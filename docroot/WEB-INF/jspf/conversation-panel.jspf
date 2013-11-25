@@ -1,0 +1,79 @@
+
+<% {%>
+
+<%@ page import="com.marcelmika.lims.jabber.JabberKeys" %>
+
+<c:set var="JABBER_ROOM_TYPE_PRIVATE" value="<%= JabberKeys.JABBER_ROOM_TYPE_PRIVATE %>" />
+<c:set var="JABBER_ROOM_TYPE_PUBLIC" value="<%= JabberKeys.JABBER_ROOM_TYPE_PUBLIC %>" />
+
+<c:choose>
+    <c:when test="${settings.activeRoomType == JABBER_ROOM_TYPE_PRIVATE}">
+        <c:set var="selectPrivate" value="selected"/>
+        <c:set var="selectPublic" value=""/>
+    </c:when>       
+    <c:when test="${settings.activeRoomType == JABBER_ROOM_TYPE_PUBLIC}">
+        <c:set var="selectPrivate" value=""/>
+        <c:set var="selectPublic" value="selected"/>
+    </c:when>       
+    <c:otherwise>
+        <c:set var="selectPrivate" value="selected"/>
+        <c:set var="selectPublic" value=""/>
+    </c:otherwise>
+</c:choose>
+
+<c:choose> 
+    <c:when test="${settings.activePanelId == 'conversations'}" > 
+        <c:set var="selected" value="selected"/>
+    </c:when> 
+    <c:otherwise> 
+        <c:set var="selected" value=""/>
+    </c:otherwise> 
+</c:choose> 
+
+<c:choose> 
+    <c:when test="${settings.chatEnabled}" > 
+        <c:set var="hidden" value=""/>
+    </c:when> 
+    <c:otherwise> 
+        <c:set var="hidden" value="aui-helper-hidden"/>
+    </c:otherwise> 
+</c:choose> 
+
+<li class="conversations ${selected} ${hidden}">
+    <div class="panel-trigger" panelId="conversations">
+        <div class="trigger-name"></div>
+    </div>
+
+    <div class="chat-panel">
+        <div class="panel-window">
+            <div class="panel-button minimize"></div>
+            <div class="panel-title"><liferay-ui:message key="conversations" /></div>
+            <div class="panel-subtitle">
+                <div class="pull-left switch">
+                    <span class="private-trigger ${selectPrivate}"><liferay-ui:message key="private" /></span>
+                    &nbsp;|&nbsp;
+                    <span class="public-trigger ${selectPublic}"><liferay-ui:message key="public" /></span>
+                </div>
+                <div class="pull-right">
+                    <span class="new-conversation-trigger"><liferay-ui:message key="new-conversation" /></span>
+                </div>
+                <div class="clear"></div>
+                <div class="panel-new-conversation">                    
+                    <input type="text" class="users-token-input"/>
+                    <textarea class="message-textarea"></textarea>
+                    <div class="buttons">
+                        <div class="cancel"><liferay-ui:message key="cancel" /></div>
+                        <div class="send"><liferay-ui:message key="send" /></div>
+                    </div>
+                </div>
+            </div>    
+            <div class="conversations-container">
+                <div class="preloader"><img alt="" src="/liferay-lims-portlet/images/preloader.gif" /></div>
+                <div class="no-conversation-info aui-helper-hidden"><liferay-ui:message key="no-conversation-info" /></div>
+                <ul class="current-conversations"></ul>
+            </div>
+        </div>
+    </div>
+</li>
+
+<% }%>

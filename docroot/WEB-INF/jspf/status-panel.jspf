@@ -1,0 +1,64 @@
+
+<% { %>
+
+<%@ page import="com.marcelmika.lims.jabber.JabberKeys" %>
+
+<c:set var="JABBER_STATUS_ONLINE" value="<%= JabberKeys.JABBER_STATUS_ONLINE %>" />
+<c:set var="JABBER_STATUS_BUSY" value="<%= JabberKeys.JABBER_STATUS_BUSY %>" />
+<c:set var="JABBER_STATUS_UNAVAILABLE" value="<%= JabberKeys.JABBER_STATUS_UNAVAILABLE %>" />
+<c:set var="JABBER_STATUS_INVISIBLE" value="<%= JabberKeys.JABBER_STATUS_INVISIBLE %>" />
+<c:set var="JABBER_STATUS_OFF" value="<%= JabberKeys.JABBER_STATUS_OFF %>" />
+    
+<c:choose>
+    <c:when test="${settings.status == JABBER_STATUS_ONLINE}">
+        <c:set var="status" value="online"/>
+    </c:when>    
+    <c:when test="${settings.status == JABBER_STATUS_BUSY}">
+        <c:set var="status" value="busy"/>
+    </c:when>    
+    <c:when test="${settings.status == JABBER_STATUS_UNAVAILABLE}">
+        <c:set var="status" value="unavailable"/>
+    </c:when>    
+    <c:when test="${settings.status == JABBER_STATUS_INVISIBLE}">
+        <c:set var="status" value="invisible"/>
+    </c:when>    
+    <c:when test="${settings.status == JABBER_STATUS_OFF}">
+        <c:set var="status" value="off"/>
+    </c:when>    
+    <c:otherwise>
+        <c:set var="status" value="unknown"/>
+    </c:otherwise>
+</c:choose>
+
+<c:choose> 
+    <c:when test="${settings.activePanelId == 'status'}" > 
+        <c:set var="selected" value="selected"/>
+    </c:when> 
+    <c:otherwise> 
+        <c:set var="selected" value=""/>
+    </c:otherwise> 
+</c:choose> 
+
+<li class="status-panel ${selected}">
+    <div class="panel-trigger" panelId="status">
+        <div class="trigger-name">
+            <div class="status-indicator ${status}" title="Status: ${status}"></div>
+        </div>
+    </div>
+    <div class="chat-panel">     
+        <div class="panel-window">
+            <div class="panel-button minimize"></div>
+
+            <div class="panel-title"><liferay-ui:message key="status" /></div>            
+            <ul class="lfr-component status">
+                <li class="online" data-status="${JABBER_STATUS_ONLINE}"><liferay-ui:message key="online" /></li>                
+                <li class="busy" data-status="${JABBER_STATUS_BUSY}"><liferay-ui:message key="busy" /></li>                
+                <li class="unavailable divider" data-status="${JABBER_STATUS_UNAVAILABLE}"><liferay-ui:message key="unavailable" /></li>                
+                <!--<li class="invisible " data-status="${JABBER_STATUS_INVISIBLE}"><liferay-ui:message key="invisible" /></li>-->
+                <li class="off" data-status="${JABBER_STATUS_OFF}"><liferay-ui:message key="off" /></li>                
+            </ul>
+        </div>
+    </div>
+</li>
+
+<% } %>

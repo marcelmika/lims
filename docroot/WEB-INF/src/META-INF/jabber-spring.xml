@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<beans
+        default-destroy-method="destroy"
+        default-init-method="afterPropertiesSet"
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+        >
+    <bean id="com.marcelmika.lims.jabber.JabberUtil" class="com.marcelmika.lims.jabber.JabberUtil">
+        <property name="jabber" ref="com.marcelmika.lims.jabber.JabberImpl"/>
+    </bean>
+
+    <bean id="com.marcelmika.lims.jabber.session.JabberSessionManager" class="com.marcelmika.lims.jabber.session.JabberSessionManager">
+        <constructor-arg index="0" ref="com.marcelmika.lims.jabber.connection.JabberConnectionManager"/>
+        <constructor-arg index="1" ref="com.marcelmika.lims.jabber.session.JabberSessionCallback"/>
+    </bean>
+
+    <bean id="com.marcelmika.lims.jabber.JabberImpl" class="com.marcelmika.lims.jabber.JabberImpl">
+        <constructor-arg ref="com.marcelmika.lims.jabber.session.JabberSessionManager"/>
+    </bean>
+
+    <bean id="com.marcelmika.lims.jabber.connection.JabberConnectionManager" class="com.marcelmika.lims.jabber.connection.JabberConnectionManager"/>
+    <bean id="com.marcelmika.lims.jabber.connection.JabberConversationManager" class="com.marcelmika.lims.jabber.connection.JabberConversationManager"/>
+
+    <bean id="com.marcelmika.lims.jabber.session.JabberSessionCallback" class="com.marcelmika.lims.jabber.session.JabberSessionCallback">
+        <constructor-arg index="0" ref="com.marcelmika.lims.jabber.connection.JabberConnectionManager"/>
+        <constructor-arg index="1" ref="com.marcelmika.lims.jabber.connection.JabberConversationManager"/>
+    </bean>
+
+</beans>

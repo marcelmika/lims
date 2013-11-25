@@ -1,0 +1,15 @@
+# build folders
+/out/
+/lib/
+
+# idea, eclipse
+/.idea/
+.project
+.classpath
+
+# mac
+.DS_Store
+
+# css cahce
+/docroot/css/.sass-cache/
+

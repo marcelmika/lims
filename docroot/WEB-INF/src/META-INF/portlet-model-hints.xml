@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.marcelmika.lims.model.Buddy">
+		<field name="bid" type="long" />
+		<field name="userId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="portraitId" type="long" />
+		<field name="fullName" type="String" />
+		<field name="screenName" type="String" />
+		<field name="statusMessage" type="String" />
+		<field name="isTyping" type="boolean" />
+		<field name="awake" type="boolean" />
+		<field name="status" type="String" />
+	</model>
+	<model name="com.marcelmika.lims.model.Conversation">
+		<field name="cid" type="long" />
+		<field name="userId" type="long" />
+		<field name="conversationId" type="String" />
+		<field name="conversationType" type="String" />
+		<field name="conversationVisibility" type="String" />
+		<field name="conversationName" type="String" />
+		<field name="unreadMessages" type="int" />
+	</model>
+	<model name="com.marcelmika.lims.model.OpenedConversation">
+		<field name="ocid" type="long" />
+		<field name="userId" type="long" />
+		<field name="conversationId" type="String" />
+	</model>
+	<model name="com.marcelmika.lims.model.Settings">
+		<field name="sid" type="long" />
+		<field name="userId" type="long" />
+		<field name="status" type="String" />
+		<field name="activeRoomType" type="String" />
+		<field name="activePanelId" type="String" />
+		<field name="mute" type="boolean" />
+		<field name="chatEnabled" type="boolean" />
+	</model>
+</model-hints>

@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.1.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_1_0.dtd">
+<service-builder package-path='com.marcelmika.lims'>
+    <namespace>LiferayLIMS</namespace>
+      
+    <!-- Settings -->
+    <entity name='Settings' local-service='true' remote-service='false'>        
+        <column name='sid' type='long' primary='true'/>
+        <column name='userId' type='long'/>
+        <column name='status' type='String'/>       
+        <column name='activeRoomType' type='String'/>        
+        <column name='activePanelId' type='String'/>        
+        <column name='mute' type='boolean'/>
+        <column name='chatEnabled' type='boolean'/>
+        <finder name='UserId' return-type='Settings'>
+            <finder-column name='userId'/>
+        </finder>        
+        <finder name='Status' return-type='Collection'>
+            <finder-column name='status'/>            
+        </finder>        
+    </entity>
+
+    <!-- Conversation -->
+    <entity name='Conversation' local-service='true' remote-service='false'>
+        <column name='cid' type='long' primary='true'/>
+        <column name='userId' type='long'/>
+        <column name='conversationId' type='String'/>
+        <column name='conversationType' type='String'/>
+        <column name='conversationVisibility' type='String'/>
+        <column name='conversationName' type='String'/>
+        <column name='unreadMessages' type='int'/>
+        <finder name='UserId_conversationId' return-type='Conversation'>
+            <finder-column name='userId'/>
+            <finder-column name='conversationId'/>
+        </finder>
+        <finder name='UserId' return-type='Collection'>
+            <finder-column name='userId'/>
+        </finder>
+    </entity>
+
+    <!-- Buddy -->
+    <entity name='Buddy' local-service='true' remote-service='false'>
+        <column name='bid' type='long' primary='true'/>
+        <column name='userId' type='long'/>
+        <column name='companyId' type='long'/>
+        <column name='portraitId' type='long'/>
+        <column name='fullName' type='String'/>
+        <column name='screenName' type='String'/>
+        <column name='statusMessage' type='String'/>
+        <column name='isTyping' type='boolean'/>
+        <column name='awake' type='boolean'/>
+        <column name='status' type='String'/>
+    </entity>
+    
+    <!-- Opened Conversation -->
+    <entity name='OpenedConversation' local-service='true' remote-service='false'>
+        <column name='ocid' type='long' primary='true'/>
+        <column name='userId' type='long'/>
+        <column name='conversationId' type='String'/>
+        <finder name='UserId_ConversationId' return-type='OpenedConversation'>
+            <finder-column name='userId'/>
+            <finder-column name='conversationId'/>
+        </finder>  
+        <finder name='UserId' return-type='Collection'>
+            <finder-column name='userId'/>            
+        </finder>   
+    </entity>
+        
+</service-builder>

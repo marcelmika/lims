@@ -1,0 +1,47 @@
+
+<% { %>
+
+<c:choose> 
+    <c:when test="${settings.activePanelId == 'settings'}" > 
+        <c:set var="selected" value="selected"/>
+    </c:when> 
+    <c:otherwise> 
+        <c:set var="selected" value=""/>
+    </c:otherwise> 
+</c:choose> 
+<c:choose> 
+    <c:when test="${settings.mute == false}" > 
+        <c:set var="playSoundChecked" value="checked"/>
+    </c:when> 
+    <c:otherwise> 
+        <c:set var="playSoundChecked" value=""/>
+    </c:otherwise> 
+</c:choose> 
+                
+<c:choose> 
+    <c:when test="${settings.chatEnabled}" > 
+        <c:set var="hidden" value=""/>
+    </c:when> 
+    <c:otherwise> 
+        <c:set var="hidden" value="aui-helper-hidden"/>
+    </c:otherwise> 
+</c:choose> 
+        
+<li class="chat-settings ${selected} ${hidden}">
+    <div class="panel-trigger" panelId="settings">
+        <div class="trigger-name"></div>
+    </div>
+    <div class="chat-panel">      
+        <div class="panel-window">
+            <div class="panel-button minimize"></div>
+            <div class="panel-title"><liferay-ui:message key="settings" /></div>            
+            <ul class="lfr-component settings">                                
+                <li>
+                    <label for="playSound"><input ${playSoundChecked} id="playSound" type="checkbox" /> <liferay-ui:message key="play-a-sound-when-i-receive-a-new-message-in-a-hidden-window" /> </label>
+                </li>                
+            </ul>
+        </div>
+    </div>
+</li>
+
+<% } %>
