@@ -4,9 +4,11 @@ package com.marcelmika.lims.hook.events;
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.User;
-import com.liferay.portal.util.PortalUtil;
-import com.marcelmika.lims.util.ChatUtil;
+import com.marcelmika.lims.events.session.BuddyLoginRequestEvent;
+import com.marcelmika.lims.events.session.BuddyLoginResponseEvent;
+import com.marcelmika.lims.hook.domain.Buddy;
+import com.marcelmika.lims.hook.service.BuddyPortalEventHandler;
+import com.marcelmika.lims.hook.service.BuddyPortalService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,17 +26,27 @@ public class LoginPostAction extends Action {
 
     // Log
     private static Log log = LogFactoryUtil.getLog(LoginPostAction.class);
+    // Portal service
+    // TODO: Inject
+    private BuddyPortalService portalService = new BuddyPortalEventHandler();
+
+    public void setPortalService(BuddyPortalService portalService) {
+        this.portalService = portalService;
+    }
 
     @Override
     public void run(HttpServletRequest request, HttpServletResponse response) {
 
         try {
-            // Get user from the request
-            User user = PortalUtil.getUser(request);
-            // Get password from request
-            String password = PortalUtil.getUserPassword(request);
+            // Create buddy from portal request
+            Buddy buddy = Buddy.fromPortalServletRequest(request);
+            // Login buddy
+            BuddyLoginResponseEvent responseEvent = portalService.loginBuddy(
+                    new BuddyLoginRequestEvent(buddy.toBuddyDetails())
+            );
+
             // Login to Jabber server
-            ChatUtil.login(user.getUserId(), user.getScreenName(), password);
+            // ChatUtil.login(user.getUserId(), user.getScreenName(), password);
 
         } catch (Exception e) {
             // Log error

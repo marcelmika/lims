@@ -28,4 +28,12 @@
         <constructor-arg index="1" ref="com.marcelmika.lims.jabber.connection.JabberConversationManager"/>
     </bean>
 
+
+    <!-- Portal Service -->
+    <!--<bean id="com.marcelmika.lims.hook.service.BuddyPortalEventHandler" class="com.marcelmika.lims.hook.service.BuddyPortalEventHandler"/>-->
+
+    <!--<bean id="com.marcelmika.lims.hook.events.LoginPostAction" class="com.marcelmika.lims.hook.events.LoginPostAction">-->
+        <!--<property name="portalService" ref="com.marcelmika.lims.hook.service.BuddyPortalEventHandler"/>-->
+    <!--</bean>-->
+
 </beans>
