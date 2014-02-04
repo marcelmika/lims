@@ -52,11 +52,6 @@ public class ChatUtil {
     // ------------------------------------------------------------------------------
     //   Session Management
     // ------------------------------------------------------------------------------
-    public static void login(long userId, String username, String password) {
-        // Login to the Jabber server
-        JabberUtil.login(userId, username, password);
-    }
-
     public static void logout(long userId) {
         // Logout from the Jabber server
         JabberUtil.logout(userId);

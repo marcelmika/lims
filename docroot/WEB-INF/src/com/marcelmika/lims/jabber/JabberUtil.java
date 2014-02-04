@@ -35,16 +35,6 @@ public class JabberUtil {
         JabberUtil.jabber = jabber;
     }
 
-    /**
-     * Performs login action
-     *
-     * @param userId   long
-     * @param username String
-     * @param password String
-     */
-    public static void login(long userId, String username, String password) {
-        getJabber().login(userId, username, password);
-    }
 
     /**
      * Performs logout action

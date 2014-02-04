@@ -15,9 +15,6 @@ import java.util.List;
  */
 public interface Jabber {
 
-    // Session management related stuff
-    public void login(long userId, String username, String password);
-
     public void logout(long userId);
 
     // Message related stuff

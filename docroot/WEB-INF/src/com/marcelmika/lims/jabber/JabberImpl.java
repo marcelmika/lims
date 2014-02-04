@@ -54,23 +54,11 @@ public class JabberImpl implements Jabber {
     // ------------------------------------------------------------------------------
     //    Session Management
     // ------------------------------------------------------------------------------
-
-    /**
-     * Log in to the Jabber Server
-     *
-     * @param userId   long
-     * @param username String
-     * @param password String
-     */
-    public void login(long userId, String username, String password) {
-        // Login
-        sessionManager.login(userId, username, password);
-    }
-
     /**
      * Log out from the Jabber Server
      *
      * @param userId long
+     * @deprecated
      */
     public void logout(long userId) {
         // Logout
