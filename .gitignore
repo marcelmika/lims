@@ -7,6 +7,10 @@
 .project
 .classpath
 
+# tests
+/test-classes
+/test-results
+
 # mac
 .DS_Store
 
