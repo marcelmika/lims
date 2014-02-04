@@ -35,16 +35,6 @@ public class JabberUtil {
         JabberUtil.jabber = jabber;
     }
 
-
-    /**
-     * Performs logout action
-     *
-     * @param userId long
-     */
-    public static void logout(long userId) {
-        getJabber().logout(userId);
-    }
-
     /**
      * @done
      */

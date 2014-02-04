@@ -15,8 +15,6 @@ import java.util.List;
  */
 public interface Jabber {
 
-    public void logout(long userId);
-
     // Message related stuff
     public void sendMessage(long userId, Conversation conversation, String message) throws Exception;
 

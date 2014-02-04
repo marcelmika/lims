@@ -52,11 +52,6 @@ public class ChatUtil {
     // ------------------------------------------------------------------------------
     //   Session Management
     // ------------------------------------------------------------------------------
-    public static void logout(long userId) {
-        // Logout from the Jabber server
-        JabberUtil.logout(userId);
-    }
-
     public static void removeUserFromSystem(long userId) throws Exception {
         // Remove settings
         Settings settings = SettingsLocalServiceUtil.getSettings(userId);

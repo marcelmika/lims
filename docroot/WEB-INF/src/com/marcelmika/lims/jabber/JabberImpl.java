@@ -52,20 +52,6 @@ public class JabberImpl implements Jabber {
     }
 
     // ------------------------------------------------------------------------------
-    //    Session Management
-    // ------------------------------------------------------------------------------
-    /**
-     * Log out from the Jabber Server
-     *
-     * @param userId long
-     * @deprecated
-     */
-    public void logout(long userId) {
-        // Logout
-        sessionManager.logout(userId);
-    }
-
-    // ------------------------------------------------------------------------------
     //    Conversation
     // ------------------------------------------------------------------------------
 
