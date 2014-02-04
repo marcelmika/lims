@@ -50,17 +50,6 @@ public class ChatUtil {
     }
 
     // ------------------------------------------------------------------------------
-    //   Session Management
-    // ------------------------------------------------------------------------------
-    public static void removeUserFromSystem(long userId) throws Exception {
-        // Remove settings
-        Settings settings = SettingsLocalServiceUtil.getSettings(userId);
-        if (settings != null) {
-            SettingsLocalServiceUtil.deleteSettings(settings);
-        }
-    }
-
-    // ------------------------------------------------------------------------------
     //   Message
     // ------------------------------------------------------------------------------ 
     public static void sendMessage(long userId, Conversation conversation, String message) throws Exception {
