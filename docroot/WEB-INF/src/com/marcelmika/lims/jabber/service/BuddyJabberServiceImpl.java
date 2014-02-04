@@ -4,9 +4,7 @@ import com.marcelmika.lims.events.session.BuddyLoginRequestEvent;
 import com.marcelmika.lims.events.session.BuddyLoginResponseEvent;
 import com.marcelmika.lims.jabber.JabberException;
 import com.marcelmika.lims.jabber.domain.Buddy;
-import com.marcelmika.lims.jabber.session.JabberSessionCallbackInterface;
 import com.marcelmika.lims.jabber.session.JabberSessionManager;
-import org.jivesoftware.smack.Connection;
 
 /**
  * @author Ing. Marcel Mika
@@ -16,6 +14,7 @@ import org.jivesoftware.smack.Connection;
  */
 public class BuddyJabberServiceImpl implements BuddyJabberService {
 
+    // Dependencies
     private JabberSessionManager sessionManager;
 
     /**
@@ -28,6 +27,12 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
     }
 
 
+    /**
+     * Login buddy to Jabber
+     *
+     * @param event Request event for login method
+     * @return Response event for login method
+     */
     @Override
     public BuddyLoginResponseEvent loginBuddy(BuddyLoginRequestEvent event) {
         // Get buddy form details
@@ -39,7 +44,6 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
         } catch (JabberException e) {
             return BuddyLoginResponseEvent.loginFailure(e.getMessage(), buddy.toBuddyDetails());
         }
-
 
         return BuddyLoginResponseEvent.loginSuccess("User successfully signed in", buddy.toBuddyDetails());
     }

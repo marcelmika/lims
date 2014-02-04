@@ -11,5 +11,10 @@ import com.marcelmika.lims.events.session.BuddyLoginResponseEvent;
  */
 public interface BuddyJabberService {
 
+    /**
+     * Login buddy to Jabber
+     * @param event Request event for login method
+     * @return Response event for login method
+     */
     public BuddyLoginResponseEvent loginBuddy(BuddyLoginRequestEvent event);
 }

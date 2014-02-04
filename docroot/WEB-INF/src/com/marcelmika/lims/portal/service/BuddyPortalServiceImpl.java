@@ -1,11 +1,8 @@
 package com.marcelmika.lims.portal.service;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.marcelmika.lims.jabber.service.BuddyJabberService;
-import com.marcelmika.lims.jabber.service.BuddyJabberServiceUtil;
 import com.marcelmika.lims.events.session.BuddyLoginRequestEvent;
 import com.marcelmika.lims.events.session.BuddyLoginResponseEvent;
+import com.marcelmika.lims.jabber.service.BuddyJabberService;
 
 /**
  * @author Ing. Marcel Mika
@@ -15,11 +12,26 @@ import com.marcelmika.lims.events.session.BuddyLoginResponseEvent;
  */
 public class BuddyPortalServiceImpl implements BuddyPortalService {
 
-    // Log
-    private static Log log = LogFactoryUtil.getLog(BuddyPortalServiceImpl.class);
+    // Dependencies
+    BuddyJabberService buddyJabberService;
 
+    /**
+     * Constructor
+     *
+     * @param buddyJabberService Buddy Jabber Service
+     */
+    public BuddyPortalServiceImpl(BuddyJabberService buddyJabberService) {
+        this.buddyJabberService = buddyJabberService;
+    }
+
+    /**
+     * Login buddy to Portal
+     *
+     * @param event Request event for login method
+     * @return Response event for login method
+     */
     @Override
     public BuddyLoginResponseEvent loginBuddy(BuddyLoginRequestEvent event) {
-        return BuddyJabberServiceUtil.getBuddyJabberService().loginBuddy(event);
+        return buddyJabberService.loginBuddy(event);
     }
 }

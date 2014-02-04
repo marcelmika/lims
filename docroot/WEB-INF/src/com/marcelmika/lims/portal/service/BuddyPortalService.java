@@ -11,6 +11,11 @@ import com.marcelmika.lims.events.session.BuddyLoginResponseEvent;
  */
 public interface BuddyPortalService {
 
+    /**
+     * Login buddy to Portal
+     * @param event Request event for login method
+     * @return Response event for login method
+     */
     public BuddyLoginResponseEvent loginBuddy(BuddyLoginRequestEvent event);
 
 }
