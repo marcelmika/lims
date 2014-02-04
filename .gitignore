@@ -10,6 +10,7 @@
 # tests
 /test-classes
 /test-results
+/tests
 
 # mac
 .DS_Store
