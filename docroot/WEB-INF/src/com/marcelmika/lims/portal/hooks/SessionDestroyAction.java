@@ -2,8 +2,13 @@
 package com.marcelmika.lims.portal.hooks;
 
 import com.liferay.portal.kernel.events.SessionAction;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.marcelmika.lims.util.ChatUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.marcelmika.lims.events.session.BuddyLogoutRequestEvent;
+import com.marcelmika.lims.events.session.BuddyLogoutResponseEvent;
+import com.marcelmika.lims.portal.domain.Buddy;
+import com.marcelmika.lims.portal.service.BuddyPortalService;
+import com.marcelmika.lims.portal.service.BuddyPortalServiceUtil;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,11 +23,21 @@ import javax.servlet.http.HttpSession;
  */
 public class SessionDestroyAction extends SessionAction {
 
+    // Log
+    private static Log log = LogFactoryUtil.getLog(LoginPostAction.class);
+    // Buddy portal service
+    private BuddyPortalService portalService = BuddyPortalServiceUtil.getBuddyPortalService();
+
     @Override
     public void run(HttpSession session) {
-        // Get user ID from session
-        Long userId = (Long) session.getAttribute(WebKeys.USER_ID);
-        // Disconnect user from jabber
-        ChatUtil.logout(userId);
+        // Create buddy from session
+        Buddy buddy = Buddy.fromHttpSession(session);
+        // Logout buddy
+        BuddyLogoutResponseEvent responseEvent = portalService.logoutBuddy(
+                new BuddyLogoutRequestEvent(buddy.toBuddyDetails())
+        );
+
+        // Log result
+        log.info(responseEvent.getResult());
     }
 }

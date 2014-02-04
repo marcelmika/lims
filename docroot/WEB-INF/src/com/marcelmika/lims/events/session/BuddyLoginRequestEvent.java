@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class BuddyLoginRequestEvent {
 
-    private BuddyDetails details;
+    private final BuddyDetails details;
 
     public BuddyLoginRequestEvent(BuddyDetails details) {
         this.details = details;

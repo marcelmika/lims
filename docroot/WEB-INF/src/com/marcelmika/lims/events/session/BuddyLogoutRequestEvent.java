@@ -10,7 +10,6 @@ import com.marcelmika.lims.events.details.BuddyDetails;
  */
 public class BuddyLogoutRequestEvent {
 
-
     private final BuddyDetails details;
 
     public BuddyLogoutRequestEvent(BuddyDetails details) {
@@ -20,4 +19,5 @@ public class BuddyLogoutRequestEvent {
     public BuddyDetails getDetails() {
         return details;
     }
+
 }

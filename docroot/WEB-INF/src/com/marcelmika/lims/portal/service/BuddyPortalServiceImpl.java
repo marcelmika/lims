@@ -2,6 +2,8 @@ package com.marcelmika.lims.portal.service;
 
 import com.marcelmika.lims.events.session.BuddyLoginRequestEvent;
 import com.marcelmika.lims.events.session.BuddyLoginResponseEvent;
+import com.marcelmika.lims.events.session.BuddyLogoutRequestEvent;
+import com.marcelmika.lims.events.session.BuddyLogoutResponseEvent;
 import com.marcelmika.lims.jabber.service.BuddyJabberService;
 
 /**
@@ -33,5 +35,16 @@ public class BuddyPortalServiceImpl implements BuddyPortalService {
     @Override
     public BuddyLoginResponseEvent loginBuddy(BuddyLoginRequestEvent event) {
         return buddyJabberService.loginBuddy(event);
+    }
+
+    /**
+     * Logout buddy from Portal
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    @Override
+    public BuddyLogoutResponseEvent logoutBuddy(BuddyLogoutRequestEvent event) {
+        return buddyJabberService.logoutBuddy(event);
     }
 }

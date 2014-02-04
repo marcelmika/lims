@@ -2,11 +2,13 @@ package com.marcelmika.lims.portal.domain;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 import com.marcelmika.lims.events.details.BuddyDetails;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author Ing. Marcel Mika
@@ -32,6 +34,17 @@ public class Buddy {
         buddy.setBuddyId(user.getUserId());
         buddy.setScreenName(user.getScreenName());
         buddy.setPassword(password);
+
+        return buddy;
+    }
+
+    public static Buddy fromHttpSession(HttpSession session) {
+        // Create new buddy
+        Buddy buddy = new Buddy();
+        // Get user ID from http session
+        Long userId = (Long) session.getAttribute(WebKeys.USER_ID);
+
+        buddy.setBuddyId(userId);
 
         return buddy;
     }

@@ -104,29 +104,15 @@ public class JabberSessionManager {
         addToSystem(userId, connection);
     }
 
-    private void addToSystem(long userId, Connection connection) {
-        // Add connection to the connection container
-        connectionManager.putConnection(userId, connection);
-        // Build conversations for the user
-        conversationManager.buildConversations(userId, connection);
-        // Set initial presence
-        setInitialPresence(userId, connection);
-        // Set roster listener
-        setRosterListener(userId, connection);
-
-        // Log
-        log.info("User with ID: " + userId + " is successfully logged in");
-    }
-
     /**
      * Signs out from jabber server and remove conversation from container
      *
      * @param userId long
      */
-    public void logout(long userId) {
+    public void logout(long userId) throws JabberException {
         // User must be connected
         if (!connectionManager.isUserConnected(userId)) {
-            sessionDidNotLogout(userId, new Exception("User is not connected"));
+            throw new JabberException("User cannot be signed out since he was not connected.");
         }
 
         // Get connection from connection store
@@ -136,7 +122,16 @@ public class JabberSessionManager {
         // Remove from manager
         connectionManager.removeConnection(userId);
         // Call Session Did Logout
-        sessionDidLogout(userId);
+        try {
+            // Change local status to off
+            SettingsLocalServiceUtil.changeStatus(userId, JabberKeys.JABBER_STATUS_OFF);
+            // TODO: Move to conversation manager
+            // Remove conversation from the conversation store
+            ConversationStore.getInstance().removeConversationContainer(userId);
+        } catch (Exception e) {
+            throw new JabberException("Problems during logout occurred. However, user was successfully " +
+                    "logged out from the Jabber server", e);
+        }
     }
 
     /**
@@ -182,6 +177,26 @@ public class JabberSessionManager {
                 throw new JabberException("User did not login", e);
             }
         }
+    }
+
+
+    /**
+     * TODO: Refactor, rename, etc.
+     * @param userId
+     * @param connection
+     */
+    private void addToSystem(long userId, Connection connection) {
+        // Add connection to the connection container
+        connectionManager.putConnection(userId, connection);
+        // Build conversations for the user
+        conversationManager.buildConversations(userId, connection);
+        // Set initial presence
+        setInitialPresence(userId, connection);
+        // Set roster listener
+        setRosterListener(userId, connection);
+
+        // Log
+        log.info("User with ID: " + userId + " is successfully logged in");
     }
 
     /**
@@ -287,26 +302,4 @@ public class JabberSessionManager {
 //            }
 //        }
     }
-
-    public void sessionDidLogout(long userId) {
-        try {
-            // Change local status to off
-            SettingsLocalServiceUtil.changeStatus(userId, JabberKeys.JABBER_STATUS_OFF);
-            // TODO: Move to conversation manager
-            // Remove conversation from the conversation store
-            ConversationStore.getInstance().removeConversationContainer(userId);
-        } catch (Exception e) {
-            log.error("Problems during logout occurred. However, user was successfully logged out from the " +
-                    "Jabber server. Reason: " + e.getMessage());
-            return;
-        }
-
-        log.info("User " + userId + " was successfully logged off.");
-    }
-
-    public void sessionDidNotLogout(long userId, Exception e) {
-        log.error("User " + userId + " cannot be logged off. Reason: " + e.getMessage());
-    }
-
-
 }
