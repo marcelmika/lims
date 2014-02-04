@@ -1,4 +1,4 @@
-package com.marcelmika.lims.core.service;
+package com.marcelmika.lims.jabber.service;
 
 import com.marcelmika.lims.events.session.BuddyLoginRequestEvent;
 import com.marcelmika.lims.events.session.BuddyLoginResponseEvent;
@@ -9,7 +9,7 @@ import com.marcelmika.lims.events.session.BuddyLoginResponseEvent;
  * Date: 2/2/14
  * Time: 6:22 PM
  */
-public interface BuddyCoreService {
+public interface BuddyJabberService {
 
     public BuddyLoginResponseEvent loginBuddy(BuddyLoginRequestEvent event);
 }

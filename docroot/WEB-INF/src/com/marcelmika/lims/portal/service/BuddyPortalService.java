@@ -1,4 +1,4 @@
-package com.marcelmika.lims.hook.service;
+package com.marcelmika.lims.portal.service;
 
 import com.marcelmika.lims.events.session.BuddyLoginRequestEvent;
 import com.marcelmika.lims.events.session.BuddyLoginResponseEvent;

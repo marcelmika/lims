@@ -1,5 +1,5 @@
 
-package com.marcelmika.lims.hook.events;
+package com.marcelmika.lims.portal.hooks;
 
 import com.liferay.portal.kernel.events.SessionAction;
 import com.liferay.portal.kernel.util.WebKeys;

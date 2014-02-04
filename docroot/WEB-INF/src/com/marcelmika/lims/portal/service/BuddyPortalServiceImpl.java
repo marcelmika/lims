@@ -1,7 +1,9 @@
-package com.marcelmika.lims.hook.service;
+package com.marcelmika.lims.portal.service;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.marcelmika.lims.jabber.service.BuddyJabberService;
+import com.marcelmika.lims.jabber.service.BuddyJabberServiceUtil;
 import com.marcelmika.lims.events.session.BuddyLoginRequestEvent;
 import com.marcelmika.lims.events.session.BuddyLoginResponseEvent;
 
@@ -11,15 +13,13 @@ import com.marcelmika.lims.events.session.BuddyLoginResponseEvent;
  * Date: 2/2/14
  * Time: 7:09 PM
  */
-public class BuddyPortalEventHandler implements BuddyPortalService {
+public class BuddyPortalServiceImpl implements BuddyPortalService {
 
     // Log
-    private static Log log = LogFactoryUtil.getLog(BuddyPortalEventHandler.class);
+    private static Log log = LogFactoryUtil.getLog(BuddyPortalServiceImpl.class);
 
     @Override
     public BuddyLoginResponseEvent loginBuddy(BuddyLoginRequestEvent event) {
-        log.info("Jsme tu");
-
-        return null;
+        return BuddyJabberServiceUtil.getBuddyJabberService().loginBuddy(event);
     }
 }

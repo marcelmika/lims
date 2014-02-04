@@ -302,9 +302,9 @@ public class ChatPollerProcessor extends BasePollerProcessor {
             getOpenedConversations(pollerRequest, pollerResponse);
         } catch (Exception ex) {
             pollerResponse.setParameter("error", ex.getMessage());
-//            System.out.println("[ERROR] " + ex.getMessage());
+            System.out.println("[ERROR] " + ex.getMessage());
             // Uncomment for testing purpouses
-            throw ex;
+//            throw ex;
         }
     }
 
@@ -355,9 +355,9 @@ public class ChatPollerProcessor extends BasePollerProcessor {
                 changeActiveRoomType(pollerRequest);
             }
         } catch (Exception ex) {
-//            System.out.println("[ERROR] " + ex.getMessage());
+            System.out.println("[ERROR] " + ex.getMessage());
             // Uncomment for testing purpouses
-            throw ex;
+//            throw ex;
         }
 
     }

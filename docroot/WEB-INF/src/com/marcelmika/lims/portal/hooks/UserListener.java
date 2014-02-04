@@ -1,5 +1,5 @@
 
-package com.marcelmika.lims.hook.listeners;
+package com.marcelmika.lims.portal.hooks;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

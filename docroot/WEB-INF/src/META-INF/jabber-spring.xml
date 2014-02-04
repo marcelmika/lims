@@ -13,7 +13,7 @@
 
     <bean id="com.marcelmika.lims.jabber.session.JabberSessionManager" class="com.marcelmika.lims.jabber.session.JabberSessionManager">
         <constructor-arg index="0" ref="com.marcelmika.lims.jabber.connection.JabberConnectionManager"/>
-        <constructor-arg index="1" ref="com.marcelmika.lims.jabber.session.JabberSessionCallback"/>
+        <constructor-arg index="1" ref="com.marcelmika.lims.jabber.connection.JabberConversationManager"/>
     </bean>
 
     <bean id="com.marcelmika.lims.jabber.JabberImpl" class="com.marcelmika.lims.jabber.JabberImpl">
@@ -29,11 +29,22 @@
     </bean>
 
 
-    <!-- Portal Service -->
-    <!--<bean id="com.marcelmika.lims.hook.service.BuddyPortalEventHandler" class="com.marcelmika.lims.hook.service.BuddyPortalEventHandler"/>-->
+    <!-- Buddy Portal Service -->
 
-    <!--<bean id="com.marcelmika.lims.hook.events.LoginPostAction" class="com.marcelmika.lims.hook.events.LoginPostAction">-->
-        <!--<property name="portalService" ref="com.marcelmika.lims.hook.service.BuddyPortalEventHandler"/>-->
-    <!--</bean>-->
+    <bean id="com.marcelmika.lims.portal.service.BuddyPortalServiceImpl" class="com.marcelmika.lims.portal.service.BuddyPortalServiceImpl"/>
+
+    <bean id="com.marcelmika.lims.portal.service.BuddyPortalServiceUtil" class="com.marcelmika.lims.portal.service.BuddyPortalServiceUtil">
+        <property name="buddyPortalService" ref="com.marcelmika.lims.portal.service.BuddyPortalServiceImpl"/>
+    </bean>
+
+    <!-- Buddy Core Service -->
+
+    <bean id="com.marcelmika.lims.jabber.service.BuddyJabberServiceImpl" class="com.marcelmika.lims.jabber.service.BuddyJabberServiceImpl">
+        <constructor-arg ref="com.marcelmika.lims.jabber.session.JabberSessionManager"/>
+    </bean>
+
+    <bean id="com.marcelmika.lims.jabber.service.BuddyJabberServiceUtil" class="com.marcelmika.lims.jabber.service.BuddyJabberServiceUtil">
+        <property name="buddyJabberService" ref="com.marcelmika.lims.jabber.service.BuddyJabberServiceImpl"/>
+    </bean>
 
 </beans>
