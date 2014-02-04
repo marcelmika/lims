@@ -1,50 +1,50 @@
-package com.marcelmika.lims.portal.service;
+package com.marcelmika.lims.core.service;
 
-import com.marcelmika.lims.core.service.BuddyCoreService;
 import com.marcelmika.lims.events.session.BuddyLoginRequestEvent;
 import com.marcelmika.lims.events.session.BuddyLoginResponseEvent;
 import com.marcelmika.lims.events.session.BuddyLogoutRequestEvent;
 import com.marcelmika.lims.events.session.BuddyLogoutResponseEvent;
+import com.marcelmika.lims.jabber.service.BuddyJabberService;
 
 /**
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
- * Date: 2/2/14
- * Time: 7:09 PM
+ * Date: 2/4/14
+ * Time: 11:29 PM
  */
-public class BuddyPortalServiceImpl implements BuddyPortalService {
+public class BuddyCoreServiceImpl implements BuddyCoreService {
 
     // Dependencies
-    BuddyCoreService buddyCoreService;
+    BuddyJabberService buddyJabberService;
 
     /**
      * Constructor
      *
-     * @param buddyCoreService Buddy Jabber Service
+     * @param buddyJabberService Buddy Jabber Service
      */
-    public BuddyPortalServiceImpl(BuddyCoreService buddyCoreService) {
-        this.buddyCoreService = buddyCoreService;
+    public BuddyCoreServiceImpl(BuddyJabberService buddyJabberService) {
+        this.buddyJabberService = buddyJabberService;
     }
 
     /**
-     * Login buddy to Portal
+     * Login buddy to System
      *
      * @param event Request event for login method
      * @return Response event for login method
      */
     @Override
     public BuddyLoginResponseEvent loginBuddy(BuddyLoginRequestEvent event) {
-        return buddyCoreService.loginBuddy(event);
+        return buddyJabberService.loginBuddy(event);
     }
 
     /**
-     * Logout buddy from Portal
+     * Logout buddy from System
      *
      * @param event Request event for logout method
      * @return Response event for logout method
      */
     @Override
     public BuddyLogoutResponseEvent logoutBuddy(BuddyLogoutRequestEvent event) {
-        return buddyCoreService.logoutBuddy(event);
+        return buddyJabberService.logoutBuddy(event);
     }
 }
