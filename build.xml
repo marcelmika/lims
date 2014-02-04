@@ -3,46 +3,5 @@
 
 <project name="liferay-lims-portlet" basedir="." default="deploy">
     <import file="../build-common-portlet.xml" />
-    
-    <property name="src.dir" value="${basedir}/docroot/WEB-INF/src"/>
-    <property name="classes.dir" value="${basedir}/docroot/WEB-INF/classes"/>
-    <property name="lib.dir" value="${basedir}/docroot/WEB-INF/lib"/>
 
-    <property name="test.src.dir" value="${basedir}/tests/src"/>
-    <property name="test.classes.dir" value="${basedir}/tests/output"/>
-    <property name="test.lib.dir" value="${basedir}/tests/lib"/>
-    
-    <target name="compile-tests" depends="compile, clean-tests">
-        <mkdir dir="${test.classes.dir}"/>
-        <javac classpathref="test.class.path"
-               destdir="${test.classes.dir}"
-               srcdir="${test.src.dir}"
-               debug="true"
-               target="${ant.build.javac.target}">
-            <include name="**/*"/>
-        </javac>
-        
-        <!-- 
-            compiled src files into the testing output directory since our tests will of course
-            reference them
-        -->
-        <copy todir="${test.classes.dir}">
-            <fileset dir="${classes.dir}"/>
-        </copy>
-    </target>
-
-    <target name="clean-tests">
-        <delete dir="${test.classes.dir}"/>
-    </target>
-
-    <path id="test.class.path">
-        <pathelement location="${classes.dir}"/>
-        <fileset dir="${lib.dir}">
-            <include name="*.jar"/>
-        </fileset>
-        <pathelement location="${test.classes.dir}"/>
-        <fileset dir="${test.lib.dir}">
-            <include name="*.jar"/>
-        </fileset>
-    </path>
 </project>
