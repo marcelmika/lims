@@ -1,10 +1,7 @@
 package com.marcelmika.lims.portal.service;
 
 import com.marcelmika.lims.core.service.BuddyCoreService;
-import com.marcelmika.lims.events.session.BuddyLoginRequestEvent;
-import com.marcelmika.lims.events.session.BuddyLoginResponseEvent;
-import com.marcelmika.lims.events.session.BuddyLogoutRequestEvent;
-import com.marcelmika.lims.events.session.BuddyLogoutResponseEvent;
+import com.marcelmika.lims.events.session.*;
 
 /**
  * @author Ing. Marcel Mika
@@ -46,5 +43,16 @@ public class BuddyPortalServiceImpl implements BuddyPortalService {
     @Override
     public BuddyLogoutResponseEvent logoutBuddy(BuddyLogoutRequestEvent event) {
         return buddyCoreService.logoutBuddy(event);
+    }
+
+    /**
+     * Completely removes buddy from Portal
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    @Override
+    public BuddyRemoveResponseEvent removeBuddy(BuddyRemoveRequestEvent event) {
+        return buddyCoreService.removeBuddy(event);
     }
 }

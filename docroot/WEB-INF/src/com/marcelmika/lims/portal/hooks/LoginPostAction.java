@@ -26,7 +26,7 @@ public class LoginPostAction extends Action {
 
     // Log
     private static Log log = LogFactoryUtil.getLog(LoginPostAction.class);
-    // Buddy portal service
+    // Services
     private BuddyPortalService portalService = BuddyPortalServiceUtil.getBuddyPortalService();
 
     @Override

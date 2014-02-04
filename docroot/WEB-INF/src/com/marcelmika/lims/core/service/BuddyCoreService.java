@@ -1,9 +1,6 @@
 package com.marcelmika.lims.core.service;
 
-import com.marcelmika.lims.events.session.BuddyLoginRequestEvent;
-import com.marcelmika.lims.events.session.BuddyLoginResponseEvent;
-import com.marcelmika.lims.events.session.BuddyLogoutRequestEvent;
-import com.marcelmika.lims.events.session.BuddyLogoutResponseEvent;
+import com.marcelmika.lims.events.session.*;
 
 /**
  * @author Ing. Marcel Mika
@@ -15,6 +12,7 @@ public interface BuddyCoreService {
 
     /**
      * Login buddy to System
+     *
      * @param event Request event for login method
      * @return Response event for login method
      */
@@ -22,8 +20,17 @@ public interface BuddyCoreService {
 
     /**
      * Logout buddy from System
+     *
      * @param event Request event for logout method
      * @return Response event for logout method
      */
     public BuddyLogoutResponseEvent logoutBuddy(BuddyLogoutRequestEvent event);
+
+    /**
+     * Completely removes buddy from the System
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    public BuddyRemoveResponseEvent removeBuddy(BuddyRemoveRequestEvent event);
 }

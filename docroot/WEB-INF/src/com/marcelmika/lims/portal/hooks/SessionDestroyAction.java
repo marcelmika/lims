@@ -25,7 +25,7 @@ public class SessionDestroyAction extends SessionAction {
 
     // Log
     private static Log log = LogFactoryUtil.getLog(LoginPostAction.class);
-    // Buddy portal service
+    // Service
     private BuddyPortalService portalService = BuddyPortalServiceUtil.getBuddyPortalService();
 
     @Override

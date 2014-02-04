@@ -23,6 +23,17 @@ public class Buddy {
     private String password;
 
 
+    public static Buddy fromPortalUser(User user) {
+        // Create new empty buddy
+        Buddy buddy = new Buddy();
+
+        buddy.setBuddyId(user.getUserId());
+        buddy.setScreenName(user.getScreenName());
+        buddy.setPassword(user.getPassword());
+
+        return buddy;
+    }
+
     public static Buddy fromPortalServletRequest(HttpServletRequest request) throws SystemException, PortalException {
         // Create new empty buddy
         Buddy buddy = new Buddy();
