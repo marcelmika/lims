@@ -1,5 +1,6 @@
 package com.marcelmika.lims.events.session;
 
+import com.marcelmika.lims.events.ResponseEvent;
 import com.marcelmika.lims.events.details.BuddyDetails;
 
 /**
@@ -8,10 +9,8 @@ import com.marcelmika.lims.events.details.BuddyDetails;
  * Date: 2/4/14
  * Time: 11:40 PM
  */
-public class BuddyDeleteResponseEvent {
+public class BuddyDeleteResponseEvent extends ResponseEvent {
 
-    private String result;
-    private boolean success;
     private BuddyDetails details;
 
     public static BuddyDeleteResponseEvent removeFailure(String result, BuddyDetails details) {
@@ -30,14 +29,6 @@ public class BuddyDeleteResponseEvent {
         event.success = true;
 
         return event;
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public boolean isSuccess() {
-        return success;
     }
 
     public BuddyDetails getDetails() {

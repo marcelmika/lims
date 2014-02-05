@@ -88,14 +88,4 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
         return null;
     }
 
-    /**
-     * Update buddy's active panel (panel which is open)
-     *
-     * @param event Request event for logout method
-     * @return Response event for logout method
-     */
-    @Override
-    public BuddyUpdateActivePanelResponseEvent updateActivePanel(BuddyUpdateActivePanelRequestEvent event) {
-        return null;
-    }
 }

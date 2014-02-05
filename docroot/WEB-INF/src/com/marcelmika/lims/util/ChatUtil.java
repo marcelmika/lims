@@ -122,7 +122,7 @@ public class ChatUtil {
      *
      * @param userId
      * @return Conversation if the user is connected. Null if conversation was
-     *         opened but user is not connected.
+     * opened but user is not connected.
      * @throws Exception If the conversation wasn't opened.
      */
     public static Conversation openConversation(long userId, String conversationId) throws Exception {
@@ -146,7 +146,7 @@ public class ChatUtil {
      *
      * @param buddy
      * @return Conversation if user is connected. Null if conversation was
-     *         opened but user is not connected.
+     * opened but user is not connected.
      * @throws Exception If the conversation wasn't opened.
      */
     public static Conversation openConversation(com.marcelmika.lims.model.Buddy buddy, String conversationId) throws Exception {
@@ -204,6 +204,13 @@ public class ChatUtil {
     // ------------------------------------------------------------------------------
     //   Settings
     // ------------------------------------------------------------------------------
+
+    /**
+     * @param userId
+     * @param roomType
+     * @throws Exception
+     * @deprecated
+     */
     public static void changeActiveRoomType(long userId, String roomType) throws Exception {
         SettingsLocalServiceUtil.changeActiveRoomType(userId, roomType);
     }
@@ -216,6 +223,12 @@ public class ChatUtil {
         return SettingsLocalServiceUtil.getSettings(buddy.getUserId());
     }
 
+    /**
+     * @param userId
+     * @param status
+     * @throws Exception
+     * @deprecated
+     */
     public static void changeStatus(long userId, String status) throws Exception {
         // Save to settings                
         SettingsLocalServiceUtil.changeStatus(userId, status);
@@ -223,6 +236,12 @@ public class ChatUtil {
         JabberUtil.changeStatus(userId, status);
     }
 
+    /**
+     * @param userId
+     * @param activePanelId
+     * @throws Exception
+     * @deprecated
+     */
     public static void changeActivePanel(long userId, String activePanelId) throws Exception {
         // Get settings
         Settings settings = SettingsLocalServiceUtil.getSettings(userId);

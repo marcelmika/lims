@@ -88,6 +88,30 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
      */
     @Override
     public BuddyUpdateActivePanelResponseEvent updateActivePanel(BuddyUpdateActivePanelRequestEvent event) {
-        return null;
+        return buddyPersistenceService.updateActivePanel(event);
     }
+
+    /**
+     * Update buddy's active room type (i.e. public or private)
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    @Override
+    public BuddyUpdateActiveRoomTypeResponseEvent updateActiveRoomType(BuddyUpdateActiveRoomTypeRequestEvent event) {
+        return buddyPersistenceService.updateActiveRoomType(event);
+    }
+
+    /**
+     * Update buddy's settings
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    @Override
+    public BuddyUpdateSettingsResponseEvent updateSettings(BuddyUpdateSettingsRequestEvent event) {
+        return buddyPersistenceService.updateSettings(event);
+    }
+
+
 }

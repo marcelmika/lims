@@ -39,6 +39,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
         pollerResponse.setParameter("buddies", buddiesJSON);
     }
 
+    // HEX OK
     protected void saveSettings(PollerRequest pollerRequest) throws Exception {
         boolean mute = getBoolean(pollerRequest, "mute");
         // Get settings
@@ -56,6 +57,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
         ChatUtil.changeStatus(pollerRequest.getUserId(), status);
     }
 
+    // HEX OK
     protected void changeActivePanel(PollerRequest pollerRequest) throws Exception {
         String activePanelId = getString(pollerRequest, "activePanelId");
 //        System.out.println("CHANGING PANEL: " + activePanelId);

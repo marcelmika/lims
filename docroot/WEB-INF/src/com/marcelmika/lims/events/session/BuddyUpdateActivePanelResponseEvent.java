@@ -1,38 +1,32 @@
 package com.marcelmika.lims.events.session;
 
+import com.marcelmika.lims.events.ResponseEvent;
+
 /**
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
  * Date: 2/5/14
  * Time: 9:30 PM
  */
-public class BuddyUpdateActivePanelResponseEvent {
+public class BuddyUpdateActivePanelResponseEvent extends ResponseEvent {
 
-    private String result;
-    private boolean success;
 
-    public static BuddyUpdateActivePanelResponseEvent changeActivePanelFailure(String result) {
+    public static BuddyUpdateActivePanelResponseEvent updateActivePanelFailure(String result,
+                                                                               Throwable exception) {
         BuddyUpdateActivePanelResponseEvent event = new BuddyUpdateActivePanelResponseEvent();
         event.result = result;
         event.success = false;
+        event.exception = exception;
 
         return event;
     }
 
-    public static BuddyUpdateActivePanelResponseEvent changeActivePanelSuccess(String result) {
+    public static BuddyUpdateActivePanelResponseEvent updateActivePanelSuccess(String result) {
         BuddyUpdateActivePanelResponseEvent event = new BuddyUpdateActivePanelResponseEvent();
         event.result = result;
         event.success = true;
 
         return event;
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public boolean isSuccess() {
-        return success;
     }
 
 }

@@ -32,11 +32,4 @@ public interface BuddyJabberService {
      */
     public BuddyUpdateStatusResponseEvent updateStatus(BuddyUpdateStatusRequestEvent event);
 
-    /**
-     * Update buddy's active panel (panel which is open)
-     *
-     * @param event Request event for logout method
-     * @return Response event for logout method
-     */
-    public BuddyUpdateActivePanelResponseEvent updateActivePanel(BuddyUpdateActivePanelRequestEvent event);
 }
