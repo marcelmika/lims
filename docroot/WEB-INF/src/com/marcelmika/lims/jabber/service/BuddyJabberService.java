@@ -1,6 +1,6 @@
 package com.marcelmika.lims.jabber.service;
 
-import com.marcelmika.lims.events.session.*;
+import com.marcelmika.lims.events.buddy.*;
 
 /**
  * @author Ing. Marcel Mika

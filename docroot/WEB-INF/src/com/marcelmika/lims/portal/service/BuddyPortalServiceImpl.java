@@ -1,7 +1,7 @@
 package com.marcelmika.lims.portal.service;
 
 import com.marcelmika.lims.core.service.BuddyCoreService;
-import com.marcelmika.lims.events.session.*;
+import com.marcelmika.lims.events.buddy.*;
 
 /**
  * @author Ing. Marcel Mika

@@ -1,6 +1,6 @@
 package com.marcelmika.lims.jabber.service;
 
-import com.marcelmika.lims.events.session.*;
+import com.marcelmika.lims.events.buddy.*;
 import com.marcelmika.lims.jabber.JabberException;
 import com.marcelmika.lims.jabber.domain.Buddy;
 import com.marcelmika.lims.jabber.session.JabberSessionManager;

@@ -1,20 +1,18 @@
-package com.marcelmika.lims.events.session;
+package com.marcelmika.lims.events.buddy;
 
 import com.marcelmika.lims.events.details.BuddyDetails;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
  * Date: 2/2/14
- * Time: 6:44 PM
+ * Time: 6:46 PM
  */
-public class BuddyLoginRequestEvent {
+public class BuddyLogoutRequestEvent {
 
     private final BuddyDetails details;
 
-    public BuddyLoginRequestEvent(BuddyDetails details) {
+    public BuddyLogoutRequestEvent(BuddyDetails details) {
         this.details = details;
     }
 

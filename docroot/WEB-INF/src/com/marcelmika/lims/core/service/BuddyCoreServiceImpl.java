@@ -1,6 +1,6 @@
 package com.marcelmika.lims.core.service;
 
-import com.marcelmika.lims.events.session.*;
+import com.marcelmika.lims.events.buddy.*;
 import com.marcelmika.lims.jabber.service.BuddyJabberService;
 import com.marcelmika.lims.persistence.service.BuddyPersistenceService;
 

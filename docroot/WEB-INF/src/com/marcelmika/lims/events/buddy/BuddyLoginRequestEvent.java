@@ -1,18 +1,18 @@
-package com.marcelmika.lims.events.session;
+package com.marcelmika.lims.events.buddy;
 
 import com.marcelmika.lims.events.details.BuddyDetails;
 
 /**
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
- * Date: 2/4/14
- * Time: 11:39 PM
+ * Date: 2/2/14
+ * Time: 6:44 PM
  */
-public class BuddyDeleteRequestEvent {
+public class BuddyLoginRequestEvent {
 
     private final BuddyDetails details;
 
-    public BuddyDeleteRequestEvent(BuddyDetails details) {
+    public BuddyLoginRequestEvent(BuddyDetails details) {
         this.details = details;
     }
 

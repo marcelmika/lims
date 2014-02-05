@@ -1,4 +1,4 @@
-package com.marcelmika.lims.events.session;
+package com.marcelmika.lims.events.buddy;
 
 import com.marcelmika.lims.events.ResponseEvent;
 

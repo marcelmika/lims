@@ -1,4 +1,4 @@
-package com.marcelmika.lims.events.session;
+package com.marcelmika.lims.events.buddy;
 
 /**
  * @author Ing. Marcel Mika
