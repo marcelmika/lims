@@ -1,5 +1,6 @@
 package com.marcelmika.lims.events.buddy;
 
+import com.marcelmika.lims.events.RequestEvent;
 import com.marcelmika.lims.events.details.BuddyDetails;
 
 /**
@@ -8,7 +9,7 @@ import com.marcelmika.lims.events.details.BuddyDetails;
  * Date: 2/2/14
  * Time: 6:44 PM
  */
-public class BuddyLoginRequestEvent {
+public class BuddyLoginRequestEvent extends RequestEvent {
 
     private final BuddyDetails details;
 

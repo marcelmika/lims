@@ -1,12 +1,14 @@
 package com.marcelmika.lims.events.buddy;
 
+import com.marcelmika.lims.events.RequestEvent;
+
 /**
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
  * Date: 2/5/14
  * Time: 9:27 PM
  */
-public class BuddyUpdateActivePanelRequestEvent {
+public class BuddyUpdateActivePanelRequestEvent extends RequestEvent {
 
     private final Long buddyId;
     private final String activePanel;
