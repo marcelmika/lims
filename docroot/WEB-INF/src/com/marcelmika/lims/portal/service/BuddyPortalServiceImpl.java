@@ -52,7 +52,7 @@ public class BuddyPortalServiceImpl implements BuddyPortalService {
      * @return Response event for logout method
      */
     @Override
-    public BuddyRemoveResponseEvent removeBuddy(BuddyRemoveRequestEvent event) {
+    public BuddyDeleteResponseEvent removeBuddy(BuddyDeleteRequestEvent event) {
         return buddyCoreService.removeBuddy(event);
     }
 }

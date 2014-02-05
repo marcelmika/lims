@@ -1,7 +1,7 @@
 package com.marcelmika.lims.persistence.service;
 
-import com.marcelmika.lims.events.session.BuddyRemoveRequestEvent;
-import com.marcelmika.lims.events.session.BuddyRemoveResponseEvent;
+import com.marcelmika.lims.events.session.BuddyDeleteRequestEvent;
+import com.marcelmika.lims.events.session.BuddyDeleteResponseEvent;
 import com.marcelmika.lims.model.Settings;
 import com.marcelmika.lims.persistence.domain.Buddy;
 import com.marcelmika.lims.service.SettingsLocalServiceUtil;
@@ -21,7 +21,7 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
      * @return Response event for logout method
      */
     @Override
-    public BuddyRemoveResponseEvent removeBuddy(BuddyRemoveRequestEvent event) {
+    public BuddyDeleteResponseEvent removeBuddy(BuddyDeleteRequestEvent event) {
         // Get buddy from buddy details
         Buddy buddy = Buddy.fromBuddyDetails(event.getDetails());
 
@@ -33,11 +33,11 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
                 SettingsLocalServiceUtil.deleteSettings(settings);
             }
             // Success
-            return BuddyRemoveResponseEvent.removeSuccess("Buddy " + buddy.getBuddyId() + " has been successfully " +
+            return BuddyDeleteResponseEvent.removeSuccess("Buddy " + buddy.getBuddyId() + " has been successfully " +
                     "removed from the persistence layer", buddy.toBuddyDetails());
         } catch (Exception e) {
             // Failure
-            return BuddyRemoveResponseEvent.removeFailure(
+            return BuddyDeleteResponseEvent.removeFailure(
                     "Cannot remove buddy from persistence layer.",
                     buddy.toBuddyDetails()
             );

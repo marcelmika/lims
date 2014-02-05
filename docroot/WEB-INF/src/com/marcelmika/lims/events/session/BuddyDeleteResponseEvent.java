@@ -8,14 +8,14 @@ import com.marcelmika.lims.events.details.BuddyDetails;
  * Date: 2/4/14
  * Time: 11:40 PM
  */
-public class BuddyRemoveResponseEvent {
+public class BuddyDeleteResponseEvent {
 
     private String result;
     private boolean success;
     private BuddyDetails details;
 
-    public static BuddyRemoveResponseEvent removeFailure(String result, BuddyDetails details) {
-        BuddyRemoveResponseEvent event = new BuddyRemoveResponseEvent();
+    public static BuddyDeleteResponseEvent removeFailure(String result, BuddyDetails details) {
+        BuddyDeleteResponseEvent event = new BuddyDeleteResponseEvent();
         event.result = result;
         event.details = details;
         event.success = false;
@@ -23,8 +23,8 @@ public class BuddyRemoveResponseEvent {
         return event;
     }
 
-    public static BuddyRemoveResponseEvent removeSuccess(String result, BuddyDetails details) {
-        BuddyRemoveResponseEvent event = new BuddyRemoveResponseEvent();
+    public static BuddyDeleteResponseEvent removeSuccess(String result, BuddyDetails details) {
+        BuddyDeleteResponseEvent event = new BuddyDeleteResponseEvent();
         event.result = result;
         event.details = details;
         event.success = true;

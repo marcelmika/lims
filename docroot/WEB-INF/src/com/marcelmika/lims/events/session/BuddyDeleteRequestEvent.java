@@ -8,11 +8,11 @@ import com.marcelmika.lims.events.details.BuddyDetails;
  * Date: 2/4/14
  * Time: 11:39 PM
  */
-public class BuddyRemoveRequestEvent {
+public class BuddyDeleteRequestEvent {
 
     private final BuddyDetails details;
 
-    public BuddyRemoveRequestEvent(BuddyDetails details) {
+    public BuddyDeleteRequestEvent(BuddyDetails details) {
         this.details = details;
     }
 

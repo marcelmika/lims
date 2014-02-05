@@ -1,9 +1,6 @@
 package com.marcelmika.lims.jabber.service;
 
-import com.marcelmika.lims.events.session.BuddyLoginRequestEvent;
-import com.marcelmika.lims.events.session.BuddyLoginResponseEvent;
-import com.marcelmika.lims.events.session.BuddyLogoutRequestEvent;
-import com.marcelmika.lims.events.session.BuddyLogoutResponseEvent;
+import com.marcelmika.lims.events.session.*;
 import com.marcelmika.lims.jabber.JabberException;
 import com.marcelmika.lims.jabber.domain.Buddy;
 import com.marcelmika.lims.jabber.session.JabberSessionManager;
@@ -78,5 +75,27 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
                 "User " + buddy.getBuddyId() + " successfully signed out",
                 buddy.toBuddyDetails()
         );
+    }
+
+    /**
+     * Change buddy's status
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    @Override
+    public BuddyUpdateStatusResponseEvent updateStatus(BuddyUpdateStatusRequestEvent event) {
+        return null;
+    }
+
+    /**
+     * Update buddy's active panel (panel which is open)
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    @Override
+    public BuddyUpdateActivePanelResponseEvent updateActivePanel(BuddyUpdateActivePanelRequestEvent event) {
+        return null;
     }
 }

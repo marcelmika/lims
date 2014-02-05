@@ -21,6 +21,7 @@ import java.util.List;
  */
 public class ChatPollerProcessor extends BasePollerProcessor {
 
+    /** @deprecated */
     private ChatPollerParser parser = new ChatPollerParser();
 
     // ------------------------------------------------------------------------------
@@ -48,6 +49,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
         ChatUtil.updateSettings(settings);
     }
 
+    // HEX OK
     protected void changeStatus(PollerRequest pollerRequest) throws Exception {
         String status = getString(pollerRequest, "status");
         // Change status

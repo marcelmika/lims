@@ -1,7 +1,6 @@
 package com.marcelmika.lims.persistence.service;
 
-import com.marcelmika.lims.events.session.BuddyRemoveRequestEvent;
-import com.marcelmika.lims.events.session.BuddyRemoveResponseEvent;
+import com.marcelmika.lims.events.session.*;
 
 /**
  * @author Ing. Marcel Mika
@@ -17,5 +16,21 @@ public interface BuddyPersistenceService {
      * @param event Request event for logout method
      * @return Response event for logout method
      */
-    public BuddyRemoveResponseEvent removeBuddy(BuddyRemoveRequestEvent event);
+    public BuddyDeleteResponseEvent removeBuddy(BuddyDeleteRequestEvent event);
+
+    /**
+     * Change buddy's status
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    public BuddyUpdateStatusResponseEvent changeStatus(BuddyUpdateStatusRequestEvent event);
+
+    /**
+     * Update buddy's active panel (panel which is open)
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    public BuddyUpdateActivePanelResponseEvent updateActivePanel(BuddyUpdateActivePanelRequestEvent event);
 }

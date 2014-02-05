@@ -30,6 +30,6 @@ public interface BuddyPortalService {
      * @param event Request event for logout method
      * @return Response event for logout method
      */
-    public BuddyRemoveResponseEvent removeBuddy(BuddyRemoveRequestEvent event);
+    public BuddyDeleteResponseEvent removeBuddy(BuddyDeleteRequestEvent event);
 
 }

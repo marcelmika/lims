@@ -32,5 +32,22 @@ public interface BuddyCoreService {
      * @param event Request event for logout method
      * @return Response event for logout method
      */
-    public BuddyRemoveResponseEvent removeBuddy(BuddyRemoveRequestEvent event);
+    public BuddyDeleteResponseEvent removeBuddy(BuddyDeleteRequestEvent event);
+
+    /**
+     * Update buddy's status
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    public BuddyUpdateStatusResponseEvent updateStatus(BuddyUpdateStatusRequestEvent event);
+
+    /**
+     * Update buddy's active panel (panel which is open)
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    public BuddyUpdateActivePanelResponseEvent updateActivePanel(BuddyUpdateActivePanelRequestEvent event);
+
 }

@@ -14,6 +14,7 @@ public class BuddyDetails {
     private String screenName;
     private String password;
     private String status;
+    private SettingsDetails settingsDetails;
 
     public Long getBuddyId() {
         return buddyId;
@@ -61,5 +62,13 @@ public class BuddyDetails {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public SettingsDetails getSettingsDetails() {
+        return settingsDetails;
+    }
+
+    public void setSettingsDetails(SettingsDetails settingsDetails) {
+        this.settingsDetails = settingsDetails;
     }
 }

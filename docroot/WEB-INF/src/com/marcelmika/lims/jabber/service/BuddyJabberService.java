@@ -1,9 +1,6 @@
 package com.marcelmika.lims.jabber.service;
 
-import com.marcelmika.lims.events.session.BuddyLoginRequestEvent;
-import com.marcelmika.lims.events.session.BuddyLoginResponseEvent;
-import com.marcelmika.lims.events.session.BuddyLogoutRequestEvent;
-import com.marcelmika.lims.events.session.BuddyLogoutResponseEvent;
+import com.marcelmika.lims.events.session.*;
 
 /**
  * @author Ing. Marcel Mika
@@ -26,4 +23,20 @@ public interface BuddyJabberService {
      * @return Response event for logout method
      */
     public BuddyLogoutResponseEvent logoutBuddy(BuddyLogoutRequestEvent event);
+
+    /**
+     * Change buddy's status
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    public BuddyUpdateStatusResponseEvent updateStatus(BuddyUpdateStatusRequestEvent event);
+
+    /**
+     * Update buddy's active panel (panel which is open)
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    public BuddyUpdateActivePanelResponseEvent updateActivePanel(BuddyUpdateActivePanelRequestEvent event);
 }

@@ -16,6 +16,7 @@ public class Buddy {
     private String screenName;
     private String password;
     private String status;
+    private Settings settings;
 
     /**
      * Create new user and maps data from user details
@@ -33,6 +34,10 @@ public class Buddy {
         buddy.setScreenName(buddyDetails.getScreenName());
         buddy.setPassword(buddyDetails.getPassword());
         buddy.setStatus(buddyDetails.getStatus());
+        // Relations
+        if(buddyDetails.getStatus() != null) {
+            buddy.setSettings(Settings.fromSettingsDetails(buddyDetails.getSettingsDetails()));
+        }
 
         return buddy;
     }
@@ -52,6 +57,10 @@ public class Buddy {
         details.setScreenName(screenName);
         details.setPassword(password);
         details.setStatus(status);
+
+        if(settings != null) {
+            details.setSettingsDetails(settings.toSettingsDetails());
+        }
 
         return details;
     }
@@ -102,5 +111,13 @@ public class Buddy {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Settings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
     }
 }
