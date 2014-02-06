@@ -205,16 +205,6 @@ public class ChatUtil {
     //   Settings
     // ------------------------------------------------------------------------------
 
-    /**
-     * @param userId
-     * @param roomType
-     * @throws Exception
-     * @deprecated
-     */
-    public static void changeActiveRoomType(long userId, String roomType) throws Exception {
-        SettingsLocalServiceUtil.changeActiveRoomType(userId, roomType);
-    }
-
     public static Settings getSettings(long userId) throws Exception {
         return SettingsLocalServiceUtil.getSettings(userId);
     }
