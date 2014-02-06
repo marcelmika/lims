@@ -1,6 +1,10 @@
 package com.marcelmika.lims.poller;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.conversation.Conversation;
+import com.marcelmika.lims.core.service.BuddyCoreService;
+import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
 import com.marcelmika.lims.util.ChatUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -20,6 +24,11 @@ import java.util.List;
  * Time: 11:18 PM
  */
 public class ChatPollerProcessor extends BasePollerProcessor {
+
+    // Log
+    private static Log log = LogFactoryUtil.getLog(ChatPollerProcessor.class);
+    // Dependencies
+    BuddyCoreService buddyCoreService = BuddyCoreServiceUtil.getBuddyCoreService();
 
     /** @deprecated */
     private ChatPollerParser parser = new ChatPollerParser();
@@ -299,6 +308,9 @@ public class ChatPollerProcessor extends BasePollerProcessor {
             pollerResponse.setParameter(PollerResponse.POLLER_HINT_HIGH_CONNECTIVITY, Boolean.TRUE.toString());
         }
 
+        log.info("POLLER SERVICE");
+        log.info(buddyCoreService);
+
         // Will be called every time 
         try {
             getBuddyList(pollerRequest, pollerResponse);
@@ -321,6 +333,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
         if (chunkId == null) {
             return;
         }
+
 
         try {
             // Create conversation
