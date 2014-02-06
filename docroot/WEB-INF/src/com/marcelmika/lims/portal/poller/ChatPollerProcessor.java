@@ -12,6 +12,7 @@ import com.marcelmika.lims.conversation.Conversation;
 import com.marcelmika.lims.core.service.BuddyCoreService;
 import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
 import com.marcelmika.lims.events.ResponseEvent;
+import com.marcelmika.lims.events.buddy.BuddyUpdateActiveRoomTypeRequestEvent;
 import com.marcelmika.lims.events.buddy.BuddyUpdateSettingsRequestEvent;
 import com.marcelmika.lims.events.buddy.BuddyUpdateStatusRequestEvent;
 import com.marcelmika.lims.model.Settings;
@@ -63,7 +64,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
      * @param pollerRequest PollerRequest
      * @return ResponseEvent
      */
-    private ResponseEvent saveSettings(PollerRequest pollerRequest) {
+    private ResponseEvent updateSettings(PollerRequest pollerRequest) {
         // Create buddy from poller request
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
         // Update settings
@@ -72,10 +73,41 @@ public class ChatPollerProcessor extends BasePollerProcessor {
         );
     }
 
+    /**
+     * Updates buddy's active room type
+     *
+     * @param pollerRequest PollerRequest
+     * @return ResponseEvent
+     */
+    protected ResponseEvent updateActiveRoomType(PollerRequest pollerRequest) {
+        // Create buddy from poller request
+        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
+        // Update active room type
+        return buddyCoreService.updateActiveRoomType(
+                new BuddyUpdateActiveRoomTypeRequestEvent(buddy.getBuddyId(), buddy.getSettings().getActiveRoomType())
+        );
+    }
+
 
     // ------------------------------------------------------------------------------
     //   Hexagonal compatible END
     // ------------------------------------------------------------------------------
+    protected void changeActivePanel(PollerRequest pollerRequest) throws Exception {
+//        Buddy buddy = Buddy.fromPollerRequest()
+
+
+
+        // TODO: Reimplement to hexagonal
+        String activePanelId = getString(pollerRequest, "activePanelId");
+        ChatUtil.changeActivePanel(pollerRequest.getUserId(), activePanelId);
+        // While user opens panel unread messages should be set to zero
+        if (!Validator.isNull(activePanelId)) {
+            ChatUtil.setUnreadMessages(pollerRequest.getUserId(), activePanelId, 0);
+        }
+    }
+
+
+
 
     protected void getBuddyList(PollerRequest pollerRequest, PollerResponse pollerResponse) throws Exception {
         List<com.marcelmika.lims.model.Buddy> buddies = ChatUtil.getBuddyList(pollerRequest.getUserId());
@@ -89,20 +121,6 @@ public class ChatPollerProcessor extends BasePollerProcessor {
         pollerResponse.setParameter("buddies", buddiesJSON);
     }
 
-    // HEX OK
-
-
-    // HEX OK
-    protected void changeActivePanel(PollerRequest pollerRequest) throws Exception {
-        String activePanelId = getString(pollerRequest, "activePanelId");
-//        System.out.println("CHANGING PANEL: " + activePanelId);
-        // Change active panel
-        ChatUtil.changeActivePanel(pollerRequest.getUserId(), activePanelId);
-        // While user opens panel unread messages should be set to zero
-        if (!Validator.isNull(activePanelId)) {
-            ChatUtil.setUnreadMessages(pollerRequest.getUserId(), activePanelId, 0);
-        }
-    }
 
     protected void setChatEnabled(PollerRequest pollerRequest) throws Exception {
         boolean enabled = getBoolean(pollerRequest, "enabled");
@@ -310,16 +328,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
 //        }
     }
 
-    /**
-     * Changes active room type setting
-     *
-     * @param pollerRequest PollerRequest
-     * @throws Exception
-     */
-    protected void changeActiveRoomType(PollerRequest pollerRequest) throws Exception {
-        String roomType = getString(pollerRequest, "roomVisibility");
-        ChatUtil.changeActiveRoomType(pollerRequest.getUserId(), roomType);
-    }
+
 
     // ------------------------------------------------------------------------------
     //   POLLER REQUEST/RESPONSE
@@ -382,7 +391,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
                 sendMessage(pollerRequest);
             } // Save settings
             else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_SAVE_SETTINGS)) {
-                responseEvent = saveSettings(pollerRequest);
+                responseEvent = updateSettings(pollerRequest);
             } // Change status
             else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_CHANGE_STATUS)) {
                 responseEvent = updateStatus(pollerRequest);
@@ -394,7 +403,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
                 setChatEnabled(pollerRequest);
             } // Change active room type
             else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_CHANGE_ACTIVE_ROOM_TYPE)) {
-                changeActiveRoomType(pollerRequest);
+                responseEvent = updateActiveRoomType(pollerRequest);
             }
 
             if (responseEvent != null) {

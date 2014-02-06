@@ -15,7 +15,7 @@ import java.util.Map;
 public class Settings {
 
     private static final String KEY_STATUS = "status";
-    private static final String KEY_ACTIVE_ROOM_TYPE = "activeRoomType";
+    private static final String KEY_ACTIVE_ROOM_TYPE = "roomVisibility";
     private static final String KEY_ACTIVE_PANEL_ID = "activePanelId";
     private static final String KEY_MUTE = "mute";
     private static final String KEY_CHAT_ENABLED = "chatEnabled";
