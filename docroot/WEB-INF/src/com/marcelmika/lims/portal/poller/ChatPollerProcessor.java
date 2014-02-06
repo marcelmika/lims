@@ -11,10 +11,10 @@ import com.liferay.portal.kernel.util.Validator;
 import com.marcelmika.lims.conversation.Conversation;
 import com.marcelmika.lims.core.service.BuddyCoreService;
 import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
+import com.marcelmika.lims.events.ResponseEvent;
 import com.marcelmika.lims.events.buddy.BuddyUpdateStatusRequestEvent;
-import com.marcelmika.lims.events.buddy.BuddyUpdateStatusResponseEvent;
-import com.marcelmika.lims.model.Buddy;
 import com.marcelmika.lims.model.Settings;
+import com.marcelmika.lims.portal.domain.Buddy;
 import com.marcelmika.lims.util.ChatUtil;
 
 import java.util.List;
@@ -38,14 +38,35 @@ public class ChatPollerProcessor extends BasePollerProcessor {
     private ChatPollerParser parser = new ChatPollerParser();
 
     // ------------------------------------------------------------------------------
-    //   DONE
+    //   Hexagonal compatible BEGIN
     // ------------------------------------------------------------------------------
+
+    /**
+     * Updates buddy's status
+     *
+     * @param pollerRequest PollerRequest
+     * @return ResponseEvent
+     */
+    protected ResponseEvent updateStatus(PollerRequest pollerRequest) {
+        // Create buddy from poller request
+        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
+        // Update status
+        return buddyCoreService.updateStatus(
+                new BuddyUpdateStatusRequestEvent(buddy.getBuddyId(), buddy.getStatus())
+        );
+    }
+
+
+    // ------------------------------------------------------------------------------
+    //   Hexagonal compatible END
+    // ------------------------------------------------------------------------------
+
     protected void getBuddyList(PollerRequest pollerRequest, PollerResponse pollerResponse) throws Exception {
-        List<Buddy> buddies = ChatUtil.getBuddyList(pollerRequest.getUserId());
+        List<com.marcelmika.lims.model.Buddy> buddies = ChatUtil.getBuddyList(pollerRequest.getUserId());
 
         // Compose json array
         JSONArray buddiesJSON = JSONFactoryUtil.createJSONArray();
-        for (Buddy buddy : buddies) {
+        for (com.marcelmika.lims.model.Buddy buddy : buddies) {
             buddiesJSON.put(buddy.toJSON());
         }
 
@@ -54,6 +75,9 @@ public class ChatPollerProcessor extends BasePollerProcessor {
 
     // HEX OK
     protected void saveSettings(PollerRequest pollerRequest) throws Exception {
+        // Create buddy from poller request
+        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
+
         boolean mute = getBoolean(pollerRequest, "mute");
         // Get settings
         Settings settings = ChatUtil.getSettings(pollerRequest.getUserId());
@@ -63,18 +87,6 @@ public class ChatPollerProcessor extends BasePollerProcessor {
         ChatUtil.updateSettings(settings);
     }
 
-    // HEX OK
-    protected void changeStatus(PollerRequest pollerRequest) throws Exception {
-        String status = getString(pollerRequest, "status");
-
-        BuddyUpdateStatusResponseEvent responseEvent = buddyCoreService.updateStatus(
-                new BuddyUpdateStatusRequestEvent(pollerRequest.getUserId(), status)
-        );
-
-
-        // Change status
-        ChatUtil.changeStatus(pollerRequest.getUserId(), status);
-    }
 
     // HEX OK
     protected void changeActivePanel(PollerRequest pollerRequest) throws Exception {
@@ -223,7 +235,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
         String message = getString(pollerRequest, "message");
         String users = getString(pollerRequest, "users");
         // Parse buddies from request
-        List<Buddy> participants = parser.parseUsersToBuddies(users);
+        List<com.marcelmika.lims.model.Buddy> participants = parser.parseUsersToBuddies(users);
 
         // [1] Create conversation
         Conversation conversation = ChatUtil.createConversation(pollerRequest.getUserId(), participants, message);
@@ -232,7 +244,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
         ChatUtil.openConversation(pollerRequest.getUserId(), conversation.getConversationId());
 
         // [3] Open conversation for all participants
-        for (Buddy participant : participants) {
+        for (com.marcelmika.lims.model.Buddy participant : participants) {
             ChatUtil.openConversation(participant.getUserId(), conversation.getConversationId());
         }
     }
@@ -251,7 +263,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
         ChatUtil.sendMessage(pollerRequest.getUserId(), conversation, message);
 
         // [3] Handle buddies in conversation
-        for (Buddy participant : conversation.getParticipants()) {
+        for (com.marcelmika.lims.model.Buddy participant : conversation.getParticipants()) {
 
             // [4] Open conversation for all buddies in the conversation
             if (!ChatUtil.isConversationOpened(participant, conversationId)) {
@@ -280,7 +292,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
         String users = getString(pollerRequest, "users");
         String roomJID = getString(pollerRequest, "roomJID");
         // Parse buddies from request
-        List<Buddy> buddies = parser.parseUsersToBuddies(users);
+        List<com.marcelmika.lims.model.Buddy> buddies = parser.parseUsersToBuddies(users);
 
         // [1] Get room
 //        Room room = ChatUtil.getRoom(pollerRequest.getUserId(), pollerRequest.getCompanyId(), roomJID);
@@ -343,6 +355,8 @@ public class ChatPollerProcessor extends BasePollerProcessor {
 
 
         try {
+            ResponseEvent responseEvent = null;
+
             // Create conversation
             if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_CREATE_MESSAGE)) {
                 createConversation(pollerRequest);
@@ -367,7 +381,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
                 saveSettings(pollerRequest);
             } // Change status
             else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_CHANGE_STATUS)) {
-                changeStatus(pollerRequest);
+                responseEvent = updateStatus(pollerRequest);
             } // Change active panel
             else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_CHANGE_ACTIVE_PANEL)) {
                 changeActivePanel(pollerRequest);
@@ -378,6 +392,12 @@ public class ChatPollerProcessor extends BasePollerProcessor {
             else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_CHANGE_ACTIVE_ROOM_TYPE)) {
                 changeActiveRoomType(pollerRequest);
             }
+
+            if (responseEvent != null) {
+                log.info(responseEvent.getResult());
+            }
+
+
         } catch (Exception ex) {
             System.out.println("[ERROR] " + ex.getMessage());
             // Uncomment for testing purpouses

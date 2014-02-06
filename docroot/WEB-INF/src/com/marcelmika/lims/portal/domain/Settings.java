@@ -1,6 +1,10 @@
 package com.marcelmika.lims.portal.domain;
 
+import com.liferay.portal.kernel.poller.PollerRequest;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.marcelmika.lims.events.details.SettingsDetails;
+
+import java.util.Map;
 
 /**
  * @author Ing. Marcel Mika
@@ -10,11 +14,55 @@ import com.marcelmika.lims.events.details.SettingsDetails;
  */
 public class Settings {
 
+    private static final String KEY_STATUS = "status";
+    private static final String KEY_ACTIVE_ROOM_TYPE = "activeRoomType";
+    private static final String KEY_ACTIVE_PANEL_ID = "activePanelId";
+    private static final String KEY_MUTE = "mute";
+    private static final String KEY_CHAT_ENABLED = "chatEnabled";
+
     private String status;
     private String activeRoomType;
     private String activePanelId;
     private boolean isMute;
     private boolean isChatEnabled;
+
+    /**
+     * Creates settings from poller request
+     *
+     * @param pollerRequest PollerRequest
+     * @return Settings
+     */
+    public static Settings fromPollerRequest(PollerRequest pollerRequest) {
+        // Map contains all parameters from request
+        Map<String, String> parameterMap = pollerRequest.getParameterMap();
+        // Create new buddy
+        Settings settings = new Settings();
+
+        // Status
+        if (parameterMap.containsKey(KEY_STATUS)) {
+            settings.setStatus(GetterUtil.getString(parameterMap.get(KEY_STATUS)));
+        }
+        // Active Room Type
+        if (parameterMap.containsKey(KEY_ACTIVE_ROOM_TYPE)) {
+            settings.setActiveRoomType(GetterUtil.getString(parameterMap.get(KEY_ACTIVE_ROOM_TYPE)));
+        }
+        // Active Panel Id
+        if (parameterMap.containsKey(KEY_ACTIVE_PANEL_ID)) {
+            settings.setActivePanelId(GetterUtil.getString(parameterMap.get(KEY_ACTIVE_PANEL_ID)));
+        }
+        // Mute
+        if (parameterMap.containsKey(KEY_MUTE)) {
+            settings.setMute(GetterUtil.getBoolean(parameterMap.get(KEY_MUTE)));
+        }
+        // Chat Enabled
+        if (parameterMap.containsKey(KEY_CHAT_ENABLED)) {
+            settings.setChatEnabled(GetterUtil.getBoolean(parameterMap.get(KEY_CHAT_ENABLED)));
+        }
+
+
+        return settings;
+    }
+
 
     /**
      * Create new settings and maps data from settings details

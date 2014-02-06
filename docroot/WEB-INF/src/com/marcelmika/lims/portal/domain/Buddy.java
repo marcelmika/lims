@@ -2,6 +2,8 @@ package com.marcelmika.lims.portal.domain;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.poller.PollerRequest;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
@@ -9,6 +11,7 @@ import com.marcelmika.lims.events.details.BuddyDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * @author Ing. Marcel Mika
@@ -18,6 +21,13 @@ import javax.servlet.http.HttpSession;
  */
 public class Buddy {
 
+    private static final String KEY_PORTRAIT_ID = "portraitId";
+    private static final String KEY_FULL_NAME = "fullName";
+    private static final String KEY_SCREEN_NAME = "screenName";
+    private static final String KEY_PASSWORD = "password";
+    private static final String KEY_STATUS = "status";
+
+
     private Long buddyId;
     private Long portraitId;
     private String fullName;
@@ -25,6 +35,40 @@ public class Buddy {
     private String password;
     private String status;
     private Settings settings;
+
+
+    public static Buddy fromPollerRequest(PollerRequest pollerRequest) {
+        // Map contains all parameters from request
+        Map<String, String> parameterMap = pollerRequest.getParameterMap();
+        // Create new buddy
+        Buddy buddy = new Buddy();
+        // BuddyID
+        buddy.setBuddyId(pollerRequest.getUserId());
+        // Portrait Id
+        if (parameterMap.containsKey(KEY_PORTRAIT_ID)) {
+            buddy.setPortraitId(GetterUtil.getLong(parameterMap.get(KEY_PORTRAIT_ID)));
+        }
+        // Full name
+        if (parameterMap.containsKey(KEY_FULL_NAME)) {
+            buddy.setFullName(GetterUtil.getString(parameterMap.get(KEY_FULL_NAME)));
+        }
+        // Screen name
+        if (parameterMap.containsKey(KEY_SCREEN_NAME)) {
+            buddy.setScreenName(GetterUtil.getString(parameterMap.get(KEY_SCREEN_NAME)));
+        }
+        // Password
+        if (parameterMap.containsKey(KEY_PASSWORD)) {
+            buddy.setPassword(GetterUtil.getString(parameterMap.get(KEY_PASSWORD)));
+        }
+        // Status
+        if (parameterMap.containsKey(KEY_STATUS)) {
+            buddy.setStatus(GetterUtil.getString(parameterMap.get(KEY_STATUS)));
+        }
+        // Settings
+        buddy.setSettings(Settings.fromPollerRequest(pollerRequest));
+
+        return buddy;
+    }
 
 
     /**
