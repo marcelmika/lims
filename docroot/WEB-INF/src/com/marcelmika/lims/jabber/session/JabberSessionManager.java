@@ -196,7 +196,7 @@ public class JabberSessionManager {
         setRosterListener(userId, connection);
 
         // Log
-        log.info("User with ID: " + userId + " is successfully logged in");
+        log.info("Session for user " + userId + " was successfully created.");
     }
 
     /**

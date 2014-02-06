@@ -4,11 +4,11 @@ package com.marcelmika.lims.portal.hooks;
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.marcelmika.lims.core.service.BuddyCoreService;
+import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
 import com.marcelmika.lims.events.buddy.BuddyLoginRequestEvent;
 import com.marcelmika.lims.events.buddy.BuddyLoginResponseEvent;
 import com.marcelmika.lims.portal.domain.Buddy;
-import com.marcelmika.lims.portal.service.BuddyPortalService;
-import com.marcelmika.lims.portal.service.BuddyPortalServiceUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +27,7 @@ public class LoginPostAction extends Action {
     // Log
     private static Log log = LogFactoryUtil.getLog(LoginPostAction.class);
     // Services
-    private BuddyPortalService portalService = BuddyPortalServiceUtil.getBuddyPortalService();
+    BuddyCoreService coreService = BuddyCoreServiceUtil.getBuddyCoreService();
 
     @Override
     public void run(HttpServletRequest request, HttpServletResponse response) {
@@ -36,7 +36,7 @@ public class LoginPostAction extends Action {
             // Create buddy from portal request
             Buddy buddy = Buddy.fromPortalServletRequest(request);
             // Login buddy
-            BuddyLoginResponseEvent responseEvent = portalService.loginBuddy(
+            BuddyLoginResponseEvent responseEvent = coreService.loginBuddy(
                     new BuddyLoginRequestEvent(buddy.toBuddyDetails())
             );
 

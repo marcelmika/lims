@@ -308,9 +308,6 @@ public class ChatPollerProcessor extends BasePollerProcessor {
             pollerResponse.setParameter(PollerResponse.POLLER_HINT_HIGH_CONNECTIVITY, Boolean.TRUE.toString());
         }
 
-        log.info("POLLER SERVICE");
-        log.info(buddyCoreService);
-
         // Will be called every time 
         try {
             getBuddyList(pollerRequest, pollerResponse);

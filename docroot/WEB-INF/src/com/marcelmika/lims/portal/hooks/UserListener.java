@@ -5,13 +5,15 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.BaseModelListener;
 import com.liferay.portal.model.User;
+import com.marcelmika.lims.core.service.BuddyCoreService;
+import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
 import com.marcelmika.lims.events.buddy.BuddyDeleteRequestEvent;
 import com.marcelmika.lims.events.buddy.BuddyDeleteResponseEvent;
 import com.marcelmika.lims.portal.domain.Buddy;
-import com.marcelmika.lims.portal.service.BuddyPortalService;
-import com.marcelmika.lims.portal.service.BuddyPortalServiceUtil;
 
 /**
+ * Listens to the events from portal related to user.
+ *
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com/lims
  * Date: 11/24/13
@@ -22,14 +24,14 @@ public class UserListener extends BaseModelListener<User> {
     // Log
     private static Log log = LogFactoryUtil.getLog(UserListener.class);
     // Services
-    private BuddyPortalService portalService = BuddyPortalServiceUtil.getBuddyPortalService();
+    BuddyCoreService coreService = BuddyCoreServiceUtil.getBuddyCoreService();
 
     @Override
     public void onAfterRemove(User user) {
         // Create buddy from portal user
         Buddy buddy = Buddy.fromPortalUser(user);
         // Logout buddy
-        BuddyDeleteResponseEvent responseEvent = portalService.removeBuddy(
+        BuddyDeleteResponseEvent responseEvent = coreService.removeBuddy(
                 new BuddyDeleteRequestEvent(buddy.toBuddyDetails())
         );
         // Log result

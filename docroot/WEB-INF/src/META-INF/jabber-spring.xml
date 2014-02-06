@@ -29,6 +29,7 @@
     </bean>
 
     <!-- Buddy Core Service -->
+
     <bean id="com.marcelmika.lims.core.service.BuddyCoreServiceImpl" class="com.marcelmika.lims.core.service.BuddyCoreServiceImpl">
         <constructor-arg index="0" ref="com.marcelmika.lims.jabber.service.BuddyJabberServiceImpl"/>
         <constructor-arg index="1" ref="com.marcelmika.lims.persistence.service.BuddyPersistenceServiceImpl"/>
@@ -36,16 +37,6 @@
 
     <bean id="com.marcelmika.lims.core.service.BuddyCoreServiceUtil" class="com.marcelmika.lims.core.service.BuddyCoreServiceUtil">
         <property name="buddyCoreService" ref="com.marcelmika.lims.core.service.BuddyCoreServiceImpl"/>
-    </bean>
-
-    <!-- Buddy Portal Service -->
-
-    <bean id="com.marcelmika.lims.portal.service.BuddyPortalServiceImpl" class="com.marcelmika.lims.portal.service.BuddyPortalServiceImpl">
-        <constructor-arg ref="com.marcelmika.lims.core.service.BuddyCoreServiceImpl"/>
-    </bean>
-
-    <bean id="com.marcelmika.lims.portal.service.BuddyPortalServiceUtil" class="com.marcelmika.lims.portal.service.BuddyPortalServiceUtil">
-        <property name="buddyPortalService" ref="com.marcelmika.lims.portal.service.BuddyPortalServiceImpl"/>
     </bean>
 
     <!-- Buddy Jabber Service -->

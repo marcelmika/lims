@@ -4,17 +4,18 @@ package com.marcelmika.lims.portal.hooks;
 import com.liferay.portal.kernel.events.SessionAction;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.marcelmika.lims.core.service.BuddyCoreService;
+import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
 import com.marcelmika.lims.events.buddy.BuddyLogoutRequestEvent;
 import com.marcelmika.lims.events.buddy.BuddyLogoutResponseEvent;
 import com.marcelmika.lims.portal.domain.Buddy;
-import com.marcelmika.lims.portal.service.BuddyPortalService;
-import com.marcelmika.lims.portal.service.BuddyPortalServiceUtil;
 
 import javax.servlet.http.HttpSession;
 
 /**
- * Listens to the session destroy action. Whenever it occurs it tries to login to the Jabber
- * server with the credentials from request.
+ * Listens to the session destroy action.
+ * Whenever it occurs it tries to login the user to the LIMS system
+ * server with the credentials from the request.
  *
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com/lims
@@ -25,15 +26,15 @@ public class SessionDestroyAction extends SessionAction {
 
     // Log
     private static Log log = LogFactoryUtil.getLog(LoginPostAction.class);
-    // Service
-    private BuddyPortalService portalService = BuddyPortalServiceUtil.getBuddyPortalService();
+    // Services
+    BuddyCoreService coreService = BuddyCoreServiceUtil.getBuddyCoreService();
 
     @Override
     public void run(HttpSession session) {
         // Create buddy from session
         Buddy buddy = Buddy.fromHttpSession(session);
         // Logout buddy
-        BuddyLogoutResponseEvent responseEvent = portalService.logoutBuddy(
+        BuddyLogoutResponseEvent responseEvent = coreService.logoutBuddy(
                 new BuddyLogoutRequestEvent(buddy.toBuddyDetails())
         );
 
