@@ -1,5 +1,5 @@
 
-package com.marcelmika.lims.poller;
+package com.marcelmika.lims.portal.poller;
 
 /**
  * @author Ing. Marcel Mika

@@ -1,5 +1,5 @@
 
-package com.marcelmika.lims.poller;
+package com.marcelmika.lims.portal.poller;
 
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;

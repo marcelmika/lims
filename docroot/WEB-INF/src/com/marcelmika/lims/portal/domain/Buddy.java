@@ -19,10 +19,20 @@ import javax.servlet.http.HttpSession;
 public class Buddy {
 
     private Long buddyId;
+    private Long portraitId;
+    private String fullName;
     private String screenName;
     private String password;
+    private String status;
+    private Settings settings;
 
 
+    /**
+     * Create Buddy from Portal User
+     *
+     * @param user
+     * @return
+     */
     public static Buddy fromPortalUser(User user) {
         // Create new empty buddy
         Buddy buddy = new Buddy();
@@ -34,6 +44,14 @@ public class Buddy {
         return buddy;
     }
 
+    /**
+     * Creates Buddy from Http Servlet Request
+     *
+     * @param request HttpServletRequest
+     * @return Buddy
+     * @throws SystemException
+     * @throws PortalException
+     */
     public static Buddy fromPortalServletRequest(HttpServletRequest request) throws SystemException, PortalException {
         // Create new empty buddy
         Buddy buddy = new Buddy();
@@ -49,6 +67,12 @@ public class Buddy {
         return buddy;
     }
 
+    /**
+     * Creates Buddy from Http Session
+     *
+     * @param session HttpSession
+     * @return Buddy
+     */
     public static Buddy fromHttpSession(HttpSession session) {
         // Create new buddy
         Buddy buddy = new Buddy();
@@ -60,39 +84,54 @@ public class Buddy {
         return buddy;
     }
 
+
     /**
-     * Creates new buddy and maps data from buddy details
+     * Create new user and maps data from user details
      *
      * @param buddyDetails BuddyDetails
-     * @return BuddyDetails
+     * @return User
      */
     public static Buddy fromBuddyDetails(BuddyDetails buddyDetails) {
         // Create new buddy
         Buddy buddy = new Buddy();
         // Map data to user details
         buddy.setBuddyId(buddyDetails.getBuddyId());
+        buddy.setFullName(buddyDetails.getFullName());
+        buddy.setPortraitId(buddyDetails.getPortraitId());
         buddy.setScreenName(buddyDetails.getScreenName());
         buddy.setPassword(buddyDetails.getPassword());
+        buddy.setStatus(buddyDetails.getStatus());
+        // Relations
+        if (buddyDetails.getStatus() != null) {
+            buddy.setSettings(Settings.fromSettingsDetails(buddyDetails.getSettingsDetails()));
+        }
 
         return buddy;
     }
 
     /**
-     * Maps buddy to buddy details
+     * Maps user to user details
      *
-     * @return BuddyDetails
+     * @return UserDetails
      */
     public BuddyDetails toBuddyDetails() {
         // Create new user details
         BuddyDetails details = new BuddyDetails();
         // Map data from user
         details.setBuddyId(buddyId);
+        details.setFullName(fullName);
+        details.setPortraitId(portraitId);
         details.setScreenName(screenName);
         details.setPassword(password);
+        details.setStatus(status);
+
+        if (settings != null) {
+            details.setSettingsDetails(settings.toSettingsDetails());
+        }
 
         return details;
     }
-    
+
 
     public Long getBuddyId() {
         return buddyId;
@@ -116,5 +155,37 @@ public class Buddy {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Long getPortraitId() {
+        return portraitId;
+    }
+
+    public void setPortraitId(Long portraitId) {
+        this.portraitId = portraitId;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Settings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
     }
 }

@@ -1,19 +1,21 @@
-package com.marcelmika.lims.poller;
+package com.marcelmika.lims.portal.poller;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.marcelmika.lims.conversation.Conversation;
-import com.marcelmika.lims.core.service.BuddyCoreService;
-import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
-import com.marcelmika.lims.util.ChatUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.poller.BasePollerProcessor;
 import com.liferay.portal.kernel.poller.PollerRequest;
 import com.liferay.portal.kernel.poller.PollerResponse;
 import com.liferay.portal.kernel.util.Validator;
+import com.marcelmika.lims.conversation.Conversation;
+import com.marcelmika.lims.core.service.BuddyCoreService;
+import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
+import com.marcelmika.lims.events.buddy.BuddyUpdateStatusRequestEvent;
+import com.marcelmika.lims.events.buddy.BuddyUpdateStatusResponseEvent;
 import com.marcelmika.lims.model.Buddy;
 import com.marcelmika.lims.model.Settings;
+import com.marcelmika.lims.util.ChatUtil;
 
 import java.util.List;
 
@@ -30,7 +32,9 @@ public class ChatPollerProcessor extends BasePollerProcessor {
     // Dependencies
     BuddyCoreService buddyCoreService = BuddyCoreServiceUtil.getBuddyCoreService();
 
-    /** @deprecated */
+    /**
+     * @deprecated
+     */
     private ChatPollerParser parser = new ChatPollerParser();
 
     // ------------------------------------------------------------------------------
@@ -62,6 +66,12 @@ public class ChatPollerProcessor extends BasePollerProcessor {
     // HEX OK
     protected void changeStatus(PollerRequest pollerRequest) throws Exception {
         String status = getString(pollerRequest, "status");
+
+        BuddyUpdateStatusResponseEvent responseEvent = buddyCoreService.updateStatus(
+                new BuddyUpdateStatusRequestEvent(pollerRequest.getUserId(), status)
+        );
+
+
         // Change status
         ChatUtil.changeStatus(pollerRequest.getUserId(), status);
     }
