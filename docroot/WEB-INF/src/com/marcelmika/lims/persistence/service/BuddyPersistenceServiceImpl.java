@@ -1,6 +1,7 @@
 package com.marcelmika.lims.persistence.service;
 
 import com.marcelmika.lims.events.buddy.*;
+import com.marcelmika.lims.events.details.SettingsDetails;
 import com.marcelmika.lims.model.Settings;
 import com.marcelmika.lims.persistence.domain.Buddy;
 import com.marcelmika.lims.service.SettingsLocalServiceUtil;
@@ -111,7 +112,7 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
             );
         } catch (Exception exception) {
             return BuddyUpdateActiveRoomTypeResponseEvent.updateActiveRoomTypeFailure(
-                    "Cannot update Active Room type toa persistence layer", exception
+                    "Cannot update Active Room type to a persistence layer", exception
             );
         }
     }
@@ -124,6 +125,23 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
      */
     @Override
     public BuddyUpdateSettingsResponseEvent updateSettings(BuddyUpdateSettingsRequestEvent event) {
-        return null;
+        SettingsDetails details = event.getSettingsDetails();
+        try {
+            // Get settings
+            Settings settings = SettingsLocalServiceUtil.getSettings(event.getBuddyId());
+            // Set new values
+            settings.setMute(details.isMute());
+            // Save
+            SettingsLocalServiceUtil.updateSettings(settings, false);
+
+            return BuddyUpdateSettingsResponseEvent.updateSettingsSuccess(
+                    "Settings saved to persistence layer for user " + event.getBuddyId(), details
+            );
+
+        } catch (Exception exception) {
+            return BuddyUpdateSettingsResponseEvent.updateSettingsFailure(
+                    "Cannot update Settings to a persistence layer", details, exception
+            );
+        }
     }
 }

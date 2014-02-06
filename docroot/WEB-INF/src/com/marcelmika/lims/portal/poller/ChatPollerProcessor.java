@@ -12,6 +12,7 @@ import com.marcelmika.lims.conversation.Conversation;
 import com.marcelmika.lims.core.service.BuddyCoreService;
 import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
 import com.marcelmika.lims.events.ResponseEvent;
+import com.marcelmika.lims.events.buddy.BuddyUpdateSettingsRequestEvent;
 import com.marcelmika.lims.events.buddy.BuddyUpdateStatusRequestEvent;
 import com.marcelmika.lims.model.Settings;
 import com.marcelmika.lims.portal.domain.Buddy;
@@ -47,12 +48,27 @@ public class ChatPollerProcessor extends BasePollerProcessor {
      * @param pollerRequest PollerRequest
      * @return ResponseEvent
      */
-    protected ResponseEvent updateStatus(PollerRequest pollerRequest) {
+    private ResponseEvent updateStatus(PollerRequest pollerRequest) {
         // Create buddy from poller request
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
         // Update status
         return buddyCoreService.updateStatus(
                 new BuddyUpdateStatusRequestEvent(buddy.getBuddyId(), buddy.getStatus())
+        );
+    }
+
+    /**
+     * Updates buddy's settings
+     *
+     * @param pollerRequest PollerRequest
+     * @return ResponseEvent
+     */
+    private ResponseEvent saveSettings(PollerRequest pollerRequest) {
+        // Create buddy from poller request
+        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
+        // Update settings
+        return buddyCoreService.updateSettings(
+                new BuddyUpdateSettingsRequestEvent(buddy.getBuddyId(), buddy.getSettings().toSettingsDetails())
         );
     }
 
@@ -74,18 +90,6 @@ public class ChatPollerProcessor extends BasePollerProcessor {
     }
 
     // HEX OK
-    protected void saveSettings(PollerRequest pollerRequest) throws Exception {
-        // Create buddy from poller request
-        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
-
-        boolean mute = getBoolean(pollerRequest, "mute");
-        // Get settings
-        Settings settings = ChatUtil.getSettings(pollerRequest.getUserId());
-        // Set new values
-        settings.setMute(mute);
-        // Save settings
-        ChatUtil.updateSettings(settings);
-    }
 
 
     // HEX OK
@@ -378,7 +382,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
                 sendMessage(pollerRequest);
             } // Save settings
             else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_SAVE_SETTINGS)) {
-                saveSettings(pollerRequest);
+                responseEvent = saveSettings(pollerRequest);
             } // Change status
             else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_CHANGE_STATUS)) {
                 responseEvent = updateStatus(pollerRequest);
