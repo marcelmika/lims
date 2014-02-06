@@ -9,7 +9,6 @@ import com.marcelmika.lims.conversation.*;
 import com.marcelmika.lims.jabber.connection.JabberConnectionManager;
 import com.marcelmika.lims.jabber.form.JabberFormFactory;
 import com.marcelmika.lims.jabber.listener.JabberMessageListener;
-import com.marcelmika.lims.jabber.session.JabberSessionManager;
 import com.marcelmika.lims.model.Buddy;
 import com.marcelmika.lims.service.BuddyLocalServiceUtil;
 import com.marcelmika.lims.service.ConversationLocalServiceUtil;
@@ -40,16 +39,6 @@ public class JabberImpl implements Jabber {
      * @deprecated
      */
     private JabberConnectionManager connectionManager = new JabberConnectionManager();
-    private JabberSessionManager sessionManager;
-
-    /**
-     * JabberImpl
-     *
-     * @param sessionManager JabberSessionManager
-     */
-    public JabberImpl(JabberSessionManager sessionManager) {
-        this.sessionManager = sessionManager;
-    }
 
     // ------------------------------------------------------------------------------
     //    Conversation
