@@ -1,7 +1,7 @@
 
 package com.marcelmika.lims.util;
 
-import com.marcelmika.lims.conversation.Conversation;
+import com.marcelmika.lims.jabber.domain.Conversation;
 import com.marcelmika.lims.jabber.JabberUtil;
 import com.marcelmika.lims.model.OpenedConversation;
 import com.marcelmika.lims.model.Settings;

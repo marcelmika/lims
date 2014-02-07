@@ -2,19 +2,12 @@ package com.marcelmika.lims.jabber.session;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import com.marcelmika.lims.conversation.ConversationStore;
+import com.marcelmika.lims.jabber.conversation.ConversationStore;
 import com.marcelmika.lims.jabber.JabberKeys;
-import com.marcelmika.lims.jabber.JabberMapper;
 import com.marcelmika.lims.jabber.connection.JabberConnectionManager;
 import com.marcelmika.lims.jabber.connection.JabberConversationManager;
-import com.marcelmika.lims.jabber.listener.JabberRosterListener;
-import com.marcelmika.lims.model.Settings;
 import com.marcelmika.lims.service.SettingsLocalServiceUtil;
 import org.jivesoftware.smack.Connection;
-import org.jivesoftware.smack.Roster;
-import org.jivesoftware.smack.packet.Presence;
 
 /**
  * @author Ing. Marcel Mika

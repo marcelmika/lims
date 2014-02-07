@@ -1,4 +1,4 @@
-package com.marcelmika.lims.conversation;
+package com.marcelmika.lims.jabber.conversation;
 
 import java.util.HashMap;
 import java.util.Map;

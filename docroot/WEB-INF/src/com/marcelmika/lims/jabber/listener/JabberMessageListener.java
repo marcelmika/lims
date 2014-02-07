@@ -1,8 +1,8 @@
 
 package com.marcelmika.lims.jabber.listener;
 
-import com.marcelmika.lims.conversation.Conversation;
-import com.marcelmika.lims.conversation.Message;
+import com.marcelmika.lims.jabber.domain.Conversation;
+import com.marcelmika.lims.jabber.domain.Message;
 import com.marcelmika.lims.jabber.JabberUtil;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.MessageListener;

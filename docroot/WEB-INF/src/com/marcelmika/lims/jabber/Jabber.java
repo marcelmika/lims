@@ -2,7 +2,7 @@
 
 package com.marcelmika.lims.jabber;
 
-import com.marcelmika.lims.conversation.Conversation;
+import com.marcelmika.lims.jabber.domain.Conversation;
 import com.marcelmika.lims.model.Buddy;
 
 import java.util.List;

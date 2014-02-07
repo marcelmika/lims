@@ -1,5 +1,7 @@
 
-package com.marcelmika.lims.conversation;
+package com.marcelmika.lims.jabber.conversation;
+
+import com.marcelmika.lims.jabber.domain.Conversation;
 
 import java.util.ArrayList;
 import java.util.HashMap;

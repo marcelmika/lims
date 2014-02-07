@@ -5,7 +5,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.marcelmika.lims.conversation.ConversationStore;
+import com.marcelmika.lims.jabber.conversation.ConversationStore;
 import com.marcelmika.lims.jabber.JabberException;
 import com.marcelmika.lims.jabber.JabberKeys;
 import com.marcelmika.lims.jabber.JabberMapper;

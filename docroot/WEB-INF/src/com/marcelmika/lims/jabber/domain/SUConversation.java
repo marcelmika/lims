@@ -1,6 +1,8 @@
-package com.marcelmika.lims.conversation;
+package com.marcelmika.lims.jabber.domain;
 
 import com.marcelmika.lims.jabber.JabberUtil;
+import com.marcelmika.lims.jabber.domain.Conversation;
+import com.marcelmika.lims.jabber.domain.Message;
 import com.marcelmika.lims.model.json.JSONable;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;

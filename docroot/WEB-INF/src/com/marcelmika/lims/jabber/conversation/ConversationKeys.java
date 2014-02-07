@@ -1,4 +1,4 @@
-package com.marcelmika.lims.conversation;
+package com.marcelmika.lims.jabber.conversation;
 
 /**
  * @author Ing. Marcel Mika

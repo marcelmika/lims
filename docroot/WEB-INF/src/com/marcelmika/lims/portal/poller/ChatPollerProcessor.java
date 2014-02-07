@@ -8,7 +8,7 @@ import com.liferay.portal.kernel.poller.BasePollerProcessor;
 import com.liferay.portal.kernel.poller.PollerRequest;
 import com.liferay.portal.kernel.poller.PollerResponse;
 import com.liferay.portal.kernel.util.Validator;
-import com.marcelmika.lims.conversation.Conversation;
+import com.marcelmika.lims.jabber.domain.Conversation;
 import com.marcelmika.lims.core.service.BuddyCoreService;
 import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
 import com.marcelmika.lims.events.ResponseEvent;

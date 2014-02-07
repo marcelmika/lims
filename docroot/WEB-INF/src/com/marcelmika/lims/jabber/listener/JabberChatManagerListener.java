@@ -1,10 +1,10 @@
 
 package com.marcelmika.lims.jabber.listener;
 
-import com.marcelmika.lims.conversation.Conversation;
-import com.marcelmika.lims.conversation.ConversationContainer;
-import com.marcelmika.lims.conversation.ConversationStore;
-import com.marcelmika.lims.conversation.SUConversation;
+import com.marcelmika.lims.jabber.domain.Conversation;
+import com.marcelmika.lims.jabber.conversation.ConversationContainer;
+import com.marcelmika.lims.jabber.conversation.ConversationStore;
+import com.marcelmika.lims.jabber.domain.SUConversation;
 import com.marcelmika.lims.jabber.JabberUtil;
 import com.marcelmika.lims.model.Buddy;
 import com.marcelmika.lims.service.BuddyLocalServiceUtil;

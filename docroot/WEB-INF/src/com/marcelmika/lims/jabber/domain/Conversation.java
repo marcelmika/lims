@@ -1,6 +1,7 @@
-package com.marcelmika.lims.conversation;
+package com.marcelmika.lims.jabber.domain;
 
 import com.liferay.portal.kernel.json.JSONObject;
+import com.marcelmika.lims.jabber.domain.Message;
 
 import java.util.List;
 
