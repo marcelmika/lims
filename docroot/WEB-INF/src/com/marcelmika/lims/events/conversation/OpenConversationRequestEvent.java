@@ -8,5 +8,5 @@ import com.marcelmika.lims.events.RequestEvent;
  * Date: 2/20/14
  * Time: 8:14 AM
  */
-public class ConversationOpenRequestEvent extends RequestEvent {
+public class OpenConversationRequestEvent extends RequestEvent {
 }

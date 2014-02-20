@@ -6,7 +6,7 @@ import com.marcelmika.lims.events.RequestEvent;
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
  * Date: 2/20/14
- * Time: 8:15 AM
+ * Time: 8:16 AM
  */
-public class ConversationCloseRequestEvent extends RequestEvent {
+public class LeaveConversationRequestEvent extends RequestEvent {
 }

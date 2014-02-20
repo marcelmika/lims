@@ -17,7 +17,7 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      * @return Response event for login method
      */
     @Override
-    public ConversationCreateResponseEvent createConversation(ConversationCreateRequestEvent event) {
+    public CreateConversationResponseEvent createConversation(CreateConversationRequestEvent event) {
         throw new RuntimeException("Not implemented");
 
 // [1] Create conversation
@@ -39,7 +39,7 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      * @return Response event for login method
      */
     @Override
-    public ConversationOpenResponseEvent openConversation(ConversationOpenResponseEvent event) {
+    public OpenConversationResponseEvent openConversation(OpenConversationRequestEvent event) {
         throw new RuntimeException("Not implemented");
     }
 
@@ -50,7 +50,7 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      * @return Response event for login method
      */
     @Override
-    public ConversationCloseResponseEvent closeConversation(ConversationCloseRequestEvent event) {
+    public CloseConversationResponseEvent closeConversation(CloseConversationRequestEvent event) {
         throw new RuntimeException("Not implemented");
     }
 
@@ -61,7 +61,7 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      * @return Response event for login method
      */
     @Override
-    public ConversationLeaveResponseEvent leaveConversation(ConversationLeaveRequestEvent event) {
+    public LeaveConversationResponseEvent leaveConversation(LeaveConversationRequestEvent event) {
         throw new RuntimeException("Not implemented");
     }
 

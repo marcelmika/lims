@@ -16,7 +16,7 @@ public interface ConversationCoreService {
      * @param event Request event for login method
      * @return Response event for login method
      */
-    public ConversationCreateResponseEvent createConversation(ConversationCreateRequestEvent event);
+    public CreateConversationResponseEvent createConversation(CreateConversationRequestEvent event);
 
     /**
      * Opens existing conversation
@@ -24,7 +24,7 @@ public interface ConversationCoreService {
      * @param event Request event for login method
      * @return Response event for login method
      */
-    public ConversationOpenResponseEvent openConversation(ConversationOpenResponseEvent event);
+    public OpenConversationResponseEvent openConversation(OpenConversationRequestEvent event);
 
     /**
      * Closes existing conversation. User remains in the conversation though.
@@ -32,7 +32,7 @@ public interface ConversationCoreService {
      * @param event Request event for login method
      * @return Response event for login method
      */
-    public ConversationCloseResponseEvent closeConversation(ConversationCloseRequestEvent event);
+    public CloseConversationResponseEvent closeConversation(CloseConversationRequestEvent event);
 
     /**
      * Removes buddy from the conversation
@@ -40,5 +40,5 @@ public interface ConversationCoreService {
      * @param event Request event for login method
      * @return Response event for login method
      */
-    public ConversationLeaveResponseEvent leaveConversation(ConversationLeaveRequestEvent event);
+    public LeaveConversationResponseEvent leaveConversation(LeaveConversationRequestEvent event);
 }

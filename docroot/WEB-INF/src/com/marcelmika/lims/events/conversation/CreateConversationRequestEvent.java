@@ -12,12 +12,12 @@ import java.util.List;
  * Date: 2/19/14
  * Time: 11:06 PM
  */
-public class ConversationCreateRequestEvent extends RequestEvent {
+public class CreateConversationRequestEvent extends RequestEvent {
 
     List<BuddyDetails> buddies;
     MessageDetails initialMessage;
 
-    public ConversationCreateRequestEvent(List<BuddyDetails> buddies, MessageDetails initialMessage) {
+    public CreateConversationRequestEvent(List<BuddyDetails> buddies, MessageDetails initialMessage) {
         this.buddies = buddies;
         this.initialMessage = initialMessage;
     }

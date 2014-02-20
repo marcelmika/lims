@@ -17,7 +17,7 @@ import com.marcelmika.lims.events.ResponseEvent;
 import com.marcelmika.lims.events.buddy.BuddyUpdateActiveRoomTypeRequestEvent;
 import com.marcelmika.lims.events.buddy.BuddyUpdateSettingsRequestEvent;
 import com.marcelmika.lims.events.buddy.BuddyUpdateStatusRequestEvent;
-import com.marcelmika.lims.events.conversation.ConversationCreateRequestEvent;
+import com.marcelmika.lims.events.conversation.CreateConversationRequestEvent;
 import com.marcelmika.lims.events.details.BuddyDetails;
 import com.marcelmika.lims.events.details.MessageDetails;
 import com.marcelmika.lims.jabber.domain.Conversation;
@@ -127,7 +127,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
 
         // Send to core server
         return conversationCoreService.createConversation(
-                new ConversationCreateRequestEvent(buddyDetails, messageDetails)
+                new CreateConversationRequestEvent(buddyDetails, messageDetails)
         );
     }
 
