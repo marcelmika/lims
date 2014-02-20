@@ -1,7 +1,7 @@
 
 package com.marcelmika.lims.util;
 
-import com.marcelmika.lims.conversation.Conversation;
+import com.marcelmika.lims.jabber.domain.Conversation;
 import com.marcelmika.lims.jabber.JabberUtil;
 import com.marcelmika.lims.model.OpenedConversation;
 import com.marcelmika.lims.model.Settings;
@@ -47,27 +47,6 @@ public class ChatUtil {
             }
         }
         return buddies;
-    }
-
-    // ------------------------------------------------------------------------------
-    //   Session Management
-    // ------------------------------------------------------------------------------
-    public static void login(long userId, String username, String password) {
-        // Login to the Jabber server
-        JabberUtil.login(userId, username, password);
-    }
-
-    public static void logout(long userId) {
-        // Logout from the Jabber server
-        JabberUtil.logout(userId);
-    }
-
-    public static void removeUserFromSystem(long userId) throws Exception {
-        // Remove settings
-        Settings settings = SettingsLocalServiceUtil.getSettings(userId);
-        if (settings != null) {
-            SettingsLocalServiceUtil.deleteSettings(settings);
-        }
     }
 
     // ------------------------------------------------------------------------------
@@ -143,7 +122,7 @@ public class ChatUtil {
      *
      * @param userId
      * @return Conversation if the user is connected. Null if conversation was
-     *         opened but user is not connected.
+     * opened but user is not connected.
      * @throws Exception If the conversation wasn't opened.
      */
     public static Conversation openConversation(long userId, String conversationId) throws Exception {
@@ -167,7 +146,7 @@ public class ChatUtil {
      *
      * @param buddy
      * @return Conversation if user is connected. Null if conversation was
-     *         opened but user is not connected.
+     * opened but user is not connected.
      * @throws Exception If the conversation wasn't opened.
      */
     public static Conversation openConversation(com.marcelmika.lims.model.Buddy buddy, String conversationId) throws Exception {
@@ -225,9 +204,6 @@ public class ChatUtil {
     // ------------------------------------------------------------------------------
     //   Settings
     // ------------------------------------------------------------------------------
-    public static void changeActiveRoomType(long userId, String roomType) throws Exception {
-        SettingsLocalServiceUtil.changeActiveRoomType(userId, roomType);
-    }
 
     public static Settings getSettings(long userId) throws Exception {
         return SettingsLocalServiceUtil.getSettings(userId);
@@ -237,6 +213,12 @@ public class ChatUtil {
         return SettingsLocalServiceUtil.getSettings(buddy.getUserId());
     }
 
+    /**
+     * @param userId
+     * @param status
+     * @throws Exception
+     * @deprecated
+     */
     public static void changeStatus(long userId, String status) throws Exception {
         // Save to settings                
         SettingsLocalServiceUtil.changeStatus(userId, status);
@@ -244,6 +226,12 @@ public class ChatUtil {
         JabberUtil.changeStatus(userId, status);
     }
 
+    /**
+     * @param userId
+     * @param activePanelId
+     * @throws Exception
+     * @deprecated
+     */
     public static void changeActivePanel(long userId, String activePanelId) throws Exception {
         // Get settings
         Settings settings = SettingsLocalServiceUtil.getSettings(userId);

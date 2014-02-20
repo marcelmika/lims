@@ -5,11 +5,13 @@ package com.marcelmika.lims.jabber;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.marcelmika.lims.conversation.*;
+import com.marcelmika.lims.jabber.conversation.*;
 import com.marcelmika.lims.jabber.connection.JabberConnectionManager;
+import com.marcelmika.lims.jabber.domain.Conversation;
+import com.marcelmika.lims.jabber.domain.MUConversation;
+import com.marcelmika.lims.jabber.domain.SUConversation;
 import com.marcelmika.lims.jabber.form.JabberFormFactory;
 import com.marcelmika.lims.jabber.listener.JabberMessageListener;
-import com.marcelmika.lims.jabber.session.JabberSessionManager;
 import com.marcelmika.lims.model.Buddy;
 import com.marcelmika.lims.service.BuddyLocalServiceUtil;
 import com.marcelmika.lims.service.ConversationLocalServiceUtil;
@@ -40,42 +42,6 @@ public class JabberImpl implements Jabber {
      * @deprecated
      */
     private JabberConnectionManager connectionManager = new JabberConnectionManager();
-    private JabberSessionManager sessionManager;
-
-    /**
-     * JabberImpl
-     *
-     * @param sessionManager JabberSessionManager
-     */
-    public JabberImpl(JabberSessionManager sessionManager) {
-        this.sessionManager = sessionManager;
-    }
-
-    // ------------------------------------------------------------------------------
-    //    Session Management
-    // ------------------------------------------------------------------------------
-
-    /**
-     * Log in to the Jabber Server
-     *
-     * @param userId   long
-     * @param username String
-     * @param password String
-     */
-    public void login(long userId, String username, String password) {
-        // Login
-        sessionManager.login(userId, username, password);
-    }
-
-    /**
-     * Log out from the Jabber Server
-     *
-     * @param userId long
-     */
-    public void logout(long userId) {
-        // Logout
-        sessionManager.logout(userId);
-    }
 
     // ------------------------------------------------------------------------------
     //    Conversation
@@ -208,10 +174,14 @@ public class JabberImpl implements Jabber {
         Connection connection = connectionManager.getConnection(userId);
         // Get chat manager
         ChatManager chatManager = connection.getChatManager();
+
+
         // Create message listener
         JabberMessageListener messageListener = new JabberMessageListener();
         // Create chat
         Chat chat = chatManager.createChat(getJabberId(participant.getScreenName()), messageListener);
+
+
         // Create conversation
         Conversation conversation = new SUConversation(owner, chat);
         // Add message listener to the conversation

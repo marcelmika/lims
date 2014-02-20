@@ -1,10 +1,10 @@
 package com.marcelmika.lims.jabber.connection;
 
 import com.liferay.portal.kernel.exception.SystemException;
-import com.marcelmika.lims.conversation.ConversationContainer;
-import com.marcelmika.lims.conversation.ConversationKeys;
-import com.marcelmika.lims.conversation.ConversationStore;
-import com.marcelmika.lims.conversation.MUConversation;
+import com.marcelmika.lims.jabber.conversation.ConversationContainer;
+import com.marcelmika.lims.jabber.conversation.ConversationKeys;
+import com.marcelmika.lims.jabber.conversation.ConversationStore;
+import com.marcelmika.lims.jabber.domain.MUConversation;
 import com.marcelmika.lims.jabber.JabberUtil;
 import com.marcelmika.lims.jabber.listener.JabberChatManagerListener;
 import com.marcelmika.lims.model.Buddy;

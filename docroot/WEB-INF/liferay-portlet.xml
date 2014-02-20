@@ -11,7 +11,7 @@
         <friendly-url-mapping>lims</friendly-url-mapping>
         <friendly-url-routes>com/marcelmika/lims/portlet/chat-friendly-url-routes.xml</friendly-url-routes>
         <!-- Poller -->
-        <poller-processor-class>com.marcelmika.lims.poller.ChatPollerProcessor</poller-processor-class>
+        <poller-processor-class>com.marcelmika.lims.portal.poller.ChatPollerProcessor</poller-processor-class>
         <!-- CSS -->
         <header-portlet-css>/css/token-input-facebook.css</header-portlet-css>
         <header-portlet-css>/css/token-input.css</header-portlet-css>
