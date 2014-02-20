@@ -174,10 +174,14 @@ public class JabberImpl implements Jabber {
         Connection connection = connectionManager.getConnection(userId);
         // Get chat manager
         ChatManager chatManager = connection.getChatManager();
+
+
         // Create message listener
         JabberMessageListener messageListener = new JabberMessageListener();
         // Create chat
         Chat chat = chatManager.createChat(getJabberId(participant.getScreenName()), messageListener);
+
+
         // Create conversation
         Conversation conversation = new SUConversation(owner, chat);
         // Add message listener to the conversation

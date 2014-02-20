@@ -11,6 +11,8 @@ import com.marcelmika.lims.events.details.BuddyDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,13 +23,14 @@ import java.util.Map;
  */
 public class Buddy {
 
+    // Constants
     private static final String KEY_PORTRAIT_ID = "portraitId";
     private static final String KEY_FULL_NAME = "fullName";
     private static final String KEY_SCREEN_NAME = "screenName";
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_STATUS = "status";
 
-
+    // Properties
     private Long buddyId;
     private Long portraitId;
     private String fullName;
@@ -36,6 +39,21 @@ public class Buddy {
     private String status;
     private Settings settings;
 
+
+    public static List<Buddy> fromListOfBuddyIDs(String[] list) {
+        // Create a list of buddies from request
+        List<Buddy> buddies = new ArrayList<Buddy>();
+
+        for (String buddyID : list) {
+            // Create new buddy
+            Buddy buddy = new Buddy();
+            buddy.setBuddyId(Long.parseLong(buddyID));
+            // Add it to list
+            buddies.add(buddy);
+        }
+
+        return buddies;
+    }
 
     public static Buddy fromPollerRequest(PollerRequest pollerRequest) {
         // Map contains all parameters from request

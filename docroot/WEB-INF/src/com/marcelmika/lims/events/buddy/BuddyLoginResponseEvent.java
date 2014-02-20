@@ -13,6 +13,13 @@ public class BuddyLoginResponseEvent extends ResponseEvent {
 
     private BuddyDetails details;
 
+    /**
+     * Factory method which creates new success response object
+     *
+     * @param result textual description of the success
+     * @param details  related to the event
+     * @return BuddyLoginResponseEvent
+     */
     public static BuddyLoginResponseEvent loginFailure(String result, BuddyDetails details) {
         BuddyLoginResponseEvent event = new BuddyLoginResponseEvent();
         event.result = result;
@@ -22,6 +29,13 @@ public class BuddyLoginResponseEvent extends ResponseEvent {
         return event;
     }
 
+    /**
+     * Factory method which creates new failure response object
+     *
+     * @param result textual description of the failure
+     * @param details related to the event
+     * @return BuddyLoginResponseEvent
+     */
     public static BuddyLoginResponseEvent loginSuccess(String result, BuddyDetails details) {
         BuddyLoginResponseEvent event = new BuddyLoginResponseEvent();
         event.result = result;

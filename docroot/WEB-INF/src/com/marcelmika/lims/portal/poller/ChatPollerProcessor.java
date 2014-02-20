@@ -8,20 +8,30 @@ import com.liferay.portal.kernel.poller.BasePollerProcessor;
 import com.liferay.portal.kernel.poller.PollerRequest;
 import com.liferay.portal.kernel.poller.PollerResponse;
 import com.liferay.portal.kernel.util.Validator;
-import com.marcelmika.lims.jabber.domain.Conversation;
+import com.marcelmika.lims.core.domain.Message;
 import com.marcelmika.lims.core.service.BuddyCoreService;
 import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
+import com.marcelmika.lims.core.service.ConversationCoreService;
+import com.marcelmika.lims.core.service.ConversationCoreServiceUtil;
 import com.marcelmika.lims.events.ResponseEvent;
 import com.marcelmika.lims.events.buddy.BuddyUpdateActiveRoomTypeRequestEvent;
 import com.marcelmika.lims.events.buddy.BuddyUpdateSettingsRequestEvent;
 import com.marcelmika.lims.events.buddy.BuddyUpdateStatusRequestEvent;
+import com.marcelmika.lims.events.conversation.ConversationCreateRequestEvent;
+import com.marcelmika.lims.events.details.BuddyDetails;
+import com.marcelmika.lims.events.details.MessageDetails;
+import com.marcelmika.lims.jabber.domain.Conversation;
 import com.marcelmika.lims.model.Settings;
 import com.marcelmika.lims.portal.domain.Buddy;
 import com.marcelmika.lims.util.ChatUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Receives and sends messages to the liferay frontend where is periodically consumed.
+ * Servers as a gateway to Lims business logic.
+ *
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com/lims
  * Date: 11/24/13
@@ -33,15 +43,11 @@ public class ChatPollerProcessor extends BasePollerProcessor {
     private static Log log = LogFactoryUtil.getLog(ChatPollerProcessor.class);
     // Dependencies
     BuddyCoreService buddyCoreService = BuddyCoreServiceUtil.getBuddyCoreService();
+    ConversationCoreService conversationCoreService = ConversationCoreServiceUtil.getConversationCoreService();
 
-    /**
-     * @deprecated
-     */
-    private ChatPollerParser parser = new ChatPollerParser();
-
-    // ------------------------------------------------------------------------------
-    //   Hexagonal compatible BEGIN
-    // ------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------------------
+    //   Buddy Lifecycle
+    // ---------------------------------------------------------------------------------------------------------
 
     /**
      * Updates buddy's status
@@ -88,13 +94,49 @@ public class ChatPollerProcessor extends BasePollerProcessor {
         );
     }
 
+    // ---------------------------------------------------------------------------------------------------------
+    //   Conversation Lifecycle
+    // ---------------------------------------------------------------------------------------------------------
+
+    /**
+     * Creates conversation from a list of buddies involved in the conversation and an initial message
+     *
+     * @param pollerRequest PollerRequest
+     * @return ResponseEvent
+     */
+    protected ResponseEvent createConversation(PollerRequest pollerRequest) {
+        // Params
+        String message = getString(pollerRequest, "message");
+        String buddies = getString(pollerRequest, "users");
+
+        // Message
+        Message initialMessage = new Message();
+        initialMessage.setBody(message);
+
+        // List of buddies is in a form of buddyIDs separated by comma
+        String[] buddyIDs = buddies.split(",");
+        // Create a list of buddies
+        List<Buddy> buddyList = Buddy.fromListOfBuddyIDs(buddyIDs);
+
+        // Details
+        MessageDetails messageDetails = initialMessage.toMessageDetails();
+        List<BuddyDetails> buddyDetails = new ArrayList<BuddyDetails>();
+        for (Buddy buddy : buddyList) {
+            buddyDetails.add(buddy.toBuddyDetails());
+        }
+
+        // Send to core server
+        return conversationCoreService.createConversation(
+                new ConversationCreateRequestEvent(buddyDetails, messageDetails)
+        );
+    }
+
 
     // ------------------------------------------------------------------------------
-    //   Hexagonal compatible END
+    //   To Refactor:
     // ------------------------------------------------------------------------------
     protected void changeActivePanel(PollerRequest pollerRequest) throws Exception {
 //        Buddy buddy = Buddy.fromPollerRequest()
-
 
 
         // TODO: Reimplement to hexagonal
@@ -105,8 +147,6 @@ public class ChatPollerProcessor extends BasePollerProcessor {
             ChatUtil.setUnreadMessages(pollerRequest.getUserId(), activePanelId, 0);
         }
     }
-
-
 
 
     protected void getBuddyList(PollerRequest pollerRequest, PollerResponse pollerResponse) throws Exception {
@@ -246,30 +286,6 @@ public class ChatPollerProcessor extends BasePollerProcessor {
         ChatUtil.leaveConversation(pollerRequest.getUserId(), conversationId);
     }
 
-    /**
-     * Creates Multi user conversation
-     *
-     * @param pollerRequest pollerRequest
-     * @throws Exception
-     */
-    private void createConversation(PollerRequest pollerRequest) throws Exception {
-        // Params
-        String message = getString(pollerRequest, "message");
-        String users = getString(pollerRequest, "users");
-        // Parse buddies from request
-        List<com.marcelmika.lims.model.Buddy> participants = parser.parseUsersToBuddies(users);
-
-        // [1] Create conversation
-        Conversation conversation = ChatUtil.createConversation(pollerRequest.getUserId(), participants, message);
-
-        // [2] Open conversation for the owner
-        ChatUtil.openConversation(pollerRequest.getUserId(), conversation.getConversationId());
-
-        // [3] Open conversation for all participants
-        for (com.marcelmika.lims.model.Buddy participant : participants) {
-            ChatUtil.openConversation(participant.getUserId(), conversation.getConversationId());
-        }
-    }
 
     protected void sendMessage(PollerRequest pollerRequest) throws Exception {
 //        System.out.println("[POLLER][START SENDING][" + pollerRequest.getUserId() + "]");
@@ -314,7 +330,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
         String users = getString(pollerRequest, "users");
         String roomJID = getString(pollerRequest, "roomJID");
         // Parse buddies from request
-        List<com.marcelmika.lims.model.Buddy> buddies = parser.parseUsersToBuddies(users);
+//        List<com.marcelmika.lims.model.Buddy> buddies = parser.parseUsersToBuddies(users);
 
         // [1] Get room
 //        Room room = ChatUtil.getRoom(pollerRequest.getUserId(), pollerRequest.getCompanyId(), roomJID);
@@ -327,7 +343,6 @@ public class ChatPollerProcessor extends BasePollerProcessor {
 //            ChatUtil.openConversation(buddy.getUserId(), buddy.getCompanyId(), room.getRoomJID());
 //        }
     }
-
 
 
     // ------------------------------------------------------------------------------
@@ -372,7 +387,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
 
             // Create conversation
             if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_CREATE_MESSAGE)) {
-                createConversation(pollerRequest);
+                responseEvent = createConversation(pollerRequest);
             } // Open conversation
             else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_OPEN_CONVERSATION)) {
                 openConversation(pollerRequest);

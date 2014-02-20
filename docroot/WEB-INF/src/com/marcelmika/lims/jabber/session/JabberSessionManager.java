@@ -36,6 +36,7 @@ public class JabberSessionManager {
     private static Log log = LogFactoryUtil.getLog(JabberSessionManager.class);
     // Dependencies
     private JabberConnectionManager connectionManager;
+    /** @deprecated */
     private JabberConversationManager conversationManager;
 
     /**
