@@ -132,6 +132,54 @@ public class ChatPollerProcessor extends BasePollerProcessor {
     }
 
 
+    /**
+     * Opens conversation for the particular user
+     *
+     * @param pollerRequest Poller Request
+     * @throws Exception
+     */
+    protected void openConversation(PollerRequest pollerRequest) throws Exception {
+        // Params
+        String conversationId = getString(pollerRequest, "roomJID");
+        // Open conversation
+        ChatUtil.openConversation(pollerRequest.getUserId(), conversationId);
+    }
+
+    /**
+     * Closes conversation for the particular user
+     *
+     * @param pollerRequest Poller Request
+     * @throws Exception
+     */
+    protected void closeConversation(PollerRequest pollerRequest) throws Exception {
+        // Params
+        String conversationId = getString(pollerRequest, "roomJID");
+
+        // Close only opened conversations
+        if (ChatUtil.isConversationOpened(pollerRequest.getUserId(), conversationId)) {
+            // Close conversation
+            Conversation c = ChatUtil.closeConversation(pollerRequest.getUserId(), conversationId);
+            // Reset message counter
+            if (c != null) {
+                c.setLastMessageSent(0);
+            }
+        }
+    }
+
+    /**
+     * Leaves conversation for the particular user
+     *
+     * @param pollerRequest Poller Request
+     * @throws Exception
+     */
+    protected void leaveConversation(PollerRequest pollerRequest) throws Exception {
+        // Params
+        String conversationId = getString(pollerRequest, "roomJID");
+        // Leave conversation
+        ChatUtil.leaveConversation(pollerRequest.getUserId(), conversationId);
+    }
+
+
     // ------------------------------------------------------------------------------
     //   To Refactor:
     // ------------------------------------------------------------------------------
@@ -237,53 +285,6 @@ public class ChatPollerProcessor extends BasePollerProcessor {
 
         // Set response
         pollerResponse.setParameter("openedConversations", conversationsJSON);
-    }
-
-    /**
-     * Opens conversation for the particular user
-     *
-     * @param pollerRequest Poller Request
-     * @throws Exception
-     */
-    protected void openConversation(PollerRequest pollerRequest) throws Exception {
-        // Params
-        String conversationId = getString(pollerRequest, "roomJID");
-        // Open conversation
-        ChatUtil.openConversation(pollerRequest.getUserId(), conversationId);
-    }
-
-    /**
-     * Closes conversation for the particular user
-     *
-     * @param pollerRequest Poller Request
-     * @throws Exception
-     */
-    protected void closeConversation(PollerRequest pollerRequest) throws Exception {
-        // Params
-        String conversationId = getString(pollerRequest, "roomJID");
-
-        // Close only opened conversations
-        if (ChatUtil.isConversationOpened(pollerRequest.getUserId(), conversationId)) {
-            // Close conversation
-            Conversation c = ChatUtil.closeConversation(pollerRequest.getUserId(), conversationId);
-            // Reset message counter
-            if (c != null) {
-                c.setLastMessageSent(0);
-            }
-        }
-    }
-
-    /**
-     * Leaves conversation for the particular user
-     *
-     * @param pollerRequest Poller Request
-     * @throws Exception
-     */
-    protected void leaveConversation(PollerRequest pollerRequest) throws Exception {
-        // Params
-        String conversationId = getString(pollerRequest, "roomJID");
-        // Leave conversation
-        ChatUtil.leaveConversation(pollerRequest.getUserId(), conversationId);
     }
 
 

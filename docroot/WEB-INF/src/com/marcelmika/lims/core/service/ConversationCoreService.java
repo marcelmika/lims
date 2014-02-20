@@ -1,7 +1,6 @@
 package com.marcelmika.lims.core.service;
 
-import com.marcelmika.lims.events.conversation.ConversationCreateRequestEvent;
-import com.marcelmika.lims.events.conversation.ConversationCreateResponseEvent;
+import com.marcelmika.lims.events.conversation.*;
 
 /**
  * @author Ing. Marcel Mika
@@ -18,4 +17,28 @@ public interface ConversationCoreService {
      * @return Response event for login method
      */
     public ConversationCreateResponseEvent createConversation(ConversationCreateRequestEvent event);
+
+    /**
+     * Opens existing conversation
+     *
+     * @param event Request event for login method
+     * @return Response event for login method
+     */
+    public ConversationOpenResponseEvent openConversation(ConversationOpenResponseEvent event);
+
+    /**
+     * Closes existing conversation. User remains in the conversation though.
+     *
+     * @param event Request event for login method
+     * @return Response event for login method
+     */
+    public ConversationCloseResponseEvent closeConversation(ConversationCloseRequestEvent event);
+
+    /**
+     * Removes buddy from the conversation
+     *
+     * @param event Request event for login method
+     * @return Response event for login method
+     */
+    public ConversationLeaveResponseEvent leaveConversation(ConversationLeaveRequestEvent event);
 }

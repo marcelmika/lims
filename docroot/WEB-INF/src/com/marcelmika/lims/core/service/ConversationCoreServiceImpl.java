@@ -1,7 +1,6 @@
 package com.marcelmika.lims.core.service;
 
-import com.marcelmika.lims.events.conversation.ConversationCreateRequestEvent;
-import com.marcelmika.lims.events.conversation.ConversationCreateResponseEvent;
+import com.marcelmika.lims.events.conversation.*;
 
 /**
  * @author Ing. Marcel Mika
@@ -19,6 +18,8 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      */
     @Override
     public ConversationCreateResponseEvent createConversation(ConversationCreateRequestEvent event) {
+        throw new RuntimeException("Not implemented");
+
 // [1] Create conversation
 //        Conversation conversation = ChatUtil.createConversation(pollerRequest.getUserId(), participants, message);
 //
@@ -30,4 +31,39 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
 //            ChatUtil.openConversation(participant.getUserId(), conversation.getConversationId());
 //        }
     }
+
+    /**
+     * Opens existing conversation
+     *
+     * @param event Request event for login method
+     * @return Response event for login method
+     */
+    @Override
+    public ConversationOpenResponseEvent openConversation(ConversationOpenResponseEvent event) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    /**
+     * Closes existing conversation. User remains in the conversation though.
+     *
+     * @param event Request event for login method
+     * @return Response event for login method
+     */
+    @Override
+    public ConversationCloseResponseEvent closeConversation(ConversationCloseRequestEvent event) {
+        throw new RuntimeException("Not implemented");
+    }
+
+    /**
+     * Removes buddy from the conversation
+     *
+     * @param event Request event for login method
+     * @return Response event for login method
+     */
+    @Override
+    public ConversationLeaveResponseEvent leaveConversation(ConversationLeaveRequestEvent event) {
+        throw new RuntimeException("Not implemented");
+    }
+
+
 }
