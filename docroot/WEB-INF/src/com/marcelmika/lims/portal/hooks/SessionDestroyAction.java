@@ -6,8 +6,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.core.service.BuddyCoreService;
 import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
-import com.marcelmika.lims.events.buddy.BuddyLogoutRequestEvent;
-import com.marcelmika.lims.events.buddy.BuddyLogoutResponseEvent;
+import com.marcelmika.lims.events.buddy.LogoutBuddyRequestEvent;
+import com.marcelmika.lims.events.buddy.LogoutBuddyResponseEvent;
 import com.marcelmika.lims.portal.domain.Buddy;
 
 import javax.servlet.http.HttpSession;
@@ -34,8 +34,8 @@ public class SessionDestroyAction extends SessionAction {
         // Create buddy from session
         Buddy buddy = Buddy.fromHttpSession(session);
         // Logout buddy
-        BuddyLogoutResponseEvent responseEvent = coreService.logoutBuddy(
-                new BuddyLogoutRequestEvent(buddy.toBuddyDetails())
+        LogoutBuddyResponseEvent responseEvent = coreService.logoutBuddy(
+                new LogoutBuddyRequestEvent(buddy.toBuddyDetails())
         );
 
         // Log result

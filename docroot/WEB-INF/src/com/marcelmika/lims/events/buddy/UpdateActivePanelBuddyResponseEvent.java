@@ -8,12 +8,12 @@ import com.marcelmika.lims.events.ResponseEvent;
  * Date: 2/5/14
  * Time: 9:30 PM
  */
-public class BuddyUpdateActivePanelResponseEvent extends ResponseEvent {
+public class UpdateActivePanelBuddyResponseEvent extends ResponseEvent {
 
 
-    public static BuddyUpdateActivePanelResponseEvent updateActivePanelFailure(String result,
+    public static UpdateActivePanelBuddyResponseEvent updateActivePanelFailure(String result,
                                                                                Throwable exception) {
-        BuddyUpdateActivePanelResponseEvent event = new BuddyUpdateActivePanelResponseEvent();
+        UpdateActivePanelBuddyResponseEvent event = new UpdateActivePanelBuddyResponseEvent();
         event.result = result;
         event.success = false;
         event.exception = exception;
@@ -21,8 +21,8 @@ public class BuddyUpdateActivePanelResponseEvent extends ResponseEvent {
         return event;
     }
 
-    public static BuddyUpdateActivePanelResponseEvent updateActivePanelSuccess(String result) {
-        BuddyUpdateActivePanelResponseEvent event = new BuddyUpdateActivePanelResponseEvent();
+    public static UpdateActivePanelBuddyResponseEvent updateActivePanelSuccess(String result) {
+        UpdateActivePanelBuddyResponseEvent event = new UpdateActivePanelBuddyResponseEvent();
         event.result = result;
         event.success = true;
 

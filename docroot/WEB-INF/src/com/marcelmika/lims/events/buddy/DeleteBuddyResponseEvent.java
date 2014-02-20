@@ -9,12 +9,12 @@ import com.marcelmika.lims.events.details.BuddyDetails;
  * Date: 2/4/14
  * Time: 11:40 PM
  */
-public class BuddyDeleteResponseEvent extends ResponseEvent {
+public class DeleteBuddyResponseEvent extends ResponseEvent {
 
     private BuddyDetails details;
 
-    public static BuddyDeleteResponseEvent removeFailure(String result, BuddyDetails details) {
-        BuddyDeleteResponseEvent event = new BuddyDeleteResponseEvent();
+    public static DeleteBuddyResponseEvent removeFailure(String result, BuddyDetails details) {
+        DeleteBuddyResponseEvent event = new DeleteBuddyResponseEvent();
         event.result = result;
         event.details = details;
         event.success = false;
@@ -22,8 +22,8 @@ public class BuddyDeleteResponseEvent extends ResponseEvent {
         return event;
     }
 
-    public static BuddyDeleteResponseEvent removeSuccess(String result, BuddyDetails details) {
-        BuddyDeleteResponseEvent event = new BuddyDeleteResponseEvent();
+    public static DeleteBuddyResponseEvent removeSuccess(String result, BuddyDetails details) {
+        DeleteBuddyResponseEvent event = new DeleteBuddyResponseEvent();
         event.result = result;
         event.details = details;
         event.success = true;

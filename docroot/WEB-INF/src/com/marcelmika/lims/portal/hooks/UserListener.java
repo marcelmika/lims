@@ -7,8 +7,8 @@ import com.liferay.portal.model.BaseModelListener;
 import com.liferay.portal.model.User;
 import com.marcelmika.lims.core.service.BuddyCoreService;
 import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
-import com.marcelmika.lims.events.buddy.BuddyDeleteRequestEvent;
-import com.marcelmika.lims.events.buddy.BuddyDeleteResponseEvent;
+import com.marcelmika.lims.events.buddy.DeleteBuddyRequestEvent;
+import com.marcelmika.lims.events.buddy.DeleteBuddyResponseEvent;
 import com.marcelmika.lims.portal.domain.Buddy;
 
 /**
@@ -31,8 +31,8 @@ public class UserListener extends BaseModelListener<User> {
         // Create buddy from portal user
         Buddy buddy = Buddy.fromPortalUser(user);
         // Logout buddy
-        BuddyDeleteResponseEvent responseEvent = coreService.removeBuddy(
-                new BuddyDeleteRequestEvent(buddy.toBuddyDetails())
+        DeleteBuddyResponseEvent responseEvent = coreService.removeBuddy(
+                new DeleteBuddyRequestEvent(buddy.toBuddyDetails())
         );
         // Log result
         log.info(responseEvent.getResult());

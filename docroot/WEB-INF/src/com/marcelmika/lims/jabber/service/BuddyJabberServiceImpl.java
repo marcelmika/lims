@@ -32,7 +32,7 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
      * @return Response event for login method
      */
     @Override
-    public BuddyLoginResponseEvent loginBuddy(BuddyLoginRequestEvent event) {
+    public LoginBuddyResponseEvent loginBuddy(LoginBuddyRequestEvent event) {
         // Get buddy form details
         Buddy buddy = Buddy.fromBuddyDetails(event.getDetails());
 
@@ -41,11 +41,11 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
             sessionManager.login(buddy.getBuddyId(), buddy.getScreenName(), buddy.getPassword());
         } catch (JabberException e) {
             // Failure
-            return BuddyLoginResponseEvent.loginFailure(e.getMessage(), buddy.toBuddyDetails());
+            return LoginBuddyResponseEvent.loginFailure(e.getMessage(), buddy.toBuddyDetails());
         }
 
         // Success
-        return BuddyLoginResponseEvent.loginSuccess(
+        return LoginBuddyResponseEvent.loginSuccess(
                 "User " + buddy.getBuddyId() + " successfully signed in",
                 buddy.toBuddyDetails()
         );
@@ -58,7 +58,7 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
      * @return Response event for logout method
      */
     @Override
-    public BuddyLogoutResponseEvent logoutBuddy(BuddyLogoutRequestEvent event) {
+    public LogoutBuddyResponseEvent logoutBuddy(LogoutBuddyRequestEvent event) {
         // Get buddy from details
         Buddy buddy = Buddy.fromBuddyDetails(event.getDetails());
 
@@ -67,11 +67,11 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
             sessionManager.logout(buddy.getBuddyId());
         } catch (JabberException e) {
             // Failure
-            return BuddyLogoutResponseEvent.logoutFailure(e.getMessage(), buddy.toBuddyDetails());
+            return LogoutBuddyResponseEvent.logoutFailure(e.getMessage(), buddy.toBuddyDetails());
         }
 
         // Success
-        return BuddyLogoutResponseEvent.logoutSuccess(
+        return LogoutBuddyResponseEvent.logoutSuccess(
                 "User " + buddy.getBuddyId() + " successfully signed out",
                 buddy.toBuddyDetails()
         );
@@ -84,7 +84,7 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
      * @return Response event for logout method
      */
     @Override
-    public BuddyUpdateStatusResponseEvent updateStatus(BuddyUpdateStatusRequestEvent event) {
+    public UpdateStatusBuddyResponseEvent updateStatus(UpdateStatusBuddyRequestEvent event) {
         return null;
     }
 

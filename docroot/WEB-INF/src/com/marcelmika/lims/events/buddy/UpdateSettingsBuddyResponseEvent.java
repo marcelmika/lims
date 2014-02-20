@@ -9,14 +9,14 @@ import com.marcelmika.lims.events.details.SettingsDetails;
  * Date: 2/5/14
  * Time: 10:17 PM
  */
-public class BuddyUpdateSettingsResponseEvent extends ResponseEvent {
+public class UpdateSettingsBuddyResponseEvent extends ResponseEvent {
 
     private SettingsDetails settingsDetails;
 
-    public static BuddyUpdateSettingsResponseEvent updateSettingsFailure(String result,
+    public static UpdateSettingsBuddyResponseEvent updateSettingsFailure(String result,
                                                                          SettingsDetails settingsDetails,
                                                                          Throwable exception) {
-        BuddyUpdateSettingsResponseEvent event = new BuddyUpdateSettingsResponseEvent();
+        UpdateSettingsBuddyResponseEvent event = new UpdateSettingsBuddyResponseEvent();
         event.settingsDetails = settingsDetails;
         event.result = result;
         event.success = false;
@@ -25,10 +25,10 @@ public class BuddyUpdateSettingsResponseEvent extends ResponseEvent {
         return event;
     }
 
-    public static BuddyUpdateSettingsResponseEvent updateSettingsSuccess(String result,
+    public static UpdateSettingsBuddyResponseEvent updateSettingsSuccess(String result,
                                                                          SettingsDetails settingsDetails) {
 
-        BuddyUpdateSettingsResponseEvent event = new BuddyUpdateSettingsResponseEvent();
+        UpdateSettingsBuddyResponseEvent event = new UpdateSettingsBuddyResponseEvent();
 
         event.settingsDetails = settingsDetails;
         event.result = result;

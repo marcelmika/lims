@@ -9,12 +9,12 @@ import com.marcelmika.lims.events.details.BuddyDetails;
  * Date: 2/2/14
  * Time: 6:46 PM
  */
-public class BuddyLogoutResponseEvent extends ResponseEvent {
+public class LogoutBuddyResponseEvent extends ResponseEvent {
 
     private BuddyDetails details;
 
-    public static BuddyLogoutResponseEvent logoutFailure(String result, BuddyDetails details) {
-        BuddyLogoutResponseEvent event = new BuddyLogoutResponseEvent();
+    public static LogoutBuddyResponseEvent logoutFailure(String result, BuddyDetails details) {
+        LogoutBuddyResponseEvent event = new LogoutBuddyResponseEvent();
         event.result = result;
         event.details = details;
         event.success = false;
@@ -22,8 +22,8 @@ public class BuddyLogoutResponseEvent extends ResponseEvent {
         return event;
     }
 
-    public static BuddyLogoutResponseEvent logoutSuccess(String result, BuddyDetails details) {
-        BuddyLogoutResponseEvent event = new BuddyLogoutResponseEvent();
+    public static LogoutBuddyResponseEvent logoutSuccess(String result, BuddyDetails details) {
+        LogoutBuddyResponseEvent event = new LogoutBuddyResponseEvent();
         event.result = result;
         event.details = details;
         event.success = true;

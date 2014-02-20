@@ -7,13 +7,13 @@ import com.marcelmika.lims.events.details.BuddyDetails;
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
  * Date: 2/2/14
- * Time: 6:44 PM
+ * Time: 6:46 PM
  */
-public class BuddyLoginRequestEvent extends RequestEvent {
+public class LogoutBuddyRequestEvent extends RequestEvent {
 
     private final BuddyDetails details;
 
-    public BuddyLoginRequestEvent(BuddyDetails details) {
+    public LogoutBuddyRequestEvent(BuddyDetails details) {
         this.details = details;
     }
 

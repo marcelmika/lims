@@ -16,7 +16,7 @@ public interface BuddyPersistenceService {
      * @param event Request event for logout method
      * @return Response event for logout method
      */
-    public BuddyDeleteResponseEvent removeBuddy(BuddyDeleteRequestEvent event);
+    public DeleteBuddyResponseEvent removeBuddy(DeleteBuddyRequestEvent event);
 
     /**
      * Change buddy's status
@@ -24,7 +24,7 @@ public interface BuddyPersistenceService {
      * @param event Request event for logout method
      * @return Response event for logout method
      */
-    public BuddyUpdateStatusResponseEvent changeStatus(BuddyUpdateStatusRequestEvent event);
+    public UpdateStatusBuddyResponseEvent changeStatus(UpdateStatusBuddyRequestEvent event);
 
     /**
      * Update buddy's active panel (panel which is open)
@@ -32,7 +32,7 @@ public interface BuddyPersistenceService {
      * @param event Request event for logout method
      * @return Response event for logout method
      */
-    public BuddyUpdateActivePanelResponseEvent updateActivePanel(BuddyUpdateActivePanelRequestEvent event);
+    public UpdateActivePanelBuddyResponseEvent updateActivePanel(UpdateActivePanelBuddyRequestEvent event);
 
     /**
      * Update buddy's active room type (i.e. public or private)
@@ -40,7 +40,7 @@ public interface BuddyPersistenceService {
      * @param event Request event for logout method
      * @return Response event for logout method
      */
-    public BuddyUpdateActiveRoomTypeResponseEvent updateActiveRoomType(BuddyUpdateActiveRoomTypeRequestEvent event);
+    public UpdateActiveRoomTypeBuddyResponseEvent updateActiveRoomType(UpdateActiveRoomTypeBuddyRequestEvent event);
 
     /**
      * Update buddy's settings
@@ -48,5 +48,5 @@ public interface BuddyPersistenceService {
      * @param event Request event for logout method
      * @return Response event for logout method
      */
-    public BuddyUpdateSettingsResponseEvent updateSettings(BuddyUpdateSettingsRequestEvent event);
+    public UpdateSettingsBuddyResponseEvent updateSettings(UpdateSettingsBuddyRequestEvent event);
 }

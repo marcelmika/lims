@@ -6,8 +6,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.core.service.BuddyCoreService;
 import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
-import com.marcelmika.lims.events.buddy.BuddyLoginRequestEvent;
-import com.marcelmika.lims.events.buddy.BuddyLoginResponseEvent;
+import com.marcelmika.lims.events.buddy.LoginBuddyRequestEvent;
+import com.marcelmika.lims.events.buddy.LoginBuddyResponseEvent;
 import com.marcelmika.lims.portal.domain.Buddy;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,8 +36,8 @@ public class LoginPostAction extends Action {
             // Create buddy from portal request
             Buddy buddy = Buddy.fromPortalServletRequest(request);
             // Login buddy
-            BuddyLoginResponseEvent responseEvent = coreService.loginBuddy(
-                    new BuddyLoginRequestEvent(buddy.toBuddyDetails())
+            LoginBuddyResponseEvent responseEvent = coreService.loginBuddy(
+                    new LoginBuddyRequestEvent(buddy.toBuddyDetails())
             );
 
             // Log result

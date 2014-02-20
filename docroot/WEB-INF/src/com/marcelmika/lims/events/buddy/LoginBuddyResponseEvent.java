@@ -9,7 +9,7 @@ import com.marcelmika.lims.events.details.BuddyDetails;
  * Date: 2/2/14
  * Time: 6:43 PM
  */
-public class BuddyLoginResponseEvent extends ResponseEvent {
+public class LoginBuddyResponseEvent extends ResponseEvent {
 
     private BuddyDetails details;
 
@@ -20,8 +20,8 @@ public class BuddyLoginResponseEvent extends ResponseEvent {
      * @param details  related to the event
      * @return BuddyLoginResponseEvent
      */
-    public static BuddyLoginResponseEvent loginFailure(String result, BuddyDetails details) {
-        BuddyLoginResponseEvent event = new BuddyLoginResponseEvent();
+    public static LoginBuddyResponseEvent loginFailure(String result, BuddyDetails details) {
+        LoginBuddyResponseEvent event = new LoginBuddyResponseEvent();
         event.result = result;
         event.details = details;
         event.success = false;
@@ -36,8 +36,8 @@ public class BuddyLoginResponseEvent extends ResponseEvent {
      * @param details related to the event
      * @return BuddyLoginResponseEvent
      */
-    public static BuddyLoginResponseEvent loginSuccess(String result, BuddyDetails details) {
-        BuddyLoginResponseEvent event = new BuddyLoginResponseEvent();
+    public static LoginBuddyResponseEvent loginSuccess(String result, BuddyDetails details) {
+        LoginBuddyResponseEvent event = new LoginBuddyResponseEvent();
         event.result = result;
         event.details = details;
         event.success = true;

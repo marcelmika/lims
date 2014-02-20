@@ -14,9 +14,9 @@ import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
 import com.marcelmika.lims.core.service.ConversationCoreService;
 import com.marcelmika.lims.core.service.ConversationCoreServiceUtil;
 import com.marcelmika.lims.events.ResponseEvent;
-import com.marcelmika.lims.events.buddy.BuddyUpdateActiveRoomTypeRequestEvent;
-import com.marcelmika.lims.events.buddy.BuddyUpdateSettingsRequestEvent;
-import com.marcelmika.lims.events.buddy.BuddyUpdateStatusRequestEvent;
+import com.marcelmika.lims.events.buddy.UpdateActiveRoomTypeBuddyRequestEvent;
+import com.marcelmika.lims.events.buddy.UpdateSettingsBuddyRequestEvent;
+import com.marcelmika.lims.events.buddy.UpdateStatusBuddyRequestEvent;
 import com.marcelmika.lims.events.conversation.CreateConversationRequestEvent;
 import com.marcelmika.lims.events.details.BuddyDetails;
 import com.marcelmika.lims.events.details.MessageDetails;
@@ -60,7 +60,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
         // Update status
         return buddyCoreService.updateStatus(
-                new BuddyUpdateStatusRequestEvent(buddy.getBuddyId(), buddy.getStatus())
+                new UpdateStatusBuddyRequestEvent(buddy.getBuddyId(), buddy.getStatus())
         );
     }
 
@@ -75,7 +75,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
         // Update settings
         return buddyCoreService.updateSettings(
-                new BuddyUpdateSettingsRequestEvent(buddy.getBuddyId(), buddy.getSettings().toSettingsDetails())
+                new UpdateSettingsBuddyRequestEvent(buddy.getBuddyId(), buddy.getSettings().toSettingsDetails())
         );
     }
 
@@ -90,7 +90,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
         // Update active room type
         return buddyCoreService.updateActiveRoomType(
-                new BuddyUpdateActiveRoomTypeRequestEvent(buddy.getBuddyId(), buddy.getSettings().getActiveRoomType())
+                new UpdateActiveRoomTypeBuddyRequestEvent(buddy.getBuddyId(), buddy.getSettings().getActiveRoomType())
         );
     }
 

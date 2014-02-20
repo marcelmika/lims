@@ -15,14 +15,14 @@ public interface BuddyJabberService {
      * @param event Request event for login method
      * @return Response event for login method
      */
-    public BuddyLoginResponseEvent loginBuddy(BuddyLoginRequestEvent event);
+    public LoginBuddyResponseEvent loginBuddy(LoginBuddyRequestEvent event);
 
     /**
      * Logout buddy from Jabber
      * @param event Request event for logout method
      * @return Response event for logout method
      */
-    public BuddyLogoutResponseEvent logoutBuddy(BuddyLogoutRequestEvent event);
+    public LogoutBuddyResponseEvent logoutBuddy(LogoutBuddyRequestEvent event);
 
     /**
      * Change buddy's status
@@ -30,6 +30,6 @@ public interface BuddyJabberService {
      * @param event Request event for logout method
      * @return Response event for logout method
      */
-    public BuddyUpdateStatusResponseEvent updateStatus(BuddyUpdateStatusRequestEvent event);
+    public UpdateStatusBuddyResponseEvent updateStatus(UpdateStatusBuddyRequestEvent event);
 
 }

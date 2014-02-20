@@ -21,7 +21,7 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
      * @return Response event for logout method
      */
     @Override
-    public BuddyDeleteResponseEvent removeBuddy(BuddyDeleteRequestEvent event) {
+    public DeleteBuddyResponseEvent removeBuddy(DeleteBuddyRequestEvent event) {
         // Get buddy from buddy details
         Buddy buddy = Buddy.fromBuddyDetails(event.getDetails());
 
@@ -33,11 +33,11 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
                 SettingsLocalServiceUtil.deleteSettings(settings);
             }
             // Success
-            return BuddyDeleteResponseEvent.removeSuccess("Buddy " + buddy.getBuddyId() + " has been successfully " +
+            return DeleteBuddyResponseEvent.removeSuccess("Buddy " + buddy.getBuddyId() + " has been successfully " +
                     "removed from the persistence layer", buddy.toBuddyDetails());
         } catch (Exception e) {
             // Failure
-            return BuddyDeleteResponseEvent.removeFailure(
+            return DeleteBuddyResponseEvent.removeFailure(
                     "Cannot remove buddy from persistence layer.",
                     buddy.toBuddyDetails()
             );
@@ -51,16 +51,16 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
      * @return Response event for logout method
      */
     @Override
-    public BuddyUpdateStatusResponseEvent changeStatus(BuddyUpdateStatusRequestEvent event) {
+    public UpdateStatusBuddyResponseEvent changeStatus(UpdateStatusBuddyRequestEvent event) {
         try {
             // Save to settings
             SettingsLocalServiceUtil.changeStatus(event.getBuddyId(), event.getStatus());
 
-            return BuddyUpdateStatusResponseEvent.updateStatusSuccess(
+            return UpdateStatusBuddyResponseEvent.updateStatusSuccess(
                     "Status " + event.getStatus() + " saved to persistence layer for user " + event.getBuddyId()
             );
         } catch (Exception exception) {
-            return BuddyUpdateStatusResponseEvent.updateStatusFailure(
+            return UpdateStatusBuddyResponseEvent.updateStatusFailure(
                     "Cannot update Status to a persistence layer", exception
             );
         }
@@ -73,7 +73,7 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
      * @return Response event for logout method
      */
     @Override
-    public BuddyUpdateActivePanelResponseEvent updateActivePanel(BuddyUpdateActivePanelRequestEvent event) {
+    public UpdateActivePanelBuddyResponseEvent updateActivePanel(UpdateActivePanelBuddyRequestEvent event) {
         try {
             // Get settings
             Settings settings = SettingsLocalServiceUtil.getSettings(event.getBuddyId());
@@ -82,13 +82,13 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
             // Save settings
             SettingsLocalServiceUtil.updateSettings(settings, false);
 
-            return BuddyUpdateActivePanelResponseEvent.updateActivePanelSuccess(
+            return UpdateActivePanelBuddyResponseEvent.updateActivePanelSuccess(
                     "Active Panel" + event.getActivePanel() + " saved to persistence layer for user "
                             + event.getBuddyId()
             );
 
         } catch (Exception exception) {
-            return BuddyUpdateActivePanelResponseEvent.updateActivePanelFailure(
+            return UpdateActivePanelBuddyResponseEvent.updateActivePanelFailure(
                     "Cannot update Active Panel to a persistence layer", exception
             );
         }
@@ -101,17 +101,17 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
      * @return Response event for logout method
      */
     @Override
-    public BuddyUpdateActiveRoomTypeResponseEvent updateActiveRoomType(BuddyUpdateActiveRoomTypeRequestEvent event) {
+    public UpdateActiveRoomTypeBuddyResponseEvent updateActiveRoomType(UpdateActiveRoomTypeBuddyRequestEvent event) {
         try {
             // Change Active Room type
             SettingsLocalServiceUtil.changeActiveRoomType(event.getBuddyId(), event.getActiveRoomType());
 
-            return BuddyUpdateActiveRoomTypeResponseEvent.updateActiveRoomTypeSuccess(
+            return UpdateActiveRoomTypeBuddyResponseEvent.updateActiveRoomTypeSuccess(
                     "Active Room Type " + event.getActiveRoomType() + " saved to persistence layer for user "
                             + event.getBuddyId()
             );
         } catch (Exception exception) {
-            return BuddyUpdateActiveRoomTypeResponseEvent.updateActiveRoomTypeFailure(
+            return UpdateActiveRoomTypeBuddyResponseEvent.updateActiveRoomTypeFailure(
                     "Cannot update Active Room type to a persistence layer", exception
             );
         }
@@ -124,7 +124,7 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
      * @return Response event for logout method
      */
     @Override
-    public BuddyUpdateSettingsResponseEvent updateSettings(BuddyUpdateSettingsRequestEvent event) {
+    public UpdateSettingsBuddyResponseEvent updateSettings(UpdateSettingsBuddyRequestEvent event) {
         SettingsDetails details = event.getSettingsDetails();
         try {
             // Get settings
@@ -134,12 +134,12 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
             // Save
             SettingsLocalServiceUtil.updateSettings(settings, false);
 
-            return BuddyUpdateSettingsResponseEvent.updateSettingsSuccess(
+            return UpdateSettingsBuddyResponseEvent.updateSettingsSuccess(
                     "Settings saved to persistence layer for user " + event.getBuddyId(), details
             );
 
         } catch (Exception exception) {
-            return BuddyUpdateSettingsResponseEvent.updateSettingsFailure(
+            return UpdateSettingsBuddyResponseEvent.updateSettingsFailure(
                     "Cannot update Settings to a persistence layer", details, exception
             );
         }

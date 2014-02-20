@@ -36,7 +36,7 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
      * @return Response event for login method
      */
     @Override
-    public BuddyLoginResponseEvent loginBuddy(BuddyLoginRequestEvent event) {
+    public LoginBuddyResponseEvent loginBuddy(LoginBuddyRequestEvent event) {
         return buddyJabberService.loginBuddy(event);
     }
 
@@ -47,7 +47,7 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
      * @return Response event for logout method
      */
     @Override
-    public BuddyLogoutResponseEvent logoutBuddy(BuddyLogoutRequestEvent event) {
+    public LogoutBuddyResponseEvent logoutBuddy(LogoutBuddyRequestEvent event) {
         return buddyJabberService.logoutBuddy(event);
     }
 
@@ -58,7 +58,7 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
      * @return Response event for logout method
      */
     @Override
-    public BuddyDeleteResponseEvent removeBuddy(BuddyDeleteRequestEvent event) {
+    public DeleteBuddyResponseEvent removeBuddy(DeleteBuddyRequestEvent event) {
         return buddyPersistenceService.removeBuddy(event);
     }
 
@@ -69,9 +69,9 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
      * @return Response event for logout method
      */
     @Override
-    public BuddyUpdateStatusResponseEvent updateStatus(BuddyUpdateStatusRequestEvent event) {
+    public UpdateStatusBuddyResponseEvent updateStatus(UpdateStatusBuddyRequestEvent event) {
         // Save status to persistent service
-        BuddyUpdateStatusResponseEvent responseEvent = buddyPersistenceService.changeStatus(event);
+        UpdateStatusBuddyResponseEvent responseEvent = buddyPersistenceService.changeStatus(event);
         // Do not continue if the change status event failed
         if (!responseEvent.isSuccess()) {
             return responseEvent;
@@ -87,7 +87,7 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
      * @return Response event for logout method
      */
     @Override
-    public BuddyUpdateActivePanelResponseEvent updateActivePanel(BuddyUpdateActivePanelRequestEvent event) {
+    public UpdateActivePanelBuddyResponseEvent updateActivePanel(UpdateActivePanelBuddyRequestEvent event) {
         return buddyPersistenceService.updateActivePanel(event);
     }
 
@@ -98,7 +98,7 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
      * @return Response event for logout method
      */
     @Override
-    public BuddyUpdateActiveRoomTypeResponseEvent updateActiveRoomType(BuddyUpdateActiveRoomTypeRequestEvent event) {
+    public UpdateActiveRoomTypeBuddyResponseEvent updateActiveRoomType(UpdateActiveRoomTypeBuddyRequestEvent event) {
         return buddyPersistenceService.updateActiveRoomType(event);
     }
 
@@ -109,7 +109,7 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
      * @return Response event for logout method
      */
     @Override
-    public BuddyUpdateSettingsResponseEvent updateSettings(BuddyUpdateSettingsRequestEvent event) {
+    public UpdateSettingsBuddyResponseEvent updateSettings(UpdateSettingsBuddyRequestEvent event) {
         return buddyPersistenceService.updateSettings(event);
     }
 

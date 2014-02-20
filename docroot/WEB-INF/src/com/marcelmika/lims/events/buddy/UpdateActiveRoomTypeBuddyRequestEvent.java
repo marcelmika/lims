@@ -8,12 +8,12 @@ import com.marcelmika.lims.events.RequestEvent;
  * Date: 2/5/14
  * Time: 9:58 PM
  */
-public class BuddyUpdateActiveRoomTypeRequestEvent extends RequestEvent {
+public class UpdateActiveRoomTypeBuddyRequestEvent extends RequestEvent {
 
     private final Long buddyId;
     private final String activeRoomType;
 
-    public BuddyUpdateActiveRoomTypeRequestEvent(Long buddyId, String activeRoomType) {
+    public UpdateActiveRoomTypeBuddyRequestEvent(Long buddyId, String activeRoomType) {
         this.buddyId = buddyId;
         this.activeRoomType = activeRoomType;
     }
