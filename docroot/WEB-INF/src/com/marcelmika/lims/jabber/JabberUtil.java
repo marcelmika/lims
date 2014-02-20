@@ -1,7 +1,7 @@
 
 package com.marcelmika.lims.jabber;
 
-import com.marcelmika.lims.conversation.Conversation;
+import com.marcelmika.lims.jabber.domain.Conversation;
 import com.marcelmika.lims.model.Buddy;
 
 import java.util.List;
@@ -33,26 +33,6 @@ public class JabberUtil {
      */
     public void setJabber(Jabber jabber) {
         JabberUtil.jabber = jabber;
-    }
-
-    /**
-     * Performs login action
-     *
-     * @param userId   long
-     * @param username String
-     * @param password String
-     */
-    public static void login(long userId, String username, String password) {
-        getJabber().login(userId, username, password);
-    }
-
-    /**
-     * Performs logout action
-     *
-     * @param userId long
-     */
-    public static void logout(long userId) {
-        getJabber().logout(userId);
     }
 
     /**

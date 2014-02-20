@@ -2,7 +2,7 @@
 
 package com.marcelmika.lims.jabber;
 
-import com.marcelmika.lims.conversation.Conversation;
+import com.marcelmika.lims.jabber.domain.Conversation;
 import com.marcelmika.lims.model.Buddy;
 
 import java.util.List;
@@ -14,11 +14,6 @@ import java.util.List;
  * Time: 11:18 PM
  */
 public interface Jabber {
-
-    // Session management related stuff
-    public void login(long userId, String username, String password);
-
-    public void logout(long userId);
 
     // Message related stuff
     public void sendMessage(long userId, Conversation conversation, String message) throws Exception;
