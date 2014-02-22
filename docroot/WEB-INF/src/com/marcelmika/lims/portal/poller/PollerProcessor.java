@@ -30,10 +30,10 @@ import com.marcelmika.lims.portal.domain.Message;
  * Date: 11/24/13
  * Time: 11:18 PM
  */
-public class ChatPollerProcessor extends BasePollerProcessor {
+public class PollerProcessor extends BasePollerProcessor {
 
     // Log
-    private static Log log = LogFactoryUtil.getLog(ChatPollerProcessor.class);
+    private static Log log = LogFactoryUtil.getLog(PollerProcessor.class);
 
     // Dependencies
     BuddyCoreService buddyCoreService = BuddyCoreServiceUtil.getBuddyCoreService();

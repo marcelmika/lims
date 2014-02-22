@@ -35,7 +35,7 @@ public class PollerDispatcher {
     public static final String POLLER_ACTION_CHANGE_ACTIVE_ROOM_TYPE = "poller.action.change.active.room.type";
     public static final String POLLER_ACTION_CHAT_ENABLED = "poller.action.chat.enabled";
     // Log
-    private static Log log = LogFactoryUtil.getLog(ChatPollerProcessor.class);
+    private static Log log = LogFactoryUtil.getLog(PollerProcessor.class);
 
     /**
      * Calls appropriate method on ChatPollerProcessor based on the chunkId taken from the poller request.
@@ -46,7 +46,7 @@ public class PollerDispatcher {
      * @throws IllegalArgumentException if request does not contain chunkId
      */
     public static ResponseEvent dispatchSendRequest(PollerRequest pollerRequest,
-                                                    ChatPollerProcessor pollerProcessor)
+                                                    PollerProcessor pollerProcessor)
             throws IllegalArgumentException {
 
         // Get the chunk id from the request.
@@ -110,7 +110,7 @@ public class PollerDispatcher {
      */
     public static void dispatchReceiveRequest(PollerRequest pollerRequest,
                                               PollerResponse pollerResponse,
-                                              ChatPollerProcessor pollerProcessor) {
+                                              PollerProcessor pollerProcessor) {
 
         // Run methods on poller processor
         pollerProcessor.getBuddyList(pollerRequest, pollerResponse);

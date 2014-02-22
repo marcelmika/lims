@@ -11,14 +11,14 @@
         <friendly-url-mapping>lims</friendly-url-mapping>
         <friendly-url-routes>com/marcelmika/lims/portlet/chat-friendly-url-routes.xml</friendly-url-routes>
         <!-- Poller -->
-        <poller-processor-class>com.marcelmika.lims.portal.poller.ChatPollerProcessor</poller-processor-class>
+        <poller-processor-class>com.marcelmika.lims.portal.poller.PollerProcessor</poller-processor-class>
         <!-- CSS -->
         <header-portlet-css>/css/token-input-facebook.css</header-portlet-css>
         <header-portlet-css>/css/token-input.css</header-portlet-css>
         <header-portlet-css>/css/main.css</header-portlet-css>
         <!-- JS -->
-        <footer-portlet-javascript>/js/main.js</footer-portlet-javascript>  
-                
+        <footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
+
         <css-class-wrapper>liferay-ims</css-class-wrapper>
         <add-default-resource>true</add-default-resource>      
         <system>true</system>                       
