@@ -1,6 +1,7 @@
 package com.marcelmika.lims.core.service;
 
 import com.marcelmika.lims.events.conversation.*;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Implementation of ConversationCoreService
@@ -20,7 +21,7 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      */
     @Override
     public CreateConversationResponseEvent createConversation(CreateConversationRequestEvent event) {
-        throw new RuntimeException("Not implemented");
+        throw new NotImplementedException();
 
 // [1] Create conversation
 //        Conversation conversation = ChatUtil.createConversation(pollerRequest.getUserId(), participants, message);
@@ -42,7 +43,7 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      */
     @Override
     public OpenConversationResponseEvent openConversation(OpenConversationRequestEvent event) {
-        throw new RuntimeException("Not implemented");
+        throw new NotImplementedException();
     }
 
     /**
@@ -53,7 +54,7 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      */
     @Override
     public CloseConversationResponseEvent closeConversation(CloseConversationRequestEvent event) {
-
+        throw new NotImplementedException();
         // Params
 //        String conversationId = getString(pollerRequest, "roomJID");
 //
@@ -66,7 +67,6 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
 //                c.setLastMessageSent(0);
 //            }
 //        }
-        throw new RuntimeException("Not implemented");
     }
 
     /**
@@ -77,10 +77,33 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      */
     @Override
     public LeaveConversationResponseEvent leaveConversation(LeaveConversationRequestEvent event) {
-        throw new RuntimeException("Not implemented");
+        throw new NotImplementedException();
 
         // Leave conversation
 //        ChatUtil.leaveConversation(pollerRequest.getUserId(), conversationId);
+    }
+
+    /**
+     * Adds buddies to the conversation
+     *
+     * @param event request event for method
+     * @return response event for method
+     */
+    @Override
+    public AddBuddiesResponseEvent addBuddies(AddBuddiesRequestEvent event) {
+        throw new NotImplementedException();
+
+
+        // [1] Get room
+//        Room room = ChatUtil.getRoom(pollerRequest.getUserId(), pollerRequest.getCompanyId(), roomJID);
+//        System.out.println("ROOM: " + room);
+        // [2] Add users to the newly created room
+//        ChatUtil.addBuddiesToRoom(pollerRequest.getUserId(), pollerRequest.getCompanyId(), room, buddies);
+
+        // [4] Open conversation for all buddies
+//        for (Buddy buddy : buddies) {
+//            ChatUtil.openConversation(buddy.getUserId(), buddy.getCompanyId(), room.getRoomJID());
+//        }
     }
 
 

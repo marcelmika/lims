@@ -15,32 +15,41 @@ public interface ConversationCoreService {
     /**
      * Creates new conversation
      *
-     * @param event Request event for login method
-     * @return Response event for login method
+     * @param event request event for method
+     * @return response event for  method
      */
     public CreateConversationResponseEvent createConversation(CreateConversationRequestEvent event);
 
     /**
      * Opens existing conversation
      *
-     * @param event Request event for login method
-     * @return Response event for login method
+     * @param event request event for method
+     * @return response event for method
      */
     public OpenConversationResponseEvent openConversation(OpenConversationRequestEvent event);
 
     /**
      * Closes existing conversation. User remains in the conversation though.
      *
-     * @param event Request event for login method
-     * @return Response event for login method
+     * @param event request event for method
+     * @return response event for method
      */
     public CloseConversationResponseEvent closeConversation(CloseConversationRequestEvent event);
 
     /**
      * Removes buddy from the conversation
      *
-     * @param event Request event for login method
-     * @return Response event for login method
+     * @param event request event for method
+     * @return response event for method
      */
     public LeaveConversationResponseEvent leaveConversation(LeaveConversationRequestEvent event);
+
+
+    /**
+     * Adds buddies to the conversation
+     *
+     * @param event request event for method
+     * @return response event for method
+     */
+    public AddBuddiesResponseEvent addBuddies(AddBuddiesRequestEvent event);
 }

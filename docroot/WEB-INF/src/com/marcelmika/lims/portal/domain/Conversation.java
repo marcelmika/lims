@@ -2,6 +2,7 @@ package com.marcelmika.lims.portal.domain;
 
 import com.liferay.portal.kernel.poller.PollerRequest;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.marcelmika.lims.events.details.ConversationDetails;
 
 import java.util.Map;
 
@@ -36,6 +37,20 @@ public class Conversation {
         }
 
         return conversation;
+    }
+
+    /**
+     * Maps conversation to conversation details
+     *
+     * @return ConversationDetails
+     */
+    public ConversationDetails toConversationDetails() {
+        // Create conversation details
+        ConversationDetails details = new ConversationDetails();
+        // Map data from conversation
+        details.setConversationId(conversationId);
+
+        return details;
     }
 
 

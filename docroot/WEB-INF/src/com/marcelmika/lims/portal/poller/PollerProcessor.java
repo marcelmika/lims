@@ -7,17 +7,15 @@ import com.liferay.portal.kernel.poller.PollerRequest;
 import com.liferay.portal.kernel.poller.PollerResponse;
 import com.marcelmika.lims.core.service.*;
 import com.marcelmika.lims.events.ResponseEvent;
-import com.marcelmika.lims.events.conversation.CloseConversationRequestEvent;
-import com.marcelmika.lims.events.conversation.CreateConversationRequestEvent;
-import com.marcelmika.lims.events.conversation.LeaveConversationRequestEvent;
-import com.marcelmika.lims.events.conversation.OpenConversationRequestEvent;
+import com.marcelmika.lims.events.buddy.UpdateStatusBuddyRequestEvent;
+import com.marcelmika.lims.events.conversation.*;
 import com.marcelmika.lims.events.settings.UpdateActiveRoomTypeRequestEvent;
 import com.marcelmika.lims.events.settings.UpdateSettingsRequestEvent;
-import com.marcelmika.lims.events.buddy.UpdateStatusBuddyRequestEvent;
 import com.marcelmika.lims.portal.domain.Buddy;
 import com.marcelmika.lims.portal.domain.BuddyCollection;
 import com.marcelmika.lims.portal.domain.Conversation;
 import com.marcelmika.lims.portal.domain.Message;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Receives and sends messages to the Liferay frontend javascript later where is periodically consumed.
@@ -154,7 +152,7 @@ public class PollerProcessor extends BasePollerProcessor {
     }
 
     /**
-     * Open conversation for the particular user
+     * Open conversation for the particular buddy
      *
      * @param pollerRequest Poller Request
      * @return ResponseEvent
@@ -170,7 +168,7 @@ public class PollerProcessor extends BasePollerProcessor {
     }
 
     /**
-     * Close conversation for the particular user
+     * Close conversation for the particular buddy
      *
      * @param pollerRequest Poller Request
      * @return ResponseEvent
@@ -186,7 +184,7 @@ public class PollerProcessor extends BasePollerProcessor {
     }
 
     /**
-     * Leave conversation for the particular user
+     * Leave conversation for the particular buddy
      *
      * @param pollerRequest Poller Request
      * @return ResponseEvent
@@ -201,25 +199,20 @@ public class PollerProcessor extends BasePollerProcessor {
         ));
     }
 
-    // @todo: Not implemented in v0.2
+    /**
+     * Add a list of buddies to the conversation
+     *
+     * @param pollerRequest Poller Request
+     * @return ResponseEvent
+     */
     protected ResponseEvent addToConversation(PollerRequest pollerRequest) {
-        throw new RuntimeException("Not implemented");
-        // Params
-//        String users = getString(pollerRequest, "users");
-//        String roomJID = getString(pollerRequest, "roomJID");
-        // Parse buddies from request
-//        List<com.marcelmika.lims.model.Buddy> buddies = parser.parseUsersToBuddies(users);
-
-        // [1] Get room
-//        Room room = ChatUtil.getRoom(pollerRequest.getUserId(), pollerRequest.getCompanyId(), roomJID);
-//        System.out.println("ROOM: " + room);
-        // [2] Add users to the newly created room
-//        ChatUtil.addBuddiesToRoom(pollerRequest.getUserId(), pollerRequest.getCompanyId(), room, buddies);
-
-        // [4] Open conversation for all buddies
-//        for (Buddy buddy : buddies) {
-//            ChatUtil.openConversation(buddy.getUserId(), buddy.getCompanyId(), room.getRoomJID());
-//        }
+        // Create conversation and buddy collection
+        Conversation conversation = Conversation.fromPollerRequest(pollerRequest);
+        BuddyCollection buddies = BuddyCollection.fromPollerRequest(pollerRequest);
+        // Send request to core service
+        return conversationCoreService.addBuddies(new AddBuddiesRequestEvent(
+                buddies.toBuddyCollectionDetails(), conversation.toConversationDetails()
+        ));
     }
 
 
@@ -227,7 +220,7 @@ public class PollerProcessor extends BasePollerProcessor {
     //   To Refactor:
     // ------------------------------------------------------------------------------
     protected ResponseEvent changeActivePanel(PollerRequest pollerRequest) {
-        throw new RuntimeException("Not implemented");
+        throw new NotImplementedException();
 //        String activePanelId = getString(pollerRequest, "activePanelId");
 //        ChatUtil.changeActivePanel(pollerRequest.getUserId(), activePanelId);
 //        // While user opens panel unread messages should be set to zero
@@ -252,7 +245,7 @@ public class PollerProcessor extends BasePollerProcessor {
 
 
     protected ResponseEvent setChatEnabled(PollerRequest pollerRequest) {
-        throw new RuntimeException("Not implemented");
+        throw new NotImplementedException();
 //        boolean enabled = getBoolean(pollerRequest, "enabled");
 //        String status = getString(pollerRequest, "status");
 //        ChatUtil.setChatEnabled(pollerRequest.getUserId(), enabled, status);
@@ -333,7 +326,7 @@ public class PollerProcessor extends BasePollerProcessor {
 
 
     protected ResponseEvent sendMessage(PollerRequest pollerRequest) {
-        throw new RuntimeException("Not implemented");
+        throw new NotImplementedException();
 //        System.out.println("[POLLER][START SENDING][" + pollerRequest.getUserId() + "]");
 
 //        // Params

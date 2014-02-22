@@ -72,8 +72,7 @@ public class PollerDispatcher {
             responseEvent = pollerProcessor.leaveConversation(pollerRequest);
         } // Add to conversation
         else if (chunkId.equals(PollerDispatcher.POLLER_ACTION_ADD_TO_CONVERSATION)) {
-            // @todo: Not implemented in v0.2
-            // addToConversation(pollerRequest);
+            responseEvent = pollerProcessor.addToConversation(pollerRequest);
         } // Send Message
         else if (chunkId.equals(PollerDispatcher.POLLER_ACTION_SEND_MESSAGE)) {
             responseEvent = pollerProcessor.sendMessage(pollerRequest);
@@ -104,8 +103,8 @@ public class PollerDispatcher {
     /**
      * Calls all appropriate method on ChatPollerProcessor that are scheduled for the receive request event.
      *
-     * @param pollerRequest request from browser
-     * @param pollerResponse response sent to browser
+     * @param pollerRequest   request from browser
+     * @param pollerResponse  response sent to browser
      * @param pollerProcessor poller processor
      */
     public static void dispatchReceiveRequest(PollerRequest pollerRequest,
