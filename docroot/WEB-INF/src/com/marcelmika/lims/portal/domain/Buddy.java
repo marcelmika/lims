@@ -11,8 +11,6 @@ import com.marcelmika.lims.events.details.BuddyDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,26 +53,26 @@ public class Buddy {
         buddy.setBuddyId(pollerRequest.getUserId());
         // Portrait Id
         if (parameterMap.containsKey(KEY_PORTRAIT_ID)) {
-            buddy.setPortraitId(GetterUtil.getLong(parameterMap.get(KEY_PORTRAIT_ID)));
+            buddy.portraitId = GetterUtil.getLong(parameterMap.get(KEY_PORTRAIT_ID));
         }
         // Full name
         if (parameterMap.containsKey(KEY_FULL_NAME)) {
-            buddy.setFullName(GetterUtil.getString(parameterMap.get(KEY_FULL_NAME)));
+            buddy.fullName = GetterUtil.getString(parameterMap.get(KEY_FULL_NAME));
         }
         // Screen name
         if (parameterMap.containsKey(KEY_SCREEN_NAME)) {
-            buddy.setScreenName(GetterUtil.getString(parameterMap.get(KEY_SCREEN_NAME)));
+            buddy.screenName = GetterUtil.getString(parameterMap.get(KEY_SCREEN_NAME));
         }
         // Password
         if (parameterMap.containsKey(KEY_PASSWORD)) {
-            buddy.setPassword(GetterUtil.getString(parameterMap.get(KEY_PASSWORD)));
+            buddy.password = GetterUtil.getString(parameterMap.get(KEY_PASSWORD));
         }
         // Status
         if (parameterMap.containsKey(KEY_STATUS)) {
-            buddy.setStatus(GetterUtil.getString(parameterMap.get(KEY_STATUS)));
+            buddy.status = GetterUtil.getString(parameterMap.get(KEY_STATUS));
         }
         // Settings
-        buddy.setSettings(Settings.fromPollerRequest(pollerRequest));
+        buddy.settings = Settings.fromPollerRequest(pollerRequest);
 
         return buddy;
     }
@@ -90,9 +88,9 @@ public class Buddy {
         // Create new empty buddy
         Buddy buddy = new Buddy();
 
-        buddy.setBuddyId(user.getUserId());
-        buddy.setScreenName(user.getScreenName());
-        buddy.setPassword(user.getPassword());
+        buddy.buddyId = user.getUserId();
+        buddy.screenName = user.getScreenName();
+        buddy.password = user.getPassword();
 
         return buddy;
     }
@@ -113,9 +111,9 @@ public class Buddy {
         // Get password from request
         String password = PortalUtil.getUserPassword(request);
 
-        buddy.setBuddyId(user.getUserId());
-        buddy.setScreenName(user.getScreenName());
-        buddy.setPassword(password);
+        buddy.buddyId = user.getUserId();
+        buddy.screenName = user.getScreenName();
+        buddy.password = password;
 
         return buddy;
     }
@@ -130,9 +128,7 @@ public class Buddy {
         // Create new buddy
         Buddy buddy = new Buddy();
         // Get user ID from http session
-        Long userId = (Long) session.getAttribute(WebKeys.USER_ID);
-        // Set property
-        buddy.setBuddyId(userId);
+        buddy.buddyId = (Long) session.getAttribute(WebKeys.USER_ID);
 
         return buddy;
     }
@@ -148,15 +144,15 @@ public class Buddy {
         // Create new buddy
         Buddy buddy = new Buddy();
         // Map data to user details
-        buddy.setBuddyId(buddyDetails.getBuddyId());
-        buddy.setFullName(buddyDetails.getFullName());
-        buddy.setPortraitId(buddyDetails.getPortraitId());
-        buddy.setScreenName(buddyDetails.getScreenName());
-        buddy.setPassword(buddyDetails.getPassword());
-        buddy.setStatus(buddyDetails.getStatus());
+        buddy.buddyId = buddyDetails.getBuddyId();
+        buddy.fullName = buddyDetails.getFullName();
+        buddy.portraitId = buddyDetails.getPortraitId();
+        buddy.screenName = buddyDetails.getScreenName();
+        buddy.password = buddyDetails.getPassword();
+        buddy.status = buddyDetails.getStatus();
         // Relations
         if (buddyDetails.getStatus() != null) {
-            buddy.setSettings(Settings.fromSettingsDetails(buddyDetails.getSettingsDetails()));
+            buddy.settings = Settings.fromSettingsDetails(buddyDetails.getSettingsDetails());
         }
 
         return buddy;

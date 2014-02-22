@@ -14,6 +14,33 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class ConversationCoreServiceImpl implements ConversationCoreService {
 
     /**
+     * Get all conversations related to the particular user
+     *
+     * @param event request event for method
+     * @return response event for  method
+     */
+    @Override
+    public GetConversationsResponseEvent getConversations(GetConversationsRequestEvent event) {
+        throw new NotImplementedException();
+        // Fetch conversations
+//        List<Conversation> conversations = ChatUtil.getConversations(pollerRequest.getUserId());
+//
+//        // Json array of conversations
+//        JSONArray conversationsJSON = JSONFactoryUtil.createJSONArray();
+//        // Compose array
+//        for (Conversation conversation : conversations) {
+//            // Add only conversations that are alive
+//            if (conversation.getParticipants().size() > 1) {
+//                conversationsJSON.put(conversation.toJSON());
+//            }
+//        }
+//
+//        // Set response
+//        pollerResponse.setParameter("conversations", conversationsJSON);
+
+    }
+
+    /**
      * Creates new conversation
      *
      * @param event Request event for login method

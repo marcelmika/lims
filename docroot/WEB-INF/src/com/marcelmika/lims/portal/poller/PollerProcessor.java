@@ -1,16 +1,20 @@
 package com.marcelmika.lims.portal.poller;
 
+import com.liferay.portal.kernel.json.*;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.poller.BasePollerProcessor;
 import com.liferay.portal.kernel.poller.PollerRequest;
 import com.liferay.portal.kernel.poller.PollerResponse;
+import com.liferay.portal.kernel.poller.PollerResponseClosedException;
 import com.marcelmika.lims.core.service.*;
 import com.marcelmika.lims.events.ResponseEvent;
 import com.marcelmika.lims.events.buddy.UpdateStatusBuddyRequestEvent;
 import com.marcelmika.lims.events.conversation.*;
 import com.marcelmika.lims.events.settings.*;
 import com.marcelmika.lims.portal.domain.*;
+
+import java.util.List;
 
 /**
  * Receives and sends messages to the Liferay frontend javascript later where is periodically consumed.
@@ -98,6 +102,44 @@ public class PollerProcessor extends BasePollerProcessor {
     // ---------------------------------------------------------------------------------------------------------
     //   Conversation Lifecycle
     // ---------------------------------------------------------------------------------------------------------
+
+    /**
+     * Fetches all conversations related to the particular user
+     * Returns conversations without messages
+     *
+     * @param pollerRequest  Poller Request
+     * @param pollerResponse Poller Response
+     */
+    protected void getAllConversations(PollerRequest pollerRequest, PollerResponse pollerResponse) {
+        // Create buddy
+        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
+        // Get conversations
+        GetConversationsResponseEvent responseEvent = conversationCoreService.getConversations(
+                new GetConversationsRequestEvent(buddy.toBuddyDetails())
+        );
+
+        if (responseEvent.isSuccess()) {
+            // Get conversations from conversation details
+            List<Conversation> conversation = Conversation.fromConversationDetails(responseEvent.getConversations());
+            // Get serializer so we can exclude some fields
+            JSONSerializer jsonSerializer = JSONFactoryUtil.createJSONSerializer();
+            // Exclude messages. The are not needed since the call returns just the list of conversations
+            jsonSerializer.exclude(Conversation.KEY_MESSAGES);
+            // Serialize to json string
+            String jsonString = jsonSerializer.serialize(conversation);
+
+            // Add to response
+            try {
+                pollerResponse.setParameter("conversations", createJsonArray(jsonString));
+            } catch (PollerResponseClosedException e) {
+                log.error("Poller response was closed", e);
+            }
+
+        } else {
+            // At least log what went wrong
+            log.error(responseEvent.getException());
+        }
+    }
 
     /**
      * Creates conversation from a list of buddies involved in the conversation and an initial message
@@ -266,14 +308,12 @@ public class PollerProcessor extends BasePollerProcessor {
         }
     }
 
-
     // ------------------------------------------------------------------------------
     //   To Refactor:
     // ------------------------------------------------------------------------------
 
-
     protected void getBuddyList(PollerRequest pollerRequest, PollerResponse pollerResponse) {
-        log.info("getBuddyList not implemented");
+
 //        List<com.marcelmika.lims.model.Buddy> buddies = ChatUtil.getBuddyList(pollerRequest.getUserId());
 
         // Compose json array
@@ -285,32 +325,6 @@ public class PollerProcessor extends BasePollerProcessor {
 //        pollerResponse.setParameter("buddies", buddiesJSON);
     }
 
-    /**
-     * Fetches all conversations related to the particular user
-     * Returns conversations without messages
-     *
-     * @param pollerRequest  Poller Request
-     * @param pollerResponse Poller Response
-     * @throws Exception
-     */
-    protected void getAllConversations(PollerRequest pollerRequest, PollerResponse pollerResponse) {
-        log.info("getAllConversations not implemented");
-        // Fetch conversations
-//        List<Conversation> conversations = ChatUtil.getConversations(pollerRequest.getUserId());
-//
-//        // Json array of conversations
-//        JSONArray conversationsJSON = JSONFactoryUtil.createJSONArray();
-//        // Compose array
-//        for (Conversation conversation : conversations) {
-//            // Add only conversations that are alive
-//            if (conversation.getParticipants().size() > 1) {
-//                conversationsJSON.put(conversation.toJSON());
-//            }
-//        }
-//
-//        // Set response
-//        pollerResponse.setParameter("conversations", conversationsJSON);
-    }
 
     /**
      * Fetches all conversations which were opened by the user. Returns full
@@ -358,4 +372,48 @@ public class PollerProcessor extends BasePollerProcessor {
 //        pollerResponse.setParameter("openedConversations", conversationsJSON);
     }
 
+
+    // ------------------------------------------------------------------------------
+    //   Helpers
+    // ------------------------------------------------------------------------------
+
+    /**
+     * Creates JSON array from JSON string. Avoids exception so if there is any error returns null.
+     *
+     * @param jsonString serialized string
+     * @return JSONArray
+     */
+    private JSONArray createJsonArray(String jsonString) {
+
+        JSONArray jsonArray = null;
+
+        try {
+            jsonArray = JSONFactoryUtil.createJSONArray(jsonString);
+        } catch (JSONException e) {
+            // At least log what went wrong
+            log.error(e);
+        }
+
+        return jsonArray;
+    }
+
+    /**
+     * Creates JSON object from JSON string. Avoids exception so if there is any error returns null.
+     *
+     * @param jsonString serialized string
+     * @return JSONObject
+     */
+    private JSONObject createJsonObject(String jsonString) {
+
+        JSONObject jsonObject = null;
+
+        try {
+            jsonObject = JSONFactoryUtil.createJSONObject(jsonString);
+        } catch (JSONException e) {
+            // At least log what went wrong
+            log.error(e);
+        }
+
+        return jsonObject;
+    }
 }

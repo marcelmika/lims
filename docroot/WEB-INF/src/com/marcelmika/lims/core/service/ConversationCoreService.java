@@ -13,6 +13,14 @@ import com.marcelmika.lims.events.conversation.*;
 public interface ConversationCoreService {
 
     /**
+     * Get all conversations related to the particular user
+     *
+     * @param event request event for method
+     * @return response event for  method
+     */
+    public GetConversationsResponseEvent getConversations(GetConversationsRequestEvent event);
+
+    /**
      * Creates new conversation
      *
      * @param event request event for method
