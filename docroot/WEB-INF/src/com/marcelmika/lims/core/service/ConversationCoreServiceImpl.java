@@ -106,5 +106,49 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
 //        }
     }
 
+    /**
+     * Sends message to conversation
+     *
+     * @param event request event for method
+     * @return response event for method
+     */
+    @Override
+    public SendMessageResponseEvent sendMessage(SendMessageRequestEvent event) {
+        throw new NotImplementedException();
+
+
+//        System.out.println("[POLLER][START SENDING][" + pollerRequest.getUserId() + "]");
+
+//        // Params
+//        String message = getString(pollerRequest, "message");
+//        String conversationId = getString(pollerRequest, "roomJID");
+//
+//        // [1] Find conversation
+//        Conversation conversation = ChatUtil.getConversation(pollerRequest.getUserId(), conversationId);
+//
+//        // [2] Send message
+//        ChatUtil.sendMessage(pollerRequest.getUserId(), conversation, message);
+//
+//        // [3] Handle buddies in conversation
+//        for (com.marcelmika.lims.model.Buddy participant : conversation.getParticipants()) {
+//
+//            // [4] Open conversation for all buddies in the conversation
+//            if (!ChatUtil.isConversationOpened(participant, conversationId)) {
+//                Conversation c = ChatUtil.openConversation(participant, conversationId);
+//                // Reset message counter
+//                if (c != null) {
+//                    c.setLastMessageSent(0);
+//                }
+//            }
+//
+//            // [5] Increment number of unread messages
+//            Settings settings = ChatUtil.getSettings(participant);
+//            // Increment only for not active panels
+//            if (!settings.getActivePanelId().equals(conversationId)) {
+//                ChatUtil.incrementUnreadMessages(participant.getUserId(), conversationId);
+//            }
+//        }
+    }
+
 
 }

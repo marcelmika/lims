@@ -34,6 +34,11 @@ public class SettingsCoreServiceImpl implements SettingsCoreService {
     @Override
     public UpdateActivePanelResponseEvent updateActivePanel(UpdateActivePanelRequestEvent event) {
         return buddyPersistenceService.updateActivePanel(event);
+// TODO: Refactor
+//        // While user opens panel unread messages should be set to zero
+//        if (!Validator.isNull(activePanelId)) {
+//            ChatUtil.setUnreadMessages(pollerRequest.getUserId(), activePanelId, 0);
+//        }
     }
 
     /**

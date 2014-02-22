@@ -9,12 +9,10 @@ import com.marcelmika.lims.core.service.*;
 import com.marcelmika.lims.events.ResponseEvent;
 import com.marcelmika.lims.events.buddy.UpdateStatusBuddyRequestEvent;
 import com.marcelmika.lims.events.conversation.*;
+import com.marcelmika.lims.events.settings.UpdateActivePanelRequestEvent;
 import com.marcelmika.lims.events.settings.UpdateActiveRoomTypeRequestEvent;
 import com.marcelmika.lims.events.settings.UpdateSettingsRequestEvent;
-import com.marcelmika.lims.portal.domain.Buddy;
-import com.marcelmika.lims.portal.domain.BuddyCollection;
-import com.marcelmika.lims.portal.domain.Conversation;
-import com.marcelmika.lims.portal.domain.Message;
+import com.marcelmika.lims.portal.domain.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -100,6 +98,112 @@ public class PollerProcessor extends BasePollerProcessor {
         );
     }
 
+    // ---------------------------------------------------------------------------------------------------------
+    //   Conversation Lifecycle
+    // ---------------------------------------------------------------------------------------------------------
+
+    /**
+     * Creates conversation from a list of buddies involved in the conversation and an initial message
+     *
+     * @param pollerRequest PollerRequest
+     * @return ResponseEvent
+     */
+    protected ResponseEvent createConversation(PollerRequest pollerRequest) {
+        // Create objects from poller request
+        Message message = Message.fromPollerRequest(pollerRequest);
+        BuddyCollection buddies = BuddyCollection.fromPollerRequest(pollerRequest);
+
+        // Send request to core service
+        return conversationCoreService.createConversation(new CreateConversationRequestEvent(
+                buddies.toBuddyCollectionDetails(), message.toMessageDetails())
+        );
+    }
+
+    /**
+     * Open conversation for the particular buddy
+     *
+     * @param pollerRequest PollerRequest
+     * @return ResponseEvent
+     */
+    protected ResponseEvent openConversation(PollerRequest pollerRequest) {
+        // Create conversation and buddy from the poller request
+        Conversation conversation = Conversation.fromPollerRequest(pollerRequest);
+        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
+        // Send request to core service
+        return conversationCoreService.openConversation(new OpenConversationRequestEvent(
+                buddy.getBuddyId(), conversation.getConversationId())
+        );
+    }
+
+    /**
+     * Close conversation for the particular buddy
+     *
+     * @param pollerRequest PollerRequest
+     * @return ResponseEvent
+     */
+    protected ResponseEvent closeConversation(PollerRequest pollerRequest) {
+        // Create conversation and buddy from poller request
+        Conversation conversation = Conversation.fromPollerRequest(pollerRequest);
+        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
+        // Send request to core service
+        return conversationCoreService.closeConversation(new CloseConversationRequestEvent(
+                buddy.getBuddyId(), conversation.getConversationId()
+        ));
+    }
+
+    /**
+     * Leave conversation for the particular buddy
+     *
+     * @param pollerRequest PollerRequest
+     * @return ResponseEvent
+     */
+    protected ResponseEvent leaveConversation(PollerRequest pollerRequest) {
+        // Create conversation and buddy from poller request
+        Conversation conversation = Conversation.fromPollerRequest(pollerRequest);
+        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
+        // Send request to core service
+        return conversationCoreService.leaveConversation(new LeaveConversationRequestEvent(
+                buddy.getBuddyId(), conversation.getConversationId()
+        ));
+    }
+
+    /**
+     * Add a list of buddies to the conversation
+     *
+     * @param pollerRequest PollerRequest
+     * @return ResponseEvent
+     */
+    protected ResponseEvent addToConversation(PollerRequest pollerRequest) {
+        // Create conversation and buddy collection
+        Conversation conversation = Conversation.fromPollerRequest(pollerRequest);
+        BuddyCollection buddies = BuddyCollection.fromPollerRequest(pollerRequest);
+        // Send request to core service
+        return conversationCoreService.addBuddies(new AddBuddiesRequestEvent(
+                buddies.toBuddyCollectionDetails(), conversation.toConversationDetails()
+        ));
+    }
+
+    /**
+     * Sends message in conversation
+     *
+     * @param pollerRequest PollerRequest
+     * @return ResponseEvent
+     */
+    protected ResponseEvent sendMessage(PollerRequest pollerRequest) {
+        // Create buddy, conversation and message
+        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
+        Conversation conversation = Conversation.fromPollerRequest(pollerRequest);
+        Message message = Message.fromPollerRequest(pollerRequest);
+        // Send request to core service
+        return conversationCoreService.sendMessage(new SendMessageRequestEvent(
+                buddy.toBuddyDetails(), conversation.toConversationDetails(), message.toMessageDetails()
+        ));
+    }
+
+    // ---------------------------------------------------------------------------------------------------------
+    //   Settings Lifecycle
+    // ---------------------------------------------------------------------------------------------------------
+
     /**
      * Update buddy's settings
      *
@@ -130,88 +234,19 @@ public class PollerProcessor extends BasePollerProcessor {
         );
     }
 
-    // ---------------------------------------------------------------------------------------------------------
-    //   Conversation Lifecycle
-    // ---------------------------------------------------------------------------------------------------------
-
     /**
-     * Creates conversation from a list of buddies involved in the conversation and an initial message
+     * Update buddy's active panel
      *
      * @param pollerRequest PollerRequest
      * @return ResponseEvent
      */
-    protected ResponseEvent createConversation(PollerRequest pollerRequest) {
-        // Create objects from poller request
-        Message message = Message.fromPollerRequest(pollerRequest);
-        BuddyCollection buddies = BuddyCollection.fromPollerRequest(pollerRequest);
-
-        // Send request to core service
-        return conversationCoreService.createConversation(new CreateConversationRequestEvent(
-                buddies.toBuddyCollectionDetails(), message.toMessageDetails())
-        );
-    }
-
-    /**
-     * Open conversation for the particular buddy
-     *
-     * @param pollerRequest Poller Request
-     * @return ResponseEvent
-     */
-    protected ResponseEvent openConversation(PollerRequest pollerRequest) {
-        // Create conversation and buddy from the poller request
-        Conversation conversation = Conversation.fromPollerRequest(pollerRequest);
+    protected ResponseEvent updateActivePanel(PollerRequest pollerRequest) {
+        // Create buddy and settings from poller request
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
+        Settings settings = Settings.fromPollerRequest(pollerRequest);
         // Send request to core service
-        return conversationCoreService.openConversation(new OpenConversationRequestEvent(
-                buddy.getBuddyId(), conversation.getConversationId())
-        );
-    }
-
-    /**
-     * Close conversation for the particular buddy
-     *
-     * @param pollerRequest Poller Request
-     * @return ResponseEvent
-     */
-    protected ResponseEvent closeConversation(PollerRequest pollerRequest) {
-        // Create conversation and buddy from poller request
-        Conversation conversation = Conversation.fromPollerRequest(pollerRequest);
-        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
-        // Send request to core service
-        return conversationCoreService.closeConversation(new CloseConversationRequestEvent(
-                buddy.getBuddyId(), conversation.getConversationId()
-        ));
-    }
-
-    /**
-     * Leave conversation for the particular buddy
-     *
-     * @param pollerRequest Poller Request
-     * @return ResponseEvent
-     */
-    protected ResponseEvent leaveConversation(PollerRequest pollerRequest) {
-        // Create conversation and buddy from poller request
-        Conversation conversation = Conversation.fromPollerRequest(pollerRequest);
-        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
-        // Send request to core service
-        return conversationCoreService.leaveConversation(new LeaveConversationRequestEvent(
-                buddy.getBuddyId(), conversation.getConversationId()
-        ));
-    }
-
-    /**
-     * Add a list of buddies to the conversation
-     *
-     * @param pollerRequest Poller Request
-     * @return ResponseEvent
-     */
-    protected ResponseEvent addToConversation(PollerRequest pollerRequest) {
-        // Create conversation and buddy collection
-        Conversation conversation = Conversation.fromPollerRequest(pollerRequest);
-        BuddyCollection buddies = BuddyCollection.fromPollerRequest(pollerRequest);
-        // Send request to core service
-        return conversationCoreService.addBuddies(new AddBuddiesRequestEvent(
-                buddies.toBuddyCollectionDetails(), conversation.toConversationDetails()
+        return settingsCoreService.updateActivePanel(new UpdateActivePanelRequestEvent(
+                buddy.getBuddyId(), settings.getActivePanelId()
         ));
     }
 
@@ -219,15 +254,6 @@ public class PollerProcessor extends BasePollerProcessor {
     // ------------------------------------------------------------------------------
     //   To Refactor:
     // ------------------------------------------------------------------------------
-    protected ResponseEvent changeActivePanel(PollerRequest pollerRequest) {
-        throw new NotImplementedException();
-//        String activePanelId = getString(pollerRequest, "activePanelId");
-//        ChatUtil.changeActivePanel(pollerRequest.getUserId(), activePanelId);
-//        // While user opens panel unread messages should be set to zero
-//        if (!Validator.isNull(activePanelId)) {
-//            ChatUtil.setUnreadMessages(pollerRequest.getUserId(), activePanelId, 0);
-//        }
-    }
 
 
     protected void getBuddyList(PollerRequest pollerRequest, PollerResponse pollerResponse) {
@@ -324,39 +350,4 @@ public class PollerProcessor extends BasePollerProcessor {
 //        pollerResponse.setParameter("openedConversations", conversationsJSON);
     }
 
-
-    protected ResponseEvent sendMessage(PollerRequest pollerRequest) {
-        throw new NotImplementedException();
-//        System.out.println("[POLLER][START SENDING][" + pollerRequest.getUserId() + "]");
-
-//        // Params
-//        String message = getString(pollerRequest, "message");
-//        String conversationId = getString(pollerRequest, "roomJID");
-//
-//        // [1] Find conversation
-//        Conversation conversation = ChatUtil.getConversation(pollerRequest.getUserId(), conversationId);
-//
-//        // [2] Send message
-//        ChatUtil.sendMessage(pollerRequest.getUserId(), conversation, message);
-//
-//        // [3] Handle buddies in conversation
-//        for (com.marcelmika.lims.model.Buddy participant : conversation.getParticipants()) {
-//
-//            // [4] Open conversation for all buddies in the conversation
-//            if (!ChatUtil.isConversationOpened(participant, conversationId)) {
-//                Conversation c = ChatUtil.openConversation(participant, conversationId);
-//                // Reset message counter
-//                if (c != null) {
-//                    c.setLastMessageSent(0);
-//                }
-//            }
-//
-//            // [5] Increment number of unread messages
-//            Settings settings = ChatUtil.getSettings(participant);
-//            // Increment only for not active panels
-//            if (!settings.getActivePanelId().equals(conversationId)) {
-//                ChatUtil.incrementUnreadMessages(participant.getUserId(), conversationId);
-//            }
-//        }
-    }
 }

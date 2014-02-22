@@ -52,4 +52,12 @@ public interface ConversationCoreService {
      * @return response event for method
      */
     public AddBuddiesResponseEvent addBuddies(AddBuddiesRequestEvent event);
+
+    /**
+     * Sends message to conversation
+     *
+     * @param event request event for method
+     * @return response event for method
+     */
+    public SendMessageResponseEvent sendMessage(SendMessageRequestEvent event);
 }
