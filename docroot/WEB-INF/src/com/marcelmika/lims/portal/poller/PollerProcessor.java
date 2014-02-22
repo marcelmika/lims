@@ -9,11 +9,8 @@ import com.marcelmika.lims.core.service.*;
 import com.marcelmika.lims.events.ResponseEvent;
 import com.marcelmika.lims.events.buddy.UpdateStatusBuddyRequestEvent;
 import com.marcelmika.lims.events.conversation.*;
-import com.marcelmika.lims.events.settings.UpdateActivePanelRequestEvent;
-import com.marcelmika.lims.events.settings.UpdateActiveRoomTypeRequestEvent;
-import com.marcelmika.lims.events.settings.UpdateSettingsRequestEvent;
+import com.marcelmika.lims.events.settings.*;
 import com.marcelmika.lims.portal.domain.*;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Receives and sends messages to the Liferay frontend javascript later where is periodically consumed.
@@ -250,6 +247,25 @@ public class PollerProcessor extends BasePollerProcessor {
         ));
     }
 
+    /**
+     * Enable or disable chat for the buddy
+     *
+     * @param pollerRequest PollerRequest
+     * @return ResponseEvent
+     */
+    protected ResponseEvent setChatEnabled(PollerRequest pollerRequest) {
+        // Create buddy
+        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
+        // Check if the chat should be enabled or disabled
+        boolean enabled = getBoolean(pollerRequest, "enabled");
+        // Enable or disable chat
+        if (enabled) {
+            return settingsCoreService.enableChat(new EnableChatRequestEvent(buddy.toBuddyDetails()));
+        } else {
+            return settingsCoreService.disableChat(new DisableChatRequestEvent(buddy.toBuddyDetails()));
+        }
+    }
+
 
     // ------------------------------------------------------------------------------
     //   To Refactor:
@@ -267,14 +283,6 @@ public class PollerProcessor extends BasePollerProcessor {
 //        }
 
 //        pollerResponse.setParameter("buddies", buddiesJSON);
-    }
-
-
-    protected ResponseEvent setChatEnabled(PollerRequest pollerRequest) {
-        throw new NotImplementedException();
-//        boolean enabled = getBoolean(pollerRequest, "enabled");
-//        String status = getString(pollerRequest, "status");
-//        ChatUtil.setChatEnabled(pollerRequest.getUserId(), enabled, status);
     }
 
     /**

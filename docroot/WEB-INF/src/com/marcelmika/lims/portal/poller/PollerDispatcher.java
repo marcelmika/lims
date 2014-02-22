@@ -23,7 +23,7 @@ import com.marcelmika.lims.events.ResponseEvent;
 public class PollerDispatcher {
 
     // Actions
-    // TODO: refactor, also in js
+    // TODO: refactor (action names are slightly different than method names on poller processor), also in js
     private static final String POLLER_ACTION_CREATE_MESSAGE = "poller.action.create.message";
     private static final String POLLER_ACTION_OPEN_CONVERSATION = "poller.action.open.conversation";
     private static final String POLLER_ACTION_CLOSE_CONVERSATION = "poller.action.close.conversation";

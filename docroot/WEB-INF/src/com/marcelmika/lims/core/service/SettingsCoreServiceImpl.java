@@ -2,6 +2,7 @@ package com.marcelmika.lims.core.service;
 
 import com.marcelmika.lims.events.settings.*;
 import com.marcelmika.lims.persistence.service.BuddyPersistenceService;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Implementation of SettingsCoreService
@@ -14,6 +15,7 @@ import com.marcelmika.lims.persistence.service.BuddyPersistenceService;
 public class SettingsCoreServiceImpl implements SettingsCoreService {
 
     // Dependencies
+    // TODO: Move the functionality to settingsPersistenceService
     BuddyPersistenceService buddyPersistenceService;
 
     /**
@@ -61,6 +63,30 @@ public class SettingsCoreServiceImpl implements SettingsCoreService {
     @Override
     public UpdateSettingsResponseEvent updateSettings(UpdateSettingsRequestEvent event) {
         return buddyPersistenceService.updateSettings(event);
+    }
+
+    /**
+     * Enables chat for buddy
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method @param event
+     */
+    @Override
+    public EnableChatResponseEvent enableChat(EnableChatRequestEvent event) {
+        throw new NotImplementedException();
+        //        ChatUtil.setChatEnabled(pollerRequest.getUserId(), enabled, status);
+    }
+
+    /**
+     * Disables chat for buddy
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    @Override
+    public DisableChatResponseEvent disableChat(DisableChatRequestEvent event) {
+        throw new NotImplementedException();
+        //        ChatUtil.setChatEnabled(pollerRequest.getUserId(), enabled, status);
     }
 
 
