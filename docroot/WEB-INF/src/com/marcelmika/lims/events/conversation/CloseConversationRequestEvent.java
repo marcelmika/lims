@@ -9,4 +9,20 @@ import com.marcelmika.lims.events.RequestEvent;
  * Time: 8:15 AM
  */
 public class CloseConversationRequestEvent extends RequestEvent {
+
+    private Long buddyId;
+    private String conversationId;
+
+    public CloseConversationRequestEvent(Long buddyId, String conversationId) {
+        this.buddyId = buddyId;
+        this.conversationId = conversationId;
+    }
+
+    public Long getBuddyId() {
+        return buddyId;
+    }
+
+    public String getConversationId() {
+        return conversationId;
+    }
 }

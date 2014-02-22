@@ -16,7 +16,9 @@ import com.marcelmika.lims.events.ResponseEvent;
 import com.marcelmika.lims.events.buddy.UpdateActiveRoomTypeBuddyRequestEvent;
 import com.marcelmika.lims.events.buddy.UpdateSettingsBuddyRequestEvent;
 import com.marcelmika.lims.events.buddy.UpdateStatusBuddyRequestEvent;
+import com.marcelmika.lims.events.conversation.CloseConversationRequestEvent;
 import com.marcelmika.lims.events.conversation.CreateConversationRequestEvent;
+import com.marcelmika.lims.events.conversation.LeaveConversationRequestEvent;
 import com.marcelmika.lims.events.conversation.OpenConversationRequestEvent;
 import com.marcelmika.lims.portal.domain.Buddy;
 import com.marcelmika.lims.portal.domain.BuddyCollection;
@@ -48,7 +50,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
     // ---------------------------------------------------------------------------------------------------------
 
     /**
-     * Updates buddy's status
+     * Update buddy's status
      *
      * @param pollerRequest PollerRequest
      * @return ResponseEvent
@@ -56,14 +58,14 @@ public class ChatPollerProcessor extends BasePollerProcessor {
     private ResponseEvent updateStatus(PollerRequest pollerRequest) {
         // Create buddy from poller request
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
-        // Update status
-        return buddyCoreService.updateStatus(
-                new UpdateStatusBuddyRequestEvent(buddy.getBuddyId(), buddy.getStatus())
+        // Send request to core service
+        return buddyCoreService.updateStatus(new UpdateStatusBuddyRequestEvent(
+                buddy.getBuddyId(), buddy.getStatus())
         );
     }
 
     /**
-     * Updates buddy's settings
+     * Update buddy's settings
      *
      * @param pollerRequest PollerRequest
      * @return ResponseEvent
@@ -71,14 +73,14 @@ public class ChatPollerProcessor extends BasePollerProcessor {
     private ResponseEvent updateSettings(PollerRequest pollerRequest) {
         // Create buddy from poller request
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
-        // Update settings
-        return buddyCoreService.updateSettings(
-                new UpdateSettingsBuddyRequestEvent(buddy.getBuddyId(), buddy.getSettings().toSettingsDetails())
+        // Send request to core service
+        return buddyCoreService.updateSettings(new UpdateSettingsBuddyRequestEvent(
+                buddy.getBuddyId(), buddy.getSettings().toSettingsDetails())
         );
     }
 
     /**
-     * Updates buddy's active room type
+     * Update buddy's active room type
      *
      * @param pollerRequest PollerRequest
      * @return ResponseEvent
@@ -86,9 +88,9 @@ public class ChatPollerProcessor extends BasePollerProcessor {
     protected ResponseEvent updateActiveRoomType(PollerRequest pollerRequest) {
         // Create buddy from poller request
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
-        // Update active room type
-        return buddyCoreService.updateActiveRoomType(
-                new UpdateActiveRoomTypeBuddyRequestEvent(buddy.getBuddyId(), buddy.getSettings().getActiveRoomType())
+        // Send request to core service
+        return buddyCoreService.updateActiveRoomType(new UpdateActiveRoomTypeBuddyRequestEvent(
+                buddy.getBuddyId(), buddy.getSettings().getActiveRoomType())
         );
     }
 
@@ -107,60 +109,58 @@ public class ChatPollerProcessor extends BasePollerProcessor {
         Message message = Message.fromPollerRequest(pollerRequest);
         BuddyCollection buddies = BuddyCollection.fromPollerRequest(pollerRequest);
 
-        // Send to core service
-        return conversationCoreService.createConversation(
-                new CreateConversationRequestEvent(buddies.toBuddyCollectionDetails(), message.toMessageDetails())
+        // Send request to core service
+        return conversationCoreService.createConversation(new CreateConversationRequestEvent(
+                buddies.toBuddyCollectionDetails(), message.toMessageDetails())
         );
     }
 
-
     /**
-     * Opens conversation for the particular user
+     * Open conversation for the particular user
      *
      * @param pollerRequest Poller Request
+     * @return ResponseEvent
      */
     protected ResponseEvent openConversation(PollerRequest pollerRequest) {
         // Create conversation and buddy from the poller request
         Conversation conversation = Conversation.fromPollerRequest(pollerRequest);
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
-        // Open conversation
+        // Send request to core service
         return conversationCoreService.openConversation(new OpenConversationRequestEvent(
                 buddy.getBuddyId(), conversation.getConversationId())
         );
     }
 
     /**
-     * Closes conversation for the particular user
+     * Close conversation for the particular user
      *
      * @param pollerRequest Poller Request
-     * @throws Exception
+     * @return ResponseEvent
      */
-    protected void closeConversation(PollerRequest pollerRequest) throws Exception {
-        // Params
-//        String conversationId = getString(pollerRequest, "roomJID");
-//
-//        // Close only opened conversations
-//        if (ChatUtil.isConversationOpened(pollerRequest.getUserId(), conversationId)) {
-//            // Close conversation
-//            Conversation c = ChatUtil.closeConversation(pollerRequest.getUserId(), conversationId);
-//            // Reset message counter
-//            if (c != null) {
-//                c.setLastMessageSent(0);
-//            }
-//        }
+    protected ResponseEvent closeConversation(PollerRequest pollerRequest) {
+        // Create conversation and buddy from poller request
+        Conversation conversation = Conversation.fromPollerRequest(pollerRequest);
+        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
+        // Send request to core service
+        return conversationCoreService.closeConversation(new CloseConversationRequestEvent(
+                buddy.getBuddyId(), conversation.getConversationId()
+        ));
     }
 
     /**
-     * Leaves conversation for the particular user
+     * Leave conversation for the particular user
      *
      * @param pollerRequest Poller Request
-     * @throws Exception
+     * @return ResponseEvent
      */
-    protected void leaveConversation(PollerRequest pollerRequest) throws Exception {
-        // Params
-        String conversationId = getString(pollerRequest, "roomJID");
-        // Leave conversation
-        ChatUtil.leaveConversation(pollerRequest.getUserId(), conversationId);
+    protected ResponseEvent leaveConversation(PollerRequest pollerRequest) {
+        // Create conversation and buddy from poller request
+        Conversation conversation = Conversation.fromPollerRequest(pollerRequest);
+        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
+        // Send request to core service
+        return conversationCoreService.leaveConversation(new LeaveConversationRequestEvent(
+                buddy.getBuddyId(), conversation.getConversationId()
+        ));
     }
 
 
@@ -375,13 +375,13 @@ public class ChatPollerProcessor extends BasePollerProcessor {
                 responseEvent = createConversation(pollerRequest);
             } // Open conversation
             else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_OPEN_CONVERSATION)) {
-                openConversation(pollerRequest);
+                responseEvent = openConversation(pollerRequest);
             } // Close conversation
             else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_CLOSE_CONVERSATION)) {
-                closeConversation(pollerRequest);
+                responseEvent = closeConversation(pollerRequest);
             } // Leave conversation
             else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_LEAVE_CONVERSATION)) {
-                leaveConversation(pollerRequest);
+                responseEvent = leaveConversation(pollerRequest);
             } // Add to conversation
             else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_ADD_TO_CONVERSATION)) {
                 // @todo: Not implemented in v0.2

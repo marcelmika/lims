@@ -10,7 +10,6 @@ import com.marcelmika.lims.events.ResponseEvent;
  */
 public class OpenConversationResponseEvent extends ResponseEvent {
 
-
     public static OpenConversationResponseEvent openConversationSuccess(String result) {
         OpenConversationResponseEvent event = new OpenConversationResponseEvent();
         event.result = result;

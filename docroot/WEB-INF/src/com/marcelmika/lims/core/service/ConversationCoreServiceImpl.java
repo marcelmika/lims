@@ -51,6 +51,19 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      */
     @Override
     public CloseConversationResponseEvent closeConversation(CloseConversationRequestEvent event) {
+
+        // Params
+//        String conversationId = getString(pollerRequest, "roomJID");
+//
+//        // Close only opened conversations
+//        if (ChatUtil.isConversationOpened(pollerRequest.getUserId(), conversationId)) {
+//            // Close conversation
+//            Conversation c = ChatUtil.closeConversation(pollerRequest.getUserId(), conversationId);
+//            // Reset message counter
+//            if (c != null) {
+//                c.setLastMessageSent(0);
+//            }
+//        }
         throw new RuntimeException("Not implemented");
     }
 
@@ -63,6 +76,9 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
     @Override
     public LeaveConversationResponseEvent leaveConversation(LeaveConversationRequestEvent event) {
         throw new RuntimeException("Not implemented");
+
+        // Leave conversation
+//        ChatUtil.leaveConversation(pollerRequest.getUserId(), conversationId);
     }
 
 
