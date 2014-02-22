@@ -1,10 +1,8 @@
 package com.marcelmika.lims.events.conversation;
 
 import com.marcelmika.lims.events.RequestEvent;
-import com.marcelmika.lims.events.details.BuddyDetails;
+import com.marcelmika.lims.events.details.BuddyCollectionDetails;
 import com.marcelmika.lims.events.details.MessageDetails;
-
-import java.util.List;
 
 /**
  * @author Ing. Marcel Mika
@@ -14,16 +12,16 @@ import java.util.List;
  */
 public class CreateConversationRequestEvent extends RequestEvent {
 
-    List<BuddyDetails> buddies;
+    BuddyCollectionDetails buddyCollectionDetails;
     MessageDetails initialMessage;
 
-    public CreateConversationRequestEvent(List<BuddyDetails> buddies, MessageDetails initialMessage) {
-        this.buddies = buddies;
+    public CreateConversationRequestEvent(BuddyCollectionDetails buddyCollectionDetails, MessageDetails initialMessage) {
+        this.buddyCollectionDetails = buddyCollectionDetails;
         this.initialMessage = initialMessage;
     }
 
-    public List<BuddyDetails> getBuddies() {
-        return buddies;
+    public BuddyCollectionDetails getBuddyCollectionDetails() {
+        return buddyCollectionDetails;
     }
 
     public MessageDetails getInitialMessage() {

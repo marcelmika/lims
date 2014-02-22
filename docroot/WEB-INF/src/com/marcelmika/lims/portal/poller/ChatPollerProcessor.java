@@ -8,7 +8,6 @@ import com.liferay.portal.kernel.poller.BasePollerProcessor;
 import com.liferay.portal.kernel.poller.PollerRequest;
 import com.liferay.portal.kernel.poller.PollerResponse;
 import com.liferay.portal.kernel.util.Validator;
-import com.marcelmika.lims.core.domain.Message;
 import com.marcelmika.lims.core.service.BuddyCoreService;
 import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
 import com.marcelmika.lims.core.service.ConversationCoreService;
@@ -18,18 +17,17 @@ import com.marcelmika.lims.events.buddy.UpdateActiveRoomTypeBuddyRequestEvent;
 import com.marcelmika.lims.events.buddy.UpdateSettingsBuddyRequestEvent;
 import com.marcelmika.lims.events.buddy.UpdateStatusBuddyRequestEvent;
 import com.marcelmika.lims.events.conversation.CreateConversationRequestEvent;
-import com.marcelmika.lims.events.details.BuddyDetails;
-import com.marcelmika.lims.events.details.MessageDetails;
-import com.marcelmika.lims.jabber.domain.Conversation;
-import com.marcelmika.lims.model.Settings;
+import com.marcelmika.lims.events.conversation.OpenConversationRequestEvent;
 import com.marcelmika.lims.portal.domain.Buddy;
+import com.marcelmika.lims.portal.domain.BuddyCollection;
+import com.marcelmika.lims.portal.domain.Conversation;
+import com.marcelmika.lims.portal.domain.Message;
 import com.marcelmika.lims.util.ChatUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Receives and sends messages to the liferay frontend where is periodically consumed.
+ * Receives and sends messages to the Liferay frontend where is periodically consumed.
  * Servers as a gateway to Lims business logic.
  *
  * @author Ing. Marcel Mika
@@ -105,29 +103,13 @@ public class ChatPollerProcessor extends BasePollerProcessor {
      * @return ResponseEvent
      */
     protected ResponseEvent createConversation(PollerRequest pollerRequest) {
-        // Params
-        String message = getString(pollerRequest, "message");
-        String buddies = getString(pollerRequest, "users");
+        // Create objects from poller request
+        Message message = Message.fromPollerRequest(pollerRequest);
+        BuddyCollection buddies = BuddyCollection.fromPollerRequest(pollerRequest);
 
-        // Message
-        Message initialMessage = new Message();
-        initialMessage.setBody(message);
-
-        // List of buddies is in a form of buddyIDs separated by comma
-        String[] buddyIDs = buddies.split(",");
-        // Create a list of buddies
-        List<Buddy> buddyList = Buddy.fromListOfBuddyIDs(buddyIDs);
-
-        // Details
-        MessageDetails messageDetails = initialMessage.toMessageDetails();
-        List<BuddyDetails> buddyDetails = new ArrayList<BuddyDetails>();
-        for (Buddy buddy : buddyList) {
-            buddyDetails.add(buddy.toBuddyDetails());
-        }
-
-        // Send to core server
+        // Send to core service
         return conversationCoreService.createConversation(
-                new CreateConversationRequestEvent(buddyDetails, messageDetails)
+                new CreateConversationRequestEvent(buddies.toBuddyCollectionDetails(), message.toMessageDetails())
         );
     }
 
@@ -136,13 +118,15 @@ public class ChatPollerProcessor extends BasePollerProcessor {
      * Opens conversation for the particular user
      *
      * @param pollerRequest Poller Request
-     * @throws Exception
      */
-    protected void openConversation(PollerRequest pollerRequest) throws Exception {
-        // Params
-        String conversationId = getString(pollerRequest, "roomJID");
+    protected ResponseEvent openConversation(PollerRequest pollerRequest) {
+        // Create conversation and buddy from the poller request
+        Conversation conversation = Conversation.fromPollerRequest(pollerRequest);
+        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
         // Open conversation
-        ChatUtil.openConversation(pollerRequest.getUserId(), conversationId);
+        return conversationCoreService.openConversation(new OpenConversationRequestEvent(
+                buddy.getBuddyId(), conversation.getConversationId())
+        );
     }
 
     /**
@@ -153,17 +137,17 @@ public class ChatPollerProcessor extends BasePollerProcessor {
      */
     protected void closeConversation(PollerRequest pollerRequest) throws Exception {
         // Params
-        String conversationId = getString(pollerRequest, "roomJID");
-
-        // Close only opened conversations
-        if (ChatUtil.isConversationOpened(pollerRequest.getUserId(), conversationId)) {
-            // Close conversation
-            Conversation c = ChatUtil.closeConversation(pollerRequest.getUserId(), conversationId);
-            // Reset message counter
-            if (c != null) {
-                c.setLastMessageSent(0);
-            }
-        }
+//        String conversationId = getString(pollerRequest, "roomJID");
+//
+//        // Close only opened conversations
+//        if (ChatUtil.isConversationOpened(pollerRequest.getUserId(), conversationId)) {
+//            // Close conversation
+//            Conversation c = ChatUtil.closeConversation(pollerRequest.getUserId(), conversationId);
+//            // Reset message counter
+//            if (c != null) {
+//                c.setLastMessageSent(0);
+//            }
+//        }
     }
 
     /**
@@ -226,20 +210,20 @@ public class ChatPollerProcessor extends BasePollerProcessor {
      */
     protected void getAllConversations(PollerRequest pollerRequest, PollerResponse pollerResponse) throws Exception {
         // Fetch conversations
-        List<Conversation> conversations = ChatUtil.getConversations(pollerRequest.getUserId());
-
-        // Json array of conversations
-        JSONArray conversationsJSON = JSONFactoryUtil.createJSONArray();
-        // Compose array
-        for (Conversation conversation : conversations) {
-            // Add only conversations that are alive
-            if (conversation.getParticipants().size() > 1) {
-                conversationsJSON.put(conversation.toJSON());
-            }
-        }
-
-        // Set response
-        pollerResponse.setParameter("conversations", conversationsJSON);
+//        List<Conversation> conversations = ChatUtil.getConversations(pollerRequest.getUserId());
+//
+//        // Json array of conversations
+//        JSONArray conversationsJSON = JSONFactoryUtil.createJSONArray();
+//        // Compose array
+//        for (Conversation conversation : conversations) {
+//            // Add only conversations that are alive
+//            if (conversation.getParticipants().size() > 1) {
+//                conversationsJSON.put(conversation.toJSON());
+//            }
+//        }
+//
+//        // Set response
+//        pollerResponse.setParameter("conversations", conversationsJSON);
     }
 
     /**
@@ -253,73 +237,73 @@ public class ChatPollerProcessor extends BasePollerProcessor {
     protected void getOpenedConversations(PollerRequest pollerRequest, PollerResponse pollerResponse) throws Exception {
         // Params
         long userId = pollerRequest.getUserId();
-        List<Conversation> conversations = ChatUtil.getOpenedConversations(userId, false);
-
-        // Compose json array
-        JSONArray conversationsJSON = JSONFactoryUtil.createJSONArray();
-
-        // Compose array
-        for (Conversation conversation : conversations) {
-            String conversationId = conversation.getConversationId();
-            // [1] We want to send all messages on the initial request
-            if (pollerRequest.isInitialRequest()) {
-                conversation.setLastMessageSent(0);
-            }
-
-            // [2] Make poller faster while sending new messages
-            if (conversation.getLastMessageSent() < conversation.getMessages().size()) {
-                pollerResponse.setParameter(PollerResponse.POLLER_HINT_HIGH_CONNECTIVITY, Boolean.TRUE.toString());
-            }
-
-            // [3] Active conversations don't have unread messages             
-            if (ChatUtil.isConversationActive(userId, conversationId)) {
-                ChatUtil.setUnreadMessages(userId, conversationId, 0);
-            }
-
-            // [4] Add conversation to json
-            conversationsJSON.put(conversation.toFullJSON());
-
-            // [5] Set last message counter to the index of last message
-            conversation.setLastMessageSent(conversation.getIndexOfLastMessage());
-        }
-
-        // Set response
-        pollerResponse.setParameter("openedConversations", conversationsJSON);
+//        List<Conversation> conversations = ChatUtil.getOpenedConversations(userId, false);
+//
+//        // Compose json array
+//        JSONArray conversationsJSON = JSONFactoryUtil.createJSONArray();
+//
+//        // Compose array
+//        for (Conversation conversation : conversations) {
+//            String conversationId = conversation.getConversationId();
+//            // [1] We want to send all messages on the initial request
+//            if (pollerRequest.isInitialRequest()) {
+//                conversation.setLastMessageSent(0);
+//            }
+//
+//            // [2] Make poller faster while sending new messages
+//            if (conversation.getLastMessageSent() < conversation.getMessages().size()) {
+//                pollerResponse.setParameter(PollerResponse.POLLER_HINT_HIGH_CONNECTIVITY, Boolean.TRUE.toString());
+//            }
+//
+//            // [3] Active conversations don't have unread messages
+//            if (ChatUtil.isConversationActive(userId, conversationId)) {
+//                ChatUtil.setUnreadMessages(userId, conversationId, 0);
+//            }
+//
+//            // [4] Add conversation to json
+//            conversationsJSON.put(conversation.toFullJSON());
+//
+//            // [5] Set last message counter to the index of last message
+//            conversation.setLastMessageSent(conversation.getIndexOfLastMessage());
+//        }
+//
+//        // Set response
+//        pollerResponse.setParameter("openedConversations", conversationsJSON);
     }
 
 
     protected void sendMessage(PollerRequest pollerRequest) throws Exception {
 //        System.out.println("[POLLER][START SENDING][" + pollerRequest.getUserId() + "]");
 
-        // Params
-        String message = getString(pollerRequest, "message");
-        String conversationId = getString(pollerRequest, "roomJID");
-
-        // [1] Find conversation
-        Conversation conversation = ChatUtil.getConversation(pollerRequest.getUserId(), conversationId);
-
-        // [2] Send message
-        ChatUtil.sendMessage(pollerRequest.getUserId(), conversation, message);
-
-        // [3] Handle buddies in conversation
-        for (com.marcelmika.lims.model.Buddy participant : conversation.getParticipants()) {
-
-            // [4] Open conversation for all buddies in the conversation
-            if (!ChatUtil.isConversationOpened(participant, conversationId)) {
-                Conversation c = ChatUtil.openConversation(participant, conversationId);
-                // Reset message counter
-                if (c != null) {
-                    c.setLastMessageSent(0);
-                }
-            }
-
-            // [5] Increment number of unread messages
-            Settings settings = ChatUtil.getSettings(participant);
-            // Increment only for not active panels
-            if (!settings.getActivePanelId().equals(conversationId)) {
-                ChatUtil.incrementUnreadMessages(participant.getUserId(), conversationId);
-            }
-        }
+//        // Params
+//        String message = getString(pollerRequest, "message");
+//        String conversationId = getString(pollerRequest, "roomJID");
+//
+//        // [1] Find conversation
+//        Conversation conversation = ChatUtil.getConversation(pollerRequest.getUserId(), conversationId);
+//
+//        // [2] Send message
+//        ChatUtil.sendMessage(pollerRequest.getUserId(), conversation, message);
+//
+//        // [3] Handle buddies in conversation
+//        for (com.marcelmika.lims.model.Buddy participant : conversation.getParticipants()) {
+//
+//            // [4] Open conversation for all buddies in the conversation
+//            if (!ChatUtil.isConversationOpened(participant, conversationId)) {
+//                Conversation c = ChatUtil.openConversation(participant, conversationId);
+//                // Reset message counter
+//                if (c != null) {
+//                    c.setLastMessageSent(0);
+//                }
+//            }
+//
+//            // [5] Increment number of unread messages
+//            Settings settings = ChatUtil.getSettings(participant);
+//            // Increment only for not active panels
+//            if (!settings.getActivePanelId().equals(conversationId)) {
+//                ChatUtil.incrementUnreadMessages(participant.getUserId(), conversationId);
+//            }
+//        }
     }
 
     // ------------------------------------------------------------------------------

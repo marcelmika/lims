@@ -39,26 +39,6 @@ public class Buddy {
     private String status;
     private Settings settings;
 
-    /**
-     * Factory method which creates a list of buddies from a list of their buddy IDs (e.g. 123,32,..)
-     *
-     * @param list of buddies (in Strings)
-     * @return List<Buddy>
-     */
-    public static List<Buddy> fromListOfBuddyIDs(String[] list) {
-        // Create a list of buddies from request
-        List<Buddy> buddies = new ArrayList<Buddy>();
-
-        for (String buddyID : list) {
-            // Create new buddy
-            Buddy buddy = new Buddy();
-            buddy.setBuddyId(Long.parseLong(buddyID));
-            // Add it to list
-            buddies.add(buddy);
-        }
-
-        return buddies;
-    }
 
     /**
      * Factory method which creates new Buddy object from the PollerRequest
