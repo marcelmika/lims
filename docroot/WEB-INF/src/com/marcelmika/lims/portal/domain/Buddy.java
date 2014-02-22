@@ -39,7 +39,12 @@ public class Buddy {
     private String status;
     private Settings settings;
 
-
+    /**
+     * Factory method which creates a list of buddies from a list of their buddy IDs (e.g. 123,32,..)
+     *
+     * @param list of buddies (in Strings)
+     * @return List<Buddy>
+     */
     public static List<Buddy> fromListOfBuddyIDs(String[] list) {
         // Create a list of buddies from request
         List<Buddy> buddies = new ArrayList<Buddy>();
@@ -55,6 +60,12 @@ public class Buddy {
         return buddies;
     }
 
+    /**
+     * Factory method which creates new Buddy object from the PollerRequest
+     *
+     * @param pollerRequest request
+     * @return Buddy
+     */
     public static Buddy fromPollerRequest(PollerRequest pollerRequest) {
         // Map contains all parameters from request
         Map<String, String> parameterMap = pollerRequest.getParameterMap();
@@ -90,10 +101,10 @@ public class Buddy {
 
 
     /**
-     * Create Buddy from Portal User
+     * Factory method which creates new Buddy object from portal User
      *
-     * @param user
-     * @return
+     * @param user User
+     * @return Buddy
      */
     public static Buddy fromPortalUser(User user) {
         // Create new empty buddy
@@ -107,7 +118,7 @@ public class Buddy {
     }
 
     /**
-     * Creates Buddy from Http Servlet Request
+     * Factory method which creates new Buddy object from HttpServletRequest
      *
      * @param request HttpServletRequest
      * @return Buddy
@@ -130,7 +141,7 @@ public class Buddy {
     }
 
     /**
-     * Creates Buddy from Http Session
+     * Factory method which creates new Buddy object from HttpSession
      *
      * @param session HttpSession
      * @return Buddy
@@ -140,7 +151,7 @@ public class Buddy {
         Buddy buddy = new Buddy();
         // Get user ID from http session
         Long userId = (Long) session.getAttribute(WebKeys.USER_ID);
-
+        // Set property
         buddy.setBuddyId(userId);
 
         return buddy;
@@ -148,7 +159,7 @@ public class Buddy {
 
 
     /**
-     * Create new user and maps data from user details
+     * Factory method which creates new Buddy object from BuddyDetails
      *
      * @param buddyDetails BuddyDetails
      * @return User
