@@ -1,13 +1,10 @@
 package com.marcelmika.lims.portal.poller;
 
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.poller.BasePollerProcessor;
 import com.liferay.portal.kernel.poller.PollerRequest;
 import com.liferay.portal.kernel.poller.PollerResponse;
-import com.liferay.portal.kernel.util.Validator;
 import com.marcelmika.lims.core.service.BuddyCoreService;
 import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
 import com.marcelmika.lims.core.service.ConversationCoreService;
@@ -24,13 +21,9 @@ import com.marcelmika.lims.portal.domain.Buddy;
 import com.marcelmika.lims.portal.domain.BuddyCollection;
 import com.marcelmika.lims.portal.domain.Conversation;
 import com.marcelmika.lims.portal.domain.Message;
-import com.marcelmika.lims.util.ChatUtil;
-
-import java.util.List;
 
 /**
- * Receives and sends messages to the Liferay frontend where is periodically consumed.
- * Servers as a gateway to Lims business logic.
+ * Receives and sends messages to the Liferay frontend javascript later where is periodically consumed.
  *
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com/lims
@@ -41,9 +34,56 @@ public class ChatPollerProcessor extends BasePollerProcessor {
 
     // Log
     private static Log log = LogFactoryUtil.getLog(ChatPollerProcessor.class);
+
     // Dependencies
     BuddyCoreService buddyCoreService = BuddyCoreServiceUtil.getBuddyCoreService();
     ConversationCoreService conversationCoreService = ConversationCoreServiceUtil.getConversationCoreService();
+
+
+    /**
+     * This method is called whenever the user calls submitRequest(portletId, data, key) method in
+     * browser (used in Liferay.Chat.Poller.js).
+     * Unfortunately, this method does not return any value. As a result, there is no way
+     * to confirm success or failure of the given request because no response (!) is received.
+     * Consequently, there is no other way to receive data from the backend besides waiting
+     * for the response of the receive action (i.e. waiting for the result of doReceive() method).
+     *
+     * @param pollerRequest sent via the submitRequest(portletId, data, key) method from browser
+     * @throws IllegalArgumentException if request does not contain chunkID used to determine request type
+     */
+    @Override
+    protected void doSend(PollerRequest pollerRequest) throws IllegalArgumentException {
+        // Poller dispatcher will call appropriate method on poller processor
+        ResponseEvent responseEvent = PollerDispatcher.dispatchSendRequest(pollerRequest, this);
+
+        // Log info
+        if (responseEvent != null) {
+            log.info(responseEvent.getResult());
+        }
+    }
+
+    /**
+     * This method serves as a request/response gateway. However, it cannot be explicitly triggered.
+     * Liferay has its own timer, which repeats the given operation for each allotted amount of time.
+     * This method is periodically called from the browser (called in Liferay.Chat.Poller.js).
+     *
+     * @param pollerRequest  sent periodically from browser
+     * @param pollerResponse provided response
+     * @throws Exception
+     */
+    @Override
+    protected void doReceive(PollerRequest pollerRequest, PollerResponse pollerResponse) throws Exception {
+        // Initial request is the first request sent to the poller (i.e. whenever the user opens any page).
+        // If the user moves to another page within the portal, new initial request is sent.
+        if (pollerRequest.isInitialRequest()) {
+            // Make polling faster on the initial request
+            pollerResponse.setParameter(PollerResponse.POLLER_HINT_HIGH_CONNECTIVITY, Boolean.TRUE.toString());
+        }
+
+        // Poller dispatcher will call appropriate methods on poller processor scheduled for
+        // the do receive event
+        PollerDispatcher.dispatchReceiveRequest(pollerRequest, pollerResponse, this);
+    }
 
     // ---------------------------------------------------------------------------------------------------------
     //   Buddy Lifecycle
@@ -55,7 +95,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
      * @param pollerRequest PollerRequest
      * @return ResponseEvent
      */
-    private ResponseEvent updateStatus(PollerRequest pollerRequest) {
+    protected ResponseEvent updateStatus(PollerRequest pollerRequest) {
         // Create buddy from poller request
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
         // Send request to core service
@@ -70,7 +110,7 @@ public class ChatPollerProcessor extends BasePollerProcessor {
      * @param pollerRequest PollerRequest
      * @return ResponseEvent
      */
-    private ResponseEvent updateSettings(PollerRequest pollerRequest) {
+    protected ResponseEvent updateSettings(PollerRequest pollerRequest) {
         // Create buddy from poller request
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
         // Send request to core service
@@ -167,37 +207,36 @@ public class ChatPollerProcessor extends BasePollerProcessor {
     // ------------------------------------------------------------------------------
     //   To Refactor:
     // ------------------------------------------------------------------------------
-    protected void changeActivePanel(PollerRequest pollerRequest) throws Exception {
-//        Buddy buddy = Buddy.fromPollerRequest()
-
-
-        // TODO: Reimplement to hexagonal
-        String activePanelId = getString(pollerRequest, "activePanelId");
-        ChatUtil.changeActivePanel(pollerRequest.getUserId(), activePanelId);
-        // While user opens panel unread messages should be set to zero
-        if (!Validator.isNull(activePanelId)) {
-            ChatUtil.setUnreadMessages(pollerRequest.getUserId(), activePanelId, 0);
-        }
+    protected ResponseEvent changeActivePanel(PollerRequest pollerRequest) {
+        throw new RuntimeException("Not implemented");
+//        String activePanelId = getString(pollerRequest, "activePanelId");
+//        ChatUtil.changeActivePanel(pollerRequest.getUserId(), activePanelId);
+//        // While user opens panel unread messages should be set to zero
+//        if (!Validator.isNull(activePanelId)) {
+//            ChatUtil.setUnreadMessages(pollerRequest.getUserId(), activePanelId, 0);
+//        }
     }
 
 
-    protected void getBuddyList(PollerRequest pollerRequest, PollerResponse pollerResponse) throws Exception {
-        List<com.marcelmika.lims.model.Buddy> buddies = ChatUtil.getBuddyList(pollerRequest.getUserId());
+    protected void getBuddyList(PollerRequest pollerRequest, PollerResponse pollerResponse) {
+        log.info("getBuddyList not implemented");
+//        List<com.marcelmika.lims.model.Buddy> buddies = ChatUtil.getBuddyList(pollerRequest.getUserId());
 
         // Compose json array
-        JSONArray buddiesJSON = JSONFactoryUtil.createJSONArray();
-        for (com.marcelmika.lims.model.Buddy buddy : buddies) {
-            buddiesJSON.put(buddy.toJSON());
-        }
+//        JSONArray buddiesJSON = JSONFactoryUtil.createJSONArray();
+//        for (com.marcelmika.lims.model.Buddy buddy : buddies) {
+//            buddiesJSON.put(buddy.toJSON());
+//        }
 
-        pollerResponse.setParameter("buddies", buddiesJSON);
+//        pollerResponse.setParameter("buddies", buddiesJSON);
     }
 
 
-    protected void setChatEnabled(PollerRequest pollerRequest) throws Exception {
-        boolean enabled = getBoolean(pollerRequest, "enabled");
-        String status = getString(pollerRequest, "status");
-        ChatUtil.setChatEnabled(pollerRequest.getUserId(), enabled, status);
+    protected ResponseEvent setChatEnabled(PollerRequest pollerRequest) {
+        throw new RuntimeException("Not implemented");
+//        boolean enabled = getBoolean(pollerRequest, "enabled");
+//        String status = getString(pollerRequest, "status");
+//        ChatUtil.setChatEnabled(pollerRequest.getUserId(), enabled, status);
     }
 
     /**
@@ -208,7 +247,8 @@ public class ChatPollerProcessor extends BasePollerProcessor {
      * @param pollerResponse Poller Response
      * @throws Exception
      */
-    protected void getAllConversations(PollerRequest pollerRequest, PollerResponse pollerResponse) throws Exception {
+    protected void getAllConversations(PollerRequest pollerRequest, PollerResponse pollerResponse) {
+        log.info("getAllConversations not implemented");
         // Fetch conversations
 //        List<Conversation> conversations = ChatUtil.getConversations(pollerRequest.getUserId());
 //
@@ -234,9 +274,10 @@ public class ChatPollerProcessor extends BasePollerProcessor {
      * @param pollerResponse Poller Response
      * @throws Exception
      */
-    protected void getOpenedConversations(PollerRequest pollerRequest, PollerResponse pollerResponse) throws Exception {
+    protected void getOpenedConversations(PollerRequest pollerRequest, PollerResponse pollerResponse) {
+        log.info("getOpenedConversations not implemented");
         // Params
-        long userId = pollerRequest.getUserId();
+//        long userId = pollerRequest.getUserId();
 //        List<Conversation> conversations = ChatUtil.getOpenedConversations(userId, false);
 //
 //        // Compose json array
@@ -272,7 +313,8 @@ public class ChatPollerProcessor extends BasePollerProcessor {
     }
 
 
-    protected void sendMessage(PollerRequest pollerRequest) throws Exception {
+    protected ResponseEvent sendMessage(PollerRequest pollerRequest) {
+        throw new RuntimeException("Not implemented");
 //        System.out.println("[POLLER][START SENDING][" + pollerRequest.getUserId() + "]");
 
 //        // Params
@@ -310,10 +352,11 @@ public class ChatPollerProcessor extends BasePollerProcessor {
     //   NOT IN THIS VERSION
     // ------------------------------------------------------------------------------
     // @todo: Not implemented in v0.2
-    protected void addToConversation(PollerRequest pollerRequest) throws Exception {
+    protected ResponseEvent addToConversation(PollerRequest pollerRequest) {
+        throw new RuntimeException("Not implemented");
         // Params
-        String users = getString(pollerRequest, "users");
-        String roomJID = getString(pollerRequest, "roomJID");
+//        String users = getString(pollerRequest, "users");
+//        String roomJID = getString(pollerRequest, "roomJID");
         // Parse buddies from request
 //        List<com.marcelmika.lims.model.Buddy> buddies = parser.parseUsersToBuddies(users);
 
@@ -329,93 +372,4 @@ public class ChatPollerProcessor extends BasePollerProcessor {
 //        }
     }
 
-
-    // ------------------------------------------------------------------------------
-    //   POLLER REQUEST/RESPONSE
-    // ------------------------------------------------------------------------------
-    @Override
-    protected void doReceive(PollerRequest pollerRequest, PollerResponse pollerResponse) throws Exception {
-//        System.out.println(new Date() + " [POLLER][RECEIVE] " + pollerRequest.toString());
-
-        // Will be called once during the initial request
-        if (pollerRequest.isInitialRequest()) {
-            // Make poller faster on the initial request
-            pollerResponse.setParameter(PollerResponse.POLLER_HINT_HIGH_CONNECTIVITY, Boolean.TRUE.toString());
-        }
-
-        // Will be called every time 
-        try {
-            getBuddyList(pollerRequest, pollerResponse);
-            getAllConversations(pollerRequest, pollerResponse);
-            getOpenedConversations(pollerRequest, pollerResponse);
-        } catch (Exception ex) {
-            pollerResponse.setParameter("error", ex.getMessage());
-            System.out.println("[ERROR] " + ex.getMessage());
-            // Uncomment for testing purpouses
-//            throw ex;
-        }
-    }
-
-    @Override
-    protected void doSend(PollerRequest pollerRequest) throws Exception {
-//        System.out.println(new Date() + " [POLLER][SEND] " + pollerRequest.toString());
-
-        // All requests must have a chunkId
-        String chunkId = pollerRequest.getChunkId();
-        if (chunkId == null) {
-            return;
-        }
-
-
-        try {
-            ResponseEvent responseEvent = null;
-
-            // Create conversation
-            if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_CREATE_MESSAGE)) {
-                responseEvent = createConversation(pollerRequest);
-            } // Open conversation
-            else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_OPEN_CONVERSATION)) {
-                responseEvent = openConversation(pollerRequest);
-            } // Close conversation
-            else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_CLOSE_CONVERSATION)) {
-                responseEvent = closeConversation(pollerRequest);
-            } // Leave conversation
-            else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_LEAVE_CONVERSATION)) {
-                responseEvent = leaveConversation(pollerRequest);
-            } // Add to conversation
-            else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_ADD_TO_CONVERSATION)) {
-                // @todo: Not implemented in v0.2
-                // addToConversation(pollerRequest);
-            } // Send Message            
-            else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_SEND_MESSAGE)) {
-                sendMessage(pollerRequest);
-            } // Save settings
-            else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_SAVE_SETTINGS)) {
-                responseEvent = updateSettings(pollerRequest);
-            } // Change status
-            else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_CHANGE_STATUS)) {
-                responseEvent = updateStatus(pollerRequest);
-            } // Change active panel
-            else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_CHANGE_ACTIVE_PANEL)) {
-                changeActivePanel(pollerRequest);
-            } // Enable/Disable chat
-            else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_CHAT_ENABLED)) {
-                setChatEnabled(pollerRequest);
-            } // Change active room type
-            else if (chunkId.equals(ChatPollerKeys.POLLER_ACTION_CHANGE_ACTIVE_ROOM_TYPE)) {
-                responseEvent = updateActiveRoomType(pollerRequest);
-            }
-
-            if (responseEvent != null) {
-                log.info(responseEvent.getResult());
-            }
-
-
-        } catch (Exception ex) {
-            System.out.println("[ERROR] " + ex.getMessage());
-            // Uncomment for testing purpouses
-//            throw ex;
-        }
-
-    }
 }
