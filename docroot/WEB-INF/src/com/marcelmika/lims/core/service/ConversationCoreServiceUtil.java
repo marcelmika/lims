@@ -2,6 +2,8 @@ package com.marcelmika.lims.core.service;
 
 
 /**
+ * Utility class that holds an instance of ConversationCoreService.
+ *
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
  * Date: 2/19/14

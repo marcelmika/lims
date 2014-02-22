@@ -1,6 +1,8 @@
 package com.marcelmika.lims.jabber.service;
 
 import com.marcelmika.lims.events.buddy.*;
+import com.marcelmika.lims.events.buddy.UpdateStatusBuddyRequestEvent;
+import com.marcelmika.lims.events.buddy.UpdateStatusBuddyResponseEvent;
 
 /**
  * @author Ing. Marcel Mika

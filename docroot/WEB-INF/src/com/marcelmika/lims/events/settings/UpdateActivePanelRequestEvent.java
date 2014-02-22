@@ -1,4 +1,4 @@
-package com.marcelmika.lims.events.buddy;
+package com.marcelmika.lims.events.settings;
 
 import com.marcelmika.lims.events.RequestEvent;
 
@@ -8,12 +8,12 @@ import com.marcelmika.lims.events.RequestEvent;
  * Date: 2/5/14
  * Time: 9:27 PM
  */
-public class UpdateActivePanelBuddyRequestEvent extends RequestEvent {
+public class UpdateActivePanelRequestEvent extends RequestEvent {
 
     private final Long buddyId;
     private final String activePanel;
 
-    public UpdateActivePanelBuddyRequestEvent(Long buddyId, String activePanel) {
+    public UpdateActivePanelRequestEvent(Long buddyId, String activePanel) {
         this.buddyId = buddyId;
         this.activePanel = activePanel;
     }

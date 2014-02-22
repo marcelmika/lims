@@ -3,6 +3,8 @@ package com.marcelmika.lims.core.service;
 import com.marcelmika.lims.events.buddy.*;
 
 /**
+ * Serves as a port to the business logic related to buddy.
+ *
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
  * Date: 2/4/14
@@ -41,29 +43,5 @@ public interface BuddyCoreService {
      * @return Response event for logout method
      */
     public UpdateStatusBuddyResponseEvent updateStatus(UpdateStatusBuddyRequestEvent event);
-
-    /**
-     * Update buddy's active panel (panel which is open)
-     *
-     * @param event Request event for logout method
-     * @return Response event for logout method
-     */
-    public UpdateActivePanelBuddyResponseEvent updateActivePanel(UpdateActivePanelBuddyRequestEvent event);
-
-    /**
-     * Update buddy's active room type (i.e. public or private)
-     *
-     * @param event Request event for logout method
-     * @return Response event for logout method
-     */
-    public UpdateActiveRoomTypeBuddyResponseEvent updateActiveRoomType(UpdateActiveRoomTypeBuddyRequestEvent event);
-
-    /**
-     * Update buddy's settings
-     *
-     * @param event Request event for logout method
-     * @return Response event for logout method
-     */
-    public UpdateSettingsBuddyResponseEvent updateSettings(UpdateSettingsBuddyRequestEvent event);
 
 }

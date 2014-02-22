@@ -2,6 +2,7 @@ package com.marcelmika.lims.persistence.service;
 
 import com.marcelmika.lims.events.buddy.*;
 import com.marcelmika.lims.events.details.SettingsDetails;
+import com.marcelmika.lims.events.settings.*;
 import com.marcelmika.lims.model.Settings;
 import com.marcelmika.lims.persistence.domain.Buddy;
 import com.marcelmika.lims.service.SettingsLocalServiceUtil;
@@ -73,7 +74,7 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
      * @return Response event for logout method
      */
     @Override
-    public UpdateActivePanelBuddyResponseEvent updateActivePanel(UpdateActivePanelBuddyRequestEvent event) {
+    public UpdateActivePanelResponseEvent updateActivePanel(UpdateActivePanelRequestEvent event) {
         try {
             // Get settings
             Settings settings = SettingsLocalServiceUtil.getSettings(event.getBuddyId());
@@ -82,13 +83,13 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
             // Save settings
             SettingsLocalServiceUtil.updateSettings(settings, false);
 
-            return UpdateActivePanelBuddyResponseEvent.updateActivePanelSuccess(
+            return UpdateActivePanelResponseEvent.updateActivePanelSuccess(
                     "Active Panel" + event.getActivePanel() + " saved to persistence layer for user "
                             + event.getBuddyId()
             );
 
         } catch (Exception exception) {
-            return UpdateActivePanelBuddyResponseEvent.updateActivePanelFailure(
+            return UpdateActivePanelResponseEvent.updateActivePanelFailure(
                     "Cannot update Active Panel to a persistence layer", exception
             );
         }
@@ -101,17 +102,17 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
      * @return Response event for logout method
      */
     @Override
-    public UpdateActiveRoomTypeBuddyResponseEvent updateActiveRoomType(UpdateActiveRoomTypeBuddyRequestEvent event) {
+    public UpdateActiveRoomTypeResponseEvent updateActiveRoomType(UpdateActiveRoomTypeRequestEvent event) {
         try {
             // Change Active Room type
             SettingsLocalServiceUtil.changeActiveRoomType(event.getBuddyId(), event.getActiveRoomType());
 
-            return UpdateActiveRoomTypeBuddyResponseEvent.updateActiveRoomTypeSuccess(
+            return UpdateActiveRoomTypeResponseEvent.updateActiveRoomTypeSuccess(
                     "Active Room Type " + event.getActiveRoomType() + " saved to persistence layer for user "
                             + event.getBuddyId()
             );
         } catch (Exception exception) {
-            return UpdateActiveRoomTypeBuddyResponseEvent.updateActiveRoomTypeFailure(
+            return UpdateActiveRoomTypeResponseEvent.updateActiveRoomTypeFailure(
                     "Cannot update Active Room type to a persistence layer", exception
             );
         }
@@ -124,7 +125,7 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
      * @return Response event for logout method
      */
     @Override
-    public UpdateSettingsBuddyResponseEvent updateSettings(UpdateSettingsBuddyRequestEvent event) {
+    public UpdateSettingsResponseEvent updateSettings(UpdateSettingsRequestEvent event) {
         SettingsDetails details = event.getSettingsDetails();
         try {
             // Get settings
@@ -134,12 +135,12 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
             // Save
             SettingsLocalServiceUtil.updateSettings(settings, false);
 
-            return UpdateSettingsBuddyResponseEvent.updateSettingsSuccess(
+            return UpdateSettingsResponseEvent.updateSettingsSuccess(
                     "Settings saved to persistence layer for user " + event.getBuddyId(), details
             );
 
         } catch (Exception exception) {
-            return UpdateSettingsBuddyResponseEvent.updateSettingsFailure(
+            return UpdateSettingsResponseEvent.updateSettingsFailure(
                     "Cannot update Settings to a persistence layer", details, exception
             );
         }

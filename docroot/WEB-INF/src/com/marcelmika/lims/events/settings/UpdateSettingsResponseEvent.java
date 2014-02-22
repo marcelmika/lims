@@ -1,4 +1,4 @@
-package com.marcelmika.lims.events.buddy;
+package com.marcelmika.lims.events.settings;
 
 import com.marcelmika.lims.events.ResponseEvent;
 import com.marcelmika.lims.events.details.SettingsDetails;
@@ -9,14 +9,14 @@ import com.marcelmika.lims.events.details.SettingsDetails;
  * Date: 2/5/14
  * Time: 10:17 PM
  */
-public class UpdateSettingsBuddyResponseEvent extends ResponseEvent {
+public class UpdateSettingsResponseEvent extends ResponseEvent {
 
     private SettingsDetails settingsDetails;
 
-    public static UpdateSettingsBuddyResponseEvent updateSettingsFailure(String result,
+    public static UpdateSettingsResponseEvent updateSettingsFailure(String result,
                                                                          SettingsDetails settingsDetails,
                                                                          Throwable exception) {
-        UpdateSettingsBuddyResponseEvent event = new UpdateSettingsBuddyResponseEvent();
+        UpdateSettingsResponseEvent event = new UpdateSettingsResponseEvent();
         event.settingsDetails = settingsDetails;
         event.result = result;
         event.success = false;
@@ -25,10 +25,10 @@ public class UpdateSettingsBuddyResponseEvent extends ResponseEvent {
         return event;
     }
 
-    public static UpdateSettingsBuddyResponseEvent updateSettingsSuccess(String result,
+    public static UpdateSettingsResponseEvent updateSettingsSuccess(String result,
                                                                          SettingsDetails settingsDetails) {
 
-        UpdateSettingsBuddyResponseEvent event = new UpdateSettingsBuddyResponseEvent();
+        UpdateSettingsResponseEvent event = new UpdateSettingsResponseEvent();
 
         event.settingsDetails = settingsDetails;
         event.result = result;

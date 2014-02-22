@@ -1,31 +1,17 @@
-package com.marcelmika.lims.persistence.service;
+package com.marcelmika.lims.core.service;
 
-import com.marcelmika.lims.events.buddy.*;
 import com.marcelmika.lims.events.settings.*;
 
 /**
+ * Several settings values like currently opened panel, mute or active room type are related to each buddy.
+ * Those values can be changed via SettingsCoreService that serves as a port to the business logic related to settings.
+ *
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
- * Date: 2/4/14
- * Time: 11:55 PM
+ * Date: 2/22/14
+ * Time: 2:43 PM
  */
-public interface BuddyPersistenceService {
-
-    /**
-     * Completely removes buddy from Persistence
-     *
-     * @param event Request event for logout method
-     * @return Response event for logout method
-     */
-    public DeleteBuddyResponseEvent removeBuddy(DeleteBuddyRequestEvent event);
-
-    /**
-     * Change buddy's status
-     *
-     * @param event Request event for logout method
-     * @return Response event for logout method
-     */
-    public UpdateStatusBuddyResponseEvent changeStatus(UpdateStatusBuddyRequestEvent event);
+public interface SettingsCoreService {
 
     /**
      * Update buddy's active panel (panel which is open)
@@ -50,4 +36,5 @@ public interface BuddyPersistenceService {
      * @return Response event for logout method
      */
     public UpdateSettingsResponseEvent updateSettings(UpdateSettingsRequestEvent event);
+
 }

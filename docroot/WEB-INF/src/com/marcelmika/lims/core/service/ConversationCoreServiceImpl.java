@@ -3,6 +3,8 @@ package com.marcelmika.lims.core.service;
 import com.marcelmika.lims.events.conversation.*;
 
 /**
+ * Implementation of ConversationCoreService
+ *
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
  * Date: 2/19/14

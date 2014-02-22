@@ -5,18 +5,15 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.poller.BasePollerProcessor;
 import com.liferay.portal.kernel.poller.PollerRequest;
 import com.liferay.portal.kernel.poller.PollerResponse;
-import com.marcelmika.lims.core.service.BuddyCoreService;
-import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
-import com.marcelmika.lims.core.service.ConversationCoreService;
-import com.marcelmika.lims.core.service.ConversationCoreServiceUtil;
+import com.marcelmika.lims.core.service.*;
 import com.marcelmika.lims.events.ResponseEvent;
-import com.marcelmika.lims.events.buddy.UpdateActiveRoomTypeBuddyRequestEvent;
-import com.marcelmika.lims.events.buddy.UpdateSettingsBuddyRequestEvent;
-import com.marcelmika.lims.events.buddy.UpdateStatusBuddyRequestEvent;
 import com.marcelmika.lims.events.conversation.CloseConversationRequestEvent;
 import com.marcelmika.lims.events.conversation.CreateConversationRequestEvent;
 import com.marcelmika.lims.events.conversation.LeaveConversationRequestEvent;
 import com.marcelmika.lims.events.conversation.OpenConversationRequestEvent;
+import com.marcelmika.lims.events.settings.UpdateActiveRoomTypeRequestEvent;
+import com.marcelmika.lims.events.settings.UpdateSettingsRequestEvent;
+import com.marcelmika.lims.events.buddy.UpdateStatusBuddyRequestEvent;
 import com.marcelmika.lims.portal.domain.Buddy;
 import com.marcelmika.lims.portal.domain.BuddyCollection;
 import com.marcelmika.lims.portal.domain.Conversation;
@@ -38,6 +35,7 @@ public class PollerProcessor extends BasePollerProcessor {
     // Dependencies
     BuddyCoreService buddyCoreService = BuddyCoreServiceUtil.getBuddyCoreService();
     ConversationCoreService conversationCoreService = ConversationCoreServiceUtil.getConversationCoreService();
+    SettingsCoreService settingsCoreService = SettingsCoreServiceUtil.getSettingsCoreService();
 
 
     /**
@@ -114,7 +112,7 @@ public class PollerProcessor extends BasePollerProcessor {
         // Create buddy from poller request
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
         // Send request to core service
-        return buddyCoreService.updateSettings(new UpdateSettingsBuddyRequestEvent(
+        return settingsCoreService.updateSettings(new UpdateSettingsRequestEvent(
                 buddy.getBuddyId(), buddy.getSettings().toSettingsDetails())
         );
     }
@@ -129,7 +127,7 @@ public class PollerProcessor extends BasePollerProcessor {
         // Create buddy from poller request
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
         // Send request to core service
-        return buddyCoreService.updateActiveRoomType(new UpdateActiveRoomTypeBuddyRequestEvent(
+        return settingsCoreService.updateActiveRoomType(new UpdateActiveRoomTypeRequestEvent(
                 buddy.getBuddyId(), buddy.getSettings().getActiveRoomType())
         );
     }
@@ -201,6 +199,27 @@ public class PollerProcessor extends BasePollerProcessor {
         return conversationCoreService.leaveConversation(new LeaveConversationRequestEvent(
                 buddy.getBuddyId(), conversation.getConversationId()
         ));
+    }
+
+    // @todo: Not implemented in v0.2
+    protected ResponseEvent addToConversation(PollerRequest pollerRequest) {
+        throw new RuntimeException("Not implemented");
+        // Params
+//        String users = getString(pollerRequest, "users");
+//        String roomJID = getString(pollerRequest, "roomJID");
+        // Parse buddies from request
+//        List<com.marcelmika.lims.model.Buddy> buddies = parser.parseUsersToBuddies(users);
+
+        // [1] Get room
+//        Room room = ChatUtil.getRoom(pollerRequest.getUserId(), pollerRequest.getCompanyId(), roomJID);
+//        System.out.println("ROOM: " + room);
+        // [2] Add users to the newly created room
+//        ChatUtil.addBuddiesToRoom(pollerRequest.getUserId(), pollerRequest.getCompanyId(), room, buddies);
+
+        // [4] Open conversation for all buddies
+//        for (Buddy buddy : buddies) {
+//            ChatUtil.openConversation(buddy.getUserId(), buddy.getCompanyId(), room.getRoomJID());
+//        }
     }
 
 
@@ -347,29 +366,4 @@ public class PollerProcessor extends BasePollerProcessor {
 //            }
 //        }
     }
-
-    // ------------------------------------------------------------------------------
-    //   NOT IN THIS VERSION
-    // ------------------------------------------------------------------------------
-    // @todo: Not implemented in v0.2
-    protected ResponseEvent addToConversation(PollerRequest pollerRequest) {
-        throw new RuntimeException("Not implemented");
-        // Params
-//        String users = getString(pollerRequest, "users");
-//        String roomJID = getString(pollerRequest, "roomJID");
-        // Parse buddies from request
-//        List<com.marcelmika.lims.model.Buddy> buddies = parser.parseUsersToBuddies(users);
-
-        // [1] Get room
-//        Room room = ChatUtil.getRoom(pollerRequest.getUserId(), pollerRequest.getCompanyId(), roomJID);
-//        System.out.println("ROOM: " + room);
-        // [2] Add users to the newly created room
-//        ChatUtil.addBuddiesToRoom(pollerRequest.getUserId(), pollerRequest.getCompanyId(), room, buddies);
-
-        // [4] Open conversation for all buddies
-//        for (Buddy buddy : buddies) {
-//            ChatUtil.openConversation(buddy.getUserId(), buddy.getCompanyId(), room.getRoomJID());
-//        }
-    }
-
 }

@@ -5,6 +5,8 @@ import com.marcelmika.lims.jabber.service.BuddyJabberService;
 import com.marcelmika.lims.persistence.service.BuddyPersistenceService;
 
 /**
+ * Implementation of BuddyCoreService
+ *
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
  * Date: 2/4/14
@@ -19,7 +21,8 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
     /**
      * Constructor
      *
-     * @param buddyJabberService Buddy Jabber Service
+     * @param buddyJabberService      jabber service
+     * @param buddyPersistenceService persistence service
      */
     public BuddyCoreServiceImpl(
             BuddyJabberService buddyJabberService,
@@ -79,39 +82,5 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
         // Save buddy status in Jabber as well
         return buddyJabberService.updateStatus(event);
     }
-
-    /**
-     * Change buddy's status
-     *
-     * @param event Request event for logout method
-     * @return Response event for logout method
-     */
-    @Override
-    public UpdateActivePanelBuddyResponseEvent updateActivePanel(UpdateActivePanelBuddyRequestEvent event) {
-        return buddyPersistenceService.updateActivePanel(event);
-    }
-
-    /**
-     * Update buddy's active room type (i.e. public or private)
-     *
-     * @param event Request event for logout method
-     * @return Response event for logout method
-     */
-    @Override
-    public UpdateActiveRoomTypeBuddyResponseEvent updateActiveRoomType(UpdateActiveRoomTypeBuddyRequestEvent event) {
-        return buddyPersistenceService.updateActiveRoomType(event);
-    }
-
-    /**
-     * Update buddy's settings
-     *
-     * @param event Request event for logout method
-     * @return Response event for logout method
-     */
-    @Override
-    public UpdateSettingsBuddyResponseEvent updateSettings(UpdateSettingsBuddyRequestEvent event) {
-        return buddyPersistenceService.updateSettings(event);
-    }
-
 
 }
