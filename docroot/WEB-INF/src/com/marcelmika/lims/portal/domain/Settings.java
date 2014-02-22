@@ -40,23 +40,23 @@ public class Settings {
 
         // Status
         if (parameterMap.containsKey(KEY_STATUS)) {
-            settings.setStatus(GetterUtil.getString(parameterMap.get(KEY_STATUS)));
+            settings.status = GetterUtil.getString(parameterMap.get(KEY_STATUS));
         }
         // Active Room Type
         if (parameterMap.containsKey(KEY_ACTIVE_ROOM_TYPE)) {
-            settings.setActiveRoomType(GetterUtil.getString(parameterMap.get(KEY_ACTIVE_ROOM_TYPE)));
+            settings.activeRoomType = GetterUtil.getString(parameterMap.get(KEY_ACTIVE_ROOM_TYPE));
         }
         // Active Panel Id
         if (parameterMap.containsKey(KEY_ACTIVE_PANEL_ID)) {
-            settings.setActivePanelId(GetterUtil.getString(parameterMap.get(KEY_ACTIVE_PANEL_ID)));
+            settings.activePanelId = GetterUtil.getString(parameterMap.get(KEY_ACTIVE_PANEL_ID));
         }
         // Mute
         if (parameterMap.containsKey(KEY_MUTE)) {
-            settings.setMute(GetterUtil.getBoolean(parameterMap.get(KEY_MUTE)));
+            settings.isMute = GetterUtil.getBoolean(parameterMap.get(KEY_MUTE));
         }
         // Chat Enabled
         if (parameterMap.containsKey(KEY_CHAT_ENABLED)) {
-            settings.setChatEnabled(GetterUtil.getBoolean(parameterMap.get(KEY_CHAT_ENABLED)));
+            settings.isChatEnabled = GetterUtil.getBoolean(parameterMap.get(KEY_CHAT_ENABLED));
         }
 
 
@@ -74,11 +74,11 @@ public class Settings {
         // Create new Settings
         Settings settings = new Settings();
         // Map data to settings details
-        settings.setStatus(settingsDetails.getStatus());
-        settings.setActiveRoomType(settingsDetails.getActiveRoomType());
-        settings.setActivePanelId(settingsDetails.getActivePanelId());
-        settings.setMute(settingsDetails.isMute());
-        settings.setChatEnabled(settingsDetails.isChatEnabled());
+        settings.status = settingsDetails.getStatus();
+        settings.activeRoomType = settingsDetails.getActiveRoomType();
+        settings.activePanelId = settingsDetails.getActivePanelId();
+        settings.isMute = settingsDetails.isMute();
+        settings.isChatEnabled = settingsDetails.isChatEnabled();
 
         return settings;
     }
