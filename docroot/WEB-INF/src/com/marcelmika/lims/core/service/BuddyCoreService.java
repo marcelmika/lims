@@ -44,4 +44,12 @@ public interface BuddyCoreService {
      */
     public UpdateStatusBuddyResponseEvent updateStatus(UpdateStatusBuddyRequestEvent event);
 
+    /**
+     * Returns a collection of buddies related to the buddy
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    public GetBuddiesResponseEvent getBuddies(GetBuddiesRequestEvent event);
+
 }

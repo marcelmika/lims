@@ -13,12 +13,20 @@ import com.marcelmika.lims.events.conversation.*;
 public interface ConversationCoreService {
 
     /**
-     * Get all conversations related to the particular user
+     * Get all conversations related to the particular buddy
      *
      * @param event request event for method
      * @return response event for  method
      */
     public GetConversationsResponseEvent getConversations(GetConversationsRequestEvent event);
+
+    /**
+     * Get all opened conversations related to the particular buddy
+     *
+     * @param event request event for method
+     * @return response event for  method
+     */
+    public GetOpenedConversationsResponseEvent getOpenedConversations(GetOpenedConversationsRequestEvent event);
 
     /**
      * Creates new conversation

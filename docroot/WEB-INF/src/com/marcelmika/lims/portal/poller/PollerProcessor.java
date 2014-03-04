@@ -9,6 +9,8 @@ import com.liferay.portal.kernel.poller.PollerResponse;
 import com.liferay.portal.kernel.poller.PollerResponseClosedException;
 import com.marcelmika.lims.core.service.*;
 import com.marcelmika.lims.events.ResponseEvent;
+import com.marcelmika.lims.events.buddy.GetBuddiesRequestEvent;
+import com.marcelmika.lims.events.buddy.GetBuddiesResponseEvent;
 import com.marcelmika.lims.events.buddy.UpdateStatusBuddyRequestEvent;
 import com.marcelmika.lims.events.conversation.*;
 import com.marcelmika.lims.events.settings.*;
@@ -99,6 +101,42 @@ public class PollerProcessor extends BasePollerProcessor {
         );
     }
 
+
+    /**
+     * Fetches all buddies related to the buddy.
+     * Note: In the feature the buddy list will contain groups and related buddies within the group.
+     *
+     * @param pollerRequest  Poller Request
+     * @param pollerResponse Poller Response
+     */
+    protected void getBuddyList(PollerRequest pollerRequest, PollerResponse pollerResponse) {
+        // Create buddy from poller request
+        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
+        // Get buddies request
+        GetBuddiesResponseEvent responseEvent = buddyCoreService.getBuddies(
+                new GetBuddiesRequestEvent(buddy.toBuddyDetails())
+        );
+
+        if (responseEvent.isSuccess()) {
+            // Get buddies from buddy details
+            List<Buddy> buddies = Buddy.fromBuddyDetails(responseEvent.getBuddies());
+            // Serialize to json string
+            String jsonString = JSONFactoryUtil.looseSerialize(buddies);
+
+            // Add to response
+            try {
+                pollerResponse.setParameter("buddies", createJsonArray(jsonString));
+            } catch (PollerResponseClosedException e) {
+                log.error("Poller response was closed", e);
+            }
+
+        } else {
+            // At least log what went wrong
+            log.error(responseEvent.getException());
+        }
+    }
+
+
     // ---------------------------------------------------------------------------------------------------------
     //   Conversation Lifecycle
     // ---------------------------------------------------------------------------------------------------------
@@ -113,7 +151,7 @@ public class PollerProcessor extends BasePollerProcessor {
     protected void getAllConversations(PollerRequest pollerRequest, PollerResponse pollerResponse) {
         // Create buddy
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
-        // Get conversations
+        // Get conversations request
         GetConversationsResponseEvent responseEvent = conversationCoreService.getConversations(
                 new GetConversationsRequestEvent(buddy.toBuddyDetails())
         );
@@ -140,6 +178,41 @@ public class PollerProcessor extends BasePollerProcessor {
             log.error(responseEvent.getException());
         }
     }
+
+    /**
+     * Fetches all conversations which were opened by the user. Returns full
+     * conversation with all messages
+     * Note: all message should be replaced with the start and limit size of the feed
+     *
+     * @param pollerRequest  Poller Request
+     * @param pollerResponse Poller Response
+     */
+    protected void getOpenedConversations(PollerRequest pollerRequest, PollerResponse pollerResponse) {
+        // Create buddy from request
+        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
+        // Get opened conversations request
+        GetOpenedConversationsResponseEvent responseEvent = conversationCoreService.getOpenedConversations(
+                new GetOpenedConversationsRequestEvent(buddy.toBuddyDetails())
+        );
+
+
+        if (responseEvent.isSuccess()) {
+            // Serialize to json string
+            String jsonString = JSONFactoryUtil.looseSerialize(responseEvent.getConversations());
+
+            // Add to response
+            try {
+                pollerResponse.setParameter("openedConversations", createJsonArray(jsonString));
+            } catch (PollerResponseClosedException e) {
+                log.error("Poller response was closed", e);
+            }
+
+        } else {
+            // At least log what went wrong
+            log.error(responseEvent.getException());
+        }
+    }
+
 
     /**
      * Creates conversation from a list of buddies involved in the conversation and an initial message
@@ -306,70 +379,6 @@ public class PollerProcessor extends BasePollerProcessor {
         } else {
             return settingsCoreService.disableChat(new DisableChatRequestEvent(buddy.toBuddyDetails()));
         }
-    }
-
-    // ------------------------------------------------------------------------------
-    //   To Refactor:
-    // ------------------------------------------------------------------------------
-
-    protected void getBuddyList(PollerRequest pollerRequest, PollerResponse pollerResponse) {
-
-//        List<com.marcelmika.lims.model.Buddy> buddies = ChatUtil.getBuddyList(pollerRequest.getUserId());
-
-        // Compose json array
-//        JSONArray buddiesJSON = JSONFactoryUtil.createJSONArray();
-//        for (com.marcelmika.lims.model.Buddy buddy : buddies) {
-//            buddiesJSON.put(buddy.toJSON());
-//        }
-
-//        pollerResponse.setParameter("buddies", buddiesJSON);
-    }
-
-
-    /**
-     * Fetches all conversations which were opened by the user. Returns full
-     * conversation with all messages
-     *
-     * @param pollerRequest  Poller Request
-     * @param pollerResponse Poller Response
-     * @throws Exception
-     */
-    protected void getOpenedConversations(PollerRequest pollerRequest, PollerResponse pollerResponse) {
-        log.info("getOpenedConversations not implemented");
-        // Params
-//        long userId = pollerRequest.getUserId();
-//        List<Conversation> conversations = ChatUtil.getOpenedConversations(userId, false);
-//
-//        // Compose json array
-//        JSONArray conversationsJSON = JSONFactoryUtil.createJSONArray();
-//
-//        // Compose array
-//        for (Conversation conversation : conversations) {
-//            String conversationId = conversation.getConversationId();
-//            // [1] We want to send all messages on the initial request
-//            if (pollerRequest.isInitialRequest()) {
-//                conversation.setLastMessageSent(0);
-//            }
-//
-//            // [2] Make poller faster while sending new messages
-//            if (conversation.getLastMessageSent() < conversation.getMessages().size()) {
-//                pollerResponse.setParameter(PollerResponse.POLLER_HINT_HIGH_CONNECTIVITY, Boolean.TRUE.toString());
-//            }
-//
-//            // [3] Active conversations don't have unread messages
-//            if (ChatUtil.isConversationActive(userId, conversationId)) {
-//                ChatUtil.setUnreadMessages(userId, conversationId, 0);
-//            }
-//
-//            // [4] Add conversation to json
-//            conversationsJSON.put(conversation.toFullJSON());
-//
-//            // [5] Set last message counter to the index of last message
-//            conversation.setLastMessageSent(conversation.getIndexOfLastMessage());
-//        }
-//
-//        // Set response
-//        pollerResponse.setParameter("openedConversations", conversationsJSON);
     }
 
 

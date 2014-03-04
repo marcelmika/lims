@@ -3,6 +3,9 @@ package com.marcelmika.lims.core.service;
 import com.marcelmika.lims.events.buddy.*;
 import com.marcelmika.lims.jabber.service.BuddyJabberService;
 import com.marcelmika.lims.persistence.service.BuddyPersistenceService;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import javax.naming.OperationNotSupportedException;
 
 /**
  * Implementation of BuddyCoreService
@@ -81,6 +84,18 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
         }
         // Save buddy status in Jabber as well
         return buddyJabberService.updateStatus(event);
+    }
+
+    /**
+     * Returns a collection of buddies related to the buddy
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    @Override
+    public GetBuddiesResponseEvent getBuddies(GetBuddiesRequestEvent event) {
+        throw new NotImplementedException();
+//        List<com.marcelmika.lims.model.Buddy> buddies = ChatUtil.getBuddyList(pollerRequest.getUserId());
     }
 
 }

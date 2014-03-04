@@ -12,6 +12,8 @@ import com.marcelmika.lims.events.details.BuddyDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -157,6 +159,24 @@ public class Buddy {
         }
 
         return buddy;
+    }
+
+    /**
+     * Factory method which creates new list of Buddies from the list of BuddyDetails
+     *
+     * @param detailsList list of buddy details
+     * @return List<Buddy> of buddies
+     */
+    public static List<Buddy> fromBuddyDetails(List<BuddyDetails> detailsList) {
+        // Create new list of buddies
+        List<Buddy> buddies = new ArrayList<Buddy>();
+
+        // Iterate through details and create buddy based on that
+        for (BuddyDetails details : detailsList) {
+            buddies.add(Buddy.fromBuddyDetails(details));
+        }
+
+        return buddies;
     }
 
     /**

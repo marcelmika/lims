@@ -1,6 +1,7 @@
 package com.marcelmika.lims.core.service;
 
 import com.marcelmika.lims.events.conversation.*;
+import com.marcelmika.lims.jabber.service.ConversationJabberService;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -13,30 +14,61 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public class ConversationCoreServiceImpl implements ConversationCoreService {
 
+    // Dependencies
+    ConversationJabberService conversationJabberService;
+
     /**
-     * Get all conversations related to the particular user
+     * Constructor
+     *
+     * @param conversationJabberService jabber service
+     */
+    public ConversationCoreServiceImpl(ConversationJabberService conversationJabberService) {
+        this.conversationJabberService = conversationJabberService;
+    }
+
+    /**
+     * Get all conversations related to the particular buddy
      *
      * @param event request event for method
      * @return response event for  method
      */
     @Override
     public GetConversationsResponseEvent getConversations(GetConversationsRequestEvent event) {
+        return conversationJabberService.getConversations(event);
+    }
+
+    /**
+     * Get all opened conversations related to the particular buddy
+     *
+     * @param event request event for method
+     * @return response event for  method
+     */
+    @Override
+    public GetOpenedConversationsResponseEvent getOpenedConversations(GetOpenedConversationsRequestEvent event) {
         throw new NotImplementedException();
-        // Fetch conversations
-//        List<Conversation> conversations = ChatUtil.getConversations(pollerRequest.getUserId());
-//
-//        // Json array of conversations
-//        JSONArray conversationsJSON = JSONFactoryUtil.createJSONArray();
-//        // Compose array
-//        for (Conversation conversation : conversations) {
-//            // Add only conversations that are alive
-//            if (conversation.getParticipants().size() > 1) {
-//                conversationsJSON.put(conversation.toJSON());
+        //        for (Conversation conversation : conversations) {
+//            String conversationId = conversation.getConversationId();
+//            // [1] We want to send all messages on the initial request
+//            if (pollerRequest.isInitialRequest()) {
+//                conversation.setLastMessageSent(0);
 //            }
-//        }
 //
-//        // Set response
-//        pollerResponse.setParameter("conversations", conversationsJSON);
+//            // [2] Make poller faster while sending new messages
+//            if (conversation.getLastMessageSent() < conversation.getMessages().size()) {
+//                pollerResponse.setParameter(PollerResponse.POLLER_HINT_HIGH_CONNECTIVITY, Boolean.TRUE.toString());
+//            }
+//
+//            // [3] Active conversations don't have unread messages
+//            if (ChatUtil.isConversationActive(userId, conversationId)) {
+//                ChatUtil.setUnreadMessages(userId, conversationId, 0);
+//            }
+//
+//            // [4] Add conversation to json
+//            conversationsJSON.put(conversation.toFullJSON());
+//
+//            // [5] Set last message counter to the index of last message
+//            conversation.setLastMessageSent(conversation.getIndexOfLastMessage());
+//        }
 
     }
 
