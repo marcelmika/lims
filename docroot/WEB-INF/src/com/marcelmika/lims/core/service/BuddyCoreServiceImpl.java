@@ -1,11 +1,11 @@
 package com.marcelmika.lims.core.service;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.events.buddy.*;
 import com.marcelmika.lims.jabber.service.BuddyJabberService;
 import com.marcelmika.lims.persistence.service.BuddyPersistenceService;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import javax.naming.OperationNotSupportedException;
 
 /**
  * Implementation of BuddyCoreService
@@ -16,6 +16,9 @@ import javax.naming.OperationNotSupportedException;
  * Time: 11:29 PM
  */
 public class BuddyCoreServiceImpl implements BuddyCoreService {
+
+    // Log
+    private static Log log = LogFactoryUtil.getLog(BuddyCoreServiceImpl.class);
 
     // Dependencies
     BuddyJabberService buddyJabberService;
@@ -43,7 +46,26 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
      */
     @Override
     public LoginBuddyResponseEvent loginBuddy(LoginBuddyRequestEvent event) {
-        return buddyJabberService.loginBuddy(event);
+
+        // [1] Connect buddy
+        ConnectBuddyResponseEvent connectResponseEvent = buddyJabberService.connectBuddy(
+                new ConnectBuddyRequestEvent(event.getDetails())
+        );
+        // Log
+        log.info(connectResponseEvent.getResult());
+        // Connection was unsuccessful
+        if (!connectResponseEvent.isSuccess()) {
+            return LoginBuddyResponseEvent.loginFailure(
+                    connectResponseEvent.getResult(), connectResponseEvent.getDetails()
+            );
+        }
+
+        // [2] Login buddy
+        LoginBuddyResponseEvent loginResponseEvent = buddyJabberService.loginBuddy(event);
+        // Log
+        log.info(loginResponseEvent.getResult());
+
+        return loginResponseEvent;
     }
 
     /**
@@ -54,7 +76,12 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
      */
     @Override
     public LogoutBuddyResponseEvent logoutBuddy(LogoutBuddyRequestEvent event) {
-        return buddyJabberService.logoutBuddy(event);
+        // Do request
+        LogoutBuddyResponseEvent logoutResponseEvent = buddyJabberService.logoutBuddy(event);
+        // Log
+        log.info(logoutResponseEvent.getResult());
+
+        return logoutResponseEvent;
     }
 
     /**

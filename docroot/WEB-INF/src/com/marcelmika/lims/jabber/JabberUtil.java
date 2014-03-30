@@ -39,14 +39,14 @@ public class JabberUtil {
      * @done
      */
     public static void sendMessage(long userId, Conversation conversation, String message) throws Exception {
-        getJabber().sendMessage(userId, conversation, message);
+        getJabber().sendMessage(userId, conversation, message, null);
     }
 
     /**
      * @done
      */
     public static void changeStatus(long userId, String status) throws Exception {
-        getJabber().changeStatus(userId, status);
+        getJabber().changeStatus(userId, status, null);
     }
 
     /**
@@ -57,12 +57,12 @@ public class JabberUtil {
         // Single user conversation
         if (participants.size() == 1) {
             // @todo: This is not going to be in v0.2 version, so just do the multi user anyway
-            conversation = getJabber().createMUConversation(userId, participants, message);
+            conversation = getJabber().createMUConversation(userId, participants, message, null);
             // conversation = getJabber().createSUConversation(userId, participants, message);
         }
         // Multi user conversation
         else if (participants.size() > 1) {
-            conversation = getJabber().createMUConversation(userId, participants, message);
+            conversation = getJabber().createMUConversation(userId, participants, message, null);
         } else {
             throw new Exception("Unknown number of participants");
         }
@@ -74,7 +74,7 @@ public class JabberUtil {
      * @done
      */
     public static void addParticipants(long userId, Conversation conversation, List<Buddy> participants) throws Exception {
-        getJabber().addParticipants(userId, conversation, participants);
+        getJabber().addParticipants(userId, conversation, participants, null);
     }
 
     /**
@@ -88,7 +88,7 @@ public class JabberUtil {
      * @done
      */
     public static void leaveConversation(long userId, String conversationId) throws Exception {
-        getJabber().leaveConversation(userId, conversationId);
+        getJabber().leaveConversation(userId, conversationId, null);
     }
 
     /**

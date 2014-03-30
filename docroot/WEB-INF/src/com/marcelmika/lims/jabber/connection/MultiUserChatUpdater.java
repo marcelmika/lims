@@ -17,10 +17,12 @@ import java.util.Collection;
  * @link http://marcelmika.com/lims
  * Date: 11/24/13
  * Time: 11:18 PM
+ * @deprecated
+ *
  */
-public class JabberMultiUserChatUpdater {
+public class MultiUserChatUpdater {
 
-    private static Log log = LogFactoryUtil.getLog(JabberMultiUserChatUpdater.class);
+    private static Log log = LogFactoryUtil.getLog(MultiUserChatUpdater.class);
     private Connection connection;
 
     public void setConnection(Connection connection) {

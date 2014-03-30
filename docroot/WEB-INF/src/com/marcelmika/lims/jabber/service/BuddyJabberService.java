@@ -1,8 +1,6 @@
 package com.marcelmika.lims.jabber.service;
 
 import com.marcelmika.lims.events.buddy.*;
-import com.marcelmika.lims.events.buddy.UpdateStatusBuddyRequestEvent;
-import com.marcelmika.lims.events.buddy.UpdateStatusBuddyResponseEvent;
 
 /**
  * @author Ing. Marcel Mika
@@ -12,25 +10,36 @@ import com.marcelmika.lims.events.buddy.UpdateStatusBuddyResponseEvent;
  */
 public interface BuddyJabberService {
 
+
+    /**
+     * Connect buddy to the Jabber server
+     *
+     * @param event Request event for method
+     * @return Response event for method
+     */
+    public ConnectBuddyResponseEvent connectBuddy(ConnectBuddyRequestEvent event);
+
     /**
      * Login buddy to Jabber
-     * @param event Request event for login method
-     * @return Response event for login method
+     *
+     * @param event Request event for method
+     * @return Response event for method
      */
     public LoginBuddyResponseEvent loginBuddy(LoginBuddyRequestEvent event);
 
     /**
      * Logout buddy from Jabber
-     * @param event Request event for logout method
-     * @return Response event for logout method
+     *
+     * @param event Request event for method
+     * @return Response event for method
      */
     public LogoutBuddyResponseEvent logoutBuddy(LogoutBuddyRequestEvent event);
 
     /**
      * Change buddy's status
      *
-     * @param event Request event for logout method
-     * @return Response event for logout method
+     * @param event Request event for method
+     * @return Response event for method
      */
     public UpdateStatusBuddyResponseEvent updateStatus(UpdateStatusBuddyRequestEvent event);
 

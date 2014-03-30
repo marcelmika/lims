@@ -2,10 +2,10 @@ package com.marcelmika.lims.jabber.session;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.marcelmika.lims.jabber.connection.manager.ConnectionManagerImpl;
+import com.marcelmika.lims.jabber.conversation.ConversationManager;
 import com.marcelmika.lims.jabber.conversation.ConversationStore;
 import com.marcelmika.lims.jabber.JabberKeys;
-import com.marcelmika.lims.jabber.connection.JabberConnectionManager;
-import com.marcelmika.lims.jabber.connection.JabberConversationManager;
 import com.marcelmika.lims.service.SettingsLocalServiceUtil;
 import org.jivesoftware.smack.Connection;
 
@@ -14,14 +14,15 @@ import org.jivesoftware.smack.Connection;
  * @link http://marcelmika.com/lims
  * Date: 11/24/13
  * Time: 11:18 PM
+ * @deprecated
  */
 public class JabberSessionCallback implements JabberSessionCallbackInterface {
 
     // Log
     private static Log log = LogFactoryUtil.getLog(JabberSessionCallback.class);
     // Dependencies
-    private JabberConnectionManager connectionManager;
-    private JabberConversationManager conversationManager;
+    private ConnectionManagerImpl connectionManager;
+    private ConversationManager conversationManager;
 
     /**
      * JabberSessionCallback
@@ -29,8 +30,8 @@ public class JabberSessionCallback implements JabberSessionCallbackInterface {
      * @param connectionManager   JabberConnectionManager
      * @param conversationManager JabberConversationManager
      */
-    public JabberSessionCallback(JabberConnectionManager connectionManager,
-                                 JabberConversationManager conversationManager) {
+    public JabberSessionCallback(ConnectionManagerImpl connectionManager,
+                                 ConversationManager conversationManager) {
         this.connectionManager = connectionManager;
         this.conversationManager = conversationManager;
     }
@@ -38,7 +39,7 @@ public class JabberSessionCallback implements JabberSessionCallbackInterface {
     @Override
     public void sessionDidLogin(long userId, Connection connection) {
         // Add connection to the connection container
-        connectionManager.putConnection(userId, connection);
+//        connectionManager.putConnection(userId, connection);
         // Build conversations for the user
         conversationManager.buildConversations(userId, connection);
         // Set initial presence

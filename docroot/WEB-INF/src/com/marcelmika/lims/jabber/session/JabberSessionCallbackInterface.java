@@ -7,6 +7,7 @@ import org.jivesoftware.smack.Connection;
  * @link http://marcelmika.com/lims
  * Date: 11/24/13
  * Time: 9:24 PM
+ * @deprecated
  */
 public interface JabberSessionCallbackInterface {
 

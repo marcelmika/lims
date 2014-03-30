@@ -1,4 +1,4 @@
-package com.marcelmika.lims.jabber.connection;
+package com.marcelmika.lims.jabber.connection.sasl;
 
 import com.marcelmika.lims.util.PortletPropsValues;
 import org.jivesoftware.smack.SASLAuthentication;

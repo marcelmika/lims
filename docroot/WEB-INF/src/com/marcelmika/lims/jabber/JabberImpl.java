@@ -5,8 +5,9 @@ package com.marcelmika.lims.jabber;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.marcelmika.lims.jabber.conversation.*;
-import com.marcelmika.lims.jabber.connection.JabberConnectionManager;
+import com.marcelmika.lims.jabber.conversation.ConversationContainer;
+import com.marcelmika.lims.jabber.conversation.ConversationKeys;
+import com.marcelmika.lims.jabber.conversation.ConversationStore;
 import com.marcelmika.lims.jabber.domain.Conversation;
 import com.marcelmika.lims.jabber.domain.MUConversation;
 import com.marcelmika.lims.jabber.domain.SUConversation;
@@ -18,6 +19,7 @@ import com.marcelmika.lims.service.ConversationLocalServiceUtil;
 import com.marcelmika.lims.util.PortletPropsValues;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManager;
+import org.jivesoftware.smack.ChatManagerListener;
 import org.jivesoftware.smack.Connection;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smackx.muc.HostedRoom;
@@ -38,43 +40,23 @@ import java.util.UUID;
  */
 public class JabberImpl implements Jabber {
 
-    /**
-     * @deprecated
-     */
-    private JabberConnectionManager connectionManager = new JabberConnectionManager();
-
     // ------------------------------------------------------------------------------
     //    Conversation
     // ------------------------------------------------------------------------------
 
     public void restartConversations(long userId) throws Exception {
-        // User must be connected
-        if (!connectionManager.isUserConnected(userId)) {
-            return;
-        }
         // @todo: Move to the conversation manager
-        ConversationContainer container = ConversationStore.getInstance().getConversationContainer(userId);
-        container.restartConversations();
+//        ConversationContainer container = ConversationStore.getInstance().getConversationContainer(userId);
+//        container.restartConversations();
     }
 
-
-    // @todo: Not implemented in v0.2
-
     /**
-     * Not implemented in this version
+     * TODO: Not implemented in this version
      *
      * @param userId userId
      * @throws Exception
      */
-    protected void updatePublicRooms(long userId) throws Exception {
-        // User must be connected
-        if (!connectionManager.isUserConnected(userId)) {
-            throw new JabberException("User [" + userId + "] is not connected to Jabber");
-        }
-
-        // Get connection from manager
-        Connection connection = connectionManager.getConnection(userId);
-
+    protected void updatePublicRooms(long userId, Connection connection) throws Exception {
         // Get all hosted rooms on the jabber server
         Collection<HostedRoom> hostedRooms = MultiUserChat.getHostedRooms(connection, PortletPropsValues.JABBER_SERVICE_MULTICHAT_NAME);
         Iterator<String> joinedRooms = MultiUserChat.getJoinedRooms(connection, PortletPropsValues.JABBER_SERVICE_MULTICHAT_NAME);
@@ -114,14 +96,10 @@ public class JabberImpl implements Jabber {
     }
 
     @Override
-    public Conversation createMUConversation(long userId, List<Buddy> participants, String message) throws Exception {
-        // User must be connected
-        if (!connectionManager.isUserConnected(userId)) {
-            throw new JabberException("User [" + userId + "] is not connected to Jabber");
-        }
-
-        // Get connection
-        Connection connection = connectionManager.getConnection(userId);
+    public Conversation createMUConversation(long userId,
+                                             List<Buddy> participants,
+                                             String message,
+                                             Connection connection) throws Exception {
         // Get buddy
         Buddy buddy = BuddyLocalServiceUtil.getBuddyByUserId(userId);
         // Get new private room key
@@ -148,20 +126,19 @@ public class JabberImpl implements Jabber {
         // Add it to container
         ConversationStore.getInstance().getConversationContainer(userId).addConversation(key, conversation);
         // Add participants to the conversation
-        addParticipants(userId, conversation, participants);
+        addParticipants(userId, conversation, participants, connection);
         // Send first message
-        sendMessage(userId, conversation, message);
+        sendMessage(userId, conversation, message, connection);
 
         return conversation;
     }
 
     // @todo: Not implemented in v0.2
     @Override
-    public Conversation createSUConversation(long userId, List<Buddy> participants, String message) throws Exception {
-        // User must be connected
-        if (!connectionManager.isUserConnected(userId)) {
-            throw new JabberException("User [" + userId + "] is not connected to Jabber");
-        }
+    public Conversation createSUConversation(long userId,
+                                             List<Buddy> participants,
+                                             String message,
+                                             Connection connection) throws Exception {
 
         // Get owner and participant
         Buddy owner = BuddyLocalServiceUtil.getBuddyByUserId(userId);
@@ -170,17 +147,19 @@ public class JabberImpl implements Jabber {
             throw new JabberException("Cannot create single user conversation when there is no participant");
         }
 
-        // Get connection
-        Connection connection = connectionManager.getConnection(userId);
         // Get chat manager
         ChatManager chatManager = connection.getChatManager();
-
-
         // Create message listener
         JabberMessageListener messageListener = new JabberMessageListener();
         // Create chat
         Chat chat = chatManager.createChat(getJabberId(participant.getScreenName()), messageListener);
 
+        chatManager.addChatListener(new ChatManagerListener() {
+            @Override
+            public void chatCreated(Chat chat, boolean b) {
+//                chat.
+            }
+        });
 
         // Create conversation
         Conversation conversation = new SUConversation(owner, chat);
@@ -197,18 +176,16 @@ public class JabberImpl implements Jabber {
         );
 
         // Send the message
-        sendMessage(userId, conversation, message);
+        sendMessage(userId, conversation, message, connection);
 
         return conversation;
     }
 
+    /**
+     * @deprecated This will be moved to conversation store
+     */
     @Override
     public Conversation getConversation(long userId, String conversationId) throws Exception {
-        // User must be connected
-        if (!connectionManager.isUserConnected(userId)) {
-            throw new JabberException("User [" + userId + "] is not connected to Jabber");
-        }
-
         // Find container that belongs to connected user
         ConversationContainer container = ConversationStore.getInstance().getConversationContainer(userId);
 
@@ -218,12 +195,11 @@ public class JabberImpl implements Jabber {
         return conversation;
     }
 
+    /**
+     * @deprecated This will be moved to conversation store
+     */
     @Override
     public List<Conversation> getAllConversations(long userId) throws Exception {
-        // User must be connected
-        if (!connectionManager.isUserConnected(userId)) {
-            throw new JabberException("User [" + userId + "] is not connected to Jabber");
-        }
         // Find container that belongs to connected user
         ConversationContainer container = ConversationStore.getInstance().getConversationContainer(userId);
 
@@ -232,14 +208,7 @@ public class JabberImpl implements Jabber {
     }
 
     @Override
-    public void changeStatus(long userId, String status) throws Exception {
-        // User must be connected
-        if (!connectionManager.isUserConnected(userId)) {
-            throw new JabberException("User [" + userId + "] is not connected to Jabber");
-        }
-
-        // Get connection
-        Connection connection = connectionManager.getConnection(userId);
+    public void changeStatus(long userId, String status, Connection connection) throws Exception {
         // Map status to jabber presence
         Presence presence = JabberMapper.mapStatusToPresence(status);
         // Send to jabber
@@ -247,15 +216,10 @@ public class JabberImpl implements Jabber {
     }
 
     @Override
-    public void addParticipants(long userId, Conversation conversation, List<Buddy> participants) throws Exception {
-        // User must be connected
-        if (!connectionManager.isUserConnected(userId)) {
-            throw new JabberException("User [" + userId + "] is not connected to Jabber");
-        }
-
-        // Get connection
-        Connection connection = connectionManager.getConnection(userId);
-
+    public void addParticipants(long userId,
+                                Conversation conversation,
+                                List<Buddy> participants,
+                                Connection connection) throws Exception {
         // Single user conversation
         if (conversation.getConversationType().equals(ConversationKeys.CONVERSATION_TYPE_SINGLE_USER)) {
             // @todo: Not implemented in v0.2
@@ -291,33 +255,26 @@ public class JabberImpl implements Jabber {
                 // There is possibility that the participant may be connected. We need to
                 // add conversation to his conversation container thus he can see
                 // the newly created conversation immediately
-                Connection buddyConnection = connectionManager.getConnection(participant.getUserId());
-                if (buddyConnection != null) {
-                    // Create new multichat
-                    MultiUserChat buddyMuc = new MultiUserChat(buddyConnection, key);
-                    // Create new conversation
-                    MUConversation muConversation = new MUConversation(conversation.getConversationId(), participant, buddyMuc);
-                    muConversation.addParticipants(participants);
-                    // Add it to the user's conversation container
-                    ConversationContainer container = ConversationStore.getInstance().getConversationContainer(participant.getUserId());
-                    if (container != null) {
-//                        System.out.println("[ADDING] " + getJabberId(participant.getScreenName()));
-                        container.addConversation(muConversation.getConversationId(), muConversation);
-                    }
-                }
+//                Connection buddyConnection = connectionManager.getConnection(participant.getUserId());
+//                if (buddyConnection != null) {
+//                    // Create new multichat
+//                    MultiUserChat buddyMuc = new MultiUserChat(buddyConnection, key);
+//                    // Create new conversation
+//                    MUConversation muConversation = new MUConversation(conversation.getConversationId(), participant, buddyMuc);
+//                    muConversation.addParticipants(participants);
+//                    // Add it to the user's conversation container
+//                    ConversationContainer container = ConversationStore.getInstance().getConversationContainer(participant.getUserId());
+//                    if (container != null) {
+////                        System.out.println("[ADDING] " + getJabberId(participant.getScreenName()));
+//                        container.addConversation(muConversation.getConversationId(), muConversation);
+//                    }
+//                }
             }
         }
     }
 
     @Override
-    public void leaveConversation(long userId, String conversationId) throws Exception {
-        // User must be connected
-        if (!connectionManager.isUserConnected(userId)) {
-            throw new JabberException("User [" + userId + "] is not connected to Jabber");
-        }
-
-        // Get connection
-        Connection connection = connectionManager.getConnection(userId);
+    public void leaveConversation(long userId, String conversationId, Connection connection) throws Exception {
         // Room key
         String key = getFullRoomId(conversationId);
         // Connect to room
@@ -393,12 +350,10 @@ public class JabberImpl implements Jabber {
 //    }
 
     @Override
-    public void sendMessage(long userId, Conversation conversation, String message) throws Exception {
-        // User must be connected
-        if (!connectionManager.isUserConnected(userId)) {
-            throw new JabberException("User [" + userId + "] is not connected to Jabber");
-        }
-
+    public void sendMessage(long userId,
+                            Conversation conversation,
+                            String message,
+                            Connection connection) throws Exception {
         // Single user conversation
         if (conversation.getConversationType().equals(ConversationKeys.CONVERSATION_TYPE_SINGLE_USER)) {
             // @todo: Not implemented in v0.2
@@ -406,7 +361,7 @@ public class JabberImpl implements Jabber {
         }
         // Multi user conversation
         else if (conversation.getConversationType().equals(ConversationKeys.CONVERSATION_TYPE_MULTI_USER)) {
-            sendMUMessage(userId, (MUConversation) conversation, message);
+            sendMUMessage(userId, (MUConversation) conversation, message,connection);
         }
     }
 
@@ -418,18 +373,14 @@ public class JabberImpl implements Jabber {
      * @param message      Message which will be sent
      * @throws Exception
      */
-    protected void sendMUMessage(long userId, MUConversation conversation, String message) throws Exception {
-        // User must be connected
-        if (!connectionManager.isUserConnected(userId)) {
-            throw new JabberException("User [" + userId + "] is not connected to Jabber");
-        }
+    protected void sendMUMessage(long userId,
+                                 MUConversation conversation,
+                                 String message,
+                                 Connection connection) throws Exception {
         // No empty messages
         if (Validator.isNull(message)) {
             return;
         }
-
-        // Get connection
-        Connection connection = connectionManager.getConnection(userId);
         // Room key
         String key = getFullRoomId(conversation.getConversationId());
         // Connect to room
@@ -446,11 +397,10 @@ public class JabberImpl implements Jabber {
      * @param message      Message which will be sent
      * @throws Exception
      */
-    protected void sendSUMessage(long userId, SUConversation conversation, String message) throws Exception {
-        // User must be connected
-        if (!connectionManager.isUserConnected(userId)) {
-            throw new JabberException("User [" + userId + "] is not connected to Jabber");
-        }
+    protected void sendSUMessage(long userId,
+                                 SUConversation conversation,
+                                 String message,
+                                 Connection connection) throws Exception {
         // No empty messages
         if (Validator.isNull(message)) {
             return;
@@ -472,6 +422,7 @@ public class JabberImpl implements Jabber {
     // ------------------------------------------------------------------------------
     //    Utils
     // ------------------------------------------------------------------------------
+
     protected String getFullJabberId(String screenName) {
         String jabberId = getJabberId(screenName);
         return jabberId.concat(StringPool.SLASH).concat(PortletPropsValues.JABBER_RESOURCE);

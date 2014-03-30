@@ -5,12 +5,11 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.marcelmika.lims.jabber.conversation.ConversationStore;
+import com.marcelmika.lims.jabber.connection.manager.ConnectionManagerImpl;
+import com.marcelmika.lims.jabber.conversation.ConversationManager;
 import com.marcelmika.lims.jabber.JabberException;
 import com.marcelmika.lims.jabber.JabberKeys;
 import com.marcelmika.lims.jabber.JabberMapper;
-import com.marcelmika.lims.jabber.connection.JabberConnectionManager;
-import com.marcelmika.lims.jabber.connection.JabberConversationManager;
 import com.marcelmika.lims.jabber.listener.JabberRosterListener;
 import com.marcelmika.lims.model.Settings;
 import com.marcelmika.lims.service.SettingsLocalServiceUtil;
@@ -18,7 +17,6 @@ import com.marcelmika.lims.util.PortletPropsValues;
 import org.jivesoftware.smack.AccountManager;
 import org.jivesoftware.smack.Connection;
 import org.jivesoftware.smack.Roster;
-import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Presence;
 
 import java.util.HashMap;
@@ -29,23 +27,24 @@ import java.util.Map;
  * @link http://marcelmika.com/lims
  * Date: 11/24/13
  * Time: 7:10 PM
+ * @deprecated
  */
 public class JabberSessionManager {
 
     // Log
     private static Log log = LogFactoryUtil.getLog(JabberSessionManager.class);
     // Dependencies
-    private JabberConnectionManager connectionManager;
+    private ConnectionManagerImpl connectionManager;
     /** @deprecated */
-    private JabberConversationManager conversationManager;
+    private ConversationManager conversationManager;
 
     /**
      * JabberSessionManager
      *
      * @param connectionManager JabberConnectionManager
      */
-    public JabberSessionManager(JabberConnectionManager connectionManager,
-                                JabberConversationManager conversationManager) {
+    public JabberSessionManager(ConnectionManagerImpl connectionManager,
+                                ConversationManager conversationManager) {
         this.connectionManager = connectionManager;
         this.conversationManager = conversationManager;
     }
@@ -59,50 +58,50 @@ public class JabberSessionManager {
      */
     public void login(long userId, String username, String password) throws JabberException {
         // User is already connected
-        if (connectionManager.isUserConnected(userId)) {
-            return;
-        }
+//        if (connectionManager.isUserConnected(userId)) {
+//            return;
+//        }
         // Create new connection and connect
-        Connection connection = connectionManager.createConnection();
+//        Connection connection = connectionManager.createConnection();
 
         // Connect to server
-        try {
-            connectionManager.connect(connection);
-        } catch (XMPPException e) {
-            throw new JabberException("Cannot connect to server", e);
-        }
+//        try {
+//            connectionManager.connect(connection);
+//        } catch (XMPPException e) {
+//            throw new JabberException("Cannot connect to server", e);
+//        }
 
-        try {
-            // If the SASL is enabled login with username, password and resource
-            if (PortletPropsValues.JABBER_SASL_PLAIN_ENABLED) {
-                connection.login(
-                        username,
-                        PortletPropsValues.JABBER_SASL_PLAIN_PASSWORD,
-                        PortletPropsValues.JABBER_RESOURCE
-                );
-            } else {
-                // Login with username and password
-                connection.login(username, password);
-            }
-
-            // Error occurred
-        } catch (Exception e) {
-            // Get message returned from the Jabber server
-            String message = e.getMessage();
-            // Check if the reason of failure was authorization
-            if (Validator.isNotNull(message) && message.contains("not-authorized")) {
-                // Call Session did not authorize
-                log.info("Session for user: " + userId + " did not authorize. Trying to import a user " +
-                        "(if enabled in config) and reauthorize.");
-                // Try to import user and login again
-                importUserAndLogin(userId, username, password, connection);
-            } else {
-                // Session Did Not Login
-                throw new JabberException("Cannot log in user: " + userId, e);
-            }
-        }
-
-        addToSystem(userId, connection);
+//        try {
+//            // If the SASL is enabled login with username, password and resource
+//            if (PortletPropsValues.JABBER_SASL_PLAIN_ENABLED) {
+//                connection.login(
+//                        username,
+//                        PortletPropsValues.JABBER_SASL_PLAIN_PASSWORD,
+//                        PortletPropsValues.JABBER_RESOURCE
+//                );
+//            } else {
+//                // Login with username and password
+//                connection.login(username, password);
+//            }
+//
+//            // Error occurred
+//        } catch (Exception e) {
+//            // Get message returned from the Jabber server
+//            String message = e.getMessage();
+//            // Check if the reason of failure was authorization
+//            if (Validator.isNotNull(message) && message.contains("not-authorized")) {
+//                // Call Session did not authorize
+//                log.info("Session for user: " + userId + " did not authorize. Trying to import a user " +
+//                        "(if enabled in config) and reauthorize.");
+//                // Try to import user and login again
+//                importUserAndLogin(userId, username, password, connection);
+//            } else {
+//                // Session Did Not Login
+//                throw new JabberException("Cannot log in user: " + userId, e);
+//            }
+//        }
+//
+//        addToSystem(userId, connection);
     }
 
     /**
@@ -112,27 +111,13 @@ public class JabberSessionManager {
      */
     public void logout(long userId) throws JabberException {
         // User must be connected
-        if (!connectionManager.isUserConnected(userId)) {
-            throw new JabberException("User cannot be signed out since he was not connected.");
-        }
+//        if (!connectionManager.isUserConnected(userId)) {
+//            throw new JabberException("User cannot be signed out since he was not connected.");
+//        }
 
         // Get connection from connection store
-        Connection connection = connectionManager.getConnection(userId);
-        // Disconnect
-        connection.disconnect();
-        // Remove from manager
-        connectionManager.removeConnection(userId);
-        // Call Session Did Logout
-        try {
-            // Change local status to off
-            SettingsLocalServiceUtil.changeStatus(userId, JabberKeys.JABBER_STATUS_OFF);
-            // TODO: Move to conversation manager
-            // Remove conversation from the conversation store
-            ConversationStore.getInstance().removeConversationContainer(userId);
-        } catch (Exception e) {
-            throw new JabberException("Problems during logout occurred. However, user was successfully " +
-                    "logged out from the Jabber server", e);
-        }
+//        Connection connection = connectionManager.getConnection(userId);
+
     }
 
     /**
@@ -188,7 +173,7 @@ public class JabberSessionManager {
      */
     private void addToSystem(long userId, Connection connection) {
         // Add connection to the connection container
-        connectionManager.putConnection(userId, connection);
+//        connectionManager.putConnection(userId, connection);
         // Build conversations for the user
         conversationManager.buildConversations(userId, connection);
         // Set initial presence

@@ -1,11 +1,13 @@
 package com.marcelmika.lims.jabber.service;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.events.buddy.*;
-import com.marcelmika.lims.events.buddy.UpdateStatusBuddyRequestEvent;
-import com.marcelmika.lims.events.buddy.UpdateStatusBuddyResponseEvent;
 import com.marcelmika.lims.jabber.JabberException;
+import com.marcelmika.lims.jabber.connection.manager.ConnectionManager;
+import com.marcelmika.lims.jabber.connection.manager.ConnectionManagerFactory;
+import com.marcelmika.lims.jabber.connection.store.ConnectionManagerStore;
 import com.marcelmika.lims.jabber.domain.Buddy;
-import com.marcelmika.lims.jabber.session.JabberSessionManager;
 
 /**
  * @author Ing. Marcel Mika
@@ -15,16 +17,55 @@ import com.marcelmika.lims.jabber.session.JabberSessionManager;
  */
 public class BuddyJabberServiceImpl implements BuddyJabberService {
 
+    // Log
+    private static Log log = LogFactoryUtil.getLog(BuddyJabberServiceImpl.class);
+
     // Dependencies
-    private JabberSessionManager sessionManager;
+    private ConnectionManagerStore connectionManagerStore;
 
     /**
      * BuddyJabberServiceImpl
      *
-     * @param sessionManager JabberSessionManager
+     * @param connectionManagerStore ConnectionManagerStore
      */
-    public BuddyJabberServiceImpl(JabberSessionManager sessionManager) {
-        this.sessionManager = sessionManager;
+    public BuddyJabberServiceImpl(ConnectionManagerStore connectionManagerStore) {
+        log.info("ADDING STORE");
+        log.info(connectionManagerStore);
+        this.connectionManagerStore = connectionManagerStore;
+    }
+
+    /**
+     * Connect buddy to the Jabber server
+     *
+     * @param event Request event for method
+     * @return Response event for method
+     */
+    @Override
+    public ConnectBuddyResponseEvent connectBuddy(ConnectBuddyRequestEvent event) {
+        log.info("CONNECT STORE:");
+        log.info(connectionManagerStore);
+        // Get buddy form details
+        Buddy buddy = Buddy.fromBuddyDetails(event.getDetails());
+        // Create new connection manager (screen name is the ID)
+        // Todo: Create from factory
+        ConnectionManager connectionManager = ConnectionManagerFactory.buildConnectionManager(buddy.getBuddyId());
+
+        try {
+            // Connect
+            connectionManager.createConnection();
+        } catch (JabberException e) {
+            // Failure
+            return ConnectBuddyResponseEvent.connectFailure(e.getMessage(), buddy.toBuddyDetails());
+        }
+
+        // Connect was successful so add the connection manager to the store
+        connectionManagerStore.addConnectionManager(connectionManager);
+
+        // Success
+        return ConnectBuddyResponseEvent.connectSuccess(
+                "User " + buddy.getBuddyId() + " successfully created connection to jabber server.",
+                buddy.toBuddyDetails()
+        );
     }
 
     /**
@@ -35,12 +76,24 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
      */
     @Override
     public LoginBuddyResponseEvent loginBuddy(LoginBuddyRequestEvent event) {
+        log.info("LOGIN STORE:");
+        log.info(connectionManagerStore);
         // Get buddy form details
         Buddy buddy = Buddy.fromBuddyDetails(event.getDetails());
 
+        // Get connection manager from store
+        ConnectionManager connectionManager = connectionManagerStore.getConnectionManager(buddy.getBuddyId());
+
+        // No connection manager for buddy
+        if (connectionManager == null) {
+            return LoginBuddyResponseEvent.loginFailure(
+                    "Cannot find connection manager for buddy.", event.getDetails()
+            );
+        }
+
         try {
-            // Login via jabber session manager
-            sessionManager.login(buddy.getBuddyId(), buddy.getScreenName(), buddy.getPassword());
+            // Login
+            connectionManager.login(buddy.getScreenName(), buddy.getPassword());
         } catch (JabberException e) {
             // Failure
             return LoginBuddyResponseEvent.loginFailure(e.getMessage(), buddy.toBuddyDetails());
@@ -63,14 +116,34 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
     public LogoutBuddyResponseEvent logoutBuddy(LogoutBuddyRequestEvent event) {
         // Get buddy from details
         Buddy buddy = Buddy.fromBuddyDetails(event.getDetails());
+        // Get connection manager from store
+        ConnectionManager connectionManager = connectionManagerStore.getConnectionManager(buddy.getBuddyId());
 
-        try {
-            // Logout via jabber session manager
-            sessionManager.logout(buddy.getBuddyId());
-        } catch (JabberException e) {
-            // Failure
-            return LogoutBuddyResponseEvent.logoutFailure(e.getMessage(), buddy.toBuddyDetails());
+        // Cannot logout buddy if no connection manager is stored
+        if (connectionManager == null) {
+            return LogoutBuddyResponseEvent.logoutFailure(
+                    "Cannot find connection manager for buddy.", buddy.toBuddyDetails()
+            );
         }
+
+        // Logout
+        connectionManager.logout();
+
+        // Remove connection manager from store
+        connectionManagerStore.removeConnectionManager(buddy.getBuddyId());
+
+        // Call Session Did Logout
+        // TODO
+//        try {
+//            // Change local status to off
+//            SettingsLocalServiceUtil.changeStatus(userId, JabberKeys.JABBER_STATUS_OFF);
+//            // TODO: Move to conversation manager
+//            // Remove conversation from the conversation store
+//            ConversationStore.getInstance().removeConversationContainer(userId);
+//        } catch (Exception e) {
+//            throw new JabberException("Problems during logout occurred. However, user was successfully " +
+//                    "logged out from the Jabber server", e);
+//        }
 
         // Success
         return LogoutBuddyResponseEvent.logoutSuccess(

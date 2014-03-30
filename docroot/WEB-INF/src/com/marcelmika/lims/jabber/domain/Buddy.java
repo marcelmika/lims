@@ -1,6 +1,10 @@
 package com.marcelmika.lims.jabber.domain;
 
 import com.marcelmika.lims.events.details.BuddyDetails;
+import com.marcelmika.lims.jabber.utils.Jid;
+import org.jivesoftware.smack.Chat;
+import org.jivesoftware.smack.Roster;
+import org.jivesoftware.smack.RosterEntry;
 
 /**
  * @author Ing. Marcel Mika
@@ -16,6 +20,40 @@ public class Buddy {
     private String screenName;
     private String password;
     private String status;
+
+    /**
+     * Create new Buddy from RosterEntry.
+     *
+     * @param rosterEntry Smack's RosterEntry.
+     * @return Buddy
+     */
+    public static Buddy fromRosterEntry(RosterEntry rosterEntry) {
+        // Create new buddy
+        Buddy buddy = new Buddy();
+        // Map properties
+        buddy.fullName = rosterEntry.getName();
+        buddy.screenName = rosterEntry.getUser();
+
+        return buddy;
+    }
+
+    /**
+     * Creates buddy from chat and roster
+     *
+     * @param chat   Chat
+     * @param roster Roster
+     * @return Buddy
+     */
+    public static Buddy fromChat(Chat chat, Roster roster) {
+        // CREATE NEW BUDDY
+        Buddy buddy = new Buddy();
+        // Map properties
+        // TODO: Take name from roster
+        buddy.fullName = chat.getParticipant();
+        buddy.screenName = Jid.getBareAddress(chat.getParticipant());
+//        buddy.setStatus(new Status(roster.getPresence(buddy.username)));
+        return buddy;
+    }
 
     /**
      * Create new user and maps data from user details
@@ -55,7 +93,6 @@ public class Buddy {
 
         return details;
     }
-
 
     public Long getBuddyId() {
         return buddyId;

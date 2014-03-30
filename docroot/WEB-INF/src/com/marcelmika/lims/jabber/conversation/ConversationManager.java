@@ -1,4 +1,4 @@
-package com.marcelmika.lims.jabber.connection;
+package com.marcelmika.lims.jabber.conversation;
 
 import com.liferay.portal.kernel.exception.SystemException;
 import com.marcelmika.lims.jabber.conversation.ConversationContainer;
@@ -24,7 +24,7 @@ import java.util.List;
  * Date: 11/24/13
  * Time: 11:18 PM
  */
-public class JabberConversationManager {
+public class ConversationManager {
 
     public void buildConversations(long userId, Connection connection) {
 
