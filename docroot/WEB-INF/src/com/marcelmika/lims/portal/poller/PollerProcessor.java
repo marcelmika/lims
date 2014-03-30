@@ -97,7 +97,7 @@ public class PollerProcessor extends BasePollerProcessor {
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
         // Send request to core service
         return buddyCoreService.updateStatus(new UpdateStatusBuddyRequestEvent(
-                buddy.getBuddyId(), buddy.getStatus())
+                buddy.getBuddyId(), buddy.getPresence().toPresenceDetails())
         );
     }
 

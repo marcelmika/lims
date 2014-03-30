@@ -17,6 +17,7 @@ public class Buddy {
     private String password;
     private String status;
     private Settings settings;
+    private Presence presence;
 
     /**
      * Create new user and maps data from user details

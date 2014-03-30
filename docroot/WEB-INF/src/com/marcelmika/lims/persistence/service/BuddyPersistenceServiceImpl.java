@@ -55,10 +55,10 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
     public UpdateStatusBuddyResponseEvent changeStatus(UpdateStatusBuddyRequestEvent event) {
         try {
             // Save to settings
-            SettingsLocalServiceUtil.changeStatus(event.getBuddyId(), event.getStatus());
+//            SettingsLocalServiceUtil.changeStatus(event.getBuddyId(), event.getStatus());
 
             return UpdateStatusBuddyResponseEvent.updateStatusSuccess(
-                    "Status " + event.getStatus() + " saved to persistence layer for user " + event.getBuddyId()
+                    "Status " + event.getPresenceDetails() + " saved to persistence layer for user " + event.getBuddyId()
             );
         } catch (Exception exception) {
             return UpdateStatusBuddyResponseEvent.updateStatusFailure(

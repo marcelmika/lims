@@ -20,6 +20,7 @@ public class Buddy {
     private String screenName;
     private String password;
     private String status;
+    private Presence presence;
 
     /**
      * Create new Buddy from RosterEntry.
@@ -72,6 +73,10 @@ public class Buddy {
         buddy.setPassword(buddyDetails.getPassword());
         buddy.setStatus(buddyDetails.getStatus());
 
+        if (buddyDetails.getPresenceDetails() != null) {
+            buddy.presence = Presence.fromPresenceDetails(buddyDetails.getPresenceDetails());
+        }
+
         return buddy;
     }
 
@@ -90,6 +95,10 @@ public class Buddy {
         details.setScreenName(screenName);
         details.setPassword(password);
         details.setStatus(status);
+
+        if (presence != null) {
+            details.setPresenceDetails(presence.toPresenceDetails());
+        }
 
         return details;
     }
@@ -140,5 +149,13 @@ public class Buddy {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Presence getPresence() {
+        return presence;
+    }
+
+    public void setPresence(Presence presence) {
+        this.presence = presence;
     }
 }

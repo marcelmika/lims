@@ -8,6 +8,7 @@ import com.marcelmika.lims.jabber.connection.manager.ConnectionManager;
 import com.marcelmika.lims.jabber.connection.manager.ConnectionManagerFactory;
 import com.marcelmika.lims.jabber.connection.store.ConnectionManagerStore;
 import com.marcelmika.lims.jabber.domain.Buddy;
+import com.marcelmika.lims.jabber.domain.Presence;
 
 /**
  * @author Ing. Marcel Mika
@@ -160,7 +161,20 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
      */
     @Override
     public UpdateStatusBuddyResponseEvent updateStatus(UpdateStatusBuddyRequestEvent event) {
-        return null;
+        // Map presence
+        Presence presence = Presence.fromPresenceDetails(event.getPresenceDetails());
+        // Get connection manager from store
+        ConnectionManager connectionManager = connectionManagerStore.getConnectionManager(event.getBuddyId());
+
+        try {
+            // Set presence on server
+            connectionManager.setPresence(presence.toSmackPresence());
+            // Success
+            return UpdateStatusBuddyResponseEvent.updateStatusSuccess("Status successfully updated");
+        } catch (Exception e) {
+            // Failure
+            return UpdateStatusBuddyResponseEvent.updateStatusFailure("Cannot update presence", e);
+        }
     }
 
 }

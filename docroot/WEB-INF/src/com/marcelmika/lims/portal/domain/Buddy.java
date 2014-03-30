@@ -3,6 +3,8 @@ package com.marcelmika.lims.portal.domain;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSON;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.poller.PollerRequest;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -24,6 +26,9 @@ import java.util.Map;
  */
 public class Buddy {
 
+    // Log
+    private static Log log = LogFactoryUtil.getLog(Buddy.class);
+
     // Constants
     private static final String KEY_PORTRAIT_ID = "portraitId";
     private static final String KEY_FULL_NAME = "fullName";
@@ -37,7 +42,9 @@ public class Buddy {
     private String fullName;
     private String screenName;
     private String password;
+    /** @deprecated */
     private String status;
+    private Presence presence;
     private Settings settings;
 
 
@@ -72,7 +79,12 @@ public class Buddy {
         }
         // Status
         if (parameterMap.containsKey(KEY_STATUS)) {
+            // TODO: Deprecated, will be renamed to presence
             buddy.status = GetterUtil.getString(parameterMap.get(KEY_STATUS));
+            String key = GetterUtil.getString(parameterMap.get(KEY_STATUS));
+            buddy.presence = Presence.fromKey(key);
+
+            log.info("BUDDY PRESENCE: " + buddy.presence);
         }
         // Settings
         buddy.settings = Settings.fromPollerRequest(pollerRequest);
@@ -154,6 +166,10 @@ public class Buddy {
         buddy.password = buddyDetails.getPassword();
         buddy.status = buddyDetails.getStatus();
         // Relations
+        if (buddyDetails.getPresenceDetails() != null) {
+            buddy.presence = Presence.fromPresenceDetails(buddyDetails.getPresenceDetails());
+        }
+
         if (buddyDetails.getStatus() != null) {
             buddy.settings = Settings.fromSettingsDetails(buddyDetails.getSettingsDetails());
         }
@@ -194,6 +210,10 @@ public class Buddy {
         details.setScreenName(screenName);
         details.setPassword(password);
         details.setStatus(status);
+
+        if (presence != null) {
+            details.setPresenceDetails(presence.toPresenceDetails());
+        }
 
         if (settings != null) {
             details.setSettingsDetails(settings.toSettingsDetails());
@@ -244,12 +264,22 @@ public class Buddy {
         this.fullName = fullName;
     }
 
+    /** @deprecated */
     public String getStatus() {
         return status;
     }
 
+    /** @deprecated */
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Presence getPresence() {
+        return presence;
+    }
+
+    public void setPresence(Presence presence) {
+        this.presence = presence;
     }
 
     public Settings getSettings() {
