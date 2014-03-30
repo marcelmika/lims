@@ -26,28 +26,4 @@ public interface BuddyPersistenceService {
      * @return Response event for logout method
      */
     public UpdateStatusBuddyResponseEvent changeStatus(UpdateStatusBuddyRequestEvent event);
-
-    /**
-     * Update buddy's active panel (panel which is open)
-     *
-     * @param event Request event for logout method
-     * @return Response event for logout method
-     */
-    public UpdateActivePanelResponseEvent updateActivePanel(UpdateActivePanelRequestEvent event);
-
-    /**
-     * Update buddy's active room type (i.e. public or private)
-     *
-     * @param event Request event for logout method
-     * @return Response event for logout method
-     */
-    public UpdateActiveRoomTypeResponseEvent updateActiveRoomType(UpdateActiveRoomTypeRequestEvent event);
-
-    /**
-     * Update buddy's settings
-     *
-     * @param event Request event for logout method
-     * @return Response event for logout method
-     */
-    public UpdateSettingsResponseEvent updateSettings(UpdateSettingsRequestEvent event);
 }

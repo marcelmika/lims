@@ -10,44 +10,44 @@
     <!--<bean id="com.marcelmika.lims.jabber.JabberUtil" class="com.marcelmika.lims.jabber.JabberUtil">-->
         <!--<property name="jabber" ref="com.marcelmika.lims.jabber.JabberImpl"/>-->
     <!--</bean>-->
-
     <!--<bean id="com.marcelmika.lims.jabber.JabberImpl" class="com.marcelmika.lims.jabber.JabberImpl"/>-->
-
-    <!-- Connection -->
-
-
 
     <!-- Settings Core Service -->
 
-    <!--<bean id="com.marcelmika.lims.core.service.SettingsCoreServiceImpl"-->
-          <!--class="com.marcelmika.lims.core.service.SettingsCoreServiceImpl">-->
-        <!--<constructor-arg index="0" ref="com.marcelmika.lims.persistence.service.BuddyPersistenceServiceImpl"/>-->
-        <!--&lt;!&ndash;<constructor-arg index="0" ref="com.marcelmika.lims.jabber.service.BuddyJabberServiceImpl"/>&ndash;&gt;-->
-    <!--</bean>-->
+    <bean id="com.marcelmika.lims.core.service.SettingsCoreServiceImpl"
+          class="com.marcelmika.lims.core.service.SettingsCoreServiceImpl">
+        <constructor-arg index="0" ref="com.marcelmika.lims.persistence.service.SettingsPersistenceServiceImpl"/>
+        <!--<constructor-arg index="0" ref="com.marcelmika.lims.jabber.service.BuddyJabberServiceImpl"/>-->
+    </bean>
 
-    <!--<bean id="com.marcelmika.lims.core.service.SettingsCoreServiceUtil"-->
-          <!--class="com.marcelmika.lims.core.service.SettingsCoreServiceUtil">-->
-        <!--<property name="settingsCoreService" ref="com.marcelmika.lims.core.service.SettingsCoreServiceImpl"/>-->
-    <!--</bean>-->
+    <bean id="com.marcelmika.lims.persistence.service.SettingsPersistenceServiceImpl"
+          class="com.marcelmika.lims.persistence.service.SettingsPersistenceServiceImpl">
+        <!--<constructor-arg ref="com.marcelmika.lims.jabber.connection.store.ConnectionManagerStoreImpl"/>-->
+    </bean>
+
+    <bean id="com.marcelmika.lims.core.service.SettingsCoreServiceUtil"
+          class="com.marcelmika.lims.core.service.SettingsCoreServiceUtil">
+        <property name="settingsCoreService" ref="com.marcelmika.lims.core.service.SettingsCoreServiceImpl"/>
+    </bean>
 
     <!-- Conversation Core Service -->
 
-    <!--<bean id="com.marcelmika.lims.core.service.ConversationCoreServiceImpl"-->
-          <!--class="com.marcelmika.lims.core.service.ConversationCoreServiceImpl">-->
-        <!--<constructor-arg index="0" ref="com.marcelmika.lims.jabber.service.ConversationJabberServiceImpl"/>-->
-    <!--</bean>-->
+    <bean id="com.marcelmika.lims.core.service.ConversationCoreServiceImpl"
+          class="com.marcelmika.lims.core.service.ConversationCoreServiceImpl">
+        <constructor-arg index="0" ref="com.marcelmika.lims.jabber.service.ConversationJabberServiceImpl"/>
+    </bean>
 
-    <!--<bean id="com.marcelmika.lims.core.service.ConversationCoreServiceUtil"-->
-          <!--class="com.marcelmika.lims.core.service.ConversationCoreServiceUtil">-->
-        <!--<property name="conversationCoreService" ref="com.marcelmika.lims.core.service.ConversationCoreServiceImpl"/>-->
-    <!--</bean>-->
+    <bean id="com.marcelmika.lims.core.service.ConversationCoreServiceUtil"
+          class="com.marcelmika.lims.core.service.ConversationCoreServiceUtil">
+        <property name="conversationCoreService" ref="com.marcelmika.lims.core.service.ConversationCoreServiceImpl"/>
+    </bean>
 
     <!-- Conversation Jabber Service -->
 
-    <!--<bean id="com.marcelmika.lims.jabber.service.ConversationJabberServiceImpl"-->
-          <!--class="com.marcelmika.lims.jabber.service.ConversationJabberServiceImpl">-->
-        <!--&lt;!&ndash;<constructor-arg ref="com.marcelmika.lims.jabber.connection.store.ConnectionManagerStoreImpl"/>&ndash;&gt;-->
-    <!--</bean>-->
+    <bean id="com.marcelmika.lims.jabber.service.ConversationJabberServiceImpl"
+          class="com.marcelmika.lims.jabber.service.ConversationJabberServiceImpl">
+        <!--<constructor-arg ref="com.marcelmika.lims.jabber.connection.store.ConnectionManagerStoreImpl"/>-->
+    </bean>
 
 
     <!-- Buddy Core Service -->

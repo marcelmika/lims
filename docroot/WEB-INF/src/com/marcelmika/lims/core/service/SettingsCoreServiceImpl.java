@@ -2,6 +2,7 @@ package com.marcelmika.lims.core.service;
 
 import com.marcelmika.lims.events.settings.*;
 import com.marcelmika.lims.persistence.service.BuddyPersistenceService;
+import com.marcelmika.lims.persistence.service.SettingsPersistenceService;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -15,16 +16,15 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class SettingsCoreServiceImpl implements SettingsCoreService {
 
     // Dependencies
-    // TODO: Move the functionality to settingsPersistenceService
-    BuddyPersistenceService buddyPersistenceService;
+    SettingsPersistenceService settingsPersistenceService;
 
     /**
      * Constructor
      *
-     * @param buddyPersistenceService persistence service
+     * @param settingsPersistenceService persistence service
      */
-    public SettingsCoreServiceImpl(BuddyPersistenceService buddyPersistenceService) {
-        this.buddyPersistenceService = buddyPersistenceService;
+    public SettingsCoreServiceImpl(SettingsPersistenceService settingsPersistenceService) {
+        this.settingsPersistenceService = settingsPersistenceService;
     }
 
     /**
@@ -35,7 +35,7 @@ public class SettingsCoreServiceImpl implements SettingsCoreService {
      */
     @Override
     public UpdateActivePanelResponseEvent updateActivePanel(UpdateActivePanelRequestEvent event) {
-        return buddyPersistenceService.updateActivePanel(event);
+        return settingsPersistenceService.updateActivePanel(event);
 // TODO: Refactor
 //        // While user opens panel unread messages should be set to zero
 //        if (!Validator.isNull(activePanelId)) {
@@ -51,7 +51,7 @@ public class SettingsCoreServiceImpl implements SettingsCoreService {
      */
     @Override
     public UpdateActiveRoomTypeResponseEvent updateActiveRoomType(UpdateActiveRoomTypeRequestEvent event) {
-        return buddyPersistenceService.updateActiveRoomType(event);
+        return settingsPersistenceService.updateActiveRoomType(event);
     }
 
     /**
@@ -62,7 +62,7 @@ public class SettingsCoreServiceImpl implements SettingsCoreService {
      */
     @Override
     public UpdateSettingsResponseEvent updateSettings(UpdateSettingsRequestEvent event) {
-        return buddyPersistenceService.updateSettings(event);
+        return settingsPersistenceService.updateSettings(event);
     }
 
     /**
