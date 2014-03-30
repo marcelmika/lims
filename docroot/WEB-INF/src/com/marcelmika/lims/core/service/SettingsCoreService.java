@@ -41,7 +41,7 @@ public interface SettingsCoreService {
      * Enables chat for buddy
      *
      * @param event Request event for logout method
-     * @return Response event for logout method @param event
+     * @return Response event for logout method
      */
     public EnableChatResponseEvent enableChat(EnableChatRequestEvent event);
 

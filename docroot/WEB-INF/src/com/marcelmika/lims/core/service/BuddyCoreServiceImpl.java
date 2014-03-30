@@ -105,6 +105,8 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
     public UpdateStatusBuddyResponseEvent updateStatus(UpdateStatusBuddyRequestEvent event) {
         // Save status to persistent service
         UpdateStatusBuddyResponseEvent responseEvent = buddyPersistenceService.changeStatus(event);
+        // Log
+        log.info(responseEvent.getResult());
         // Do not continue if the change status event failed
         if (!responseEvent.isSuccess()) {
             return responseEvent;

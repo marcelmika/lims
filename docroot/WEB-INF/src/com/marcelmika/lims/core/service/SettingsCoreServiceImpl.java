@@ -1,9 +1,12 @@
 package com.marcelmika.lims.core.service;
 
+import com.marcelmika.lims.events.ResponseEvent;
 import com.marcelmika.lims.events.settings.*;
 import com.marcelmika.lims.persistence.service.BuddyPersistenceService;
 import com.marcelmika.lims.persistence.service.SettingsPersistenceService;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import javax.xml.ws.Response;
 
 /**
  * Implementation of SettingsCoreService
@@ -69,12 +72,35 @@ public class SettingsCoreServiceImpl implements SettingsCoreService {
      * Enables chat for buddy
      *
      * @param event Request event for logout method
-     * @return Response event for logout method @param event
+     * @return Response event for logout method
      */
     @Override
     public EnableChatResponseEvent enableChat(EnableChatRequestEvent event) {
-        throw new NotImplementedException();
-        //        ChatUtil.setChatEnabled(pollerRequest.getUserId(), enabled, status);
+        // Chat is enabled
+        ResponseEvent responseEvent = settingsPersistenceService.enableChat(event);
+        if (!responseEvent.isSuccess()) {
+            return EnableChatResponseEvent.enableChatFailure("Cannot enable chat", responseEvent.getException());
+        }
+
+        // No active panel
+        responseEvent = settingsPersistenceService.updateActivePanel(
+                new UpdateActivePanelRequestEvent(event.getBuddyDetails().getBuddyId(), "")
+        );
+        if (!responseEvent.isSuccess()) {
+            return EnableChatResponseEvent.enableChatFailure("Cannot enable chat", responseEvent.getException());
+        }
+
+        // Change presence in jabber
+
+        // Change presence locally
+
+
+//        // Refresh conversations
+//        if (enabled) {
+//            JabberUtil.restartConversations(userId);
+//        }
+
+        return EnableChatResponseEvent.enableChatSuccess("Chat was successfully enabled");
     }
 
     /**
@@ -85,9 +111,26 @@ public class SettingsCoreServiceImpl implements SettingsCoreService {
      */
     @Override
     public DisableChatResponseEvent disableChat(DisableChatRequestEvent event) {
-        throw new NotImplementedException();
-        //        ChatUtil.setChatEnabled(pollerRequest.getUserId(), enabled, status);
+        // Chat is disabled
+        ResponseEvent responseEvent = settingsPersistenceService.disableChat(event);
+        if (!responseEvent.isSuccess()) {
+            return DisableChatResponseEvent.disableChatFailure("Cannot disable chat", responseEvent.getException());
+        }
+
+        // No active panel
+        responseEvent = settingsPersistenceService.updateActivePanel(
+                new UpdateActivePanelRequestEvent(event.getBuddyDetails().getBuddyId(), "")
+        );
+        if (!responseEvent.isSuccess()) {
+            return DisableChatResponseEvent.disableChatFailure("Cannot disable chat", responseEvent.getException());
+        }
+
+        // Change presence in jabber
+
+        // Change presence locally
+
+
+        return DisableChatResponseEvent.disableChatSuccess("Chat was successfully disabled");
+
     }
-
-
 }

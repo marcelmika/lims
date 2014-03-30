@@ -5,6 +5,7 @@ import com.marcelmika.lims.events.details.SettingsDetails;
 import com.marcelmika.lims.events.settings.*;
 import com.marcelmika.lims.model.Settings;
 import com.marcelmika.lims.persistence.domain.Buddy;
+import com.marcelmika.lims.persistence.domain.Presence;
 import com.marcelmika.lims.service.SettingsLocalServiceUtil;
 
 /**
@@ -53,12 +54,15 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
      */
     @Override
     public UpdateStatusBuddyResponseEvent changeStatus(UpdateStatusBuddyRequestEvent event) {
+        // Get presence
+        Presence presence = Presence.fromPresenceDetails(event.getPresenceDetails());
+
         try {
             // Save to settings
-//            SettingsLocalServiceUtil.changeStatus(event.getBuddyId(), event.getStatus());
+            SettingsLocalServiceUtil.changeStatus(event.getBuddyId(), presence.toStatus());
 
             return UpdateStatusBuddyResponseEvent.updateStatusSuccess(
-                    "Status " + event.getPresenceDetails() + " saved to persistence layer for user " + event.getBuddyId()
+                    "Status " + presence.toStatus() + " saved to persistence layer for user " + event.getBuddyId()
             );
         } catch (Exception exception) {
             return UpdateStatusBuddyResponseEvent.updateStatusFailure(

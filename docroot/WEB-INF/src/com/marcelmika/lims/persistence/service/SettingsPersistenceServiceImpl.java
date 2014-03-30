@@ -1,5 +1,6 @@
 package com.marcelmika.lims.persistence.service;
 
+import com.marcelmika.lims.events.details.BuddyDetails;
 import com.marcelmika.lims.events.details.SettingsDetails;
 import com.marcelmika.lims.events.settings.*;
 import com.marcelmika.lims.model.Settings;
@@ -90,6 +91,52 @@ public class SettingsPersistenceServiceImpl implements SettingsPersistenceServic
             return UpdateSettingsResponseEvent.updateSettingsFailure(
                     "Cannot update Settings to a persistence layer", details, exception
             );
+        }
+    }
+
+    /**
+     * Enables chat for buddy
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    @Override
+    public EnableChatResponseEvent enableChat(EnableChatRequestEvent event) {
+        // Get buddy
+        BuddyDetails buddy = event.getBuddyDetails();
+
+        try {
+            // Save
+            SettingsLocalServiceUtil.setChatEnabled(buddy.getBuddyId(), true);
+            // Success
+            return EnableChatResponseEvent.enableChatSuccess("User chat enabled");
+
+        } catch (Exception e) {
+            // Failure
+            return EnableChatResponseEvent.enableChatFailure("Cannot enable chat", e);
+        }
+    }
+
+    /**
+     * Disables chat for buddy
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    @Override
+    public DisableChatResponseEvent disableChat(DisableChatRequestEvent event) {
+        // Get buddy
+        BuddyDetails buddy = event.getBuddyDetails();
+
+        try {
+            // Save
+            SettingsLocalServiceUtil.setChatEnabled(buddy.getBuddyId(), false);
+            // Success
+            return DisableChatResponseEvent.disableChatSuccess("Chat disabled");
+
+        } catch (Exception e) {
+            // Failure
+            return DisableChatResponseEvent.disableChatFailure("Cannot disable chat", e);
         }
     }
 }

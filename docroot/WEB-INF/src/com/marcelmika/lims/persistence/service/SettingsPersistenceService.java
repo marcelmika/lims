@@ -33,4 +33,21 @@ public interface SettingsPersistenceService {
      * @return Response event for logout method
      */
     public UpdateSettingsResponseEvent updateSettings(UpdateSettingsRequestEvent event);
+
+    /**
+     * Enables chat for buddy
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    public EnableChatResponseEvent enableChat(EnableChatRequestEvent event);
+
+    /**
+     * Disables chat for buddy
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    public DisableChatResponseEvent disableChat(DisableChatRequestEvent event);
+
 }
