@@ -1,4 +1,4 @@
-package com.marcelmika.lims.jabber.group;
+package com.marcelmika.lims.jabber.group.manager;
 
 import com.marcelmika.lims.jabber.domain.Group;
 import org.jivesoftware.smack.Roster;
@@ -18,7 +18,7 @@ public interface GroupManager {
      *
      * @return String
      */
-    public String getId();
+    public Long getId();
 
     /**
      * Manage groups from roster

@@ -11,7 +11,7 @@ import com.marcelmika.lims.jabber.connection.manager.ConnectionManager;
 public interface ConnectionManagerStore {
 
     /**
-     * Returns connection manager which belongs to the particular user based on the username
+     * Returns connection manager based on it's id
      *
      * @param id of the connection manager
      * @return ConnectionManager

@@ -30,8 +30,6 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
      * @param connectionManagerStore ConnectionManagerStore
      */
     public BuddyJabberServiceImpl(ConnectionManagerStore connectionManagerStore) {
-        log.info("ADDING STORE");
-        log.info(connectionManagerStore);
         this.connectionManagerStore = connectionManagerStore;
     }
 
@@ -43,12 +41,10 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
      */
     @Override
     public ConnectBuddyResponseEvent connectBuddy(ConnectBuddyRequestEvent event) {
-        log.info("CONNECT STORE:");
-        log.info(connectionManagerStore);
         // Get buddy form details
         Buddy buddy = Buddy.fromBuddyDetails(event.getDetails());
+
         // Create new connection manager (screen name is the ID)
-        // Todo: Create from factory
         ConnectionManager connectionManager = ConnectionManagerFactory.buildConnectionManager(buddy.getBuddyId());
 
         try {
@@ -77,8 +73,6 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
      */
     @Override
     public LoginBuddyResponseEvent loginBuddy(LoginBuddyRequestEvent event) {
-        log.info("LOGIN STORE:");
-        log.info(connectionManagerStore);
         // Get buddy form details
         Buddy buddy = Buddy.fromBuddyDetails(event.getDetails());
 
@@ -99,6 +93,8 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
             // Failure
             return LoginBuddyResponseEvent.loginFailure(e.getMessage(), buddy.toBuddyDetails());
         }
+
+
 
         // Success
         return LoginBuddyResponseEvent.loginSuccess(

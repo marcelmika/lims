@@ -6,6 +6,9 @@ import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
@@ -57,6 +60,24 @@ public class Buddy {
     }
 
     /**
+     * Factory method which creates new list of Buddies from the list of BuddyDetails
+     *
+     * @param detailsList list of buddy details
+     * @return List<Buddy> of buddies
+     */
+    public static List<Buddy> fromBuddyDetails(List<BuddyDetails> detailsList) {
+        // Create new list of buddies
+        List<Buddy> buddies = new ArrayList<Buddy>();
+
+        // Iterate through details and create buddy based on that
+        for (BuddyDetails details : detailsList) {
+            buddies.add(Buddy.fromBuddyDetails(details));
+        }
+
+        return buddies;
+    }
+
+    /**
      * Create new user and maps data from user details
      *
      * @param buddyDetails BuddyDetails
@@ -102,6 +123,7 @@ public class Buddy {
 
         return details;
     }
+
 
     public Long getBuddyId() {
         return buddyId;

@@ -81,4 +81,27 @@
     <bean id="com.marcelmika.lims.persistence.service.BuddyPersistenceService"
           class="com.marcelmika.lims.persistence.service.BuddyPersistenceServiceImpl"/>
 
+
+    <!-- Group Core Service -->
+
+    <bean id="com.marcelmika.lims.core.service.GroupCoreService"
+          class="com.marcelmika.lims.core.service.GroupCoreServiceImpl">
+        <constructor-arg index="0" ref="com.marcelmika.lims.jabber.service.GroupJabberService"/>
+    </bean>
+
+    <bean id="com.marcelmika.lims.core.service.GroupCoreServiceUtil"
+          class="com.marcelmika.lims.core.service.GroupCoreServiceUtil">
+        <property name="groupCoreService" ref="com.marcelmika.lims.core.service.GroupCoreService"/>
+    </bean>
+
+
+    <!-- Group Jabber Service -->
+
+    <bean id="com.marcelmika.lims.jabber.service.GroupJabberService"
+          class="com.marcelmika.lims.jabber.service.GroupJabberServiceImpl">
+        <constructor-arg ref="com.marcelmika.lims.jabber.connection.store.ConnectionManagerStore"/>
+    </bean>
+
+
+
 </beans>

@@ -1,4 +1,4 @@
-package com.marcelmika.lims.jabber.group;
+package com.marcelmika.lims.jabber.group.manager;
 
 import com.marcelmika.lims.jabber.domain.Buddy;
 import com.marcelmika.lims.jabber.domain.Group;
@@ -8,7 +8,6 @@ import org.jivesoftware.smack.RosterGroup;
 import org.jivesoftware.smack.RosterListener;
 import org.jivesoftware.smack.packet.Presence;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,7 +20,7 @@ import java.util.List;
 public class GroupManagerImpl implements GroupManager, RosterListener {
 
     // Group manager id
-    private final String id;
+    private final Long id;
     // Represents a user's roster, which is the collection of users a person
     // receives presence updates for.
     private Roster roster;
@@ -34,7 +33,7 @@ public class GroupManagerImpl implements GroupManager, RosterListener {
      *
      * @param id id of the group
      */
-    public GroupManagerImpl(String id) {
+    public GroupManagerImpl(Long id) {
         this.id = id;
     }
 
@@ -48,7 +47,7 @@ public class GroupManagerImpl implements GroupManager, RosterListener {
      * @return String
      */
     @Override
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
@@ -109,9 +108,6 @@ public class GroupManagerImpl implements GroupManager, RosterListener {
     // Private methods
     // -------------------------------------------------------------------------------------------
     private void mapGroupsFromRoster() {
-        // A list of "our" domain's groups.
-        List<Group> groups = new ArrayList<Group>();
-
         // Go over all groups in roster
         for (RosterGroup rosterGroup : roster.getGroups()) {
             // Create new Group
@@ -122,6 +118,7 @@ public class GroupManagerImpl implements GroupManager, RosterListener {
             for (RosterEntry entry : rosterGroup.getEntries()) {
 
                 Presence presence = roster.getPresence(entry.getUser());
+
                 Buddy buddy = Buddy.fromRosterEntry(entry);
 //                buddy.setStatus(new Status(presence));
                 group.addBuddy(buddy);

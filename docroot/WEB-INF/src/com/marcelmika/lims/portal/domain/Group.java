@@ -1,4 +1,4 @@
-package com.marcelmika.lims.jabber.domain;
+package com.marcelmika.lims.portal.domain;
 
 import com.marcelmika.lims.events.details.GroupDetails;
 
@@ -8,10 +8,11 @@ import java.util.List;
 /**
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
- * Date: 3/14/14
- * Time: 3:12 PM
+ * Date: 4/1/14
+ * Time: 8:37 PM
  */
 public class Group {
+
 
     private String name;
     private List<Buddy> buddies = new ArrayList<Buddy>();

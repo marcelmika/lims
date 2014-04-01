@@ -13,6 +13,8 @@ import com.marcelmika.lims.events.buddy.GetBuddiesRequestEvent;
 import com.marcelmika.lims.events.buddy.GetBuddiesResponseEvent;
 import com.marcelmika.lims.events.buddy.UpdateStatusBuddyRequestEvent;
 import com.marcelmika.lims.events.conversation.*;
+import com.marcelmika.lims.events.group.GetGroupsRequestEvent;
+import com.marcelmika.lims.events.group.GetGroupsResponseEvent;
 import com.marcelmika.lims.events.settings.*;
 import com.marcelmika.lims.portal.domain.*;
 
@@ -33,6 +35,7 @@ public class PollerProcessor extends BasePollerProcessor {
 
     // Dependencies
     BuddyCoreService buddyCoreService = BuddyCoreServiceUtil.getBuddyCoreService();
+    GroupCoreService groupCoreService = GroupCoreServiceUtil.getGroupCoreService();
     ConversationCoreService conversationCoreService = ConversationCoreServiceUtil.getConversationCoreService();
     SettingsCoreService settingsCoreService = SettingsCoreServiceUtil.getSettingsCoreService();
 
@@ -136,6 +139,30 @@ public class PollerProcessor extends BasePollerProcessor {
         }
     }
 
+
+    // ---------------------------------------------------------------------------------------------------------
+    //   Group Lifecycle
+    // ---------------------------------------------------------------------------------------------------------
+
+    /**
+     * Fetches all groups related to the buddy.
+     *
+     * @param pollerRequest Poller Request
+     * @param pollerResponse Poller Response
+     */
+    protected void getGroupList(PollerRequest pollerRequest, PollerResponse pollerResponse) {
+        // Create buddy from poller request
+        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
+        // Get groups request
+        GetGroupsResponseEvent responseEvent = groupCoreService.getGroups(
+                new GetGroupsRequestEvent(buddy.toBuddyDetails())
+        );
+
+        if (responseEvent.isSuccess()) {
+            log.info("GROUPS");
+            log.info(responseEvent.getGroups());
+        }
+    }
 
     // ---------------------------------------------------------------------------------------------------------
     //   Conversation Lifecycle
