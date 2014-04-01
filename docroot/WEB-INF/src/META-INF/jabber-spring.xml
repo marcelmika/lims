@@ -97,9 +97,14 @@
 
     <!-- Group Jabber Service -->
 
+    <bean id="com.marcelmika.lims.jabber.group.store.GroupManagerStore"
+          class="com.marcelmika.lims.jabber.group.store.GroupManagerStoreImpl"/>
+
+
     <bean id="com.marcelmika.lims.jabber.service.GroupJabberService"
           class="com.marcelmika.lims.jabber.service.GroupJabberServiceImpl">
-        <constructor-arg ref="com.marcelmika.lims.jabber.connection.store.ConnectionManagerStore"/>
+        <constructor-arg index="0" ref="com.marcelmika.lims.jabber.connection.store.ConnectionManagerStore"/>
+        <constructor-arg index="1" ref="com.marcelmika.lims.jabber.group.store.GroupManagerStore"/>
     </bean>
 
 

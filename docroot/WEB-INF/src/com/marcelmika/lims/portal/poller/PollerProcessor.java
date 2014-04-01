@@ -159,8 +159,7 @@ public class PollerProcessor extends BasePollerProcessor {
         );
 
         if (responseEvent.isSuccess()) {
-            log.info("GROUPS");
-            log.info(responseEvent.getGroups());
+
         }
     }
 

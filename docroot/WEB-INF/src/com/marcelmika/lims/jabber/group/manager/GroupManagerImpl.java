@@ -8,6 +8,7 @@ import org.jivesoftware.smack.RosterGroup;
 import org.jivesoftware.smack.RosterListener;
 import org.jivesoftware.smack.packet.Presence;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class GroupManagerImpl implements GroupManager, RosterListener {
     // receives presence updates for.
     private Roster roster;
     // List of groups managed by the manager
-    private List<Group> groups;
+    private List<Group> groups = new ArrayList<Group>();
 
 
     /**
@@ -108,6 +109,7 @@ public class GroupManagerImpl implements GroupManager, RosterListener {
     // Private methods
     // -------------------------------------------------------------------------------------------
     private void mapGroupsFromRoster() {
+        groups.clear();
         // Go over all groups in roster
         for (RosterGroup rosterGroup : roster.getGroups()) {
             // Create new Group
