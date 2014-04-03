@@ -21,36 +21,14 @@ public class ConnectionManagerImpl implements ConnectionManager, ConnectionListe
 
     // Log
     private static Log log = LogFactoryUtil.getLog(ConnectionManagerImpl.class);
-    // Connection manager id
-    private Long id;
     // Configuration to use while establishing the connection to the server.
     private ConnectionConfiguration connectionConfiguration;
     // Connection to the server
     private Connection connection;
 
-
-    /**
-     * Constructor
-     *
-     * @param id of the connection manager
-     */
-    public ConnectionManagerImpl(Long id) {
-        this.id = id;
-    }
-
     // -------------------------------------------------------------------------------------------
     // Override: ConnectionManager
     // -------------------------------------------------------------------------------------------
-
-    /**
-     * Returns connection manager ID
-     *
-     * @return Long
-     */
-    @Override
-    public Long getId() {
-        return id;
-    }
 
     /**
      * Creates new connection with jabber server
@@ -241,8 +219,6 @@ public class ConnectionManagerImpl implements ConnectionManager, ConnectionListe
      */
     @Override
     public String toString() {
-        return String.format(
-                "Connection manager: [%d] for connection: [%s]", this.getId(), this.connection
-        );
+        return String.format("Connection manager for connection: [%s]", this.connection);
     }
 }

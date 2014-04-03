@@ -1,4 +1,4 @@
-package com.marcelmika.lims.jabber.connection;
+package com.marcelmika.lims.jabber.conversation;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

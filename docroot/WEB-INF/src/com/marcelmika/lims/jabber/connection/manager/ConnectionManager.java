@@ -15,13 +15,6 @@ import org.jivesoftware.smack.packet.Presence;
 public interface ConnectionManager {
 
     /**
-     * Returns connection manager ID
-     *
-     * @return String
-     */
-    public Long getId();
-
-    /**
      * Creates new connection with jabber server
      *
      * @throws JabberException if connection creation fails

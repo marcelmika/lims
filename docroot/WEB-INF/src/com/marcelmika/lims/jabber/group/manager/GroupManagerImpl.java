@@ -20,37 +20,15 @@ import java.util.List;
  */
 public class GroupManagerImpl implements GroupManager, RosterListener {
 
-    // Group manager id
-    private final Long id;
     // Represents a user's roster, which is the collection of users a person
     // receives presence updates for.
     private Roster roster;
     // List of groups managed by the manager
     private List<Group> groups = new ArrayList<Group>();
 
-
-    /**
-     * Constructor
-     *
-     * @param id id of the group
-     */
-    public GroupManagerImpl(Long id) {
-        this.id = id;
-    }
-
     // -------------------------------------------------------------------------------------------
     // Override: GroupManager
     // -------------------------------------------------------------------------------------------
-
-    /**
-     * Returns group manager ID
-     *
-     * @return String
-     */
-    @Override
-    public Long getId() {
-        return id;
-    }
 
     /**
      * Manage groups from roster

@@ -56,7 +56,7 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
         }
 
         // Create new connection manager (screen name is the ID)
-        ConnectionManager connectionManager = ConnectionManagerFactory.buildConnectionManager(buddyId);
+        ConnectionManager connectionManager = ConnectionManagerFactory.buildManager();
 
         try {
             // Connect

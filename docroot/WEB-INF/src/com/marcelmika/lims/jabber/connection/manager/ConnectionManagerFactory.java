@@ -8,7 +8,7 @@ package com.marcelmika.lims.jabber.connection.manager;
  */
 public class ConnectionManagerFactory {
 
-    public static ConnectionManager buildConnectionManager(Long id) {
-        return new ConnectionManagerImpl(id);
+    public static ConnectionManager buildManager() {
+        return new ConnectionManagerImpl();
     }
 }

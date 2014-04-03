@@ -3,6 +3,7 @@ package com.marcelmika.lims.jabber.session;
 import com.marcelmika.lims.jabber.connection.manager.ConnectionManager;
 import com.marcelmika.lims.jabber.conversation.manager.multi.MultiUserConversationManager;
 import com.marcelmika.lims.jabber.conversation.manager.single.SingleUserConversationManager;
+import com.marcelmika.lims.jabber.conversation.manager.single.SingleUserConversationManagerFactory;
 import com.marcelmika.lims.jabber.group.manager.GroupManager;
 import com.marcelmika.lims.jabber.group.manager.GroupManagerFactory;
 
@@ -28,12 +29,20 @@ public class UserSession {
     public static UserSession fromConnectionManager(Long sessionId, ConnectionManager connectionManager) {
         // Create new user session
         UserSession userSession = new UserSession(sessionId);
-        // Map managers from connection manager
+
+        // Connection manager
         userSession.connectionManager = connectionManager;
+
         // Group manager
-        GroupManager groupManager = GroupManagerFactory.buildGroupManager(sessionId);
+        GroupManager groupManager = GroupManagerFactory.buildManager();
         groupManager.setRoster(connectionManager.getRoster());
         userSession.groupManager = groupManager;
+
+        // Single User Conversation manager
+        SingleUserConversationManager singleManager = SingleUserConversationManagerFactory.buildManager();
+        singleManager.setChatManager(connectionManager.getChatManager());
+        userSession.singleUserConversationManager = singleManager;
+
 
 
         return userSession;

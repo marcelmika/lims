@@ -8,7 +8,7 @@ package com.marcelmika.lims.jabber.group.manager;
  */
 public class GroupManagerFactory {
 
-    public static GroupManager buildGroupManager(Long id) {
-        return new GroupManagerImpl(id);
+    public static GroupManager buildManager() {
+        return new GroupManagerImpl();
     }
 }

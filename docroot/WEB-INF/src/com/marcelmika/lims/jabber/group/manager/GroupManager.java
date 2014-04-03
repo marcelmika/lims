@@ -14,13 +14,6 @@ import java.util.List;
 public interface GroupManager {
 
     /**
-     * Returns group manager ID
-     *
-     * @return String
-     */
-    public Long getId();
-
-    /**
      * Manage groups from roster
      *
      * @param roster Roster
