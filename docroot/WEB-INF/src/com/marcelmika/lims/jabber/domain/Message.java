@@ -1,112 +1,80 @@
-
 package com.marcelmika.lims.jabber.domain;
 
-import com.marcelmika.lims.jabber.JabberUtil;
-import com.marcelmika.lims.model.json.JSONable;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import java.util.Date;
-
-import com.marcelmika.lims.model.Buddy;
 import org.jivesoftware.smackx.packet.DelayInformation;
+
+import java.util.Date;
 
 /**
  * @author Ing. Marcel Mika
- * @link http://marcelmika.com/lims
- * Date: 11/24/13
- * Time: 11:18 PM
+ * @link http://marcelmika.com
+ * Date: 4/4/14
+ * Time: 1:16 AM
  */
-public class Message implements JSONable {
+public class Message {
 
-    private org.jivesoftware.smack.packet.Message smackMessage;
-    private long companyId;
-    private Date created;
+    private Buddy from;
+    private Date createdAt;
+    private String body;
 
-    public Message(org.jivesoftware.smack.packet.Message smackMesasge) {
-        this.smackMessage = smackMesasge;
-        this.created = getMessageTimestamp(smackMesasge);                        
+
+    public static Message fromSmackMessage(org.jivesoftware.smack.packet.Message smackMessage) {
+        // Create new message
+        Message message = new Message();
+        // Map properties
+        message.body = smackMessage.getBody();
+        message.createdAt = getMessageTimestamp(smackMessage);
+        // Map relations
+        message.from = Buddy.fromSmackMessage(smackMessage);
+
+        return message;
     }
 
-    private Date getMessageTimestamp(org.jivesoftware.smack.packet.Message message) {
-        // Message creation date can be retreived just from the offline messages
-        DelayInformation inf = null;      
-        
+    /**
+     * Method which calculates smack message timestamp.
+     * Message creation date can be retrieved from the offline messages.
+     *
+     * @param message from smack
+     * @return Date
+     */
+    private static Date getMessageTimestamp(org.jivesoftware.smack.packet.Message message) {
+
         try {
-            inf = (DelayInformation) message.getExtension("x", "jabber:x:delay");
+            // Get the timestamp from message extension
+            DelayInformation inf = (DelayInformation) message.getExtension("x", "jabber:x:delay");
+            // Return offline message timestamp
+            if (inf != null) {
+                return inf.getStamp();
+            }
+            // Message is not offline -> return current timestamp
+            return new Date();
+
         } catch (Exception e) {
-//            System.out.println(e.getMessage());
+            // Extension isn't provided so return empty date
+            return new Date(0);
         }
-
-        // Return offline message timestamp
-        if (inf != null) {
-            Date date = inf.getStamp();
-            return date;
-        }
-
-        // Message is not offline -> return current timestamp
-        return new Date();
     }
 
-    public void setFrom(String from) {
-        smackMessage.setFrom(from);
+    public Buddy getFrom() {
+        return from;
     }
 
-    public String getFrom() {
-        return smackMessage.getFrom();
+    public void setFrom(Buddy from) {
+        this.from = from;
     }
 
-    public String getTo() {
-        return smackMessage.getTo();
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public long getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(long companyId) {
-        this.companyId = companyId;
-    }
-
-    public void setBody(String body) {
-        smackMessage.setBody(body);
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getBody() {
-        return smackMessage.getBody();
-    }
-    
-    public Buddy getBuddy() {
-        return com.marcelmika.lims.service.BuddyLocalServiceUtil.getBuddyByScreenName(getCompanyId(), getFrom());
+        return body;
     }
 
-    public Buddy getParticipant() {
-        String screenName = JabberUtil.getScreenName(getTo());
-        return com.marcelmika.lims.service.BuddyLocalServiceUtil.getBuddyByScreenName(getCompanyId(), screenName);
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    @Override
-    public String toString() {
-        return "Message From: " + getFrom() + " To: " + getTo() + " = " + getBody();
-    }
-
-    public JSONObject toJSON() {
-        JSONObject jsonMessage = JSONFactoryUtil.createJSONObject();
-
-        // Find buddy            
-        Buddy buddy = com.marcelmika.lims.service.BuddyLocalServiceUtil.getBuddyByScreenName(getCompanyId(), getFrom());
-        if (buddy != null) {
-            jsonMessage.put("from", buddy.toJSON());
-        }
-        // Content
-        jsonMessage.put("content", getBody());
-
-        // Crated timestamp            
-        jsonMessage.put("created", getCreated().getTime());
-
-        return jsonMessage;
+    public void setBody(String body) {
+        this.body = body;
     }
 }

@@ -165,8 +165,6 @@ public class PollerProcessor extends BasePollerProcessor {
             // Serialize to json string (include buddies collection)
             String jsonString = JSONFactoryUtil.looseSerialize(groups, "buddies");
 
-            log.info(jsonString);
-
             try {
                 // Add to response
                 pollerResponse.setParameter("groups", createJsonArray(jsonString));

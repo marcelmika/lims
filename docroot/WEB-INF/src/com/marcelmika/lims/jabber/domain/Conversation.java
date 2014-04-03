@@ -1,7 +1,6 @@
 package com.marcelmika.lims.jabber.domain;
 
 import com.liferay.portal.kernel.json.JSONObject;
-import com.marcelmika.lims.jabber.domain.Message;
 
 import java.util.List;
 
@@ -10,6 +9,7 @@ import java.util.List;
  * @link http://marcelmika.com/lims
  * Date: 11/24/13
  * Time: 11:18 PM
+ * @deprecated
  */
 public interface Conversation {
 
@@ -33,9 +33,9 @@ public interface Conversation {
     public void restart();
 
     // Message related stuff
-    public List<Message> getMessages();
+    public List<MessageDeprecated> getMessages();
 
-    public Message getLastMessage();
+    public MessageDeprecated getLastMessage();
 
     public int getLastMessageSent();
 

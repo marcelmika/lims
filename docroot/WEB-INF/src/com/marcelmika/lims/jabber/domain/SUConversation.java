@@ -1,8 +1,6 @@
 package com.marcelmika.lims.jabber.domain;
 
 import com.marcelmika.lims.jabber.JabberUtil;
-import com.marcelmika.lims.jabber.domain.Conversation;
-import com.marcelmika.lims.jabber.domain.Message;
 import com.marcelmika.lims.model.json.JSONable;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -27,7 +25,7 @@ public class SUConversation implements Conversation, JSONable {
 
     private Buddy owner;
     private Chat chat;
-    private LinkedList<Message> messages = new LinkedList<Message>();
+    private LinkedList<MessageDeprecated> messages = new LinkedList<MessageDeprecated>();
     private List<Buddy> participants = new ArrayList<Buddy>();
     private String conversationId;
     private int lastMessageSent = 0;
@@ -65,7 +63,7 @@ public class SUConversation implements Conversation, JSONable {
     }
 
     @Override
-    public List<Message> getMessages() {
+    public List<MessageDeprecated> getMessages() {
         return messages;
     }
 
@@ -107,7 +105,7 @@ public class SUConversation implements Conversation, JSONable {
     }
 
     @Override
-    public Message getLastMessage() {
+    public MessageDeprecated getLastMessage() {
         return messages.peekLast();
     }
 
@@ -149,7 +147,7 @@ public class SUConversation implements Conversation, JSONable {
         jsonConversation.put("roomType", "public");
 
         // Last message
-        Message lastMessage = getLastMessage();
+        MessageDeprecated lastMessage = getLastMessage();
         if (lastMessage != null) {
             jsonConversation.put("lastMessage", lastMessage.toJSON());
         }
@@ -163,10 +161,10 @@ public class SUConversation implements Conversation, JSONable {
         JSONArray jsonMessages = JSONFactoryUtil.createJSONArray();
 
         // Get only messages that havn't been sent yet
-        List<Message> subList = messages.subList(lastMessageSent, getIndexOfLastMessage());
+        List<MessageDeprecated> subList = messages.subList(lastMessageSent, getIndexOfLastMessage());
 
         // Iterate all messages in conversation
-        for (Message message : subList) {
+        for (MessageDeprecated message : subList) {
             JSONObject jsonMessage = message.toJSON();
             // Put to messages
             jsonMessages.put(jsonMessage);

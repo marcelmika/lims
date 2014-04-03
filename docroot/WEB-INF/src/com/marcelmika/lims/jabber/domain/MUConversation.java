@@ -3,8 +3,6 @@ package com.marcelmika.lims.jabber.domain;
 
 import com.marcelmika.lims.jabber.JabberKeys;
 import com.marcelmika.lims.jabber.JabberUtil;
-import com.marcelmika.lims.jabber.domain.Conversation;
-import com.marcelmika.lims.jabber.domain.Message;
 import com.marcelmika.lims.model.Buddy;
 import com.marcelmika.lims.model.json.JSONable;
 import com.marcelmika.lims.service.BuddyLocalServiceUtil;
@@ -44,7 +42,7 @@ public class MUConversation implements Conversation, JSONable {
     private Buddy owner;
     private List<Buddy> participants = new ArrayList<Buddy>();
     // Messages
-    private LinkedList<Message> messages = new LinkedList<Message>();
+    private LinkedList<MessageDeprecated> messages = new LinkedList<MessageDeprecated>();
     private int lastMessageSent = 0;
 
     public MUConversation(String conversationId, Buddy owner, MultiUserChat muc) {
@@ -79,7 +77,7 @@ public class MUConversation implements Conversation, JSONable {
         muc.addMessageListener(new PacketListener() {
             public void processPacket(Packet packet) {
                 if (packet instanceof org.jivesoftware.smack.packet.Message) {
-                    Message msg = new Message((org.jivesoftware.smack.packet.Message) packet);
+                    MessageDeprecated msg = new MessageDeprecated((org.jivesoftware.smack.packet.Message) packet);
                     // Extract  jabber name
                     msg.setFrom(JabberUtil.getResource(msg.getFrom()));
                     msg.setCompanyId(owner.getCompanyId());
@@ -181,7 +179,7 @@ public class MUConversation implements Conversation, JSONable {
         }
     }
 
-    public List<Message> getMessages() {
+    public List<MessageDeprecated> getMessages() {
         return messages;
     }
 
@@ -209,7 +207,7 @@ public class MUConversation implements Conversation, JSONable {
         return getConversationModel().getConversationVisibility();
     }
 
-    public Message getLastMessage() {
+    public MessageDeprecated getLastMessage() {
         return messages.peekLast();
     }
 
@@ -244,7 +242,7 @@ public class MUConversation implements Conversation, JSONable {
 
         // Private Room
         // Last message
-        Message message = getLastMessage();
+        MessageDeprecated message = getLastMessage();
         String title = "";
         if (message != null) {
             Buddy buddy = BuddyLocalServiceUtil.getBuddyByScreenName(owner.getCompanyId(), message.getFrom());
@@ -273,7 +271,7 @@ public class MUConversation implements Conversation, JSONable {
         jsonConversation.put("roomVisibility", getConversationVisibility());
 
         // Last message
-        Message lastMessage = getLastMessage();
+        MessageDeprecated lastMessage = getLastMessage();
         if (lastMessage != null) {
             jsonConversation.put("lastMessage", lastMessage.toJSON());
         }
@@ -286,10 +284,10 @@ public class MUConversation implements Conversation, JSONable {
         JSONArray jsonMessages = JSONFactoryUtil.createJSONArray();
 
         // Get only messages that havn't been sent yet
-        List<Message> subList = messages.subList(lastMessageSent, getIndexOfLastMessage());
+        List<MessageDeprecated> subList = messages.subList(lastMessageSent, getIndexOfLastMessage());
 
         // Iterate all messages in conversation
-        for (Message message : subList) {
+        for (MessageDeprecated message : subList) {
             JSONObject jsonMessage = message.toJSON();
             // Put to messages
             jsonMessages.put(jsonMessage);

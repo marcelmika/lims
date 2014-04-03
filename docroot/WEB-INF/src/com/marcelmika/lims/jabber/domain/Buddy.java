@@ -3,7 +3,6 @@ package com.marcelmika.lims.jabber.domain;
 import com.marcelmika.lims.events.details.BuddyDetails;
 import com.marcelmika.lims.jabber.utils.Jid;
 import org.jivesoftware.smack.Chat;
-import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
 
 import java.util.ArrayList;
@@ -44,11 +43,10 @@ public class Buddy {
     /**
      * Creates buddy from chat and roster
      *
-     * @param chat   Chat
-     * @param roster Roster
+     * @param chat Chat
      * @return Buddy
      */
-    public static Buddy fromChat(Chat chat, Roster roster) {
+    public static Buddy fromChat(Chat chat) {
         // CREATE NEW BUDDY
         Buddy buddy = new Buddy();
         // Map properties
@@ -56,6 +54,13 @@ public class Buddy {
         buddy.fullName = chat.getParticipant();
         buddy.screenName = Jid.getBareAddress(chat.getParticipant());
 //        buddy.setStatus(new Status(roster.getPresence(buddy.username)));
+        return buddy;
+    }
+
+    public static Buddy fromSmackMessage(org.jivesoftware.smack.packet.Message smackMessage) {
+        Buddy buddy = new Buddy();
+        buddy.screenName = Jid.getName(smackMessage.getFrom());
+
         return buddy;
     }
 
