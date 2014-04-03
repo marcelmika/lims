@@ -9,6 +9,8 @@ import com.marcelmika.lims.jabber.connection.manager.ConnectionManagerFactory;
 import com.marcelmika.lims.jabber.connection.store.ConnectionManagerStore;
 import com.marcelmika.lims.jabber.domain.Buddy;
 import com.marcelmika.lims.jabber.domain.Presence;
+import com.marcelmika.lims.jabber.session.UserSession;
+import com.marcelmika.lims.jabber.session.UserSessionStore;
 
 /**
  * @author Ing. Marcel Mika
@@ -22,15 +24,15 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
     private static Log log = LogFactoryUtil.getLog(BuddyJabberServiceImpl.class);
 
     // Dependencies
-    private ConnectionManagerStore connectionManagerStore;
+    private UserSessionStore userSessionStore;
 
     /**
      * BuddyJabberServiceImpl
      *
-     * @param connectionManagerStore ConnectionManagerStore
+     * @param userSessionStore UserSessionStore
      */
-    public BuddyJabberServiceImpl(ConnectionManagerStore connectionManagerStore) {
-        this.connectionManagerStore = connectionManagerStore;
+    public BuddyJabberServiceImpl(UserSessionStore userSessionStore) {
+        this.userSessionStore = userSessionStore;
     }
 
     /**
@@ -44,8 +46,18 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
         // Get buddy form details
         Buddy buddy = Buddy.fromBuddyDetails(event.getDetails());
 
+        // We use buddy ID as a user identification
+        Long buddyId = buddy.getBuddyId();
+
+        // Buddy Id cannot be null
+        if (buddyId == null) {
+            return ConnectBuddyResponseEvent.connectFailure(
+                    "Cannot connect buddy without buddy id", event.getDetails()
+            );
+        }
+
         // Create new connection manager (screen name is the ID)
-        ConnectionManager connectionManager = ConnectionManagerFactory.buildConnectionManager(buddy.getBuddyId());
+        ConnectionManager connectionManager = ConnectionManagerFactory.buildConnectionManager(buddyId);
 
         try {
             // Connect
@@ -55,8 +67,12 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
             return ConnectBuddyResponseEvent.connectFailure(e.getMessage(), buddy.toBuddyDetails());
         }
 
-        // Connect was successful so add the connection manager to the store
-        connectionManagerStore.addConnectionManager(connectionManager);
+        // Connection with jabber server was successfully created. Consequently, we should
+        // create a session in memory
+        UserSession userSession = UserSession.fromConnectionManager(buddyId, connectionManager);
+        // Add user session to store so it can be queried later
+        userSessionStore.addUserSession(userSession);
+
 
         // Success
         return ConnectBuddyResponseEvent.connectSuccess(
@@ -75,16 +91,18 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
     public LoginBuddyResponseEvent loginBuddy(LoginBuddyRequestEvent event) {
         // Get buddy form details
         Buddy buddy = Buddy.fromBuddyDetails(event.getDetails());
-
-        // Get connection manager from store
-        ConnectionManager connectionManager = connectionManagerStore.getConnectionManager(buddy.getBuddyId());
-
-        // No connection manager for buddy
-        if (connectionManager == null) {
+        // We use buddy ID as an identification
+        Long buddyId = buddy.getBuddyId();
+        // Get the session from store
+        UserSession userSession = userSessionStore.getUserSession(buddyId);
+        // No session
+        if (userSession == null) {
             return LoginBuddyResponseEvent.loginFailure(
-                    "Cannot find connection manager for buddy.", event.getDetails()
+                    "Cannot find session for buddy.", event.getDetails()
             );
         }
+        // We need connection manager to login
+        ConnectionManager connectionManager = userSession.getConnectionManager();
 
         try {
             // Login
@@ -93,8 +111,6 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
             // Failure
             return LoginBuddyResponseEvent.loginFailure(e.getMessage(), buddy.toBuddyDetails());
         }
-
-
 
         // Success
         return LoginBuddyResponseEvent.loginSuccess(
@@ -111,36 +127,24 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
      */
     @Override
     public LogoutBuddyResponseEvent logoutBuddy(LogoutBuddyRequestEvent event) {
-        // Get buddy from details
+        // Get buddy form details
         Buddy buddy = Buddy.fromBuddyDetails(event.getDetails());
-        // Get connection manager from store
-        ConnectionManager connectionManager = connectionManagerStore.getConnectionManager(buddy.getBuddyId());
-
-        // Cannot logout buddy if no connection manager is stored
-        if (connectionManager == null) {
+        // We use buddy ID as an identification
+        Long buddyId = buddy.getBuddyId();
+        // Get the session from store
+        UserSession userSession = userSessionStore.getUserSession(buddyId);
+        // No session
+        if (userSession == null) {
             return LogoutBuddyResponseEvent.logoutFailure(
-                    "Cannot find connection manager for buddy.", buddy.toBuddyDetails()
+                    "Cannot find session for buddy.", event.getDetails()
             );
         }
-
+        // We need connection manager to login
+        ConnectionManager connectionManager = userSession.getConnectionManager();
         // Logout
         connectionManager.logout();
-
-        // Remove connection manager from store
-        connectionManagerStore.removeConnectionManager(buddy.getBuddyId());
-
-        // Call Session Did Logout
-        // TODO
-//        try {
-//            // Change local status to off
-//            SettingsLocalServiceUtil.changeStatus(userId, JabberKeys.JABBER_STATUS_OFF);
-//            // TODO: Move to conversation manager
-//            // Remove conversation from the conversation store
-//            ConversationStore.getInstance().removeConversationContainer(userId);
-//        } catch (Exception e) {
-//            throw new JabberException("Problems during logout occurred. However, user was successfully " +
-//                    "logged out from the Jabber server", e);
-//        }
+        // Destroy user session
+        userSessionStore.removeUserSession(buddyId);
 
         // Success
         return LogoutBuddyResponseEvent.logoutSuccess(
@@ -157,10 +161,20 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
      */
     @Override
     public UpdateStatusBuddyResponseEvent updateStatus(UpdateStatusBuddyRequestEvent event) {
+        // We use buddy ID as an identification
+        Long buddyId = event.getBuddyId();
+        // Get the session from store
+        UserSession userSession = userSessionStore.getUserSession(buddyId);
+        // No session
+        if (userSession == null) {
+            return UpdateStatusBuddyResponseEvent.updateStatusFailure(
+                    "There is no session for buddy", null
+            );
+        }
+        // We need connection manager to login
+        ConnectionManager connectionManager = userSession.getConnectionManager();
         // Map presence
         Presence presence = Presence.fromPresenceDetails(event.getPresenceDetails());
-        // Get connection manager from store
-        ConnectionManager connectionManager = connectionManagerStore.getConnectionManager(event.getBuddyId());
 
         try {
             // Set presence on server

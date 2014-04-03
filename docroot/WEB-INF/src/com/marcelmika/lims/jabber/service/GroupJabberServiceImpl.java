@@ -5,6 +5,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.events.details.GroupDetails;
 import com.marcelmika.lims.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.events.group.GetGroupsResponseEvent;
+import com.marcelmika.lims.jabber.JabberException;
 import com.marcelmika.lims.jabber.connection.manager.ConnectionManager;
 import com.marcelmika.lims.jabber.connection.store.ConnectionManagerStore;
 import com.marcelmika.lims.jabber.domain.Buddy;
@@ -12,8 +13,9 @@ import com.marcelmika.lims.jabber.domain.Group;
 import com.marcelmika.lims.jabber.group.manager.GroupManager;
 import com.marcelmika.lims.jabber.group.manager.GroupManagerFactory;
 import com.marcelmika.lims.jabber.group.store.GroupManagerStore;
+import com.marcelmika.lims.jabber.session.UserSession;
+import com.marcelmika.lims.jabber.session.UserSessionStore;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +32,7 @@ public class GroupJabberServiceImpl implements GroupJabberService {
     // Dependencies
     private ConnectionManagerStore connectionManagerStore;
     private GroupManagerStore groupManagerStore;
+    private UserSessionStore userSessionStore;
 
     /**
      * Constructor
@@ -37,9 +40,11 @@ public class GroupJabberServiceImpl implements GroupJabberService {
      * @param connectionManagerStore ConnectionManagerStore
      */
     public GroupJabberServiceImpl(ConnectionManagerStore connectionManagerStore,
-                                  GroupManagerStore groupManagerStore) {
+                                  GroupManagerStore groupManagerStore,
+                                  UserSessionStore userSessionStore) {
         this.connectionManagerStore = connectionManagerStore;
         this.groupManagerStore = groupManagerStore;
+        this.userSessionStore = userSessionStore;
     }
 
     /**
@@ -50,10 +55,21 @@ public class GroupJabberServiceImpl implements GroupJabberService {
      */
     @Override
     public GetGroupsResponseEvent getGroups(GetGroupsRequestEvent event) {
-        // Get buddy from event
+        // Get buddy form details
         Buddy buddy = Buddy.fromBuddyDetails(event.getBuddyDetails());
+        // We use buddy ID as an identification
+        Long buddyId = buddy.getBuddyId();
+        // Get the session from store
+        UserSession userSession = userSessionStore.getUserSession(buddyId);
+        // No session
+        if (userSession == null) {
+            return GetGroupsResponseEvent.getGroupsFailure(
+                    new JabberException(String.format("No session for user %d found", buddyId))
+            );
+        }
+
         // Get groups manager related to buddy
-        GroupManager groupManager = getGroupManager(buddy.getBuddyId());
+        GroupManager groupManager = userSession.getGroupManager();
         // Get a list of groups
         List<Group> groups = groupManager.getGroups();
         // Map it to group details
@@ -61,27 +77,5 @@ public class GroupJabberServiceImpl implements GroupJabberService {
 
         // Return success
         return GetGroupsResponseEvent.getGroupsSuccess(details);
-    }
-
-    /**
-     * Returns a group manager from the group store
-     *
-     * @param id of the group manager
-     * @return GroupManager
-     */
-    private GroupManager getGroupManager(Long id) {
-        // Add new group manager if does not exist
-        if(!groupManagerStore.containsGroupManager(id)) {
-            // Build new group manager
-            GroupManager groupManager = GroupManagerFactory.buildGroupManager(id);
-            // Get connection manager from store
-            ConnectionManager connectionManager = connectionManagerStore.getConnectionManager(id);
-            // Set roster to group manager
-            groupManager.setRoster(connectionManager.getRoster());
-            // Add it to store
-            groupManagerStore.addGroupManager(groupManager);
-        }
-
-        return groupManagerStore.getConnectionManager(id);
     }
 }

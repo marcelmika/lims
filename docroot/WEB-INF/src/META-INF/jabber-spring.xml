@@ -70,8 +70,14 @@
 
     <bean id="com.marcelmika.lims.jabber.service.BuddyJabberService"
           class="com.marcelmika.lims.jabber.service.BuddyJabberServiceImpl">
-        <constructor-arg ref="com.marcelmika.lims.jabber.connection.store.ConnectionManagerStore"/>
+        <constructor-arg index="0" ref="com.marcelmika.lims.jabber.session.UserSessionStore"/>
     </bean>
+
+
+    <!-- User Session Store -->
+    <bean id="com.marcelmika.lims.jabber.session.UserSessionStore"
+          class="com.marcelmika.lims.jabber.session.UserSessionStoreImpl"/>
+
 
 
     <bean id="com.marcelmika.lims.jabber.connection.store.ConnectionManagerStore"
@@ -105,6 +111,7 @@
           class="com.marcelmika.lims.jabber.service.GroupJabberServiceImpl">
         <constructor-arg index="0" ref="com.marcelmika.lims.jabber.connection.store.ConnectionManagerStore"/>
         <constructor-arg index="1" ref="com.marcelmika.lims.jabber.group.store.GroupManagerStore"/>
+        <constructor-arg index="2" ref="com.marcelmika.lims.jabber.session.UserSessionStore"/>
     </bean>
 
 

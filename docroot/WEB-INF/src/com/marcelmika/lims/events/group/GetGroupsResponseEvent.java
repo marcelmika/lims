@@ -23,9 +23,9 @@ public class GetGroupsResponseEvent extends ResponseEvent {
         return event;
     }
 
-    public static GetGroupsResponseEvent sendMessageFailure(String result, Throwable exception) {
+    public static GetGroupsResponseEvent getGroupsFailure(Throwable exception) {
         GetGroupsResponseEvent event = new GetGroupsResponseEvent();
-        event.result = result;
+        event.result = exception.getMessage();
         event.success = false;
         event.exception = exception;
 
