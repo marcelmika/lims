@@ -20,6 +20,7 @@ import java.util.List;
  * @link http://marcelmika.com/lims
  * Date: 11/24/13
  * Time: 11:18 PM
+ * @deprecated
  */
 // @todo: Not implemented in v0.2
 public class SUConversation implements Conversation, JSONable {

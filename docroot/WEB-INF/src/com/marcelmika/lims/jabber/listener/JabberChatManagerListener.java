@@ -16,6 +16,7 @@ import org.jivesoftware.smack.ChatManagerListener;
  * @link http://marcelmika.com/lims
  * Date: 11/24/13
  * Time: 11:18 PM
+ * @deprecated
  */
 public class JabberChatManagerListener implements ChatManagerListener {
 

@@ -37,6 +37,7 @@ import java.util.UUID;
  * @link http://marcelmika.com/lims
  * Date: 11/24/13
  * Time: 7:10 PM
+ * @deprecated
  */
 public class JabberImpl implements Jabber {
 

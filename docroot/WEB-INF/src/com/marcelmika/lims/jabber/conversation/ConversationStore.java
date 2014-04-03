@@ -10,6 +10,7 @@ import java.util.Map;
  * @link http://marcelmika.com/lims
  * Date: 11/24/13
  * Time: 11:18 PM
+ * @deprecated
  */
 public class ConversationStore {
     Map<Long, ConversationContainer> conversationContainers = new HashMap<Long, ConversationContainer>();
