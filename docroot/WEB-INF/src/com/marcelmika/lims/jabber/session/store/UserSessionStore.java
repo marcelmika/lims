@@ -1,4 +1,6 @@
-package com.marcelmika.lims.jabber.session;
+package com.marcelmika.lims.jabber.session.store;
+
+import com.marcelmika.lims.jabber.session.UserSession;
 
 /**
  * @author Ing. Marcel Mika

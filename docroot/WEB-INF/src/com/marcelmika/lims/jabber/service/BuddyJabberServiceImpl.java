@@ -6,11 +6,10 @@ import com.marcelmika.lims.events.buddy.*;
 import com.marcelmika.lims.jabber.JabberException;
 import com.marcelmika.lims.jabber.connection.manager.ConnectionManager;
 import com.marcelmika.lims.jabber.connection.manager.ConnectionManagerFactory;
-import com.marcelmika.lims.jabber.connection.store.ConnectionManagerStore;
 import com.marcelmika.lims.jabber.domain.Buddy;
 import com.marcelmika.lims.jabber.domain.Presence;
 import com.marcelmika.lims.jabber.session.UserSession;
-import com.marcelmika.lims.jabber.session.UserSessionStore;
+import com.marcelmika.lims.jabber.session.store.UserSessionStore;
 
 /**
  * @author Ing. Marcel Mika

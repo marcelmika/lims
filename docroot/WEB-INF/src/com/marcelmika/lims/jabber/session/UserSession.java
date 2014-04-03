@@ -21,6 +21,10 @@ public class UserSession {
     private MultiUserConversationManager multiUserConversationManager;
 
 
+    public UserSession(Long sessionId) {
+        this.sessionId = sessionId;
+    }
+
     public static UserSession fromConnectionManager(Long sessionId, ConnectionManager connectionManager) {
         // Create new user session
         UserSession userSession = new UserSession(sessionId);
@@ -33,10 +37,6 @@ public class UserSession {
 
 
         return userSession;
-    }
-
-    public UserSession(Long sessionId) {
-        this.sessionId = sessionId;
     }
 
     public Long getSessionId() {

@@ -7,17 +7,12 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
         >
-    <!--<bean id="com.marcelmika.lims.jabber.JabberUtil" class="com.marcelmika.lims.jabber.JabberUtil">-->
-        <!--<property name="jabber" ref="com.marcelmika.lims.jabber.JabberImpl"/>-->
-    <!--</bean>-->
-    <!--<bean id="com.marcelmika.lims.jabber.JabberImpl" class="com.marcelmika.lims.jabber.JabberImpl"/>-->
 
     <!-- Settings Core Service -->
 
     <bean id="com.marcelmika.lims.core.service.SettingsCoreService"
           class="com.marcelmika.lims.core.service.SettingsCoreServiceImpl">
         <constructor-arg index="0" ref="com.marcelmika.lims.persistence.service.SettingsPersistenceService"/>
-        <!--<constructor-arg index="0" ref="com.marcelmika.lims.jabber.service.BuddyJabberServiceImpl"/>-->
     </bean>
 
     <bean id="com.marcelmika.lims.core.service.SettingsCoreServiceUtil"
@@ -29,7 +24,7 @@
 
     <bean id="com.marcelmika.lims.persistence.service.SettingsPersistenceService"
           class="com.marcelmika.lims.persistence.service.SettingsPersistenceServiceImpl">
-        <!--<constructor-arg ref="com.marcelmika.lims.jabber.connection.store.ConnectionManagerStoreImpl"/>-->
+
     </bean>
 
     <!-- Conversation Core Service -->
@@ -48,7 +43,7 @@
 
     <bean id="com.marcelmika.lims.jabber.service.ConversationJabberService"
           class="com.marcelmika.lims.jabber.service.ConversationJabberServiceImpl">
-        <!--<constructor-arg ref="com.marcelmika.lims.jabber.connection.store.ConnectionManagerStoreImpl"/>-->
+
     </bean>
 
 
@@ -76,12 +71,8 @@
 
     <!-- User Session Store -->
     <bean id="com.marcelmika.lims.jabber.session.UserSessionStore"
-          class="com.marcelmika.lims.jabber.session.UserSessionStoreImpl"/>
+          class="com.marcelmika.lims.jabber.session.store.UserSessionStoreImpl"/>
 
-
-
-    <bean id="com.marcelmika.lims.jabber.connection.store.ConnectionManagerStore"
-          class="com.marcelmika.lims.jabber.connection.store.ConnectionManagerStoreImpl"/>
 
     <!-- Buddy Persistence Service -->
     <bean id="com.marcelmika.lims.persistence.service.BuddyPersistenceService"
@@ -103,15 +94,9 @@
 
     <!-- Group Jabber Service -->
 
-    <bean id="com.marcelmika.lims.jabber.group.store.GroupManagerStore"
-          class="com.marcelmika.lims.jabber.group.store.GroupManagerStoreImpl"/>
-
-
     <bean id="com.marcelmika.lims.jabber.service.GroupJabberService"
           class="com.marcelmika.lims.jabber.service.GroupJabberServiceImpl">
-        <constructor-arg index="0" ref="com.marcelmika.lims.jabber.connection.store.ConnectionManagerStore"/>
-        <constructor-arg index="1" ref="com.marcelmika.lims.jabber.group.store.GroupManagerStore"/>
-        <constructor-arg index="2" ref="com.marcelmika.lims.jabber.session.UserSessionStore"/>
+        <constructor-arg index="0" ref="com.marcelmika.lims.jabber.session.UserSessionStore"/>
     </bean>
 
 

@@ -6,15 +6,11 @@ import com.marcelmika.lims.events.details.GroupDetails;
 import com.marcelmika.lims.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.events.group.GetGroupsResponseEvent;
 import com.marcelmika.lims.jabber.JabberException;
-import com.marcelmika.lims.jabber.connection.manager.ConnectionManager;
-import com.marcelmika.lims.jabber.connection.store.ConnectionManagerStore;
 import com.marcelmika.lims.jabber.domain.Buddy;
 import com.marcelmika.lims.jabber.domain.Group;
 import com.marcelmika.lims.jabber.group.manager.GroupManager;
-import com.marcelmika.lims.jabber.group.manager.GroupManagerFactory;
-import com.marcelmika.lims.jabber.group.store.GroupManagerStore;
 import com.marcelmika.lims.jabber.session.UserSession;
-import com.marcelmika.lims.jabber.session.UserSessionStore;
+import com.marcelmika.lims.jabber.session.store.UserSessionStore;
 
 import java.util.List;
 
@@ -30,20 +26,14 @@ public class GroupJabberServiceImpl implements GroupJabberService {
     private static Log log = LogFactoryUtil.getLog(GroupJabberServiceImpl.class);
 
     // Dependencies
-    private ConnectionManagerStore connectionManagerStore;
-    private GroupManagerStore groupManagerStore;
     private UserSessionStore userSessionStore;
 
     /**
      * Constructor
      *
-     * @param connectionManagerStore ConnectionManagerStore
+     * @param userSessionStore UserSessionStore
      */
-    public GroupJabberServiceImpl(ConnectionManagerStore connectionManagerStore,
-                                  GroupManagerStore groupManagerStore,
-                                  UserSessionStore userSessionStore) {
-        this.connectionManagerStore = connectionManagerStore;
-        this.groupManagerStore = groupManagerStore;
+    public GroupJabberServiceImpl(UserSessionStore userSessionStore) {
         this.userSessionStore = userSessionStore;
     }
 
