@@ -126,10 +126,11 @@ public class PollerProcessor extends BasePollerProcessor {
             // Serialize to json string
             String jsonString = JSONFactoryUtil.looseSerialize(buddies);
 
-            // Add to response
             try {
+                // Add to response
                 pollerResponse.setParameter("buddies", createJsonArray(jsonString));
             } catch (PollerResponseClosedException e) {
+                // Log what went wrong
                 log.error("Poller response was closed", e);
             }
 
@@ -159,7 +160,22 @@ public class PollerProcessor extends BasePollerProcessor {
         );
 
         if (responseEvent.isSuccess()) {
+            // Get groups from group details
+            List<Group> groups = Group.fromGroupDetails(responseEvent.getGroups());
+            // Serialize to json string (include buddies collection)
+            String jsonString = JSONFactoryUtil.looseSerialize(groups, "buddies");
 
+            try {
+                // Add to response
+                pollerResponse.setParameter("groups", createJsonArray(jsonString));
+            } catch (PollerResponseClosedException e) {
+                // Log what went wrong
+                log.error(responseEvent.getException());
+            }
+
+        } else {
+            // At least log what went wrong
+            log.error(responseEvent.getException());
         }
     }
 

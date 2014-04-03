@@ -2,11 +2,11 @@ package com.marcelmika.lims.jabber.group.manager;
 
 import com.marcelmika.lims.jabber.domain.Buddy;
 import com.marcelmika.lims.jabber.domain.Group;
+import com.marcelmika.lims.jabber.domain.Presence;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.RosterGroup;
 import org.jivesoftware.smack.RosterListener;
-import org.jivesoftware.smack.packet.Presence;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -100,7 +100,7 @@ public class GroupManagerImpl implements GroupManager, RosterListener {
     }
 
     @Override
-    public void presenceChanged(Presence presence) {
+    public void presenceChanged(org.jivesoftware.smack.packet.Presence presence) {
         // Refresh data
         mapGroupsFromRoster();
     }
@@ -118,20 +118,18 @@ public class GroupManagerImpl implements GroupManager, RosterListener {
 
             // Add buddies to Group
             for (RosterEntry entry : rosterGroup.getEntries()) {
-
-                Presence presence = roster.getPresence(entry.getUser());
-
+                // Map buddy
                 Buddy buddy = Buddy.fromRosterEntry(entry);
-//                buddy.setStatus(new Status(presence));
+                // Map presence
+                Presence presence = Presence.fromSmackPresence(roster.getPresence(entry.getUser()));
+                buddy.setPresence(presence);
+
+                // Add buddy to the group
                 group.addBuddy(buddy);
             }
 
             // Add Group to the collection
             groups.add(group);
         }
-
-        this.groups = groups;
     }
-
-
 }

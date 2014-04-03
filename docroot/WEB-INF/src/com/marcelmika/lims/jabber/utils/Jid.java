@@ -21,8 +21,7 @@ public class Jid {
      * argument.
      */
     public static String getResource(String user) {
-        return user == null ? null : StringUtils.parseResource(user
-                .toLowerCase(Locale.US));
+        return user == null ? null : StringUtils.parseResource(user.toLowerCase(Locale.US));
     }
 
     /**
@@ -30,8 +29,7 @@ public class Jid {
      * <code>null</code> argument.
      */
     public static String getServer(String user) {
-        return user == null ? null : StringUtils.parseServer(user
-                .toLowerCase(Locale.US));
+        return user == null ? null : StringUtils.parseServer(user.toLowerCase(Locale.US));
     }
 
     /**
@@ -39,8 +37,7 @@ public class Jid {
      * <code>null</code> argument.
      */
     public static String getName(String user) {
-        return user == null ? null : StringUtils.parseName(user
-                .toLowerCase(Locale.US));
+        return user == null ? null : StringUtils.parseName(user.toLowerCase(Locale.US));
     }
 
     /**
@@ -48,8 +45,7 @@ public class Jid {
      * <code>null</code> argument.
      */
     public static String getBareAddress(String user) {
-        return user == null ? null : StringUtils.parseBareAddress(user
-                .toLowerCase(Locale.US));
+        return user == null ? null : StringUtils.parseBareAddress(user.toLowerCase(Locale.US));
     }
 
     /**

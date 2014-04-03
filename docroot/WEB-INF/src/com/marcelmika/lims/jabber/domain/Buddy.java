@@ -35,8 +35,8 @@ public class Buddy {
         // Create new buddy
         Buddy buddy = new Buddy();
         // Map properties
-        buddy.fullName = rosterEntry.getName();
-        buddy.screenName = rosterEntry.getUser();
+        buddy.fullName = Jid.getName(rosterEntry.getName());
+        buddy.screenName = Jid.getName(rosterEntry.getUser());
 
         return buddy;
     }

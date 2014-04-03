@@ -54,20 +54,20 @@ public class GroupJabberServiceImpl implements GroupJabberService {
         Buddy buddy = Buddy.fromBuddyDetails(event.getBuddyDetails());
         // Get groups manager related to buddy
         GroupManager groupManager = getGroupManager(buddy.getBuddyId());
-
+        // Get a list of groups
         List<Group> groups = groupManager.getGroups();
-        log.info("groups:");
-        log.info(groups);
+        // Map it to group details
+        List<GroupDetails> details = Group.toGroupDetailsList(groups);
 
-        // todo: Implement mapping to group details
-
-        return GetGroupsResponseEvent.getGroupsSuccess(null);
+        // Return success
+        return GetGroupsResponseEvent.getGroupsSuccess(details);
     }
 
     /**
+     * Returns a group manager from the group store
      *
-     * @param id
-     * @return
+     * @param id of the group manager
+     * @return GroupManager
      */
     private GroupManager getGroupManager(Long id) {
         // Add new group manager if does not exist

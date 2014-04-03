@@ -43,6 +43,20 @@ public enum Presence {
         }
     }
 
+    public static Presence fromSmackPresence(org.jivesoftware.smack.packet.Presence smackPresence) {
+        if (smackPresence.getType().equals(org.jivesoftware.smack.packet.Presence.Type.unavailable)) {
+            return Presence.STATE_OFFLINE;
+        } else if (smackPresence.getMode().equals(org.jivesoftware.smack.packet.Presence.Mode.available)) {
+            return Presence.STATE_ACTIVE;
+        } else if (smackPresence.getMode().equals(org.jivesoftware.smack.packet.Presence.Mode.away)) {
+            return Presence.STATE_AWAY;
+        } else if (smackPresence.getMode().equals(org.jivesoftware.smack.packet.Presence.Mode.dnd)) {
+            return Presence.STATE_DND;
+        } else {
+            return Presence.STATE_UNRECOGNIZED;
+        }
+    }
+
     public int getCode() {
         return code;
     }
@@ -97,4 +111,5 @@ public enum Presence {
 
         return new org.jivesoftware.smack.packet.Presence(type, statusDescription, priority, mode);
     }
+
 }

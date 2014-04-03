@@ -38,6 +38,24 @@ public class Group {
     }
 
     /**
+     * Create a list of groups from a list of group details
+     *
+     * @param groupDetails list of group details
+     * @return list of groups
+     */
+    public static List<Group> fromGroupDetails(List<GroupDetails> groupDetails) {
+        List<Group> groups = new ArrayList<Group>();
+
+        // Map all group details to group
+        for(GroupDetails details : groupDetails) {
+            groups.add(Group.fromGroupDetails(details));
+        }
+
+        return groups;
+    }
+
+
+    /**
      * Maps group to group details
      *
      * @return GroupDetails
