@@ -11,6 +11,7 @@ import java.util.List;
 public class ConversationDetails {
 
     private String conversationId;
+    private ConversationTypeDetails conversationType;
     private List<BuddyDetails> participants;
     private String title;
     private String name;
@@ -26,6 +27,14 @@ public class ConversationDetails {
 
     public void setConversationId(String conversationId) {
         this.conversationId = conversationId;
+    }
+
+    public ConversationTypeDetails getConversationType() {
+        return conversationType;
+    }
+
+    public void setConversationType(ConversationTypeDetails conversationType) {
+        this.conversationType = conversationType;
     }
 
     public List<BuddyDetails> getParticipants() {

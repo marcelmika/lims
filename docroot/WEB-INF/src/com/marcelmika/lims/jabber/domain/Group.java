@@ -16,6 +16,11 @@ public class Group {
     private String name;
     private List<Buddy> buddies = new ArrayList<Buddy>();
 
+
+    // -------------------------------------------------------------------------------------------
+    // Factory Methods
+    // -------------------------------------------------------------------------------------------
+
     /**
      * Create new group and maps data from group details
      *
@@ -74,6 +79,10 @@ public class Group {
     }
 
 
+    // -------------------------------------------------------------------------------------------
+    // Getters/Setters
+    // -------------------------------------------------------------------------------------------
+
     public List<Buddy> getBuddies() {
         return buddies;
     }
@@ -89,7 +98,6 @@ public class Group {
     public void setName(String name) {
         this.name = name;
     }
-
 
     /**
      * String representation of the Group.

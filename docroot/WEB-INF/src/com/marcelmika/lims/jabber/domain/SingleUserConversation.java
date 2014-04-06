@@ -19,6 +19,8 @@ public class SingleUserConversation implements MessageListener {
     // Log
     private static Log log = LogFactoryUtil.getLog(SingleUserConversation.class);
 
+    private String conversationId;
+    private ConversationType conversationType;
     private Buddy participant;
     private List<Message> messages = new ArrayList<Message>();
 
@@ -32,10 +34,11 @@ public class SingleUserConversation implements MessageListener {
     public static SingleUserConversation fromChat(Chat chat) {
         // Create new instance of conversation
         SingleUserConversation conversation = new SingleUserConversation();
-//        conversation.threadId = chat.getThreadID();
+        // Map properties
+        conversation.conversationId = chat.getThreadID();
         // Map relationships
-        // Add buddy to conversation
         conversation.participant = Buddy.fromChat(chat);
+        conversation.conversationType = ConversationType.SINGLE_USER;
         // Set conversation as a message listener. Thanks to that it
         // will be able to change inner content
         chat.addMessageListener(conversation);
@@ -45,7 +48,7 @@ public class SingleUserConversation implements MessageListener {
 
 
     // -------------------------------------------------------------------------------------------
-    // Override: MessageListener
+    // Message Listener
     // -------------------------------------------------------------------------------------------
 
     /**
@@ -61,6 +64,27 @@ public class SingleUserConversation implements MessageListener {
         log.info(String.format("From: %s, Body: %s", message.getFrom().getScreenName(), message.getBody()));
 
         messages.add(message);
+    }
+
+
+    // -------------------------------------------------------------------------------------------
+    // Getters/Setters
+    // -------------------------------------------------------------------------------------------
+
+    public String getConversationId() {
+        return conversationId;
+    }
+
+    public void setConversationId(String conversationId) {
+        this.conversationId = conversationId;
+    }
+
+    public ConversationType getConversationType() {
+        return conversationType;
+    }
+
+    public void setConversationType(ConversationType conversationType) {
+        this.conversationType = conversationType;
     }
 
     public Buddy getParticipant() {

@@ -7,4 +7,19 @@ package com.marcelmika.lims.jabber.domain;
  * Time: 1:07 AM
  */
 public class MultiUserConversation {
+
+    private ConversationType conversationType;
+
+
+    // -------------------------------------------------------------------------------------------
+    // Getters/Setters
+    // -------------------------------------------------------------------------------------------
+
+    public ConversationType getConversationType() {
+        return conversationType;
+    }
+
+    public void setConversationType(ConversationType conversationType) {
+        this.conversationType = conversationType;
+    }
 }

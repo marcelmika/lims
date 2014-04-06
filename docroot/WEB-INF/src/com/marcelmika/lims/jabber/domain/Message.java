@@ -19,6 +19,10 @@ public class Message {
     private String body;
 
 
+    // -------------------------------------------------------------------------------------------
+    // Factory Methods
+    // -------------------------------------------------------------------------------------------
+
     public static Message fromSmackMessage(org.jivesoftware.smack.packet.Message smackMessage) {
         // Create new message
         Message message = new Message();
@@ -68,6 +72,11 @@ public class Message {
             return new Date(0);
         }
     }
+
+
+    // -------------------------------------------------------------------------------------------
+    // Getters/Setters
+    // -------------------------------------------------------------------------------------------
 
     public Buddy getFrom() {
         return from;
