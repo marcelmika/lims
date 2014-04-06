@@ -1,5 +1,6 @@
 package com.marcelmika.lims.jabber.domain;
 
+import com.marcelmika.lims.events.details.MessageDetails;
 import org.jivesoftware.smackx.packet.DelayInformation;
 
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.Date;
  */
 public class Message {
 
+    private Buddy to;
     private Buddy from;
     private Date createdAt;
     private String body;
@@ -25,6 +27,19 @@ public class Message {
         message.createdAt = getMessageTimestamp(smackMessage);
         // Map relations
         message.from = Buddy.fromSmackMessage(smackMessage);
+
+        return message;
+    }
+
+    public static Message fromMessageDetails(MessageDetails details) {
+        // Create new message
+        Message message = new Message();
+        // Map properties
+        message.body = details.getBody();
+        message.createdAt = details.getCreatedAt();
+        // Relations
+        message.to = Buddy.fromBuddyDetails(details.getTo());
+        message.from = Buddy.fromBuddyDetails(details.getFrom());
 
         return message;
     }
@@ -60,6 +75,14 @@ public class Message {
 
     public void setFrom(Buddy from) {
         this.from = from;
+    }
+
+    public Buddy getTo() {
+        return to;
+    }
+
+    public void setTo(Buddy to) {
+        this.to = to;
     }
 
     public Date getCreatedAt() {

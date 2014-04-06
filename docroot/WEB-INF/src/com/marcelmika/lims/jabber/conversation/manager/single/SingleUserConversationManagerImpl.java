@@ -63,7 +63,7 @@ public class SingleUserConversationManagerImpl implements SingleUserConversation
     public void chatCreated(Chat chat, boolean createdLocally) {
         // Create new conversation
         SingleUserConversation conversation = SingleUserConversation.fromChat(chat);
-        // Add chat pointer to chat map, otherwise it will be garbage collected;
+        // Add chat pointer to chat map, otherwise it will be garbage collected.
         chatMap.put(chat.getThreadID(), chat);
         // Add conversation to the map
         conversationMap.put(chat.getThreadID(), conversation);

@@ -21,8 +21,10 @@ import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManager;
 import org.jivesoftware.smack.ChatManagerListener;
 import org.jivesoftware.smack.Connection;
+import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smackx.muc.HostedRoom;
+import org.jivesoftware.smackx.muc.InvitationListener;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 
 import java.util.Collection;
@@ -37,6 +39,7 @@ import java.util.UUID;
  * @link http://marcelmika.com/lims
  * Date: 11/24/13
  * Time: 7:10 PM
+ * @deprecated
  */
 public class JabberImpl implements Jabber {
 
@@ -60,6 +63,13 @@ public class JabberImpl implements Jabber {
         // Get all hosted rooms on the jabber server
         Collection<HostedRoom> hostedRooms = MultiUserChat.getHostedRooms(connection, PortletPropsValues.JABBER_SERVICE_MULTICHAT_NAME);
         Iterator<String> joinedRooms = MultiUserChat.getJoinedRooms(connection, PortletPropsValues.JABBER_SERVICE_MULTICHAT_NAME);
+
+//          MultiUserChat.addInvitationListener(connection, new InvitationListener() {
+//              @Override
+//              public void invitationReceived(Connection connection, String s, String s2, String s3, String s4, Message message) {
+//
+//              }
+//          });
 
         while (joinedRooms.hasNext()) {
             System.out.println("JOINED: " + joinedRooms.next());

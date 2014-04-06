@@ -1,5 +1,8 @@
 package com.marcelmika.lims.jabber.conversation.manager.multi;
 
+import com.marcelmika.lims.jabber.connection.manager.ConnectionManager;
+import org.jivesoftware.smack.Connection;
+
 /**
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
@@ -7,4 +10,12 @@ package com.marcelmika.lims.jabber.conversation.manager.multi;
  * Time: 11:39 PM
  */
 public interface MultiUserConversationManager {
+
+    /**
+     * Sets connection
+     *
+     * @param connection Connection
+     */
+    public void setConnection(Connection connection);
+
 }

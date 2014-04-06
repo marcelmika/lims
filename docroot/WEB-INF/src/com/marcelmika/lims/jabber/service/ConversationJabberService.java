@@ -2,6 +2,8 @@ package com.marcelmika.lims.jabber.service;
 
 import com.marcelmika.lims.events.conversation.GetConversationsRequestEvent;
 import com.marcelmika.lims.events.conversation.GetConversationsResponseEvent;
+import com.marcelmika.lims.events.conversation.SendMessageRequestEvent;
+import com.marcelmika.lims.events.conversation.SendMessageResponseEvent;
 
 /**
  * @author Ing. Marcel Mika
@@ -18,5 +20,13 @@ public interface ConversationJabberService {
      * @return response event for  method
      */
     public GetConversationsResponseEvent getConversations(GetConversationsRequestEvent event);
+
+    /**
+     * Sends message to conversation
+     *
+     * @param event request event for method
+     * @return response event for method
+     */
+    public SendMessageResponseEvent sendMessage(SendMessageRequestEvent event);
 
 }

@@ -18,9 +18,9 @@ public class SendMessageResponseEvent extends ResponseEvent {
         return event;
     }
 
-    public static SendMessageResponseEvent sendMessageFailure(String result, Throwable exception) {
+    public static SendMessageResponseEvent sendMessageFailure(Throwable exception) {
         SendMessageResponseEvent event = new SendMessageResponseEvent();
-        event.result = result;
+        event.result = exception.getMessage();
         event.success = false;
         event.exception = exception;
 

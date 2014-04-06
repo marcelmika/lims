@@ -16,6 +16,7 @@ import java.util.List;
 public class Conversation {
 
     private String conversationId;
+    private ConversationType conversationType;
     private String title;
     private String name;
     private String type;
