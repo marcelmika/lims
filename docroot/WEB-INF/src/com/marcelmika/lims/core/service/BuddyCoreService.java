@@ -1,6 +1,6 @@
 package com.marcelmika.lims.core.service;
 
-import com.marcelmika.lims.events.buddy.*;
+import com.marcelmika.lims.api.events.buddy.*;
 
 /**
  * Serves as a port to the business logic related to buddy.

@@ -6,7 +6,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.core.service.BuddyCoreService;
 import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
-import com.marcelmika.lims.events.buddy.LoginBuddyRequestEvent;
+import com.marcelmika.lims.api.events.buddy.LoginBuddyRequestEvent;
 import com.marcelmika.lims.portal.domain.Buddy;
 
 import javax.servlet.http.HttpServletRequest;

@@ -1,6 +1,6 @@
 package com.marcelmika.lims.core.service;
 
-import com.marcelmika.lims.events.conversation.*;
+import com.marcelmika.lims.api.events.conversation.*;
 
 /**
  * Serves as a port to the business logic related to conversation.

@@ -1,9 +1,9 @@
 package com.marcelmika.lims.jabber.service;
 
-import com.marcelmika.lims.events.conversation.GetConversationsRequestEvent;
-import com.marcelmika.lims.events.conversation.GetConversationsResponseEvent;
-import com.marcelmika.lims.events.conversation.SendMessageRequestEvent;
-import com.marcelmika.lims.events.conversation.SendMessageResponseEvent;
+import com.marcelmika.lims.api.events.conversation.GetConversationsRequestEvent;
+import com.marcelmika.lims.api.events.conversation.GetConversationsResponseEvent;
+import com.marcelmika.lims.api.events.conversation.SendMessageRequestEvent;
+import com.marcelmika.lims.api.events.conversation.SendMessageResponseEvent;
 
 /**
  * @author Ing. Marcel Mika

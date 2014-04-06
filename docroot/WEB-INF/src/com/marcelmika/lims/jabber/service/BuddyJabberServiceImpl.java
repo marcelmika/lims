@@ -2,7 +2,7 @@ package com.marcelmika.lims.jabber.service;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.marcelmika.lims.events.buddy.*;
+import com.marcelmika.lims.api.events.buddy.*;
 import com.marcelmika.lims.jabber.JabberException;
 import com.marcelmika.lims.jabber.connection.manager.ConnectionManager;
 import com.marcelmika.lims.jabber.connection.manager.ConnectionManagerFactory;

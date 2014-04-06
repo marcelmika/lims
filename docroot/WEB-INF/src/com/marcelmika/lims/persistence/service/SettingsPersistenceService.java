@@ -1,6 +1,6 @@
 package com.marcelmika.lims.persistence.service;
 
-import com.marcelmika.lims.events.settings.*;
+import com.marcelmika.lims.api.events.settings.*;
 
 /**
  * @author Ing. Marcel Mika

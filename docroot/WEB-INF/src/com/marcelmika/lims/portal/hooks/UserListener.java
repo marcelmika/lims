@@ -7,8 +7,8 @@ import com.liferay.portal.model.BaseModelListener;
 import com.liferay.portal.model.User;
 import com.marcelmika.lims.core.service.BuddyCoreService;
 import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
-import com.marcelmika.lims.events.buddy.DeleteBuddyRequestEvent;
-import com.marcelmika.lims.events.buddy.DeleteBuddyResponseEvent;
+import com.marcelmika.lims.api.events.buddy.DeleteBuddyRequestEvent;
+import com.marcelmika.lims.api.events.buddy.DeleteBuddyResponseEvent;
 import com.marcelmika.lims.portal.domain.Buddy;
 
 /**

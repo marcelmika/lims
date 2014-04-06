@@ -1,12 +1,8 @@
 package com.marcelmika.lims.core.service;
 
-import com.marcelmika.lims.events.ResponseEvent;
-import com.marcelmika.lims.events.settings.*;
-import com.marcelmika.lims.persistence.service.BuddyPersistenceService;
+import com.marcelmika.lims.api.events.ResponseEvent;
+import com.marcelmika.lims.api.events.settings.*;
 import com.marcelmika.lims.persistence.service.SettingsPersistenceService;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import javax.xml.ws.Response;
 
 /**
  * Implementation of SettingsCoreService

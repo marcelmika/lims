@@ -2,7 +2,7 @@ package com.marcelmika.lims.core.service;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.marcelmika.lims.events.buddy.*;
+import com.marcelmika.lims.api.events.buddy.*;
 import com.marcelmika.lims.jabber.service.BuddyJabberService;
 import com.marcelmika.lims.persistence.service.BuddyPersistenceService;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;

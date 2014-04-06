@@ -5,7 +5,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.poller.PollerRequest;
 import com.liferay.portal.kernel.poller.PollerResponse;
-import com.marcelmika.lims.events.ResponseEvent;
+import com.marcelmika.lims.api.events.ResponseEvent;
 
 /**
  * Poller dispatcher is responsible for calling the appropriate method

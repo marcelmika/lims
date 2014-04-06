@@ -1,6 +1,6 @@
 package com.marcelmika.lims.core.service;
 
-import com.marcelmika.lims.events.settings.*;
+import com.marcelmika.lims.api.events.settings.*;
 
 /**
  * Several settings values like currently opened panel, mute or active room type are related to each buddy.

@@ -1,0 +1,24 @@
+package com.marcelmika.lims.api.events.buddy;
+
+import com.marcelmika.lims.api.events.RequestEvent;
+import com.marcelmika.lims.api.entity.BuddyDetails;
+
+/**
+ * @author Ing. Marcel Mika
+ * @link http://marcelmika.com
+ * Date: 2/2/14
+ * Time: 6:46 PM
+ */
+public class LogoutBuddyRequestEvent extends RequestEvent {
+
+    private final BuddyDetails details;
+
+    public LogoutBuddyRequestEvent(BuddyDetails details) {
+        this.details = details;
+    }
+
+    public BuddyDetails getDetails() {
+        return details;
+    }
+
+}

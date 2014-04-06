@@ -1,7 +1,7 @@
 package com.marcelmika.lims.core.service;
 
-import com.marcelmika.lims.events.group.GetGroupsRequestEvent;
-import com.marcelmika.lims.events.group.GetGroupsResponseEvent;
+import com.marcelmika.lims.api.events.group.GetGroupsRequestEvent;
+import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
 
 /**
  * @author Ing. Marcel Mika

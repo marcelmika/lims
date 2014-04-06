@@ -1,6 +1,6 @@
 package com.marcelmika.lims.persistence.service;
 
-import com.marcelmika.lims.events.buddy.*;
+import com.marcelmika.lims.api.events.buddy.*;
 import com.marcelmika.lims.model.Settings;
 import com.marcelmika.lims.persistence.domain.Buddy;
 import com.marcelmika.lims.persistence.domain.Presence;

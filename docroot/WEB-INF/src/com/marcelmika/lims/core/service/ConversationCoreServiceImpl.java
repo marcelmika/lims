@@ -1,6 +1,6 @@
 package com.marcelmika.lims.core.service;
 
-import com.marcelmika.lims.events.conversation.*;
+import com.marcelmika.lims.api.events.conversation.*;
 import com.marcelmika.lims.jabber.service.ConversationJabberService;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
