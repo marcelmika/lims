@@ -115,7 +115,6 @@ public class PollerDispatcher {
         // Run methods on poller processor
 //        pollerProcessor.getBuddyList(pollerRequest, pollerResponse);
 //        pollerProcessor.getGroupList(pollerRequest, pollerResponse);
-          pollerProcessor.sendMessage(pollerRequest);
 //        pollerProcessor.getAllConversations(pollerRequest, pollerResponse);
 //        pollerProcessor.getOpenedConversations(pollerRequest, pollerResponse);
 

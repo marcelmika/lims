@@ -72,10 +72,17 @@ public class Message {
         // Crate new message
         Message message = new Message();
         // Map values
-        message.from = Buddy.fromBuddyDetails(details.getFrom());
-        message.to = Buddy.fromBuddyDetails(details.getTo());
         message.createdAt = details.getCreatedAt();
         message.body = details.getBody();
+
+        // Relations
+        if (details.getFrom() != null) {
+            message.from = Buddy.fromBuddyDetails(details.getFrom());
+        }
+
+        if (details.getTo() != null) {
+            message.to = Buddy.fromBuddyDetails(details.getTo());
+        }
 
         return message;
     }
@@ -89,7 +96,17 @@ public class Message {
         // Create message details
         MessageDetails details = new MessageDetails();
         // Map data from message
+        details.setCreatedAt(createdAt);
         details.setBody(body);
+
+        // Relations
+        if (from != null) {
+            details.setFrom(from.toBuddyDetails());
+        }
+
+        if (to != null) {
+            details.setTo(to.toBuddyDetails());
+        }
 
         return details;
     }

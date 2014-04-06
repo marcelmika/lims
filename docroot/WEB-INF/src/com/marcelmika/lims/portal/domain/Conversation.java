@@ -18,10 +18,12 @@ public class Conversation {
 
     // Constants
     public static final String KEY_CONVERSATION_ID = "roomJID";
+    public static final String KEY_CONVERSATION_TYPE = "conversationType";
     public static final String KEY_MESSAGES = "messages";
 
     // Properties
     private String conversationId;
+    private ConversationType conversationType;
     private List<Buddy> participants;
     private String title;
     private String name;
@@ -30,6 +32,10 @@ public class Conversation {
     private Message lastMessage;
     private List<Message> messages;
 
+
+    // -------------------------------------------------------------------------------------------
+    // Factory Methods
+    // -------------------------------------------------------------------------------------------
 
     /**
      * Factory method which creates new Conversation from the PollerRequest
@@ -45,6 +51,11 @@ public class Conversation {
         // Conversation Id
         if (parameterMap.containsKey(KEY_CONVERSATION_ID)) {
             conversation.conversationId = GetterUtil.getString(parameterMap.get(KEY_CONVERSATION_ID));
+        }
+        // Conversation type
+        if (parameterMap.containsKey(KEY_CONVERSATION_TYPE)) {
+            String key = GetterUtil.getString(parameterMap.get(KEY_CONVERSATION_TYPE));
+            conversation.conversationType = ConversationType.fromKey(key);
         }
 
         return conversation;
@@ -83,8 +94,19 @@ public class Conversation {
         conversation.name = details.getName();
         conversation.type = details.getType();
         conversation.visibility = details.getVisibility();
-        conversation.lastMessage = Message.fromMessageDetails(details.getLastMessage());
-        conversation.messages = Message.fromMessageDetails(details.getMessages());
+
+        // Relations
+        if (details.getLastMessage() != null) {
+            conversation.lastMessage = Message.fromMessageDetails(details.getLastMessage());
+        }
+
+        if (details.getMessages() != null) {
+            conversation.messages = Message.fromMessageDetails(details.getMessages());
+        }
+
+        if (details.getConversationType() != null) {
+            conversation.conversationType = ConversationType.fromConversationTypeDetails(details.getConversationType());
+        }
 
         return conversation;
     }
@@ -100,8 +122,18 @@ public class Conversation {
         // Map data from conversation
         details.setConversationId(conversationId);
 
+        // Relations
+        if (conversationType != null) {
+            details.setConversationType(conversationType.toConversationTypeDetails());
+        }
+
         return details;
     }
+
+
+    // -------------------------------------------------------------------------------------------
+    // Getters/Setters
+    // -------------------------------------------------------------------------------------------
 
     public String getConversationId() {
         return conversationId;
@@ -109,6 +141,14 @@ public class Conversation {
 
     public void setConversationId(String conversationId) {
         this.conversationId = conversationId;
+    }
+
+    public ConversationType getConversationType() {
+        return conversationType;
+    }
+
+    public void setConversationType(ConversationType conversationType) {
+        this.conversationType = conversationType;
     }
 
     public List<Buddy> getParticipants() {

@@ -3,7 +3,9 @@ package com.marcelmika.lims.jabber.domain;
 import com.marcelmika.lims.api.entity.MessageDetails;
 import org.jivesoftware.smackx.packet.DelayInformation;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Ing. Marcel Mika
@@ -41,11 +43,28 @@ public class Message {
         // Map properties
         message.body = details.getBody();
         message.createdAt = details.getCreatedAt();
-        // Relations
-        message.to = Buddy.fromBuddyDetails(details.getTo());
-        message.from = Buddy.fromBuddyDetails(details.getFrom());
+
+        // Relations:
+        // To
+        if (details.getTo() != null) {
+            message.to = Buddy.fromBuddyDetails(details.getTo());
+        }
+        // From
+        if (details.getFrom() != null) {
+            message.from = Buddy.fromBuddyDetails(details.getFrom());
+        }
 
         return message;
+    }
+
+    public static List<Message> fromMessageDetails (List<MessageDetails> details) {
+        // Create new message list
+        List<Message> messages = new ArrayList<Message>();
+        // Map
+        for (MessageDetails messageDetails : details) {
+            messages.add(Message.fromMessageDetails(messageDetails));
+        }
+        return messages;
     }
 
     /**

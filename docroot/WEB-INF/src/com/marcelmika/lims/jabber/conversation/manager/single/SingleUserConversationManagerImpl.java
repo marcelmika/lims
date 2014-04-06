@@ -73,20 +73,17 @@ public class SingleUserConversationManagerImpl implements SingleUserConversation
                 // Send message via chat
                 chat.sendMessage(message.getBody());
 
-                // Return already created conversation
-                return localConversation;
-
-            } catch (XMPPException e) {
-                throw new JabberException("Error while sending message via local conversation.", e);
+            } catch (Exception e) {
+                throw new JabberException(e.getMessage(), e);
             }
         }
-        // Send a message to the conversation isn't created yet
+        // Send a message to the conversation which is not created yet
         else {
             try {
                 // Receiver
                 Buddy receiver = message.getTo();
                 // Receiver's Jid
-                String receiverJid = Jid.getBareAddress(receiver.getScreenName());
+                String receiverJid = Jid.getJid(receiver.getScreenName());
                 // Create a new chat
                 Chat chat = chatManager.createChat(receiverJid, null);
                 // Create a conversation from chat
@@ -94,13 +91,14 @@ public class SingleUserConversationManagerImpl implements SingleUserConversation
                 // Send message via new conversation
                 chat.sendMessage(message.getBody());
 
-                // Return newly created conversation
-                return localConversation;
-
-            } catch (XMPPException e) {
-                throw new JabberException("Error while sending message via remote conversation", e);
+            } catch (Exception e) {
+                throw new JabberException(e.getMessage(), e);
             }
         }
+
+
+        // Return conversation
+        return localConversation;
     }
 
 

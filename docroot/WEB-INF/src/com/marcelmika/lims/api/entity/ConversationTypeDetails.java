@@ -7,11 +7,19 @@ package com.marcelmika.lims.api.entity;
  * Time: 9:22 AM
  */
 public enum ConversationTypeDetails {
+
+    // Possible values
     SINGLE_USER(0),
     MULTI_USER(1),
-    UNKNOWN(2);
+    UNRECOGNIZED(2);
 
+    // Current value
     private int code;
+
+
+    // -------------------------------------------------------------------------------------------
+    // Getters/Setters
+    // -------------------------------------------------------------------------------------------
 
     private ConversationTypeDetails(int code) {
         this.code = code;

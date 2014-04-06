@@ -173,11 +173,8 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      */
     @Override
     public SendMessageResponseEvent sendMessage(SendMessageRequestEvent event) {
-//        throw new NotImplementedException();
+        return conversationJabberService.sendMessage(event);
 
-        conversationJabberService.sendMessage(event);
-
-         return null;
 //        System.out.println("[POLLER][START SENDING][" + pollerRequest.getUserId() + "]");
 
 //        // Params

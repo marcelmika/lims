@@ -2,6 +2,7 @@ package com.marcelmika.lims.jabber.domain;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.marcelmika.lims.api.entity.ConversationDetails;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.MessageListener;
 
@@ -48,6 +49,41 @@ public class SingleUserConversation implements MessageListener {
         chat.addMessageListener(conversation);
 
         return conversation;
+    }
+
+    public static SingleUserConversation fromConversationDetails(ConversationDetails details) {
+        // todo: implement
+        // Create new instance of conversation
+        SingleUserConversation conversation = new SingleUserConversation();
+        // Map properties
+        conversation.conversationId = details.getConversationId();
+
+        // Relations
+        if (details.getConversationType() != null) {
+            conversation.conversationType = ConversationType.fromConversationTypeDetails(details.getConversationType());
+        }
+
+        if (details.getParticipants() != null && details.getParticipants().size() > 0) {
+            // Get first participant (in general there shouldn't ever by more than 1 participants in a
+            // single user conversation
+            conversation.participant = Buddy.fromBuddyDetails(details.getParticipants().get(0));
+        }
+
+        if (details.getMessages() != null) {
+            conversation.messages = Message.fromMessageDetails(details.getMessages());
+        }
+
+        return conversation;
+    }
+
+    public ConversationDetails toConversationDetails() {
+        // Create new details
+        ConversationDetails details = new ConversationDetails();
+
+        details.setConversationId(conversationId);
+        // todo: Map other values
+
+        return details;
     }
 
 

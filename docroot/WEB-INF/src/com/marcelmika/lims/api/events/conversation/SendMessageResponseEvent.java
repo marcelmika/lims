@@ -1,5 +1,6 @@
 package com.marcelmika.lims.api.events.conversation;
 
+import com.marcelmika.lims.api.entity.ConversationDetails;
 import com.marcelmika.lims.api.events.ResponseEvent;
 
 /**
@@ -10,8 +11,12 @@ import com.marcelmika.lims.api.events.ResponseEvent;
  */
 public class SendMessageResponseEvent extends ResponseEvent {
 
-    public static SendMessageResponseEvent sendMessageSuccess(String result) {
+    private ConversationDetails conversationDetails;
+
+    public static SendMessageResponseEvent sendMessageSuccess(String result,
+                                                              ConversationDetails conversationDetails) {
         SendMessageResponseEvent event = new SendMessageResponseEvent();
+        event.conversationDetails = conversationDetails;
         event.result = result;
         event.success = true;
 
@@ -27,5 +32,7 @@ public class SendMessageResponseEvent extends ResponseEvent {
         return event;
     }
 
-
+    public ConversationDetails getConversationDetails() {
+        return conversationDetails;
+    }
 }
