@@ -1,9 +1,9 @@
 package com.marcelmika.lims.events.conversation;
 
 import com.marcelmika.lims.events.RequestEvent;
-import com.marcelmika.lims.events.details.BuddyDetails;
-import com.marcelmika.lims.events.details.ConversationDetails;
-import com.marcelmika.lims.events.details.MessageDetails;
+import com.marcelmika.lims.api.entity.BuddyDetails;
+import com.marcelmika.lims.api.entity.ConversationDetails;
+import com.marcelmika.lims.api.entity.MessageDetails;
 
 /**
  * @author Ing. Marcel Mika

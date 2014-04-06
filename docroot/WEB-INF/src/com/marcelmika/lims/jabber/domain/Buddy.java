@@ -1,6 +1,6 @@
 package com.marcelmika.lims.jabber.domain;
 
-import com.marcelmika.lims.events.details.BuddyDetails;
+import com.marcelmika.lims.api.entity.BuddyDetails;
 import com.marcelmika.lims.jabber.utils.Jid;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.RosterEntry;

@@ -1,7 +1,7 @@
 package com.marcelmika.lims.events.conversation;
 
 import com.marcelmika.lims.events.ResponseEvent;
-import com.marcelmika.lims.events.details.ConversationDetails;
+import com.marcelmika.lims.api.entity.ConversationDetails;
 
 import java.util.List;
 

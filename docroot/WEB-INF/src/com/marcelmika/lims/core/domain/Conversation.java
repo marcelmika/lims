@@ -1,8 +1,8 @@
 package com.marcelmika.lims.core.domain;
 
-import com.marcelmika.lims.events.details.BuddyDetails;
-import com.marcelmika.lims.events.details.ConversationDetails;
-import com.marcelmika.lims.events.details.MessageDetails;
+import com.marcelmika.lims.api.entity.BuddyDetails;
+import com.marcelmika.lims.api.entity.ConversationDetails;
+import com.marcelmika.lims.api.entity.MessageDetails;
 
 import java.util.ArrayList;
 import java.util.List;

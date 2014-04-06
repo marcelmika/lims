@@ -1,7 +1,7 @@
 package com.marcelmika.lims.persistence.service;
 
-import com.marcelmika.lims.events.details.BuddyDetails;
-import com.marcelmika.lims.events.details.SettingsDetails;
+import com.marcelmika.lims.api.entity.BuddyDetails;
+import com.marcelmika.lims.api.entity.SettingsDetails;
 import com.marcelmika.lims.events.settings.*;
 import com.marcelmika.lims.model.Settings;
 import com.marcelmika.lims.service.SettingsLocalServiceUtil;

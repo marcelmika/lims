@@ -1,6 +1,6 @@
 package com.marcelmika.lims.portal.domain;
 
-import com.marcelmika.lims.events.details.GroupDetails;
+import com.marcelmika.lims.api.entity.GroupDetails;
 
 import java.util.ArrayList;
 import java.util.List;

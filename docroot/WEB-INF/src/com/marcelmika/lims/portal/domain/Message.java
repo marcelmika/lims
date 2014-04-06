@@ -2,7 +2,7 @@ package com.marcelmika.lims.portal.domain;
 
 import com.liferay.portal.kernel.poller.PollerRequest;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.marcelmika.lims.events.details.MessageDetails;
+import com.marcelmika.lims.api.entity.MessageDetails;
 
 import java.util.ArrayList;
 import java.util.Date;

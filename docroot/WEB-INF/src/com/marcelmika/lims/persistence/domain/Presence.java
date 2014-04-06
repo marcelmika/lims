@@ -1,6 +1,6 @@
 package com.marcelmika.lims.persistence.domain;
 
-import com.marcelmika.lims.events.details.PresenceDetails;
+import com.marcelmika.lims.api.entity.PresenceDetails;
 
 /**
  * @author Ing. Marcel Mika

@@ -1,7 +1,7 @@
 package com.marcelmika.lims.events.group;
 
 import com.marcelmika.lims.events.ResponseEvent;
-import com.marcelmika.lims.events.details.GroupDetails;
+import com.marcelmika.lims.api.entity.GroupDetails;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.marcelmika.lims.jabber.domain;
 
-import com.marcelmika.lims.events.details.MessageDetails;
+import com.marcelmika.lims.api.entity.MessageDetails;
 import org.jivesoftware.smackx.packet.DelayInformation;
 
 import java.util.Date;

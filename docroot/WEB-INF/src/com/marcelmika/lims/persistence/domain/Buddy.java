@@ -1,6 +1,6 @@
 package com.marcelmika.lims.persistence.domain;
 
-import com.marcelmika.lims.events.details.BuddyDetails;
+import com.marcelmika.lims.api.entity.BuddyDetails;
 
 /**
  * @author Ing. Marcel Mika

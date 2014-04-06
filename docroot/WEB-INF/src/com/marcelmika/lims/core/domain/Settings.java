@@ -1,6 +1,6 @@
 package com.marcelmika.lims.core.domain;
 
-import com.marcelmika.lims.events.details.SettingsDetails;
+import com.marcelmika.lims.api.entity.SettingsDetails;
 
 /**
  * @author Ing. Marcel Mika

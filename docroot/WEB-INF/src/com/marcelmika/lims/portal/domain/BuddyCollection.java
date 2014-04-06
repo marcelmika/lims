@@ -1,7 +1,7 @@
 package com.marcelmika.lims.portal.domain;
 
 import com.liferay.portal.kernel.poller.PollerRequest;
-import com.marcelmika.lims.events.details.BuddyCollectionDetails;
+import com.marcelmika.lims.api.entity.BuddyCollectionDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;

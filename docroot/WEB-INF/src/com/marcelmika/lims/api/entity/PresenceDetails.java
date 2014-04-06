@@ -1,4 +1,4 @@
-package com.marcelmika.lims.events.details;
+package com.marcelmika.lims.api.entity;
 
 /**
  * @author Ing. Marcel Mika

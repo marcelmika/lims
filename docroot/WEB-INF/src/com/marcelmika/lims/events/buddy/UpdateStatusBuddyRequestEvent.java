@@ -1,7 +1,7 @@
 package com.marcelmika.lims.events.buddy;
 
 import com.marcelmika.lims.events.RequestEvent;
-import com.marcelmika.lims.events.details.PresenceDetails;
+import com.marcelmika.lims.api.entity.PresenceDetails;
 
 /**
  * @author Ing. Marcel Mika

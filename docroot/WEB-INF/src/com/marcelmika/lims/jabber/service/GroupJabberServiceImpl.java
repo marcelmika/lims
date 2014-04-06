@@ -2,7 +2,7 @@ package com.marcelmika.lims.jabber.service;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.marcelmika.lims.events.details.GroupDetails;
+import com.marcelmika.lims.api.entity.GroupDetails;
 import com.marcelmika.lims.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.events.group.GetGroupsResponseEvent;
 import com.marcelmika.lims.jabber.JabberException;

@@ -1,6 +1,6 @@
 package com.marcelmika.lims.core.domain;
 
-import com.marcelmika.lims.events.details.MessageDetails;
+import com.marcelmika.lims.api.entity.MessageDetails;
 
 import java.util.Date;
 

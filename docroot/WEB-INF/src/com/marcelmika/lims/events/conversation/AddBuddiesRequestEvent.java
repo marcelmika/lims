@@ -1,8 +1,8 @@
 package com.marcelmika.lims.events.conversation;
 
 import com.marcelmika.lims.events.RequestEvent;
-import com.marcelmika.lims.events.details.BuddyCollectionDetails;
-import com.marcelmika.lims.events.details.ConversationDetails;
+import com.marcelmika.lims.api.entity.BuddyCollectionDetails;
+import com.marcelmika.lims.api.entity.ConversationDetails;
 
 
 /**

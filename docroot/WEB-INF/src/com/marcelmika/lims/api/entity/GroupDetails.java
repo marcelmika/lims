@@ -1,4 +1,4 @@
-package com.marcelmika.lims.events.details;
+package com.marcelmika.lims.api.entity;
 
 import java.util.ArrayList;
 import java.util.List;
