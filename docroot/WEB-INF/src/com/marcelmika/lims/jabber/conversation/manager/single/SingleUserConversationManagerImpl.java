@@ -6,6 +6,7 @@ import com.marcelmika.lims.jabber.JabberException;
 import com.marcelmika.lims.jabber.domain.Buddy;
 import com.marcelmika.lims.jabber.domain.Message;
 import com.marcelmika.lims.jabber.domain.SingleUserConversation;
+import com.marcelmika.lims.jabber.utils.Jid;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManager;
 import org.jivesoftware.smack.ChatManagerListener;
@@ -64,47 +65,47 @@ public class SingleUserConversationManagerImpl implements SingleUserConversation
         // Find local conversation based on the id taken from conversation from parameter
         SingleUserConversation localConversation = conversationMap.get(conversation.getConversationId());
 
-        // No conversation found
-        if (localConversation == null) {
-            log.info("No local conversation");
-            // Receiver
-            Buddy receiver = message.getTo();
-            // Create a new chat, this calls chatCreated() method on both sides
-            // so we don't need to take care of it here
-            Chat chat = chatManager.createChat(receiver.getScreenName(), null);
+        // Send a message to the conversation which was already in the system
+        if (localConversation != null) {
             try {
-                chat.sendMessage(message.getBody());
-                // Create new conversation
-                SingleUserConversation c = SingleUserConversation.fromChat(chat);
-                // Add chat pointer to chat map, otherwise it will be garbage collected.
-                chatMap.put(chat.getThreadID(), chat);
-                // Add conversation to the map
-                conversationMap.put(chat.getThreadID(), c);
-
-                return c;
-            } catch (XMPPException e) {
-                throw new JabberException(e);
-            }
-
-
-        } else {
-            log.info("Local conversation found");
-            // Get chat from map
-            Chat chat = chatMap.get(localConversation.getConversationId());
-            try {
+                // Conversation was already created so take the chat from map
+                Chat chat = chatMap.get(localConversation.getConversationId());
                 // Send message via chat
                 chat.sendMessage(message.getBody());
 
+                // Return already created conversation
                 return localConversation;
+
             } catch (XMPPException e) {
-                throw new JabberException(e);
+                throw new JabberException("Error while sending message via local conversation.", e);
+            }
+        }
+        // Send a message to the conversation isn't created yet
+        else {
+            try {
+                // Receiver
+                Buddy receiver = message.getTo();
+                // Receiver's Jid
+                String receiverJid = Jid.getBareAddress(receiver.getScreenName());
+                // Create a new chat
+                Chat chat = chatManager.createChat(receiverJid, null);
+                // Create a conversation from chat
+                localConversation = createConversation(chat);
+                // Send message via new conversation
+                chat.sendMessage(message.getBody());
+
+                // Return newly created conversation
+                return localConversation;
+
+            } catch (XMPPException e) {
+                throw new JabberException("Error while sending message via remote conversation", e);
             }
         }
     }
 
 
     // -------------------------------------------------------------------------------------------
-    // Override: ChatManagerListener
+    // Chat Manager Listener
     // -------------------------------------------------------------------------------------------
 
     /**
@@ -115,32 +116,36 @@ public class SingleUserConversationManagerImpl implements SingleUserConversation
      */
     @Override
     public void chatCreated(Chat chat, boolean createdLocally) {
+        // Only if the remote user created the conversation
         if (!createdLocally) {
             // Create new conversation
-            SingleUserConversation conversation = SingleUserConversation.fromChat(chat);
-            // Add chat pointer to chat map, otherwise it will be garbage collected.
-            chatMap.put(chat.getThreadID(), chat);
-            // Add conversation to the map
-            conversationMap.put(chat.getThreadID(), conversation);
-            log.info("Chat created remotely with id: " + chat.getThreadID());
+            createConversation(chat);
         } else {
+            // We don't need to care about it here because the chat was already
+            // created in sendMessage() method called by the local user.
             log.info("Chat created locally with id: " + chat.getThreadID());
         }
     }
 
 
+    // -------------------------------------------------------------------------------------------
+    // Private Methods
+    // -------------------------------------------------------------------------------------------
+
     /**
-     * Create a new conversation
+     * Stores chat in the system
      *
-     * @param buddy Participant of the new conversation.
-     * @throws JabberException return A new Conversation.
+     * @param chat Chat
+     * @return SingleUserConversation create conversation
      */
-//    private SingleUserConversation createConversation(Buddy buddy) throws JabberException {
-//        // Create a new chat, this calls chatCreated() method
-//        Chat chat = chatManager.createChat(buddy.getScreenName(), null);
-//        if (chat == null) {
-//            throw new JabberException("Created chat was null");
-//        }
-////        return cre
-//    }
+    private SingleUserConversation createConversation(Chat chat) {
+        // Create new conversation
+        SingleUserConversation conversation = SingleUserConversation.fromChat(chat);
+        // Add chat pointer to chat map, otherwise it will be garbage collected.
+        chatMap.put(conversation.getConversationId(), chat);
+        // Add conversation to the map
+        conversationMap.put(conversation.getConversationId(), conversation);
+
+        return conversation;
+    }
 }
