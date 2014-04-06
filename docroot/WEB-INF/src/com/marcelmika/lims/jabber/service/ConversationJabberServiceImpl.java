@@ -7,9 +7,12 @@ import com.marcelmika.lims.api.events.conversation.GetConversationsResponseEvent
 import com.marcelmika.lims.api.events.conversation.SendMessageRequestEvent;
 import com.marcelmika.lims.api.events.conversation.SendMessageResponseEvent;
 import com.marcelmika.lims.jabber.JabberException;
+import com.marcelmika.lims.jabber.conversation.manager.multi.MultiUserConversationManager;
+import com.marcelmika.lims.jabber.conversation.manager.single.SingleUserConversationManager;
 import com.marcelmika.lims.jabber.domain.Buddy;
 import com.marcelmika.lims.jabber.domain.ConversationType;
 import com.marcelmika.lims.jabber.domain.Message;
+import com.marcelmika.lims.jabber.domain.SingleUserConversation;
 import com.marcelmika.lims.jabber.session.UserSession;
 import com.marcelmika.lims.jabber.session.store.UserSessionStore;
 
@@ -26,6 +29,18 @@ public class ConversationJabberServiceImpl implements ConversationJabberService 
 
     // Dependencies
     private UserSessionStore userSessionStore;
+
+    // todo: DEBUG
+    private String threadId;
+
+    /**
+     * Constructor
+     *
+     * @param userSessionStore UserSessionStore
+     */
+    public ConversationJabberServiceImpl(UserSessionStore userSessionStore) {
+        this.userSessionStore = userSessionStore;
+    }
 
     /**
      * Get all conversations related to the particular buddy
@@ -48,7 +63,7 @@ public class ConversationJabberServiceImpl implements ConversationJabberService 
     public SendMessageResponseEvent sendMessage(SendMessageRequestEvent event) {
         // Get buddy form details
         Buddy buddy = Buddy.fromBuddyDetails(event.getBuddyDetails());
-        Message message = Message.fromMessageDetails(event.getMessageDetails());
+//        Message message = Message.fromMessageDetails(event.getMessageDetails());
         // We use buddy ID as an identification
         Long buddyId = buddy.getBuddyId();
         // Get the session from store
@@ -61,32 +76,50 @@ public class ConversationJabberServiceImpl implements ConversationJabberService 
         }
 
         // Decide where to go based on the conversation type
-        ConversationType conversationType = ConversationType.fromConversationTypeDetails(
-                event.getConversationDetails().getConversationType()
-        );
+//        ConversationType conversationType = ConversationType.fromConversationTypeDetails(
+//                event.getConversationDetails().getConversationType()
+//        );
 
 
         // Single user conversation
-        if (conversationType == ConversationType.SINGLE_USER) {
+//        if (conversationType == ConversationType.SINGLE_USER) {
             // todo: Map from conversation details
-//            SingleUserConversation conversation = SingleUserConv
-            // todo: Send message via single user conversation manager taken from user session
+            SingleUserConversation conversation = new SingleUserConversation();
+            conversation.setConversationId(threadId);
+        Message message = new Message();
+        Buddy b  = new Buddy();
+        b.setScreenName("marcel.mika@test02.rclick.cz");
+            message.setTo(b);
+        message.setBody("Ahoj");
 
-            return SendMessageResponseEvent.sendMessageSuccess("Message successfully send");
+            // Send message via single user conversation manager taken from user session
+            SingleUserConversationManager manager = userSession.getSingleUserConversationManager();
+            try {
+                conversation = manager.sendMessage(conversation, message);
+                log.info("Saving conversation: " + conversation.getConversationId());
+                threadId = conversation.getConversationId();
+            } catch (JabberException e) {
+                return SendMessageResponseEvent.sendMessageFailure(e);
+            }
+
+            return SendMessageResponseEvent.sendMessageSuccess("Message successfully sent");
         }
         // Multi user conversation
-        else if (conversationType == ConversationType.MULTI_USER) {
-            // todo: Map from conversation details
-//            MultiUserConversation conversation = MultiUserConversation.from
-            // todo: Send message via single user conversation manager taken from user session
-
-
-            return SendMessageResponseEvent.sendMessageSuccess("Message successfully send");
-
-        } else {
-            return SendMessageResponseEvent.sendMessageFailure(
-                    new JabberException("Unknown type of conversation: " + conversationType)
-            );
-        }
-    }
+//        else if (conversationType == ConversationType.MULTI_USER) {
+//            // todo: Map from conversation details
+////            MultiUserConversation conversation = MultiUserConversation.from
+//            // todo: Send message via single user conversation manager taken from user session
+//            MultiUserConversationManager manager = userSession.getMultiUserConversationManager();
+//
+//
+//            return SendMessageResponseEvent.sendMessageSuccess("Message successfully send");
+//
+//        }
+//        // Unknown type
+//        else {
+//            return SendMessageResponseEvent.sendMessageFailure(
+//                    new JabberException("Unknown type of conversation: " + conversationType)
+//            );
+//        }
+//    }
 }

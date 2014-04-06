@@ -43,7 +43,7 @@
 
     <bean id="com.marcelmika.lims.jabber.service.ConversationJabberService"
           class="com.marcelmika.lims.jabber.service.ConversationJabberServiceImpl">
-
+        <constructor-arg index="0" ref="com.marcelmika.lims.jabber.session.UserSessionStore"/>
     </bean>
 
 

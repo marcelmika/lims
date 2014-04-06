@@ -25,6 +25,10 @@ public class SingleUserConversation implements MessageListener {
     private List<Message> messages = new ArrayList<Message>();
 
 
+    // -------------------------------------------------------------------------------------------
+    // Factory Methods
+    // -------------------------------------------------------------------------------------------
+
     /**
      * Factory method creates single user conversation from smack chat
      *

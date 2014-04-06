@@ -1,5 +1,8 @@
 package com.marcelmika.lims.jabber.conversation.manager.single;
 
+import com.marcelmika.lims.jabber.JabberException;
+import com.marcelmika.lims.jabber.domain.Message;
+import com.marcelmika.lims.jabber.domain.SingleUserConversation;
 import org.jivesoftware.smack.ChatManager;
 
 /**
@@ -17,5 +20,14 @@ public interface SingleUserConversationManager {
      */
     public void setChatManager(ChatManager chatManager);
 
+
+    /**
+     * Sends message to conversation
+     *
+     * @param conversation SingleUserConversation
+     * @param message      Message
+     */
+    public SingleUserConversation sendMessage(SingleUserConversation conversation,
+                                              Message message) throws JabberException;
 
 }
