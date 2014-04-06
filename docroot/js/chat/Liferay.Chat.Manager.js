@@ -172,12 +172,16 @@ AUI().use(
                         return;
                     }
 
+                    console.log(response);
+
                     // Handle Initial request
                     instance._handleInitialRequest(response);
                     // Update conversation list
                     instance._getContainer('conversationList').update(response.conversations);
                     // Update buddy list container
-                    instance._getContainer('buddyList').update(response.buddies);
+                    if(response.initialRequest) {
+                        instance._getContainer('buddyList').update(response.groups);
+                    }
                     // Handle Opened Conversations
                     instance._handleOpenedConversations(response.openedConversations);
                 },

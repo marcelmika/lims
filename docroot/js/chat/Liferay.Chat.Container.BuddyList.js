@@ -1,12 +1,11 @@
-
-AUI().use('aui-base', 'aui-live-search', function(A) {
+AUI().use('aui-base', 'aui-live-search', function (A) {
 
     Liferay.namespace('Chat.Container');
 
     // ------------------------------------------------------------------------------
     //    Buddy List Container
     // ------------------------------------------------------------------------------  
-    Liferay.Chat.Container.BuddyList = function() {
+    Liferay.Chat.Container.BuddyList = function () {
         var instance = this;
 
         // Panel
@@ -25,21 +24,21 @@ AUI().use('aui-base', 'aui-live-search', function(A) {
         instance._liveSearch = new A.LiveSearch({
             input: instance._searchBuddiesFieldObj,
             nodes: '#chatBar .buddy-list .online-users li',
-            data: function(node) {
+            data: function (node) {
                 return node.one('.name').text();
             }
         });
 
         // Events
         instance._searchBuddiesFieldObj.on('focus', instance._liveSearch.refreshIndex, instance._liveSearch);
-        instance.panel.on('show', function(event) {
+        instance.panel.on('show', function (event) {
             if (instance._searchBuddiesFieldObj.val()) {
                 instance._searchBuddiesFieldObj.selectText();
             }
         });
 
         if (instance.node) {
-            instance.node.delegate('click', function(event) {
+            instance.node.delegate('click', function (event) {
                 var target = event.currentTarget;
 
                 if (target.ancestor('li')) {
@@ -55,7 +54,7 @@ AUI().use('aui-base', 'aui-live-search', function(A) {
     };
 
     Liferay.Chat.Container.BuddyList.prototype = {
-        update: function(buddies) {
+        update: function (buddies) {
             var instance = this;
             buddies = buddies || [];
 
@@ -71,44 +70,59 @@ AUI().use('aui-base', 'aui-live-search', function(A) {
             // Send notification that settings has been changed
             A.fire('buddyListUpdated');
         },
-        hidePanels: function(panel) {
+        hidePanels: function (panel) {
             var instance = this;
             if (instance.panel !== panel && instance.panel.isOpened) {
                 instance.panel.hide();
             }
         },
-        invisible: function(invisible) {
+        invisible: function (invisible) {
             var instance = this;
             instance.panel.setInvisible(invisible);
         },
-        _updateNode: function(buddies) {
+        _updateNode: function (groups) {
             var instance = this;
             var buffer = [''];
 
-            for (var i = 0; i < buddies.length; i++) {
-                var buddy = buddies[i];
+            for (var i = 0; i < groups.length; i++) {
 
-                var userImagePath = Liferay.Chat.Util.getUserImagePath(buddy.portraitId);
-                var status = Liferay.Chat.Util.getStatusCssClass(buddy.status);
+                var group = groups[i];
+                var buddies = group.buddies;
 
-                // Add buddy to instance 
-                instance.buddies[buddy.userId] = buddy;
-
-                // Create node
                 buffer.push(
-                        '<li class="user active" userId="' + buddy.userId + '">' +
-                        '<img alt="" src="' + userImagePath + '" />' +
-                        '<div class="name">' + buddy.fullName + '</div>' +
-                        '<div class="status ' + status + '"></div>');
+                    '<li class="">' +
+                        '<div class="group-name">' + group.name + '</div>' +
+                        '<ul>'
+                );
 
-                // Close node
-                buffer.push('</div>' + '</li>');
+                for (var j = 0; j < buddies.length; j++) {
+
+                    var buddy = buddies[j];
+
+                    var userImagePath = Liferay.Chat.Util.getUserImagePath(buddy.portraitId);
+                    var status = Liferay.Chat.Util.getStatusCssClass(buddy.status);
+
+                    // Add buddy to instance
+                    instance.buddies[buddy.userId] = buddy;
+
+                    // Create node
+                    buffer.push(
+                        '<li class="user active" userId="' + buddy.userId + '">' +
+                            '<img alt="" src="' + userImagePath + '" />' +
+                            '<div class="name">' + buddy.screenName + '</div>' +
+                            '<div class="status ' + status + '"></div>');
+
+                    // Close node
+                    buffer.push('</div>' + '</li>');
+                }
+
+                buffer.push('</ul></li>');
             }
 
             // Add to HTML
             instance.node.html(buffer.join(''));
         },
-        _updateTitle: function() {
+        _updateTitle: function () {
             var instance = this;
             var title = instance.panel.getTitle();
             // Change title
@@ -116,7 +130,7 @@ AUI().use('aui-base', 'aui-live-search', function(A) {
             // Save
             instance.panel._popupTitle.text(title);
         },
-        _updateSearch: function() {
+        _updateSearch: function () {
             var instance = this;
             var searchBuddiesField = instance._searchBuddiesFieldObj;
             var searchText = searchBuddiesField.val().toLowerCase();
