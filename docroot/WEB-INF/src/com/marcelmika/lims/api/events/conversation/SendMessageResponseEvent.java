@@ -32,7 +32,5 @@ public class SendMessageResponseEvent extends ResponseEvent {
         return event;
     }
 
-    public ConversationDetails getConversationDetails() {
-        return conversationDetails;
-    }
+
 }

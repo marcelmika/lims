@@ -57,7 +57,7 @@ public class Message {
         return message;
     }
 
-    public static List<Message> fromMessageDetails (List<MessageDetails> details) {
+    public static List<Message> fromMessageDetails(List<MessageDetails> details) {
         // Create new message list
         List<Message> messages = new ArrayList<Message>();
         // Map
@@ -90,6 +90,37 @@ public class Message {
             // Extension isn't provided so return empty date
             return new Date(0);
         }
+    }
+
+    public static List<MessageDetails> toMessageDetailsList(List<Message> messages) {
+        // Create new list
+        List<MessageDetails> details = new ArrayList<MessageDetails>();
+        // Map
+        for (Message message : messages) {
+            details.add(message.toMessageDetails());
+        }
+
+        return details;
+    }
+
+
+    public MessageDetails toMessageDetails() {
+        // Create new message details
+        MessageDetails details = new MessageDetails();
+        // Properties
+        details.setBody(body);
+        details.setCreatedAt(createdAt);
+
+        // Relations
+        if (to != null) {
+            details.setTo(to.toBuddyDetails());
+        }
+
+        if (from != null) {
+            details.setFrom(from.toBuddyDetails());
+        }
+
+        return details;
     }
 
 

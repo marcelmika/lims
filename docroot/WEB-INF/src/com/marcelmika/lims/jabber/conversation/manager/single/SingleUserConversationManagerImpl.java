@@ -12,9 +12,7 @@ import org.jivesoftware.smack.ChatManager;
 import org.jivesoftware.smack.ChatManagerListener;
 import org.jivesoftware.smack.XMPPException;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Ing. Marcel Mika
@@ -37,7 +35,7 @@ public class SingleUserConversationManagerImpl implements SingleUserConversation
 
 
     // -------------------------------------------------------------------------------------------
-    // Override: SingleUserConversationManager
+    // Single User Conversation Manager
     // -------------------------------------------------------------------------------------------
 
     /**
@@ -51,6 +49,16 @@ public class SingleUserConversationManagerImpl implements SingleUserConversation
 
         // Add listener
         this.chatManager.addChatListener(this);
+    }
+
+    /**
+     * Returns a list of all conversations
+     *
+     * @return SingleUserConversation list of conversations
+     */
+    @Override
+    public List<SingleUserConversation> getConversations() {
+        return new ArrayList<SingleUserConversation>(conversationMap.values());
     }
 
     /**

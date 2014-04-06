@@ -2,6 +2,7 @@ package com.marcelmika.lims.jabber.domain;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.marcelmika.lims.api.entity.BuddyDetails;
 import com.marcelmika.lims.api.entity.ConversationDetails;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.MessageListener;
@@ -52,7 +53,6 @@ public class SingleUserConversation implements MessageListener {
     }
 
     public static SingleUserConversation fromConversationDetails(ConversationDetails details) {
-        // todo: implement
         // Create new instance of conversation
         SingleUserConversation conversation = new SingleUserConversation();
         // Map properties
@@ -76,12 +76,37 @@ public class SingleUserConversation implements MessageListener {
         return conversation;
     }
 
+    public static List<ConversationDetails> toConversationDetailsList(List<SingleUserConversation> conversations) {
+        // Create new list
+        List<ConversationDetails> details = new ArrayList<ConversationDetails>();
+        // Map
+        for (SingleUserConversation conversation : conversations) {
+            details.add(conversation.toConversationDetails());
+        }
+
+        return details;
+    }
+
     public ConversationDetails toConversationDetails() {
         // Create new details
         ConversationDetails details = new ConversationDetails();
-
+        // Properties
         details.setConversationId(conversationId);
-        // todo: Map other values
+
+        // Relations
+        if (conversationType != null) {
+            details.setConversationType(conversationType.toConversationTypeDetails());
+        }
+
+        if (messages != null) {
+            details.setMessages(Message.toMessageDetailsList(messages));
+        }
+
+        if (participant != null) {
+            List<BuddyDetails> participants = new ArrayList<BuddyDetails>();
+            participants.add(participant.toBuddyDetails());
+            details.setParticipants(participants);
+        }
 
         return details;
     }

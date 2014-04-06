@@ -5,6 +5,8 @@ import com.marcelmika.lims.jabber.domain.Message;
 import com.marcelmika.lims.jabber.domain.SingleUserConversation;
 import org.jivesoftware.smack.ChatManager;
 
+import java.util.List;
+
 /**
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
@@ -20,6 +22,13 @@ public interface SingleUserConversationManager {
      */
     public void setChatManager(ChatManager chatManager);
 
+
+    /**
+     * Returns a list of all conversations
+     *
+     * @return SingleUserConversation list of conversations
+     */
+    public List<SingleUserConversation> getConversations();
 
     /**
      * Sends message to conversation

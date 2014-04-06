@@ -2,6 +2,7 @@ package com.marcelmika.lims.jabber.service;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.marcelmika.lims.api.entity.ConversationDetails;
 import com.marcelmika.lims.api.events.conversation.GetConversationsRequestEvent;
 import com.marcelmika.lims.api.events.conversation.GetConversationsResponseEvent;
 import com.marcelmika.lims.api.events.conversation.SendMessageRequestEvent;
@@ -14,6 +15,9 @@ import com.marcelmika.lims.jabber.domain.Message;
 import com.marcelmika.lims.jabber.domain.SingleUserConversation;
 import com.marcelmika.lims.jabber.session.UserSession;
 import com.marcelmika.lims.jabber.session.store.UserSessionStore;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Ing. Marcel Mika
@@ -51,7 +55,38 @@ public class ConversationJabberServiceImpl implements ConversationJabberService 
      */
     @Override
     public GetConversationsResponseEvent getConversations(GetConversationsRequestEvent event) {
-        throw new UnsupportedOperationException();
+        // Check preconditions
+        if (event.getBuddyDetails() == null) {
+            return GetConversationsResponseEvent.getConversationsFailure(
+                    new JabberException("Some of required params is missing")
+            );
+        }
+
+        // Get buddy form details
+        Buddy buddy = Buddy.fromBuddyDetails(event.getBuddyDetails());
+        // We use buddy ID as an identification
+        Long buddyId = buddy.getBuddyId();
+        // Get the session from store
+        UserSession userSession = userSessionStore.getUserSession(buddyId);
+        // No session
+        if (userSession == null) {
+            return GetConversationsResponseEvent.getConversationsFailure(
+                    new JabberException("There is no user session. Message cannot be sent.")
+            );
+        }
+
+        // Create new list
+        List<ConversationDetails> conversations = new ArrayList<ConversationDetails>();
+
+        // Add single user conversations
+        SingleUserConversationManager singleManager = userSession.getSingleUserConversationManager();
+        List<SingleUserConversation> singleConversations = singleManager.getConversations();
+        conversations.addAll(SingleUserConversation.toConversationDetailsList(singleConversations));
+
+        // todo: Add multi user conversations
+
+        // Return list
+        return GetConversationsResponseEvent.getConversationsSuccess(conversations);
     }
 
     /**

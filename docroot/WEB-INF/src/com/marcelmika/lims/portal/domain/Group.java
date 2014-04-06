@@ -14,6 +14,8 @@ import java.util.List;
 public class Group {
 
 
+    public static final String KEY_BUDDIES = "buddies";
+
     private String name;
     private List<Buddy> buddies = new ArrayList<Buddy>();
 

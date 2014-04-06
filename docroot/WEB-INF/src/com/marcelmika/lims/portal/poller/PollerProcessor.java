@@ -163,7 +163,7 @@ public class PollerProcessor extends BasePollerProcessor {
             // Get groups from group details
             List<Group> groups = Group.fromGroupDetails(responseEvent.getGroups());
             // Serialize to json string (include buddies collection)
-            String jsonString = JSONFactoryUtil.looseSerialize(groups, "buddies");
+            String jsonString = JSONFactoryUtil.looseSerialize(groups, Group.KEY_BUDDIES);
 
             try {
                 // Add to response
@@ -201,12 +201,8 @@ public class PollerProcessor extends BasePollerProcessor {
         if (responseEvent.isSuccess()) {
             // Get conversations from conversation details
             List<Conversation> conversation = Conversation.fromConversationDetails(responseEvent.getConversations());
-            // Get serializer so we can exclude some fields
-            JSONSerializer jsonSerializer = JSONFactoryUtil.createJSONSerializer();
-            // Exclude messages. The are not needed since the call returns just the list of conversations
-            jsonSerializer.exclude(Conversation.KEY_MESSAGES);
-            // Serialize to json string
-            String jsonString = jsonSerializer.serialize(conversation);
+            // Serialize to json
+            String jsonString = JSONFactoryUtil.looseSerialize(conversation);
 
             // Add to response
             try {

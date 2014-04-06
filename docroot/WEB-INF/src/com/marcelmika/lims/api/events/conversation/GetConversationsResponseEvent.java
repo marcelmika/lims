@@ -15,7 +15,7 @@ public class GetConversationsResponseEvent extends ResponseEvent {
 
     private List<ConversationDetails> conversations;
 
-    public static GetConversationsResponseEvent leaveConversationSuccess(List<ConversationDetails> conversations) {
+    public static GetConversationsResponseEvent getConversationsSuccess(List<ConversationDetails> conversations) {
         GetConversationsResponseEvent event = new GetConversationsResponseEvent();
         event.success = true;
         event.conversations = conversations;
@@ -23,9 +23,9 @@ public class GetConversationsResponseEvent extends ResponseEvent {
         return event;
     }
 
-    public static GetConversationsResponseEvent getConversationsFailure(String result, Throwable exception) {
+    public static GetConversationsResponseEvent getConversationsFailure(Throwable exception) {
         GetConversationsResponseEvent event = new GetConversationsResponseEvent();
-        event.result = result;
+        event.result = exception.getMessage();
         event.success = false;
         event.exception = exception;
 
