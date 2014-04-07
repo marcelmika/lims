@@ -21,7 +21,7 @@ html body {
 }
 
 .liferay-ims .oveflow-y-auto {
-    overflow-y: auto;    
+    overflow-y: auto;
 }
 
 .liferay-ims .red {
@@ -36,7 +36,7 @@ html body {
     border-left: none;
     border-bottom: none;
     bottom: 0;
-    height: 24px;    
+    height: 24px;
     position: fixed;
     right: 15px;
     z-index: 999;
@@ -78,17 +78,17 @@ html body {
     opacity: 0;
 }
 
-#chatBar  textarea.error { 
+#chatBar  textarea.error {
     border: 1px solid rgb(255, 89, 89) !important;
     background-color: rgb(255, 242, 242) !important;
 }
 
-#chatBar input.error { 
+#chatBar input.error {
     border: 1px solid rgb(255, 89, 89) !important;
     background-color: rgb(255, 242, 242) !important;
 }
 
-#chatBar ul.error { 
+#chatBar ul.error {
     border: 1px solid rgb(255, 89, 89) !important;
     background-color: rgb(255, 242, 242) !important;
 }
@@ -113,6 +113,7 @@ html body {
 }
 
 .liferay-ims .chat-bar .chat-tabs > li {
+    background: #f8f8f8;
     float: right;
 }
 
@@ -120,7 +121,6 @@ html body {
     cursor: pointer;
     float: left;
     border-left: 1px solid #dddad8;
-    border-right: 1px solid #eee;
     color: #111;
     font: bold 11px/24px Tahoma, Geneva, sans-serif;
     text-decoration: none;
@@ -133,7 +133,6 @@ html body {
 
 .liferay-ims .chat-bar div ul li.selected .panel-trigger {
     background: #fff;
-    border: 1px solid #dddad8;
     border-top: none;
     border-bottom: none;
     line-height: 24px;
@@ -142,7 +141,7 @@ html body {
     z-index: 30;
     box-shadow: #bcbcbc 0px 2px 3px;
     -webkit-box-shadow: #bcbcbc 0px 2px 3px;
-    -moz-box-shadow: #bcbcbc 0px 2px 3px;   
+    -moz-box-shadow: #bcbcbc 0px 2px 3px;
 }
 .liferay-ims .chat-bar div ul li.waiting .panel-trigger {
     border-right: 1px solid rgba(79, 134, 231, 0.26);
@@ -216,8 +215,28 @@ html body {
     height: 24px;
 }
 
+.liferay-ims .buddy-list.selected .panel-trigger .trigger-name {
+    background: url(../images/icon-people-selected.png) no-repeat center center;
+    width: 40px;
+    height: 24px;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+only screen and (-o-min-device-pixel-ratio: 3/2),
+only screen and (min--moz-device-pixel-ratio: 1.5),
+only screen and (min-device-pixel-ratio: 1.5) {
+    .liferay-ims .buddy-list .panel-trigger .trigger-name {
+        background-image: url(../images/icon-people@2x.png);
+        background-size: auto 16px;
+    }
+    .liferay-ims .buddy-list.selected .panel-trigger .trigger-name {
+        background-image: url(../images/icon-people-selected@2x.png);
+        background-size: auto 18px;
+    }
+}
+
 .liferay-ims .buddy-list .search-buddies .aui-field-content {
-    padding: 2px 4px 5px;
+    padding: 5px 4px 5px;
     background: #ffffff;
     border-bottom: 1px solid #ccc;
 }
@@ -273,7 +292,7 @@ only screen and (min-device-pixel-ratio: 1.5) {
     list-style-type: none;
     cursor: pointer;
     border: 1px solid #fff;
-    width: 100%;    
+    width: 100%;
 }
 
 .liferay-ims .buddy-list .panel-content .online-users .group-name {
@@ -396,11 +415,11 @@ only screen and (min-device-pixel-ratio: 1.5) {
     margin: 0 2px;
     padding: 3px 4px 2px;
     height: 26px;
-    list-style-type: none;       
+    list-style-type: none;
 }
 .liferay-ims .conversation .menu-people-in-conversation li .name {
     padding-top: 6px;
-} 
+}
 
 
 .liferay-ims .conversation .menu-people-in-conversation li .status {
@@ -419,8 +438,8 @@ only screen and (min-device-pixel-ratio: 1.5) {
     float: left;
     height: 24px;
     width: 24px;
-    margin: 0 6px 2px 0;    
-    border: 1px solid #ddd;    
+    margin: 0 6px 2px 0;
+    border: 1px solid #ddd;
     background: #fff;
 }
 
@@ -433,7 +452,7 @@ only screen and (min-device-pixel-ratio: 1.5) {
 
 .liferay-ims .conversation .menu-search p {
     float: left;
-    margin-bottom: 0;    
+    margin-bottom: 0;
 }
 
 .liferay-ims .conversation .menu-search .buttons {
@@ -443,7 +462,7 @@ only screen and (min-device-pixel-ratio: 1.5) {
 
 .liferay-ims .conversation .menu-search .buttons .prev {
     width: 16px;
-    height: 16px;    
+    height: 16px;
     background: url(../images/icon-prev.png) no-repeat center center;
     display: inline-block;
     cursor: pointer;
@@ -459,7 +478,7 @@ only screen and (min-device-pixel-ratio: 1.5) {
 
 .liferay-ims .conversation .menu-add-to-conversation .token-input-list-facebook {
     text-indent: 0;
-    width: 188px;    
+    width: 188px;
 }
 /*
 .liferay-ims .conversation .token-input-dropdown-facebook {
@@ -483,7 +502,7 @@ only screen and (min-device-pixel-ratio: 1.5) {
     background: url(../images/icon-ok.png) no-repeat left center;
     display: inline-block;
     cursor: pointer;
-    padding: 2px 2px 2px 20px;    
+    padding: 2px 2px 2px 20px;
 }
 
 /************************************************************************************
@@ -519,9 +538,9 @@ only screen and (min-device-pixel-ratio: 1.5) {
 .liferay-ims .conversations .message-textarea,
 .liferay-ims .conversations .message-textarea:focus {
     border: 1px solid #ccc;
-    font-size: 12px; 
+    font-size: 12px;
     margin: 6px 0px 10px 6px;
-    padding: 5px 5px 5px 25px;        
+    padding: 5px 5px 5px 25px;
     background: #fff url(../images/icon-message.png) 5px 7px no-repeat;
     width: 294px;
     height: 97px;
@@ -536,7 +555,7 @@ only screen and (min-device-pixel-ratio: 1.5) {
 
 .liferay-ims .conversations .panel-subtitle .new-conversation-trigger {
     display: block;
-    background: url(../images/icon-add-conversation.png) no-repeat left center;    
+    background: url(../images/icon-add-conversation.png) no-repeat left center;
     margin-top: -2px;
     padding: 2px 2px 2px 20px;
 }
@@ -556,23 +575,23 @@ only screen and (min-device-pixel-ratio: 1.5) {
 
 .liferay-ims .conversations .current-conversations li {
     margin: 0px;
-    padding: 4px;    
+    padding: 4px;
     list-style-type: none;
     cursor: pointer;
-    border-top: 1px solid #ddd;    
+    border-top: 1px solid #ddd;
 }
 
 .liferay-ims .conversations .current-conversations li.preloader {
     margin: 0px;
-    padding: 14px;    
+    padding: 14px;
     list-style-type: none;
     cursor: pointer;
-    border-top: 1px solid #ddd;    
+    border-top: 1px solid #ddd;
     text-align: center;
 }
 
 .liferay-ims .conversations .current-conversations li:hover {
-    background: #f3f3f3;    
+    background: #f3f3f3;
 }
 
 .liferay-ims .conversations .current-conversations img.portrait {
@@ -608,11 +627,11 @@ only screen and (min-device-pixel-ratio: 1.5) {
     overflow: hidden;
     width: 339px;
     height: 0px;
-    background: #f8f8f8;    
+    background: #f8f8f8;
     border-bottom: 1px solid #ccc;
     z-index: 1;
     top: 51px;
-    right: 0px;    
+    right: 0px;
 }
 
 .liferay-ims .conversations .panel-new-conversation .buttons {
@@ -695,7 +714,7 @@ only screen and (min-device-pixel-ratio: 1.5) {
 }
 
 .liferay-ims .status-panel .panel-window .status li  {
-    padding: 6px 5px 6px 30px;
+    padding: 10px 5px 10px 30px;
     cursor: pointer;
 }
 
@@ -753,38 +772,38 @@ only screen and (min-device-pixel-ratio: 1.5) {
     width: 173px;
     height: 0px;
     background: #f8f8f8;
-    border-left: 1px solid #ccc;    
+    border-left: 1px solid #ccc;
     z-index: 2;
     top: 57px;
-    right: 0px;    
+    right: 0px;
 }
 
 .liferay-ims .conversation .panel-secondary-menu,
 .liferay-ims .conversation .panel-tertiary-menu {
     position: absolute;
-    overflow: hidden;    
+    overflow: hidden;
     width: 227px;
     height: 0px;
     max-height: 180px;
-    background: #f8f8f8;      
+    background: #f8f8f8;
     top: 57px;
-    right: 0px;    
-    z-index: 1;   
+    right: 0px;
+    z-index: 1;
 }
 
 .liferay-ims .conversation .panel-secondary-menu {
     box-shadow: rgba(188, 188, 188, 0.529412) 0px 1px 1px;
     -webkit-box-shadow: rgba(188, 188, 188, 0.529412) 0px 1px 1px;
-    -moz-box-shadow: rgba(188, 188, 188, 0.529412) 0px 1px 1px; 
-    border-bottom: 1px solid #ccc;  
+    -moz-box-shadow: rgba(188, 188, 188, 0.529412) 0px 1px 1px;
+    border-bottom: 1px solid #ccc;
     z-index: 1;
 }
 .liferay-ims .conversation .panel-primary-menu.opened,
 .liferay-ims .conversation .panel-tertiary-menu.opened {
     box-shadow: rgba(188, 188, 188, 0.529412) 0px 1px 1px;
     -webkit-box-shadow: rgba(188, 188, 188, 0.529412) 0px 1px 1px;
-    -moz-box-shadow: rgba(188, 188, 188, 0.529412) 0px 1px 1px; 
-    border-bottom: 1px solid #ccc;  
+    -moz-box-shadow: rgba(188, 188, 188, 0.529412) 0px 1px 1px;
+    border-bottom: 1px solid #ccc;
 }
 
 
@@ -828,7 +847,7 @@ only screen and (min-device-pixel-ratio: 1.5) {
     text-align: left;
     padding: 0px;
     margin: 5px 5px 11px 6px;
-    text-indent: 0px;  
+    text-indent: 0px;
 }
 
 .liferay-ims .conversation .panel-secondary-menu .menu-leave-conversation  .buttons {
@@ -860,6 +879,29 @@ only screen and (min-device-pixel-ratio: 1.5) {
     height: 24px;
 }
 
+.liferay-ims .chat-settings.selected .panel-trigger .trigger-name {
+    background: url(../images/icon-settings-selected.png) no-repeat center center;
+    width: 40px;
+    height: 24px;
+}
+
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+only screen and (-o-min-device-pixel-ratio: 3/2),
+only screen and (min--moz-device-pixel-ratio: 1.5),
+only screen and (min-device-pixel-ratio: 1.5) {
+    .liferay-ims .chat-settings .panel-trigger .trigger-name {
+        background-image: url(../images/icon-settings@2x.png);
+        background-size: 16px;
+    }
+    .liferay-ims .chat-settings.selected .panel-trigger .trigger-name {
+        background-image: url(../images/icon-settings-selected@2x.png);
+        background-size: 16px;
+    }
+}
+
+
+
 .liferay-ims .chat-settings .settings {
     float: none;
 }
@@ -867,17 +909,59 @@ only screen and (min-device-pixel-ratio: 1.5) {
 .liferay-ims .chat-settings li {
     clear: both;
     float: none;
-    padding: 10px;
+    padding: 10px 0 10px 10px;
     position: static;
 }
 
 .liferay-ims .chat-settings label {
-    font-weight: bold;
+    width: 164px;
+    float:left;
+    font-weight: normal;
+    margin-top: 8px;
 }
 
 .liferay-ims .chat-settings input {
     vertical-align: middle;
 }
+
+.liferay-ims .chat-settings input[type=checkbox] {
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    box-shadow: inset 0px 0px 0px 1px #e6e6e6;
+    border-radius: 15px;
+    background-color: #fff;
+    padding: 1px;
+    display: inline-block;
+    width: 52px;
+    height: 31px;
+    position: relative;
+    cursor: pointer;
+    transition: all .3s ease-out;
+    margin: 0px;
+    transform: scale(0.6);
+    -webkit-transform: scale(0.6); /* Adjust size here */
+}
+.liferay-ims .chat-settings [type=checkbox]:checked {
+    box-shadow: inset 0px 0px 0px 20px #53d76a;
+}
+.liferay-ims .chat-settings input[type=checkbox]:after {
+    content: '';
+    position: absolute;
+    width: 29px;
+    height: 29px;
+    border-radius: 15px;
+    box-shadow: 0px 2px 2px 1px rgba(0,0,0,.2);
+    cursor: pointer;
+    background-color: #fff;
+    transition: all 0.1s ease-in .1s;
+}
+.liferay-ims .chat-settings input:checked:after {
+    left: 22px;
+}
+
+
+
 
 .liferay-ims .chat-settings .ctrl-holder {
     padding: 10px;
@@ -918,6 +1002,7 @@ only screen and (min-device-pixel-ratio: 1.5) {
     text-indent: 6px;
     text-align: center;
     font-size: 15px;
+    border-bottom: 1px solid #ccc;
 }
 
 .liferay-ims .panel-subtitle {
@@ -931,8 +1016,8 @@ only screen and (min-device-pixel-ratio: 1.5) {
 
 .liferay-ims .panel-button {
     cursor: pointer;
-    height: 16px;
-    width: 16px;
+    height: 14px;
+    width: 20px;
 }
 
 .liferay-ims .panel-button.close {
@@ -950,27 +1035,37 @@ only screen and (min-device-pixel-ratio: 1.5) {
 }
 
 .liferay-ims .panel-button.minimize {
-    background: url(../images/chat-minimize_button.png) left bottom;
+    background: url(../images/minimize-button.png) left bottom no-repeat;
     position: absolute;
-    right: 6px;
-    top: 4px;
+    right: 9px;
+    top: 6px;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+only screen and (-o-min-device-pixel-ratio: 3/2),
+only screen and (min--moz-device-pixel-ratio: 1.5),
+only screen and (min-device-pixel-ratio: 1.5) {
+    .liferay-ims .panel-button.minimize {
+        background-image:url(../images/minimize-button@2x.png);
+        background-size: auto 13px;
+    }
 }
 
 .liferay-ims .panel-profile {
     background: #f8f8f8;
     border-bottom: 1px solid #ccc;
     height: 27px;
-    padding-top: 5px;     
+    padding-top: 5px;
 }
 
 .liferay-ims .panel-profile .panel-search-input {
     position: absolute;
     left: 60px;
     top: 28px;
-    height: 12px;    
-    border: 1px solid #ddd;    
+    height: 12px;
+    border: 1px solid #ddd;
     width: 110px;
-    padding: 5px 5px 5px 23px; 
+    padding: 5px 5px 5px 23px;
     background: white url(../images/search.png) 5px center no-repeat;
     box-shadow: none;
     -webkit-box-shadow: none;
@@ -992,10 +1087,10 @@ only screen and (min-device-pixel-ratio: 1.5) {
 
 
 .liferay-ims .panel-profile .panel-search-input.selected {
-    outline: none;    
+    outline: none;
     border: 2px solid #a5d6ef;
-    padding: 4px 3px 4px 23px;   
-    background-position-x: 4px;    
+    padding: 4px 3px 4px 23px;
+    background-position-x: 4px;
 }
 
 .liferay-ims .panel-profile .panel-search .panel-serach-clear-button {
@@ -1013,7 +1108,7 @@ only screen and (min-device-pixel-ratio: 1.5) {
 
 .liferay-ims .panel-output {
     height: 192px;
-    overflow-y: auto;    
+    overflow-y: auto;
     background: #f0f0f0;
     margin-top: -1px;
 }
@@ -1043,14 +1138,14 @@ only screen and (min-device-pixel-ratio: 1.5) {
     font-size: 9px;
     display: block;
     line-height: 8px;
-    padding: 3px 3px 3px;    
+    padding: 3px 3px 3px;
     color: rgb(126, 126, 126);
 }
 
 .liferay-ims .panel-output .buddy-image {
     float: left;
     width: 32px;
-    height: 32px;        
+    height: 32px;
     background: white;
     border-bottom: 1px solid #ddd;
 }
@@ -1114,7 +1209,7 @@ only screen and (min-device-pixel-ratio: 1.5) {
 }
 
 .liferay-ims .panel-input textarea.focus, .ie6 .panel-input textarea.focus {
-    background: #fff;    
+    background: #fff;
     border: 3px solid #a5d6ef;
 }
 

@@ -359,7 +359,7 @@ AUI().use(
                     var instance = this;
                     instance._chatSessions[chatName] = chat;
                 },
-                _createChatFromUser: function(userId) {
+                _createChatFromUser: function(screenName) {
                     // Fire an event
 //                    Liferay.Chat.Poller.send({
 //                        toUser: userId,
@@ -367,11 +367,10 @@ AUI().use(
 //                    }, Liferay.Chat.PollerKeys.POLLER_ACTION_SEND_MESSAGE);
 
                     // Send to server
-//                    Liferay.Chat.Poller.send({
-//                        users: userId.toString(),
-//                        message: "Tvoje baba"
-//                    }, Liferay.Chat.PollerKeys.POLLER_ACTION_CREATE_MESSAGE);
-//
+                    Liferay.Chat.Poller.send({
+                        user: userId.toString()
+                    }, Liferay.Chat.PollerKeys.POLLER_ACTION_CREATE_MESSAGE);
+
 
 
 //                    var instance = this;
