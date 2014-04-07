@@ -1,5 +1,7 @@
 package com.marcelmika.lims.jabber.domain;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.entity.BuddyDetails;
 import com.marcelmika.lims.jabber.utils.Jid;
 import org.jivesoftware.smack.Chat;
@@ -24,7 +26,7 @@ public class Buddy {
     private String status;
     private Presence presence;
 
-
+    private static Log log = LogFactoryUtil.getLog(Buddy.class);
 
     // -------------------------------------------------------------------------------------------
     // Factory Methods
@@ -40,7 +42,7 @@ public class Buddy {
         // Create new buddy
         Buddy buddy = new Buddy();
         // Map properties
-        buddy.fullName = Jid.getName(rosterEntry.getName());
+        buddy.fullName = rosterEntry.getName();
         buddy.screenName = Jid.getName(rosterEntry.getUser());
 
         return buddy;

@@ -114,6 +114,8 @@ public class PollerDispatcher {
 
         // Run methods on poller processor
 //        pollerProcessor.getBuddyList(pollerRequest, pollerResponse);
+
+        // Groups are needed just on the initial request
         pollerProcessor.getGroupList(pollerRequest, pollerResponse);
         pollerProcessor.getAllConversations(pollerRequest, pollerResponse);
 //        pollerProcessor.getOpenedConversations(pollerRequest, pollerResponse);

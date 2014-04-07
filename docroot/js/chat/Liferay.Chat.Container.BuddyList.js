@@ -90,7 +90,7 @@ AUI().use('aui-base', 'aui-live-search', function (A) {
                 var buddies = group.buddies;
 
                 buffer.push(
-                    '<li class="">' +
+                    '<li>' +
                         '<div class="group-name">' + group.name + '</div>' +
                         '<ul>'
                 );
@@ -99,7 +99,7 @@ AUI().use('aui-base', 'aui-live-search', function (A) {
 
                     var buddy = buddies[j];
 
-                    var userImagePath = Liferay.Chat.Util.getUserImagePath(buddy.portraitId);
+                    var userImagePath = Liferay.Chat.Util.getUserImagePathScreenName(buddy.screenName, Liferay.ThemeDisplay.getCompanyId());
                     var status = Liferay.Chat.Util.getStatusCssClass(buddy.status);
 
                     // Add buddy to instance
@@ -107,9 +107,9 @@ AUI().use('aui-base', 'aui-live-search', function (A) {
 
                     // Create node
                     buffer.push(
-                        '<li class="user active" userId="' + buddy.userId + '">' +
+                        '<li class="user active" userId="' + buddy.screenName + '">' +
                             '<img alt="" src="' + userImagePath + '" />' +
-                            '<div class="name">' + buddy.screenName + '</div>' +
+                            '<div class="name">' + buddy.fullName + '</div>' +
                             '<div class="status ' + status + '"></div>');
 
                     // Close node

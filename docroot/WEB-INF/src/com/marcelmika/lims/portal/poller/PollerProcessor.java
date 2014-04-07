@@ -159,6 +159,9 @@ public class PollerProcessor extends BasePollerProcessor {
                 new GetGroupsRequestEvent(buddy.toBuddyDetails())
         );
 
+        log.info("GROUP RESULT: " + responseEvent.getResult());
+
+
         if (responseEvent.isSuccess()) {
             // Get groups from group details
             List<Group> groups = Group.fromGroupDetails(responseEvent.getGroups());
