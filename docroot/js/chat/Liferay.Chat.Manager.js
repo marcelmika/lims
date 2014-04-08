@@ -31,7 +31,7 @@ AUI().use(
                     A.on('hidePanel', instance._onPanelHide, instance);
                     A.on('closePanel', instance._onPanelClose, instance);
                     A.on('selectedConversation', instance._openConversation, instance);
-                    A.on('selectedBuddy', instance._createChatFromUser, instance);
+                    A.on('selectedBuddy', instance._onCreateSingleUserConversation, instance);
                     A.on('statusChanged', instance._onStatusChanged, instance);
                     A.on('settingsChanged', instance._onSettingsChanged, instance);
                     A.on('createNewConversation', instance._onCreateNewConversation, instance);
@@ -243,6 +243,13 @@ AUI().use(
                     // Remove from conversation list
                     instance._getContainer('conversationList').clearContent();
                 },
+                _onCreateSingleUserConversation: function(screenName) {
+                    // Send to server
+                    Liferay.Chat.Poller.send({
+                        screenName: screenName
+                    }, Liferay.Chat.PollerKeys.POLLER_ACTION_CREATE_SINGLE_USER_CONVERSATION);
+                    // todo: Create empty message thread
+                },
                 _onCreateNewConversation: function(data) {
                     // Send to server 
                     Liferay.Chat.Poller.send({
@@ -352,40 +359,12 @@ AUI().use(
                     instance._chatSuspended = false;
                 },
                 // ------------------------------------------------------------------------------
-                //    Depricated
+                //    Deprecated
                 // ------------------------------------------------------------------------------                                
                 _chatSessions: {},
                 _addChat: function(chatName, chat) {
                     var instance = this;
                     instance._chatSessions[chatName] = chat;
-                },
-                _createChatFromUser: function(screenName) {
-                    // Fire an event
-//                    Liferay.Chat.Poller.send({
-//                        toUser: userId,
-//                        message: "Nazdar bazar"
-//                    }, Liferay.Chat.PollerKeys.POLLER_ACTION_SEND_MESSAGE);
-
-                    console.log(screenName);
-                    // Send to server
-                    Liferay.Chat.Poller.send({
-                        screenName: screenName
-                    }, Liferay.Chat.PollerKeys.POLLER_ACTION_CREATE_SINGLE_USER_CONVERSATION);
-
-
-
-//                    var instance = this;
-//                    var buddy;
-//                    var buddyListContainer = instance._getContainer('buddyList');
-//                    buddy = buddyListContainer.buddies[userId];
-//
-//                    if (buddy) {
-//                        var chat = instance._chatSessions[userId];
-//                        if (!chat) {
-//                            chat = instance._createChatSession(buddy);
-//                        }
-//                        chat.show();
-//                    }
                 },
                 _createChatSession: function(options) {
                     var instance = this;

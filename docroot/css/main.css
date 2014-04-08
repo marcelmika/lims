@@ -101,8 +101,23 @@ html body {
 
 
 .liferay-ims .chat-panel .preloader {
-    margin: 30px auto 0;
+    position: absolute;
+    margin: 60px auto 0;
     text-align: center;
+    background: url(../images/preloader-light.gif) center center no-repeat;
+    width: 100%;
+    height: 40px;
+}
+
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+only screen and (-o-min-device-pixel-ratio: 3/2),
+only screen and (min--moz-device-pixel-ratio: 1.5),
+only screen and (min-device-pixel-ratio: 1.5) {
+    .liferay-ims .chat-panel .preloader  {
+        background-image:url(../images/preloader-light@2x.gif);
+        background-size: 32px;
+    }
 }
 
 .liferay-ims .chat-bar div ul, .chat-bar div ul li {

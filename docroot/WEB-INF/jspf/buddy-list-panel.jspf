@@ -29,6 +29,7 @@
             <div class="panel-title"><liferay-ui:message key="colleagues" /></div>
             <aui:input cssClass="search-buddies" inputCssClass="search-buddies-field" label="" name="searchBuddies" />
             <div class="panel-content">
+                <div class="preloader"></div>
                 <ul class="lfr-component online-users">                                            
                 </ul>
             </div>

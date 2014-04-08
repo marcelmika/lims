@@ -21,6 +21,7 @@ AUI().use('aui-base', 'aui-live-search', function (A) {
         instance.buddies = [];
 
         instance._searchBuddiesFieldObj = panel.one('.search-buddies-field');
+        instance._preloader = panel.one('.preloader');
         instance._liveSearch = new A.LiveSearch({
             input: instance._searchBuddiesFieldObj,
             nodes: '#chatBar .buddy-list .online-users li',
@@ -43,8 +44,6 @@ AUI().use('aui-base', 'aui-live-search', function (A) {
 
                 if (target.ancestor('li')) {
                     var screenName = target.getAttribute('userId');
-                    console.log("name");
-                    console.log(screenName);
                     if (screenName) {
                         A.fire('selectedBuddy', screenName);
                     }
@@ -121,6 +120,8 @@ AUI().use('aui-base', 'aui-live-search', function (A) {
                 buffer.push('</ul></li>');
             }
 
+            // Hide preloader
+            instance._preloader.hide();
             // Add to HTML
             instance.node.html(buffer.join(''));
         },
