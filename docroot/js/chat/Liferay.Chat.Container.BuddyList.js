@@ -1,4 +1,4 @@
-AUI().use('aui-base', 'aui-live-search', function (A) {
+AUI().use('aui-base', 'anim', 'aui-live-search', function (A) {
 
     Liferay.namespace('Chat.Container');
 
@@ -122,8 +122,25 @@ AUI().use('aui-base', 'aui-live-search', function (A) {
 
             // Hide preloader
             instance._preloader.hide();
+            instance.node.setStyle('opacity',0);
             // Add to HTML
             instance.node.html(buffer.join(''));
+
+            var animation = new A.Anim({
+                node: '#chatBar .buddy-list .online-users',
+                duration: 0.5,
+                from: {
+                    opacity :0
+                },
+                to: {
+                    opacity: 1
+                }
+            });
+
+            animation.run();
+
+
+
         },
         _updateTitle: function () {
             var instance = this;
