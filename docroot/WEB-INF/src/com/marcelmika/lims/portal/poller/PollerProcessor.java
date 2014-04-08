@@ -159,9 +159,6 @@ public class PollerProcessor extends BasePollerProcessor {
                 new GetGroupsRequestEvent(buddy.toBuddyDetails())
         );
 
-        log.info("GROUP RESULT: " + responseEvent.getResult());
-
-
         if (responseEvent.isSuccess()) {
             // Get groups from group details
             List<Group> groups = Group.fromGroupDetails(responseEvent.getGroups());
@@ -257,7 +254,7 @@ public class PollerProcessor extends BasePollerProcessor {
 
     /**
      * Creates conversation from a list of buddies involved in the conversation and an initial message
-     *
+     * todo: rename to createMultiUserConversation
      * @param pollerRequest PollerRequest
      * @return ResponseEvent
      */
@@ -270,6 +267,23 @@ public class PollerProcessor extends BasePollerProcessor {
         return conversationCoreService.createConversation(new CreateConversationRequestEvent(
                 buddies.toBuddyCollectionDetails(), message.toMessageDetails())
         );
+    }
+
+
+    /**
+     * Creates single user conversation with a buddy selected in request
+     *
+     * @param pollerRequest PollerRequest
+     * @return Response Event
+     */
+    protected ResponseEvent createSingleUserConversation(PollerRequest pollerRequest) {
+        // Create buddy from poller request
+        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
+
+        log.info("BUDDY TO CHAT: " + buddy.getScreenName());
+
+        // Send request to core service
+        return null;
     }
 
     /**

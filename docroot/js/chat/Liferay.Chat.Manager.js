@@ -366,10 +366,11 @@ AUI().use(
 //                        message: "Nazdar bazar"
 //                    }, Liferay.Chat.PollerKeys.POLLER_ACTION_SEND_MESSAGE);
 
+                    console.log(screenName);
                     // Send to server
                     Liferay.Chat.Poller.send({
-                        user: userId.toString()
-                    }, Liferay.Chat.PollerKeys.POLLER_ACTION_CREATE_MESSAGE);
+                        screenName: screenName
+                    }, Liferay.Chat.PollerKeys.POLLER_ACTION_CREATE_SINGLE_USER_CONVERSATION);
 
 
 

@@ -24,6 +24,7 @@ public class PollerDispatcher {
 
     // Actions
     // TODO: refactor (action names are slightly different than method names on poller processor), also in js
+    private static final String POLLER_ACTION_CREATE_SINGLE_USER_CONVERSATION = "poller.action.create.singleUserConversation";
     private static final String POLLER_ACTION_CREATE_MESSAGE = "poller.action.create.message";
     private static final String POLLER_ACTION_OPEN_CONVERSATION = "poller.action.open.conversation";
     private static final String POLLER_ACTION_CLOSE_CONVERSATION = "poller.action.close.conversation";
@@ -59,8 +60,11 @@ public class PollerDispatcher {
         // Response event as s result of a request
         ResponseEvent responseEvent = null;
 
-        // Create conversation
-        if (chunkId.equals(PollerDispatcher.POLLER_ACTION_CREATE_MESSAGE)) {
+        // Create Single User conversation
+        if(chunkId.equals(PollerDispatcher.POLLER_ACTION_CREATE_SINGLE_USER_CONVERSATION)) {
+            responseEvent = pollerProcessor.createSingleUserConversation(pollerRequest);
+        }// Create conversation
+        else if (chunkId.equals(PollerDispatcher.POLLER_ACTION_CREATE_MESSAGE)) {
             responseEvent = pollerProcessor.createConversation(pollerRequest);
         } // Open conversation
         else if (chunkId.equals(PollerDispatcher.POLLER_ACTION_OPEN_CONVERSATION)) {

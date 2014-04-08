@@ -42,9 +42,11 @@ AUI().use('aui-base', 'aui-live-search', function (A) {
                 var target = event.currentTarget;
 
                 if (target.ancestor('li')) {
-                    var userId = Number(target.getAttribute('userId'));
-                    if (!isNaN(userId)) {
-                        A.fire('selectedBuddy', userId);
+                    var screenName = target.getAttribute('userId');
+                    console.log("name");
+                    console.log(screenName);
+                    if (screenName) {
+                        A.fire('selectedBuddy', screenName);
                     }
                     return;
                 }

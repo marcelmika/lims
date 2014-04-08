@@ -10,6 +10,7 @@ AUI().use(
             // ------------------------------------------------------------------------------   
             Liferay.Chat.PollerKeys = {
                 // Action
+                POLLER_ACTION_CREATE_SINGLE_USER_CONVERSATION: "poller.action.create.singleUserConversation",
                 POLLER_ACTION_CREATE_MESSAGE: "poller.action.create.message",
                 POLLER_ACTION_OPEN_CONVERSATION: "poller.action.open.conversation",
                 POLLER_ACTION_CLOSE_CONVERSATION: "poller.action.close.conversation",
