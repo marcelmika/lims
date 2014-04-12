@@ -1,0 +1,17 @@
+{
+    "name": "lims",
+    "builds": {
+        "lims": {
+            "jsfiles": [
+                "js/Liferay.LIMS.Model.js",
+                "js/Liferay.LIMS.Notification.js"
+            ],
+            "config": {
+                "requires": [
+                    "io",
+                    "swfobject"
+                ]
+            }
+        }
+    }
+}
