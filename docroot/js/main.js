@@ -37,25 +37,28 @@ AUI().use('aui-base', 'get', function(A) {
     // Dynamic detection of jquery
       if (typeof jQuery !== 'undefined' || typeof $ !== 'undefined') {
         // jQuery is loaded            
-        resources.push((jsFolder + '/lib/jquery.tokeninput.js'));
+//        resources.push((jsFolder + '/lib/jquery.tokeninput.js'));
     } else {
         // jQuery is not loaded        
-        resources.push((jsFolder + '/lib/jquery.min.js'));
-        resources.push((jsFolder + '/lib/jquery.tokeninput.js'));
+//        resources.push((jsFolder + '/lib/jquery.min.js'));
+//        resources.push((jsFolder + '/lib/jquery.tokeninput.js'));
     }
 
     // Dynamic load of scripts
     A.Get.script(resources, {
         onSuccess: function() {
             // Init manager on startup
-            Liferay.publish('chatPortletReady', {
-                defaultFn: A.bind("init", Liferay.Chat.Manager),
-                fireOnce: true
-            });
+            console.log("Scripts loaded");
 
             // Dom ready startup
             A.on('domready', function() {
+                console.log(Liferay.Chat.Manager);
                 Liferay.fire('chatPortletReady');
+            });
+
+            Liferay.publish('chatPortletReady', {
+                defaultFn: A.bind("init", Liferay.Chat.Manager),
+                fireOnce: true
             });
         }});
 });

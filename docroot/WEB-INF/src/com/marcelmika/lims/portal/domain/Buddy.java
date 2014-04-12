@@ -9,9 +9,11 @@ import com.liferay.portal.kernel.poller.PollerRequest;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.marcelmika.lims.api.entity.BuddyDetails;
 
+import javax.portlet.ResourceRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -88,6 +90,55 @@ public class Buddy {
         }
         // Settings
         buddy.settings = Settings.fromPollerRequest(pollerRequest);
+
+        return buddy;
+    }
+
+    /**
+     * Factory method which creates new Buddy object from the PollerRequest
+     *
+     * @param request request
+     * @return Buddy
+     */
+    public static Buddy fromResourceRequest(ResourceRequest request) {
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
+        // Map contains all parameters from request
+        Map<String, String[]> parameterMap = request.getParameterMap();
+
+        log.info(parameterMap);
+
+        // Create new buddy
+        Buddy buddy = new Buddy();
+        // BuddyID
+        buddy.buddyId = themeDisplay.getUserId();
+        // Portrait Id
+        if (parameterMap.containsKey(KEY_PORTRAIT_ID)) {
+            buddy.portraitId = GetterUtil.getLong(parameterMap.get(KEY_PORTRAIT_ID));
+        }
+        // Full name
+        if (parameterMap.containsKey(KEY_FULL_NAME)) {
+            buddy.fullName = GetterUtil.getString(parameterMap.get(KEY_FULL_NAME));
+        }
+        // Screen name
+        if (parameterMap.containsKey(KEY_SCREEN_NAME)) {
+            buddy.screenName = GetterUtil.getString(parameterMap.get(KEY_SCREEN_NAME));
+        }
+        // Password
+        if (parameterMap.containsKey(KEY_PASSWORD)) {
+            buddy.password = GetterUtil.getString(parameterMap.get(KEY_PASSWORD));
+        }
+        // Status
+        if (parameterMap.containsKey(KEY_STATUS)) {
+            // TODO: Deprecated, will be renamed to presence
+            buddy.status = GetterUtil.getString(parameterMap.get(KEY_STATUS));
+            String key = GetterUtil.getString(parameterMap.get(KEY_STATUS));
+            buddy.presence = Presence.fromKey(key);
+
+            log.info("BUDDY PRESENCE: " + buddy.presence);
+        }
+        // Settings
+//        buddy.settings = Settings.fromPollerRequest(request);
 
         return buddy;
     }

@@ -30,26 +30,27 @@ AUI().use('aui-base', 'anim', 'aui-live-search', function (A) {
         instance._cancelTriggerEl = panel.one('.cancel');
         instance._switchEl = panel.one('.switch');
         instance._newConversationPanelEl = panel.one('.panel-new-conversation');
-        instance._messageTextareaEl = $('.conversations .message-textarea');
+//        instance._messageTextareaEl = $('.conversations .message-textarea');
+        instance._messageTextareaEl = panel.one('.panel-new-conversation');
         // Token input
-        instance._tokenInputEl = $(".conversations .users-token-input");
-        instance._tokenInputEl.tokenInput(instance._tokenQueryURL, {
-            theme: "facebook",
-            preventDuplicates: true,
-            dropdownContainer: '.conversations .panel-window',
-            onResult: function (results) {
-                var r = [];
-                $.each(results, function (index, value) {
+//        instance._tokenInputEl = $(".conversations .users-token-input");
+//        instance._tokenInputEl.tokenInput(instance._tokenQueryURL, {
+//            theme: "facebook",
+//            preventDuplicates: true,
+//            dropdownContainer: '.conversations .panel-window',
+//            onResult: function (results) {
+//                var r = [];
+//                $.each(results, function (index, value) {
                     // Remove yourself from the list
-                    if (value.id != themeDisplay.getUserId()) {
-                        r.push(value);
-                    }
-                });
-
-                return r;
-            }
-        });
-        instance._usersListEl = $('.panel-new-conversation ul');
+//                    if (value.id != themeDisplay.getUserId()) {
+//                        r.push(value);
+//                    }
+//                });
+//
+//                return r;
+//            }
+//        });
+//        instance._usersListEl = $('.panel-new-conversation ul');
 
         // Events                                         
         instance._newConversationTriggerEl.on('click', instance._onOpenNewConversation, instance);
@@ -59,14 +60,14 @@ AUI().use('aui-base', 'anim', 'aui-live-search', function (A) {
         instance._cancelTriggerEl.on('click', instance._onCancelNewConversation, instance);
         instance.node.delegate('click', instance._onSelectedConversation, 'li');
         // Remove error class if user starts to type a message
-        instance._messageTextareaEl.bind('input propertychange', function () {
-            if (instance._messageTextareaEl.val()) {
-                instance._messageTextareaEl.removeClass('error');
-            }
-        });
-        instance._usersListEl.bind('input propertychange', function () {
-            instance._usersListEl.removeClass('error');
-        });
+//        instance._messageTextareaEl.bind('input propertychange', function () {
+//            if (instance._messageTextareaEl.val()) {
+//                instance._messageTextareaEl.removeClass('error');
+//            }
+//        });
+//        instance._usersListEl.bind('input propertychange', function () {
+//            instance._usersListEl.removeClass('error');
+//        });
 
 
         // Preloader

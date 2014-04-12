@@ -58,7 +58,9 @@ AUI().use(
                 },
 
                 _foo: function(groups) {
+                    var instance = this;
                   console.log(groups);
+                    instance._getContainer('buddyList').update(groups);
                 },
 
                 // ------------------------------------------------------------------------------

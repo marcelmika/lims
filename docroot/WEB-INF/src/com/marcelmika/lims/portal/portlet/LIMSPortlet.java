@@ -8,6 +8,7 @@ import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.marcelmika.lims.jabber.domain.Conversation;
 import com.marcelmika.lims.model.Buddy;
 import com.marcelmika.lims.model.Settings;
+import com.marcelmika.lims.portal.processor.PortletProcessor;
 import com.marcelmika.lims.service.BuddyLocalServiceUtil;
 import com.marcelmika.lims.util.ChatUtil;
 
@@ -23,6 +24,10 @@ import java.util.List;
  * Time: 11:18 PM
  */
 public class LIMSPortlet extends MVCPortlet {
+
+    // TODO: Inject
+    PortletProcessor processor = new PortletProcessor();
+
 
     private boolean isCorrectAttempt(RenderRequest request) {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
@@ -68,7 +73,6 @@ public class LIMSPortlet extends MVCPortlet {
     @Override
     public void serveResource(ResourceRequest request, ResourceResponse response) throws PortletException, IOException {
         response.setContentType("text/html");
-        PrintWriter writer = response.getWriter();
 
         // Security check
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
@@ -77,17 +81,25 @@ public class LIMSPortlet extends MVCPortlet {
         }
 
 
-        // Get parameter send via ajax
-        String query = request.getParameter("query");
-        if (query != null) {
-            // Compose json array from buddies found based on the query
-            JSONArray buddiesJSON = JSONFactoryUtil.createJSONArray();
-            List<Buddy> buddies = BuddyLocalServiceUtil.findByQuery(query);
-            for (Buddy buddy : buddies) {
-                buddiesJSON.put(buddy.toJSON());
-            }
 
-            writer.print(buddiesJSON);
-        }
+        processor.getGroupList(request, response);
+
+
+
+
+//        PrintWriter writer = response.getWriter();
+//
+//        // Get parameter send via ajax
+//        String query = request.getParameter("query");
+//        if (query != null) {
+//            // Compose json array from buddies found based on the query
+//            JSONArray buddiesJSON = JSONFactoryUtil.createJSONArray();
+//            List<Buddy> buddies = BuddyLocalServiceUtil.findByQuery(query);
+//            for (Buddy buddy : buddies) {
+//                buddiesJSON.put(buddy.toJSON());
+//            }
+//
+//            writer.print(buddiesJSON);
+//        }
     }
 }
