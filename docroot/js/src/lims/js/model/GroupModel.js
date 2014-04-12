@@ -1,8 +1,9 @@
+
 /**
  * Created by marcelmika on 4/12/14.
  */
 
-var Model = Y.Base.create('model', Y.Base, [], {
+var GroupModel = Y.Base.create('groupModel', Y.Base, [], {
 
     // GET Groups
     getGroups: function () {
@@ -34,6 +35,6 @@ var Model = Y.Base.create('model', Y.Base, [], {
 
 }, {});
 
-Y.namespace('LIMS');
+Y.namespace('LIMS.Model');
 
-Y.LIMS.Model = Model;
+Y.LIMS.Model.GroupModel = GroupModel;

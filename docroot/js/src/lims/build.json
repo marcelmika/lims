@@ -1,16 +1,45 @@
 {
     "name": "lims",
     "builds": {
-        "lims": {
+
+        "lims-core": {
             "jsfiles": [
-                "js/Liferay.LIMS.Model.js",
-                "js/Liferay.LIMS.Notification.js"
+                "js/core/Notification.js"
+            ],
+            "config": {
+                "requires": [
+                    "swfobject"
+                ]
+            }
+        },
+
+        "lims-model": {
+            "jsfiles": [
+                "js/model/GroupModel.js"
             ],
             "config": {
                 "requires": [
                     "io",
-                    "swfobject"
+                    "model"
                 ]
+            }
+        },
+
+        "lims-view": {
+            "jsfiles": [
+                "js/view/GroupView.js"
+            ],
+            "config": {
+                "requires": []
+            }
+        },
+
+        "lims-controller": {
+            "jsfiles": [
+                "js/controller/GroupController.js"
+            ],
+            "config": {
+                "requires": []
             }
         }
     }

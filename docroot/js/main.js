@@ -1,10 +1,10 @@
 
 
-AUI().use('lims', function(A) {
+AUI().use('lims-core', "lims-model", "lims-view", "lims-controller", function(A) {
 
      console.log("MAIN");
 
-    var model = new A.LIMS.Model();
+    var model = new A.LIMS.Model.GroupModel();
 
     model.getGroups();
 
