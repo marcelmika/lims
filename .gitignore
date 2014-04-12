@@ -2,6 +2,9 @@
 /out/
 /lib/
 
+# js build folders
+/docroot/js/build
+
 # idea, eclipse
 /.idea/
 .project
@@ -15,6 +18,6 @@
 # mac
 .DS_Store
 
-# css cahce
+# css cache
 /docroot/css/.sass-cache/
 
