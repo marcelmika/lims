@@ -28,12 +28,16 @@ var GroupController = Y.Base.create('groupController', Y.Base, [], {
     // Group item is added to the list.
     add: function (e) {
 
-        console.log(e.model);
-//        var view = new TodoView({model: e.model});
-//
-//        this.get('container').one('#todo-list').append(
-//            view.render().get('container')
-//        );
+        var view = new Y.LIMS.View.GroupView({model: e.model}), cont;
+        view.render();
+
+        cont = view.container !== null ? view.container : view.get('container');
+
+        console.log(cont);
+
+        Y.one('#chatBar .buddy-list .panel-content .online-users').append(
+            cont.get('innerHTML')
+        );
     }
 
 }, {});

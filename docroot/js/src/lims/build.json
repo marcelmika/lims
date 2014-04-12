@@ -32,7 +32,10 @@
                 "js/view/GroupView.js"
             ],
             "config": {
-                "requires": []
+                "requires": [
+                    "view",
+                    "node"
+                ]
             }
         },
 
