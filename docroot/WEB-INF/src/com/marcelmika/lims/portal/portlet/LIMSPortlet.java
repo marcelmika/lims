@@ -22,7 +22,7 @@ import java.util.List;
  * Date: 11/24/13
  * Time: 11:18 PM
  */
-public class ChatPortlet extends MVCPortlet {
+public class LIMSPortlet extends MVCPortlet {
 
     private boolean isCorrectAttempt(RenderRequest request) {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
