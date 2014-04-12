@@ -17,10 +17,10 @@
         <header-portlet-css>/css/token-input.css</header-portlet-css>
         <header-portlet-css>/css/main.css</header-portlet-css>
         <!-- JS -->
-        <footer-portlet-javascript>/js/build/lims-core/lims-core.js</footer-portlet-javascript>
-        <footer-portlet-javascript>/js/build/lims-model/lims-model.js</footer-portlet-javascript>
-        <footer-portlet-javascript>/js/build/lims-view/lims-view.js</footer-portlet-javascript>
-        <footer-portlet-javascript>/js/build/lims-controller/lims-controller.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/js/build/lims-core/lims-core-debug.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/js/build/lims-model/lims-model-debug.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/js/build/lims-view/lims-view-debug.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/js/build/lims-controller/lims-controller-debug.js</footer-portlet-javascript>
         <footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 
         <css-class-wrapper>liferay-ims</css-class-wrapper>

@@ -1,12 +1,13 @@
 
 
-AUI().use('lims-core', "lims-model", "lims-view", "lims-controller", function(A) {
+AUI({debug:true}).use('console', 'lims-core', "lims-model", "lims-view", "lims-controller", function(A) {
 
-     console.log("MAIN");
+    // Show console
+    new A.Console({width: '600px'}).render();
 
+    // Code
     var model = new A.LIMS.Model.GroupModel();
-
-    model.getGroups();
+    model.eatSlice();
 
 //
 //    Liferay.namespace('Chat');

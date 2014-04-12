@@ -19,7 +19,6 @@
             ],
             "config": {
                 "requires": [
-                    "io",
                     "model"
                 ]
             }
