@@ -3,11 +3,16 @@
 AUI({debug:true}).use('console', 'lims-core', "lims-model", "lims-view", "lims-controller", function(A) {
 
     // Show console
-    new A.Console({width: '600px'}).render();
+    new A.Console({width: '600px', newestOnTop: false}).render();
 
-    // Code
+    // Codexx
     var model = new A.LIMS.Model.GroupModel();
+
+    model.load();
     model.eatSlice();
+    model.save();
+    model.save();
+    model.save();
 
 //
 //    Liferay.namespace('Chat');
