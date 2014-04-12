@@ -14,7 +14,7 @@ AUI().use(
 
                 // Private values
                 instance._chatContainerEl = Liferay.Chat.Globals.chatContainerEl;
-                instance._sound = new SWFObject('/liferay-lims-portlet/alert.swf', 'alertsound', '0', '0', '8');
+                instance._sound = new SWFObject('/liferay-lims-portlet/swf/alert.swf', 'alertsound', '0', '0', '8');
                 instance._soundContainer = instance._chatContainerEl.one('.chat-sound');
                 instance._mute;
 
