@@ -9,7 +9,7 @@
         <!-- Friendly URL -->
         <friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
         <friendly-url-mapping>lims</friendly-url-mapping>
-        <friendly-url-routes>chat-friendly-url-routes.xml</friendly-url-routes>
+        <friendly-url-routes>META-INF/lims-friendly-url-routes.xml</friendly-url-routes>
         <!-- Poller -->
         <poller-processor-class>com.marcelmika.lims.portal.poller.PollerProcessor</poller-processor-class>
         <!-- CSS -->
