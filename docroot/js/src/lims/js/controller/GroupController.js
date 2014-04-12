@@ -21,7 +21,19 @@ var GroupController = Y.Base.create('groupController', Y.Base, [], {
             this.render, this);
 
         // Load saved items from localStorage, if available.
-//        list.load();
+        list.load();
+    },
+
+    // Creates a new GroupView instance and renders it into the list whenever a
+    // Group item is added to the list.
+    add: function (e) {
+
+        console.log(e.model);
+//        var view = new TodoView({model: e.model});
+//
+//        this.get('container').one('#todo-list').append(
+//            view.render().get('container')
+//        );
     }
 
 }, {});

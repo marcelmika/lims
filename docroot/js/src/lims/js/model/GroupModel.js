@@ -95,6 +95,10 @@ var GroupModel = Y.Base.create('groupModel', Y.Model, [], {
         // model's data. See the docs for Y.Attribute to learn more about defining
         // attributes.
 
+        name: {
+            value: "" // default value
+        },
+
         slices: {
             value: 6 // default value
         },
