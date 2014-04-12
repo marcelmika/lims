@@ -1,4 +1,4 @@
-package com.marcelmika.lims.portlet;
+package com.marcelmika.lims.portal.portlet;
 
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;

@@ -9,7 +9,7 @@
 	<portlet>            
 		<portlet-name>1</portlet-name>
 		<display-name>Liferay IMS</display-name>
-		<portlet-class>com.marcelmika.lims.portlet.ChatPortlet</portlet-class>
+		<portlet-class>com.marcelmika.lims.portal.portlet.ChatPortlet</portlet-class>
 		<init-param>
 			<name>view-jsp</name>
 			<value>/view.jsp</value>
