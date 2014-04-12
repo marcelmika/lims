@@ -18,7 +18,7 @@ AUI().use('aui-base', function(A) {
         instance._tokenInputEl.tokenInput(Liferay.Chat.Globals.chatPortletURL, {
             theme: "facebook",
             preventDuplicates: true,
-            dropdownContainer: options.panelId + ' .panel-window',
+            dropdownContainer: options.panelId + ' .panel-window'
 
         });
         instance._usersListEl = $(options.panelId + ' .menu-add-to-conversation ul');

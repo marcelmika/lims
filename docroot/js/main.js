@@ -1,6 +1,6 @@
 
 
-AUI().use('aui-base', function(A) {
+AUI().use('aui-base', 'get', function(A) {
 
     Liferay.namespace('Chat');
 
@@ -30,17 +30,18 @@ AUI().use('aui-base', function(A) {
         jsFolder + '/chat/Liferay.Chat.Util.js',
         jsFolder + '/chat/Liferay.Chat.Panel.js',
         jsFolder + '/chat/Liferay.Chat.Conversation.js',
-        jsFolder + '/chat/Liferay.Chat.Notification.js',      
+        jsFolder + '/chat/Liferay.Chat.Notification.js',
+        jsFolder + '/chat/Liferay.LIMS.Model.js'
     ];
     
     // Dynamic detection of jquery
       if (typeof jQuery !== 'undefined' || typeof $ !== 'undefined') {
         // jQuery is loaded            
-        resources.push((jsFolder + '/lib/jquery.tokeninput.js'));  
+        resources.push((jsFolder + '/lib/jquery.tokeninput.js'));
     } else {
         // jQuery is not loaded        
-        resources.push((jsFolder + '/lib/jquery.min.js'));        
-        resources.push((jsFolder + '/lib/jquery.tokeninput.js'));                 
+        resources.push((jsFolder + '/lib/jquery.min.js'));
+        resources.push((jsFolder + '/lib/jquery.tokeninput.js'));
     }
 
     // Dynamic load of scripts
@@ -48,7 +49,7 @@ AUI().use('aui-base', function(A) {
         onSuccess: function() {
             // Init manager on startup
             Liferay.publish('chatPortletReady', {
-                defaultFn: A.bind(Liferay.Chat.Manager.init, Liferay.Chat.Manager),
+                defaultFn: A.bind("init", Liferay.Chat.Manager),
                 fireOnce: true
             });
 
@@ -56,6 +57,5 @@ AUI().use('aui-base', function(A) {
             A.on('domready', function() {
                 Liferay.fire('chatPortletReady');
             });
-        }
-    });
+        }});
 });

@@ -10,6 +10,9 @@ AUI().use(
 
             Liferay.Chat.Manager = {
                 init: function() {
+
+                    Liferay.LIMS.Model.getGroups();
+
                     var instance = this;
                     // Instance Vars Private
                     instance._chatContainerEl = Liferay.Chat.Globals.chatContainerEl;
@@ -41,6 +44,8 @@ AUI().use(
                     A.on('messageSend', instance._onMessageSend, instance);
                     A.on('addToConversationSelected', instance._onAddToConversation, instance);
 
+                    A.on('Model:GroupsChanged', instance._foo, instance);
+
                     // Create containers
                     instance._initContainers();
 
@@ -51,6 +56,11 @@ AUI().use(
                         Liferay.Chat.Poller.suspend();
                     }
                 },
+
+                _foo: function(groups) {
+                  console.log(groups);
+                },
+
                 // ------------------------------------------------------------------------------
                 //    Containers
                 // ------------------------------------------------------------------------------
@@ -158,6 +168,7 @@ AUI().use(
                 },
                 _onPollerUpdate: function(response) {
                     var instance = this;
+                    return;
                     // No updates while the chat is off
                     if (instance._chatSuspended) {
                         // Suspend poller
