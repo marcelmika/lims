@@ -15,11 +15,13 @@
 
         "lims-model": {
             "jsfiles": [
-                "js/model/GroupModel.js"
+                "js/model/GroupModel.js",
+                "js/model/GroupModelList.js"
             ],
             "config": {
                 "requires": [
-                    "model"
+                    "model",
+                    "model-list"
                 ]
             }
         },
@@ -38,7 +40,9 @@
                 "js/controller/GroupController.js"
             ],
             "config": {
-                "requires": []
+                "requires": [
+
+                ]
             }
         }
     }

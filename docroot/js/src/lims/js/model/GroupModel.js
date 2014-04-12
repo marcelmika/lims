@@ -1,6 +1,9 @@
 /**
- * GroupModel
- * Model class which represents a group
+ * Group Model
+ *
+ * The class extends Y.Model and customizes it to use a localStorage
+ * sync provider or load data via ajax and to provide
+ * attributes and methods useful for Group items.
  *
  * Created by marcelmika on 4/12/14.
  */
@@ -38,48 +41,48 @@ var GroupModel = Y.Base.create('groupModel', Y.Model, [], {
                 data = this.toJSON();
                 Y.log(data);
                 return;
-                // Use the current timestamp as an id just to simplify the example. In a
-                // real sync layer, you'd want to generate an id that's more likely to
-                // be globally unique.
-                data.id = Y.Lang.now();
-
-                // Store the new record in localStorage, then call the callback.
-                localStorage.setItem(data.id, Y.JSON.stringify(data));
-                callback(null, data);
-                return;
+//                // Use the current timestamp as an id just to simplify the example. In a
+//                // real sync layer, you'd want to generate an id that's more likely to
+//                // be globally unique.
+//                data.id = Y.Lang.now();
+//
+//                // Store the new record in localStorage, then call the callback.
+//                localStorage.setItem(data.id, Y.JSON.stringify(data));
+//                callback(null, data);
+//                return;
 
             case 'read':
                 Y.log("read");
                 return;
 
                 // Look for an item in localStorage with this model's id.
-                data = localStorage.getItem(this.get('id'));
-
-                if (data) {
-                    callback(null, data);
-                } else {
-                    callback('Model not found.');
-                }
-
-                return;
+//                data = localStorage.getItem(this.get('id'));
+//
+//                if (data) {
+//                    callback(null, data);
+//                } else {
+//                    callback('Model not found.');
+//                }
+//
+//                return;
 
             case 'update':
                 Y.log("update");
                 return;
-
-                data = this.toJSON();
-
-                // Update the record in localStorage, then call the callback.
-                localStorage.setItem(this.get('id'), Y.JSON.stringify(data));
-                callback(null, data);
-                return;
+//
+//                data = this.toJSON();
+//
+//                // Update the record in localStorage, then call the callback.
+//                localStorage.setItem(this.get('id'), Y.JSON.stringify(data));
+//                callback(null, data);
+//                return;
 
             case 'delete':
-                Y.log("update");
+                Y.log("delete");
                 return;
-                localStorage.removeItem(this.get('id'));
-                callback();
-                return;
+//                localStorage.removeItem(this.get('id'));
+//                callback();
+//                return;
 
             default:
                 callback('Invalid action');
