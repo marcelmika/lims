@@ -7,7 +7,10 @@ Y.namespace('LIMS.View');
 
 Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
 
-    // The initializer runs when a GroupController instance is created, and gives
+    // Specify a model to associate with the view.
+    model: Y.LIMS.Model.GroupModelList,
+
+    // The initializer runs when the instance is created, and gives
     // us an opportunity to set up the view.
     initializer: function () {
         // Create a new GroupModelList instance to hold the GroupModel items.
@@ -20,7 +23,7 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
 
         // Re-render the stats in the footer whenever an item is added, removed
         // or changed, or when the entire list is reset.
-        list.after(['add', 'reset', 'remove', 'todoModel:doneChange'], this.render, this);
+//        list.after(['add', 'reset', 'remove', 'todoModel:doneChange'], this.render, this);
 
         // Load saved items from localStorage, if available.
         list.load();
@@ -29,17 +32,23 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
     // Creates a new GroupView instance and renders it into the list whenever a
     // Group item is added to the list.
     add: function (e) {
-
-        var view = new Y.LIMS.View.GroupViewItem({model: e.model}), cont;
-        view.render();
-
-        cont = view.container !== null ? view.container : view.get('container');
-
-        console.log(cont);
-
-        Y.one('#chatBar .buddy-list .panel-content .online-users').append(
-            cont.get('innerHTML')
-        );
+        var groupView;
+        // Create new Group View Item
+        groupView = new Y.LIMS.View.GroupViewItem({model: e.model});
+        // Render it
+        groupView.render();
+        // Append to list
+        this.get('container').append(groupView.get('container'));
     }
 
-}, {});
+}, {
+    // Specify attributes and static properties for your View here.
+    ATTRS: {
+        // Override the default container attribute.
+        container: {
+            valueFn: function () {
+                return Y.one("#chatBar .buddy-list .panel-content .online-users");
+            }
+        }
+    }
+});

@@ -11,7 +11,7 @@ Y.LIMS.View.GroupViewItem = Y.Base.create('groupViewItem', Y.View, [], {
     container: Y.Node.create('<li/>'),
 
     // This customizes the HTML used for this view's container node.
-//    containerTemplate: '<li class="todo-item"/>',
+    containerTemplate: '<li class="todo-item"/>',
 
     // Specify an optional model to associate with the view.
     model: Y.LIMS.Model.GroupModelItem,
@@ -22,10 +22,11 @@ Y.LIMS.View.GroupViewItem = Y.Base.create('groupViewItem', Y.View, [], {
 //    template: '{slices} slice(s) of {type} pie remaining.'
 
     render: function () {
+        var container, model;
         // This is a 3.4.x workaround, check http://yuilibrary.com/yui/docs/view/#upgrading-from-yui-34x
-        var container = this.container !== undefined ? this.container : this.get('container'),
-            model = this.model !== undefined ? this.model : this.get('model');
-        console.log('adding');
+        container = this.get('container');
+        model = this.getModel(this);
+
         container.set('innerHTML', '<div class="name">' + model.get('name') + "</div>");
 
 
@@ -38,6 +39,10 @@ Y.LIMS.View.GroupViewItem = Y.Base.create('groupViewItem', Y.View, [], {
 //        this.set('inputNode', container.one('.todo-input'));
 
         return this;
+    },
+
+    getModel: function (view) {
+        return view.get('model') !== undefined ? view.get('model') : view.model;
     }
 
 }, {
