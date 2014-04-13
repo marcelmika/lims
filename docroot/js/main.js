@@ -6,7 +6,7 @@ AUI({debug:true}).use('console', 'lims-core', "lims-model", "lims-view", "lims-c
 //    new A.Console({width: '600px', newestOnTop: false}).render();
 
     // Code
-    new A.LIMS.Controller.GroupController();
+    new A.LIMS.Controller.MainController();
 
 
 //

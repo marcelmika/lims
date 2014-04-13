@@ -1,8 +1,11 @@
 /**
- * Created by marcelmika on 4/12/14.
+ * Group View List
+ *
+ * The class extends Y.View. It represent a view for a list of groups
  */
+Y.namespace('LIMS.View');
 
-var GroupController = Y.Base.create('groupController', Y.Base, [], {
+Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
 
     // The initializer runs when a GroupController instance is created, and gives
     // us an opportunity to set up the view.
@@ -17,8 +20,7 @@ var GroupController = Y.Base.create('groupController', Y.Base, [], {
 
         // Re-render the stats in the footer whenever an item is added, removed
         // or changed, or when the entire list is reset.
-        list.after(['add', 'reset', 'remove', 'todoModel:doneChange'],
-            this.render, this);
+        list.after(['add', 'reset', 'remove', 'todoModel:doneChange'], this.render, this);
 
         // Load saved items from localStorage, if available.
         list.load();
@@ -28,7 +30,7 @@ var GroupController = Y.Base.create('groupController', Y.Base, [], {
     // Group item is added to the list.
     add: function (e) {
 
-        var view = new Y.LIMS.View.GroupView({model: e.model}), cont;
+        var view = new Y.LIMS.View.GroupViewItem({model: e.model}), cont;
         view.render();
 
         cont = view.container !== null ? view.container : view.get('container');
@@ -41,7 +43,3 @@ var GroupController = Y.Base.create('groupController', Y.Base, [], {
     }
 
 }, {});
-
-Y.namespace('LIMS.Controller');
-
-Y.LIMS.Controller.GroupController = GroupController;

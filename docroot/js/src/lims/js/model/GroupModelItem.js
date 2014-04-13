@@ -1,13 +1,12 @@
 /**
- * Group Model
+ * Group Model Item
  *
  * The class extends Y.Model and customizes it to use a localStorage
- * sync provider or load data via ajax and to provide
- * attributes and methods useful for Group items.
- *
- * Created by marcelmika on 4/12/14.
+ * sync provider or load data via ajax. It represent a single group item.
  */
-var GroupModel = Y.Base.create('groupModel', Y.Model, [], {
+Y.namespace('LIMS.Model');
+
+Y.LIMS.Model.GroupModelItem = Y.Base.create('groupModelItem', Y.Model, [], {
 
     // Add prototype methods for your Model here if desired. These methods will be
     // available to all instances of your Model.
@@ -108,7 +107,3 @@ var GroupModel = Y.Base.create('groupModel', Y.Model, [], {
         }
     }
 });
-
-Y.namespace('LIMS.Model');
-
-Y.LIMS.Model.GroupModel = GroupModel;

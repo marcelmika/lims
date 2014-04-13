@@ -15,7 +15,7 @@
 
         "lims-model": {
             "jsfiles": [
-                "js/model/GroupModel.js",
+                "js/model/GroupModelItem.js",
                 "js/model/GroupModelList.js"
             ],
             "config": {
@@ -29,7 +29,8 @@
 
         "lims-view": {
             "jsfiles": [
-                "js/view/GroupView.js"
+                "js/view/GroupViewItem.js",
+                "js/view/GroupViewList.js"
             ],
             "config": {
                 "requires": [
@@ -41,7 +42,7 @@
 
         "lims-controller": {
             "jsfiles": [
-                "js/controller/GroupController.js"
+                "js/controller/MainController.js"
             ],
             "config": {
                 "requires": [

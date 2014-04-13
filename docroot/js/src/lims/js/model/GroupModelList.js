@@ -2,18 +2,15 @@
  * Group Model List
  *
  * The class extends Y.ModelList and customizes it to hold a list of
- * GroupModel instances, and to provide some convenience methods for getting
+ * GroupModelItem instances, and to provide some convenience methods for getting
  * information about the Group items in the list.
- *
- * Created by marcelmika on 4/12/14.
  */
-
 Y.namespace('LIMS.Model');
 
 Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
 
     // This tells the list that it will hold instances of the GroupModel class.
-    model: GroupModel,
+    model: Y.LIMS.Model.GroupModelItem,
 
     // This tells the list to use a localStorage sync provider (which we'll
     // create below) to load the list of todo items.
@@ -126,6 +123,3 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
     }
 
 }, {});
-
-
-//Y.LIMS.Model.GroupModelList = GroupModelList;

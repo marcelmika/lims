@@ -1,9 +1,11 @@
 /**
- * Created by marcelmika on 4/12/14.
+ * Group View Item
+ *
+ * The class extends Y.View. It represents the view for a single group item.
  */
+Y.namespace('LIMS.View');
 
-
-var GroupView = Y.Base.create('groupView', Y.View, [], {
+Y.LIMS.View.GroupViewItem = Y.Base.create('groupViewItem', Y.View, [], {
 
     // Override the default container attribute.
     container: Y.Node.create('<li/>'),
@@ -12,7 +14,7 @@ var GroupView = Y.Base.create('groupView', Y.View, [], {
 //    containerTemplate: '<li class="todo-item"/>',
 
     // Specify an optional model to associate with the view.
-    model: Y.LIMS.Model.GroupModel,
+    model: Y.LIMS.Model.GroupModelItem,
 
     // Provide an optional template that will be used to render the view. The
     // template can be anything we want, but in this case we'll use a string
@@ -23,7 +25,7 @@ var GroupView = Y.Base.create('groupView', Y.View, [], {
         // This is a 3.4.x workaround, check http://yuilibrary.com/yui/docs/view/#upgrading-from-yui-34x
         var container = this.container !== undefined ? this.container : this.get('container'),
             model = this.model !== undefined ? this.model : this.get('model');
-                     console.log('adding');
+        console.log('adding');
         container.set('innerHTML', '<div class="name">' + model.get('name') + "</div>");
 
 
@@ -50,6 +52,3 @@ var GroupView = Y.Base.create('groupView', Y.View, [], {
     }
 });
 
-Y.namespace('LIMS.View');
-
-Y.LIMS.View.GroupView = GroupView;
