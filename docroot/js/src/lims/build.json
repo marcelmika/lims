@@ -15,6 +15,8 @@
 
         "lims-model": {
             "jsfiles": [
+                "js/model/BuddyModelItem.js",
+                "js/model/BuddyModelList.js",
                 "js/model/GroupModelItem.js",
                 "js/model/GroupModelList.js"
             ],
@@ -29,6 +31,8 @@
 
         "lims-view": {
             "jsfiles": [
+                "js/view/GroupBuddyViewItem.js",
+                "js/view/GroupBuddyViewList.js",
                 "js/view/GroupViewItem.js",
                 "js/view/GroupViewList.js"
             ],
@@ -42,11 +46,12 @@
 
         "lims-controller": {
             "jsfiles": [
+                "js/controller/GroupViewController.js",
                 "js/controller/MainController.js"
             ],
             "config": {
                 "requires": [
-
+                    "view"
                 ]
             }
         }

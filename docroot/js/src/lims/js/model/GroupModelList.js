@@ -9,12 +9,8 @@ Y.namespace('LIMS.Model');
 
 Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
 
-    // This tells the list that it will hold instances of the GroupModel class.
+    // This tells the list that it will hold instances of the GroupModelItem class.
     model: Y.LIMS.Model.GroupModelItem,
-
-    // This tells the list to use a localStorage sync provider (which we'll
-    // create below) to load the list of todo items.
-//    sync: LocalStorageSync('todo'),
 
     // Returns an array of all models in this list with the `done` attribute
     // set to `true`.
@@ -55,7 +51,6 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
 //                return;
 
             case 'read':
-                Y.log("LIST: read");
                 // TODO: Move away
                 url = Y.one('#chatPortletURL').get('value');
 
@@ -66,13 +61,24 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
                     },
                     on: {
                         success: function (id, o) {
-                            var i, groups;
+                            var i, groups, group, buddies;
                             // Parse groups
                             groups = Y.JSON.parse(o.response);
 
                             // Add groups to list
                             for(i = 0; i < groups.length; i++) {
-                                instance.add(groups[i]);
+                                // Create new group
+                                group = new Y.LIMS.Model.GroupModelItem(groups[i]);
+
+                                // List of buddies
+                                buddies = new Y.LIMS.Model.BuddyModelList();
+                                buddies.add(groups[i].buddies);
+
+                                // Add buddies to group
+                                group.set('buddies', buddies);
+
+                                // Add group to group list
+                                instance.add(group);
                             }
                         },
                         failure: function (x, o) {

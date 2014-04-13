@@ -1,0 +1,9 @@
+
+<%-- This template HTML will be used to render each group item. --%>
+<script type="text/x-template" id="lims-group-item-template">
+
+    <div class="group-name">{name}</div>
+        <ul class="group-contacts-list">
+        </ul>
+
+</script>

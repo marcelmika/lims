@@ -32,6 +32,9 @@
             </div>
         </div>
 
+        <%-- Javascript Templates --%>
+        <%@ include file="/WEB-INF/jspf/templates.jspf" %>
+
         <%-- Hidden inputs --%>
         <aui:input type="hidden" id="chatPortletId" name="chatPortletId" useNamespace="false" value="${portletDisplay.id}" />        
         <aui:input type="hidden" id="chatPortletEnabled" name="chatPortletEnabled" useNamespace="false" value="${settings.chatEnabled}" />

@@ -98,12 +98,8 @@ Y.LIMS.Model.GroupModelItem = Y.Base.create('groupModelItem', Y.Model, [], {
             value: "" // default value
         },
 
-        slices: {
-            value: 6 // default value
-        },
-
-        type: {
-            value: 'apple'
+        buddies: {
+            value: [] // default value
         }
     }
 });

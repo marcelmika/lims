@@ -30,8 +30,6 @@
             <aui:input cssClass="search-buddies" inputCssClass="search-buddies-field" label="" name="searchBuddies" />
             <div class="panel-content">
                 <div class="preloader"></div>
-                <ul class="lfr-component online-users">                                            
-                </ul>
             </div>
             <div class="clear"></div>
         </div>
