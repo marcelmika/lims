@@ -19,7 +19,7 @@ Y.LIMS.View.GroupViewItem = Y.Base.create('groupViewItem', Y.View, [], {
 
     render: function () {
         // Vars
-        var container, group, buddyIndex, buddy, buddies, buddyView;
+        var container, group, buddiesView;
         // Container and model
         container = this.get('container');
         group = this.get('model');
@@ -32,19 +32,10 @@ Y.LIMS.View.GroupViewItem = Y.Base.create('groupViewItem', Y.View, [], {
             })
         );
 
-        // Render buddies:
-        buddies = group.get('buddies');
-        console.log(buddies);
-        for (buddyIndex = 0; buddyIndex < buddies.size(); buddyIndex++) {
-            // Get buddy from model list
-            buddy = buddies.item(buddyIndex);
-            // Build view from buddy
-            buddyView = new Y.LIMS.View.GroupBuddyViewItem({model: buddy});
-            // Render view
-            buddyView.render();
-            // Append to container
-            container.append(buddyView.get('container'));
-        }
+        // Render Buddies:
+        buddiesView = new Y.LIMS.View.GroupBuddyViewList({model: group.get('buddies')});
+        buddiesView.render();
+        container.append(buddiesView.get("container"));
 
         return this;
     }
@@ -61,7 +52,7 @@ Y.LIMS.View.GroupViewItem = Y.Base.create('groupViewItem', Y.View, [], {
         },
         // Instance of model attached to view
         model: {
-            value: null
+            value: null // default value
         }
     }
 

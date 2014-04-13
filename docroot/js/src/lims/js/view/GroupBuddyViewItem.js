@@ -15,39 +15,24 @@ Y.LIMS.View.GroupBuddyViewItem = Y.Base.create('groupBuddyViewItem', Y.View, [],
 
     // The template property holds the contents of the #lims-group-item-template
     // element, which will be used as the HTML template for each group item.
-//    template: Y.one('#lims-group-buddy-item-template').get('innerHTML'),
+    template: Y.one('#lims-group-buddy-item-template').get('innerHTML'),
 
     render: function () {
         // Vars
         var container, model;
         // Container and model
-        container = this.getContainer();
-        model = this.getModel();
-
-        container.set('innerHTML', model.get("fullName"));
+        container = this.get("container");
+        model = this.get("model");
 
         // Fill data from model to template and set it to container
-//        container.set('innerHTML',
-//            Y.Lang.sub(this.template, {
-//                name: model.get('name')
-//            })
-//        );
+        container.set('innerHTML',
+            Y.Lang.sub(this.template, {
+                name: model.get('fullName')
+            })
+        );
 
         return this;
-    },
-
-    // ----------------------------------------------------------------------------------------------------------------
-    // Getters/Setters
-    // ----------------------------------------------------------------------------------------------------------------
-
-    getContainer: function () {
-        return this.get('container');
-    },
-
-    getModel: function () {
-        return this.get('model');
     }
-
 
 }, {
 

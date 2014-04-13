@@ -30,6 +30,7 @@
             <aui:input cssClass="search-buddies" inputCssClass="search-buddies-field" label="" name="searchBuddies" />
             <div class="panel-content">
                 <div class="preloader"></div>
+                <ul class="group-list"></ul>
             </div>
             <div class="clear"></div>
         </div>

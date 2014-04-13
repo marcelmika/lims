@@ -14,21 +14,25 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
 
     // Initializes group view list
     _initGroups: function() {
-        var model;
+        var container, model, view;
 
+        // Container
+        container = this.get('groupListContainer');
+        // Model
         model = new Y.LIMS.Model.GroupModelList();
         model.after('add', this._groupsUpdated, this);
-
-        // Init group list
-        this.groupViewList = new Y.LIMS.View.GroupViewList({
-            container: this.get('groupListContainer'),
+        // View
+        view = new Y.LIMS.View.GroupViewList({
+            container: container,
             model: model
         });
+
+        // Store view
+        this.groupViewList = view;
     },
 
     // Called whenever the groups model is updated
     _groupsUpdated: function() {
-        console.log("Groups Updated");
         this.get('activityIndicator').hide();
     }
 
@@ -39,7 +43,7 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
         // Override the default container attribute.
         groupListContainer: {
             valueFn: function () {
-                return Y.one("#chatBar .buddy-list .panel-content .online-users");
+                return Y.one("#chatBar .buddy-list .panel-content .group-list");
             }
         },
 
