@@ -6,7 +6,7 @@
 
 <%-- This template HTML will be used to render each group buddy item. --%>
 <script type="text/x-template" id="lims-group-buddy-item-template">
-    <img class="group-buddy-item-portrait" alt="" src="{imageSrc}" />
+    <div class="group-buddy-item-portrait">{portrait}</div>
     <div class="group-buddy-item-name">{name}</div>
     <div class="group-buddy-item-presence">{presence}</div>
 </script>

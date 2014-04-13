@@ -11,10 +11,10 @@ Y.LIMS.View.PresenceView = Y.Base.create('presenceView', Y.View, [], {
     containerTemplate: '<div class="status-indicator"/>',
 
     render: function () {
-
+        // Vars
         var presenceType = this.get('presenceType'),
             container = this.get("container");
-
+        // Add class to container based on the presence type
         switch (presenceType) {
             case "STATE_ACTIVE":
                 container.addClass("online");
@@ -37,27 +37,6 @@ Y.LIMS.View.PresenceView = Y.Base.create('presenceView', Y.View, [], {
                 break;
         }
 
-        // Vars
-//        var container, group, buddiesView;
-//        // Container and model
-//        container = this.get('container');
-//        group = this.get('model');
-//
-//        // Render Group:
-//        // Fill data from model to template and set it to container
-//        container.set('innerHTML',
-//            Y.Lang.sub(this.template, {
-//                name: group.get('name')
-//            })
-//        );
-//
-//        // Render Buddies:
-//        buddiesView = new Y.LIMS.View.GroupBuddyViewList({model: group.get('buddies')});
-//
-//
-// buddiesView.render();
-//        container.append(buddiesView.get("container"));
-//
         return this;
     }
 

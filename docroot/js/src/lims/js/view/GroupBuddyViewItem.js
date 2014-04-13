@@ -29,8 +29,8 @@ Y.LIMS.View.GroupBuddyViewItem = Y.Base.create('groupBuddyViewItem', Y.View, [],
         container.set('innerHTML',
             Y.Lang.sub(this.template, {
                 name: model.get('fullName'),
-                imageSrc: this._getPortraitUrl(model.get('screenName')),
-                presence: this._getPresenceView(model.get('presence'))
+                portrait: this._getPortrait(model.get('screenName')),
+                presence: this._getPresence(model.get('presence'))
             })
         );
 
@@ -38,14 +38,15 @@ Y.LIMS.View.GroupBuddyViewItem = Y.Base.create('groupBuddyViewItem', Y.View, [],
     },
 
     // Returns user portrait URL
-    _getPortraitUrl: function(screenName) {
-        var portrait = new Y.LIMS.Core.Portrait();
-        return portrait.getPortraitUrl(screenName);
+    _getPortrait: function (screenName) {
+        var portraitView = new Y.LIMS.View.PortraitView({screenName: screenName});
+        portraitView.render();
+        return portraitView.get('container').get('outerHTML');
     },
 
     // Returns presence view
-    _getPresenceView: function(presenceType) {
-        var presenceView = new Y.LIMS.View.PresenceView({presenceType:presenceType});
+    _getPresence: function (presenceType) {
+        var presenceView = new Y.LIMS.View.PresenceView({presenceType: presenceType});
         presenceView.render();
         return presenceView.get('container').get('outerHTML');
     }

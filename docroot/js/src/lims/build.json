@@ -5,8 +5,7 @@
         "lims-core": {
             "jsfiles": [
                 "js/core/Notification.js",
-                "js/core/Settings.js",
-                "js/core/Portrait.js"
+                "js/core/Settings.js"
             ],
             "config": {
                 "requires": [
@@ -38,6 +37,7 @@
                 "js/view/GroupBuddyViewList.js",
                 "js/view/GroupViewItem.js",
                 "js/view/GroupViewList.js",
+                "js/view/PortraitView.js",
                 "js/view/PresenceView.js"
             ],
             "config": {

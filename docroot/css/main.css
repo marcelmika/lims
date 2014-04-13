@@ -128,7 +128,7 @@
     font: 12px/24px Arial, Helvetica, sans-serif;
 }
 
-.liferay-ims .buddy-list .panel-content .group-buddy-item-portrait {
+.liferay-ims .buddy-list .panel-content .group-buddy-item-portrait .portrait {
     display: block;
     float: left;
     height: 36px;
