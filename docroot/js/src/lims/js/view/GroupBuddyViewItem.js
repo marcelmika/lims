@@ -50,6 +50,7 @@ Y.LIMS.View.GroupBuddyViewItem = Y.Base.create('groupBuddyViewItem', Y.View, [],
         presenceView.render();
         return presenceView.get('container').get('outerHTML');
     }
+
 }, {
 
     // Specify attributes and static properties for your View here.

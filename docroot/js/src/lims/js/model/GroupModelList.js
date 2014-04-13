@@ -80,6 +80,8 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
                                 // Add group to group list
                                 instance.add(group);
                             }
+
+                            instance.fire("groupsModified");
                         },
                         failure: function (x, o) {
                             console.log("groups not changed");

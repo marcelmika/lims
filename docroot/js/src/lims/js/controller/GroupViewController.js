@@ -13,14 +13,13 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
     },
 
     // Initializes group view list
-    _initGroups: function() {
+    _initGroups: function () {
         var container, model, view;
-
         // Container
         container = this.get('groupListContainer');
         // Model
         model = new Y.LIMS.Model.GroupModelList();
-        model.after('add', this._groupsUpdated, this);
+        model.after('groupsModified', this._groupsUpdated, this);
         // View
         view = new Y.LIMS.View.GroupViewList({
             container: container,
@@ -32,8 +31,29 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
     },
 
     // Called whenever the groups model is updated
-    _groupsUpdated: function() {
+    _groupsUpdated: function () {
+        this._animateGroups();
         this.get('activityIndicator').hide();
+    },
+
+    _animateGroups: function () {
+        // Container
+        var container = this.get('groupListContainer'),
+            animation = new Y.Anim({
+                node: container,
+                duration: 0.5,
+                from: {
+                    opacity: 0
+                },
+                to: {
+                    opacity: 1
+                }
+            });
+
+
+        container.setStyle('opacity',0);
+
+        animation.run();
     }
 
 }, {
@@ -49,7 +69,7 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
 
         activityIndicator: {
             valueFn: function () {
-                 return Y.one("#chatBar .buddy-list .panel-content .preloader");
+                return Y.one("#chatBar .buddy-list .panel-content .preloader");
             }
         },
 
