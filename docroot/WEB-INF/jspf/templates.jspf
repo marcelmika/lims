@@ -8,5 +8,5 @@
 <script type="text/x-template" id="lims-group-buddy-item-template">
     <img class="group-buddy-item-portrait" alt="" src="{imageSrc}" />
     <div class="group-buddy-item-name">{name}</div>
-    <div class="group-buddy-item-status {status}"></div>
+    <div class="group-buddy-item-presence">{presence}</div>
 </script>

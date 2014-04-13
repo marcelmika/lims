@@ -4,10 +4,13 @@
 
         "lims-core": {
             "jsfiles": [
-                "js/core/Notification.js"
+                "js/core/Notification.js",
+                "js/core/Settings.js",
+                "js/core/Portrait.js"
             ],
             "config": {
                 "requires": [
+                    "base",
                     "swfobject"
                 ]
             }
@@ -34,7 +37,8 @@
                 "js/view/GroupBuddyViewItem.js",
                 "js/view/GroupBuddyViewList.js",
                 "js/view/GroupViewItem.js",
-                "js/view/GroupViewList.js"
+                "js/view/GroupViewList.js",
+                "js/view/PresenceView.js"
             ],
             "config": {
                 "requires": [

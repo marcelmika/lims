@@ -1,6 +1,49 @@
-html body {
-    height: auto;
-    padding-bottom: 24px;
+/********************************************************************************
+/ STATUS INDICATOR
+/********************************************************************************/
+
+.liferay-ims .status-indicator {
+    width: 10px;
+    height: 10px;
+    opacity: 0.9;
+}
+
+.liferay-ims .status-indicator.online {
+    background: url(../images/status-online.png) no-repeat center center;
+}
+
+.liferay-ims .status-indicator.busy {
+    background: url(../images/status-busy.png) no-repeat center center;
+}
+
+.liferay-ims .status-indicator.unavailable {
+    background: url(../images/status-unavailable.png) no-repeat center center;
+}
+
+.liferay-ims .status-indicator.off {
+    background: url(../images/status-off.png) no-repeat center center;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+    .liferay-ims .status-indicator.online {
+        background-image: url(../images/status-online@2x.png);
+        background-size: 10px
+    }
+
+    .liferay-ims .status-indicator.busy {
+        background-image: url(../images/status-busy@2x.png);
+        background-size: 10px
+    }
+
+    .liferay-ims .status-indicator.unavailable {
+        background-image: url(../images/status-unavailable@2x.png);
+        background-size: 10px
+    }
+
+    .liferay-ims .status-indicator.off {
+        background-image: url(../images/status-off@2x.png);
+        background-size: 10px
+    }
 }
 
 /********************************************************************************
@@ -66,6 +109,9 @@ html body {
 
 .liferay-ims .buddy-list .panel-content .group-buddy-item .group-buddy-item-name {
     margin-top: 6px;
+    max-width: 170px;
+    max-height: 20px;
+    overflow: hidden;
 }
 
 .liferay-ims .buddy-list .panel-content {
@@ -126,12 +172,10 @@ html body {
     cursor: pointer;
 }
 
-.liferay-ims .buddy-list .panel-content .group-buddy-item-status {
+.liferay-ims .buddy-list .panel-content .group-buddy-item-presence {
     float: right;
-    width: 16px;
-    height: 16px;
-    margin: 4px 10px;
-    opacity: 0.8;
+    margin-right: 20px;
+    margin-top: 14px;
 }
 
 /* ---------- Util ---------- */
@@ -657,50 +701,6 @@ html body {
 
 .liferay-ims .status-panel .panel-window {
     min-width: 150px;
-}
-
-.liferay-ims .status-panel .panel-trigger .trigger-name .status-indicator {
-    width: 100%;
-    height: 100%;
-    opacity: 0.9;
-}
-
-.liferay-ims .status-panel .panel-trigger .trigger-name .status-indicator.online {
-    background: url(../images/status-online.png) no-repeat center center;
-}
-
-.liferay-ims .status-panel .panel-trigger .trigger-name .status-indicator.busy {
-    background: url(../images/status-busy.png) no-repeat center center;
-}
-
-.liferay-ims .status-panel .panel-trigger .trigger-name .status-indicator.unavailable {
-    background: url(../images/status-unavailable.png) no-repeat center center;
-}
-
-.liferay-ims .status-panel .panel-trigger .trigger-name .status-indicator.off {
-    background: url(../images/status-off.png) no-repeat center center;
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
-    .liferay-ims .status-panel .panel-trigger .trigger-name .status-indicator.online {
-        background-image: url(../images/status-online@2x.png);
-        background-size: 10px
-    }
-
-    .liferay-ims .status-panel .panel-trigger .trigger-name .status-indicator.busy {
-        background-image: url(../images/status-busy@2x.png);
-        background-size: 10px
-    }
-
-    .liferay-ims .status-panel .panel-trigger .trigger-name .status-indicator.unavailable {
-        background-image: url(../images/status-unavailable@2x.png);
-        background-size: 10px
-    }
-
-    .liferay-ims .status-panel .panel-trigger .trigger-name .status-indicator.off {
-        background-image: url(../images/status-off@2x.png);
-        background-size: 10px
-    }
 }
 
 .liferay-ims .status-panel .panel-window .status li {

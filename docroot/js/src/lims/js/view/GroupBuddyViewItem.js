@@ -17,6 +17,7 @@ Y.LIMS.View.GroupBuddyViewItem = Y.Base.create('groupBuddyViewItem', Y.View, [],
     // element, which will be used as the HTML template for each group item.
     template: Y.one('#lims-group-buddy-item-template').get('innerHTML'),
 
+    // Renders view
     render: function () {
         // Vars
         var container, model;
@@ -27,13 +28,27 @@ Y.LIMS.View.GroupBuddyViewItem = Y.Base.create('groupBuddyViewItem', Y.View, [],
         // Fill data from model to template and set it to container
         container.set('innerHTML',
             Y.Lang.sub(this.template, {
-                name: model.get('fullName')
+                name: model.get('fullName'),
+                imageSrc: this._getPortraitUrl(model.get('screenName')),
+                presence: this._getPresenceView(model.get('presence'))
             })
         );
 
         return this;
-    }
+    },
 
+    // Returns user portrait URL
+    _getPortraitUrl: function(screenName) {
+        var portrait = new Y.LIMS.Core.Portrait();
+        return portrait.getPortraitUrl(screenName);
+    },
+
+    // Returns presence view
+    _getPresenceView: function(presenceType) {
+        var presenceView = new Y.LIMS.View.PresenceView({presenceType:presenceType});
+        presenceView.render();
+        return presenceView.get('container').get('outerHTML');
+    }
 }, {
 
     // Specify attributes and static properties for your View here.
