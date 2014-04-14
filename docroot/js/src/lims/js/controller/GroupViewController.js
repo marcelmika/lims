@@ -5,21 +5,27 @@ Y.namespace('LIMS.Controller');
 
 Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.View, [], {
 
-    // The initializer runs when a MainController instance is created, and gives
-    // us an opportunity to set up the view.
+    /**
+     *  The initializer runs when a Group View Controller instance is created, and gives
+     *  us an opportunity to set up the view.
+     */
     initializer: function () {
         var container = this.get('container');
         // Set panel
         this.set('panel', new Y.LIMS.View.PanelView({
             container: container,
-            panelId: "contacts"
+            panelId: "groups"
         }));
 
         // Initializations
         this._initGroups();
     },
 
-    // Initializes group view list
+    /**
+     * Initializes group view list
+     *
+     * @private
+     */
     _initGroups: function () {
         var container, model, view;
         // Container
@@ -37,7 +43,11 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
         this.groupViewList = view;
     },
 
-    // Called whenever the groups model is updated
+    /**
+     * Called whenever the groups model is updated
+     *
+     * @private
+     */
     _groupsUpdated: function () {
         this._animateGroups();
         this.get('activityIndicator').hide();
@@ -68,23 +78,24 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
     // Specify attributes and static properties for your View here.
     ATTRS: {
 
-        // Override the default container attribute.
+        // Main container
         container: {
             valueFn: function () {
                 return Y.one('#chatBar .buddy-list');
             }
         },
 
-        // Todo: to be removed
+        // Container for group list
         groupListContainer: {
             valueFn: function () {
-                return Y.one("#chatBar .buddy-list .panel-content .group-list");
+                return this.get('container').one('.panel-content .group-list');
             }
         },
 
+        // Container for activity indicator
         activityIndicator: {
             valueFn: function () {
-                return Y.one("#chatBar .buddy-list .panel-content .preloader");
+                return this.get('container').one(".panel-content .preloader");
             }
         },
 
