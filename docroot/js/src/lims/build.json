@@ -17,10 +17,10 @@
 
         "lims-model": {
             "jsfiles": [
-                "js/model/BuddyModelItem.js",
-                "js/model/BuddyModelList.js",
-                "js/model/GroupModelItem.js",
-                "js/model/GroupModelList.js"
+                "js/model/buddy/BuddyModelItem.js",
+                "js/model/buddy/BuddyModelList.js",
+                "js/model/group/GroupModelItem.js",
+                "js/model/group/GroupModelList.js"
             ],
             "config": {
                 "requires": [
@@ -33,12 +33,13 @@
 
         "lims-view": {
             "jsfiles": [
-                "js/view/GroupBuddyViewItem.js",
-                "js/view/GroupBuddyViewList.js",
-                "js/view/GroupViewItem.js",
-                "js/view/GroupViewList.js",
-                "js/view/PortraitView.js",
-                "js/view/PresenceView.js"
+                "js/view/group/GroupBuddyViewItem.js",
+                "js/view/group/GroupBuddyViewList.js",
+                "js/view/group/GroupViewItem.js",
+                "js/view/group/GroupViewList.js",
+                "js/view/portrait/PortraitView.js",
+                "js/view/presence/PresenceView.js",
+                "js/view/panel/PanelView.js"
             ],
             "config": {
                 "requires": [

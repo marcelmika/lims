@@ -8,6 +8,13 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
     // The initializer runs when a MainController instance is created, and gives
     // us an opportunity to set up the view.
     initializer: function () {
+        var container = this.get('container');
+        // Set panel
+        this.set('panel', new Y.LIMS.View.PanelView({
+            container: container,
+            panelId: "contacts"
+        }));
+
         // Initializations
         this._initGroups();
     },
@@ -51,7 +58,7 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
             });
 
 
-        container.setStyle('opacity',0);
+        container.setStyle('opacity', 0);
 
         animation.run();
     }
@@ -60,7 +67,15 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
 
     // Specify attributes and static properties for your View here.
     ATTRS: {
+
         // Override the default container attribute.
+        container: {
+            valueFn: function () {
+                return Y.one('#chatBar .buddy-list');
+            }
+        },
+
+        // Todo: to be removed
         groupListContainer: {
             valueFn: function () {
                 return Y.one("#chatBar .buddy-list .panel-content .group-list");
