@@ -53,7 +53,8 @@
         "lims-controller": {
             "jsfiles": [
                 "js/controller/GroupViewController.js",
-                "js/controller/MainController.js"
+                "js/controller/MainController.js",
+                "js/controller/PresenceViewController.js"
             ],
             "config": {
                 "requires": [

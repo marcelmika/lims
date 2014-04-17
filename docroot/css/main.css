@@ -324,9 +324,9 @@
     height: 24px;
     position: relative;
     z-index: 30;
-    box-shadow: #bcbcbc 0px 2px 3px;
-    -webkit-box-shadow: #bcbcbc 0px 2px 3px;
-    -moz-box-shadow: #bcbcbc 0px 2px 3px;
+    box-shadow: #bcbcbc 1px 1px 1px;
+    -webkit-box-shadow: #bcbcbc 1px 1px 1px;
+    -moz-box-shadow: #bcbcbc 1px 1px 1px;
 }
 
 .liferay-ims .chat-bar div ul li.waiting .panel-trigger {
@@ -701,6 +701,11 @@
 
 .liferay-ims .status-panel .panel-window {
     min-width: 150px;
+}
+
+.liferay-ims .status-panel .status-indicator {
+    margin-left: 6px;
+    margin-top: 7px;
 }
 
 .liferay-ims .status-panel .panel-window .status li {

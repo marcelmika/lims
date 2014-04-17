@@ -19,6 +19,8 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
 
         // Initializations
         this._initGroups();
+        // Events
+        this._attachEvents();
     },
 
     /**
@@ -44,16 +46,45 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
     },
 
     /**
+     * Maps all events on Y object to private internal functions
+     *
+     * @private
+     */
+    _attachEvents: function() {
+        // Attach click on panel's item
+        this.get('panel').get('container').delegate('click', function (event) {
+            var presence, target = event.currentTarget;
+            // Element was li
+            if (target.ancestor('li')) {
+                // Fire event
+                presence = target.getAttribute('data-id');
+                Y.fire('buddySelected', presence);
+            }
+        }, 'li');
+
+        Y.on('buddySelected', this._onBuddySelected, this);
+        Y.on('panelShown', this._onPanelShown, this);
+        Y.on('panelHidden', this._onPanelHidden, this);
+    },
+
+    /**
      * Called whenever the groups model is updated
      *
      * @private
      */
     _groupsUpdated: function () {
-        this._animateGroups();
+        // Do the animation of groups
+        this._fadeInGroups();
+        // Hide indicator
         this.get('activityIndicator').hide();
     },
 
-    _animateGroups: function () {
+    /**
+     * Runs fade in effect on groups
+     *
+     * @private
+     */
+    _fadeInGroups: function () {
         // Container
         var container = this.get('groupListContainer'),
             animation = new Y.Anim({
@@ -67,10 +98,41 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
                 }
             });
 
-
+        // Opacity needs to be set to zero otherwise there will
+        // be a weird blink effect
         container.setStyle('opacity', 0);
 
+        // Run the effect animation
         animation.run();
+    },
+
+    /**
+     * Panel shown event handler. Closes own panel if some other panel was shown.
+     * Thanks to that only one panel can be open at one time.
+     *
+     * @param panel
+     * @private
+     */
+    _onPanelShown: function (panel) {
+        // Don't close own panel
+        if (panel !== this.get('panel')) {
+            this.get('panel').hide();
+        }
+    },
+
+    /**
+     * Panel hidden event handler. Closes own panel if some other panel was shown.
+     * Thanks to that only one panel can be open at one time.
+     *
+     * @param panel
+     * @private
+     */
+    _onPanelHidden: function () {
+        // Todo: send active panel ajax
+    },
+
+    _onBuddySelected: function() {
+        this.get('panel').hide();
     }
 
 }, {
@@ -90,6 +152,11 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
             valueFn: function () {
                 return this.get('container').one('.panel-content .group-list');
             }
+        },
+
+        // Panel view related to the controller
+        panel: {
+            value: null // to be set in initializer
         },
 
         // Container for activity indicator

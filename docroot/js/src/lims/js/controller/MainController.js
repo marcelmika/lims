@@ -9,7 +9,8 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
     // us an opportunity to set up all sub controller
     initializer: function () {
 
-         new Y.LIMS.Controller.GroupViewController();
+        new Y.LIMS.Controller.GroupViewController();
+        new Y.LIMS.Controller.PresenceViewController();
 
     }
 }, {});
