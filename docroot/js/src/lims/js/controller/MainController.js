@@ -11,6 +11,6 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
 
         new Y.LIMS.Controller.GroupViewController();
         new Y.LIMS.Controller.PresenceViewController();
-
+        new Y.LIMS.Controller.SettingsViewController();
     }
 }, {});
