@@ -27,33 +27,24 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
      * @private
      */
     _attachEvents: function () {
-        // Attach click on panel's item
-//        this.get('panel').get('container').delegate('click', function (event) {
-//            var presence, target = event.currentTarget;
-//            // Element was li
-//            if (target.ancestor('li')) {
-//                // Fire event
-//                presence = target.getAttribute('data-status');
-//                Y.fire('presenceChanged', presence);
-//            }
-//        }, 'li');
-//
-//        Y.on('presenceChanged', this._onPresenceChanged, this);
+
+        // Local events
+        this.get('soundCheckbox').on('click', this._onSoundCheckboxUpdated, this);
+
+        // Remote events
         Y.on('panelShown', this._onPanelShown, this);
         Y.on('panelHidden', this._onPanelHidden, this);
     },
 
     /**
-     * Presence changed event
+     * Sound checkbox changed
      *
-     * @param presence
      * @private
      */
-    _onPresenceChanged: function (presence) {
-        // Update presence indicator
-        this._updatePresenceIndicator(presence);
+    _onSoundCheckboxUpdated: function () {
+        var isChecked = this.get('soundCheckbox').get('checked') ? true : false;
         // Todo: Send to server
-        this.get('panel').hide();
+        console.log('checkbox updated to: ' + isChecked);
     },
 
     /**
@@ -95,6 +86,13 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
         // Panel view related to the controller
         panel: {
             value: null // to be set in initializer
+        },
+
+        // Sound checkbox element
+        soundCheckbox: {
+            valueFn: function () {
+                return this.get('container').one("#playSound");
+            }
         }
     }
 });
