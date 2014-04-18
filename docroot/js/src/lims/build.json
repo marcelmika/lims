@@ -33,6 +33,7 @@
 
         "lims-view": {
             "jsfiles": [
+                "js/view/conversation/ConversationView.js",
                 "js/view/group/GroupBuddyViewItem.js",
                 "js/view/group/GroupBuddyViewList.js",
                 "js/view/group/GroupViewItem.js",
@@ -55,7 +56,9 @@
                 "js/controller/GroupViewController.js",
                 "js/controller/MainController.js",
                 "js/controller/PresenceViewController.js",
-                "js/controller/SettingsViewController.js"
+                "js/controller/SettingsViewController.js",
+                "js/controller/ConversationsViewController.js",
+                "js/controller/SingleUserConversationViewController.js"
             ],
             "config": {
                 "requires": [

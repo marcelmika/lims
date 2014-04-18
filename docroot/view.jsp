@@ -24,8 +24,8 @@
             <div class="chat-tabs-container">                
                 <ul class="chat-tabs">                              
                     <%@ include file="/WEB-INF/jspf/status-panel.jspf" %>
-                    <%@ include file="/WEB-INF/jspf/buddy-list-panel.jspf" %>
                     <%@ include file="/WEB-INF/jspf/settings-panel.jspf" %>
+                    <%@ include file="/WEB-INF/jspf/buddy-list-panel.jspf" %>
                     <%@ include file="/WEB-INF/jspf/conversation-panel.jspf" %>                                                 
                     <%@ include file="/WEB-INF/jspf/conversation-sessions.jspf" %> 
                 </ul>

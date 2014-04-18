@@ -307,7 +307,7 @@
     float: left;
     border-left: 1px solid #dddad8;
     color: #111;
-    font: bold 11px/24px Tahoma, Geneva, sans-serif;
+    font: normal 11px/24px Tahoma, Geneva, sans-serif;
     text-decoration: none;
     padding: 0 6px;
 }
@@ -351,17 +351,13 @@
     -khtml-border-radius: 20px;
     border-radius: 20px;
     background: rgb(189, 49, 49);
-    border: 2px solid white;
-    box-shadow: black 1px 2px 4px;
-    -webkit-box-shadow: black 1px 2px 4px;
-    -moz-box-shadow: black 1px 2px 4px;
     color: #fff;
     font: bold 10px/16px Arial, Helvetica, sans-serif;
     height: 16px;
     position: absolute;
     right: -7px;
     text-align: center;
-    top: -11px;
+    top: -5px;
     width: 16px;
     z-index: 0;
 }
@@ -439,8 +435,9 @@
 *************************************************************************************/
 
 .liferay-ims .conversation .chat-panel .panel-title {
-    padding-left: 60px;
-    text-indent: 0px;
+    padding-left: 10px;
+    text-indent: 0;
+    text-align: left;
 }
 
 .liferay-ims .conversation .chat-panel .panel-button.minimize {
@@ -999,18 +996,26 @@
     width: 20px;
 }
 
-.liferay-ims .panel-button.close {
-    background: url(../images/chat-close_button.png) left bottom;
-    position: absolute;
-    right: 4px;
-    top: 5px;
-}
-
 .liferay-ims .panel-button.menu {
     background: url(../images/menu-button.png) left bottom;
     position: absolute;
     right: 6px;
     top: 32px;
+}
+
+.liferay-ims .panel-button.close {
+    background: url(../images/close-button.png) center center;
+    position: absolute;
+    right: 4px;
+    top: 5px;
+}
+
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+    .liferay-ims .panel-button.close {
+        background-image: url(../images/close-button@2x.png);
+        background-size: auto 13px;
+    }
 }
 
 .liferay-ims .panel-button.minimize {
@@ -1080,7 +1085,7 @@
 .liferay-ims .panel-output {
     height: 192px;
     overflow-y: auto;
-    background: #f0f0f0;
+    background: #fff;
     margin-top: -1px;
 }
 
@@ -1165,13 +1170,13 @@
 .liferay-ims .panel-input textarea {
     background: #f8f8f8;
     border: 3px solid #dedede;
+    border-radius: 0px;
     bottom: 0;
     display: block;
     float: left;
     height: 45px;
     overflow: hidden;
     padding: 2px;
-    /*position: absolute;*/
     width: 217px;
 }
 

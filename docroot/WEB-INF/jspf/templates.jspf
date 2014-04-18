@@ -1,4 +1,3 @@
-
 <%-- This template HTML will be used to render each group item. --%>
 <script type="text/x-template" id="lims-group-item-template">
     <div class="group-name">{name}</div>
@@ -9,4 +8,73 @@
     <div class="group-buddy-item-portrait">{portrait}</div>
     <div class="group-buddy-item-name">{name}</div>
     <div class="group-buddy-item-presence">{presence}</div>
+</script>
+
+<%-- This template HTML will be used to render each conversation. --%>
+<script type="text/x-template" id="lims-conversation-template">
+    <div class="panel-trigger">
+        <span class="trigger-name">{triggerTitle}</span>
+
+        <div class="unread">{unreadMessages}</div>
+    </div>
+    <div class="chat-panel">
+        <div class="panel-window">
+            <div class="panel-button minimize"></div>
+            <div class="panel-button close"></div>
+            <div class="panel-portrait"></div>
+            <div class="panel-title">{conversationTitle}</div>
+            <div class="panel-profile">
+                <div class="panel-search">
+                    <input class="panel-search-input" type="text"/>
+
+                    <div class="panel-serach-clear-button aui-helper-hidden"></div>
+                </div>
+
+                <div class="panel-button menu"></div>
+                <div class="panel-primary-menu">
+                    <div class="menu-conversation">
+                        <ul class="menu-buttons">
+                            <li class="add"><liferay-ui:message key="add-to-conversation"/></li>
+                            <li class="buddies-in"><liferay-ui:message key="buddies-in"/></li>
+                            <li class="leave"><liferay-ui:message key="leave-conversation"/></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel-secondary-menu">
+                    <div class="menu-add-to-conversation">
+                        <input type="text" class="users-token-input"/>
+
+                        <div class="buttons">
+                            <div class="cancel"><liferay-ui:message key="cancel"/></div>
+                            <div class="add"><liferay-ui:message key="add"/></div>
+                        </div>
+                    </div>
+                    <div class="menu-leave-conversation">
+                        <p><liferay-ui:message key="leave-conversation-message"/></p>
+
+                        <div class="buttons">
+                            <div class="cancel"><liferay-ui:message key="cancel"/></div>
+                            <div class="leave"><liferay-ui:message key="leave"/></div>
+                        </div>
+                    </div>
+                    <ul class="menu-people-in-conversation"></ul>
+                </div>
+                <div class="panel-tertiary-menu">
+                    <div class="menu-search">
+                        <p><liferay-ui:message key="results"/>: <span class="results-count">0</span></p>
+
+                        <div class="buttons">
+                            <div class="prev"></div>
+                            <div class="next"></div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-output">
+                <div class="preloader"></div>
+            </div>
+            <div class="panel-input"><textarea></textarea></div>
+        </div>
+    </div>
 </script>
