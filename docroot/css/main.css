@@ -1,3 +1,113 @@
+
+
+/********************************************************************************
+/ PANEL
+/********************************************************************************/
+
+.liferay-ims .panel-button {
+    cursor: pointer;
+    height: 14px;
+    width: 20px;
+    float:right;
+    margin-top:5px;
+    margin-right: 3px;
+}
+
+.liferay-ims .panel-button.menu {
+    background: url(../images/menu-button.png) left bottom;
+}
+
+.liferay-ims .panel-button.close {
+    background: url(../images/close-button.png) center center no-repeat;
+}
+
+
+.liferay-ims .panel-button.search {
+    background: url("../images/search.png") center center no-repeat;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+    .liferay-ims .panel-button.close {
+        background-image: url(../images/close-button@2x.png);
+        background-size: auto 18px;
+    }
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+    .liferay-ims .panel-button.search {
+        background-image: url(../images/search@2x.png);
+        background-size: auto 14px;
+    }
+}
+
+.liferay-ims .panel-button.minimize {
+    background: url(../images/minimize-button.png) left bottom no-repeat;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+    .liferay-ims .panel-button.minimize {
+        background-image: url(../images/minimize-button@2x.png);
+        background-size: auto 13px;
+    }
+}
+
+.liferay-ims .panel-title {
+    background: #ffffff;
+    color: #222;
+    font-weight: normal;
+    height: 25px;
+    line-height: 24px;
+    text-indent: 10px;
+    text-align: left;
+    font-size: 15px;
+    border-bottom: 1px solid #ccc;
+}
+
+.liferay-ims .panel-search {
+    position: absolute;
+    top: 0;
+    visibility: hidden;
+}
+
+/********************************************************************************
+/ SEARCH INPUT
+/********************************************************************************/
+
+.liferay-ims .search-input .aui-field-content {
+    padding: 5px 4px 5px;
+    background: #ffffff;
+    border-bottom: 1px solid #ccc;
+}
+
+.liferay-ims .search-input-field {
+    height: 12px;
+    border: 1px solid #d4d4d4;
+    width: 189px !important;
+    padding: 5px 5px 5px 23px;
+    background: #d4d4d4 url(../images/search.png) center center no-repeat;
+    background-size: 14px;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-border-radius: 10px;
+    -ms-border-radius: 10px;
+    border-radius: 10px;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+    .liferay-ims .search-input-field {
+        background-image: url(../images/search@2x.png);
+    }
+}
+
+.liferay-ims .search-input-field:focus,
+.liferay-ims .search-input-field:hover, {
+    outline: none;
+    background-color: #e1e1e1;
+    border: 1px solid #d4d4d4;
+    background-position-x: 4px;
+}
+
 /********************************************************************************
 / STATUS INDICATOR
 /********************************************************************************/
@@ -74,39 +184,6 @@
     }
 }
 
-.liferay-ims .buddy-list .search-buddies .aui-field-content {
-    padding: 5px 4px 5px;
-    background: #ffffff;
-    border-bottom: 1px solid #ccc;
-}
-
-.liferay-ims .buddy-list .search-buddies-field {
-    height: 12px;
-    border: 1px solid #d4d4d4;
-    width: 198px;
-    padding: 5px 5px 5px 23px;
-    background: #d4d4d4 url(../images/search.png) center center no-repeat;
-    background-size: 14px;
-    box-shadow: none;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    -webkit-border-radius: 10px;
-    -ms-border-radius: 10px;
-    border-radius: 10px;
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
-    .liferay-ims .buddy-list .search-buddies-field {
-        background-image: url(../images/search@2x.png);
-    }
-}
-
-.liferay-ims .buddy-list .search-buddies-field:focus {
-    outline: none;
-    background-color: #e1e1e1;
-    background-position-x: 4px;
-}
-
 .liferay-ims .buddy-list .panel-content .group-buddy-item .group-buddy-item-name {
     margin-top: 6px;
     max-width: 170px;
@@ -117,7 +194,7 @@
 .liferay-ims .buddy-list .panel-content {
     list-style-type: none;
     margin: 0;
-    height: 248px;
+    height: 284px;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 2px 0;
@@ -434,14 +511,8 @@
 **   CONVERSATION 
 *************************************************************************************/
 
-.liferay-ims .conversation .chat-panel .panel-title {
-    padding-left: 10px;
-    text-indent: 0;
-    text-align: left;
-}
-
 .liferay-ims .conversation .chat-panel .panel-button.minimize {
-    right: 22px;
+    right: 27px;
 }
 
 .liferay-ims .conversation .menu-people-in-conversation {
@@ -542,6 +613,87 @@
     cursor: pointer;
     padding: 2px 2px 2px 20px;
 }
+
+
+.liferay-ims .conversation .panel-content {
+    height: 233px;
+    overflow-y: auto;
+    background: #fff;
+    margin-top: 0px;
+}
+
+.liferay-ims.conversation .ie .panel-content {
+    position: relative;
+}
+
+.liferay-ims .ie6 .panel-window, .ie7 .panel-window {
+    min-width: auto;
+    width: 226px;
+}
+
+.liferay-ims .conversation .panel-content .blurb {
+    margin: 2px 0px 3px;
+    position: relative;
+    background: transparent;
+    border-top: 1px solid #ddd;
+}
+
+.liferay-ims .conversation .panel-content .blurb span.highlight {
+    background: #a5d6ef;
+    font-weight: normal;
+}
+
+.liferay-ims .conversation .panel-content .name {
+    font-size: 9px;
+    display: block;
+    line-height: 8px;
+    padding: 3px 3px 3px;
+    color: rgb(126, 126, 126);
+}
+
+.liferay-ims.conversation  .panel-content .buddy-image {
+    float: left;
+    width: 32px;
+    height: 32px;
+    background: white;
+    border-bottom: 1px solid #ddd;
+}
+
+.liferay-ims .conversation .panel-content .message {
+    margin-left: 32px;
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    background: #fff;
+}
+
+.liferay-ims .conversation .panel-content .incoming .name {
+    background: #D3DADD;
+    color: #555;
+}
+
+.liferay-ims .conversation .panel-content .date {
+    font-size: 9px;
+    font-style: normal;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    color: rgb(126, 126, 126);
+}
+
+.liferay-ims .conversation .panel-content .incoming .date {
+    color: #555;
+}
+
+.liferay-ims .conversation .panel-content .text {
+    display: block;
+    line-height: 14px;
+    padding: 0px 3px 8px;
+    width: 150px;
+    color: #222;
+    clear: right;
+    word-wrap: break-word;
+}
+
 
 /************************************************************************************
 **   CONVERSATION LIST 
@@ -970,17 +1122,6 @@
     width: 46px;
 }
 
-.liferay-ims .panel-title {
-    background: #ffffff;
-    color: #222;
-    font-weight: normal;
-    height: 25px;
-    line-height: 24px;
-    text-indent: 6px;
-    text-align: center;
-    font-size: 15px;
-    border-bottom: 1px solid #ccc;
-}
 
 .liferay-ims .panel-subtitle {
     padding: 5px;
@@ -990,47 +1131,6 @@
     height: 16px;
 }
 
-.liferay-ims .panel-button {
-    cursor: pointer;
-    height: 14px;
-    width: 20px;
-}
-
-.liferay-ims .panel-button.menu {
-    background: url(../images/menu-button.png) left bottom;
-    position: absolute;
-    right: 6px;
-    top: 32px;
-}
-
-.liferay-ims .panel-button.close {
-    background: url(../images/close-button.png) center center;
-    position: absolute;
-    right: 4px;
-    top: 5px;
-}
-
-
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
-    .liferay-ims .panel-button.close {
-        background-image: url(../images/close-button@2x.png);
-        background-size: auto 13px;
-    }
-}
-
-.liferay-ims .panel-button.minimize {
-    background: url(../images/minimize-button.png) left bottom no-repeat;
-    position: absolute;
-    right: 9px;
-    top: 6px;
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
-    .liferay-ims .panel-button.minimize {
-        background-image: url(../images/minimize-button@2x.png);
-        background-size: auto 13px;
-    }
-}
 
 .liferay-ims .panel-profile {
     background: #f8f8f8;
@@ -1080,86 +1180,6 @@
     opacity: 0.9;
     cursor: pointer;
     z-index: 2;
-}
-
-.liferay-ims .panel-output {
-    height: 192px;
-    overflow-y: auto;
-    background: #fff;
-    margin-top: -1px;
-}
-
-.liferay-ims .ie .panel-output {
-    position: relative;
-}
-
-.liferay-ims .ie6 .panel-window, .ie7 .panel-window {
-    min-width: auto;
-    width: 226px;
-}
-
-.liferay-ims .panel-output .blurb {
-    margin: 2px 0px 3px;
-    position: relative;
-    background: transparent;
-    border-top: 1px solid #ddd;
-}
-
-.liferay-ims .panel-output .blurb span.highlight {
-    background: #a5d6ef;
-    font-weight: normal;
-}
-
-.liferay-ims .panel-output .name {
-    font-size: 9px;
-    display: block;
-    line-height: 8px;
-    padding: 3px 3px 3px;
-    color: rgb(126, 126, 126);
-}
-
-.liferay-ims .panel-output .buddy-image {
-    float: left;
-    width: 32px;
-    height: 32px;
-    background: white;
-    border-bottom: 1px solid #ddd;
-}
-
-.liferay-ims .panel-output .message {
-    margin-left: 32px;
-    border-left: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    background: #fff;
-}
-
-.liferay-ims .panel-output .incoming .name {
-    background: #D3DADD;
-    color: #555;
-}
-
-.liferay-ims .panel-output .date {
-    color: #222;
-    font-size: 9px;
-    font-style: normal;
-    position: absolute;
-    right: 2px;
-    top: 2px;
-    color: rgb(126, 126, 126);
-}
-
-.liferay-ims .panel-output .incoming .date {
-    color: #555;
-}
-
-.liferay-ims .panel-output .text {
-    display: block;
-    line-height: 14px;
-    padding: 0px 3px 8px;
-    width: 150px;
-    color: #222;
-    clear: right;
-    word-wrap: break-word;
 }
 
 .liferay-ims .panel-input {
