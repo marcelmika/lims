@@ -77,6 +77,26 @@ Y.LIMS.View.PanelView = Y.Base.create('panelView', Y.View, [], {
     },
 
     /**
+     * Shows search panel
+     */
+    showSearch: function() {
+        var searchContainer = this.get('searchContainer');
+        if(searchContainer !== undefined) {
+            searchContainer.removeClass('hidden');
+        }
+    },
+
+    /**
+     * Hides search panel
+     */
+    hideSearch: function() {
+        var searchContainer = this.get('searchContainer');
+        if(searchContainer !== undefined) {
+            searchContainer.addClass('hidden');
+        }
+    },
+
+    /**
      * Attaches events to all necessary elements from the container
      *
      * @private
@@ -114,6 +134,10 @@ Y.LIMS.View.PanelView = Y.Base.create('panelView', Y.View, [], {
         else if (target.hasClass('close')) {
             this.close();
         }
+        // Search button
+        else if (target.hasClass('search')) {
+            this.showSearch();
+        }
     }
 
 }, {
@@ -147,6 +171,13 @@ Y.LIMS.View.PanelView = Y.Base.create('panelView', Y.View, [], {
         panelButtons: {
             valueFn: function () {
                 return this.get('container').all('.panel-button');
+            }
+        },
+
+        // Search container
+        searchContainer: {
+            valueFn: function() {
+                return this.get('container').one('.panel-search');
             }
         }
     }

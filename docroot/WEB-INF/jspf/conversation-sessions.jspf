@@ -50,7 +50,7 @@
                 <img alt="" class="panel-icon" src="${themeDisplay.pathImage}/user_portrait?img_id=${portraitId}" />
                 <div class="panel-title">${conversation.title}</div>            
                 <div class="panel-profile">                            
-                    <div class="panel-search">                    
+                    <div class="panel-search hidden">
                         <input class="panel-search-input" type="text"/>
                         <div class="panel-serach-clear-button aui-helper-hidden"></div>
                     </div>

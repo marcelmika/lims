@@ -27,7 +27,7 @@
             <div class="panel-button minimize"></div>
             <div class="panel-button search"></div>
             <div class="panel-title"><liferay-ui:message key="colleagues"/></div>
-            <div class="panel-search">
+            <div class="panel-search hidden">
                 <aui:input cssClass="search-input"
                            inputCssClass="search-input-field"
                            label=""
