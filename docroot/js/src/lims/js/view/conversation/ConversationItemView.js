@@ -1,26 +1,28 @@
 /**
- * Conversation View
+ * Group View Item
  *
- * The class extends Y.View. It represents the view for a single conversation.
+ * The class extends Y.View. It represents the view for a single group item.
  */
 Y.namespace('LIMS.View');
 
-Y.LIMS.View.ConversationView = Y.Base.create('conversationView', Y.View, [], {
+Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View, [], {
 
     // This customizes the HTML used for this view's container node.
-    // <li class="conversation" id="conversation_{conversationId}" panelId="{panelId}">
-    containerTemplate: '<li class="conversation">',
+    containerTemplate: '<li class="conversation-item"/>',
 
     // Specify an optional model to associate with the view.
 //    model: Y.LIMS.Model.GroupModelItem,
 
     // The template property holds the contents of the #lims-group-item-template
     // element, which will be used as the HTML template for each group item.
-    template: Y.one('#lims-conversation-template').get('innerHTML'),
+    template: Y.one('#lims-conversation-item-template').get('innerHTML'),
 
     render: function () {
         // Vars
-        var container;
+        var container
+//            , group,
+//            buddiesView
+            ;
         // Container and model
         container = this.get('container');
 //        group = this.get('model');
@@ -29,11 +31,14 @@ Y.LIMS.View.ConversationView = Y.Base.create('conversationView', Y.View, [], {
         // Fill data from model to template and set it to container
         container.set('innerHTML',
             Y.Lang.sub(this.template, {
-                conversationTitle: 'John Doe',
-                triggerTitle: 'John Doe',
-                unreadMessages: 5
+//                name: group.get('name')
             })
         );
+
+        // Render Buddies:
+//        buddiesView = new Y.LIMS.View.GroupBuddyViewList({model: group.get('buddies')});
+//        buddiesView.render();
+//        container.append(buddiesView.get("container"));
 
         return this;
     }
@@ -48,7 +53,6 @@ Y.LIMS.View.ConversationView = Y.Base.create('conversationView', Y.View, [], {
                 return Y.Node.create(this.containerTemplate);
             }
         },
-
         // Instance of model attached to view
         model: {
             value: null // default value

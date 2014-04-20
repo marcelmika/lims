@@ -36,3 +36,18 @@
         </div>
     </div>
 </script>
+
+
+<%-- This template HTML will be used to render each conversation item (i.e. message). --%>
+<script type="text/x-template" id="lims-conversation-item-template">
+    <div class="blurb {cssClass}">
+        <img class="buddy-image" alt="" src="{userImagePath}"/>
+        <div class="message">
+            <span class="name">{fullName}</span>
+            <span class="date" title="{created}">{createdPrettified}</span>
+            <span class="text">{content}</span>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</script>

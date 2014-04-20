@@ -5,20 +5,40 @@ Y.namespace('LIMS.Controller');
 
 Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUserConversationController', Y.View, [], {
 
+    // This customizes the HTML used for this view's container node.
+    // <li class="conversation" id="conversation_{conversationId}" panelId="{panelId}">
+    containerTemplate: '<li class="conversation">',
+
+    // The template property holds the contents of the #lims-group-item-template
+    // element, which will be used as the HTML template for each group item.
+    template: Y.one('#lims-conversation-template').get('innerHTML'),
+
     // The initializer runs when a MainController instance is created, and gives
     // us an opportunity to set up all sub controllers
     initializer: function () {
-        var view = new Y.LIMS.View.ConversationView(),
-            container = this.get('container');
+        var container = this.get('container');
 
-        container.append(view.render().get('container'));
+        container.set('innerHTML',
+            Y.Lang.sub(this.template, {
+                conversationTitle: 'John Doe',
+                triggerTitle: 'John Doe',
+                unreadMessages: 5
+            })
+        );
 
         // Set panel
         this.set('panel', new Y.LIMS.View.PanelView({
-            container: view.get('container'),
+            container: this.get('container'),
             panelId: "conversation"
         }));
 
+        this.get('parentContainer').append(container);
+
+        this.set('listView', new Y.LIMS.View.ConversationListView({
+            container: this.get('container').one('.panel-content')
+        }));
+
+        // TODO : Debug
         this.get('panel').show();
 
         // Events
@@ -31,7 +51,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
      *
      * @private
      */
-    _attachEvents: function() {
+    _attachEvents: function () {
 
         Y.on('panelShown', this._onPanelShown, this);
         Y.on('panelHidden', this._onPanelHidden, this);
@@ -67,11 +87,27 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
     // Specify attributes and static properties for your View here.
     ATTRS: {
 
-        // Main container
+        // Template for a single conversation
         container: {
+            valueFn: function () {
+                if (this.get('container') === undefined) {
+                    console.log('creating');
+                    return Y.Node.create(this.containerTemplate);
+                }
+                console.log('returning');
+                return this.get('container');
+            }
+        },
+
+        // Main container
+        parentContainer: {
             valueFn: function () {
                 return Y.one('#chatBar .chat-tabs');
             }
+        },
+
+        listView: {
+            value: null
         },
 
         // Panel view related to the controller

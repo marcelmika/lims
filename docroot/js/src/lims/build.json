@@ -33,7 +33,8 @@
 
         "lims-view": {
             "jsfiles": [
-                "js/view/conversation/ConversationView.js",
+                "js/view/conversation/ConversationItemView.js",
+                "js/view/conversation/ConversationListView.js",
                 "js/view/group/GroupBuddyViewItem.js",
                 "js/view/group/GroupBuddyViewList.js",
                 "js/view/group/GroupViewItem.js",
