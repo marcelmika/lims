@@ -14,10 +14,10 @@ Y.LIMS.Model.ConversationItemModel = Y.Base.create('conversationItemModel', Y.Mo
 
         switch (action) {
             case 'create':
-                Y.log("create");
                 data = this.toJSON();
-                Y.log(data);
-                return;
+                console.log("create item");
+                console.log(data);
+                return callback(null, data);
 //                // Use the current timestamp as an id just to simplify the example. In a
 //                // real sync layer, you'd want to generate an id that's more likely to
 //                // be globally unique.
@@ -29,7 +29,7 @@ Y.LIMS.Model.ConversationItemModel = Y.Base.create('conversationItemModel', Y.Mo
 //                return;
 
             case 'read':
-                Y.log("read");
+                console.log("read item");
                 return;
 
             // Look for an item in localStorage with this model's id.
@@ -44,7 +44,7 @@ Y.LIMS.Model.ConversationItemModel = Y.Base.create('conversationItemModel', Y.Mo
 //                return;
 
             case 'update':
-                Y.log("update");
+                console.log("update item");
                 return;
 //
 //                data = this.toJSON();
@@ -55,7 +55,7 @@ Y.LIMS.Model.ConversationItemModel = Y.Base.create('conversationItemModel', Y.Mo
 //                return;
 
             case 'delete':
-                Y.log("delete");
+                console.log("delete item");
                 return;
 //                localStorage.removeItem(this.get('id'));
 //                callback();

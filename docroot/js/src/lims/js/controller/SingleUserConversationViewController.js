@@ -38,7 +38,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         this.get('parentContainer').append(container);
 
         this.set('listView', new Y.LIMS.View.ConversationListView({
-            container: this.get('container').one('.panel-content'),
+            container: this.get('container').one('.panel-window'),
             model: model
         }));
 

@@ -74,7 +74,7 @@ AUI().use(
                 //    Events
                 // ------------------------------------------------------------------------------
                 // Chat Input
-                instance._chatInput.on('keyup', instance._onKeystroke, instance);
+                instance._chatInput.on('keyup', instance, instance);
                 instance._chatInput.on('focus', instance._onKeystroke, instance);
 
                 // Menu button

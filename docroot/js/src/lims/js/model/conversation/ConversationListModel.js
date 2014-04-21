@@ -36,9 +36,9 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
 
         switch (action) {
             case 'create':
-                Y.log("create");
+                console.log("create");
                 data = this.toJSON();
-                Y.log(data);
+                console.log(data);
                 return;
 //                // Use the current timestamp as an id just to simplify the example. In a
 //                // real sync layer, you'd want to generate an id that's more likely to
@@ -51,6 +51,7 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
 //                return;
 
             case 'read':
+                console.log('read');
                 // TODO: Move away
 //                url = Y.one('#chatPortletURL').get('value');
 //
@@ -114,7 +115,7 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
 //                return;
 
             case 'update':
-                Y.log("update");
+                console.log("update");
                 return;
 //
 //                data = this.toJSON();
@@ -125,7 +126,7 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
 //                return;
 
             case 'delete':
-                Y.log("delete");
+                console.log("delete");
                 return;
 //                localStorage.removeItem(this.get('id'));
 //                callback();

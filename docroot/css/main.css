@@ -119,7 +119,7 @@
 /********************************************************************************/
 
 .liferay-ims .conversation .panel-content {
-	height: 233px;
+	height: 258px;
 	overflow-y: auto;
 	background: #fff;
 	margin-top: 0;
@@ -178,7 +178,7 @@
 
 .liferay-ims .conversation .panel-input {
 	position: relative;
-	height: 55px;
+	height: 30px;
 }
 
 .liferay-ims .conversation .panel-input textarea {

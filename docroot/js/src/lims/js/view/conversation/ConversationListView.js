@@ -13,6 +13,8 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     initializer: function () {
         // Init model
         this._initModel();
+        // Attach events
+        this._attachEvents();
 
         return this;
     },
@@ -29,6 +31,15 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         model.load();
     },
 
+    _attachEvents: function () {
+        // Attach event to text field
+        var messageTextField = this.get('messageTextField');
+        if (messageTextField !== null) {
+            messageTextField.on('keydown', this._onMessageTextFieldUpdated, this);
+            messageTextField.on('focus', this._onMessageTextFieldUpdated, this);
+        }
+    },
+
     // Creates a new GroupView instance and renders it into the list whenever a
     // Group item is added to the list.
     _updateConversationList: function (e) {
@@ -39,7 +50,28 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         // Render it
         conversation.render();
         // Append to list
-        this.get('container').append(conversation.get('container'));
+        this.get('panelContent').append(conversation.get('container'));
+    },
+
+    /**
+     * Called whenever the message field is updated
+     *
+     * @param event
+     * @private
+     */
+    _onMessageTextFieldUpdated: function (event) {
+        var textField = this.get('messageTextField'),
+            model = this.get('model'),
+            // Get rid of new line characters
+            value = textField.get('value').replace(/\n|\r/gim, '');
+
+        // Send message on enter
+        if (event.keyCode === 13 && !event.shiftKey && value.length) {
+            event.preventDefault();
+            // Empty text field
+            textField.set('value', "");
+            model.create(new Y.LIMS.Model.ConversationItemModel({message: value}));
+        }
     }
 
 }, {
@@ -56,12 +88,32 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
             value: null // default value
         },
 
+        // Panel content container
+        panelContent: {
+            valueFn: function () {
+                var container = this.get('container').one('.panel-content');
+                if (container !== undefined) {
+                    return container;
+                }
+            }
+        },
+
         // Container for activity indicator
         activityIndicator: {
             valueFn: function () {
-                var indicator = this.get('container').one('.preloader');
-                if (indicator !== undefined) {
-                    return indicator;
+                var container = this.get('container').one('.preloader');
+                if (container !== undefined) {
+                    return container;
+                }
+            }
+        },
+
+        // Message text field container
+        messageTextField: {
+            valueFn: function () {
+                var container = this.get('container').one('.panel-input textarea');
+                if (container !== undefined) {
+                    return container;
                 }
             }
         }
