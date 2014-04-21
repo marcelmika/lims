@@ -62,8 +62,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
     },
 
     _onConversationUpdated: function () {
-        // Hide indicator
-        this.get('activityIndicator').hide();
+
     },
 
     /**
@@ -120,20 +119,6 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         // Panel view related to the controller
         panel: {
             value: null // to be set in initializer
-        },
-
-        // Container for activity indicator
-        activityIndicator: {
-            valueFn: function () {
-                var container = this.get('container'),
-                    indicators = container.all('.preloader');
-                console.log(container);
-                console.log(indicators);
-                if (indicators.size()) {
-                    console.log(indicators[0]);
-                }
-                return null;
-            }
         }
     }
 });

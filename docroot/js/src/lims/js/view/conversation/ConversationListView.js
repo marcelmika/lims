@@ -32,6 +32,8 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     // Creates a new GroupView instance and renders it into the list whenever a
     // Group item is added to the list.
     _updateConversationList: function (e) {
+        // Hide indicator
+        this.get('activityIndicator').hide();
         // New conversation
         var conversation = new Y.LIMS.View.ConversationItemView({model: e.model});
         // Render it
@@ -52,7 +54,18 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         // Instance of model attached to view
         model: {
             value: null // default value
+        },
+
+        // Container for activity indicator
+        activityIndicator: {
+            valueFn: function () {
+                var indicator = this.get('container').one('.preloader');
+                if (indicator !== undefined) {
+                    return indicator;
+                }
+            }
         }
+
     }
 
 });
