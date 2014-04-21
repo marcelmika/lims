@@ -31,7 +31,10 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
         // Fill data from model to template and set it to container
         container.set('innerHTML',
             Y.Lang.sub(this.template, {
-//                name: group.get('name')
+                createdPrettified: "a minute ago",
+                fullName: "Jakub Bokoč",
+                content: "hi!",
+                portrait: this._getPortrait("jakub.bokoc")
             })
         );
 
@@ -41,6 +44,13 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
 //        container.append(buddiesView.get("container"));
 
         return this;
+    },
+
+    // Returns user portrait
+    _getPortrait: function (screenName) {
+        var portraitView = new Y.LIMS.View.PortraitView({screenName: screenName});
+        portraitView.render();
+        return portraitView.get('container').get('outerHTML');
     }
 
 }, {

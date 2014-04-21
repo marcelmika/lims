@@ -14,6 +14,8 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
 
         this.set('container', options.container);
 
+        //TODO: debug
+        this._updateConversationList();
         this._updateConversationList();
 
         return this;
