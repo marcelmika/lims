@@ -8,7 +8,7 @@
 	width: 20px;
 	float: right;
 	margin-top: 5px;
-	margin-right: 3px;
+	margin-right: 7px;
 }
 
 .liferay-ims .panel-button.menu {
@@ -198,6 +198,7 @@
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
 	box-shadow: none;
+	resize: none;
 }
 
 .liferay-ims .conversation .panel-input textarea, .chat-height-monitor {
@@ -207,7 +208,7 @@
 .liferay-ims .conversation .panel-input textarea.focus,
 .liferay-ims .conversation .ie6 .panel-input textarea.focus {
 	background: #fff;
-	border-top-color: #a5d6ef;
+	border-bottom-color: #fff;
 }
 
 .liferay-ims .conversation .menu-search {

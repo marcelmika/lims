@@ -16,7 +16,10 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
     // The initializer runs when a MainController instance is created, and gives
     // us an opportunity to set up all sub controllers
     initializer: function () {
-        var container = this.get('container');
+        var container = this.get('container'),
+            model = new Y.LIMS.Model.ConversationListModel();
+
+        model.after('conversationUpdated', this._onConversationUpdated, this);
 
         container.set('innerHTML',
             Y.Lang.sub(this.template, {
@@ -35,7 +38,8 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         this.get('parentContainer').append(container);
 
         this.set('listView', new Y.LIMS.View.ConversationListView({
-            container: this.get('container').one('.panel-content')
+            container: this.get('container').one('.panel-content'),
+            model: model
         }));
 
         // TODO : Debug
@@ -55,6 +59,11 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
 
         Y.on('panelShown', this._onPanelShown, this);
         Y.on('panelHidden', this._onPanelHidden, this);
+    },
+
+    _onConversationUpdated: function () {
+        // Hide indicator
+        this.get('activityIndicator').hide();
     },
 
     /**
@@ -91,10 +100,8 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         container: {
             valueFn: function () {
                 if (this.get('container') === undefined) {
-                    console.log('creating');
                     return Y.Node.create(this.containerTemplate);
                 }
-                console.log('returning');
                 return this.get('container');
             }
         },
@@ -113,6 +120,20 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         // Panel view related to the controller
         panel: {
             value: null // to be set in initializer
+        },
+
+        // Container for activity indicator
+        activityIndicator: {
+            valueFn: function () {
+                var container = this.get('container'),
+                    indicators = container.all('.preloader');
+                console.log(container);
+                console.log(indicators);
+                if (indicators.size()) {
+                    console.log(indicators[0]);
+                }
+                return null;
+            }
         }
     }
 });

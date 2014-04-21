@@ -11,7 +11,7 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
     containerTemplate: '<li class="conversation-item"/>',
 
     // Specify an optional model to associate with the view.
-//    model: Y.LIMS.Model.GroupModelItem,
+    model: Y.LIMS.Model.ConversationItemModel,
 
     // The template property holds the contents of the #lims-group-item-template
     // element, which will be used as the HTML template for each group item.
@@ -19,24 +19,19 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
 
     render: function () {
         // Vars
-        var container
-//            , group,
-//            buddiesView
-            ;
-        // Container and model
-        container = this.get('container');
-//        group = this.get('model');
+        var container = this.get('container'),
+            model = this.get('model');
 
-        // Render Group:
-        // Fill data from model to template and set it to container
-        container.set('innerHTML',
-            Y.Lang.sub(this.template, {
-                createdPrettified: "a minute ago",
-                fullName: "Jakub Bokoč",
-                content: "hi!",
-                portrait: this._getPortrait("jakub.bokoc")
-            })
-        );
+            // Render Group:
+            // Fill data from model to template and set it to container
+            container.set('innerHTML',
+                Y.Lang.sub(this.template, {
+                    createdPrettified: "a minute ago",
+                    fullName: "Jakub Bokoč",
+                    content: model.get('message'),
+                    portrait: this._getPortrait("jakub.bokoc")
+                })
+            );
 
         // Render Buddies:
 //        buddiesView = new Y.LIMS.View.GroupBuddyViewList({model: group.get('buddies')});

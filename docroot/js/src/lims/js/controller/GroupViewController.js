@@ -50,7 +50,7 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
      *
      * @private
      */
-    _attachEvents: function() {
+    _attachEvents: function () {
         // Attach click on panel's item
         this.get('panel').get('container').delegate('click', function (event) {
             var presence, target = event.currentTarget;
@@ -131,7 +131,13 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
         // Todo: send active panel ajax
     },
 
-    _onBuddySelected: function() {
+    /**
+     * Buddy selected event. Called whenever the user selects one of the buddies from
+     * the group list
+     *
+     * @private
+     */
+    _onBuddySelected: function () {
         this.get('panel').hide();
     }
 
