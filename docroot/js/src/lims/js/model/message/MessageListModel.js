@@ -143,13 +143,5 @@ Y.LIMS.Model.MessageListModel = Y.Base.create('messageListModel', Y.ModelList, [
         // Add custom model attributes here. These attributes will contain your
         // model's data. See the docs for Y.Attribute to learn more about defining
         // attributes.
-
-        participant: {
-            value: "" // default value
-        },
-
-        unreadMessages: {
-            value: 10 // default value
-        }
     }
 });

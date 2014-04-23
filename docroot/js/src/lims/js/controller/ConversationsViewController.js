@@ -31,17 +31,21 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
      */
     _onBuddySelected: function (buddy) {
         if (buddy !== undefined) {
-            var controller, model,
+            var controller,
+                conversation,
                 list = this.get('conversationMap'),
                 listID = buddy.get('screenName'); // Id is a screenName of the selected buddy
             // Check if the conversation is already there
             if (!list.hasOwnProperty(listID)) {
-                model = new Y.LIMS.Model.MessageListModel({
-                    participant: buddy,
-                    unreadMessages: 0
+                // Create new conversation
+                conversation = new Y.LIMS.Model.ConversationModel({
+                    participant: buddy
                 });
+                conversation.save();
                 // Create new single user conversation and add it to the list
-                controller = new Y.LIMS.Controller.SingleUserConversationViewController({model:model});
+                controller = new Y.LIMS.Controller.SingleUserConversationViewController({
+                    model: conversation
+                });
                 // Add to list
                 list[listID] = controller;
             } else {
