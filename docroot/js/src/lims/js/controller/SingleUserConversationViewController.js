@@ -16,31 +16,37 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
     // us an opportunity to set up all sub controllers
     initializer: function () {
         var container = this.get('container'),
-            model = new Y.LIMS.Model.ConversationListModel(),
-            participant = this.get('participant');
+            model = this.get('model');
 
-        model.after('conversationUpdated', this._onConversationUpdated, this);
-
+        // Create content of the container
         container.set('innerHTML',
             Y.Lang.sub(this.template, {
-                conversationTitle: participant.get('fullName'),
-                triggerTitle: participant.get('fullName'),
-                unreadMessages: 0
+                conversationTitle: model.get('participant').get('fullName'),
+                triggerTitle: model.get('participant').get('fullName'),
+                unreadMessages: model.get('unreadMessages')
             })
         );
 
         // Set panel
         this.set('panel', new Y.LIMS.View.PanelView({
-            container: this.get('container'),
+            container: container,
             panelId: "conversation"
         }));
 
+        // Add panel container to parent container
         this.get('parentContainer').append(container);
 
+        // Set list view
         this.set('listView', new Y.LIMS.View.ConversationListView({
-            container: this.get('container').one('.panel-window'),
+            container: container.one('.panel-window'),
             model: model
         }));
+
+        // Set badge
+        this.set('badge', container.one('.unread'));
+        // Hide badge at the beginning
+        this.get('badge').hide();
+
 
         // Events
         this._attachEvents();
@@ -49,7 +55,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
     /**
      * Shows the conversation panel
      */
-    show: function() {
+    show: function () {
         this.get('panel').show();
     },
 
@@ -59,6 +65,9 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
      * @private
      */
     _attachEvents: function () {
+        var model = this.get('model');
+        // Model event
+        model.after('conversationUpdated', this._onConversationUpdated, this);
         // Panel events
         Y.on('panelShown', this._onPanelShown, this);
         Y.on('panelHidden', this._onPanelHidden, this);
@@ -67,11 +76,31 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         Y.on('buddySelected', this._onBuddySelected, this); // Whenever the user click on buddy in group
     },
 
+    /**
+     * Called whenever the conversation model is updated
+     *
+     * @private
+     */
     _onConversationUpdated: function () {
+        console.log('update called');
+        var unreadMessages = this.get('model').get('unreadMessages'),
+            badge = this.get('badge');
+        if (unreadMessages === 0) {
+            badge.hide();
+        } else {
+            badge.show();
+        }
 
+        badge.set('innerHTML', unreadMessages);
     },
 
-    _onBuddySelected: function(buddy) {
+    /**
+     * Called whenever the buddy from group is selected
+     *
+     * @param buddy
+     * @private
+     */
+    _onBuddySelected: function (buddy) {
         var participant = this.get('participant');
         if (participant.get('screenName') === buddy.get('screenName')) {
             this.get('panel').show();
@@ -103,7 +132,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         // Todo: send active panel ajax
     },
 
-    _onPanelClosed: function() {
+    _onPanelClosed: function () {
         this.fire('conversationClosed');
     }
 
@@ -129,9 +158,12 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             }
         },
 
-        // Buddy screenName of the receiver
-        participant: {
-            value: "" // default value
+        badge: {
+            value: null // default value
+        },
+
+        model: {
+            value: null // default value
         },
 
         listView: {

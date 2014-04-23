@@ -36,7 +36,7 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
 
         switch (action) {
             case 'create':
-                console.log("create");
+                console.log("create conversation list");
                 data = this.toJSON();
                 console.log(data);
                 return;
@@ -51,7 +51,7 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
 //                return;
 
             case 'read':
-                console.log('read');
+                console.log('read conversation list');
                 // TODO: Move away
 //                url = Y.one('#chatPortletURL').get('value');
 //
@@ -115,7 +115,7 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
 //                return;
 
             case 'update':
-                console.log("update");
+                console.log("update conversation list");
                 return;
 //
 //                data = this.toJSON();
@@ -126,7 +126,7 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
 //                return;
 
             case 'delete':
-                console.log("delete");
+                console.log("delete conversation list");
                 return;
 //                localStorage.removeItem(this.get('id'));
 //                callback();
@@ -146,6 +146,10 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
 
         participant: {
             value: "" // default value
+        },
+
+        unreadMessages: {
+            value: 10 // default value
         }
     }
 });

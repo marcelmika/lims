@@ -21,8 +21,6 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
         Y.on('buddySelected', function (buddy) {
             this._onBuddySelected(buddy);
         }, this);
-        // User closed conversation
-
     },
 
     /**
@@ -33,15 +31,17 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
      */
     _onBuddySelected: function (buddy) {
         if (buddy !== undefined) {
-            var controller,
+            var controller, model,
                 list = this.get('conversationMap'),
                 listID = buddy.get('screenName'); // Id is a screenName of the selected buddy
             // Check if the conversation is already there
             if (!list.hasOwnProperty(listID)) {
-                // Create new single user conversation and add it to the list
-                controller = new Y.LIMS.Controller.SingleUserConversationViewController({
-                    participant: buddy
+                model = new Y.LIMS.Model.ConversationListModel({
+                    participant: buddy,
+                    unreadMessages: 0
                 });
+                // Create new single user conversation and add it to the list
+                controller = new Y.LIMS.Controller.SingleUserConversationViewController({model:model});
                 // Add to list
                 list[listID] = controller;
             } else {
