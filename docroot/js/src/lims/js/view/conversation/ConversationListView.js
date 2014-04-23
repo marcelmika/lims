@@ -43,14 +43,44 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     // Creates a new GroupView instance and renders it into the list whenever a
     // Group item is added to the list.
     _updateConversationList: function (e) {
+        var animation, conversation;
         // Hide indicator
         this.get('activityIndicator').hide();
         // New conversation
-        var conversation = new Y.LIMS.View.ConversationItemView({model: e.model});
+        conversation = new Y.LIMS.View.ConversationItemView({model: e.model});
         // Render it
         conversation.render();
+        // Set opacity to zero (because of the animation
+        conversation.get('container').setStyle('opacity', 0);
         // Append to list
         this.get('panelContent').append(conversation.get('container'));
+        // Scroll to the last message
+        this._scrollToBottom();
+        // Animate
+        animation = new Y.Anim({
+            node: conversation.get('container'),
+            duration: 0.2,
+            from: {
+                opacity: 0
+            },
+            to: {
+                opacity: 1
+            }
+        });
+        // Run the effect animation
+        animation.run();
+
+    },
+
+    /**
+     * Scrolls to the last message
+     * @private
+     */
+    _scrollToBottom: function () {
+        var panelContent = this.get('panelContent');
+        setTimeout(function () {
+            panelContent.set('scrollTop', panelContent.get('scrollHeight'));
+        }, 1);
     },
 
     /**
@@ -62,7 +92,7 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     _onMessageTextFieldUpdated: function (event) {
         var textField = this.get('messageTextField'),
             model = this.get('model'),
-            // Get rid of new line characters
+        // Get rid of new line characters
             value = textField.get('value').replace(/\n|\r/gim, '');
 
         // Send message on enter
@@ -73,7 +103,6 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
             model.create(new Y.LIMS.Model.ConversationItemModel({message: value}));
         }
     }
-
 }, {
 
     // Specify attributes and static properties for your View here.

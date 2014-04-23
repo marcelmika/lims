@@ -34,7 +34,25 @@ Y.LIMS.View.GroupBuddyViewItem = Y.Base.create('groupBuddyViewItem', Y.View, [],
             })
         );
 
+        // Attach events to newly created container
+        this._attachEvents();
+
         return this;
+    },
+
+    /**
+     * Attach events to container content
+     * @private
+     */
+    _attachEvents: function () {
+        var model = this.get('model'),
+            container = this.get('container');
+        // Attach click on panel's item
+        container.on('click', function (event) {
+            event.preventDefault();
+                // Fire event, add current model (buddy)
+                Y.fire('buddySelected', model);
+        });
     },
 
     // Returns user portrait URL

@@ -79,7 +79,7 @@ AUI().use(
                     // Add to instance
                     instance._addContainer('status', statusContainer);
                     instance._addContainer('buddyList', buddyListContainer);
-                    instance._addContainer('conversationList', conversationListContainer);
+                    instance._addContainer('conversationMap', conversationListContainer);
                     instance._addContainer('settings', settingsContainer);
                     instance._addContainer('conversationSessions', conversationSessionsContainer);
                 },
@@ -98,7 +98,7 @@ AUI().use(
                     var instance = this;
 
                     // Get particular conversation from the conversations list
-                    var conversationsListContainer = instance._getContainer('conversationList');
+                    var conversationsListContainer = instance._getContainer('conversationMap');
                     var conversation = conversationsListContainer.getConversation(roomJID);
                     // Add it to conversation sessions container
                     var conversationSessionContainer = instance._getContainer('conversationSessions');
@@ -190,7 +190,7 @@ AUI().use(
                     // Handle Initial request
                     instance._handleInitialRequest(response);
                     // Update conversation list
-                    instance._getContainer('conversationList').update(response.conversations);
+                    instance._getContainer('conversationMap').update(response.conversations);
                     // Update buddy list container
                     if(response.initialRequest) {
                         instance._getContainer('buddyList').update(response.groups);
@@ -254,7 +254,7 @@ AUI().use(
                     var conversation = instance._getContainer('conversationSessions').getConversation(roomJID);
                     conversation.close();
                     // Remove from conversation list
-                    instance._getContainer('conversationList').clearContent();
+                    instance._getContainer('conversationMap').clearContent();
                 },
                 _onCreateSingleUserConversation: function(screenName) {
                     // Send to server
@@ -343,7 +343,7 @@ AUI().use(
                     var instance = this;
                     // Hide all containers except of the status container  
                     instance._getContainer('buddyList').invisible(true);
-                    instance._getContainer('conversationList').invisible(true);
+                    instance._getContainer('conversationMap').invisible(true);
                     instance._getContainer('settings').invisible(true);
                     instance._getContainer('conversationSessions').invisible(true);
                     // Save to server                    
@@ -358,7 +358,7 @@ AUI().use(
                     var instance = this;
                     // Recreate containers
                     instance._getContainer('buddyList').invisible(false);
-                    instance._getContainer('conversationList').invisible(false);
+                    instance._getContainer('conversationMap').invisible(false);
                     instance._getContainer('settings').invisible(false);
                     instance._getContainer('conversationSessions').invisible(false);
                     // Resume poller

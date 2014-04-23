@@ -31,6 +31,7 @@ Y.LIMS.View.PanelView = Y.Base.create('panelView', Y.View, [], {
     show: function () {
         var container = this.get('container');
         // Show container
+        container.removeClass('closed');
         container.addClass('selected');
         // Set flag
         this.set('isOpened', true);
@@ -69,7 +70,7 @@ Y.LIMS.View.PanelView = Y.Base.create('panelView', Y.View, [], {
     close: function () {
         var container = this.get('container');
         // Remove container
-        container.remove();
+        container.addClass('closed');
         // Set flag
         this.set('isOpened', false);
         // Fire event

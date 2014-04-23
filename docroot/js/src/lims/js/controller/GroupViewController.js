@@ -51,17 +51,6 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
      * @private
      */
     _attachEvents: function () {
-        // Attach click on panel's item
-        this.get('panel').get('container').delegate('click', function (event) {
-            var presence, target = event.currentTarget;
-            // Element was li
-            if (target.ancestor('li')) {
-                // Fire event
-                presence = target.getAttribute('data-id');
-                Y.fire('buddySelected', presence);
-            }
-        }, 'li');
-
         Y.on('buddySelected', this._onBuddySelected, this);
         Y.on('panelShown', this._onPanelShown, this);
         Y.on('panelHidden', this._onPanelHidden, this);

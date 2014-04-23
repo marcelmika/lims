@@ -137,4 +137,15 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
         }
     }
 
-}, {});
+}, {
+
+    ATTRS: {
+        // Add custom model attributes here. These attributes will contain your
+        // model's data. See the docs for Y.Attribute to learn more about defining
+        // attributes.
+
+        participant: {
+            value: "" // default value
+        }
+    }
+});

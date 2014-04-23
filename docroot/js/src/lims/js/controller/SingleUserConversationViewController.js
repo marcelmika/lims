@@ -6,7 +6,6 @@ Y.namespace('LIMS.Controller');
 Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUserConversationController', Y.View, [], {
 
     // This customizes the HTML used for this view's container node.
-    // <li class="conversation" id="conversation_{conversationId}" panelId="{panelId}">
     containerTemplate: '<li class="conversation">',
 
     // The template property holds the contents of the #lims-group-item-template
@@ -17,15 +16,16 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
     // us an opportunity to set up all sub controllers
     initializer: function () {
         var container = this.get('container'),
-            model = new Y.LIMS.Model.ConversationListModel();
+            model = new Y.LIMS.Model.ConversationListModel(),
+            participant = this.get('participant');
 
         model.after('conversationUpdated', this._onConversationUpdated, this);
 
         container.set('innerHTML',
             Y.Lang.sub(this.template, {
-                conversationTitle: 'John Doe',
-                triggerTitle: 'John Doe',
-                unreadMessages: 5
+                conversationTitle: participant.get('fullName'),
+                triggerTitle: participant.get('fullName'),
+                unreadMessages: 0
             })
         );
 
@@ -42,13 +42,16 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             model: model
         }));
 
-        // TODO : Debug
-        this.get('panel').show();
-
         // Events
         this._attachEvents();
     },
 
+    /**
+     * Shows the conversation panel
+     */
+    show: function() {
+        this.get('panel').show();
+    },
 
     /**
      * Maps all events on Y object to private internal functions
@@ -56,13 +59,23 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
      * @private
      */
     _attachEvents: function () {
-
+        // Panel events
         Y.on('panelShown', this._onPanelShown, this);
         Y.on('panelHidden', this._onPanelHidden, this);
+        Y.on('panelClosed', this._onPanelClosed, this);
+        // Buddy events
+        Y.on('buddySelected', this._onBuddySelected, this); // Whenever the user click on buddy in group
     },
 
     _onConversationUpdated: function () {
 
+    },
+
+    _onBuddySelected: function(buddy) {
+        var participant = this.get('participant');
+        if (participant.get('screenName') === buddy.get('screenName')) {
+            this.get('panel').show();
+        }
     },
 
     /**
@@ -88,6 +101,10 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
      */
     _onPanelHidden: function () {
         // Todo: send active panel ajax
+    },
+
+    _onPanelClosed: function() {
+        this.fire('conversationClosed');
     }
 
 }, {
@@ -110,6 +127,11 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             valueFn: function () {
                 return Y.one('#chatBar .chat-tabs');
             }
+        },
+
+        // Buddy screenName of the receiver
+        participant: {
+            value: "" // default value
         },
 
         listView: {
