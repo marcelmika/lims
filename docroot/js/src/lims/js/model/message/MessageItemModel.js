@@ -6,7 +6,7 @@
  */
 Y.namespace('LIMS.Model');
 
-Y.LIMS.Model.ConversationItemModel = Y.Base.create('conversationItemModel', Y.Model, [], {
+Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
 
     // Custom sync layer.
     sync: function (action, options, callback) {

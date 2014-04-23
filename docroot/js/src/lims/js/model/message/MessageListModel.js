@@ -7,10 +7,10 @@
  */
 Y.namespace('LIMS.Model');
 
-Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.ModelList, [], {
+Y.LIMS.Model.MessageListModel = Y.Base.create('messageListModel', Y.ModelList, [], {
 
     // This tells the list that it will hold instances of the GroupModelItem class.
-    model: Y.LIMS.Model.ConversationItemModel,
+    model: Y.LIMS.Model.MessageItemModel,
 
     // Returns an array of all models in this list with the `done` attribute
     // set to `true`.
@@ -36,7 +36,7 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
 
         switch (action) {
             case 'create':
-                console.log("create conversation list");
+                console.log("create message list");
                 data = this.toJSON();
                 console.log(data);
                 return;
@@ -51,7 +51,7 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
 //                return;
 
             case 'read':
-                console.log('read conversation list');
+                console.log('read message list');
                 // TODO: Move away
 //                url = Y.one('#chatPortletURL').get('value');
 //
@@ -95,7 +95,7 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
 //                    }
 //                });
 
-                this.add(new Y.LIMS.Model.ConversationItemModel({
+                this.add(new Y.LIMS.Model.MessageItemModel({
                     message: "nazdar"
                 }));
 

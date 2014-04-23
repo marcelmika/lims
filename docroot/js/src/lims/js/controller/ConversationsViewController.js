@@ -36,7 +36,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                 listID = buddy.get('screenName'); // Id is a screenName of the selected buddy
             // Check if the conversation is already there
             if (!list.hasOwnProperty(listID)) {
-                model = new Y.LIMS.Model.ConversationListModel({
+                model = new Y.LIMS.Model.MessageListModel({
                     participant: buddy,
                     unreadMessages: 0
                 });

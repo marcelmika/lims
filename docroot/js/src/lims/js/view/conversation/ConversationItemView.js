@@ -11,7 +11,7 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
     containerTemplate: '<li class="conversation-item"/>',
 
     // Specify an optional model to associate with the view.
-    model: Y.LIMS.Model.ConversationItemModel,
+    model: Y.LIMS.Model.MessageItemModel,
 
     // The template property holds the contents of the #lims-group-item-template
     // element, which will be used as the HTML template for each group item.

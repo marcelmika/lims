@@ -8,7 +8,7 @@ Y.namespace('LIMS.View');
 Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View, [], {
 
     // Specify an optional model to associate with the view.
-    model: Y.LIMS.Model.ConversationListModel,
+    model: Y.LIMS.Model.MessageListModel,
 
     initializer: function () {
         // Init model
@@ -100,7 +100,7 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
             event.preventDefault();
             // Empty text field
             textField.set('value', "");
-            model.create(new Y.LIMS.Model.ConversationItemModel({message: value}));
+            model.create(new Y.LIMS.Model.MessageItemModel({message: value}));
         }
     }
 }, {
