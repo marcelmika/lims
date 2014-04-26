@@ -6,10 +6,15 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.marcelmika.lims.api.events.ResponseEvent;
+import com.marcelmika.lims.api.events.buddy.UpdateStatusBuddyRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
 import com.marcelmika.lims.core.service.*;
 import com.marcelmika.lims.portal.domain.Buddy;
+import com.marcelmika.lims.portal.domain.Conversation;
 import com.marcelmika.lims.portal.domain.Group;
 
 import javax.portlet.ResourceRequest;
@@ -36,6 +41,70 @@ public class PortletProcessor {
     ConversationCoreService conversationCoreService = ConversationCoreServiceUtil.getConversationCoreService();
     SettingsCoreService settingsCoreService = SettingsCoreServiceUtil.getSettingsCoreService();
 
+
+    public void processRequest(ResourceRequest request, ResourceResponse response) {
+        PortletDispatcher.dispatchRequest(request, response, this);
+    }
+
+
+
+    // ---------------------------------------------------------------------------------------------------------
+    //   Buddy Lifecycle
+    // ---------------------------------------------------------------------------------------------------------
+
+    /**
+     * Update buddy's status
+     *
+     * @param request Request
+     * @param response Response
+     */
+    public void updateBuddyPresence(ResourceRequest request, ResourceResponse response) {
+        // Create buddy from poller request
+        Buddy buddy = JSONFactoryUtil.looseDeserialize(request.getParameter("data"), Buddy.class);
+
+        // Send request to core service
+        ResponseEvent responseEvent = buddyCoreService.updateStatus(new UpdateStatusBuddyRequestEvent(
+                        buddy.getBuddyId(), buddy.getPresence().toPresenceDetails())
+        );
+
+
+        // TODO: Add to separate function
+        // Get the writer
+        PrintWriter writer = getResponseWriter(response);
+        if (writer == null) {
+            return;
+        }
+
+        if (responseEvent.isSuccess()) {
+            writer.print("success");
+        } else {
+            writer.print("error");
+        }
+    }
+
+    /**
+     * Creates single user conversation with a buddy selected in request
+     */
+    public void createSingleUserConversation(ResourceRequest request, ResourceResponse response) {
+        // Get the writer
+        PrintWriter writer = getResponseWriter(response);
+        if (writer == null) {
+            return;
+        }
+        // Create buddy from poller request
+//        Buddy buddy = Buddy.fromResourceRequest(request);
+
+        Conversation conversation = JSONFactoryUtil.looseDeserialize(request.getParameter("data"),
+                Conversation.class);
+
+
+        log.info(request.getParameter("data"));
+
+        log.info(conversation);
+
+
+        writer.print("{\"error\":\"nazdar\"}");
+    }
 
     // ---------------------------------------------------------------------------------------------------------
     //   Group Lifecycle

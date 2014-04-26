@@ -57,7 +57,7 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
                 Y.io(url, {
                     method: "GET",
                     data: {
-                        query: "Marcel"
+                        query: "GetGroupList"
                     },
                     on: {
                         success: function (id, o) {

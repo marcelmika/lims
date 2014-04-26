@@ -28,7 +28,6 @@ public class LIMSPortlet extends MVCPortlet {
     // TODO: Inject
     PortletProcessor processor = new PortletProcessor();
 
-
     private boolean isCorrectAttempt(RenderRequest request) {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         boolean isSignedIn = themeDisplay.isSignedIn();
@@ -76,30 +75,12 @@ public class LIMSPortlet extends MVCPortlet {
 
         // Security check
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        // Do not send anything if the user is not signed in
         if (!themeDisplay.isSignedIn()) {
             return;
         }
 
-
-
-        processor.getGroupList(request, response);
-
-
-
-
-//        PrintWriter writer = response.getWriter();
-//
-//        // Get parameter send via ajax
-//        String query = request.getParameter("query");
-//        if (query != null) {
-//            // Compose json array from buddies found based on the query
-//            JSONArray buddiesJSON = JSONFactoryUtil.createJSONArray();
-//            List<Buddy> buddies = BuddyLocalServiceUtil.findByQuery(query);
-//            for (Buddy buddy : buddies) {
-//                buddiesJSON.put(buddy.toJSON());
-//            }
-//
-//            writer.print(buddiesJSON);
-//        }
+        // This is an entry point to the whole app. Processor will do all the necessary work and fill the response.
+        processor.processRequest(request, response);
     }
 }

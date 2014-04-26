@@ -16,12 +16,13 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
             case 'create':
                 console.log("create conversation");
                 data = this.toJSON();
+                data = Y.JSON.stringify(data);
                 console.log(data);
 
                 Y.io(url, {
-                    method: "GET",
+                    method: "POST",
                     data: {
-                        query: "createConversation",
+                        query: "CreateSingleUserConversation",
                         data: data
                     },
                     on: {
@@ -34,10 +35,10 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
                             console.log(x);
                             console.log(o);
                         }
-                    },
-                    headers: {
-                        'Content-Type': 'application/json'
                     }
+//                    headers: {
+//                        'Content-Type': 'application/json'
+//                    }
                 });
 
 

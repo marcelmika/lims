@@ -3,6 +3,7 @@ package com.marcelmika.lims.portal.domain;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSON;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.poller.PollerRequest;
@@ -107,6 +108,8 @@ public class Buddy {
         Map<String, String[]> parameterMap = request.getParameterMap();
 
         log.info(parameterMap);
+
+
 
         // Create new buddy
         Buddy buddy = new Buddy();

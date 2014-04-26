@@ -52,7 +52,6 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
     _onPresenceChanged: function (presence) {
         // Update presence indicator
        this._updatePresenceIndicator(presence);
-        // Todo: Send to server
         this.get('panel').hide();
     },
 
@@ -87,25 +86,37 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
      * @private
      */
     _updatePresenceIndicator: function (presence) {
-        var presenceClass = "";
+        var buddyDetails = this.get('buddyDetails'),
+        presenceClass = "";
         // Set status indicator based on the presence type
         switch (presence) {
             case "jabber.status.online":
                 presenceClass = "online";
+                buddyDetails.set('presence', 'STATE_ACTIVE');
                 break;
             case "jabber.status.busy":
                 presenceClass = "busy";
+                buddyDetails.set('presence', 'STATE_AWAY');
                 break;
             case "jabber.status.unavailable":
                 presenceClass = "unavailable";
+                buddyDetails.set('presence', 'STATE_DND');
                 break;
             case "jabber.status.offline":
                 presenceClass = "off";
+                buddyDetails.set('presence', 'STATE_OFFLINE');
                 break;
             default:
                 presenceClass = "off";
+                buddyDetails.set('presence', 'STATE_UNRECOGNIZED');
                 break;
         }
+
+        buddyDetails.save({action:"updatePresence"}, function(err, response){
+            if(!err){
+                console.log(response);
+            }
+        });
 
         this.get('statusIndicator').setAttribute('class', "status-indicator " + presenceClass);
     }
@@ -114,6 +125,10 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
 
     // Specify attributes and static properties for your View here.
     ATTRS: {
+
+        buddyDetails: {
+            value: null
+        },
 
         // Main container
         container: {

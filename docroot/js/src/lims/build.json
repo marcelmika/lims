@@ -28,6 +28,7 @@
             "config": {
                 "requires": [
                     "io",
+                    "json",
                     "model",
                     "model-list"
                 ]

@@ -10,11 +10,26 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
     pathImage: null,
     companyId: null,
 
-    getPortraitUrl: function(screenName) {
+    /**
+     * Returns url of the portrait of buddy based on the screenName
+     * @param screenName
+     * @returns {string}
+     */
+    getPortraitUrl: function (screenName) {
         var companyId = this.companyId,
             pathImage = this.pathImage;
 
         return pathImage + '/user_portrait?screenName=' + screenName + '&' + 'companyId=' + companyId;
+    },
+
+    /**
+     * Returns request url of the server. Given url is used for and request/response conversation
+     * with the server.
+     *
+     * @returns {string}
+     */
+    getServerRequestUrl: function () {
+        return Y.one('#chatPortletURL').get('value');
     }
 
 }, {
