@@ -15,30 +15,45 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
 
         switch (action) {
             case 'create':
-            case 'update':
-                if (options.action === "updateActivePanel") {
-                    this._updateActivePanel(data, callback);
-                }
+            case 'update': // There is no difference between create and update
+                // Update Event Handler
+                this._updateEventHandler(data, options, callback);
                 break;
 
             case 'read':
-                console.log("read buddy");
-                // Look for an item in localStorage with this model's id.
-//                data = localStorage.getItem(this.get('id'));
-//
-//                if (data) {
-//                    callback(null, data);
-//                } else {
-//                    callback('Model not found.');
-//                }
-                return;
+                // Read Event Handler
+                this._readEventHandler(data, options, callback);
+                break;
 
             case 'delete':
-                console.log("delete buddy");
-                return;
+                // Delete is not provided
+                break;
 
             default:
                 callback('Invalid action');
+        }
+    },
+
+    /**
+     * Event handler decides which update function should be called based on the
+     * options.action call. Update Settings is a default fallback
+     *
+     * @param data
+     * @param options
+     * @param callback
+     * @private
+     */
+    _updateEventHandler: function(data, options, callback) {
+        if(options !== undefined) {
+            // Update active panel action
+            if (options.hasOwnProperty("action") && options.action === "updateActivePanel") {
+                this._updateActivePanel(data, callback);
+            }
+        }
+
+        // Update settings action is a default
+        else {
+            this._updateSettings(data, callback);
         }
     },
 
@@ -49,7 +64,7 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
      * @param callback
      * @private
      */
-    _updateActivePanel: function(data, callback) {
+    _updateActivePanel: function (data, callback) {
         // Create settings that contains request url
         var settings = new Y.LIMS.Core.Settings();
         // Do the request
@@ -68,6 +83,54 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
                 }
             }
         });
+    },
+
+    /**
+     * Updates settings
+     *
+     * @param data
+     * @param callback
+     * @private
+     */
+    _updateSettings: function (data, callback) {
+        // Create settings that contains request url
+        var settings = new Y.LIMS.Core.Settings();
+        console.log(data);
+        // Do the request
+        Y.io(settings.getServerRequestUrl(), {
+            method: "POST",
+            data: {
+                query: "UpdateSettings",
+                data: data
+            },
+            on: {
+                success: function (id, o) {
+                    callback(null, o.response);
+                },
+                failure: function (x, o) {
+                    callback("Cannot update settings", o.response);
+                }
+            }
+        });
+    },
+
+    /**
+     * Event handler decides which read function should be called based on the
+     * options.action call. Update Settings is a default fallback
+     *
+     * @param callback
+     * @private
+     */
+    _readEventHandler: function() {
+        // todo: Read from dom
+        // Look for an item in localStorage with this model's id.
+//                data = localStorage.getItem(this.get('id'));
+//
+//                if (data) {
+//                    callback(null, data);
+//                } else {
+//                    callback('Model not found.');
+//                }
     }
 
 
@@ -86,7 +149,7 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
         },
 
         isMute: {
-            value: "" // default value
+            value: null // default value
         }
     }
 });

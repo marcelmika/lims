@@ -138,6 +138,10 @@ public class Settings {
         return isMute;
     }
 
+    public void setIsMute(boolean isMute) {
+        this.isMute = isMute;
+    }
+
     public void setMute(boolean isMute) {
         this.isMute = isMute;
     }

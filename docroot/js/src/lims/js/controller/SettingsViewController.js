@@ -42,9 +42,10 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
      * @private
      */
     _onSoundCheckboxUpdated: function () {
-        var isChecked = this.get('soundCheckbox').get('checked') ? true : false;
-        // Todo: Send to server
-        console.log('checkbox updated to: ' + isChecked);
+        var settings = this.get('settings'),
+            isMute = this.get('soundCheckbox').get('checked') ? false : true;
+        // Update model
+        settings.set('isMute', isMute).save();
     },
 
     /**

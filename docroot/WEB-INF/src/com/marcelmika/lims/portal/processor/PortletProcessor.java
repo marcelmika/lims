@@ -6,13 +6,12 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
 import com.marcelmika.lims.api.events.ResponseEvent;
 import com.marcelmika.lims.api.events.buddy.UpdateStatusBuddyRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
 import com.marcelmika.lims.api.events.settings.UpdateActivePanelRequestEvent;
+import com.marcelmika.lims.api.events.settings.UpdateSettingsRequestEvent;
 import com.marcelmika.lims.core.service.*;
 import com.marcelmika.lims.portal.domain.Buddy;
 import com.marcelmika.lims.portal.domain.Conversation;
@@ -49,7 +48,6 @@ public class PortletProcessor {
     }
 
 
-
     // ---------------------------------------------------------------------------------------------------------
     //   Buddy Lifecycle
     // ---------------------------------------------------------------------------------------------------------
@@ -57,7 +55,7 @@ public class PortletProcessor {
     /**
      * Update buddy's status
      *
-     * @param request Request
+     * @param request  Request
      * @param response Response
      */
     public void updateBuddyPresence(ResourceRequest request, ResourceResponse response) {
@@ -155,6 +153,24 @@ public class PortletProcessor {
     // ---------------------------------------------------------------------------------------------------------
 
     /**
+     * Update buddy's settings
+     *
+     * @param request  ResourceRequest
+     * @param response ResourceResponse
+     */
+    protected void updateSettings(ResourceRequest request, ResourceResponse response) {
+        // todo move to fromResourceRequest() method
+        // Create buddy and settings from poller request
+        Settings settings = JSONFactoryUtil.looseDeserialize(request.getParameter("data"), Settings.class);
+        // Send request to core service
+        ResponseEvent responseEvent = settingsCoreService.updateSettings(new UpdateSettingsRequestEvent(
+                        settings.getBuddy().getBuddyId(), settings.toSettingsDetails())
+        );
+
+        log.info(settings.isMute());
+    }
+
+    /**
      * Updates buddy's active panel
      *
      * @param request  ResourceRequest
@@ -172,7 +188,6 @@ public class PortletProcessor {
 
         log.info(responseEvent.getResult());
     }
-
 
 
     // ------------------------------------------------------------------------------

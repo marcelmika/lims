@@ -8,7 +8,8 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
     // The initializer runs when a MainController instance is created, and gives
     // us an opportunity to set up all sub controller
     initializer: function () {
-        var buddyDetails = this.get('buddyDetails');
+        var buddyDetails = this.get('buddyDetails'),
+            settings = this.get('settings');
 
         // Attach events
         this._attachEvents();
@@ -20,7 +21,9 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
             buddyDetails: buddyDetails
         });
         // Settings
-        new Y.LIMS.Controller.SettingsViewController();
+        new Y.LIMS.Controller.SettingsViewController({
+            settings: settings
+        });
         // Conversation
         new Y.LIMS.Controller.ConversationsController();
     },

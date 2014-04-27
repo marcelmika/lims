@@ -18,6 +18,7 @@ public class PortletDispatcher {
     private static final String QUERY_GET_GROUP_LIST = "GetGroupList";
     private static final String QUERY_UPDATE_BUDDY_PRESENCE = "UpdateBuddyPresence";
     private static final String QUERY_UPDATE_ACTIVE_PANEL = "UpdateActivePanel";
+    private static final String QUERY_UPDATE_SETTINGS = "UpdateSettings";
 
     // Log
     private static Log log = LogFactoryUtil.getLog(PortletDispatcher.class);
@@ -53,6 +54,10 @@ public class PortletDispatcher {
         // Update active panel
         else if(query.equals(QUERY_UPDATE_ACTIVE_PANEL)) {
             processor.updateActivePanel(request, response);
+        }
+        // Update settings
+        else if(query.equals(QUERY_UPDATE_SETTINGS)) {
+            processor.updateSettings(request, response);
         }
     }
 }
