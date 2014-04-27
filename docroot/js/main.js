@@ -2,6 +2,11 @@
 
 AUI({debug:true}).use('console', 'lims-core', "lims-model", "lims-view", "lims-controller", function(A) {
 
+    // If there is no chat bar do nothing
+    if (!A.one('#chatBar')) {
+        return;
+    }
+
     // Dom ready startup
     A.on('domready', function() {
 

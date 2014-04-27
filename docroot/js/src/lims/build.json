@@ -4,6 +4,7 @@
 
         "lims-core": {
             "jsfiles": [
+                "js/bootstrap.js",
                 "js/core/Notification.js",
                 "js/core/Settings.js"
             ],
@@ -17,6 +18,7 @@
 
         "lims-model": {
             "jsfiles": [
+                "js/bootstrap.js",
                 "js/model/buddy/BuddyModelItem.js",
                 "js/model/buddy/BuddyModelList.js",
                 "js/model/conversation/ConversationModel.js",
@@ -38,6 +40,7 @@
 
         "lims-view": {
             "jsfiles": [
+                "js/bootstrap.js",
                 "js/view/conversation/ConversationItemView.js",
                 "js/view/conversation/ConversationListView.js",
                 "js/view/group/GroupBuddyViewItem.js",
@@ -59,6 +62,7 @@
 
         "lims-controller": {
             "jsfiles": [
+                "js/bootstrap.js",
                 "js/controller/GroupViewController.js",
                 "js/controller/MainController.js",
                 "js/controller/PresenceViewController.js",
