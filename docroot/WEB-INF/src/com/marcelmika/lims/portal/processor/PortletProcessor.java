@@ -12,10 +12,12 @@ import com.marcelmika.lims.api.events.ResponseEvent;
 import com.marcelmika.lims.api.events.buddy.UpdateStatusBuddyRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
+import com.marcelmika.lims.api.events.settings.UpdateActivePanelRequestEvent;
 import com.marcelmika.lims.core.service.*;
 import com.marcelmika.lims.portal.domain.Buddy;
 import com.marcelmika.lims.portal.domain.Conversation;
 import com.marcelmika.lims.portal.domain.Group;
+import com.marcelmika.lims.portal.domain.Settings;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -147,6 +149,30 @@ public class PortletProcessor {
             writer.print("{\"error\":\"error\"}");
         }
     }
+
+    // ---------------------------------------------------------------------------------------------------------
+    //   Settings
+    // ---------------------------------------------------------------------------------------------------------
+
+    /**
+     * Updates buddy's active panel
+     *
+     * @param request  ResourceRequest
+     * @param response ResourceResponse
+     */
+    protected void updateActivePanel(ResourceRequest request, ResourceResponse response) {
+        // todo move to fromResourceRequest() method
+        // Create buddy and settings from poller request
+        Settings settings = JSONFactoryUtil.looseDeserialize(request.getParameter("data"), Settings.class);
+
+        // Send request to core service
+        ResponseEvent responseEvent = settingsCoreService.updateActivePanel(new UpdateActivePanelRequestEvent(
+                settings.getBuddy().getBuddyId(), settings.getActivePanelId()
+        ));
+
+        log.info(responseEvent.getResult());
+    }
+
 
 
     // ------------------------------------------------------------------------------

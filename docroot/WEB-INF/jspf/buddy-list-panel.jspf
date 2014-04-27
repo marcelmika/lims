@@ -1,7 +1,7 @@
 <% { %>
 
 <c:choose>
-    <c:when test="${settings.activePanelId == 'buddylist'}">
+    <c:when test="${settings.activePanelId == 'groups'}">
         <c:set var="selected" value="selected"/>
     </c:when>
     <c:otherwise>

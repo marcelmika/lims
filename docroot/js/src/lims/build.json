@@ -23,7 +23,8 @@
                 "js/model/message/MessageItemModel.js",
                 "js/model/message/MessageListModel.js",
                 "js/model/group/GroupModelItem.js",
-                "js/model/group/GroupModelList.js"
+                "js/model/group/GroupModelList.js",
+                "js/model/settings/SettingsModel.js"
             ],
             "config": {
                 "requires": [

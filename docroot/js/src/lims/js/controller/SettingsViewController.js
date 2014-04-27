@@ -93,6 +93,10 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
             valueFn: function () {
                 return this.get('container').one("#playSound");
             }
+        },
+
+        settings: {
+            value: null // default value
         }
     }
 });

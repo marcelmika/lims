@@ -31,7 +31,7 @@
 </c:choose>
 
 <c:choose> 
-    <c:when test="${settings.activePanelId == 'status'}" > 
+    <c:when test="${settings.activePanelId == 'presence'}" >
         <c:set var="selected" value="selected"/>
     </c:when> 
     <c:otherwise> 

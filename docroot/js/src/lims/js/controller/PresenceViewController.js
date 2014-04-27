@@ -40,7 +40,6 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
 
         Y.on('presenceChanged', this._onPresenceChanged, this);
         Y.on('panelShown', this._onPanelShown, this);
-        Y.on('panelHidden', this._onPanelHidden, this);
     },
 
     /**
@@ -67,16 +66,6 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
         if (panel !== this.get('panel')) {
             this.get('panel').hide();
         }
-    },
-
-    /**
-     * Panel hidden event handler. Closes own panel if some other panel was shown.
-     * Thanks to that only one panel can be open at one time.
-     *
-     * @private
-     */
-    _onPanelHidden: function () {
-        // Todo: send active panel ajax
     },
 
     /**

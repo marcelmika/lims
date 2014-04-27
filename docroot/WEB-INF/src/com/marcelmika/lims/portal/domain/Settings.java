@@ -20,6 +20,7 @@ public class Settings {
     private static final String KEY_MUTE = "mute";
     private static final String KEY_CHAT_ENABLED = "chatEnabled";
 
+    private Buddy buddy;
     private String status;
     private String activeRoomType;
     private String activePanelId;
@@ -99,6 +100,14 @@ public class Settings {
         details.setChatEnabled(isChatEnabled);
 
         return details;
+    }
+
+    public Buddy getBuddy() {
+        return buddy;
+    }
+
+    public void setBuddy(Buddy buddy) {
+        this.buddy = buddy;
     }
 
     public String getStatus() {

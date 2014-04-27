@@ -17,6 +17,7 @@ public class PortletDispatcher {
     private static final String QUERY_CREATE_SINGLE_USER_CONVERSATION = "CreateSingleUserConversation";
     private static final String QUERY_GET_GROUP_LIST = "GetGroupList";
     private static final String QUERY_UPDATE_BUDDY_PRESENCE = "UpdateBuddyPresence";
+    private static final String QUERY_UPDATE_ACTIVE_PANEL = "UpdateActivePanel";
 
     // Log
     private static Log log = LogFactoryUtil.getLog(PortletDispatcher.class);
@@ -33,8 +34,8 @@ public class PortletDispatcher {
                                        ResourceResponse response,
                                        PortletProcessor processor) {
 
+        // Get query type from parameter
         String query = request.getParameter("query");
-
         log.info("Dispatching query: " + query);
 
         // Create Single User conversation
@@ -48,6 +49,10 @@ public class PortletDispatcher {
         // Update buddy presence
         else if(query.equals(QUERY_UPDATE_BUDDY_PRESENCE)) {
             processor.updateBuddyPresence(request, response);
+        }
+        // Update active panel
+        else if(query.equals(QUERY_UPDATE_ACTIVE_PANEL)) {
+            processor.updateActivePanel(request, response);
         }
     }
 }
