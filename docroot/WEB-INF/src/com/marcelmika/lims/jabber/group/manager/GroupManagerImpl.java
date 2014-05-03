@@ -12,6 +12,9 @@ import org.jivesoftware.smack.RosterListener;
 import java.util.*;
 
 /**
+ * Group manager is responsible for the synchronization of groups and their entries. It keeps
+ * fresh copy of Group Collection related to the user.
+ *
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
  * Date: 3/14/14
@@ -33,7 +36,7 @@ public class GroupManagerImpl implements GroupManager, RosterListener {
     // -------------------------------------------------------------------------------------------
 
     /**
-     * Manage groups from roster
+     * Sets roster to group manager.
      *
      * @param roster Roster
      */
@@ -122,7 +125,7 @@ public class GroupManagerImpl implements GroupManager, RosterListener {
     // -------------------------------------------------------------------------------------------
 
     /**
-     * Whenever called, the method takes roster and maps its groups and entities to our groups and entities
+     * Whenever called the method takes roster and maps its groups and entities to our groups and entities
      */
     private void mapGroupsFromRoster() {
         // Create temporary group list

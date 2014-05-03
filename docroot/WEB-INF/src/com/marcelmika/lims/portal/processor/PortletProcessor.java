@@ -12,8 +12,12 @@ import com.marcelmika.lims.api.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
 import com.marcelmika.lims.api.events.settings.UpdateActivePanelRequestEvent;
 import com.marcelmika.lims.api.events.settings.UpdateSettingsRequestEvent;
+import com.marcelmika.lims.api.events.settings.UpdateSettingsResponseEvent;
 import com.marcelmika.lims.core.service.*;
-import com.marcelmika.lims.portal.domain.*;
+import com.marcelmika.lims.portal.domain.Buddy;
+import com.marcelmika.lims.portal.domain.Conversation;
+import com.marcelmika.lims.portal.domain.GroupCollection;
+import com.marcelmika.lims.portal.domain.Settings;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -45,7 +49,7 @@ public class PortletProcessor {
 
 
     // ---------------------------------------------------------------------------------------------------------
-    //   Buddy Lifecycle
+    //   Buddy
     // ---------------------------------------------------------------------------------------------------------
 
     /**
@@ -63,20 +67,20 @@ public class PortletProcessor {
                         buddy.getBuddyId(), buddy.getPresence().toPresenceDetails())
         );
 
-
-        // TODO: Add to separate function
-        // Get the writer
-        PrintWriter writer = getResponseWriter(response);
-        if (writer == null) {
-            return;
-        }
-
+        // On success
         if (responseEvent.isSuccess()) {
-            writer.print("success");
-        } else {
-            writer.print("error");
+            writeSuccess("", response);
+        }
+        // On error
+        else {
+            writeError(responseEvent.getResult(), response);
         }
     }
+
+
+    // ---------------------------------------------------------------------------------------------------------
+    //   Conversation
+    // ---------------------------------------------------------------------------------------------------------
 
     /**
      * Creates single user conversation with a buddy selected in request
@@ -103,7 +107,7 @@ public class PortletProcessor {
     }
 
     // ---------------------------------------------------------------------------------------------------------
-    //   Group Lifecycle
+    //   Group
     // ---------------------------------------------------------------------------------------------------------
 
     /**
@@ -113,12 +117,6 @@ public class PortletProcessor {
      * @param response ResourceResponse
      */
     public void getGroupList(ResourceRequest request, ResourceResponse response) {
-        // Get the writer
-        PrintWriter writer = getResponseWriter(response);
-        if (writer == null) {
-            return;
-        }
-
         // Create buddy from request
         Buddy buddy = Buddy.fromResourceRequest(request);
         // Get groups request
@@ -126,33 +124,30 @@ public class PortletProcessor {
                 new GetGroupsRequestEvent(buddy.toBuddyDetails())
         );
 
+        // On success
         if (responseEvent.isSuccess()) {
-            // Get groups from group details
+            // Map groups from group details
             GroupCollection groupCollection = GroupCollection.fromGroupCollectionDetails(
                     responseEvent.getGroupCollection()
             );
 
-            log.info(request.getParameter("etag"));
-
+            // Groups are cached, so take the etag from request ...
             String etag = request.getParameter("etag");
-
-
-            // Same etags -> nothing to be send
+            // ... and compare it with group collection etag
             if (etag.equals(Integer.toString(groupCollection.getEtag()))) {
-                writer.print("{\"etag\":\"" + etag + "\"}");
-                return;
+                // Etags equal which means that nothing has changed.
+                // Write only the group collection without groups and buddies (no extra traffic needed)
+                writeSuccess(JSONFactoryUtil.looseSerialize(groupCollection), response);
+            } else {
+                // Etags are different which means that groups were modified
+                // Send the whole package to the client
+                writeSuccess(JSONFactoryUtil.looseSerialize(groupCollection, "groups", "groups.buddies"), response);
             }
-
-            // Serialize to json string (include buddies collection)
-            String jsonString = JSONFactoryUtil.looseSerialize(groupCollection, "groups", "groups.buddies");
-
-            writer.print(jsonString);
-            log.info(jsonString);
-
-        } else {
-            // TODO: Handle error
-            log.error(responseEvent.getResult());
-            writer.print("{\"error\":\"error\"}");
+        }
+        // On error
+        else {
+            // Write an error to the response so the client knows what went wrong
+            writeError(responseEvent.getResult(), response);
         }
     }
 
@@ -167,7 +162,6 @@ public class PortletProcessor {
      * @param response ResourceResponse
      */
     protected void updateSettings(ResourceRequest request, ResourceResponse response) {
-        // todo move to fromResourceRequest() method
         // Create buddy and settings from poller request
         Settings settings = JSONFactoryUtil.looseDeserialize(request.getParameter("data"), Settings.class);
         // Send request to core service
@@ -175,7 +169,14 @@ public class PortletProcessor {
                         settings.getBuddy().getBuddyId(), settings.toSettingsDetails())
         );
 
-        log.info(settings.isMute());
+        // On success
+        if (responseEvent.isSuccess()){
+            writeSuccess("", response);
+        }
+        // On error
+        else {
+            writeError(responseEvent.getResult(), response);
+        }
     }
 
     /**
@@ -185,7 +186,6 @@ public class PortletProcessor {
      * @param response ResourceResponse
      */
     protected void updateActivePanel(ResourceRequest request, ResourceResponse response) {
-        // todo move to fromResourceRequest() method
         // Create buddy and settings from poller request
         Settings settings = JSONFactoryUtil.looseDeserialize(request.getParameter("data"), Settings.class);
 
@@ -194,7 +194,14 @@ public class PortletProcessor {
                 settings.getBuddy().getBuddyId(), settings.getActivePanelId()
         ));
 
-        log.info(responseEvent.getResult());
+        // On success
+        if (responseEvent.isSuccess()){
+            writeSuccess("", response);
+        }
+        // On error
+        else {
+            writeError(responseEvent.getResult(), response);
+        }
     }
 
 
@@ -203,7 +210,41 @@ public class PortletProcessor {
     // ------------------------------------------------------------------------------
 
     /**
-     * Returns write from response, null on error
+     * Takes the response and writes a content given in parameter to it.
+     *
+     * @param content  which will be written to the response
+     * @param response resource response
+     */
+    private void writeSuccess(String content, ResourceResponse response) {
+        // Get the writer
+        PrintWriter writer = getResponseWriter(response);
+        if (writer == null) {
+            return;
+        }
+
+        // Write the content to the output stream
+        writer.print(content);
+    }
+
+    /**
+     * Takes the response and writes an error message to it.
+     *
+     * @param content  Error message which will be written to the response
+     * @param response resource response
+     */
+    private void writeError(String content, ResourceResponse response) {
+        // Get the writer
+        PrintWriter writer = getResponseWriter(response);
+        if (writer == null) {
+            return;
+        }
+
+        // Writes an error to the output stream
+        writer.print(String.format("{\"error\":\"%s\"}", content));
+    }
+
+    /**
+     * Returns writer from response, null on error
      *
      * @param response ResourceResponse
      * @return PrintWriter, null on error
@@ -218,45 +259,4 @@ public class PortletProcessor {
 
         return writer;
     }
-
-    /**
-     * Creates JSON array from JSON string. Avoids exception so if there is any error returns null.
-     *
-     * @param jsonString serialized string
-     * @return JSONArray
-     */
-    private JSONArray createJsonArray(String jsonString) {
-
-        JSONArray jsonArray = null;
-
-        try {
-            jsonArray = JSONFactoryUtil.createJSONArray(jsonString);
-        } catch (JSONException e) {
-            // At least log what went wrong
-            log.error(e);
-        }
-
-        return jsonArray;
-    }
-
-    /**
-     * Creates JSON object from JSON string. Avoids exception so if there is any error returns null.
-     *
-     * @param jsonString serialized string
-     * @return JSONObject
-     */
-    private JSONObject createJsonObject(String jsonString) {
-
-        JSONObject jsonObject = null;
-
-        try {
-            jsonObject = JSONFactoryUtil.createJSONObject(jsonString);
-        } catch (JSONException e) {
-            // At least log what went wrong
-            log.error(e);
-        }
-
-        return jsonObject;
-    }
-
 }

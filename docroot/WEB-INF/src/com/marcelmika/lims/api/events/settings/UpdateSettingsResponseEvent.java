@@ -36,4 +36,8 @@ public class UpdateSettingsResponseEvent extends ResponseEvent {
 
         return event;
     }
+
+    public SettingsDetails getSettingsDetails() {
+        return settingsDetails;
+    }
 }

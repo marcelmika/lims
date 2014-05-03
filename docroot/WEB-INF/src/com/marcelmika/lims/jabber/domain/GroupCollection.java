@@ -37,7 +37,6 @@ public class GroupCollection {
         // Modification date
         details.setLastModified(lastModified);
 
-
         return details;
     }
 

@@ -1,19 +1,13 @@
 package com.marcelmika.lims.jabber.service;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.marcelmika.lims.api.entity.GroupDetails;
 import com.marcelmika.lims.api.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
 import com.marcelmika.lims.jabber.JabberException;
 import com.marcelmika.lims.jabber.domain.Buddy;
-import com.marcelmika.lims.jabber.domain.Group;
 import com.marcelmika.lims.jabber.domain.GroupCollection;
 import com.marcelmika.lims.jabber.group.manager.GroupManager;
 import com.marcelmika.lims.jabber.session.UserSession;
 import com.marcelmika.lims.jabber.session.store.UserSessionStore;
-
-import java.util.List;
 
 /**
  * @author Ing. Marcel Mika
