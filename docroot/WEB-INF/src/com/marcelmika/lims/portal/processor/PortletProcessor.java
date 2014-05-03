@@ -134,12 +134,11 @@ public class PortletProcessor {
         if (responseEvent.isSuccess()) {
             // Get groups from group details
             List<Group> groups = Group.fromGroupDetails(responseEvent.getGroups());
+
             // Serialize to json string (include buddies collection)
             String jsonString = JSONFactoryUtil.looseSerialize(groups, Group.KEY_BUDDIES);
 
             writer.print(jsonString);
-            // Add to response
-//                pollerResponse.setParameter("groups", createJsonArray(jsonString));
 
         } else {
             // TODO: Handle error

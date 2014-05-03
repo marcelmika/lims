@@ -64,7 +64,6 @@ public class GroupJabberServiceImpl implements GroupJabberService {
         List<Group> groups = groupManager.getGroups();
         // Map it to group details
         List<GroupDetails> details = Group.toGroupDetailsList(groups);
-
         // Return success
         return GetGroupsResponseEvent.getGroupsSuccess(details);
     }

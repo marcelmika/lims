@@ -3,6 +3,7 @@ package com.marcelmika.lims.jabber.domain;
 import com.marcelmika.lims.api.entity.GroupDetails;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,6 +16,7 @@ public class Group {
 
     private String name;
     private List<Buddy> buddies = new ArrayList<Buddy>();
+    private Date lastModified;
 
 
     // -------------------------------------------------------------------------------------------
@@ -99,6 +101,14 @@ public class Group {
         this.name = name;
     }
 
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
     /**
      * String representation of the Group.
      *
@@ -106,7 +116,7 @@ public class Group {
      */
     @Override
     public String toString() {
-        return name;
+        return String.format("Group: %s, modified: %s", name, lastModified);
     }
 
 

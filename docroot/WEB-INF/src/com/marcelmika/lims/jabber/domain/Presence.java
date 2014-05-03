@@ -44,14 +44,32 @@ public enum Presence {
     }
 
     public static Presence fromSmackPresence(org.jivesoftware.smack.packet.Presence smackPresence) {
+        // Offline
         if (smackPresence.getType().equals(org.jivesoftware.smack.packet.Presence.Type.unavailable)) {
             return Presence.STATE_OFFLINE;
-        } else if (smackPresence.getMode().equals(org.jivesoftware.smack.packet.Presence.Mode.available)) {
+        }
+
+        // Active
+        if (smackPresence.getType().equals(org.jivesoftware.smack.packet.Presence.Type.available) &&
+                smackPresence.getMode() == null) {
             return Presence.STATE_ACTIVE;
+        }
+        // Mode == null but Type != available -> unrecognized
+        if (smackPresence.getMode() == null) {
+            return Presence.STATE_UNRECOGNIZED;
+        }
+
+        // Available types:
+        // Available
+        if (smackPresence.getMode().equals(org.jivesoftware.smack.packet.Presence.Mode.available)) {
+            return Presence.STATE_ACTIVE;
+        // Away
         } else if (smackPresence.getMode().equals(org.jivesoftware.smack.packet.Presence.Mode.away)) {
             return Presence.STATE_AWAY;
+        // Dnd
         } else if (smackPresence.getMode().equals(org.jivesoftware.smack.packet.Presence.Mode.dnd)) {
             return Presence.STATE_DND;
+        // Unrecognized
         } else {
             return Presence.STATE_UNRECOGNIZED;
         }
