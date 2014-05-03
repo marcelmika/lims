@@ -13,16 +13,12 @@ import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
 import com.marcelmika.lims.api.events.settings.UpdateActivePanelRequestEvent;
 import com.marcelmika.lims.api.events.settings.UpdateSettingsRequestEvent;
 import com.marcelmika.lims.core.service.*;
-import com.marcelmika.lims.portal.domain.Buddy;
-import com.marcelmika.lims.portal.domain.Conversation;
-import com.marcelmika.lims.portal.domain.Group;
-import com.marcelmika.lims.portal.domain.Settings;
+import com.marcelmika.lims.portal.domain.*;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
 /**
  * @author Ing. Marcel Mika
@@ -130,15 +126,28 @@ public class PortletProcessor {
                 new GetGroupsRequestEvent(buddy.toBuddyDetails())
         );
 
-
         if (responseEvent.isSuccess()) {
             // Get groups from group details
-            List<Group> groups = Group.fromGroupDetails(responseEvent.getGroups());
+            GroupCollection groupCollection = GroupCollection.fromGroupCollectionDetails(
+                    responseEvent.getGroupCollection()
+            );
+
+            log.info(request.getParameter("etag"));
+
+            String etag = request.getParameter("etag");
+
+
+            // Same etags -> nothing to be send
+            if (etag.equals(Integer.toString(groupCollection.getEtag()))) {
+                writer.print("{\"etag\":\"" + etag + "\"}");
+                return;
+            }
 
             // Serialize to json string (include buddies collection)
-            String jsonString = JSONFactoryUtil.looseSerialize(groups, Group.KEY_BUDDIES);
+            String jsonString = JSONFactoryUtil.looseSerialize(groupCollection, "groups", "groups.buddies");
 
             writer.print(jsonString);
+            log.info(jsonString);
 
         } else {
             // TODO: Handle error

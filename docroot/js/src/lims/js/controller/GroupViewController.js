@@ -34,7 +34,7 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
         container = this.get('groupListContainer');
         // Model
         model = new Y.LIMS.Model.GroupModelList();
-        model.after('groupsModified', this._groupsUpdated, this);
+        model.after('groupsLoaded', this._groupsLoaded, this);
         // View
         view = new Y.LIMS.View.GroupViewList({
             container: container,
@@ -61,7 +61,7 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
      *
      * @private
      */
-    _groupsUpdated: function () {
+    _groupsLoaded: function () {
         // Do the animation of groups
         this._fadeInGroups();
         // Hide indicator

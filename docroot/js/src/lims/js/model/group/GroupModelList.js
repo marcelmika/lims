@@ -28,9 +28,20 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
 //        });
 //    }
 
+    initializer: function () {
+        var instance = this, timer = new Y.Timer({
+            length: 5000,
+            repeatCount: 10000,
+            callback: function () {
+                instance.load();
+            }});
+
+        timer.start();
+    },
+
     // Custom sync layer.
     sync: function (action, options, callback) {
-        var data,url, instance = this;
+        var data, url, etag = this.get('etag'), instance = this;
 
 //        instance.callback = callback;
 
@@ -57,31 +68,48 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
                 Y.io(url, {
                     method: "GET",
                     data: {
-                        query: "GetGroupList"
+                        query: "GetGroupList",
+                        etag: etag
                     },
                     on: {
                         success: function (id, o) {
-                            var i, groups, group, buddies;
+                            // TODO: Refactor
+                            var i, groupCollection, groups, group, buddies;
                             // Parse groups
-                            groups = Y.JSON.parse(o.response);
+                            groupCollection = Y.JSON.parse(o.response);
+                            groups = groupCollection.groups;
 
-                            // Add groups to list
-                            for(i = 0; i < groups.length; i++) {
-                                // Create new group
-                                group = new Y.LIMS.Model.GroupModelItem(groups[i]);
+                            console.log(groupCollection.etag.toString());
+                            console.log(etag.toString());
 
-                                // List of buddies
-                                buddies = new Y.LIMS.Model.BuddyModelList();
-                                buddies.add(groups[i].buddies);
+                            if (etag.toString() !== groupCollection.etag.toString()) {
 
-                                // Add buddies to group
-                                group.set('buddies', buddies);
+                                console.log('tada');
+                                // Empty the list
+                                instance.reset();
 
-                                // Add group to group list
-                                instance.add(group);
+                                instance.set('etag', groupCollection.etag);
+
+                                // Add groups to list
+                                for (i = 0; i < groups.length; i++) {
+                                    // Create new group
+                                    group = new Y.LIMS.Model.GroupModelItem(groups[i]);
+
+                                    // List of buddies
+                                    buddies = new Y.LIMS.Model.BuddyModelList();
+                                    buddies.add(groups[i].buddies);
+
+                                    // Add buddies to group
+                                    group.set('buddies', buddies);
+
+                                    // Add group to group list
+                                    instance.add(group);
+                                }
+
+                                if (etag === 0 ) {
+                                    instance.fire("groupsLoaded");
+                                }
                             }
-
-                            instance.fire("groupsModified");
                         },
                         failure: function (x, o) {
                             callback("group model error", o.response);
@@ -131,4 +159,16 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
         }
     }
 
-}, {});
+}, {
+
+    ATTRS: {
+        // Add custom model attributes here. These attributes will contain your
+        // model's data. See the docs for Y.Attribute to learn more about defining
+        // attributes.
+
+        etag: {
+            value: 0 // default value
+        }
+    }
+
+});

@@ -24,17 +24,27 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         groupModelList = this.get('model');
         // Update the display when a new item is added to the list, or when the
         // entire list is reset.
-        groupModelList.after('add', this._updateGroupViewList, this);
-        groupModelList.after('reset', this._updateGroupViewList, this);
+        groupModelList.after('add', this._onGroupAdd, this);
+        groupModelList.after('reset', this._onGroupReset, this);
 
         // Load saved items from server or local storage
         groupModelList.load();
     },
 
 
+    /**
+     * Called whenever the group model is reset
+     *
+     * @private
+     */
+    _onGroupReset: function() {
+        // Empty container
+        this.get('container').set('innerHTML', '');
+    },
+
     // Creates a new GroupView instance and renders it into the list whenever a
     // Group item is added to the list.
-    _updateGroupViewList: function (e) {
+    _onGroupAdd: function (e) {
         var groupView;
         // Create new Group View Item
         groupView = new Y.LIMS.View.GroupViewItem({model: e.model});

@@ -8,6 +8,7 @@ import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
 import com.marcelmika.lims.jabber.JabberException;
 import com.marcelmika.lims.jabber.domain.Buddy;
 import com.marcelmika.lims.jabber.domain.Group;
+import com.marcelmika.lims.jabber.domain.GroupCollection;
 import com.marcelmika.lims.jabber.group.manager.GroupManager;
 import com.marcelmika.lims.jabber.session.UserSession;
 import com.marcelmika.lims.jabber.session.store.UserSessionStore;
@@ -21,9 +22,6 @@ import java.util.List;
  * Time: 8:22 PM
  */
 public class GroupJabberServiceImpl implements GroupJabberService {
-
-    // Log
-    private static Log log = LogFactoryUtil.getLog(GroupJabberServiceImpl.class);
 
     // Dependencies
     private UserSessionStore userSessionStore;
@@ -61,10 +59,8 @@ public class GroupJabberServiceImpl implements GroupJabberService {
         // Get groups manager related to buddy
         GroupManager groupManager = userSession.getGroupManager();
         // Get a list of groups
-        List<Group> groups = groupManager.getGroups();
-        // Map it to group details
-        List<GroupDetails> details = Group.toGroupDetailsList(groups);
+        GroupCollection groupCollection = groupManager.getGroupCollection();
         // Return success
-        return GetGroupsResponseEvent.getGroupsSuccess(details);
+        return GetGroupsResponseEvent.getGroupsSuccess(groupCollection.toGroupCollectionDetails());
     }
 }

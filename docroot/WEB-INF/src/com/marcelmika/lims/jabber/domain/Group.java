@@ -3,7 +3,6 @@ package com.marcelmika.lims.jabber.domain;
 import com.marcelmika.lims.api.entity.GroupDetails;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,8 +15,6 @@ public class Group {
 
     private String name;
     private List<Buddy> buddies = new ArrayList<Buddy>();
-    private Date lastModified;
-
 
     // -------------------------------------------------------------------------------------------
     // Factory Methods
@@ -44,22 +41,6 @@ public class Group {
     }
 
     /**
-     * Maps a list of groups to a list of group details
-     *
-     * @param groups list of groups
-     * @return list of group details
-     */
-    public static List<GroupDetails> toGroupDetailsList(List<Group> groups) {
-        List<GroupDetails> details = new ArrayList<GroupDetails>();
-
-        for(Group group : groups) {
-            details.add(group.toGroupDetails());
-        }
-
-        return details;
-    }
-
-    /**
      * Maps group to group details
      *
      * @return GroupDetails
@@ -72,7 +53,7 @@ public class Group {
 
         // Relations
         if (buddies != null) {
-            for(Buddy buddy : buddies) {
+            for (Buddy buddy : buddies) {
                 details.addBuddyDetails(buddy.toBuddyDetails());
             }
         }
@@ -101,14 +82,6 @@ public class Group {
         this.name = name;
     }
 
-    public Date getLastModified() {
-        return lastModified;
-    }
-
-    public void setLastModified(Date lastModified) {
-        this.lastModified = lastModified;
-    }
-
     /**
      * String representation of the Group.
      *
@@ -116,7 +89,7 @@ public class Group {
      */
     @Override
     public String toString() {
-        return String.format("Group: %s, modified: %s", name, lastModified);
+        return String.format("Group: %s:", name);
     }
 
 

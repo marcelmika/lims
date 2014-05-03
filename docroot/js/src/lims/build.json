@@ -33,7 +33,8 @@
                     "io",
                     "json",
                     "model",
-                    "model-list"
+                    "model-list",
+                    "gallery-timer"
                 ]
             }
         },

@@ -109,8 +109,6 @@ public class Buddy {
 
         log.info(parameterMap);
 
-
-
         // Create new buddy
         Buddy buddy = new Buddy();
         // BuddyID

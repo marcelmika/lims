@@ -1,9 +1,8 @@
 package com.marcelmika.lims.jabber.group.manager;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.jabber.domain.Buddy;
 import com.marcelmika.lims.jabber.domain.Group;
+import com.marcelmika.lims.jabber.domain.GroupCollection;
 import com.marcelmika.lims.jabber.domain.Presence;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
@@ -20,12 +19,8 @@ import java.util.*;
  */
 public class GroupManagerImpl implements GroupManager, RosterListener {
 
-    // Log
-    private static Log log = LogFactoryUtil.getLog(GroupManagerImpl.class);
-    // Pay attention to this collection! In every method, in which you use groups, You have to
-    // wrap an operation with groups to the synchronized block in every method! Don't forget it in
-    // Activities and Fragments!
-    private final List<Group> groups = Collections.synchronizedList(new ArrayList<Group>());
+    // Collection of groups related to the manager
+    private GroupCollection groupCollection = new GroupCollection();
     // Represents a user's roster, which is the collection of users a person
     // receives presence updates for.
     private Roster roster;
@@ -50,19 +45,20 @@ public class GroupManagerImpl implements GroupManager, RosterListener {
         roster.addRosterListener(this);
     }
 
+
     /**
-     * Get buddy's groups.
+     * Get buddy's collection of groups.
      *
-     * @return Buddy's groups.
+     * @return Buddy's collection of groups.
      */
     @Override
-    public List<Group> getGroups() {
+    public GroupCollection getGroupCollection() {
         // Map groups only if they were somehow modified
         if (wasModified) {
             mapGroupsFromRoster();
         }
 
-        return groups;
+        return groupCollection;
     }
 
     // -------------------------------------------------------------------------------------------
@@ -130,9 +126,7 @@ public class GroupManagerImpl implements GroupManager, RosterListener {
      */
     private void mapGroupsFromRoster() {
         // Create temporary group list
-        List<Group> mappedGroup = new ArrayList<Group>();
-        // Last modification date
-        Date lastModified = new Date();
+        List<Group> groups = new ArrayList<Group>();
         // Go over all groups in roster
         for (RosterGroup rosterGroup : roster.getGroups()) {
             // Create new Group
@@ -149,16 +143,11 @@ public class GroupManagerImpl implements GroupManager, RosterListener {
                 // Add buddy to the group
                 group.addBuddy(buddy);
             }
-
-            // Set modification data (useful for e-tag)
-            group.setLastModified(lastModified);
             // Add Group to the collection
-            mappedGroup.add(group);
+            groups.add(group);
         }
         // Clear global groups
-        groups.clear();
-        // Add mapped groups to global groups
-        groups.addAll(mappedGroup);
+        groupCollection.addGroups(groups);
 
         // Return modify flag
         wasModified = false;

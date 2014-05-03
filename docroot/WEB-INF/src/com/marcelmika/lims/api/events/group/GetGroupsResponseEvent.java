@@ -1,9 +1,7 @@
 package com.marcelmika.lims.api.events.group;
 
+import com.marcelmika.lims.api.entity.GroupCollectionDetails;
 import com.marcelmika.lims.api.events.ResponseEvent;
-import com.marcelmika.lims.api.entity.GroupDetails;
-
-import java.util.List;
 
 /**
  * @author Ing. Marcel Mika
@@ -13,11 +11,11 @@ import java.util.List;
  */
 public class GetGroupsResponseEvent extends ResponseEvent {
 
-    List<GroupDetails> groups;
+    GroupCollectionDetails groupCollection;
 
-    public static GetGroupsResponseEvent getGroupsSuccess(List<GroupDetails> groups) {
+    public static GetGroupsResponseEvent getGroupsSuccess(GroupCollectionDetails groupCollectionDetails) {
         GetGroupsResponseEvent event = new GetGroupsResponseEvent();
-        event.groups = groups;
+        event.groupCollection = groupCollectionDetails;
         event.success = true;
 
         return event;
@@ -32,7 +30,7 @@ public class GetGroupsResponseEvent extends ResponseEvent {
         return event;
     }
 
-    public List<GroupDetails> getGroups() {
-        return groups;
+    public GroupCollectionDetails getGroupCollection() {
+        return groupCollection;
     }
 }

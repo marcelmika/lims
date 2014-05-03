@@ -22,18 +22,18 @@ public class Group {
     /**
      * Create new group and maps data from group details
      *
-     * @param groupDetails GroupDetails
+     * @param details GroupDetails
      * @return Group
      */
-    public static Group fromGroupDetails(GroupDetails groupDetails) {
+    public static Group fromGroupDetails(GroupDetails details) {
         // Create new group
         Group group = new Group();
         // Map data to group details
-        group.name = groupDetails.getName();
+        group.name = details.getName();
 
         // Relations
-        if (groupDetails.getBuddies() != null) {
-            group.buddies = Buddy.fromBuddyDetails(groupDetails.getBuddies());
+        if (details.getBuddies() != null) {
+            group.buddies = Buddy.fromBuddyDetails(details.getBuddies());
         }
 
         return group;
@@ -94,7 +94,6 @@ public class Group {
     public void setName(String name) {
         this.name = name;
     }
-
 
     /**
      * String representation of the Group.

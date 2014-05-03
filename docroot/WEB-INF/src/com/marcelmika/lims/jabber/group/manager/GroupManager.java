@@ -1,9 +1,7 @@
 package com.marcelmika.lims.jabber.group.manager;
 
-import com.marcelmika.lims.jabber.domain.Group;
+import com.marcelmika.lims.jabber.domain.GroupCollection;
 import org.jivesoftware.smack.Roster;
-
-import java.util.List;
 
 /**
  * @author Ing. Marcel Mika
@@ -21,10 +19,10 @@ public interface GroupManager {
     public void setRoster(Roster roster);
 
     /**
-     * Get buddy's groups.
+     * Get buddy's collection of groups.
      *
-     * @return Buddy's groups.
+     * @return Buddy's collection of groups.
      */
-    public List<Group> getGroups();
+    public GroupCollection getGroupCollection();
 
 }
