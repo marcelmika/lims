@@ -53,8 +53,7 @@
             <ul class="lfr-component status">
                 <li class="online" data-status="${JABBER_STATUS_ONLINE}"><liferay-ui:message key="online" /></li>                
                 <li class="busy" data-status="${JABBER_STATUS_BUSY}"><liferay-ui:message key="busy" /></li>                
-                <li class="unavailable divider" data-status="${JABBER_STATUS_UNAVAILABLE}"><liferay-ui:message key="unavailable" /></li>                
-                <!--<li class="invisible " data-status="${JABBER_STATUS_INVISIBLE}"><liferay-ui:message key="invisible" /></li>-->
+                <li class="unavailable divider" data-status="${JABBER_STATUS_UNAVAILABLE}"><liferay-ui:message key="unavailable" /></li>
                 <li class="off" data-status="${JABBER_STATUS_OFF}"><liferay-ui:message key="off" /></li>                
             </ul>
         </div>

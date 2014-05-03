@@ -17,19 +17,22 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
     // element, which will be used as the HTML template for each group item.
     template: Y.one('#lims-conversation-item-template').get('innerHTML'),
 
+
     render: function () {
         // Vars
         var container = this.get('container'),
-            model = this.get('model');
+            model = this.get('model'),
+        // Todo: this is just for debug
+            settings = new Y.LIMS.Core.Settings();
 
             // Render Group:
             // Fill data from model to template and set it to container
             container.set('innerHTML',
                 Y.Lang.sub(this.template, {
                     createdPrettified: "a minute ago",
-                    fullName: "Jakub Bokoč",
-                    content: model.get('message'),
-                    portrait: this._getPortrait("jakub.bokoc")
+                    fullName: "John Doe",
+                    content: "Test",
+                    portrait: this._getPortrait(settings.getCurrentUserScreenName())
                 })
             );
 

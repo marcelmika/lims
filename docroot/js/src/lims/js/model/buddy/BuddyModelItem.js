@@ -22,7 +22,6 @@ Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [], {
                 break;
 
             case 'read':
-                console.log("read buddy");
             // Look for an item in localStorage with this model's id.
 //                data = localStorage.getItem(this.get('id'));
 //
@@ -34,7 +33,6 @@ Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [], {
                 return;
 
             case 'delete':
-                console.log("delete buddy");
                 return;
 
             default:

@@ -36,9 +36,9 @@ Y.LIMS.Model.MessageListModel = Y.Base.create('messageListModel', Y.ModelList, [
 
         switch (action) {
             case 'create':
-                console.log("create message list");
+//                console.log("create message list");
                 data = this.toJSON();
-                console.log(data);
+//                console.log(data);
                 return;
 //                // Use the current timestamp as an id just to simplify the example. In a
 //                // real sync layer, you'd want to generate an id that's more likely to
@@ -51,7 +51,7 @@ Y.LIMS.Model.MessageListModel = Y.Base.create('messageListModel', Y.ModelList, [
 //                return;
 
             case 'read':
-                console.log('read message list');
+//                console.log('read message list');
                 // TODO: Move away
 //                url = Y.one('#chatPortletURL').get('value');
 //
@@ -96,12 +96,13 @@ Y.LIMS.Model.MessageListModel = Y.Base.create('messageListModel', Y.ModelList, [
 //                });
 
                 this.add(new Y.LIMS.Model.MessageItemModel({
-                    message: "nazdar"
+                    message: "Hi! This is just a testing message. Nothing is currently send to server." +
+                        " However, you can try to type messages and it should work correctly"
                 }));
 
-                this.fire("conversationUpdated");
+                this.fire("conversationUpdated", this);
 
-                return;
+                return this;
 
             // Look for an item in localStorage with this model's id.
 //                data = localStorage.getItem(this.get('id'));
@@ -115,7 +116,6 @@ Y.LIMS.Model.MessageListModel = Y.Base.create('messageListModel', Y.ModelList, [
 //                return;
 
             case 'update':
-                console.log("update conversation list");
                 return;
 //
 //                data = this.toJSON();
@@ -126,7 +126,6 @@ Y.LIMS.Model.MessageListModel = Y.Base.create('messageListModel', Y.ModelList, [
 //                return;
 
             case 'delete':
-                console.log("delete conversation list");
                 return;
 //                localStorage.removeItem(this.get('id'));
 //                callback();

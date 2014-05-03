@@ -50,6 +50,11 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
 
         // Events
         this._attachEvents();
+
+        model.addMessage(new Y.LIMS.Model.MessageItemModel({
+            message: "Hi! This is just a testing message. Nothing is currently send to server." +
+                " However, you can try to type messages and it should work correctly"
+        }));
     },
 
     /**
@@ -82,7 +87,6 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
      * @private
      */
     _onConversationUpdated: function () {
-        console.log('update called');
         var unreadMessages = this.get('model').get('unreadMessages'),
             badge = this.get('badge');
         if (unreadMessages === 0) {
@@ -119,17 +123,6 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         if (panel !== this.get('panel')) {
             this.get('panel').hide();
         }
-    },
-
-    /**
-     * Panel hidden event handler. Closes own panel if some other panel was shown.
-     * Thanks to that only one panel can be open at one time.
-     *
-     * @param panel
-     * @private
-     */
-    _onPanelHidden: function () {
-        // Todo: send active panel ajax
     },
 
     _onPanelClosed: function () {

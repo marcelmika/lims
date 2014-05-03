@@ -3,6 +3,7 @@ package com.marcelmika.lims.jabber.group.manager;
 import com.marcelmika.lims.jabber.domain.Buddy;
 import com.marcelmika.lims.jabber.domain.Group;
 import com.marcelmika.lims.jabber.domain.Presence;
+import com.marcelmika.lims.jabber.utils.Jid;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.RosterGroup;
@@ -88,6 +89,17 @@ public class GroupManagerImpl implements GroupManager, RosterListener {
     // -------------------------------------------------------------------------------------------
     private void mapGroupsFromRoster() {
         groups.clear();
+        // TODO: DEBUG ------------------
+        Group g = new Group();
+        g.setName("Test Group");
+        Buddy b = new Buddy();
+        // Map properties
+        b.setFullName("Marcel Mika");
+        b.setScreenName("mikamarc");
+        g.addBuddy(b);
+        groups.add(g);
+        // ------------------------------
+
         // Go over all groups in roster
         for (RosterGroup rosterGroup : roster.getGroups()) {
             // Create new Group

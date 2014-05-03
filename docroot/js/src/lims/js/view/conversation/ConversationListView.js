@@ -24,8 +24,7 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         var model = this.get('model');
         // Update the display when a new item is added to the list, or when the
         // entire list is reset.
-        model.after('add', this._updateConversationList, this);
-        model.after('reset', this._updateConversationList, this);
+        model.after('messageAdded', this._updateConversationList, this);
 
         // Load saved items from server or local storage
         model.load();
@@ -42,12 +41,13 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
 
     // Creates a new GroupView instance and renders it into the list whenever a
     // Group item is added to the list.
-    _updateConversationList: function (e) {
+    _updateConversationList: function (event) {
+        console.log(event);
         var animation, conversation;
         // Hide indicator
         this.get('activityIndicator').hide();
         // New conversation
-        conversation = new Y.LIMS.View.ConversationItemView({model: e.model});
+        conversation = new Y.LIMS.View.ConversationItemView({model: event});
         // Render it
         conversation.render();
         // Set opacity to zero (because of the animation
@@ -99,8 +99,8 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         if (event.keyCode === 13 && !event.shiftKey && value.length) {
             event.preventDefault();
             // Empty text field
-            textField.set('value', "");
-            model.create(new Y.LIMS.Model.MessageItemModel({message: value}));
+            textField.set('value', '');
+            model.addMessage(new Y.LIMS.Model.MessageItemModel({message: value}));
         }
     }
 }, {

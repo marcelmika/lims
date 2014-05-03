@@ -8,17 +8,20 @@ Y.namespace('LIMS.Model');
 
 Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [], {
 
+    addMessage: function(message) {
+        var messageList = this.get('messageList');
+        messageList.add(message);
+        this.fire('messageAdded', message);
+    },
+
     // Custom sync layer.
     sync: function (action, options, callback) {
         var data, url = Y.one('#chatPortletURL').get('value');
 
         switch (action) {
             case 'create':
-                console.log("create conversation");
                 data = this.toJSON();
                 data = Y.JSON.stringify(data);
-                console.log(data);
-
                 Y.io(url, {
                     method: "POST",
                     data: {
@@ -26,15 +29,15 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
                         data: data
                     },
                     on: {
-                        success: function (id, o) {
-                            console.log('success');
-                            console.log(id);
-                            console.log(o.response);
-                        },
-                        failure: function (x, o) {
-                            console.log(x);
-                            console.log(o);
-                        }
+//                        success: function (id, o) {
+//                            console.log('success');
+//                            console.log(id);
+//                            console.log(o.response);
+//                        },
+//                        failure: function (x, o) {
+//                            console.log(x);
+//                            console.log(o);
+//                        }
                     }
 //                    headers: {
 //                        'Content-Type': 'application/json'
@@ -55,7 +58,6 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
 //                return;
 
             case 'read':
-                console.log("read conversation");
                 return;
 
             // Look for an item in localStorage with this model's id.
@@ -70,7 +72,6 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
 //                return;
 
             case 'update':
-                console.log("update conversation");
                 return;
 //
 //                data = this.toJSON();
@@ -81,7 +82,6 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
 //                return;
 
             case 'delete':
-                console.log("delete conversation");
                 return;
 //                localStorage.removeItem(this.get('id'));
 //                callback();
@@ -104,6 +104,12 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
 
         unreadMessages: {
             value: 10 // default value
+        },
+
+        messageList: {
+            valueFn: function() {
+                return new Y.LIMS.Model.MessageListModel();
+            }
         }
     }
 });

@@ -7,6 +7,7 @@ Y.namespace('LIMS.Core');
 
 Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
 
+    screenName: null,
     pathImage: null,
     companyId: null,
 
@@ -30,6 +31,10 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
      */
     getServerRequestUrl: function () {
         return Y.one('#chatPortletURL').get('value');
+    },
+
+    getCurrentUserScreenName: function() {
+        return Y.one('#currentChatUserScreenName').get('value');
     }
 
 }, {
@@ -48,6 +53,12 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
         companyId: {
             valueFn: function () {
                 return this.companyId;
+            }
+        },
+
+        screenName: {
+            valueFn: function() {
+                return this.screenName;
             }
         }
     }

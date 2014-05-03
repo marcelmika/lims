@@ -52,6 +52,8 @@ public class LIMSPortlet extends MVCPortlet {
         // Fulfill them
         try {
             settings = ChatUtil.getSettings(userId);
+            // todo: debug
+            settings.setChatEnabled(true);
             openedConversations = ChatUtil.getOpenedConversations(userId, true);
         } catch (Exception ex) {
 //            System.out.println(ex);

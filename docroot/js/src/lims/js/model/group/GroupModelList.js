@@ -84,9 +84,10 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
                             instance.fire("groupsModified");
                         },
                         failure: function (x, o) {
-                            console.log("groups not changed");
-                            console.log(x);
-                            console.log(o);
+                            callback("group model error", o.response);
+//                            console.log("groups not changed");
+//                            console.log(x);
+//                            console.log(o);
                         }
                     },
                     headers: {

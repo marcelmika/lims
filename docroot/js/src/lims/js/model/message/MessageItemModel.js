@@ -15,8 +15,8 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
         switch (action) {
             case 'create':
                 data = this.toJSON();
-                console.log("create item");
-                console.log(data);
+//                console.log("create item");
+//                console.log(data);
                 return callback(null, data);
 //                // Use the current timestamp as an id just to simplify the example. In a
 //                // real sync layer, you'd want to generate an id that's more likely to
@@ -29,7 +29,7 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
 //                return;
 
             case 'read':
-                console.log("read item");
+//                console.log("read item");
                 return;
 
             // Look for an item in localStorage with this model's id.
@@ -44,7 +44,7 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
 //                return;
 
             case 'update':
-                console.log("update item");
+//                console.log("update item");
                 return;
 //
 //                data = this.toJSON();
@@ -55,7 +55,7 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
 //                return;
 
             case 'delete':
-                console.log("delete item");
+//                console.log("delete item");
                 return;
 //                localStorage.removeItem(this.get('id'));
 //                callback();

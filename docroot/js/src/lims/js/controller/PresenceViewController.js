@@ -101,11 +101,7 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
                 break;
         }
 
-        buddyDetails.save({action:"updatePresence"}, function(err, response){
-            if(!err){
-                console.log(response);
-            }
-        });
+        buddyDetails.save({action:"updatePresence"});
 
         this.get('statusIndicator').setAttribute('class', "status-indicator " + presenceClass);
     }
