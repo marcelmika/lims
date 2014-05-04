@@ -91,7 +91,7 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
                 presenceClass = "unavailable";
                 buddyDetails.set('presence', 'STATE_DND');
                 break;
-            case "jabber.status.offline":
+            case "jabber.status.off":
                 presenceClass = "off";
                 buddyDetails.set('presence', 'STATE_OFFLINE');
                 break;

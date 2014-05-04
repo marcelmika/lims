@@ -86,16 +86,6 @@ public class SettingsCoreServiceImpl implements SettingsCoreService {
             return EnableChatResponseEvent.enableChatFailure("Cannot enable chat", responseEvent.getException());
         }
 
-        // Change presence in jabber
-
-        // Change presence locally
-
-
-//        // Refresh conversations
-//        if (enabled) {
-//            JabberUtil.restartConversations(userId);
-//        }
-
         return EnableChatResponseEvent.enableChatSuccess("Chat was successfully enabled");
     }
 
@@ -120,11 +110,6 @@ public class SettingsCoreServiceImpl implements SettingsCoreService {
         if (!responseEvent.isSuccess()) {
             return DisableChatResponseEvent.disableChatFailure("Cannot disable chat", responseEvent.getException());
         }
-
-        // Change presence in jabber
-
-        // Change presence locally
-
 
         return DisableChatResponseEvent.disableChatSuccess("Chat was successfully disabled");
 

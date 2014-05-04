@@ -3,6 +3,7 @@ package com.marcelmika.lims.core.service;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.events.buddy.*;
+import com.marcelmika.lims.core.domain.Presence;
 import com.marcelmika.lims.jabber.service.BuddyJabberService;
 import com.marcelmika.lims.persistence.service.BuddyPersistenceService;
 
@@ -117,7 +118,7 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
      * @return Response event for logout method
      */
     @Override
-    public UpdatePresenceBuddyResponseEvent updateStatus(UpdatePresenceBuddyRequestEvent event) {
+    public UpdatePresenceBuddyResponseEvent updatePresence(UpdatePresenceBuddyRequestEvent event) {
         // Save status to persistent service
         UpdatePresenceBuddyResponseEvent responseEvent = buddyPersistenceService.updatePresence(event);
         // Log

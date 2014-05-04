@@ -7,13 +7,12 @@ import com.marcelmika.lims.api.events.ResponseEvent;
 import com.marcelmika.lims.api.events.buddy.UpdatePresenceBuddyRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
+import com.marcelmika.lims.api.events.settings.DisableChatRequestEvent;
+import com.marcelmika.lims.api.events.settings.EnableChatRequestEvent;
 import com.marcelmika.lims.api.events.settings.UpdateActivePanelRequestEvent;
 import com.marcelmika.lims.api.events.settings.UpdateSettingsRequestEvent;
 import com.marcelmika.lims.core.service.*;
-import com.marcelmika.lims.portal.domain.Buddy;
-import com.marcelmika.lims.portal.domain.Conversation;
-import com.marcelmika.lims.portal.domain.GroupCollection;
-import com.marcelmika.lims.portal.domain.Settings;
+import com.marcelmika.lims.portal.domain.*;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -57,11 +56,21 @@ public class PortletProcessor {
     public void updateBuddyPresence(ResourceRequest request, ResourceResponse response) {
         // Create buddy from poller request
         Buddy buddy = JSONFactoryUtil.looseDeserialize(request.getParameter("data"), Buddy.class);
+        Presence presence = buddy.getPresence();
 
         // Send request to core service
-        ResponseEvent responseEvent = buddyCoreService.updateStatus(new UpdatePresenceBuddyRequestEvent(
+        ResponseEvent responseEvent = buddyCoreService.updatePresence(new UpdatePresenceBuddyRequestEvent(
                         buddy.getBuddyId(), buddy.getPresence().toPresenceDetails())
         );
+
+        // Disable chat if presence is offline
+        if (presence == Presence.STATE_OFFLINE) {
+            settingsCoreService.disableChat(new DisableChatRequestEvent(buddy.toBuddyDetails()));
+        }
+        // Enable otherwise
+        else {
+            settingsCoreService.enableChat(new EnableChatRequestEvent(buddy.toBuddyDetails()));
+        }
 
         // On success
         if (responseEvent.isSuccess()) {

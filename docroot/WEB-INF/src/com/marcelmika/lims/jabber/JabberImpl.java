@@ -49,8 +49,8 @@ public class JabberImpl implements Jabber {
 
     public void restartConversations(long userId) throws Exception {
         // @todo: Move to the conversation manager
-//        ConversationContainer container = ConversationStore.getInstance().getConversationContainer(userId);
-//        container.restartConversations();
+        ConversationContainer container = ConversationStore.getInstance().getConversationContainer(userId);
+        container.restartConversations();
     }
 
     @Override

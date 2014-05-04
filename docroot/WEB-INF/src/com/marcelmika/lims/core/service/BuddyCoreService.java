@@ -42,6 +42,6 @@ public interface BuddyCoreService {
      * @param event Request event for logout method
      * @return Response event for logout method
      */
-    public UpdatePresenceBuddyResponseEvent updateStatus(UpdatePresenceBuddyRequestEvent event);
+    public UpdatePresenceBuddyResponseEvent updatePresence(UpdatePresenceBuddyRequestEvent event);
 
 }
