@@ -27,7 +27,7 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
 
         try {
             // Remove settings from database
-            Settings settings = SettingsLocalServiceUtil.getSettings(buddy.getBuddyId());
+            Settings settings = SettingsLocalServiceUtil.getSettingsByUser(buddy.getBuddyId());
             if (settings != null) {
                 // Delete only if the user is in the system otherwise do nothing
                 SettingsLocalServiceUtil.deleteSettings(settings);
@@ -57,7 +57,7 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
 
         try {
             // Take presence from user settings
-            Settings settings = SettingsLocalServiceUtil.getSettings(buddy.getBuddyId());
+            Settings settings = SettingsLocalServiceUtil.getSettingsByUser(buddy.getBuddyId());
 
             if (settings != null) {
                 // Create Presence from status

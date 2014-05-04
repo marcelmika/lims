@@ -28,20 +28,11 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
 //        });
 //    }
 
-    initializer: function () {
-        var instance = this, timer = new Y.Timer({
-            length: 10000,
-            repeatCount: 10000,
-            callback: function () {
-                instance.load();
-            }});
-
-        timer.start();
-    },
-
     // Custom sync layer.
     sync: function (action, options, callback) {
         var data, url, etag = this.get('etag'), instance = this;
+
+        console.log("Reading groups with etag: " + etag);
 
 //        instance.callback = callback;
 
@@ -79,12 +70,7 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
                             groupCollection = Y.JSON.parse(o.response);
                             groups = groupCollection.groups;
 
-                            console.log(groupCollection.etag.toString());
-                            console.log(etag.toString());
-
                             if (etag.toString() !== groupCollection.etag.toString()) {
-
-                                console.log('tada');
                                 // Empty the list
                                 instance.reset();
 

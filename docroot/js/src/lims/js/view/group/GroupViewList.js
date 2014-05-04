@@ -26,9 +26,6 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         // entire list is reset.
         groupModelList.after('add', this._onGroupAdd, this);
         groupModelList.after('reset', this._onGroupReset, this);
-
-        // Load saved items from server or local storage
-        groupModelList.load();
     },
 
 

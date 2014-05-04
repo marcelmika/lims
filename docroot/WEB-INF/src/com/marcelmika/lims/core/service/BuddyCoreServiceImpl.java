@@ -3,7 +3,6 @@ package com.marcelmika.lims.core.service;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.events.buddy.*;
-import com.marcelmika.lims.core.domain.Presence;
 import com.marcelmika.lims.jabber.service.BuddyJabberService;
 import com.marcelmika.lims.persistence.service.BuddyPersistenceService;
 
@@ -75,7 +74,7 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
         // ended with success. If it fails we simply do nothing. We don't want to interrupt login process
         // only because we can't send initial presence to the jabber server
         if (readPresenceEvent.isSuccess()) {
-            buddyJabberService.updateStatus(new UpdatePresenceBuddyRequestEvent(
+            buddyJabberService.updatePresence(new UpdatePresenceBuddyRequestEvent(
                             loginResponseEvent.getDetails().getBuddyId(),
                             readPresenceEvent.getPresenceDetails())
             );
@@ -128,6 +127,6 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
             return responseEvent;
         }
         // Save buddy status in Jabber as well
-        return buddyJabberService.updateStatus(event);
+        return buddyJabberService.updatePresence(event);
     }
 }

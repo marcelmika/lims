@@ -35,6 +35,10 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
 
     getCurrentUserScreenName: function() {
         return Y.one('#currentChatUserScreenName').get('value');
+    },
+
+    isChatEnabled: function() {
+        return Y.one('#chatPortletEnabled').get('value') === 'true';
     }
 
 }, {

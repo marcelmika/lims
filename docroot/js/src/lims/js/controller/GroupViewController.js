@@ -21,6 +21,8 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
         this._initGroups();
         // Events
         this._attachEvents();
+        // Init timer
+        this._initTimer();
     },
 
     /**
@@ -35,6 +37,7 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
         // Model
         model = new Y.LIMS.Model.GroupModelList();
         model.after('groupsLoaded', this._groupsLoaded, this);
+        this.set('model', model);
         // View
         view = new Y.LIMS.View.GroupViewList({
             container: container,
@@ -43,6 +46,29 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
 
         // Store view
         this.groupViewList = view;
+    },
+
+    _initTimer: function () {
+        var settings = this.get('settings'),
+            model = this.get('model'),
+            timer = new Y.Timer({
+                length: 10000,
+                repeatCount: 10000,
+                callback: function () {
+                    model.load();
+                }});
+
+
+        // Start only if the chat is enabled
+        if (settings.isChatEnabled()) {
+            // Load model
+            model.load();
+            // Start periodical update
+            timer.start();
+        }
+
+        // Store globally
+        this.set('timer', timer);
     },
 
     /**
@@ -112,17 +138,6 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
     },
 
     /**
-     * Panel hidden event handler. Closes own panel if some other panel was shown.
-     * Thanks to that only one panel can be open at one time.
-     *
-     * @param panel
-     * @private
-     */
-    _onPanelHidden: function () {
-        // Todo: send active panel ajax
-    },
-
-    /**
      * Buddy selected event. Called whenever the user selects one of the buddies from
      * the group list
      *
@@ -137,8 +152,13 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
      *
      * @private
      */
-    _onChatEnabled: function() {
+    _onChatEnabled: function () {
+        // Show container
         this.get('container').show();
+        // Load model
+        this.get('model').load();
+        // Start timer that periodically updates groups model
+        this.get('timer').start();
     },
 
     /**
@@ -146,8 +166,11 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
      *
      * @private
      */
-    _onChatDisabled: function() {
+    _onChatDisabled: function () {
+        // Hide container
         this.get('container').hide();
+        // Stop timer that periodically updates groups model
+        this.get('timer').stop();
     }
 
 }, {
@@ -172,6 +195,20 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
         // Panel view related to the controller
         panel: {
             value: null // to be set in initializer
+        },
+
+        timer: {
+            value: null // to be set
+        },
+
+        groupModel: {
+            value: null // to be set
+        },
+
+        settings: {
+            valueFn: function(){
+                return new Y.LIMS.Core.Settings();
+            }
         },
 
         // Container for activity indicator

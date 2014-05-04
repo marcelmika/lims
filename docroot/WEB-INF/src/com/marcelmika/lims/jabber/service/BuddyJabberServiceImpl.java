@@ -159,7 +159,7 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
      * @return Response event for logout method
      */
     @Override
-    public UpdatePresenceBuddyResponseEvent updateStatus(UpdatePresenceBuddyRequestEvent event) {
+    public UpdatePresenceBuddyResponseEvent updatePresence(UpdatePresenceBuddyRequestEvent event) {
         // We use buddy ID as an identification
         Long buddyId = event.getBuddyId();
         // Get the session from store
@@ -174,6 +174,8 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
         ConnectionManager connectionManager = userSession.getConnectionManager();
         // Map presence
         Presence presence = Presence.fromPresenceDetails(event.getPresenceDetails());
+
+        log.info("SETTING PRESENCE: " + presence);
 
         try {
             // Set presence on server

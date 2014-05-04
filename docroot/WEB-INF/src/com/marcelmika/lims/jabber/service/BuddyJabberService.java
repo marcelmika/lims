@@ -41,6 +41,6 @@ public interface BuddyJabberService {
      * @param event Request event for method
      * @return Response event for method
      */
-    public UpdatePresenceBuddyResponseEvent updateStatus(UpdatePresenceBuddyRequestEvent event);
+    public UpdatePresenceBuddyResponseEvent updatePresence(UpdatePresenceBuddyRequestEvent event);
 
 }
