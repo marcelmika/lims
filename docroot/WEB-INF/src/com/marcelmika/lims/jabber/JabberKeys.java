@@ -16,8 +16,4 @@ public class JabberKeys {
     public static final String JABBER_STATUS_UNAVAILABLE = "jabber.status.unavailable";
     public static final String JABBER_STATUS_INVISIBLE = "jabber.status.invisible";
     public static final String JABBER_STATUS_OFF = "jabber.status.off";
-    //@ todo: Will be moved to the ConversationKeys
-    // Room types
-    public static final String JABBER_ROOM_TYPE_PRIVATE = "jabber.room.type.private";
-    public static final String JABBER_ROOM_TYPE_PUBLIC = "jabber.room.type.public";
 }

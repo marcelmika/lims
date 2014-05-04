@@ -11,7 +11,6 @@ import com.marcelmika.lims.api.entity.SettingsDetails;
 public class Settings {
 
     private String status;
-    private String activeRoomType;
     private String activePanelId;
     private boolean isMute;
     private boolean isChatEnabled;
@@ -28,7 +27,6 @@ public class Settings {
         Settings settings = new Settings();
         // Map data to settings details
         settings.setStatus(settingsDetails.getStatus());
-        settings.setActiveRoomType(settingsDetails.getActiveRoomType());
         settings.setActivePanelId(settingsDetails.getActivePanelId());
         settings.setMute(settingsDetails.isMute());
         settings.setChatEnabled(settingsDetails.isChatEnabled());
@@ -46,7 +44,6 @@ public class Settings {
         SettingsDetails details = new SettingsDetails();
         // Map data from user
         details.setStatus(status);
-        details.setActiveRoomType(activeRoomType);
         details.setActivePanelId(activePanelId);
         details.setMute(isMute);
         details.setChatEnabled(isChatEnabled);
@@ -60,14 +57,6 @@ public class Settings {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getActiveRoomType() {
-        return activeRoomType;
-    }
-
-    public void setActiveRoomType(String activeRoomType) {
-        this.activeRoomType = activeRoomType;
     }
 
     public String getActivePanelId() {

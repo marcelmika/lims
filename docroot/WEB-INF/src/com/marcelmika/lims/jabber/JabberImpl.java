@@ -53,58 +53,6 @@ public class JabberImpl implements Jabber {
 //        container.restartConversations();
     }
 
-    /**
-     * TODO: Not implemented in this version
-     *
-     * @param userId userId
-     * @throws Exception
-     */
-    protected void updatePublicRooms(long userId, Connection connection) throws Exception {
-        // Get all hosted rooms on the jabber server
-        Collection<HostedRoom> hostedRooms = MultiUserChat.getHostedRooms(connection, PortletPropsValues.JABBER_SERVICE_MULTICHAT_NAME);
-        Iterator<String> joinedRooms = MultiUserChat.getJoinedRooms(connection, PortletPropsValues.JABBER_SERVICE_MULTICHAT_NAME);
-
-//          MultiUserChat.addInvitationListener(connection, new InvitationListener() {
-//              @Override
-//              public void invitationReceived(Connection connection, String s, String s2, String s3, String s4, Message message) {
-//
-//              }
-//          });
-
-        while (joinedRooms.hasNext()) {
-            System.out.println("JOINED: " + joinedRooms.next());
-        }
-
-        // Add public room to users list
-        for (HostedRoom hostedRoom : hostedRooms) {
-            String roomJID = getScreenName(hostedRoom.getJid());
-            String roomName = hostedRoom.getName();
-
-            // TODO: Add only if the user is owner
-            if (roomJID.startsWith(PortletPropsValues.JABBER_PP_PREFIX_PUBLIC)) {
-//                  RoomInfo roomInfo = MultiUserChat.getRoomInfo(connection, roomName);
-
-//                    MultiUserChat muc = new MultiUserChat(connection, roomName);
-//
-//                Collection<Affiliate> aff = muc.getOwners();
-//
-//                System.out.println(aff.toString());
-
-
-//                // Add to database
-//                ConversationLocalServiceUtil.addConversation(
-//                        buddy.getUserId(),
-//                        key,
-//                        ConversationKeys.CONVERSATION_TYPE_MULTI_USER,
-//                        JabberKeys.JABBER_ROOM_TYPE_PRIVATE,
-//                        key
-//                );
-//                RoomLocalServiceUtil.addRoom(userId, roomJID, roomName, JabberKeys.JABBER_ROOM_TYPE_PUBLIC);
-//                System.out.println("HOSTED: " + roomJID);
-            }
-        }
-    }
-
     @Override
     public Conversation createMUConversation(long userId,
                                              List<Buddy> participants,
@@ -127,7 +75,7 @@ public class JabberImpl implements Jabber {
                 buddy.getUserId(),
                 key,
                 ConversationKeys.CONVERSATION_TYPE_MULTI_USER,
-                JabberKeys.JABBER_ROOM_TYPE_PRIVATE,
+                "",
                 key
         );
         // Create local conversation
@@ -181,7 +129,7 @@ public class JabberImpl implements Jabber {
                 owner.getUserId(),
                 participant.getScreenName(),
                 ConversationKeys.CONVERSATION_TYPE_SINGLE_USER,
-                JabberKeys.JABBER_ROOM_TYPE_PRIVATE,
+                "",
                 participant.getFullName()
         );
 
@@ -422,9 +370,9 @@ public class JabberImpl implements Jabber {
 
     // @todo: Remove from this class
     protected String generatePrivateRoomKey() {
-        String prefix = PortletPropsValues.JABBER_PP_PREFIX_PRIVATE; // User can create only private rooms
+//        String prefix = PortletPropsValues.JABBER_PP_PREFIX_PRIVATE; // User can create only private rooms
         String randomID = UUID.randomUUID().toString(); // Create random unique string
-        String key = prefix.concat(randomID);
+        String key = randomID;
 
         return key;
     }

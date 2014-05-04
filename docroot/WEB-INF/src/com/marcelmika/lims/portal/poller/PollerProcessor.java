@@ -355,21 +355,6 @@ public class PollerProcessor extends BasePollerProcessor {
     }
 
     /**
-     * Update buddy's active room type
-     *
-     * @param pollerRequest PollerRequest
-     * @return ResponseEvent
-     */
-    protected ResponseEvent updateActiveRoomType(PollerRequest pollerRequest) {
-        // Create buddy from poller request
-        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
-        // Send request to core service
-        return settingsCoreService.updateActiveRoomType(new UpdateActiveRoomTypeRequestEvent(
-                        buddy.getBuddyId(), buddy.getSettings().getActiveRoomType())
-        );
-    }
-
-    /**
      * Update buddy's active panel
      *
      * @param pollerRequest PollerRequest

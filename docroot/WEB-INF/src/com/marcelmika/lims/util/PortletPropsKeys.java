@@ -24,11 +24,6 @@ public interface PortletPropsKeys {
     public static final String JABBER_SOCK5_PROXY_ENABLED = "jabber.sock5.proxy.enabled";
     public static final String JABBER_SOCK5_PROXY_PORT = "jabber.sock5.proxy.port";
 
-    //  Public/Private rooms
-    public static final String JABBER_PP_ENABLED = "jabber.pp.enabled";
-    public static final String JABBER_PP_PREFIX_PRIVATE = "jabber.pp.prefix.private";
-    public static final String JABBER_PP_PREFIX_PUBLIC = "jabber.pp.prefix.public";
-
     // User import
     public static final String JABBER_IMPORT_USER_ENABLED = "jabber.import.user.enabled";
 

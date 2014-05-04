@@ -54,17 +54,6 @@ public class SettingsCoreServiceImpl implements SettingsCoreService {
     }
 
     /**
-     * Update buddy's active room type (i.e. public or private)
-     *
-     * @param event Request event for logout method
-     * @return Response event for logout method
-     */
-    @Override
-    public UpdateActiveRoomTypeResponseEvent updateActiveRoomType(UpdateActiveRoomTypeRequestEvent event) {
-        return settingsPersistenceService.updateActiveRoomType(event);
-    }
-
-    /**
      * Update buddy's settings
      *
      * @param event Request event for logout method

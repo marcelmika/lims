@@ -236,9 +236,6 @@ public class MUConversation implements Conversation, JSONable {
      */
     public String getTitle() {
         // Public Room:
-        if (getConversationVisibility().equals(JabberKeys.JABBER_ROOM_TYPE_PUBLIC)) {
-            return getConversationName();
-        }
 
         // Private Room
         // Last message

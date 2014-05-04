@@ -34,7 +34,6 @@ public class PollerDispatcher {
     private static final String POLLER_ACTION_SAVE_SETTINGS = "poller.action.save.settings";
     private static final String POLLER_ACTION_CHANGE_STATUS = "poller.action.change.status";
     private static final String POLLER_ACTION_CHANGE_ACTIVE_PANEL = "poller.action.change.active.panel";
-    private static final String POLLER_ACTION_CHANGE_ACTIVE_ROOM_TYPE = "poller.action.change.active.room.type";
     private static final String POLLER_ACTION_CHAT_ENABLED = "poller.action.chat.enabled";
     // Log
     private static Log log = LogFactoryUtil.getLog(PollerProcessor.class);
@@ -93,9 +92,6 @@ public class PollerDispatcher {
         } // Enable/Disable chat
         else if (chunkId.equals(PollerDispatcher.POLLER_ACTION_CHAT_ENABLED)) {
             responseEvent = pollerProcessor.setChatEnabled(pollerRequest);
-        } // Change active room type
-        else if (chunkId.equals(PollerDispatcher.POLLER_ACTION_CHANGE_ACTIVE_ROOM_TYPE)) {
-            responseEvent = pollerProcessor.updateActiveRoomType(pollerRequest);
         }
 
         // Log

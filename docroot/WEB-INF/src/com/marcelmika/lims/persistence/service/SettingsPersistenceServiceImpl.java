@@ -70,30 +70,6 @@ public class SettingsPersistenceServiceImpl implements SettingsPersistenceServic
     }
 
     /**
-     * Update buddy's active room type (i.e. public or private)
-     *
-     * @param event Request event for logout method
-     * @return Response event for logout method
-     * @deprecated
-     */
-    @Override
-    public UpdateActiveRoomTypeResponseEvent updateActiveRoomType(UpdateActiveRoomTypeRequestEvent event) {
-        try {
-            // Change Active Room type
-//            SettingsLocalServiceUtil.changeActiveRoomType(event.getBuddyId(), event.getActiveRoomType());
-
-            return UpdateActiveRoomTypeResponseEvent.updateActiveRoomTypeSuccess(
-                    "Active Room Type " + event.getActiveRoomType() + " saved to persistence layer for user "
-                            + event.getBuddyId()
-            );
-        } catch (Exception exception) {
-            return UpdateActiveRoomTypeResponseEvent.updateActiveRoomTypeFailure(
-                    "Cannot update Active Room type to a persistence layer", exception
-            );
-        }
-    }
-
-    /**
      * Update buddy's settings
      *
      * @param event Request event for logout method

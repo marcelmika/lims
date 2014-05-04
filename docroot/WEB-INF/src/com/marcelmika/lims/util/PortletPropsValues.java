@@ -24,11 +24,6 @@ public class PortletPropsValues {
     public static final boolean JABBER_SOCK5_PROXY_ENABLED = GetterUtil.getBoolean(PortletProps.get(PortletPropsKeys.JABBER_SOCK5_PROXY_ENABLED));
     public static final int JABBER_SOCK5_PROXY_PORT = GetterUtil.getInteger(PortletProps.get(PortletPropsKeys.JABBER_SOCK5_PROXY_PORT));
 
-    // Public/Private rooms
-    public static final boolean JABBER_PP_ENABLED = GetterUtil.getBoolean(PortletProps.get(PortletPropsKeys.JABBER_SASL_PLAIN_ENABLED));
-    public static final String JABBER_PP_PREFIX_PRIVATE = GetterUtil.getString(PortletProps.get(PortletPropsKeys.JABBER_PP_PREFIX_PRIVATE));
-    public static final String JABBER_PP_PREFIX_PUBLIC = GetterUtil.getString(PortletProps.get(PortletPropsKeys.JABBER_PP_PREFIX_PUBLIC));
-
     // User Import
     public static final boolean JABBER_IMPORT_USER_ENABLED = GetterUtil.getBoolean(PortletProps.get(PortletPropsKeys.JABBER_IMPORT_USER_ENABLED));
 

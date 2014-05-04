@@ -15,14 +15,12 @@ import java.util.Map;
 public class Settings {
 
     private static final String KEY_STATUS = "status";
-    private static final String KEY_ACTIVE_ROOM_TYPE = "roomVisibility";
     private static final String KEY_ACTIVE_PANEL_ID = "activePanelId";
     private static final String KEY_MUTE = "mute";
     private static final String KEY_CHAT_ENABLED = "chatEnabled";
 
     private Buddy buddy;
     private String status;
-    private String activeRoomType;
     private String activePanelId;
     private boolean isMute;
     private boolean isChatEnabled;
@@ -43,10 +41,7 @@ public class Settings {
         if (parameterMap.containsKey(KEY_STATUS)) {
             settings.status = GetterUtil.getString(parameterMap.get(KEY_STATUS));
         }
-        // Active Room Type
-        if (parameterMap.containsKey(KEY_ACTIVE_ROOM_TYPE)) {
-            settings.activeRoomType = GetterUtil.getString(parameterMap.get(KEY_ACTIVE_ROOM_TYPE));
-        }
+
         // Active Panel Id
         if (parameterMap.containsKey(KEY_ACTIVE_PANEL_ID)) {
             settings.activePanelId = GetterUtil.getString(parameterMap.get(KEY_ACTIVE_PANEL_ID));
@@ -76,7 +71,6 @@ public class Settings {
         Settings settings = new Settings();
         // Map data to settings details
         settings.status = settingsDetails.getStatus();
-        settings.activeRoomType = settingsDetails.getActiveRoomType();
         settings.activePanelId = settingsDetails.getActivePanelId();
         settings.isMute = settingsDetails.isMute();
         settings.isChatEnabled = settingsDetails.isChatEnabled();
@@ -94,7 +88,6 @@ public class Settings {
         SettingsDetails details = new SettingsDetails();
         // Map data from user
         details.setStatus(status);
-        details.setActiveRoomType(activeRoomType);
         details.setActivePanelId(activePanelId);
         details.setMute(isMute);
         details.setChatEnabled(isChatEnabled);
@@ -116,14 +109,6 @@ public class Settings {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getActiveRoomType() {
-        return activeRoomType;
-    }
-
-    public void setActiveRoomType(String activeRoomType) {
-        this.activeRoomType = activeRoomType;
     }
 
     public String getActivePanelId() {

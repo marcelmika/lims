@@ -9,7 +9,6 @@ package com.marcelmika.lims.api.entity;
 public class SettingsDetails {
 
     private String status;
-    private String activeRoomType;
     private String activePanelId;
     private boolean isMute;
     private boolean isChatEnabled;
@@ -20,14 +19,6 @@ public class SettingsDetails {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getActiveRoomType() {
-        return activeRoomType;
-    }
-
-    public void setActiveRoomType(String activeRoomType) {
-        this.activeRoomType = activeRoomType;
     }
 
     public String getActivePanelId() {

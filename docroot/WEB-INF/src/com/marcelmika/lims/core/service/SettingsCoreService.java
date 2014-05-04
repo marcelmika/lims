@@ -31,14 +31,6 @@ public interface SettingsCoreService {
     public UpdateActivePanelResponseEvent updateActivePanel(UpdateActivePanelRequestEvent event);
 
     /**
-     * Update buddy's active room type (i.e. public or private)
-     *
-     * @param event Request event
-     * @return Response event
-     */
-    public UpdateActiveRoomTypeResponseEvent updateActiveRoomType(UpdateActiveRoomTypeRequestEvent event);
-
-    /**
      * Update buddy's settings
      *
      * @param event Request event
