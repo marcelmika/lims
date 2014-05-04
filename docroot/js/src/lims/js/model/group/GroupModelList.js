@@ -30,7 +30,7 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
 
     initializer: function () {
         var instance = this, timer = new Y.Timer({
-            length: 5000,
+            length: 10000,
             repeatCount: 10000,
             callback: function () {
                 instance.load();
