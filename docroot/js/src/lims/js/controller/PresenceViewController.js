@@ -51,6 +51,12 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
     _onPresenceChanged: function (presence) {
         // Update presence indicator
        this._updatePresenceIndicator(presence);
+        if (presence === "jabber.status.off") {
+            Y.fire("chatDisabled");
+        } else {
+            Y.fire("chatEnabled");
+        }
+        // Hide panel
         this.get('panel').hide();
     },
 

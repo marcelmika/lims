@@ -77,6 +77,8 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         Y.on('panelShown', this._onPanelShown, this);
         Y.on('panelHidden', this._onPanelHidden, this);
         Y.on('panelClosed', this._onPanelClosed, this);
+        Y.on('chatEnabled', this._onChatEnabled, this);
+        Y.on('chatDisabled', this._onChatDisabled, this);
         // Buddy events
         Y.on('buddySelected', this._onBuddySelected, this); // Whenever the user click on buddy in group
     },
@@ -127,6 +129,24 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
 
     _onPanelClosed: function () {
         this.fire('conversationClosed');
+    },
+
+    /**
+     * Called whenever the chat is enabled
+     *
+     * @private
+     */
+    _onChatEnabled: function() {
+        this.get('container').show();
+    },
+
+    /**
+     * Called whenever the chat is disabled
+     *
+     * @private
+     */
+    _onChatDisabled: function() {
+        this.get('container').hide();
     }
 
 }, {

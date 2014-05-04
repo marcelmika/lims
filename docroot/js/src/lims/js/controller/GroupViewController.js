@@ -54,6 +54,8 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
         Y.on('buddySelected', this._onBuddySelected, this);
         Y.on('panelShown', this._onPanelShown, this);
         Y.on('panelHidden', this._onPanelHidden, this);
+        Y.on('chatEnabled', this._onChatEnabled, this);
+        Y.on('chatDisabled', this._onChatDisabled, this);
     },
 
     /**
@@ -128,6 +130,24 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
      */
     _onBuddySelected: function () {
         this.get('panel').hide();
+    },
+
+    /**
+     * Called whenever the chat is enabled
+     *
+     * @private
+     */
+    _onChatEnabled: function() {
+        this.get('container').show();
+    },
+
+    /**
+     * Called whenever the chat is disabled
+     *
+     * @private
+     */
+    _onChatDisabled: function() {
+        this.get('container').hide();
     }
 
 }, {

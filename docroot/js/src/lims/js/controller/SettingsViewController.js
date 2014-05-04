@@ -34,6 +34,8 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
         // Remote events
         Y.on('panelShown', this._onPanelShown, this);
         Y.on('panelHidden', this._onPanelHidden, this);
+        Y.on('chatEnabled', this._onChatEnabled, this);
+        Y.on('chatDisabled', this._onChatDisabled, this);
     },
 
     /**
@@ -63,13 +65,21 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
     },
 
     /**
-     * Panel hidden event handler. Closes own panel if some other panel was shown.
-     * Thanks to that only one panel can be open at one time.
+     * Called whenever the chat is enabled
      *
      * @private
      */
-    _onPanelHidden: function () {
-        // Todo: send active panel ajax
+    _onChatEnabled: function() {
+        this.get('container').show();
+    },
+
+    /**
+     * Called whenever the chat is disabled
+     *
+     * @private
+     */
+    _onChatDisabled: function() {
+        this.get('container').hide();
     }
 
 }, {
