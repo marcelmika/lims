@@ -1,6 +1,5 @@
 package com.marcelmika.lims.persistence.service;
 
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.marcelmika.lims.api.events.buddy.*;
 import com.marcelmika.lims.model.Settings;
 import com.marcelmika.lims.persistence.domain.Buddy;
@@ -46,13 +45,48 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
     }
 
     /**
+     * Reads buddy's presence
+     *
+     * @param event Request event
+     * @return Response event
+     */
+    @Override
+    public ReadPresenceBuddyResponseEvent readPresence(ReadPresenceBuddyRequestEvent event) {
+        // Get buddy from buddy details
+        Buddy buddy = Buddy.fromBuddyDetails(event.getBuddyDetails());
+
+        try {
+            // Take presence from user settings
+            Settings settings = SettingsLocalServiceUtil.getSettings(buddy.getBuddyId());
+
+            if (settings != null) {
+                // Create Presence from status
+                Presence presence = Presence.fromStatus(settings.getStatus());
+                // Success
+                return ReadPresenceBuddyResponseEvent.readPresenceSuccess(
+                        "Presence successfully read", presence.toPresenceDetails()
+                );
+            } else {
+                // Failure
+                return ReadPresenceBuddyResponseEvent.readPresenceFailure(
+                        new Exception(String.format("Cannot find settings for buddy with ID: %s", buddy.getBuddyId()))
+                );
+            }
+
+        } catch (Exception e) {
+            // Failure
+            return ReadPresenceBuddyResponseEvent.readPresenceFailure(e);
+        }
+    }
+
+    /**
      * Change buddy's status
      *
      * @param event Request event for logout method
      * @return Response event for logout method
      */
     @Override
-    public UpdateStatusBuddyResponseEvent changeStatus(UpdateStatusBuddyRequestEvent event) {
+    public UpdatePresenceBuddyResponseEvent updatePresence(UpdatePresenceBuddyRequestEvent event) {
         // Get presence
         Presence presence = Presence.fromPresenceDetails(event.getPresenceDetails());
 
@@ -60,11 +94,11 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
             // Save to settings
             SettingsLocalServiceUtil.changeStatus(event.getBuddyId(), presence.toStatus());
 
-            return UpdateStatusBuddyResponseEvent.updateStatusSuccess(
+            return UpdatePresenceBuddyResponseEvent.updateStatusSuccess(
                     "Status " + presence.toStatus() + " saved to persistence layer for user " + event.getBuddyId()
             );
         } catch (Exception exception) {
-            return UpdateStatusBuddyResponseEvent.updateStatusFailure(
+            return UpdatePresenceBuddyResponseEvent.updateStatusFailure(
                     "Cannot update Status to a persistence layer", exception
             );
         }

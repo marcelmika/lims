@@ -1,18 +1,14 @@
 package com.marcelmika.lims.portal.processor;
 
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.events.ResponseEvent;
-import com.marcelmika.lims.api.events.buddy.UpdateStatusBuddyRequestEvent;
+import com.marcelmika.lims.api.events.buddy.UpdatePresenceBuddyRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
 import com.marcelmika.lims.api.events.settings.UpdateActivePanelRequestEvent;
 import com.marcelmika.lims.api.events.settings.UpdateSettingsRequestEvent;
-import com.marcelmika.lims.api.events.settings.UpdateSettingsResponseEvent;
 import com.marcelmika.lims.core.service.*;
 import com.marcelmika.lims.portal.domain.Buddy;
 import com.marcelmika.lims.portal.domain.Conversation;
@@ -63,7 +59,7 @@ public class PortletProcessor {
         Buddy buddy = JSONFactoryUtil.looseDeserialize(request.getParameter("data"), Buddy.class);
 
         // Send request to core service
-        ResponseEvent responseEvent = buddyCoreService.updateStatus(new UpdateStatusBuddyRequestEvent(
+        ResponseEvent responseEvent = buddyCoreService.updateStatus(new UpdatePresenceBuddyRequestEvent(
                         buddy.getBuddyId(), buddy.getPresence().toPresenceDetails())
         );
 

@@ -18,11 +18,20 @@ public interface BuddyPersistenceService {
      */
     public DeleteBuddyResponseEvent removeBuddy(DeleteBuddyRequestEvent event);
 
+
     /**
-     * Change buddy's status
+     * Reads buddy's presence
      *
-     * @param event Request event for logout method
-     * @return Response event for logout method
+     * @param event Request event
+     * @return Response event
      */
-    public UpdateStatusBuddyResponseEvent changeStatus(UpdateStatusBuddyRequestEvent event);
+    public ReadPresenceBuddyResponseEvent readPresence(ReadPresenceBuddyRequestEvent event);
+
+    /**
+     * Change buddy's presence
+     *
+     * @param event Request event
+     * @return Response event
+     */
+    public UpdatePresenceBuddyResponseEvent updatePresence(UpdatePresenceBuddyRequestEvent event);
 }

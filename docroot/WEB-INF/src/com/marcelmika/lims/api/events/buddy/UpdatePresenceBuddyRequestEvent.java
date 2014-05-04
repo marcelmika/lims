@@ -9,12 +9,12 @@ import com.marcelmika.lims.api.entity.PresenceDetails;
  * Date: 2/5/14
  * Time: 9:08 PM
  */
-public class UpdateStatusBuddyRequestEvent extends RequestEvent {
+public class UpdatePresenceBuddyRequestEvent extends RequestEvent {
 
     private final Long buddyId;
     private final PresenceDetails presenceDetails;
 
-    public UpdateStatusBuddyRequestEvent(Long buddyId, PresenceDetails presenceDetails) {
+    public UpdatePresenceBuddyRequestEvent(Long buddyId, PresenceDetails presenceDetails) {
         this.buddyId = buddyId;
         this.presenceDetails = presenceDetails;
     }

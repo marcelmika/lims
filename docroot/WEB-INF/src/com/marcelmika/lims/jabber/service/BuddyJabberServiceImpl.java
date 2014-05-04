@@ -159,14 +159,14 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
      * @return Response event for logout method
      */
     @Override
-    public UpdateStatusBuddyResponseEvent updateStatus(UpdateStatusBuddyRequestEvent event) {
+    public UpdatePresenceBuddyResponseEvent updateStatus(UpdatePresenceBuddyRequestEvent event) {
         // We use buddy ID as an identification
         Long buddyId = event.getBuddyId();
         // Get the session from store
         UserSession userSession = userSessionStore.getUserSession(buddyId);
         // No session
         if (userSession == null) {
-            return UpdateStatusBuddyResponseEvent.updateStatusFailure(
+            return UpdatePresenceBuddyResponseEvent.updateStatusFailure(
                     "There is no session for buddy", null
             );
         }
@@ -179,10 +179,10 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
             // Set presence on server
             connectionManager.setPresence(presence.toSmackPresence());
             // Success
-            return UpdateStatusBuddyResponseEvent.updateStatusSuccess("Status successfully updated");
+            return UpdatePresenceBuddyResponseEvent.updateStatusSuccess("Status successfully updated");
         } catch (Exception e) {
             // Failure
-            return UpdateStatusBuddyResponseEvent.updateStatusFailure("Cannot update presence", e);
+            return UpdatePresenceBuddyResponseEvent.updateStatusFailure("Cannot update presence", e);
         }
     }
 

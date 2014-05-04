@@ -72,6 +72,40 @@ public enum Presence {
         }
     }
 
+    /**
+     * Creates Presence from Status
+     *
+     * @param status Status
+     * @return Presence
+     */
+    public static Presence fromStatus(String status) {
+        // Check preconditions
+        if (status == null) {
+            return Presence.STATE_UNRECOGNIZED;
+        }
+
+        // Active
+        if (status.equals(STATUS_ACTIVE)) {
+            return Presence.STATE_ACTIVE;
+        }
+        // Away
+        else if (status.equals(STATUS_AWAY)) {
+            return Presence.STATE_AWAY;
+        }
+        // Dnd
+        else if (status.equals(STATUS_DND)) {
+            return Presence.STATE_DND;
+        }
+        // Offline
+        else if (status.equals(STATUS_OFFLINE)) {
+            return Presence.STATE_OFFLINE;
+        }
+        // Unrecognized
+        else {
+            return Presence.STATE_UNRECOGNIZED;
+        }
+    }
+
     public String toStatus() {
 
         if (this == Presence.STATE_OFFLINE) {

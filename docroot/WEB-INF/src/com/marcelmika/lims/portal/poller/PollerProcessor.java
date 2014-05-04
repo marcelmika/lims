@@ -1,21 +1,22 @@
 package com.marcelmika.lims.portal.poller;
 
-import com.liferay.portal.kernel.json.*;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.poller.BasePollerProcessor;
 import com.liferay.portal.kernel.poller.PollerRequest;
 import com.liferay.portal.kernel.poller.PollerResponse;
 import com.liferay.portal.kernel.poller.PollerResponseClosedException;
-import com.marcelmika.lims.core.service.*;
 import com.marcelmika.lims.api.events.ResponseEvent;
-import com.marcelmika.lims.api.events.buddy.GetBuddiesRequestEvent;
-import com.marcelmika.lims.api.events.buddy.GetBuddiesResponseEvent;
-import com.marcelmika.lims.api.events.buddy.UpdateStatusBuddyRequestEvent;
+import com.marcelmika.lims.api.events.buddy.UpdatePresenceBuddyRequestEvent;
 import com.marcelmika.lims.api.events.conversation.*;
 import com.marcelmika.lims.api.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
 import com.marcelmika.lims.api.events.settings.*;
+import com.marcelmika.lims.core.service.*;
 import com.marcelmika.lims.portal.domain.*;
 
 import java.util.List;
@@ -99,56 +100,21 @@ public class PollerProcessor extends BasePollerProcessor {
         // Create buddy from poller request
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
         // Send request to core service
-        return buddyCoreService.updateStatus(new UpdateStatusBuddyRequestEvent(
-                buddy.getBuddyId(), buddy.getPresence().toPresenceDetails())
+        return buddyCoreService.updateStatus(new UpdatePresenceBuddyRequestEvent(
+                        buddy.getBuddyId(), buddy.getPresence().toPresenceDetails())
         );
     }
 
 
     /**
-     * Fetches all buddies related to the buddy.
-     * Note: In the feature the buddy list will contain groups and related buddies within the group.
-     *
-     * @param pollerRequest  Poller Request
-     * @param pollerResponse Poller Response
-     */
-    protected void getBuddyList(PollerRequest pollerRequest, PollerResponse pollerResponse) {
-        // Create buddy from poller request
-        Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
-        // Get buddies request
-        GetBuddiesResponseEvent responseEvent = buddyCoreService.getBuddies(
-                new GetBuddiesRequestEvent(buddy.toBuddyDetails())
-        );
-
-        if (responseEvent.isSuccess()) {
-            // Get buddies from buddy details
-            List<Buddy> buddies = Buddy.fromBuddyDetails(responseEvent.getBuddies());
-            // Serialize to json string
-            String jsonString = JSONFactoryUtil.looseSerialize(buddies);
-
-            try {
-                // Add to response
-                pollerResponse.setParameter("buddies", createJsonArray(jsonString));
-            } catch (PollerResponseClosedException e) {
-                // Log what went wrong
-                log.error("Poller response was closed", e);
-            }
-
-        } else {
-            // At least log what went wrong
-            log.error(responseEvent.getException());
-        }
-    }
-
-
-    // ---------------------------------------------------------------------------------------------------------
-    //   Group Lifecycle
-    // ---------------------------------------------------------------------------------------------------------
-
-    /**
+     * // ---------------------------------------------------------------------------------------------------------
+     * //   Group Lifecycle
+     * // ---------------------------------------------------------------------------------------------------------
+     * <p/>
+     * /**
      * Fetches all groups related to the buddy.
      *
-     * @param pollerRequest Poller Request
+     * @param pollerRequest  Poller Request
      * @param pollerResponse Poller Response
      */
     protected void getGroupList(PollerRequest pollerRequest, PollerResponse pollerResponse) {
@@ -160,20 +126,19 @@ public class PollerProcessor extends BasePollerProcessor {
         );
 
 
-
         if (responseEvent.isSuccess()) {
             // Get groups from group details
-            List<Group> groups = Group.fromGroupDetails(responseEvent.getGroups());
+//            List<Group> groups = Group.fromGroupDetails(responseEvent.getGroups());
             // Serialize to json string (include buddies collection)
-            String jsonString = JSONFactoryUtil.looseSerialize(groups, Group.KEY_BUDDIES);
+//            String jsonString = JSONFactoryUtil.looseSerialize(groups, Group.KEY_BUDDIES);
 
-            try {
-                // Add to response
-                pollerResponse.setParameter("groups", createJsonArray(jsonString));
-            } catch (PollerResponseClosedException e) {
-                // Log what went wrong
-                log.error(responseEvent.getException());
-            }
+//            try {
+            // Add to response
+//                pollerResponse.setParameter("groups", createJsonArray(jsonString));
+//            } catch (PollerResponseClosedException e) {
+            // Log what went wrong
+            log.error(responseEvent.getException());
+//            }
 
         } else {
             // At least log what went wrong
@@ -257,6 +222,7 @@ public class PollerProcessor extends BasePollerProcessor {
     /**
      * Creates conversation from a list of buddies involved in the conversation and an initial message
      * todo: rename to createMultiUserConversation
+     *
      * @param pollerRequest PollerRequest
      * @return ResponseEvent
      */
@@ -267,7 +233,7 @@ public class PollerProcessor extends BasePollerProcessor {
 
         // Send request to core service
         return conversationCoreService.createConversation(new CreateConversationRequestEvent(
-                buddies.toBuddyCollectionDetails(), message.toMessageDetails())
+                        buddies.toBuddyCollectionDetails(), message.toMessageDetails())
         );
     }
 
@@ -300,7 +266,7 @@ public class PollerProcessor extends BasePollerProcessor {
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
         // Send request to core service
         return conversationCoreService.openConversation(new OpenConversationRequestEvent(
-                buddy.getBuddyId(), conversation.getConversationId())
+                        buddy.getBuddyId(), conversation.getConversationId())
         );
     }
 
@@ -384,7 +350,7 @@ public class PollerProcessor extends BasePollerProcessor {
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
         // Send request to core service
         return settingsCoreService.updateSettings(new UpdateSettingsRequestEvent(
-                buddy.getBuddyId(), buddy.getSettings().toSettingsDetails())
+                        buddy.getBuddyId(), buddy.getSettings().toSettingsDetails())
         );
     }
 
@@ -399,7 +365,7 @@ public class PollerProcessor extends BasePollerProcessor {
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
         // Send request to core service
         return settingsCoreService.updateActiveRoomType(new UpdateActiveRoomTypeRequestEvent(
-                buddy.getBuddyId(), buddy.getSettings().getActiveRoomType())
+                        buddy.getBuddyId(), buddy.getSettings().getActiveRoomType())
         );
     }
 
