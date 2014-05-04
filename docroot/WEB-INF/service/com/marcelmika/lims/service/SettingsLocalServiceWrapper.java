@@ -169,12 +169,10 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @return the settings
 	* @throws PortalException if a settings with the primary key could not be found
 	* @throws SystemException if a system exception occurred
-	* @throws java.lang.Exception
 	*/
 	public com.marcelmika.lims.model.Settings getSettings(long sid)
 		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException,
-			java.lang.Exception {
+			com.liferay.portal.kernel.exception.SystemException {
 		return _settingsLocalService.getSettings(sid);
 	}
 
@@ -266,6 +264,11 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 			arguments);
 	}
 
+	public com.marcelmika.lims.model.Settings getSettingsByUser(long userId)
+		throws java.lang.Exception {
+		return _settingsLocalService.getSettingsByUser(userId);
+	}
+
 	public void changeStatus(long userId, java.lang.String status)
 		throws java.lang.Exception {
 		_settingsLocalService.changeStatus(userId, status);
@@ -274,11 +277,6 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	public void setChatEnabled(long userId, boolean enabled)
 		throws java.lang.Exception {
 		_settingsLocalService.setChatEnabled(userId, enabled);
-	}
-
-	public void changeActiveRoomType(long userId, java.lang.String roomType)
-		throws java.lang.Exception {
-		_settingsLocalService.changeActiveRoomType(userId, roomType);
 	}
 
 	/**

@@ -5,6 +5,7 @@
 	<import class="com.marcelmika.lims.model.Buddy" />
 	<import class="com.marcelmika.lims.model.Conversation" />
 	<import class="com.marcelmika.lims.model.OpenedConversation" />
+	<import class="com.marcelmika.lims.model.Panel" />
 	<import class="com.marcelmika.lims.model.Settings" />
 	<class name="com.marcelmika.lims.model.impl.BuddyImpl" table="LiferayLIMS_Buddy">
 		<cache usage="read-write" />
@@ -41,6 +42,14 @@
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="conversationId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
+	<class name="com.marcelmika.lims.model.impl.PanelImpl" table="LiferayLIMS_Panel">
+		<cache usage="read-write" />
+		<id name="pid" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="activePanelId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
 	<class name="com.marcelmika.lims.model.impl.SettingsImpl" table="LiferayLIMS_Settings">
 		<cache usage="read-write" />
 		<id name="sid" type="long">
@@ -48,8 +57,6 @@
 		</id>
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="activeRoomType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="activePanelId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="mute" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="chatEnabled" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>

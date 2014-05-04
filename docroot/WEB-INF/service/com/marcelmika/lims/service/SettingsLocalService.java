@@ -163,13 +163,11 @@ public interface SettingsLocalService extends BaseLocalService,
 	* @return the settings
 	* @throws PortalException if a settings with the primary key could not be found
 	* @throws SystemException if a system exception occurred
-	* @throws java.lang.Exception
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.marcelmika.lims.model.Settings getSettings(long sid)
 		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException,
-			java.lang.Exception;
+			com.liferay.portal.kernel.exception.SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.liferay.portal.model.PersistedModel getPersistedModel(
@@ -245,12 +243,13 @@ public interface SettingsLocalService extends BaseLocalService,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public com.marcelmika.lims.model.Settings getSettingsByUser(long userId)
+		throws java.lang.Exception;
+
 	public void changeStatus(long userId, java.lang.String status)
 		throws java.lang.Exception;
 
 	public void setChatEnabled(long userId, boolean enabled)
-		throws java.lang.Exception;
-
-	public void changeActiveRoomType(long userId, java.lang.String roomType)
 		throws java.lang.Exception;
 }

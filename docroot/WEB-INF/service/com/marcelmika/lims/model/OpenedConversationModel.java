@@ -144,6 +144,8 @@ public interface OpenedConversationModel extends BaseModel<OpenedConversation> {
 
 	public OpenedConversation toEscapedModel();
 
+	public OpenedConversation toUnescapedModel();
+
 	public String toString();
 
 	public String toXmlString();

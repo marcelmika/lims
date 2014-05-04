@@ -11,6 +11,14 @@ import com.marcelmika.lims.api.events.settings.*;
 public interface SettingsPersistenceService {
 
     /**
+     * Reads buddy's settings
+     *
+     * @param event Request event
+     * @return Response event
+     */
+    public ReadSettingsResponseEvent readSettings(ReadSettingsRequestEvent event);
+
+    /**
      * Update buddy's active panel (panel which is open)
      *
      * @param event Request event for logout method

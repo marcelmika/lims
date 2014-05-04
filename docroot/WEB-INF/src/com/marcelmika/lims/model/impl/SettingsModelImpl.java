@@ -63,12 +63,10 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 			{ "sid", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "status", Types.VARCHAR },
-			{ "activeRoomType", Types.VARCHAR },
-			{ "activePanelId", Types.VARCHAR },
 			{ "mute", Types.BOOLEAN },
 			{ "chatEnabled", Types.BOOLEAN }
 		};
-	public static final String TABLE_SQL_CREATE = "create table LiferayLIMS_Settings (sid LONG not null primary key,userId LONG,status VARCHAR(75) null,activeRoomType VARCHAR(75) null,activePanelId VARCHAR(75) null,mute BOOLEAN,chatEnabled BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table LiferayLIMS_Settings (sid LONG not null primary key,userId LONG,status VARCHAR(75) null,mute BOOLEAN,chatEnabled BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table LiferayLIMS_Settings";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
@@ -121,8 +119,6 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		attributes.put("sid", getSid());
 		attributes.put("userId", getUserId());
 		attributes.put("status", getStatus());
-		attributes.put("activeRoomType", getActiveRoomType());
-		attributes.put("activePanelId", getActivePanelId());
 		attributes.put("mute", getMute());
 		attributes.put("chatEnabled", getChatEnabled());
 
@@ -147,18 +143,6 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 
 		if (status != null) {
 			setStatus(status);
-		}
-
-		String activeRoomType = (String)attributes.get("activeRoomType");
-
-		if (activeRoomType != null) {
-			setActiveRoomType(activeRoomType);
-		}
-
-		String activePanelId = (String)attributes.get("activePanelId");
-
-		if (activePanelId != null) {
-			setActivePanelId(activePanelId);
 		}
 
 		Boolean mute = (Boolean)attributes.get("mute");
@@ -233,32 +217,6 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		return GetterUtil.getString(_originalStatus);
 	}
 
-	public String getActiveRoomType() {
-		if (_activeRoomType == null) {
-			return StringPool.BLANK;
-		}
-		else {
-			return _activeRoomType;
-		}
-	}
-
-	public void setActiveRoomType(String activeRoomType) {
-		_activeRoomType = activeRoomType;
-	}
-
-	public String getActivePanelId() {
-		if (_activePanelId == null) {
-			return StringPool.BLANK;
-		}
-		else {
-			return _activePanelId;
-		}
-	}
-
-	public void setActivePanelId(String activePanelId) {
-		_activePanelId = activePanelId;
-	}
-
 	public boolean getMute() {
 		return _mute;
 	}
@@ -302,13 +260,16 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 
 	@Override
 	public Settings toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (Settings)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (Settings)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	public Settings toUnescapedModel() {
+		return (Settings)this;
 	}
 
 	@Override
@@ -318,8 +279,6 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		settingsImpl.setSid(getSid());
 		settingsImpl.setUserId(getUserId());
 		settingsImpl.setStatus(getStatus());
-		settingsImpl.setActiveRoomType(getActiveRoomType());
-		settingsImpl.setActivePanelId(getActivePanelId());
 		settingsImpl.setMute(getMute());
 		settingsImpl.setChatEnabled(getChatEnabled());
 
@@ -344,18 +303,15 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof Settings)) {
 			return false;
 		}
 
-		Settings settings = null;
-
-		try {
-			settings = (Settings)obj;
-		}
-		catch (ClassCastException cce) {
-			return false;
-		}
+		Settings settings = (Settings)obj;
 
 		long primaryKey = settings.getPrimaryKey();
 
@@ -401,22 +357,6 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 			settingsCacheModel.status = null;
 		}
 
-		settingsCacheModel.activeRoomType = getActiveRoomType();
-
-		String activeRoomType = settingsCacheModel.activeRoomType;
-
-		if ((activeRoomType != null) && (activeRoomType.length() == 0)) {
-			settingsCacheModel.activeRoomType = null;
-		}
-
-		settingsCacheModel.activePanelId = getActivePanelId();
-
-		String activePanelId = settingsCacheModel.activePanelId;
-
-		if ((activePanelId != null) && (activePanelId.length() == 0)) {
-			settingsCacheModel.activePanelId = null;
-		}
-
 		settingsCacheModel.mute = getMute();
 
 		settingsCacheModel.chatEnabled = getChatEnabled();
@@ -426,7 +366,7 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(11);
 
 		sb.append("{sid=");
 		sb.append(getSid());
@@ -434,10 +374,6 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		sb.append(getUserId());
 		sb.append(", status=");
 		sb.append(getStatus());
-		sb.append(", activeRoomType=");
-		sb.append(getActiveRoomType());
-		sb.append(", activePanelId=");
-		sb.append(getActivePanelId());
 		sb.append(", mute=");
 		sb.append(getMute());
 		sb.append(", chatEnabled=");
@@ -448,7 +384,7 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 	}
 
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(19);
 
 		sb.append("<model><model-name>");
 		sb.append("com.marcelmika.lims.model.Settings");
@@ -467,14 +403,6 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		sb.append(getStatus());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>activeRoomType</column-name><column-value><![CDATA[");
-		sb.append(getActiveRoomType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>activePanelId</column-name><column-value><![CDATA[");
-		sb.append(getActivePanelId());
-		sb.append("]]></column-value></column>");
-		sb.append(
 			"<column><column-name>mute</column-name><column-value><![CDATA[");
 		sb.append(getMute());
 		sb.append("]]></column-value></column>");
@@ -489,7 +417,7 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 	}
 
 	private static ClassLoader _classLoader = Settings.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			Settings.class
 		};
 	private long _sid;
@@ -499,10 +427,8 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 	private boolean _setOriginalUserId;
 	private String _status;
 	private String _originalStatus;
-	private String _activeRoomType;
-	private String _activePanelId;
 	private boolean _mute;
 	private boolean _chatEnabled;
 	private long _columnBitmask;
-	private Settings _escapedModelProxy;
+	private Settings _escapedModel;
 }

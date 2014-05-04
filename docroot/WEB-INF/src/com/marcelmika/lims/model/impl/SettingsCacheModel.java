@@ -32,7 +32,7 @@ import java.io.Serializable;
 public class SettingsCacheModel implements CacheModel<Settings>, Serializable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(11);
 
 		sb.append("{sid=");
 		sb.append(sid);
@@ -40,10 +40,6 @@ public class SettingsCacheModel implements CacheModel<Settings>, Serializable {
 		sb.append(userId);
 		sb.append(", status=");
 		sb.append(status);
-		sb.append(", activeRoomType=");
-		sb.append(activeRoomType);
-		sb.append(", activePanelId=");
-		sb.append(activePanelId);
 		sb.append(", mute=");
 		sb.append(mute);
 		sb.append(", chatEnabled=");
@@ -66,20 +62,6 @@ public class SettingsCacheModel implements CacheModel<Settings>, Serializable {
 			settingsImpl.setStatus(status);
 		}
 
-		if (activeRoomType == null) {
-			settingsImpl.setActiveRoomType(StringPool.BLANK);
-		}
-		else {
-			settingsImpl.setActiveRoomType(activeRoomType);
-		}
-
-		if (activePanelId == null) {
-			settingsImpl.setActivePanelId(StringPool.BLANK);
-		}
-		else {
-			settingsImpl.setActivePanelId(activePanelId);
-		}
-
 		settingsImpl.setMute(mute);
 		settingsImpl.setChatEnabled(chatEnabled);
 
@@ -91,8 +73,6 @@ public class SettingsCacheModel implements CacheModel<Settings>, Serializable {
 	public long sid;
 	public long userId;
 	public String status;
-	public String activeRoomType;
-	public String activePanelId;
 	public boolean mute;
 	public boolean chatEnabled;
 }

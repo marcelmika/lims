@@ -32,8 +32,6 @@ public class SettingsSoap implements Serializable {
 		soapModel.setSid(model.getSid());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setStatus(model.getStatus());
-		soapModel.setActiveRoomType(model.getActiveRoomType());
-		soapModel.setActivePanelId(model.getActivePanelId());
 		soapModel.setMute(model.getMute());
 		soapModel.setChatEnabled(model.getChatEnabled());
 
@@ -112,22 +110,6 @@ public class SettingsSoap implements Serializable {
 		_status = status;
 	}
 
-	public String getActiveRoomType() {
-		return _activeRoomType;
-	}
-
-	public void setActiveRoomType(String activeRoomType) {
-		_activeRoomType = activeRoomType;
-	}
-
-	public String getActivePanelId() {
-		return _activePanelId;
-	}
-
-	public void setActivePanelId(String activePanelId) {
-		_activePanelId = activePanelId;
-	}
-
 	public boolean getMute() {
 		return _mute;
 	}
@@ -155,8 +137,6 @@ public class SettingsSoap implements Serializable {
 	private long _sid;
 	private long _userId;
 	private String _status;
-	private String _activeRoomType;
-	private String _activePanelId;
 	private boolean _mute;
 	private boolean _chatEnabled;
 }

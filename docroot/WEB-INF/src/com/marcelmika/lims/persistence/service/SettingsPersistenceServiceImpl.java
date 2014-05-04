@@ -3,7 +3,8 @@ package com.marcelmika.lims.persistence.service;
 import com.marcelmika.lims.api.entity.BuddyDetails;
 import com.marcelmika.lims.api.entity.SettingsDetails;
 import com.marcelmika.lims.api.events.settings.*;
-import com.marcelmika.lims.model.Settings;
+import com.marcelmika.lims.persistence.domain.Settings;
+import com.marcelmika.lims.service.PanelLocalServiceUtil;
 import com.marcelmika.lims.service.SettingsLocalServiceUtil;
 
 /**
@@ -16,6 +17,33 @@ public class SettingsPersistenceServiceImpl implements SettingsPersistenceServic
 
 
     /**
+     * Reads buddy's settings
+     *
+     * @param event Request event
+     * @return Response event
+     */
+    @Override
+    public ReadSettingsResponseEvent readSettings(ReadSettingsRequestEvent event) {
+        // Get buddy
+        BuddyDetails buddy = event.getBuddyDetails();
+
+        try {
+            // Create settings domain from service builder domain
+            Settings settings = Settings.fromServiceBuilderModel(
+                    PanelLocalServiceUtil.getPanelByUser(buddy.getBuddyId()),
+                    SettingsLocalServiceUtil.getSettingsByUser(buddy.getBuddyId())
+            );
+
+            // Success
+            return ReadSettingsResponseEvent.readSettingsSuccess("Details read", settings.toSettingsDetails());
+
+        } catch (Exception e) {
+            // Failure
+            return ReadSettingsResponseEvent.readSettingsFailure(e);
+        }
+    }
+
+    /**
      * Update buddy's active panel (panel which is open)
      *
      * @param event Request event for logout method
@@ -24,19 +52,17 @@ public class SettingsPersistenceServiceImpl implements SettingsPersistenceServic
     @Override
     public UpdateActivePanelResponseEvent updateActivePanel(UpdateActivePanelRequestEvent event) {
         try {
-            // Get settings
-            Settings settings = SettingsLocalServiceUtil.getSettings(event.getBuddyId());
-            // Set values
-            settings.setActivePanelId(event.getActivePanel());
-            // Save settings
-            SettingsLocalServiceUtil.updateSettings(settings, false);
+            // Update active panel
+            PanelLocalServiceUtil.updateActivePanel(event.getBuddyId(), event.getActivePanel());
 
+            // Success
             return UpdateActivePanelResponseEvent.updateActivePanelSuccess(
                     "Active Panel" + event.getActivePanel() + " saved to persistence layer for user "
                             + event.getBuddyId()
             );
 
         } catch (Exception exception) {
+            // Failure
             return UpdateActivePanelResponseEvent.updateActivePanelFailure(
                     "Cannot update Active Panel to a persistence layer", exception
             );
@@ -48,12 +74,13 @@ public class SettingsPersistenceServiceImpl implements SettingsPersistenceServic
      *
      * @param event Request event for logout method
      * @return Response event for logout method
+     * @deprecated
      */
     @Override
     public UpdateActiveRoomTypeResponseEvent updateActiveRoomType(UpdateActiveRoomTypeRequestEvent event) {
         try {
             // Change Active Room type
-            SettingsLocalServiceUtil.changeActiveRoomType(event.getBuddyId(), event.getActiveRoomType());
+//            SettingsLocalServiceUtil.changeActiveRoomType(event.getBuddyId(), event.getActiveRoomType());
 
             return UpdateActiveRoomTypeResponseEvent.updateActiveRoomTypeSuccess(
                     "Active Room Type " + event.getActiveRoomType() + " saved to persistence layer for user "
@@ -77,11 +104,13 @@ public class SettingsPersistenceServiceImpl implements SettingsPersistenceServic
         SettingsDetails details = event.getSettingsDetails();
         try {
             // Get settings
-            Settings settings = SettingsLocalServiceUtil.getSettings(event.getBuddyId());
+            com.marcelmika.lims.model.Settings settings = SettingsLocalServiceUtil.getSettingsByUser(
+                    event.getBuddyId()
+            );
             // Set new values
             settings.setMute(details.isMute());
             // Save
-            SettingsLocalServiceUtil.updateSettings(settings, false);
+            SettingsLocalServiceUtil.updateSettings(settings, true);
 
             return UpdateSettingsResponseEvent.updateSettingsSuccess(
                     "Settings saved to persistence layer for user " + event.getBuddyId(), details

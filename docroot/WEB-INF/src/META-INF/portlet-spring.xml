@@ -7,6 +7,8 @@
 	<bean id="com.marcelmika.lims.service.persistence.ConversationPersistence" class="com.marcelmika.lims.service.persistence.ConversationPersistenceImpl" parent="basePersistence" />
 	<bean id="com.marcelmika.lims.service.OpenedConversationLocalService" class="com.marcelmika.lims.service.impl.OpenedConversationLocalServiceImpl" />
 	<bean id="com.marcelmika.lims.service.persistence.OpenedConversationPersistence" class="com.marcelmika.lims.service.persistence.OpenedConversationPersistenceImpl" parent="basePersistence" />
+	<bean id="com.marcelmika.lims.service.PanelLocalService" class="com.marcelmika.lims.service.impl.PanelLocalServiceImpl" />
+	<bean id="com.marcelmika.lims.service.persistence.PanelPersistence" class="com.marcelmika.lims.service.persistence.PanelPersistenceImpl" parent="basePersistence" />
 	<bean id="com.marcelmika.lims.service.SettingsLocalService" class="com.marcelmika.lims.service.impl.SettingsLocalServiceImpl" />
 	<bean id="com.marcelmika.lims.service.persistence.SettingsPersistence" class="com.marcelmika.lims.service.persistence.SettingsPersistenceImpl" parent="basePersistence" />
 </beans>

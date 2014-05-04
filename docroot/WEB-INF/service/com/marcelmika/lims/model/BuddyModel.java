@@ -259,6 +259,8 @@ public interface BuddyModel extends BaseModel<Buddy> {
 
 	public Buddy toEscapedModel();
 
+	public Buddy toUnescapedModel();
+
 	public String toString();
 
 	public String toXmlString();

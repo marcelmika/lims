@@ -220,13 +220,16 @@ public class OpenedConversationModelImpl extends BaseModelImpl<OpenedConversatio
 
 	@Override
 	public OpenedConversation toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (OpenedConversation)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (OpenedConversation)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	public OpenedConversation toUnescapedModel() {
+		return (OpenedConversation)this;
 	}
 
 	@Override
@@ -258,18 +261,15 @@ public class OpenedConversationModelImpl extends BaseModelImpl<OpenedConversatio
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof OpenedConversation)) {
 			return false;
 		}
 
-		OpenedConversation openedConversation = null;
-
-		try {
-			openedConversation = (OpenedConversation)obj;
-		}
-		catch (ClassCastException cce) {
-			return false;
-		}
+		OpenedConversation openedConversation = (OpenedConversation)obj;
 
 		long primaryKey = openedConversation.getPrimaryKey();
 
@@ -359,7 +359,7 @@ public class OpenedConversationModelImpl extends BaseModelImpl<OpenedConversatio
 	}
 
 	private static ClassLoader _classLoader = OpenedConversation.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			OpenedConversation.class
 		};
 	private long _ocid;
@@ -370,5 +370,5 @@ public class OpenedConversationModelImpl extends BaseModelImpl<OpenedConversatio
 	private String _conversationId;
 	private String _originalConversationId;
 	private long _columnBitmask;
-	private OpenedConversation _escapedModelProxy;
+	private OpenedConversation _escapedModel;
 }

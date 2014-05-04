@@ -27,6 +27,17 @@ public class SettingsCoreServiceImpl implements SettingsCoreService {
     }
 
     /**
+     * Reads buddy's settings
+     *
+     * @param event Request event
+     * @return Response event
+     */
+    @Override
+    public ReadSettingsResponseEvent readSettings(ReadSettingsRequestEvent event) {
+        return settingsPersistenceService.readSettings(event);
+    }
+
+    /**
      * Change buddy's status
      *
      * @param event Request event for logout method

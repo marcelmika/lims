@@ -117,36 +117,6 @@ public interface SettingsModel extends BaseModel<Settings> {
 	public void setStatus(String status);
 
 	/**
-	 * Returns the active room type of this settings.
-	 *
-	 * @return the active room type of this settings
-	 */
-	@AutoEscape
-	public String getActiveRoomType();
-
-	/**
-	 * Sets the active room type of this settings.
-	 *
-	 * @param activeRoomType the active room type of this settings
-	 */
-	public void setActiveRoomType(String activeRoomType);
-
-	/**
-	 * Returns the active panel ID of this settings.
-	 *
-	 * @return the active panel ID of this settings
-	 */
-	@AutoEscape
-	public String getActivePanelId();
-
-	/**
-	 * Sets the active panel ID of this settings.
-	 *
-	 * @param activePanelId the active panel ID of this settings
-	 */
-	public void setActivePanelId(String activePanelId);
-
-	/**
 	 * Returns the mute of this settings.
 	 *
 	 * @return the mute of this settings
@@ -215,6 +185,8 @@ public interface SettingsModel extends BaseModel<Settings> {
 	public CacheModel<Settings> toCacheModel();
 
 	public Settings toEscapedModel();
+
+	public Settings toUnescapedModel();
 
 	public String toString();
 

@@ -14,6 +14,7 @@
 
 package com.marcelmika.lims.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
 
 import java.util.HashMap;
@@ -415,6 +416,10 @@ public class BuddyWrapper implements Buddy, ModelWrapper<Buddy> {
 		return new BuddyWrapper(_buddy.toEscapedModel());
 	}
 
+	public com.marcelmika.lims.model.Buddy toUnescapedModel() {
+		return new BuddyWrapper(_buddy.toUnescapedModel());
+	}
+
 	@Override
 	public java.lang.String toString() {
 		return _buddy.toString();
@@ -431,6 +436,25 @@ public class BuddyWrapper implements Buddy, ModelWrapper<Buddy> {
 
 	public com.liferay.portal.kernel.json.JSONObject toJSON() {
 		return _buddy.toJSON();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof BuddyWrapper)) {
+			return false;
+		}
+
+		BuddyWrapper buddyWrapper = (BuddyWrapper)obj;
+
+		if (Validator.equals(_buddy, buddyWrapper._buddy)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

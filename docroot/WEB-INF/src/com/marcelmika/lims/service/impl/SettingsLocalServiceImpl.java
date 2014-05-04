@@ -41,7 +41,7 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
      * Never reference this interface directly. Always use {@link SettingsLocalServiceUtil} to access the settings local service.
      */
 
-    public Settings getSettings(long userId) throws Exception {
+    public Settings getSettingsByUser(long userId) throws Exception {
         // Find user settings
         Settings settings = settingsPersistence.fetchByUserId(userId);
 
@@ -59,36 +59,21 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
 
     public void changeStatus(long userId, String status) throws Exception {
         // Get user settings
-        Settings settings = getSettings(userId);
+        Settings settings = getSettingsByUser(userId);
         // Change status
-        if (settings != null) {            
-            settings.setStatus(status);            
-            settingsPersistence.clearCache();
-            settingsPersistence.update(settings, true);            
+        if (settings != null) {
+            settings.setStatus(status);
+            settingsPersistence.update(settings, true);
         }
     }
-    
+
     public void setChatEnabled(long userId, boolean enabled) throws Exception {
         // Get user settings
-        Settings settings = getSettings(userId);
+        Settings settings = getSettingsByUser(userId);
         // Change value
         if (settings != null) {
             settings.setChatEnabled(enabled);
-            settingsPersistence.clearCache();
             settingsPersistence.update(settings, true);  
         }
     }
-    
-    public void changeActiveRoomType(long userId, String roomType) throws Exception {
-        // Get user settings
-        Settings settings = getSettings(userId);
-        // Change value
-        if (settings != null) {
-            settings.setActiveRoomType(roomType);
-            settingsPersistence.clearCache();
-            settingsPersistence.update(settings, true);  
-        }
-    }
-    
-    
 }

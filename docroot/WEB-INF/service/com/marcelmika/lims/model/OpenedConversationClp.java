@@ -16,16 +16,18 @@ package com.marcelmika.lims.model;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.util.PortalUtil;
 
+import com.marcelmika.lims.service.ClpSerializer;
 import com.marcelmika.lims.service.OpenedConversationLocalServiceUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Proxy;
+import java.lang.reflect.Method;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -100,6 +102,19 @@ public class OpenedConversationClp extends BaseModelImpl<OpenedConversation>
 
 	public void setOcid(long ocid) {
 		_ocid = ocid;
+
+		if (_openedConversationRemoteModel != null) {
+			try {
+				Class<?> clazz = _openedConversationRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setOcid", long.class);
+
+				method.invoke(_openedConversationRemoteModel, ocid);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
 	}
 
 	public long getUserId() {
@@ -108,6 +123,19 @@ public class OpenedConversationClp extends BaseModelImpl<OpenedConversation>
 
 	public void setUserId(long userId) {
 		_userId = userId;
+
+		if (_openedConversationRemoteModel != null) {
+			try {
+				Class<?> clazz = _openedConversationRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setUserId", long.class);
+
+				method.invoke(_openedConversationRemoteModel, userId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
 	}
 
 	public String getUserUuid() throws SystemException {
@@ -124,6 +152,20 @@ public class OpenedConversationClp extends BaseModelImpl<OpenedConversation>
 
 	public void setConversationId(String conversationId) {
 		_conversationId = conversationId;
+
+		if (_openedConversationRemoteModel != null) {
+			try {
+				Class<?> clazz = _openedConversationRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setConversationId",
+						String.class);
+
+				method.invoke(_openedConversationRemoteModel, conversationId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
 	}
 
 	public BaseModel<?> getOpenedConversationRemoteModel() {
@@ -133,6 +175,47 @@ public class OpenedConversationClp extends BaseModelImpl<OpenedConversation>
 	public void setOpenedConversationRemoteModel(
 		BaseModel<?> openedConversationRemoteModel) {
 		_openedConversationRemoteModel = openedConversationRemoteModel;
+	}
+
+	public Object invokeOnRemoteModel(String methodName,
+		Class<?>[] parameterTypes, Object[] parameterValues)
+		throws Exception {
+		Object[] remoteParameterValues = new Object[parameterValues.length];
+
+		for (int i = 0; i < parameterValues.length; i++) {
+			if (parameterValues[i] != null) {
+				remoteParameterValues[i] = ClpSerializer.translateInput(parameterValues[i]);
+			}
+		}
+
+		Class<?> remoteModelClass = _openedConversationRemoteModel.getClass();
+
+		ClassLoader remoteModelClassLoader = remoteModelClass.getClassLoader();
+
+		Class<?>[] remoteParameterTypes = new Class[parameterTypes.length];
+
+		for (int i = 0; i < parameterTypes.length; i++) {
+			if (parameterTypes[i].isPrimitive()) {
+				remoteParameterTypes[i] = parameterTypes[i];
+			}
+			else {
+				String parameterTypeName = parameterTypes[i].getName();
+
+				remoteParameterTypes[i] = remoteModelClassLoader.loadClass(parameterTypeName);
+			}
+		}
+
+		Method method = remoteModelClass.getMethod(methodName,
+				remoteParameterTypes);
+
+		Object returnValue = method.invoke(_openedConversationRemoteModel,
+				remoteParameterValues);
+
+		if (returnValue != null) {
+			returnValue = ClpSerializer.translateOutput(returnValue);
+		}
+
+		return returnValue;
 	}
 
 	public void persist() throws SystemException {
@@ -146,9 +229,13 @@ public class OpenedConversationClp extends BaseModelImpl<OpenedConversation>
 
 	@Override
 	public OpenedConversation toEscapedModel() {
-		return (OpenedConversation)Proxy.newProxyInstance(OpenedConversation.class.getClassLoader(),
+		return (OpenedConversation)ProxyUtil.newProxyInstance(OpenedConversation.class.getClassLoader(),
 			new Class[] { OpenedConversation.class },
 			new AutoEscapeBeanHandler(this));
+	}
+
+	public OpenedConversation toUnescapedModel() {
+		return this;
 	}
 
 	@Override
@@ -178,18 +265,15 @@ public class OpenedConversationClp extends BaseModelImpl<OpenedConversation>
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof OpenedConversationClp)) {
 			return false;
 		}
 
-		OpenedConversationClp openedConversation = null;
-
-		try {
-			openedConversation = (OpenedConversationClp)obj;
-		}
-		catch (ClassCastException cce) {
-			return false;
-		}
+		OpenedConversationClp openedConversation = (OpenedConversationClp)obj;
 
 		long primaryKey = openedConversation.getPrimaryKey();
 

@@ -300,13 +300,16 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 
 	@Override
 	public Conversation toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (Conversation)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (Conversation)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	public Conversation toUnescapedModel() {
+		return (Conversation)this;
 	}
 
 	@Override
@@ -342,18 +345,15 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof Conversation)) {
 			return false;
 		}
 
-		Conversation conversation = null;
-
-		try {
-			conversation = (Conversation)obj;
-		}
-		catch (ClassCastException cce) {
-			return false;
-		}
+		Conversation conversation = (Conversation)obj;
 
 		long primaryKey = conversation.getPrimaryKey();
 
@@ -494,7 +494,7 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 	}
 
 	private static ClassLoader _classLoader = Conversation.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+	private static Class<?>[] _escapedModelInterfaces = new Class[] {
 			Conversation.class
 		};
 	private long _cid;
@@ -509,5 +509,5 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 	private String _conversationName;
 	private int _unreadMessages;
 	private long _columnBitmask;
-	private Conversation _escapedModelProxy;
+	private Conversation _escapedModel;
 }

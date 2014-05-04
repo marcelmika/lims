@@ -14,6 +14,7 @@
 
 package com.marcelmika.lims.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
 
 import java.util.HashMap;
@@ -325,6 +326,10 @@ public class ConversationWrapper implements Conversation,
 		return new ConversationWrapper(_conversation.toEscapedModel());
 	}
 
+	public com.marcelmika.lims.model.Conversation toUnescapedModel() {
+		return new ConversationWrapper(_conversation.toUnescapedModel());
+	}
+
 	@Override
 	public java.lang.String toString() {
 		return _conversation.toString();
@@ -337,6 +342,25 @@ public class ConversationWrapper implements Conversation,
 	public void persist()
 		throws com.liferay.portal.kernel.exception.SystemException {
 		_conversation.persist();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof ConversationWrapper)) {
+			return false;
+		}
+
+		ConversationWrapper conversationWrapper = (ConversationWrapper)obj;
+
+		if (Validator.equals(_conversation, conversationWrapper._conversation)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

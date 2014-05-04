@@ -51,13 +51,22 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.marcelmika.lims.model.impl.PanelModelImpl">
+		<attributes>
+			<id name="pid" />
+			<basic name="userId" />
+			<basic name="activePanelId" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.marcelmika.lims.model.impl.SettingsModelImpl">
 		<attributes>
 			<id name="sid" />
 			<basic name="userId" />
 			<basic name="status" />
-			<basic name="activeRoomType" />
-			<basic name="activePanelId" />
 			<basic name="mute" />
 			<basic name="chatEnabled" />
 			<transient name="modelAttributes" />
@@ -76,6 +85,10 @@
 	</entity>
 	<entity class="com.marcelmika.lims.model.impl.OpenedConversationImpl" name="OpenedConversation">
 		<table name="LiferayLIMS_OpenedConversation" />
+		<attributes />
+	</entity>
+	<entity class="com.marcelmika.lims.model.impl.PanelImpl" name="Panel">
+		<table name="LiferayLIMS_Panel" />
 		<attributes />
 	</entity>
 	<entity class="com.marcelmika.lims.model.impl.SettingsImpl" name="Settings">

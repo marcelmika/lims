@@ -583,8 +583,10 @@ public class BuddyPersistenceImpl extends BasePersistenceImpl<Buddy>
 				List<ModelListener<Buddy>> listenersList = new ArrayList<ModelListener<Buddy>>();
 
 				for (String listenerClassName : listenerClassNames) {
+					Class<?> clazz = getClass();
+
 					listenersList.add((ModelListener<Buddy>)InstanceFactory.newInstance(
-							listenerClassName));
+							clazz.getClassLoader(), listenerClassName));
 				}
 
 				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -607,6 +609,8 @@ public class BuddyPersistenceImpl extends BasePersistenceImpl<Buddy>
 	protected ConversationPersistence conversationPersistence;
 	@BeanReference(type = OpenedConversationPersistence.class)
 	protected OpenedConversationPersistence openedConversationPersistence;
+	@BeanReference(type = PanelPersistence.class)
+	protected PanelPersistence panelPersistence;
 	@BeanReference(type = SettingsPersistence.class)
 	protected SettingsPersistence settingsPersistence;
 	@BeanReference(type = ResourcePersistence.class)

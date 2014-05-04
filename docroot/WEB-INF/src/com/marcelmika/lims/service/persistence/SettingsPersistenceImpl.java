@@ -200,9 +200,47 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 		}
 	}
 
+	protected void cacheUniqueFindersCache(Settings settings) {
+		if (settings.isNew()) {
+			Object[] args = new Object[] { Long.valueOf(settings.getUserId()) };
+
+			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_USERID, args,
+				Long.valueOf(1));
+			FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERID, args,
+				settings);
+		}
+		else {
+			SettingsModelImpl settingsModelImpl = (SettingsModelImpl)settings;
+
+			if ((settingsModelImpl.getColumnBitmask() &
+					FINDER_PATH_FETCH_BY_USERID.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] { Long.valueOf(settings.getUserId()) };
+
+				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_USERID, args,
+					Long.valueOf(1));
+				FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERID, args,
+					settings);
+			}
+		}
+	}
+
 	protected void clearUniqueFindersCache(Settings settings) {
-		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERID,
-			new Object[] { Long.valueOf(settings.getUserId()) });
+		SettingsModelImpl settingsModelImpl = (SettingsModelImpl)settings;
+
+		Object[] args = new Object[] { Long.valueOf(settings.getUserId()) };
+
+		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERID, args);
+
+		if ((settingsModelImpl.getColumnBitmask() &
+				FINDER_PATH_FETCH_BY_USERID.getColumnBitmask()) != 0) {
+			args = new Object[] {
+					Long.valueOf(settingsModelImpl.getOriginalUserId())
+				};
+
+			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
+			FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERID, args);
+		}
 	}
 
 	/**
@@ -350,26 +388,8 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 		EntityCacheUtil.putResult(SettingsModelImpl.ENTITY_CACHE_ENABLED,
 			SettingsImpl.class, settings.getPrimaryKey(), settings);
 
-		if (isNew) {
-			FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERID,
-				new Object[] { Long.valueOf(settings.getUserId()) }, settings);
-		}
-		else {
-			if ((settingsModelImpl.getColumnBitmask() &
-					FINDER_PATH_FETCH_BY_USERID.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						Long.valueOf(settingsModelImpl.getOriginalUserId())
-					};
-
-				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
-
-				FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERID, args);
-
-				FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERID,
-					new Object[] { Long.valueOf(settings.getUserId()) },
-					settings);
-			}
-		}
+		clearUniqueFindersCache(settings);
+		cacheUniqueFindersCache(settings);
 
 		return settings;
 	}
@@ -387,8 +407,6 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 		settingsImpl.setSid(settings.getSid());
 		settingsImpl.setUserId(settings.getUserId());
 		settingsImpl.setStatus(settings.getStatus());
-		settingsImpl.setActiveRoomType(settings.getActiveRoomType());
-		settingsImpl.setActivePanelId(settings.getActivePanelId());
 		settingsImpl.setMute(settings.isMute());
 		settingsImpl.setChatEnabled(settings.isChatEnabled());
 
@@ -1342,8 +1360,10 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 				List<ModelListener<Settings>> listenersList = new ArrayList<ModelListener<Settings>>();
 
 				for (String listenerClassName : listenerClassNames) {
+					Class<?> clazz = getClass();
+
 					listenersList.add((ModelListener<Settings>)InstanceFactory.newInstance(
-							listenerClassName));
+							clazz.getClassLoader(), listenerClassName));
 				}
 
 				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1366,6 +1386,8 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 	protected ConversationPersistence conversationPersistence;
 	@BeanReference(type = OpenedConversationPersistence.class)
 	protected OpenedConversationPersistence openedConversationPersistence;
+	@BeanReference(type = PanelPersistence.class)
+	protected PanelPersistence panelPersistence;
 	@BeanReference(type = SettingsPersistence.class)
 	protected SettingsPersistence settingsPersistence;
 	@BeanReference(type = ResourcePersistence.class)

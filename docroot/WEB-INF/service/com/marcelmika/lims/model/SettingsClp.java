@@ -16,16 +16,18 @@ package com.marcelmika.lims.model;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.util.PortalUtil;
 
+import com.marcelmika.lims.service.ClpSerializer;
 import com.marcelmika.lims.service.SettingsLocalServiceUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Proxy;
+import java.lang.reflect.Method;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,8 +70,6 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		attributes.put("sid", getSid());
 		attributes.put("userId", getUserId());
 		attributes.put("status", getStatus());
-		attributes.put("activeRoomType", getActiveRoomType());
-		attributes.put("activePanelId", getActivePanelId());
 		attributes.put("mute", getMute());
 		attributes.put("chatEnabled", getChatEnabled());
 
@@ -96,18 +96,6 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 			setStatus(status);
 		}
 
-		String activeRoomType = (String)attributes.get("activeRoomType");
-
-		if (activeRoomType != null) {
-			setActiveRoomType(activeRoomType);
-		}
-
-		String activePanelId = (String)attributes.get("activePanelId");
-
-		if (activePanelId != null) {
-			setActivePanelId(activePanelId);
-		}
-
 		Boolean mute = (Boolean)attributes.get("mute");
 
 		if (mute != null) {
@@ -127,6 +115,19 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 
 	public void setSid(long sid) {
 		_sid = sid;
+
+		if (_settingsRemoteModel != null) {
+			try {
+				Class<?> clazz = _settingsRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setSid", long.class);
+
+				method.invoke(_settingsRemoteModel, sid);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
 	}
 
 	public long getUserId() {
@@ -135,6 +136,19 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 
 	public void setUserId(long userId) {
 		_userId = userId;
+
+		if (_settingsRemoteModel != null) {
+			try {
+				Class<?> clazz = _settingsRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setUserId", long.class);
+
+				method.invoke(_settingsRemoteModel, userId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
 	}
 
 	public String getUserUuid() throws SystemException {
@@ -151,22 +165,19 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 
 	public void setStatus(String status) {
 		_status = status;
-	}
 
-	public String getActiveRoomType() {
-		return _activeRoomType;
-	}
+		if (_settingsRemoteModel != null) {
+			try {
+				Class<?> clazz = _settingsRemoteModel.getClass();
 
-	public void setActiveRoomType(String activeRoomType) {
-		_activeRoomType = activeRoomType;
-	}
+				Method method = clazz.getMethod("setStatus", String.class);
 
-	public String getActivePanelId() {
-		return _activePanelId;
-	}
-
-	public void setActivePanelId(String activePanelId) {
-		_activePanelId = activePanelId;
+				method.invoke(_settingsRemoteModel, status);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
 	}
 
 	public boolean getMute() {
@@ -179,6 +190,19 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 
 	public void setMute(boolean mute) {
 		_mute = mute;
+
+		if (_settingsRemoteModel != null) {
+			try {
+				Class<?> clazz = _settingsRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setMute", boolean.class);
+
+				method.invoke(_settingsRemoteModel, mute);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
 	}
 
 	public boolean getChatEnabled() {
@@ -191,10 +215,37 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 
 	public void setChatEnabled(boolean chatEnabled) {
 		_chatEnabled = chatEnabled;
+
+		if (_settingsRemoteModel != null) {
+			try {
+				Class<?> clazz = _settingsRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setChatEnabled", boolean.class);
+
+				method.invoke(_settingsRemoteModel, chatEnabled);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
 	}
 
 	public com.liferay.portal.kernel.json.JSONObject toJSON() {
-		throw new UnsupportedOperationException();
+		try {
+			String methodName = "toJSON";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			com.liferay.portal.kernel.json.JSONObject returnObj = (com.liferay.portal.kernel.json.JSONObject)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
 	}
 
 	public BaseModel<?> getSettingsRemoteModel() {
@@ -203,6 +254,47 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 
 	public void setSettingsRemoteModel(BaseModel<?> settingsRemoteModel) {
 		_settingsRemoteModel = settingsRemoteModel;
+	}
+
+	public Object invokeOnRemoteModel(String methodName,
+		Class<?>[] parameterTypes, Object[] parameterValues)
+		throws Exception {
+		Object[] remoteParameterValues = new Object[parameterValues.length];
+
+		for (int i = 0; i < parameterValues.length; i++) {
+			if (parameterValues[i] != null) {
+				remoteParameterValues[i] = ClpSerializer.translateInput(parameterValues[i]);
+			}
+		}
+
+		Class<?> remoteModelClass = _settingsRemoteModel.getClass();
+
+		ClassLoader remoteModelClassLoader = remoteModelClass.getClassLoader();
+
+		Class<?>[] remoteParameterTypes = new Class[parameterTypes.length];
+
+		for (int i = 0; i < parameterTypes.length; i++) {
+			if (parameterTypes[i].isPrimitive()) {
+				remoteParameterTypes[i] = parameterTypes[i];
+			}
+			else {
+				String parameterTypeName = parameterTypes[i].getName();
+
+				remoteParameterTypes[i] = remoteModelClassLoader.loadClass(parameterTypeName);
+			}
+		}
+
+		Method method = remoteModelClass.getMethod(methodName,
+				remoteParameterTypes);
+
+		Object returnValue = method.invoke(_settingsRemoteModel,
+				remoteParameterValues);
+
+		if (returnValue != null) {
+			returnValue = ClpSerializer.translateOutput(returnValue);
+		}
+
+		return returnValue;
 	}
 
 	public void persist() throws SystemException {
@@ -216,8 +308,12 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 
 	@Override
 	public Settings toEscapedModel() {
-		return (Settings)Proxy.newProxyInstance(Settings.class.getClassLoader(),
+		return (Settings)ProxyUtil.newProxyInstance(Settings.class.getClassLoader(),
 			new Class[] { Settings.class }, new AutoEscapeBeanHandler(this));
+	}
+
+	public Settings toUnescapedModel() {
+		return this;
 	}
 
 	@Override
@@ -227,8 +323,6 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		clone.setSid(getSid());
 		clone.setUserId(getUserId());
 		clone.setStatus(getStatus());
-		clone.setActiveRoomType(getActiveRoomType());
-		clone.setActivePanelId(getActivePanelId());
 		clone.setMute(getMute());
 		clone.setChatEnabled(getChatEnabled());
 
@@ -251,18 +345,15 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof SettingsClp)) {
 			return false;
 		}
 
-		SettingsClp settings = null;
-
-		try {
-			settings = (SettingsClp)obj;
-		}
-		catch (ClassCastException cce) {
-			return false;
-		}
+		SettingsClp settings = (SettingsClp)obj;
 
 		long primaryKey = settings.getPrimaryKey();
 
@@ -281,7 +372,7 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(11);
 
 		sb.append("{sid=");
 		sb.append(getSid());
@@ -289,10 +380,6 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		sb.append(getUserId());
 		sb.append(", status=");
 		sb.append(getStatus());
-		sb.append(", activeRoomType=");
-		sb.append(getActiveRoomType());
-		sb.append(", activePanelId=");
-		sb.append(getActivePanelId());
 		sb.append(", mute=");
 		sb.append(getMute());
 		sb.append(", chatEnabled=");
@@ -303,7 +390,7 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 	}
 
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(19);
 
 		sb.append("<model><model-name>");
 		sb.append("com.marcelmika.lims.model.Settings");
@@ -320,14 +407,6 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		sb.append(
 			"<column><column-name>status</column-name><column-value><![CDATA[");
 		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>activeRoomType</column-name><column-value><![CDATA[");
-		sb.append(getActiveRoomType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>activePanelId</column-name><column-value><![CDATA[");
-		sb.append(getActivePanelId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>mute</column-name><column-value><![CDATA[");
@@ -347,8 +426,6 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 	private long _userId;
 	private String _userUuid;
 	private String _status;
-	private String _activeRoomType;
-	private String _activePanelId;
 	private boolean _mute;
 	private boolean _chatEnabled;
 	private BaseModel<?> _settingsRemoteModel;

@@ -14,6 +14,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.marcelmika.lims.api.entity.BuddyDetails;
 
+import javax.portlet.RenderRequest;
 import javax.portlet.ResourceRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -95,6 +96,16 @@ public class Buddy {
         return buddy;
     }
 
+    public static Buddy fromRenderRequest(RenderRequest request) {
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        Buddy buddy = new Buddy();
+        buddy.buddyId = themeDisplay.getUserId();
+        buddy.screenName = themeDisplay.getUser().getScreenName();
+        buddy.fullName = themeDisplay.getUser().getFullName();
+
+        return buddy;
+    }
+
     /**
      * Factory method which creates new Buddy object from the PollerRequest
      *
@@ -106,9 +117,6 @@ public class Buddy {
 
         // Map contains all parameters from request
         Map<String, String[]> parameterMap = request.getParameterMap();
-
-        log.info(parameterMap);
-
         // Create new buddy
         Buddy buddy = new Buddy();
         // BuddyID

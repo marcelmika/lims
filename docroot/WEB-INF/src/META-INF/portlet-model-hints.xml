@@ -27,12 +27,15 @@
 		<field name="userId" type="long" />
 		<field name="conversationId" type="String" />
 	</model>
+	<model name="com.marcelmika.lims.model.Panel">
+		<field name="pid" type="long" />
+		<field name="userId" type="long" />
+		<field name="activePanelId" type="String" />
+	</model>
 	<model name="com.marcelmika.lims.model.Settings">
 		<field name="sid" type="long" />
 		<field name="userId" type="long" />
 		<field name="status" type="String" />
-		<field name="activeRoomType" type="String" />
-		<field name="activePanelId" type="String" />
 		<field name="mute" type="boolean" />
 		<field name="chatEnabled" type="boolean" />
 	</model>

@@ -44,8 +44,7 @@ public class SettingsImpl extends SettingsBaseImpl implements JSONable {
         JSONObject json = JSONFactoryUtil.createJSONObject();
         json.put("statusId", this.getSid());
         json.put("userId", this.getUserId());
-        json.put("status", this.getStatus());        
-        json.put("activePanelId", this.getActivePanelId());        
+        json.put("status", this.getStatus());
         json.put("mute", this.getMute());        
 
         return json;

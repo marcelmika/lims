@@ -177,9 +177,10 @@ public class ChatUtil {
 
     public static boolean isConversationActive(long userId, String conversationId) throws Exception {
         Settings settings = getSettings(userId);
-        String activePanelId = settings.getActivePanelId();
+//        String activePanelId = settings.getActivePanelId();
 
-        return activePanelId.equals(conversationId);
+//        return activePanelId.equals(conversationId);
+        return false;
     }
 
     public static boolean isConversationOpened(long userId, String conversationId) {
@@ -234,11 +235,11 @@ public class ChatUtil {
      */
     public static void changeActivePanel(long userId, String activePanelId) throws Exception {
         // Get settings
-        Settings settings = SettingsLocalServiceUtil.getSettings(userId);
-        // Set values                
-        settings.setActivePanelId(activePanelId);
-        // Save settings
-        SettingsLocalServiceUtil.updateSettings(settings, false);
+//        Settings settings = SettingsLocalServiceUtil.getSettings(userId);
+//        // Set values
+//        settings.setActivePanelId(activePanelId);
+//        // Save settings
+//        SettingsLocalServiceUtil.updateSettings(settings, false);
     }
 
     public static void updateSettings(Settings settings) throws Exception {

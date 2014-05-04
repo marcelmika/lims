@@ -41,10 +41,12 @@ import com.marcelmika.lims.model.Settings;
 import com.marcelmika.lims.service.BuddyLocalService;
 import com.marcelmika.lims.service.ConversationLocalService;
 import com.marcelmika.lims.service.OpenedConversationLocalService;
+import com.marcelmika.lims.service.PanelLocalService;
 import com.marcelmika.lims.service.SettingsLocalService;
 import com.marcelmika.lims.service.persistence.BuddyPersistence;
 import com.marcelmika.lims.service.persistence.ConversationPersistence;
 import com.marcelmika.lims.service.persistence.OpenedConversationPersistence;
+import com.marcelmika.lims.service.persistence.PanelPersistence;
 import com.marcelmika.lims.service.persistence.SettingsPersistence;
 
 import java.io.Serializable;
@@ -206,10 +208,9 @@ public abstract class SettingsLocalServiceBaseImpl extends BaseLocalServiceImpl
 	 * @return the settings
 	 * @throws PortalException if a settings with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
-	 * @throws java.lang.Exception
 	 */
 	public Settings getSettings(long sid)
-		throws PortalException, SystemException, java.lang.Exception {
+		throws PortalException, SystemException {
 		return settingsPersistence.findByPrimaryKey(sid);
 	}
 
@@ -386,6 +387,42 @@ public abstract class SettingsLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	/**
+	 * Returns the panel local service.
+	 *
+	 * @return the panel local service
+	 */
+	public PanelLocalService getPanelLocalService() {
+		return panelLocalService;
+	}
+
+	/**
+	 * Sets the panel local service.
+	 *
+	 * @param panelLocalService the panel local service
+	 */
+	public void setPanelLocalService(PanelLocalService panelLocalService) {
+		this.panelLocalService = panelLocalService;
+	}
+
+	/**
+	 * Returns the panel persistence.
+	 *
+	 * @return the panel persistence
+	 */
+	public PanelPersistence getPanelPersistence() {
+		return panelPersistence;
+	}
+
+	/**
+	 * Sets the panel persistence.
+	 *
+	 * @param panelPersistence the panel persistence
+	 */
+	public void setPanelPersistence(PanelPersistence panelPersistence) {
+		this.panelPersistence = panelPersistence;
+	}
+
+	/**
 	 * Returns the settings local service.
 	 *
 	 * @return the settings local service
@@ -550,6 +587,10 @@ public abstract class SettingsLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	public void afterPropertiesSet() {
+		Class<?> clazz = getClass();
+
+		_classLoader = clazz.getClassLoader();
+
 		PersistedModelLocalServiceRegistryUtil.register("com.marcelmika.lims.model.Settings",
 			settingsLocalService);
 	}
@@ -579,7 +620,22 @@ public abstract class SettingsLocalServiceBaseImpl extends BaseLocalServiceImpl
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		return _clpInvoker.invokeMethod(name, parameterTypes, arguments);
+		Thread currentThread = Thread.currentThread();
+
+		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+		if (contextClassLoader != _classLoader) {
+			currentThread.setContextClassLoader(_classLoader);
+		}
+
+		try {
+			return _clpInvoker.invokeMethod(name, parameterTypes, arguments);
+		}
+		finally {
+			if (contextClassLoader != _classLoader) {
+				currentThread.setContextClassLoader(contextClassLoader);
+			}
+		}
 	}
 
 	protected Class<?> getModelClass() {
@@ -621,6 +677,10 @@ public abstract class SettingsLocalServiceBaseImpl extends BaseLocalServiceImpl
 	protected OpenedConversationLocalService openedConversationLocalService;
 	@BeanReference(type = OpenedConversationPersistence.class)
 	protected OpenedConversationPersistence openedConversationPersistence;
+	@BeanReference(type = PanelLocalService.class)
+	protected PanelLocalService panelLocalService;
+	@BeanReference(type = PanelPersistence.class)
+	protected PanelPersistence panelPersistence;
 	@BeanReference(type = SettingsLocalService.class)
 	protected SettingsLocalService settingsLocalService;
 	@BeanReference(type = SettingsPersistence.class)
@@ -640,5 +700,6 @@ public abstract class SettingsLocalServiceBaseImpl extends BaseLocalServiceImpl
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
 	private String _beanIdentifier;
+	private ClassLoader _classLoader;
 	private SettingsLocalServiceClpInvoker _clpInvoker = new SettingsLocalServiceClpInvoker();
 }

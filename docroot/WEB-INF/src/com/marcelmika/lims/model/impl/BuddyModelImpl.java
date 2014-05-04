@@ -324,13 +324,16 @@ public class BuddyModelImpl extends BaseModelImpl<Buddy> implements BuddyModel {
 
 	@Override
 	public Buddy toEscapedModel() {
-		if (_escapedModelProxy == null) {
-			_escapedModelProxy = (Buddy)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelProxyInterfaces,
-					new AutoEscapeBeanHandler(this));
+		if (_escapedModel == null) {
+			_escapedModel = (Buddy)ProxyUtil.newProxyInstance(_classLoader,
+					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
 		}
 
-		return _escapedModelProxy;
+		return _escapedModel;
+	}
+
+	public Buddy toUnescapedModel() {
+		return (Buddy)this;
 	}
 
 	@Override
@@ -369,18 +372,15 @@ public class BuddyModelImpl extends BaseModelImpl<Buddy> implements BuddyModel {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof Buddy)) {
 			return false;
 		}
 
-		Buddy buddy = null;
-
-		try {
-			buddy = (Buddy)obj;
-		}
-		catch (ClassCastException cce) {
-			return false;
-		}
+		Buddy buddy = (Buddy)obj;
 
 		long primaryKey = buddy.getPrimaryKey();
 
@@ -535,9 +535,7 @@ public class BuddyModelImpl extends BaseModelImpl<Buddy> implements BuddyModel {
 	}
 
 	private static ClassLoader _classLoader = Buddy.class.getClassLoader();
-	private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
-			Buddy.class
-		};
+	private static Class<?>[] _escapedModelInterfaces = new Class[] { Buddy.class };
 	private long _bid;
 	private long _userId;
 	private String _userUuid;
@@ -549,5 +547,5 @@ public class BuddyModelImpl extends BaseModelImpl<Buddy> implements BuddyModel {
 	private boolean _isTyping;
 	private boolean _awake;
 	private String _status;
-	private Buddy _escapedModelProxy;
+	private Buddy _escapedModel;
 }

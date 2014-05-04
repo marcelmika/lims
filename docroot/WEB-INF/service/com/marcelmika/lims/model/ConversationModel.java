@@ -203,6 +203,8 @@ public interface ConversationModel extends BaseModel<Conversation> {
 
 	public Conversation toEscapedModel();
 
+	public Conversation toUnescapedModel();
+
 	public String toString();
 
 	public String toXmlString();

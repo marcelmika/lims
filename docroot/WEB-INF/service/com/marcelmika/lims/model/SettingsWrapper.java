@@ -14,6 +14,7 @@
 
 package com.marcelmika.lims.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
 
 import java.util.HashMap;
@@ -47,8 +48,6 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 		attributes.put("sid", getSid());
 		attributes.put("userId", getUserId());
 		attributes.put("status", getStatus());
-		attributes.put("activeRoomType", getActiveRoomType());
-		attributes.put("activePanelId", getActivePanelId());
 		attributes.put("mute", getMute());
 		attributes.put("chatEnabled", getChatEnabled());
 
@@ -72,18 +71,6 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 
 		if (status != null) {
 			setStatus(status);
-		}
-
-		String activeRoomType = (String)attributes.get("activeRoomType");
-
-		if (activeRoomType != null) {
-			setActiveRoomType(activeRoomType);
-		}
-
-		String activePanelId = (String)attributes.get("activePanelId");
-
-		if (activePanelId != null) {
-			setActivePanelId(activePanelId);
 		}
 
 		Boolean mute = (Boolean)attributes.get("mute");
@@ -189,42 +176,6 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	*/
 	public void setStatus(java.lang.String status) {
 		_settings.setStatus(status);
-	}
-
-	/**
-	* Returns the active room type of this settings.
-	*
-	* @return the active room type of this settings
-	*/
-	public java.lang.String getActiveRoomType() {
-		return _settings.getActiveRoomType();
-	}
-
-	/**
-	* Sets the active room type of this settings.
-	*
-	* @param activeRoomType the active room type of this settings
-	*/
-	public void setActiveRoomType(java.lang.String activeRoomType) {
-		_settings.setActiveRoomType(activeRoomType);
-	}
-
-	/**
-	* Returns the active panel ID of this settings.
-	*
-	* @return the active panel ID of this settings
-	*/
-	public java.lang.String getActivePanelId() {
-		return _settings.getActivePanelId();
-	}
-
-	/**
-	* Sets the active panel ID of this settings.
-	*
-	* @param activePanelId the active panel ID of this settings
-	*/
-	public void setActivePanelId(java.lang.String activePanelId) {
-		_settings.setActivePanelId(activePanelId);
 	}
 
 	/**
@@ -340,6 +291,10 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 		return new SettingsWrapper(_settings.toEscapedModel());
 	}
 
+	public com.marcelmika.lims.model.Settings toUnescapedModel() {
+		return new SettingsWrapper(_settings.toUnescapedModel());
+	}
+
 	@Override
 	public java.lang.String toString() {
 		return _settings.toString();
@@ -356,6 +311,25 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 
 	public com.liferay.portal.kernel.json.JSONObject toJSON() {
 		return _settings.toJSON();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof SettingsWrapper)) {
+			return false;
+		}
+
+		SettingsWrapper settingsWrapper = (SettingsWrapper)obj;
+
+		if (Validator.equals(_settings, settingsWrapper._settings)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

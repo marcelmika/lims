@@ -112,17 +112,17 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 
 		_methodParameterTypes17 = new String[] { "java.lang.String" };
 
-		_methodName19 = "changeStatus";
+		_methodName19 = "getSettingsByUser";
 
-		_methodParameterTypes19 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes19 = new String[] { "long" };
 
-		_methodName20 = "setChatEnabled";
+		_methodName20 = "changeStatus";
 
-		_methodParameterTypes20 = new String[] { "long", "boolean" };
+		_methodParameterTypes20 = new String[] { "long", "java.lang.String" };
 
-		_methodName21 = "changeActiveRoomType";
+		_methodName21 = "setChatEnabled";
 
-		_methodParameterTypes21 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes21 = new String[] { "long", "boolean" };
 	}
 
 	public com.marcelmika.lims.model.Settings addSettings(
@@ -423,8 +423,7 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 
 	public com.marcelmika.lims.model.Settings getSettings(long sid)
 		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException,
-			java.lang.Exception {
+			com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
@@ -440,10 +439,6 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
 				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
-			if (t instanceof java.lang.Exception) {
-				throw (java.lang.Exception)t;
 			}
 
 			if (t instanceof RuntimeException) {
@@ -652,11 +647,38 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 		throw new UnsupportedOperationException();
 	}
 
+	public com.marcelmika.lims.model.Settings getSettingsByUser(long userId)
+		throws java.lang.Exception {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName19,
+					_methodParameterTypes19, new Object[] { userId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof java.lang.Exception) {
+				throw (java.lang.Exception)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.marcelmika.lims.model.Settings)ClpSerializer.translateOutput(returnObj);
+	}
+
 	public void changeStatus(long userId, java.lang.String status)
 		throws java.lang.Exception {
 		try {
-			_invokableLocalService.invokeMethod(_methodName19,
-				_methodParameterTypes19,
+			_invokableLocalService.invokeMethod(_methodName20,
+				_methodParameterTypes20,
 				new Object[] { userId, ClpSerializer.translateInput(status) });
 		}
 		catch (Throwable t) {
@@ -679,32 +701,8 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 	public void setChatEnabled(long userId, boolean enabled)
 		throws java.lang.Exception {
 		try {
-			_invokableLocalService.invokeMethod(_methodName20,
-				_methodParameterTypes20, new Object[] { userId, enabled });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof java.lang.Exception) {
-				throw (java.lang.Exception)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	public void changeActiveRoomType(long userId, java.lang.String roomType)
-		throws java.lang.Exception {
-		try {
 			_invokableLocalService.invokeMethod(_methodName21,
-				_methodParameterTypes21,
-				new Object[] { userId, ClpSerializer.translateInput(roomType) });
+				_methodParameterTypes21, new Object[] { userId, enabled });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);

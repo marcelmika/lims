@@ -28,6 +28,7 @@ import com.liferay.portal.model.BaseModel;
 import com.marcelmika.lims.model.BuddyClp;
 import com.marcelmika.lims.model.ConversationClp;
 import com.marcelmika.lims.model.OpenedConversationClp;
+import com.marcelmika.lims.model.PanelClp;
 import com.marcelmika.lims.model.SettingsClp;
 
 import java.io.ObjectInputStream;
@@ -117,6 +118,10 @@ public class ClpSerializer {
 			return translateInputOpenedConversation(oldModel);
 		}
 
+		if (oldModelClassName.equals(PanelClp.class.getName())) {
+			return translateInputPanel(oldModel);
+		}
+
 		if (oldModelClassName.equals(SettingsClp.class.getName())) {
 			return translateInputSettings(oldModel);
 		}
@@ -166,6 +171,16 @@ public class ClpSerializer {
 		return newModel;
 	}
 
+	public static Object translateInputPanel(BaseModel<?> oldModel) {
+		PanelClp oldClpModel = (PanelClp)oldModel;
+
+		BaseModel<?> newModel = oldClpModel.getPanelRemoteModel();
+
+		newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+		return newModel;
+	}
+
 	public static Object translateInputSettings(BaseModel<?> oldModel) {
 		SettingsClp oldClpModel = (SettingsClp)oldModel;
 
@@ -205,6 +220,10 @@ public class ClpSerializer {
 		if (oldModelClassName.equals(
 					"com.marcelmika.lims.model.impl.OpenedConversationImpl")) {
 			return translateOutputOpenedConversation(oldModel);
+		}
+
+		if (oldModelClassName.equals("com.marcelmika.lims.model.impl.PanelImpl")) {
+			return translateOutputPanel(oldModel);
 		}
 
 		if (oldModelClassName.equals(
@@ -305,6 +324,10 @@ public class ClpSerializer {
 			return new com.marcelmika.lims.NoSuchOpenedConversationException();
 		}
 
+		if (className.equals("com.marcelmika.lims.NoSuchPanelException")) {
+			return new com.marcelmika.lims.NoSuchPanelException();
+		}
+
 		if (className.equals("com.marcelmika.lims.NoSuchSettingsException")) {
 			return new com.marcelmika.lims.NoSuchSettingsException();
 		}
@@ -339,6 +362,16 @@ public class ClpSerializer {
 		newModel.setModelAttributes(oldModel.getModelAttributes());
 
 		newModel.setOpenedConversationRemoteModel(oldModel);
+
+		return newModel;
+	}
+
+	public static Object translateOutputPanel(BaseModel<?> oldModel) {
+		PanelClp newModel = new PanelClp();
+
+		newModel.setModelAttributes(oldModel.getModelAttributes());
+
+		newModel.setPanelRemoteModel(oldModel);
 
 		return newModel;
 	}

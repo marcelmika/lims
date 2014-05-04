@@ -213,14 +213,67 @@ public class OpenedConversationPersistenceImpl extends BasePersistenceImpl<Opene
 		}
 	}
 
+	protected void cacheUniqueFindersCache(
+		OpenedConversation openedConversation) {
+		if (openedConversation.isNew()) {
+			Object[] args = new Object[] {
+					Long.valueOf(openedConversation.getUserId()),
+					
+					openedConversation.getConversationId()
+				};
+
+			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_USERID_CONVERSATIONID,
+				args, Long.valueOf(1));
+			FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERID_CONVERSATIONID,
+				args, openedConversation);
+		}
+		else {
+			OpenedConversationModelImpl openedConversationModelImpl = (OpenedConversationModelImpl)openedConversation;
+
+			if ((openedConversationModelImpl.getColumnBitmask() &
+					FINDER_PATH_FETCH_BY_USERID_CONVERSATIONID.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						Long.valueOf(openedConversation.getUserId()),
+						
+						openedConversation.getConversationId()
+					};
+
+				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_USERID_CONVERSATIONID,
+					args, Long.valueOf(1));
+				FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERID_CONVERSATIONID,
+					args, openedConversation);
+			}
+		}
+	}
+
 	protected void clearUniqueFindersCache(
 		OpenedConversation openedConversation) {
-		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERID_CONVERSATIONID,
-			new Object[] {
+		OpenedConversationModelImpl openedConversationModelImpl = (OpenedConversationModelImpl)openedConversation;
+
+		Object[] args = new Object[] {
 				Long.valueOf(openedConversation.getUserId()),
 				
-			openedConversation.getConversationId()
-			});
+				openedConversation.getConversationId()
+			};
+
+		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID_CONVERSATIONID,
+			args);
+		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERID_CONVERSATIONID,
+			args);
+
+		if ((openedConversationModelImpl.getColumnBitmask() &
+				FINDER_PATH_FETCH_BY_USERID_CONVERSATIONID.getColumnBitmask()) != 0) {
+			args = new Object[] {
+					Long.valueOf(openedConversationModelImpl.getOriginalUserId()),
+					
+					openedConversationModelImpl.getOriginalConversationId()
+				};
+
+			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID_CONVERSATIONID,
+				args);
+			FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERID_CONVERSATIONID,
+				args);
+		}
 	}
 
 	/**
@@ -373,37 +426,8 @@ public class OpenedConversationPersistenceImpl extends BasePersistenceImpl<Opene
 			OpenedConversationImpl.class, openedConversation.getPrimaryKey(),
 			openedConversation);
 
-		if (isNew) {
-			FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERID_CONVERSATIONID,
-				new Object[] {
-					Long.valueOf(openedConversation.getUserId()),
-					
-				openedConversation.getConversationId()
-				}, openedConversation);
-		}
-		else {
-			if ((openedConversationModelImpl.getColumnBitmask() &
-					FINDER_PATH_FETCH_BY_USERID_CONVERSATIONID.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						Long.valueOf(openedConversationModelImpl.getOriginalUserId()),
-						
-						openedConversationModelImpl.getOriginalConversationId()
-					};
-
-				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID_CONVERSATIONID,
-					args);
-
-				FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERID_CONVERSATIONID,
-					args);
-
-				FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERID_CONVERSATIONID,
-					new Object[] {
-						Long.valueOf(openedConversation.getUserId()),
-						
-					openedConversation.getConversationId()
-					}, openedConversation);
-			}
-		}
+		clearUniqueFindersCache(openedConversation);
+		cacheUniqueFindersCache(openedConversation);
 
 		return openedConversation;
 	}
@@ -1396,8 +1420,10 @@ public class OpenedConversationPersistenceImpl extends BasePersistenceImpl<Opene
 				List<ModelListener<OpenedConversation>> listenersList = new ArrayList<ModelListener<OpenedConversation>>();
 
 				for (String listenerClassName : listenerClassNames) {
+					Class<?> clazz = getClass();
+
 					listenersList.add((ModelListener<OpenedConversation>)InstanceFactory.newInstance(
-							listenerClassName));
+							clazz.getClassLoader(), listenerClassName));
 				}
 
 				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1420,6 +1446,8 @@ public class OpenedConversationPersistenceImpl extends BasePersistenceImpl<Opene
 	protected ConversationPersistence conversationPersistence;
 	@BeanReference(type = OpenedConversationPersistence.class)
 	protected OpenedConversationPersistence openedConversationPersistence;
+	@BeanReference(type = PanelPersistence.class)
+	protected PanelPersistence panelPersistence;
 	@BeanReference(type = SettingsPersistence.class)
 	protected SettingsPersistence settingsPersistence;
 	@BeanReference(type = ResourcePersistence.class)

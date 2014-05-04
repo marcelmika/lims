@@ -21,6 +21,7 @@ import com.marcelmika.lims.service.BuddyLocalServiceUtil;
 import com.marcelmika.lims.service.ClpSerializer;
 import com.marcelmika.lims.service.ConversationLocalServiceUtil;
 import com.marcelmika.lims.service.OpenedConversationLocalServiceUtil;
+import com.marcelmika.lims.service.PanelLocalServiceUtil;
 import com.marcelmika.lims.service.SettingsLocalServiceUtil;
 
 /**
@@ -43,6 +44,8 @@ public class ClpMessageListener extends BaseMessageListener {
 			ConversationLocalServiceUtil.clearService();
 
 			OpenedConversationLocalServiceUtil.clearService();
+
+			PanelLocalServiceUtil.clearService();
 
 			SettingsLocalServiceUtil.clearService();
 		}

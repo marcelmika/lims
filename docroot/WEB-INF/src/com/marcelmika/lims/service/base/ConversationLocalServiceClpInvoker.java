@@ -104,44 +104,44 @@ public class ConversationLocalServiceClpInvoker {
 				"com.marcelmika.lims.model.Conversation", "boolean"
 			};
 
-		_methodName48 = "getBeanIdentifier";
+		_methodName52 = "getBeanIdentifier";
 
-		_methodParameterTypes48 = new String[] {  };
+		_methodParameterTypes52 = new String[] {  };
 
-		_methodName49 = "setBeanIdentifier";
+		_methodName53 = "setBeanIdentifier";
 
-		_methodParameterTypes49 = new String[] { "java.lang.String" };
+		_methodParameterTypes53 = new String[] { "java.lang.String" };
 
-		_methodName54 = "addConversation";
+		_methodName58 = "addConversation";
 
-		_methodParameterTypes54 = new String[] {
+		_methodParameterTypes58 = new String[] {
 				"long", "java.lang.String", "java.lang.String",
 				"java.lang.String", "java.lang.String"
 			};
 
-		_methodName55 = "removeConversation";
-
-		_methodParameterTypes55 = new String[] { "long", "java.lang.String" };
-
-		_methodName56 = "getAllConversations";
-
-		_methodParameterTypes56 = new String[] { "long" };
-
-		_methodName57 = "getRoom";
-
-		_methodParameterTypes57 = new String[] { "long", "java.lang.String" };
-
-		_methodName58 = "getConversation";
-
-		_methodParameterTypes58 = new String[] { "long", "java.lang.String" };
-
-		_methodName59 = "incrementUnreadMessages";
+		_methodName59 = "removeConversation";
 
 		_methodParameterTypes59 = new String[] { "long", "java.lang.String" };
 
-		_methodName60 = "setUnreadMessages";
+		_methodName60 = "getAllConversations";
 
-		_methodParameterTypes60 = new String[] { "long", "java.lang.String", "int" };
+		_methodParameterTypes60 = new String[] { "long" };
+
+		_methodName61 = "getRoom";
+
+		_methodParameterTypes61 = new String[] { "long", "java.lang.String" };
+
+		_methodName62 = "getConversation";
+
+		_methodParameterTypes62 = new String[] { "long", "java.lang.String" };
+
+		_methodName63 = "incrementUnreadMessages";
+
+		_methodParameterTypes63 = new String[] { "long", "java.lang.String" };
+
+		_methodName64 = "setUnreadMessages";
+
+		_methodParameterTypes64 = new String[] { "long", "java.lang.String", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -233,57 +233,65 @@ public class ConversationLocalServiceClpInvoker {
 				((Boolean)arguments[1]).booleanValue());
 		}
 
-		if (_methodName48.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes48, parameterTypes)) {
+		if (_methodName52.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes52, parameterTypes)) {
 			return ConversationLocalServiceUtil.getBeanIdentifier();
 		}
 
-		if (_methodName49.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes49, parameterTypes)) {
+		if (_methodName53.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes53, parameterTypes)) {
 			ConversationLocalServiceUtil.setBeanIdentifier((java.lang.String)arguments[0]);
+
+			return null;
 		}
 
-		if (_methodName54.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes54, parameterTypes)) {
+		if (_methodName58.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes58, parameterTypes)) {
 			return ConversationLocalServiceUtil.addConversation(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
 				(java.lang.String)arguments[3], (java.lang.String)arguments[4]);
 		}
 
-		if (_methodName55.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes55, parameterTypes)) {
-			ConversationLocalServiceUtil.removeConversation(((Long)arguments[0]).longValue(),
-				(java.lang.String)arguments[1]);
-		}
-
-		if (_methodName56.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes56, parameterTypes)) {
-			return ConversationLocalServiceUtil.getAllConversations(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName57.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes57, parameterTypes)) {
-			return ConversationLocalServiceUtil.getRoom(((Long)arguments[0]).longValue(),
-				(java.lang.String)arguments[1]);
-		}
-
-		if (_methodName58.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes58, parameterTypes)) {
-			return ConversationLocalServiceUtil.getConversation(((Long)arguments[0]).longValue(),
-				(java.lang.String)arguments[1]);
-		}
-
 		if (_methodName59.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes59, parameterTypes)) {
-			ConversationLocalServiceUtil.incrementUnreadMessages(((Long)arguments[0]).longValue(),
+			ConversationLocalServiceUtil.removeConversation(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
+
+			return null;
 		}
 
 		if (_methodName60.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes60, parameterTypes)) {
+			return ConversationLocalServiceUtil.getAllConversations(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName61.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes61, parameterTypes)) {
+			return ConversationLocalServiceUtil.getRoom(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1]);
+		}
+
+		if (_methodName62.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes62, parameterTypes)) {
+			return ConversationLocalServiceUtil.getConversation(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1]);
+		}
+
+		if (_methodName63.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes63, parameterTypes)) {
+			ConversationLocalServiceUtil.incrementUnreadMessages(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1]);
+
+			return null;
+		}
+
+		if (_methodName64.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes64, parameterTypes)) {
 			ConversationLocalServiceUtil.setUnreadMessages(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1],
 				((Integer)arguments[2]).intValue());
+
+			return null;
 		}
 
 		throw new UnsupportedOperationException();
@@ -321,22 +329,22 @@ public class ConversationLocalServiceClpInvoker {
 	private String[] _methodParameterTypes14;
 	private String _methodName15;
 	private String[] _methodParameterTypes15;
-	private String _methodName48;
-	private String[] _methodParameterTypes48;
-	private String _methodName49;
-	private String[] _methodParameterTypes49;
-	private String _methodName54;
-	private String[] _methodParameterTypes54;
-	private String _methodName55;
-	private String[] _methodParameterTypes55;
-	private String _methodName56;
-	private String[] _methodParameterTypes56;
-	private String _methodName57;
-	private String[] _methodParameterTypes57;
+	private String _methodName52;
+	private String[] _methodParameterTypes52;
+	private String _methodName53;
+	private String[] _methodParameterTypes53;
 	private String _methodName58;
 	private String[] _methodParameterTypes58;
 	private String _methodName59;
 	private String[] _methodParameterTypes59;
 	private String _methodName60;
 	private String[] _methodParameterTypes60;
+	private String _methodName61;
+	private String[] _methodParameterTypes61;
+	private String _methodName62;
+	private String[] _methodParameterTypes62;
+	private String _methodName63;
+	private String[] _methodParameterTypes63;
+	private String _methodName64;
+	private String[] _methodParameterTypes64;
 }

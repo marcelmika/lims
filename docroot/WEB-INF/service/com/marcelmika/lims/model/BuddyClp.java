@@ -16,16 +16,18 @@ package com.marcelmika.lims.model;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.util.PortalUtil;
 
 import com.marcelmika.lims.service.BuddyLocalServiceUtil;
+import com.marcelmika.lims.service.ClpSerializer;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Proxy;
+import java.lang.reflect.Method;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -148,6 +150,19 @@ public class BuddyClp extends BaseModelImpl<Buddy> implements Buddy {
 
 	public void setBid(long bid) {
 		_bid = bid;
+
+		if (_buddyRemoteModel != null) {
+			try {
+				Class<?> clazz = _buddyRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setBid", long.class);
+
+				method.invoke(_buddyRemoteModel, bid);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
 	}
 
 	public long getUserId() {
@@ -156,6 +171,19 @@ public class BuddyClp extends BaseModelImpl<Buddy> implements Buddy {
 
 	public void setUserId(long userId) {
 		_userId = userId;
+
+		if (_buddyRemoteModel != null) {
+			try {
+				Class<?> clazz = _buddyRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setUserId", long.class);
+
+				method.invoke(_buddyRemoteModel, userId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
 	}
 
 	public String getUserUuid() throws SystemException {
@@ -172,6 +200,19 @@ public class BuddyClp extends BaseModelImpl<Buddy> implements Buddy {
 
 	public void setCompanyId(long companyId) {
 		_companyId = companyId;
+
+		if (_buddyRemoteModel != null) {
+			try {
+				Class<?> clazz = _buddyRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setCompanyId", long.class);
+
+				method.invoke(_buddyRemoteModel, companyId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
 	}
 
 	public long getPortraitId() {
@@ -180,6 +221,19 @@ public class BuddyClp extends BaseModelImpl<Buddy> implements Buddy {
 
 	public void setPortraitId(long portraitId) {
 		_portraitId = portraitId;
+
+		if (_buddyRemoteModel != null) {
+			try {
+				Class<?> clazz = _buddyRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setPortraitId", long.class);
+
+				method.invoke(_buddyRemoteModel, portraitId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
 	}
 
 	public String getFullName() {
@@ -188,6 +242,19 @@ public class BuddyClp extends BaseModelImpl<Buddy> implements Buddy {
 
 	public void setFullName(String fullName) {
 		_fullName = fullName;
+
+		if (_buddyRemoteModel != null) {
+			try {
+				Class<?> clazz = _buddyRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setFullName", String.class);
+
+				method.invoke(_buddyRemoteModel, fullName);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
 	}
 
 	public String getScreenName() {
@@ -196,6 +263,19 @@ public class BuddyClp extends BaseModelImpl<Buddy> implements Buddy {
 
 	public void setScreenName(String screenName) {
 		_screenName = screenName;
+
+		if (_buddyRemoteModel != null) {
+			try {
+				Class<?> clazz = _buddyRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setScreenName", String.class);
+
+				method.invoke(_buddyRemoteModel, screenName);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
 	}
 
 	public String getStatusMessage() {
@@ -204,6 +284,19 @@ public class BuddyClp extends BaseModelImpl<Buddy> implements Buddy {
 
 	public void setStatusMessage(String statusMessage) {
 		_statusMessage = statusMessage;
+
+		if (_buddyRemoteModel != null) {
+			try {
+				Class<?> clazz = _buddyRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setStatusMessage", String.class);
+
+				method.invoke(_buddyRemoteModel, statusMessage);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
 	}
 
 	public boolean getIsTyping() {
@@ -216,6 +309,19 @@ public class BuddyClp extends BaseModelImpl<Buddy> implements Buddy {
 
 	public void setIsTyping(boolean isTyping) {
 		_isTyping = isTyping;
+
+		if (_buddyRemoteModel != null) {
+			try {
+				Class<?> clazz = _buddyRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setIsTyping", boolean.class);
+
+				method.invoke(_buddyRemoteModel, isTyping);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
 	}
 
 	public boolean getAwake() {
@@ -228,6 +334,19 @@ public class BuddyClp extends BaseModelImpl<Buddy> implements Buddy {
 
 	public void setAwake(boolean awake) {
 		_awake = awake;
+
+		if (_buddyRemoteModel != null) {
+			try {
+				Class<?> clazz = _buddyRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setAwake", boolean.class);
+
+				method.invoke(_buddyRemoteModel, awake);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
 	}
 
 	public String getStatus() {
@@ -236,10 +355,37 @@ public class BuddyClp extends BaseModelImpl<Buddy> implements Buddy {
 
 	public void setStatus(String status) {
 		_status = status;
+
+		if (_buddyRemoteModel != null) {
+			try {
+				Class<?> clazz = _buddyRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setStatus", String.class);
+
+				method.invoke(_buddyRemoteModel, status);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
 	}
 
 	public com.liferay.portal.kernel.json.JSONObject toJSON() {
-		throw new UnsupportedOperationException();
+		try {
+			String methodName = "toJSON";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			com.liferay.portal.kernel.json.JSONObject returnObj = (com.liferay.portal.kernel.json.JSONObject)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
 	}
 
 	public BaseModel<?> getBuddyRemoteModel() {
@@ -248,6 +394,47 @@ public class BuddyClp extends BaseModelImpl<Buddy> implements Buddy {
 
 	public void setBuddyRemoteModel(BaseModel<?> buddyRemoteModel) {
 		_buddyRemoteModel = buddyRemoteModel;
+	}
+
+	public Object invokeOnRemoteModel(String methodName,
+		Class<?>[] parameterTypes, Object[] parameterValues)
+		throws Exception {
+		Object[] remoteParameterValues = new Object[parameterValues.length];
+
+		for (int i = 0; i < parameterValues.length; i++) {
+			if (parameterValues[i] != null) {
+				remoteParameterValues[i] = ClpSerializer.translateInput(parameterValues[i]);
+			}
+		}
+
+		Class<?> remoteModelClass = _buddyRemoteModel.getClass();
+
+		ClassLoader remoteModelClassLoader = remoteModelClass.getClassLoader();
+
+		Class<?>[] remoteParameterTypes = new Class[parameterTypes.length];
+
+		for (int i = 0; i < parameterTypes.length; i++) {
+			if (parameterTypes[i].isPrimitive()) {
+				remoteParameterTypes[i] = parameterTypes[i];
+			}
+			else {
+				String parameterTypeName = parameterTypes[i].getName();
+
+				remoteParameterTypes[i] = remoteModelClassLoader.loadClass(parameterTypeName);
+			}
+		}
+
+		Method method = remoteModelClass.getMethod(methodName,
+				remoteParameterTypes);
+
+		Object returnValue = method.invoke(_buddyRemoteModel,
+				remoteParameterValues);
+
+		if (returnValue != null) {
+			returnValue = ClpSerializer.translateOutput(returnValue);
+		}
+
+		return returnValue;
 	}
 
 	public void persist() throws SystemException {
@@ -261,8 +448,12 @@ public class BuddyClp extends BaseModelImpl<Buddy> implements Buddy {
 
 	@Override
 	public Buddy toEscapedModel() {
-		return (Buddy)Proxy.newProxyInstance(Buddy.class.getClassLoader(),
+		return (Buddy)ProxyUtil.newProxyInstance(Buddy.class.getClassLoader(),
 			new Class[] { Buddy.class }, new AutoEscapeBeanHandler(this));
+	}
+
+	public Buddy toUnescapedModel() {
+		return this;
 	}
 
 	@Override
@@ -299,18 +490,15 @@ public class BuddyClp extends BaseModelImpl<Buddy> implements Buddy {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof BuddyClp)) {
 			return false;
 		}
 
-		BuddyClp buddy = null;
-
-		try {
-			buddy = (BuddyClp)obj;
-		}
-		catch (ClassCastException cce) {
-			return false;
-		}
+		BuddyClp buddy = (BuddyClp)obj;
 
 		long primaryKey = buddy.getPrimaryKey();
 

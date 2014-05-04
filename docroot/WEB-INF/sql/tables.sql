@@ -27,12 +27,16 @@ create table LiferayLIMS_OpenedConversation (
 	conversationId VARCHAR(75) null
 );
 
+create table LiferayLIMS_Panel (
+	pid LONG not null primary key,
+	userId LONG,
+	activePanelId VARCHAR(75) null
+);
+
 create table LiferayLIMS_Settings (
 	sid LONG not null primary key,
 	userId LONG,
 	status VARCHAR(75) null,
-	activeRoomType VARCHAR(75) null,
-	activePanelId VARCHAR(75) null,
 	mute BOOLEAN,
 	chatEnabled BOOLEAN
 );
