@@ -22,8 +22,10 @@ AUI().use('aui-base', function(A) {
 
         });
         instance._usersListEl = $(options.panelId + ' .menu-add-to-conversation ul');
-        instance._usersListEl.bind('input propertychange', function() {             
-            instance._usersListEl.removeClass('error');
+        instance._usersListEl.bind('input propertychange', function() {
+            if(instance._usersListEl.hasClass('error')){
+                instance._usersListEl.removeClass('error');
+            }
         });
         instance._addButtonEl = instance._menuEl.one('.buttons .add');
         instance._cancelButtonEl = instance._menuEl.one('.buttons .cancel');
