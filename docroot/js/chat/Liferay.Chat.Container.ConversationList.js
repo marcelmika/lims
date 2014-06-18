@@ -60,12 +60,14 @@ AUI().use('aui-base', 'anim', 'aui-live-search', function (A) {
         instance.node.delegate('click', instance._onSelectedConversation, 'li');
         // Remove error class if user starts to type a message
         instance._messageTextareaEl.bind('input propertychange', function () {
-            if (instance._messageTextareaEl.val()) {
+            if (instance._messageTextareaEl.val() && instance._messageTextareaEl.hasClass('error')) {
                 instance._messageTextareaEl.removeClass('error');
             }
         });
         instance._usersListEl.bind('input propertychange', function () {
-            instance._usersListEl.removeClass('error');
+            if(instance._usersListEl.hasClass('error')){
+                instance._usersListEl.removeClass('error');
+            }
         });
 
 
