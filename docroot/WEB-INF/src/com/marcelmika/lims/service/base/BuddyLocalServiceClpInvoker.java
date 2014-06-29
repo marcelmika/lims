@@ -98,29 +98,29 @@ public class BuddyLocalServiceClpInvoker {
 				"com.marcelmika.lims.model.Buddy", "boolean"
 			};
 
-		_methodName52 = "getBeanIdentifier";
+		_methodName60 = "getBeanIdentifier";
 
-		_methodParameterTypes52 = new String[] {  };
+		_methodParameterTypes60 = new String[] {  };
 
-		_methodName53 = "setBeanIdentifier";
+		_methodName61 = "setBeanIdentifier";
 
-		_methodParameterTypes53 = new String[] { "java.lang.String" };
+		_methodParameterTypes61 = new String[] { "java.lang.String" };
 
-		_methodName58 = "findByQuery";
+		_methodName66 = "findByQuery";
 
-		_methodParameterTypes58 = new String[] { "java.lang.String" };
+		_methodParameterTypes66 = new String[] { "java.lang.String" };
 
-		_methodName59 = "mapBuddyFromUser";
+		_methodName67 = "mapBuddyFromUser";
 
-		_methodParameterTypes59 = new String[] { "com.liferay.portal.model.User" };
+		_methodParameterTypes67 = new String[] { "com.liferay.portal.model.User" };
 
-		_methodName60 = "getBuddyByScreenName";
+		_methodName68 = "getBuddyByScreenName";
 
-		_methodParameterTypes60 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes68 = new String[] { "long", "java.lang.String" };
 
-		_methodName61 = "getBuddyByUserId";
+		_methodName69 = "getBuddyByUserId";
 
-		_methodParameterTypes61 = new String[] { "long" };
+		_methodParameterTypes69 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -212,36 +212,36 @@ public class BuddyLocalServiceClpInvoker {
 				((Boolean)arguments[1]).booleanValue());
 		}
 
-		if (_methodName52.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes52, parameterTypes)) {
+		if (_methodName60.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes60, parameterTypes)) {
 			return BuddyLocalServiceUtil.getBeanIdentifier();
 		}
 
-		if (_methodName53.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes53, parameterTypes)) {
+		if (_methodName61.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes61, parameterTypes)) {
 			BuddyLocalServiceUtil.setBeanIdentifier((java.lang.String)arguments[0]);
 
 			return null;
 		}
 
-		if (_methodName58.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes58, parameterTypes)) {
+		if (_methodName66.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes66, parameterTypes)) {
 			return BuddyLocalServiceUtil.findByQuery((java.lang.String)arguments[0]);
 		}
 
-		if (_methodName59.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes59, parameterTypes)) {
+		if (_methodName67.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes67, parameterTypes)) {
 			return BuddyLocalServiceUtil.mapBuddyFromUser((com.liferay.portal.model.User)arguments[0]);
 		}
 
-		if (_methodName60.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes60, parameterTypes)) {
+		if (_methodName68.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes68, parameterTypes)) {
 			return BuddyLocalServiceUtil.getBuddyByScreenName(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 		}
 
-		if (_methodName61.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes61, parameterTypes)) {
+		if (_methodName69.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes69, parameterTypes)) {
 			return BuddyLocalServiceUtil.getBuddyByUserId(((Long)arguments[0]).longValue());
 		}
 
@@ -280,16 +280,16 @@ public class BuddyLocalServiceClpInvoker {
 	private String[] _methodParameterTypes14;
 	private String _methodName15;
 	private String[] _methodParameterTypes15;
-	private String _methodName52;
-	private String[] _methodParameterTypes52;
-	private String _methodName53;
-	private String[] _methodParameterTypes53;
-	private String _methodName58;
-	private String[] _methodParameterTypes58;
-	private String _methodName59;
-	private String[] _methodParameterTypes59;
 	private String _methodName60;
 	private String[] _methodParameterTypes60;
 	private String _methodName61;
 	private String[] _methodParameterTypes61;
+	private String _methodName66;
+	private String[] _methodParameterTypes66;
+	private String _methodName67;
+	private String[] _methodParameterTypes67;
+	private String _methodName68;
+	private String[] _methodParameterTypes68;
+	private String _methodName69;
+	private String[] _methodParameterTypes69;
 }

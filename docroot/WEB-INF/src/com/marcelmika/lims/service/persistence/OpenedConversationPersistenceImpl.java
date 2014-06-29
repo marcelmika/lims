@@ -1444,10 +1444,14 @@ public class OpenedConversationPersistenceImpl extends BasePersistenceImpl<Opene
 	protected BuddyPersistence buddyPersistence;
 	@BeanReference(type = ConversationPersistence.class)
 	protected ConversationPersistence conversationPersistence;
+	@BeanReference(type = MessagePersistence.class)
+	protected MessagePersistence messagePersistence;
 	@BeanReference(type = OpenedConversationPersistence.class)
 	protected OpenedConversationPersistence openedConversationPersistence;
 	@BeanReference(type = PanelPersistence.class)
 	protected PanelPersistence panelPersistence;
+	@BeanReference(type = ParticipantPersistence.class)
+	protected ParticipantPersistence participantPersistence;
 	@BeanReference(type = SettingsPersistence.class)
 	protected SettingsPersistence settingsPersistence;
 	@BeanReference(type = ResourcePersistence.class)

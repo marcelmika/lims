@@ -30,12 +30,8 @@ public class ConversationSoap implements Serializable {
 		ConversationSoap soapModel = new ConversationSoap();
 
 		soapModel.setCid(model.getCid());
-		soapModel.setUserId(model.getUserId());
 		soapModel.setConversationId(model.getConversationId());
 		soapModel.setConversationType(model.getConversationType());
-		soapModel.setConversationVisibility(model.getConversationVisibility());
-		soapModel.setConversationName(model.getConversationName());
-		soapModel.setUnreadMessages(model.getUnreadMessages());
 
 		return soapModel;
 	}
@@ -96,14 +92,6 @@ public class ConversationSoap implements Serializable {
 		_cid = cid;
 	}
 
-	public long getUserId() {
-		return _userId;
-	}
-
-	public void setUserId(long userId) {
-		_userId = userId;
-	}
-
 	public String getConversationId() {
 		return _conversationId;
 	}
@@ -120,35 +108,7 @@ public class ConversationSoap implements Serializable {
 		_conversationType = conversationType;
 	}
 
-	public String getConversationVisibility() {
-		return _conversationVisibility;
-	}
-
-	public void setConversationVisibility(String conversationVisibility) {
-		_conversationVisibility = conversationVisibility;
-	}
-
-	public String getConversationName() {
-		return _conversationName;
-	}
-
-	public void setConversationName(String conversationName) {
-		_conversationName = conversationName;
-	}
-
-	public int getUnreadMessages() {
-		return _unreadMessages;
-	}
-
-	public void setUnreadMessages(int unreadMessages) {
-		_unreadMessages = unreadMessages;
-	}
-
 	private long _cid;
-	private long _userId;
 	private String _conversationId;
 	private String _conversationType;
-	private String _conversationVisibility;
-	private String _conversationName;
-	private int _unreadMessages;
 }

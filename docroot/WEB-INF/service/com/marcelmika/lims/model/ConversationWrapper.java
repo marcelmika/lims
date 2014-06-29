@@ -47,12 +47,8 @@ public class ConversationWrapper implements Conversation,
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("cid", getCid());
-		attributes.put("userId", getUserId());
 		attributes.put("conversationId", getConversationId());
 		attributes.put("conversationType", getConversationType());
-		attributes.put("conversationVisibility", getConversationVisibility());
-		attributes.put("conversationName", getConversationName());
-		attributes.put("unreadMessages", getUnreadMessages());
 
 		return attributes;
 	}
@@ -62,12 +58,6 @@ public class ConversationWrapper implements Conversation,
 
 		if (cid != null) {
 			setCid(cid);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
 		}
 
 		String conversationId = (String)attributes.get("conversationId");
@@ -80,25 +70,6 @@ public class ConversationWrapper implements Conversation,
 
 		if (conversationType != null) {
 			setConversationType(conversationType);
-		}
-
-		String conversationVisibility = (String)attributes.get(
-				"conversationVisibility");
-
-		if (conversationVisibility != null) {
-			setConversationVisibility(conversationVisibility);
-		}
-
-		String conversationName = (String)attributes.get("conversationName");
-
-		if (conversationName != null) {
-			setConversationName(conversationName);
-		}
-
-		Integer unreadMessages = (Integer)attributes.get("unreadMessages");
-
-		if (unreadMessages != null) {
-			setUnreadMessages(unreadMessages);
 		}
 	}
 
@@ -139,44 +110,6 @@ public class ConversationWrapper implements Conversation,
 	}
 
 	/**
-	* Returns the user ID of this conversation.
-	*
-	* @return the user ID of this conversation
-	*/
-	public long getUserId() {
-		return _conversation.getUserId();
-	}
-
-	/**
-	* Sets the user ID of this conversation.
-	*
-	* @param userId the user ID of this conversation
-	*/
-	public void setUserId(long userId) {
-		_conversation.setUserId(userId);
-	}
-
-	/**
-	* Returns the user uuid of this conversation.
-	*
-	* @return the user uuid of this conversation
-	* @throws SystemException if a system exception occurred
-	*/
-	public java.lang.String getUserUuid()
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return _conversation.getUserUuid();
-	}
-
-	/**
-	* Sets the user uuid of this conversation.
-	*
-	* @param userUuid the user uuid of this conversation
-	*/
-	public void setUserUuid(java.lang.String userUuid) {
-		_conversation.setUserUuid(userUuid);
-	}
-
-	/**
 	* Returns the conversation ID of this conversation.
 	*
 	* @return the conversation ID of this conversation
@@ -210,61 +143,6 @@ public class ConversationWrapper implements Conversation,
 	*/
 	public void setConversationType(java.lang.String conversationType) {
 		_conversation.setConversationType(conversationType);
-	}
-
-	/**
-	* Returns the conversation visibility of this conversation.
-	*
-	* @return the conversation visibility of this conversation
-	*/
-	public java.lang.String getConversationVisibility() {
-		return _conversation.getConversationVisibility();
-	}
-
-	/**
-	* Sets the conversation visibility of this conversation.
-	*
-	* @param conversationVisibility the conversation visibility of this conversation
-	*/
-	public void setConversationVisibility(
-		java.lang.String conversationVisibility) {
-		_conversation.setConversationVisibility(conversationVisibility);
-	}
-
-	/**
-	* Returns the conversation name of this conversation.
-	*
-	* @return the conversation name of this conversation
-	*/
-	public java.lang.String getConversationName() {
-		return _conversation.getConversationName();
-	}
-
-	/**
-	* Sets the conversation name of this conversation.
-	*
-	* @param conversationName the conversation name of this conversation
-	*/
-	public void setConversationName(java.lang.String conversationName) {
-		_conversation.setConversationName(conversationName);
-	}
-
-	/**
-	* Returns the unread messages of this conversation.
-	*
-	* @return the unread messages of this conversation
-	*/
-	public int getUnreadMessages() {
-		return _conversation.getUnreadMessages();
-	}
-
-	/**
-	* Sets the unread messages of this conversation.
-	*
-	* @param unreadMessages the unread messages of this conversation
-	*/
-	public void setUnreadMessages(int unreadMessages) {
-		_conversation.setUnreadMessages(unreadMessages);
 	}
 
 	public boolean isNew() {

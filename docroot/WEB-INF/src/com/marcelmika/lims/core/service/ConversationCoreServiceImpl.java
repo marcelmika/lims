@@ -2,6 +2,7 @@ package com.marcelmika.lims.core.service;
 
 import com.marcelmika.lims.api.events.conversation.*;
 import com.marcelmika.lims.jabber.service.ConversationJabberService;
+import com.marcelmika.lims.persistence.service.ConversationPersistenceService;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -16,14 +17,17 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
 
     // Dependencies
     ConversationJabberService conversationJabberService;
+    ConversationPersistenceService conversationPersistenceService;
 
     /**
      * Constructor
      *
      * @param conversationJabberService jabber service
      */
-    public ConversationCoreServiceImpl(ConversationJabberService conversationJabberService) {
+    public ConversationCoreServiceImpl(ConversationJabberService conversationJabberService,
+                                       ConversationPersistenceService conversationPersistenceService) {
         this.conversationJabberService = conversationJabberService;
+        this.conversationPersistenceService = conversationPersistenceService;
     }
 
     /**
@@ -80,20 +84,14 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      */
     @Override
     public CreateConversationResponseEvent createConversation(CreateConversationRequestEvent event) {
-
-       return conversationJabberService.createConversation(event);
-
-
-// [1] Create conversation
-//        Conversation conversation = ChatUtil.createConversation(pollerRequest.getUserId(), participants, message);
-//
-//        // [2] Open conversation for the owner
-//        ChatUtil.openConversation(pollerRequest.getUserId(), conversation.getConversationId());
-//
-//        // [3] Open conversation for all participants
-//        for (com.marcelmika.lims.model.Buddy participant : participants) {
-//            ChatUtil.openConversation(participant.getUserId(), conversation.getConversationId());
-//        }
+        // Create conversation in jabber
+        CreateConversationResponseEvent responseEvent = conversationJabberService.createConversation(event);
+        // Check error
+        if (!responseEvent.isSuccess()) {
+            return responseEvent;
+        }
+        // Save to persistence
+        return conversationPersistenceService.createConversation(event);
     }
 
     /**

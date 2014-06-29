@@ -2,6 +2,8 @@ package com.marcelmika.lims.jabber.domain;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.util.PortalUtil;
 import com.marcelmika.lims.api.entity.BuddyDetails;
 import com.marcelmika.lims.jabber.utils.Jid;
 import org.jivesoftware.smack.Chat;

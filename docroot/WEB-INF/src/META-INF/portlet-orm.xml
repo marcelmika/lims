@@ -28,16 +28,27 @@
 	<mapped-superclass class="com.marcelmika.lims.model.impl.ConversationModelImpl">
 		<attributes>
 			<id name="cid" />
-			<basic name="userId" />
 			<basic name="conversationId" />
 			<basic name="conversationType" />
-			<basic name="conversationVisibility" />
-			<basic name="conversationName" />
-			<basic name="unreadMessages" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
-			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.marcelmika.lims.model.impl.MessageModelImpl">
+		<id-class class="com.marcelmika.lims.service.persistence.MessagePK" />
+		<attributes>
+			<id name="mid" />
+			<id name="cid" />
+			<basic name="creatorId" />
+			<basic name="createdAt" />
+			<basic name="messageHash" />
+			<basic name="text">
+				<column name="TEXT_" />
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.marcelmika.lims.model.impl.OpenedConversationModelImpl">
@@ -62,6 +73,19 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.marcelmika.lims.model.impl.ParticipantModelImpl">
+		<id-class class="com.marcelmika.lims.service.persistence.ParticipantPK" />
+		<attributes>
+			<id name="pid" />
+			<id name="cid" />
+			<basic name="participantId" />
+			<basic name="unreadMessagesCount" />
+			<basic name="isOpened" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.marcelmika.lims.model.impl.SettingsModelImpl">
 		<attributes>
 			<id name="sid" />
@@ -83,12 +107,20 @@
 		<table name="LiferayLIMS_Conversation" />
 		<attributes />
 	</entity>
+	<entity class="com.marcelmika.lims.model.impl.MessageImpl" name="Message">
+		<table name="LiferayLIMS_Message" />
+		<attributes />
+	</entity>
 	<entity class="com.marcelmika.lims.model.impl.OpenedConversationImpl" name="OpenedConversation">
 		<table name="LiferayLIMS_OpenedConversation" />
 		<attributes />
 	</entity>
 	<entity class="com.marcelmika.lims.model.impl.PanelImpl" name="Panel">
 		<table name="LiferayLIMS_Panel" />
+		<attributes />
+	</entity>
+	<entity class="com.marcelmika.lims.model.impl.ParticipantImpl" name="Participant">
+		<table name="LiferayLIMS_Participant" />
 		<attributes />
 	</entity>
 	<entity class="com.marcelmika.lims.model.impl.SettingsImpl" name="Settings">

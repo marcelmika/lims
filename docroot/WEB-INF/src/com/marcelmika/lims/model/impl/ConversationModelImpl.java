@@ -15,7 +15,6 @@
 package com.marcelmika.lims.model.impl;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -23,7 +22,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.util.PortalUtil;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
@@ -61,14 +59,10 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 	public static final String TABLE_NAME = "LiferayLIMS_Conversation";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "cid", Types.BIGINT },
-			{ "userId", Types.BIGINT },
 			{ "conversationId", Types.VARCHAR },
-			{ "conversationType", Types.VARCHAR },
-			{ "conversationVisibility", Types.VARCHAR },
-			{ "conversationName", Types.VARCHAR },
-			{ "unreadMessages", Types.INTEGER }
+			{ "conversationType", Types.VARCHAR }
 		};
-	public static final String TABLE_SQL_CREATE = "create table LiferayLIMS_Conversation (cid LONG not null primary key,userId LONG,conversationId VARCHAR(75) null,conversationType VARCHAR(75) null,conversationVisibility VARCHAR(75) null,conversationName VARCHAR(75) null,unreadMessages INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table LiferayLIMS_Conversation (cid LONG not null primary key,conversationId VARCHAR(75) null,conversationType VARCHAR(75) null)";
 	public static final String TABLE_SQL_DROP = "drop table LiferayLIMS_Conversation";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
@@ -79,11 +73,7 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
 				"value.object.finder.cache.enabled.com.marcelmika.lims.model.Conversation"),
 			true);
-	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
-				"value.object.column.bitmask.enabled.com.marcelmika.lims.model.Conversation"),
-			true);
-	public static long CONVERSATIONID_COLUMN_BITMASK = 1L;
-	public static long USERID_COLUMN_BITMASK = 2L;
+	public static final boolean COLUMN_BITMASK_ENABLED = false;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
 				"lock.expiration.time.com.marcelmika.lims.model.Conversation"));
 
@@ -119,12 +109,8 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("cid", getCid());
-		attributes.put("userId", getUserId());
 		attributes.put("conversationId", getConversationId());
 		attributes.put("conversationType", getConversationType());
-		attributes.put("conversationVisibility", getConversationVisibility());
-		attributes.put("conversationName", getConversationName());
-		attributes.put("unreadMessages", getUnreadMessages());
 
 		return attributes;
 	}
@@ -135,12 +121,6 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 
 		if (cid != null) {
 			setCid(cid);
-		}
-
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
 		}
 
 		String conversationId = (String)attributes.get("conversationId");
@@ -154,25 +134,6 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 		if (conversationType != null) {
 			setConversationType(conversationType);
 		}
-
-		String conversationVisibility = (String)attributes.get(
-				"conversationVisibility");
-
-		if (conversationVisibility != null) {
-			setConversationVisibility(conversationVisibility);
-		}
-
-		String conversationName = (String)attributes.get("conversationName");
-
-		if (conversationName != null) {
-			setConversationName(conversationName);
-		}
-
-		Integer unreadMessages = (Integer)attributes.get("unreadMessages");
-
-		if (unreadMessages != null) {
-			setUnreadMessages(unreadMessages);
-		}
 	}
 
 	public long getCid() {
@@ -181,34 +142,6 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 
 	public void setCid(long cid) {
 		_cid = cid;
-	}
-
-	public long getUserId() {
-		return _userId;
-	}
-
-	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
-
-		_userId = userId;
-	}
-
-	public String getUserUuid() throws SystemException {
-		return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
-	}
-
-	public void setUserUuid(String userUuid) {
-		_userUuid = userUuid;
-	}
-
-	public long getOriginalUserId() {
-		return _originalUserId;
 	}
 
 	public String getConversationId() {
@@ -221,17 +154,7 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 	}
 
 	public void setConversationId(String conversationId) {
-		_columnBitmask |= CONVERSATIONID_COLUMN_BITMASK;
-
-		if (_originalConversationId == null) {
-			_originalConversationId = _conversationId;
-		}
-
 		_conversationId = conversationId;
-	}
-
-	public String getOriginalConversationId() {
-		return GetterUtil.getString(_originalConversationId);
 	}
 
 	public String getConversationType() {
@@ -245,44 +168,6 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 
 	public void setConversationType(String conversationType) {
 		_conversationType = conversationType;
-	}
-
-	public String getConversationVisibility() {
-		if (_conversationVisibility == null) {
-			return StringPool.BLANK;
-		}
-		else {
-			return _conversationVisibility;
-		}
-	}
-
-	public void setConversationVisibility(String conversationVisibility) {
-		_conversationVisibility = conversationVisibility;
-	}
-
-	public String getConversationName() {
-		if (_conversationName == null) {
-			return StringPool.BLANK;
-		}
-		else {
-			return _conversationName;
-		}
-	}
-
-	public void setConversationName(String conversationName) {
-		_conversationName = conversationName;
-	}
-
-	public int getUnreadMessages() {
-		return _unreadMessages;
-	}
-
-	public void setUnreadMessages(int unreadMessages) {
-		_unreadMessages = unreadMessages;
-	}
-
-	public long getColumnBitmask() {
-		return _columnBitmask;
 	}
 
 	@Override
@@ -317,12 +202,8 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 		ConversationImpl conversationImpl = new ConversationImpl();
 
 		conversationImpl.setCid(getCid());
-		conversationImpl.setUserId(getUserId());
 		conversationImpl.setConversationId(getConversationId());
 		conversationImpl.setConversationType(getConversationType());
-		conversationImpl.setConversationVisibility(getConversationVisibility());
-		conversationImpl.setConversationName(getConversationName());
-		conversationImpl.setUnreadMessages(getUnreadMessages());
 
 		conversationImpl.resetOriginalValues();
 
@@ -372,15 +253,6 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 
 	@Override
 	public void resetOriginalValues() {
-		ConversationModelImpl conversationModelImpl = this;
-
-		conversationModelImpl._originalUserId = conversationModelImpl._userId;
-
-		conversationModelImpl._setOriginalUserId = false;
-
-		conversationModelImpl._originalConversationId = conversationModelImpl._conversationId;
-
-		conversationModelImpl._columnBitmask = 0;
 	}
 
 	@Override
@@ -388,8 +260,6 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 		ConversationCacheModel conversationCacheModel = new ConversationCacheModel();
 
 		conversationCacheModel.cid = getCid();
-
-		conversationCacheModel.userId = getUserId();
 
 		conversationCacheModel.conversationId = getConversationId();
 
@@ -407,53 +277,26 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 			conversationCacheModel.conversationType = null;
 		}
 
-		conversationCacheModel.conversationVisibility = getConversationVisibility();
-
-		String conversationVisibility = conversationCacheModel.conversationVisibility;
-
-		if ((conversationVisibility != null) &&
-				(conversationVisibility.length() == 0)) {
-			conversationCacheModel.conversationVisibility = null;
-		}
-
-		conversationCacheModel.conversationName = getConversationName();
-
-		String conversationName = conversationCacheModel.conversationName;
-
-		if ((conversationName != null) && (conversationName.length() == 0)) {
-			conversationCacheModel.conversationName = null;
-		}
-
-		conversationCacheModel.unreadMessages = getUnreadMessages();
-
 		return conversationCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(7);
 
 		sb.append("{cid=");
 		sb.append(getCid());
-		sb.append(", userId=");
-		sb.append(getUserId());
 		sb.append(", conversationId=");
 		sb.append(getConversationId());
 		sb.append(", conversationType=");
 		sb.append(getConversationType());
-		sb.append(", conversationVisibility=");
-		sb.append(getConversationVisibility());
-		sb.append(", conversationName=");
-		sb.append(getConversationName());
-		sb.append(", unreadMessages=");
-		sb.append(getUnreadMessages());
 		sb.append("}");
 
 		return sb.toString();
 	}
 
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("<model><model-name>");
 		sb.append("com.marcelmika.lims.model.Conversation");
@@ -464,28 +307,12 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 		sb.append(getCid());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
 			"<column><column-name>conversationId</column-name><column-value><![CDATA[");
 		sb.append(getConversationId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>conversationType</column-name><column-value><![CDATA[");
 		sb.append(getConversationType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>conversationVisibility</column-name><column-value><![CDATA[");
-		sb.append(getConversationVisibility());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>conversationName</column-name><column-value><![CDATA[");
-		sb.append(getConversationName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>unreadMessages</column-name><column-value><![CDATA[");
-		sb.append(getUnreadMessages());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -498,16 +325,7 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 			Conversation.class
 		};
 	private long _cid;
-	private long _userId;
-	private String _userUuid;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _conversationId;
-	private String _originalConversationId;
 	private String _conversationType;
-	private String _conversationVisibility;
-	private String _conversationName;
-	private int _unreadMessages;
-	private long _columnBitmask;
 	private Conversation _escapedModel;
 }

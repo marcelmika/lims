@@ -31,18 +31,32 @@
     <!-- Conversation -->
     <entity name='Conversation' local-service='true' remote-service='false'>
         <column name='cid' type='long' primary='true'/>
-        <column name='userId' type='long'/>
         <column name='conversationId' type='String'/>
         <column name='conversationType' type='String'/>
-        <column name='conversationVisibility' type='String'/>
-        <column name='conversationName' type='String'/>
-        <column name='unreadMessages' type='int'/>
-        <finder name='UserId_conversationId' return-type='Conversation'>
-            <finder-column name='userId'/>
-            <finder-column name='conversationId'/>
+    </entity>
+
+    <!-- Message -->
+    <entity name='Message' local-service='true' remote-service='false'>
+        <column name='mid' type='long' primary='true'/>
+        <column name='cid' type='long' primary='true'/>
+        <column name='creatorId' type='long'/>
+        <column name='createdAt' type='long'/>
+        <column name='messageHash' type='String'/>
+        <column name='text' type='String'/>
+        <finder name='CreatorId' return-type='Buddy'>
+            <finder-column name='creatorId'/>
         </finder>
-        <finder name='UserId' return-type='Collection'>
-            <finder-column name='userId'/>
+    </entity>
+
+    <!-- Participant -->
+    <entity name='Participant' local-service='true' remote-service='false'>
+        <column name='pid' type='long' primary='true'/>
+        <column name='cid' type='long' primary='true'/>
+        <column name='participantId' type='long'/>
+        <column name='unreadMessagesCount' type='int'/>
+        <column name='isOpened' type='boolean'/>
+        <finder name='ParticipantId' return-type='Buddy'>
+            <finder-column name='participantId'/>
         </finder>
     </entity>
 

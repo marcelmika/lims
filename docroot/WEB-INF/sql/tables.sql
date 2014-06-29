@@ -13,12 +13,18 @@ create table LiferayLIMS_Buddy (
 
 create table LiferayLIMS_Conversation (
 	cid LONG not null primary key,
-	userId LONG,
 	conversationId VARCHAR(75) null,
-	conversationType VARCHAR(75) null,
-	conversationVisibility VARCHAR(75) null,
-	conversationName VARCHAR(75) null,
-	unreadMessages INTEGER
+	conversationType VARCHAR(75) null
+);
+
+create table LiferayLIMS_Message (
+	mid LONG not null,
+	cid LONG not null,
+	creatorId LONG,
+	createdAt LONG,
+	messageHash VARCHAR(75) null,
+	text_ VARCHAR(75) null,
+	primary key (mid, cid)
 );
 
 create table LiferayLIMS_OpenedConversation (
@@ -31,6 +37,15 @@ create table LiferayLIMS_Panel (
 	pid LONG not null primary key,
 	userId LONG,
 	activePanelId VARCHAR(75) null
+);
+
+create table LiferayLIMS_Participant (
+	pid LONG not null,
+	cid LONG not null,
+	participantId LONG,
+	unreadMessagesCount INTEGER,
+	isOpened BOOLEAN,
+	primary key (pid, cid)
 );
 
 create table LiferayLIMS_Settings (

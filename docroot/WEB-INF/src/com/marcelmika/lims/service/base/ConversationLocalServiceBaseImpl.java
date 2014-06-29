@@ -40,13 +40,17 @@ import com.liferay.portal.service.persistence.UserPersistence;
 import com.marcelmika.lims.model.Conversation;
 import com.marcelmika.lims.service.BuddyLocalService;
 import com.marcelmika.lims.service.ConversationLocalService;
+import com.marcelmika.lims.service.MessageLocalService;
 import com.marcelmika.lims.service.OpenedConversationLocalService;
 import com.marcelmika.lims.service.PanelLocalService;
+import com.marcelmika.lims.service.ParticipantLocalService;
 import com.marcelmika.lims.service.SettingsLocalService;
 import com.marcelmika.lims.service.persistence.BuddyPersistence;
 import com.marcelmika.lims.service.persistence.ConversationPersistence;
+import com.marcelmika.lims.service.persistence.MessagePersistence;
 import com.marcelmika.lims.service.persistence.OpenedConversationPersistence;
 import com.marcelmika.lims.service.persistence.PanelPersistence;
+import com.marcelmika.lims.service.persistence.ParticipantPersistence;
 import com.marcelmika.lims.service.persistence.SettingsPersistence;
 
 import java.io.Serializable;
@@ -354,6 +358,42 @@ public abstract class ConversationLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the message local service.
+	 *
+	 * @return the message local service
+	 */
+	public MessageLocalService getMessageLocalService() {
+		return messageLocalService;
+	}
+
+	/**
+	 * Sets the message local service.
+	 *
+	 * @param messageLocalService the message local service
+	 */
+	public void setMessageLocalService(MessageLocalService messageLocalService) {
+		this.messageLocalService = messageLocalService;
+	}
+
+	/**
+	 * Returns the message persistence.
+	 *
+	 * @return the message persistence
+	 */
+	public MessagePersistence getMessagePersistence() {
+		return messagePersistence;
+	}
+
+	/**
+	 * Sets the message persistence.
+	 *
+	 * @param messagePersistence the message persistence
+	 */
+	public void setMessagePersistence(MessagePersistence messagePersistence) {
+		this.messagePersistence = messagePersistence;
+	}
+
+	/**
 	 * Returns the opened conversation local service.
 	 *
 	 * @return the opened conversation local service
@@ -425,6 +465,44 @@ public abstract class ConversationLocalServiceBaseImpl
 	 */
 	public void setPanelPersistence(PanelPersistence panelPersistence) {
 		this.panelPersistence = panelPersistence;
+	}
+
+	/**
+	 * Returns the participant local service.
+	 *
+	 * @return the participant local service
+	 */
+	public ParticipantLocalService getParticipantLocalService() {
+		return participantLocalService;
+	}
+
+	/**
+	 * Sets the participant local service.
+	 *
+	 * @param participantLocalService the participant local service
+	 */
+	public void setParticipantLocalService(
+		ParticipantLocalService participantLocalService) {
+		this.participantLocalService = participantLocalService;
+	}
+
+	/**
+	 * Returns the participant persistence.
+	 *
+	 * @return the participant persistence
+	 */
+	public ParticipantPersistence getParticipantPersistence() {
+		return participantPersistence;
+	}
+
+	/**
+	 * Sets the participant persistence.
+	 *
+	 * @param participantPersistence the participant persistence
+	 */
+	public void setParticipantPersistence(
+		ParticipantPersistence participantPersistence) {
+		this.participantPersistence = participantPersistence;
 	}
 
 	/**
@@ -678,6 +756,10 @@ public abstract class ConversationLocalServiceBaseImpl
 	protected ConversationLocalService conversationLocalService;
 	@BeanReference(type = ConversationPersistence.class)
 	protected ConversationPersistence conversationPersistence;
+	@BeanReference(type = MessageLocalService.class)
+	protected MessageLocalService messageLocalService;
+	@BeanReference(type = MessagePersistence.class)
+	protected MessagePersistence messagePersistence;
 	@BeanReference(type = OpenedConversationLocalService.class)
 	protected OpenedConversationLocalService openedConversationLocalService;
 	@BeanReference(type = OpenedConversationPersistence.class)
@@ -686,6 +768,10 @@ public abstract class ConversationLocalServiceBaseImpl
 	protected PanelLocalService panelLocalService;
 	@BeanReference(type = PanelPersistence.class)
 	protected PanelPersistence panelPersistence;
+	@BeanReference(type = ParticipantLocalService.class)
+	protected ParticipantLocalService participantLocalService;
+	@BeanReference(type = ParticipantPersistence.class)
+	protected ParticipantPersistence participantPersistence;
 	@BeanReference(type = SettingsLocalService.class)
 	protected SettingsLocalService settingsLocalService;
 	@BeanReference(type = SettingsPersistence.class)

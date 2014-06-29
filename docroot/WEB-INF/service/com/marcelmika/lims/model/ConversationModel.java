@@ -15,7 +15,6 @@
 package com.marcelmika.lims.model;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.service.ServiceContext;
@@ -73,35 +72,6 @@ public interface ConversationModel extends BaseModel<Conversation> {
 	public void setCid(long cid);
 
 	/**
-	 * Returns the user ID of this conversation.
-	 *
-	 * @return the user ID of this conversation
-	 */
-	public long getUserId();
-
-	/**
-	 * Sets the user ID of this conversation.
-	 *
-	 * @param userId the user ID of this conversation
-	 */
-	public void setUserId(long userId);
-
-	/**
-	 * Returns the user uuid of this conversation.
-	 *
-	 * @return the user uuid of this conversation
-	 * @throws SystemException if a system exception occurred
-	 */
-	public String getUserUuid() throws SystemException;
-
-	/**
-	 * Sets the user uuid of this conversation.
-	 *
-	 * @param userUuid the user uuid of this conversation
-	 */
-	public void setUserUuid(String userUuid);
-
-	/**
 	 * Returns the conversation ID of this conversation.
 	 *
 	 * @return the conversation ID of this conversation
@@ -130,50 +100,6 @@ public interface ConversationModel extends BaseModel<Conversation> {
 	 * @param conversationType the conversation type of this conversation
 	 */
 	public void setConversationType(String conversationType);
-
-	/**
-	 * Returns the conversation visibility of this conversation.
-	 *
-	 * @return the conversation visibility of this conversation
-	 */
-	@AutoEscape
-	public String getConversationVisibility();
-
-	/**
-	 * Sets the conversation visibility of this conversation.
-	 *
-	 * @param conversationVisibility the conversation visibility of this conversation
-	 */
-	public void setConversationVisibility(String conversationVisibility);
-
-	/**
-	 * Returns the conversation name of this conversation.
-	 *
-	 * @return the conversation name of this conversation
-	 */
-	@AutoEscape
-	public String getConversationName();
-
-	/**
-	 * Sets the conversation name of this conversation.
-	 *
-	 * @param conversationName the conversation name of this conversation
-	 */
-	public void setConversationName(String conversationName);
-
-	/**
-	 * Returns the unread messages of this conversation.
-	 *
-	 * @return the unread messages of this conversation
-	 */
-	public int getUnreadMessages();
-
-	/**
-	 * Sets the unread messages of this conversation.
-	 *
-	 * @param unreadMessages the unread messages of this conversation
-	 */
-	public void setUnreadMessages(int unreadMessages);
 
 	public boolean isNew();
 

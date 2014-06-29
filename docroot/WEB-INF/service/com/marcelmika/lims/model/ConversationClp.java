@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
-import com.liferay.portal.util.PortalUtil;
 
 import com.marcelmika.lims.service.ClpSerializer;
 import com.marcelmika.lims.service.ConversationLocalServiceUtil;
@@ -69,12 +68,8 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("cid", getCid());
-		attributes.put("userId", getUserId());
 		attributes.put("conversationId", getConversationId());
 		attributes.put("conversationType", getConversationType());
-		attributes.put("conversationVisibility", getConversationVisibility());
-		attributes.put("conversationName", getConversationName());
-		attributes.put("unreadMessages", getUnreadMessages());
 
 		return attributes;
 	}
@@ -87,12 +82,6 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 			setCid(cid);
 		}
 
-		Long userId = (Long)attributes.get("userId");
-
-		if (userId != null) {
-			setUserId(userId);
-		}
-
 		String conversationId = (String)attributes.get("conversationId");
 
 		if (conversationId != null) {
@@ -103,25 +92,6 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 
 		if (conversationType != null) {
 			setConversationType(conversationType);
-		}
-
-		String conversationVisibility = (String)attributes.get(
-				"conversationVisibility");
-
-		if (conversationVisibility != null) {
-			setConversationVisibility(conversationVisibility);
-		}
-
-		String conversationName = (String)attributes.get("conversationName");
-
-		if (conversationName != null) {
-			setConversationName(conversationName);
-		}
-
-		Integer unreadMessages = (Integer)attributes.get("unreadMessages");
-
-		if (unreadMessages != null) {
-			setUnreadMessages(unreadMessages);
 		}
 	}
 
@@ -144,35 +114,6 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 				throw new UnsupportedOperationException(e);
 			}
 		}
-	}
-
-	public long getUserId() {
-		return _userId;
-	}
-
-	public void setUserId(long userId) {
-		_userId = userId;
-
-		if (_conversationRemoteModel != null) {
-			try {
-				Class<?> clazz = _conversationRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setUserId", long.class);
-
-				method.invoke(_conversationRemoteModel, userId);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	public String getUserUuid() throws SystemException {
-		return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
-	}
-
-	public void setUserUuid(String userUuid) {
-		_userUuid = userUuid;
 	}
 
 	public String getConversationId() {
@@ -212,71 +153,6 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 						String.class);
 
 				method.invoke(_conversationRemoteModel, conversationType);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	public String getConversationVisibility() {
-		return _conversationVisibility;
-	}
-
-	public void setConversationVisibility(String conversationVisibility) {
-		_conversationVisibility = conversationVisibility;
-
-		if (_conversationRemoteModel != null) {
-			try {
-				Class<?> clazz = _conversationRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setConversationVisibility",
-						String.class);
-
-				method.invoke(_conversationRemoteModel, conversationVisibility);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	public String getConversationName() {
-		return _conversationName;
-	}
-
-	public void setConversationName(String conversationName) {
-		_conversationName = conversationName;
-
-		if (_conversationRemoteModel != null) {
-			try {
-				Class<?> clazz = _conversationRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setConversationName",
-						String.class);
-
-				method.invoke(_conversationRemoteModel, conversationName);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	public int getUnreadMessages() {
-		return _unreadMessages;
-	}
-
-	public void setUnreadMessages(int unreadMessages) {
-		_unreadMessages = unreadMessages;
-
-		if (_conversationRemoteModel != null) {
-			try {
-				Class<?> clazz = _conversationRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setUnreadMessages", int.class);
-
-				method.invoke(_conversationRemoteModel, unreadMessages);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -357,12 +233,8 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 		ConversationClp clone = new ConversationClp();
 
 		clone.setCid(getCid());
-		clone.setUserId(getUserId());
 		clone.setConversationId(getConversationId());
 		clone.setConversationType(getConversationType());
-		clone.setConversationVisibility(getConversationVisibility());
-		clone.setConversationName(getConversationName());
-		clone.setUnreadMessages(getUnreadMessages());
 
 		return clone;
 	}
@@ -410,29 +282,21 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(7);
 
 		sb.append("{cid=");
 		sb.append(getCid());
-		sb.append(", userId=");
-		sb.append(getUserId());
 		sb.append(", conversationId=");
 		sb.append(getConversationId());
 		sb.append(", conversationType=");
 		sb.append(getConversationType());
-		sb.append(", conversationVisibility=");
-		sb.append(getConversationVisibility());
-		sb.append(", conversationName=");
-		sb.append(getConversationName());
-		sb.append(", unreadMessages=");
-		sb.append(getUnreadMessages());
 		sb.append("}");
 
 		return sb.toString();
 	}
 
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("<model><model-name>");
 		sb.append("com.marcelmika.lims.model.Conversation");
@@ -443,28 +307,12 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 		sb.append(getCid());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
 			"<column><column-name>conversationId</column-name><column-value><![CDATA[");
 		sb.append(getConversationId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>conversationType</column-name><column-value><![CDATA[");
 		sb.append(getConversationType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>conversationVisibility</column-name><column-value><![CDATA[");
-		sb.append(getConversationVisibility());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>conversationName</column-name><column-value><![CDATA[");
-		sb.append(getConversationName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>unreadMessages</column-name><column-value><![CDATA[");
-		sb.append(getUnreadMessages());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -473,12 +321,7 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 	}
 
 	private long _cid;
-	private long _userId;
-	private String _userUuid;
 	private String _conversationId;
 	private String _conversationType;
-	private String _conversationVisibility;
-	private String _conversationName;
-	private int _unreadMessages;
 	private BaseModel<?> _conversationRemoteModel;
 }

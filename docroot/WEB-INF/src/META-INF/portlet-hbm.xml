@@ -4,8 +4,10 @@
 <hibernate-mapping default-lazy="false" auto-import="false">
 	<import class="com.marcelmika.lims.model.Buddy" />
 	<import class="com.marcelmika.lims.model.Conversation" />
+	<import class="com.marcelmika.lims.model.Message" />
 	<import class="com.marcelmika.lims.model.OpenedConversation" />
 	<import class="com.marcelmika.lims.model.Panel" />
+	<import class="com.marcelmika.lims.model.Participant" />
 	<import class="com.marcelmika.lims.model.Settings" />
 	<class name="com.marcelmika.lims.model.impl.BuddyImpl" table="LiferayLIMS_Buddy">
 		<cache usage="read-write" />
@@ -27,12 +29,19 @@
 		<id name="cid" type="long">
 			<generator class="assigned" />
 		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="conversationId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="conversationType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="conversationVisibility" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="conversationName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="unreadMessages" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+	</class>
+	<class name="com.marcelmika.lims.model.impl.MessageImpl" table="LiferayLIMS_Message">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.marcelmika.lims.service.persistence.MessagePK">
+			<key-property name="mid" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="cid" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		</composite-id>
+		<property name="creatorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="createdAt" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="messageHash" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="text" type="com.liferay.portal.dao.orm.hibernate.StringType" column="text_" />
 	</class>
 	<class name="com.marcelmika.lims.model.impl.OpenedConversationImpl" table="LiferayLIMS_OpenedConversation">
 		<cache usage="read-write" />
@@ -49,6 +58,16 @@
 		</id>
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="activePanelId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.marcelmika.lims.model.impl.ParticipantImpl" table="LiferayLIMS_Participant">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.marcelmika.lims.service.persistence.ParticipantPK">
+			<key-property name="pid" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="cid" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		</composite-id>
+		<property name="participantId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="unreadMessagesCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="isOpened" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.marcelmika.lims.model.impl.SettingsImpl" table="LiferayLIMS_Settings">
 		<cache usage="read-write" />

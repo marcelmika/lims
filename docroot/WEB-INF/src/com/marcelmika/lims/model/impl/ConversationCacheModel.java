@@ -33,22 +33,14 @@ public class ConversationCacheModel implements CacheModel<Conversation>,
 	Serializable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(7);
 
 		sb.append("{cid=");
 		sb.append(cid);
-		sb.append(", userId=");
-		sb.append(userId);
 		sb.append(", conversationId=");
 		sb.append(conversationId);
 		sb.append(", conversationType=");
 		sb.append(conversationType);
-		sb.append(", conversationVisibility=");
-		sb.append(conversationVisibility);
-		sb.append(", conversationName=");
-		sb.append(conversationName);
-		sb.append(", unreadMessages=");
-		sb.append(unreadMessages);
 		sb.append("}");
 
 		return sb.toString();
@@ -58,7 +50,6 @@ public class ConversationCacheModel implements CacheModel<Conversation>,
 		ConversationImpl conversationImpl = new ConversationImpl();
 
 		conversationImpl.setCid(cid);
-		conversationImpl.setUserId(userId);
 
 		if (conversationId == null) {
 			conversationImpl.setConversationId(StringPool.BLANK);
@@ -74,32 +65,12 @@ public class ConversationCacheModel implements CacheModel<Conversation>,
 			conversationImpl.setConversationType(conversationType);
 		}
 
-		if (conversationVisibility == null) {
-			conversationImpl.setConversationVisibility(StringPool.BLANK);
-		}
-		else {
-			conversationImpl.setConversationVisibility(conversationVisibility);
-		}
-
-		if (conversationName == null) {
-			conversationImpl.setConversationName(StringPool.BLANK);
-		}
-		else {
-			conversationImpl.setConversationName(conversationName);
-		}
-
-		conversationImpl.setUnreadMessages(unreadMessages);
-
 		conversationImpl.resetOriginalValues();
 
 		return conversationImpl;
 	}
 
 	public long cid;
-	public long userId;
 	public String conversationId;
 	public String conversationType;
-	public String conversationVisibility;
-	public String conversationName;
-	public int unreadMessages;
 }

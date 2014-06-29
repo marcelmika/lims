@@ -1,8 +1,12 @@
 package com.marcelmika.lims.portal.processor;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.util.PortalUtil;
 import com.marcelmika.lims.api.events.ResponseEvent;
 import com.marcelmika.lims.api.events.buddy.UpdatePresenceBuddyRequestEvent;
 import com.marcelmika.lims.api.events.conversation.CreateConversationRequestEvent;
@@ -20,6 +24,7 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * @author Ing. Marcel Mika
@@ -99,8 +104,22 @@ public class PortletProcessor {
         Conversation conversation = JSONFactoryUtil.looseDeserialize(
                 request.getParameter("data"), Conversation.class
         );
+
+        // TODO: This should be solved more conceptually ----
         conversation.setConversationType(ConversationType.SINGLE_USER);
         conversation.setConversationId(conversation.getParticipants().get(0).getScreenName());
+        List<Buddy> participants = conversation.getParticipants();
+        Long companyId = PortalUtil.getCompanyId(request);
+        for (Buddy participant : participants) {
+            try {
+                Long userId = UserLocalServiceUtil.getUserIdByScreenName(companyId, participant.getScreenName());
+                participant.setBuddyId(userId);
+            } catch (Exception e) {
+                writeError("No user found", response);
+                return;
+            }
+        }
+        // ----
 
         log.info(request.getParameter("data"));
         log.info(conversation);
@@ -110,10 +129,6 @@ public class PortletProcessor {
         );
 
         log.info("Crate conversation STATUS: " + responseEvent.getStatus());
-        if (responseEvent.getException() != null) {
-            responseEvent.getException().printStackTrace();
-        }
-
 
         // On success
         if (responseEvent.isSuccess()) {

@@ -15,12 +15,16 @@
 	</model>
 	<model name="com.marcelmika.lims.model.Conversation">
 		<field name="cid" type="long" />
-		<field name="userId" type="long" />
 		<field name="conversationId" type="String" />
 		<field name="conversationType" type="String" />
-		<field name="conversationVisibility" type="String" />
-		<field name="conversationName" type="String" />
-		<field name="unreadMessages" type="int" />
+	</model>
+	<model name="com.marcelmika.lims.model.Message">
+		<field name="mid" type="long" />
+		<field name="cid" type="long" />
+		<field name="creatorId" type="long" />
+		<field name="createdAt" type="long" />
+		<field name="messageHash" type="String" />
+		<field name="text" type="String" />
 	</model>
 	<model name="com.marcelmika.lims.model.OpenedConversation">
 		<field name="ocid" type="long" />
@@ -31,6 +35,13 @@
 		<field name="pid" type="long" />
 		<field name="userId" type="long" />
 		<field name="activePanelId" type="String" />
+	</model>
+	<model name="com.marcelmika.lims.model.Participant">
+		<field name="pid" type="long" />
+		<field name="cid" type="long" />
+		<field name="participantId" type="long" />
+		<field name="unreadMessagesCount" type="int" />
+		<field name="isOpened" type="boolean" />
 	</model>
 	<model name="com.marcelmika.lims.model.Settings">
 		<field name="sid" type="long" />

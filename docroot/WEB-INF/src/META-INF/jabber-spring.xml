@@ -32,6 +32,7 @@
     <bean id="com.marcelmika.lims.core.service.ConversationCoreService"
           class="com.marcelmika.lims.core.service.ConversationCoreServiceImpl">
         <constructor-arg index="0" ref="com.marcelmika.lims.jabber.service.ConversationJabberService"/>
+        <constructor-arg index="1" ref="com.marcelmika.lims.persistence.service.ConversationPersistenceService"/>
     </bean>
 
     <bean id="com.marcelmika.lims.core.service.ConversationCoreServiceUtil"
@@ -77,6 +78,11 @@
     <!-- Buddy Persistence Service -->
     <bean id="com.marcelmika.lims.persistence.service.BuddyPersistenceService"
           class="com.marcelmika.lims.persistence.service.BuddyPersistenceServiceImpl"/>
+
+
+    <!-- Conversation Persistence Service -->
+    <bean id="com.marcelmika.lims.persistence.service.ConversationPersistenceService"
+          class="com.marcelmika.lims.persistence.service.ConversationPersistenceServiceImpl"/>
 
 
     <!-- Group Core Service -->

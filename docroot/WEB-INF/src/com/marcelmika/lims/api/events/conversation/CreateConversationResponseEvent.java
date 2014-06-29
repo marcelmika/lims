@@ -19,6 +19,7 @@ public class CreateConversationResponseEvent extends ResponseEvent {
         ERROR_UNKNOWN_CONVERSATION_TYPE, // Unknown conversation type
         ERROR_NOT_IMPLEMENTED, // Functionality is not implemented yet
         ERROR_JABBER, // Error with jabber occurred
+        ERROR_PERSISTENCE, // Error with persistence occurred
     }
 
     /**
