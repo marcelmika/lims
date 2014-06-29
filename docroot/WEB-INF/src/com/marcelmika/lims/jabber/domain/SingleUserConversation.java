@@ -41,7 +41,7 @@ public class SingleUserConversation implements MessageListener {
         // Create new instance of conversation
         SingleUserConversation conversation = new SingleUserConversation();
         // Map properties
-        conversation.conversationId = chat.getThreadID();
+        conversation.conversationId = chat.getParticipant();
         // Map relationships
         conversation.participant = Buddy.fromChat(chat);
         conversation.conversationType = ConversationType.SINGLE_USER;

@@ -98,7 +98,7 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
         // model's data. See the docs for Y.Attribute to learn more about defining
         // attributes.
 
-        participant: {
+        participants: {
             value: "" // default value
         },
 

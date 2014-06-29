@@ -80,7 +80,9 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      */
     @Override
     public CreateConversationResponseEvent createConversation(CreateConversationRequestEvent event) {
-        throw new NotImplementedException();
+
+       return conversationJabberService.createConversation(event);
+
 
 // [1] Create conversation
 //        Conversation conversation = ChatUtil.createConversation(pollerRequest.getUserId(), participants, message);

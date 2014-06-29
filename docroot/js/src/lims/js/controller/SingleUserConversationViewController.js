@@ -16,13 +16,14 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
     // us an opportunity to set up all sub controllers
     initializer: function () {
         var container = this.get('container'),
-            model = this.get('model');
+            model = this.get('model'),
+            participant = model.get('participants')[0];
 
         // Create content of the container
         container.set('innerHTML',
             Y.Lang.sub(this.template, {
-                conversationTitle: model.get('participant').get('fullName'),
-                triggerTitle: model.get('participant').get('fullName'),
+                conversationTitle: participant.get('fullName'),
+                triggerTitle: participant.get('fullName'),
                 unreadMessages: model.get('unreadMessages')
             })
         );

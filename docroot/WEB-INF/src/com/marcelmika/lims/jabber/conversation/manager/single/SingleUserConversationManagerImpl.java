@@ -10,7 +10,6 @@ import com.marcelmika.lims.jabber.utils.Jid;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManager;
 import org.jivesoftware.smack.ChatManagerListener;
-import org.jivesoftware.smack.XMPPException;
 
 import java.util.*;
 
@@ -49,6 +48,39 @@ public class SingleUserConversationManagerImpl implements SingleUserConversation
 
         // Add listener
         this.chatManager.addChatListener(this);
+    }
+
+    /**
+     * Creates new single user chat conversation
+     *
+     * @param conversation SingleUserConversation
+     */
+    @Override
+    public SingleUserConversation createConversation(SingleUserConversation conversation) throws JabberException {
+        // Find local conversation based on the id taken from conversation from parameter
+        SingleUserConversation localConversation = conversationMap.get(conversation.getConversationId());
+
+        // Conversation is not in system
+        if (localConversation == null) {
+            log.info("Adding new conversation");
+            try {
+                // Receiver
+                Buddy receiver = conversation.getParticipant();
+                // Receiver's Jid
+                String receiverJid = Jid.getJid(receiver.getScreenName());
+                // Create a new chat
+                Chat chat = chatManager.createChat(receiverJid, null);
+                // Create a conversation from chat
+                localConversation = createConversation(chat);
+
+            } catch (Exception e) {
+                log.error(e);
+                throw new JabberException(e);
+            }
+        }
+
+        // Return conversation
+        return localConversation;
     }
 
     /**

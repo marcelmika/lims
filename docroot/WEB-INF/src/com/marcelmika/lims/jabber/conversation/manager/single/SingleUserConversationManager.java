@@ -3,6 +3,7 @@ package com.marcelmika.lims.jabber.conversation.manager.single;
 import com.marcelmika.lims.jabber.JabberException;
 import com.marcelmika.lims.jabber.domain.Message;
 import com.marcelmika.lims.jabber.domain.SingleUserConversation;
+import com.marcelmika.lims.portal.domain.Conversation;
 import org.jivesoftware.smack.ChatManager;
 
 import java.util.List;
@@ -22,6 +23,12 @@ public interface SingleUserConversationManager {
      */
     public void setChatManager(ChatManager chatManager);
 
+    /**
+     * Creates new single user chat conversation
+     *
+     * @param conversation SingleUserConversation
+     */
+    public SingleUserConversation createConversation(SingleUserConversation conversation) throws JabberException;
 
     /**
      * Returns a list of all conversations

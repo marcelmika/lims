@@ -39,7 +39,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             if (!list.hasOwnProperty(listID)) {
                 // Create new conversation
                 conversation = new Y.LIMS.Model.ConversationModel({
-                    participant: buddy
+                    participants: [buddy]
                 });
                 conversation.save();
                 // Create new single user conversation and add it to the list

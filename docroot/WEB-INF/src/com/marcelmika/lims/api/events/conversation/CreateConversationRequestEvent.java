@@ -1,8 +1,9 @@
 package com.marcelmika.lims.api.events.conversation;
 
-import com.marcelmika.lims.api.events.RequestEvent;
-import com.marcelmika.lims.api.entity.BuddyCollectionDetails;
+import com.marcelmika.lims.api.entity.BuddyDetails;
+import com.marcelmika.lims.api.entity.ConversationDetails;
 import com.marcelmika.lims.api.entity.MessageDetails;
+import com.marcelmika.lims.api.events.RequestEvent;
 
 /**
  * @author Ing. Marcel Mika
@@ -12,16 +13,25 @@ import com.marcelmika.lims.api.entity.MessageDetails;
  */
 public class CreateConversationRequestEvent extends RequestEvent {
 
-    BuddyCollectionDetails buddyCollectionDetails;
-    MessageDetails initialMessage;
+    private final BuddyDetails creator;
+    private final ConversationDetails conversation;
+    private final MessageDetails initialMessage;
 
-    public CreateConversationRequestEvent(BuddyCollectionDetails buddyCollectionDetails, MessageDetails initialMessage) {
-        this.buddyCollectionDetails = buddyCollectionDetails;
+    public CreateConversationRequestEvent(final BuddyDetails creator,
+                                          final ConversationDetails conversation,
+                                          final MessageDetails initialMessage) {
+
+        this.creator = creator;
+        this.conversation = conversation;
         this.initialMessage = initialMessage;
     }
 
-    public BuddyCollectionDetails getBuddyCollectionDetails() {
-        return buddyCollectionDetails;
+    public BuddyDetails getCreator() {
+        return creator;
+    }
+
+    public ConversationDetails getConversation() {
+        return conversation;
     }
 
     public MessageDetails getInitialMessage() {

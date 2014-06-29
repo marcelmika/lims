@@ -232,9 +232,10 @@ public class PollerProcessor extends BasePollerProcessor {
         BuddyCollection buddies = BuddyCollection.fromPollerRequest(pollerRequest);
 
         // Send request to core service
-        return conversationCoreService.createConversation(new CreateConversationRequestEvent(
-                        buddies.toBuddyCollectionDetails(), message.toMessageDetails())
-        );
+//        return conversationCoreService.createConversation(new CreateConversationRequestEvent(
+//                        buddies.toBuddyCollectionDetails(), message.toMessageDetails())
+//        );
+        return null;
     }
 
 

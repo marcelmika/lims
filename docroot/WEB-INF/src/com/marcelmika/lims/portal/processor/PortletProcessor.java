@@ -5,6 +5,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.events.ResponseEvent;
 import com.marcelmika.lims.api.events.buddy.UpdatePresenceBuddyRequestEvent;
+import com.marcelmika.lims.api.events.conversation.CreateConversationRequestEvent;
+import com.marcelmika.lims.api.events.conversation.CreateConversationResponseEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
 import com.marcelmika.lims.api.events.settings.DisableChatRequestEvent;
@@ -91,24 +93,36 @@ public class PortletProcessor {
      * Creates single user conversation with a buddy selected in request
      */
     public void createSingleUserConversation(ResourceRequest request, ResourceResponse response) {
-        // Get the writer
-        PrintWriter writer = getResponseWriter(response);
-        if (writer == null) {
-            return;
-        }
-        // Create buddy from poller request
-//        Buddy buddy = Buddy.fromResourceRequest(request);
+        // Create buddy from request
+        Buddy buddy = Buddy.fromResourceRequest(request);
 
-        Conversation conversation = JSONFactoryUtil.looseDeserialize(request.getParameter("data"),
-                Conversation.class);
-
+        Conversation conversation = JSONFactoryUtil.looseDeserialize(
+                request.getParameter("data"), Conversation.class
+        );
+        conversation.setConversationType(ConversationType.SINGLE_USER);
+        conversation.setConversationId(conversation.getParticipants().get(0).getScreenName());
 
         log.info(request.getParameter("data"));
-
         log.info(conversation);
 
+        CreateConversationResponseEvent responseEvent = conversationCoreService.createConversation(
+                new CreateConversationRequestEvent(buddy.toBuddyDetails(), conversation.toConversationDetails(), null)
+        );
 
-        writer.print("{\"error\":\"nazdar\"}");
+        log.info("Crate conversation STATUS: " + responseEvent.getStatus());
+        if (responseEvent.getException() != null) {
+            responseEvent.getException().printStackTrace();
+        }
+
+
+        // On success
+        if (responseEvent.isSuccess()) {
+            writeSuccess("", response);
+        }
+        // On error
+        else {
+            writeError(responseEvent.getStatus().toString(), response);
+        }
     }
 
     // ---------------------------------------------------------------------------------------------------------
@@ -175,7 +189,7 @@ public class PortletProcessor {
         );
 
         // On success
-        if (responseEvent.isSuccess()){
+        if (responseEvent.isSuccess()) {
             writeSuccess("", response);
         }
         // On error
@@ -200,7 +214,7 @@ public class PortletProcessor {
         ));
 
         // On success
-        if (responseEvent.isSuccess()){
+        if (responseEvent.isSuccess()) {
             writeSuccess("", response);
         }
         // On error

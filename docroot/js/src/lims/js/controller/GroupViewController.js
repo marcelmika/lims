@@ -51,24 +51,33 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
     _initTimer: function () {
         var settings = this.get('settings'),
             model = this.get('model'),
-            timer = new Y.Timer({
-                length: 10000,
-                repeatCount: 10000,
-                callback: function () {
-                    model.load();
-                }});
+            intervalID;
 
 
+
+//            timer = new Y.Timer({
+//                length: 10000,
+//                repeatCount: 10000,
+//                callback: function () {
+//                    model.load();
+//                }});
+//
+//
         // Start only if the chat is enabled
         if (settings.isChatEnabled()) {
             // Load model
             model.load();
             // Start periodical update
-            timer.start();
-        }
+//            timer.start();
+            intervalID = setInterval(function(){
+                model.load();
+            }, 10000);
 
-        // Store globally
-        this.set('timer', timer);
+            this.set('timer', intervalID);
+        }
+//
+//        // Store globally
+//        this.set('timer', timer);
     },
 
     /**
@@ -158,7 +167,7 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
         // Load model
         this.get('model').load();
         // Start timer that periodically updates groups model
-        this.get('timer').start();
+        this._initTimer();
     },
 
     /**
@@ -170,7 +179,7 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
         // Hide container
         this.get('container').hide();
         // Stop timer that periodically updates groups model
-        this.get('timer').stop();
+        clearInterval(this.get('timer'));
     }
 
 }, {

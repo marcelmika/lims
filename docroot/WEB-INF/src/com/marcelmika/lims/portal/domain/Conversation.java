@@ -2,9 +2,11 @@ package com.marcelmika.lims.portal.domain;
 
 import com.liferay.portal.kernel.poller.PollerRequest;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.marcelmika.lims.api.entity.BuddyDetails;
 import com.marcelmika.lims.api.entity.ConversationDetails;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -127,6 +129,14 @@ public class Conversation {
             details.setConversationType(conversationType.toConversationTypeDetails());
         }
 
+        if (participants != null) {
+            List<BuddyDetails> participantDetails = new LinkedList<BuddyDetails>();
+            for (Buddy participant : participants) {
+                participantDetails.add(participant.toBuddyDetails());
+            }
+            details.setParticipants(participantDetails);
+        }
+
         return details;
     }
 
@@ -205,5 +215,20 @@ public class Conversation {
 
     public void setMessages(List<Message> messages) {
         this.messages = messages;
+    }
+
+    @Override
+    public String toString() {
+        return "Conversation{" +
+                "conversationId='" + conversationId + '\'' +
+                ", conversationType=" + conversationType +
+                ", participants=" + participants +
+                ", title='" + title + '\'' +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", visibility='" + visibility + '\'' +
+                ", lastMessage=" + lastMessage +
+                ", messages=" + messages +
+                '}';
     }
 }

@@ -34,8 +34,7 @@
                     "io",
                     "json",
                     "model",
-                    "model-list",
-                    "gallery-timer"
+                    "model-list"
                 ]
             }
         },
