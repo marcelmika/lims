@@ -311,7 +311,7 @@ public class JabberImpl implements Jabber {
             for (Buddy participant : participants) {
                 // Add buddy to room like an owner
                 String participantJID = getJabberId(getJabberId(participant.getScreenName()));
-                muc.invite(participantJID, inviteMSg);
+                muc.invite(participantJID, "Let's have a chat");
                 muc.grantOwnership(participantJID);
                 // Add locally
                 ConversationLocalServiceUtil.addConversation(participant.getUserId(),
