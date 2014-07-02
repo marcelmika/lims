@@ -64,6 +64,8 @@ public class MUConversation implements Conversation, JSONable {
     public void restart() {
         // Delete old stuff
         messages.clear();
+        lastMessageSent = 0;//reset
+        
         participants.clear();
         // Reset creating flow
         join(muc);
