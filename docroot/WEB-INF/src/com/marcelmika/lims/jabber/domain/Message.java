@@ -45,10 +45,6 @@ public class Message {
         message.createdAt = details.getCreatedAt();
 
         // Relations:
-        // To
-        if (details.getTo() != null) {
-            message.to = Buddy.fromBuddyDetails(details.getTo());
-        }
         // From
         if (details.getFrom() != null) {
             message.from = Buddy.fromBuddyDetails(details.getFrom());
@@ -112,10 +108,6 @@ public class Message {
         details.setCreatedAt(createdAt);
 
         // Relations
-        if (to != null) {
-            details.setTo(to.toBuddyDetails());
-        }
-
         if (from != null) {
             details.setFrom(from.toBuddyDetails());
         }

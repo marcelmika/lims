@@ -13,7 +13,6 @@ import java.util.Date;
 public class Message {
 
     private Buddy from;
-    private Buddy to;
     private Date createdAt;
     private String body;
 
@@ -28,7 +27,6 @@ public class Message {
         Message message = new Message();
         // Map data to message details
         message.setFrom(Buddy.fromBuddyDetails(messageDetails.getFrom()));
-        message.setTo(Buddy.fromBuddyDetails(messageDetails.getTo()));
         message.setCreatedAt(messageDetails.getCreatedAt());
         message.setBody(message.getBody());
 
@@ -45,7 +43,6 @@ public class Message {
         MessageDetails details = new MessageDetails();
         // Map data from message
         details.setFrom(from.toBuddyDetails());
-        details.setTo(to.toBuddyDetails());
         details.setCreatedAt(createdAt);
         details.setBody(body);
 
@@ -58,14 +55,6 @@ public class Message {
 
     public void setFrom(Buddy from) {
         this.from = from;
-    }
-
-    public Buddy getTo() {
-        return to;
-    }
-
-    public void setTo(Buddy to) {
-        this.to = to;
     }
 
     public Date getCreatedAt() {

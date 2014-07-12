@@ -11,6 +11,10 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
     addMessage: function(message) {
         var messageList = this.get('messageList');
         messageList.add(message);
+
+        // This will send the message on server
+        message.save();
+
         this.fire('messageAdded', message);
     },
 

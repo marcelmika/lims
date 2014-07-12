@@ -16,6 +16,7 @@ public class PortletDispatcher {
 
     private static final String QUERY_CREATE_SINGLE_USER_CONVERSATION = "CreateSingleUserConversation";
     private static final String QUERY_GET_GROUP_LIST = "GetGroupList";
+    private static final String QUERY_CREATE_MESSAGE = "CreateMessage";
     private static final String QUERY_UPDATE_BUDDY_PRESENCE = "UpdateBuddyPresence";
     private static final String QUERY_UPDATE_ACTIVE_PANEL = "UpdateActivePanel";
     private static final String QUERY_UPDATE_SETTINGS = "UpdateSettings";
@@ -46,6 +47,10 @@ public class PortletDispatcher {
         // Get Group List
         else if(query.equals(QUERY_GET_GROUP_LIST)) {
             processor.getGroupList(request, response);
+        }
+        // Send message
+        else if(query.equals(QUERY_CREATE_MESSAGE)) {
+            processor.createMessage(request, response);
         }
         // Update buddy presence
         else if(query.equals(QUERY_UPDATE_BUDDY_PRESENCE)) {

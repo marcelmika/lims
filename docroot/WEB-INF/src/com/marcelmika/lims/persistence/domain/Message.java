@@ -14,10 +14,10 @@ import java.util.List;
  */
 public class Message {
 
-    private Buddy to;
     private Buddy from;
-    private Date createdAt;
     private String body;
+    private Date createdAt;
+    private String messageHash;
 
 
     // -------------------------------------------------------------------------------------------
@@ -30,12 +30,9 @@ public class Message {
         // Map properties
         message.body = details.getBody();
         message.createdAt = details.getCreatedAt();
+        message.messageHash = details.getMessageHash();
 
         // Relations:
-        // To
-        if (details.getTo() != null) {
-            message.to = Buddy.fromBuddyDetails(details.getTo());
-        }
         // From
         if (details.getFrom() != null) {
             message.from = Buddy.fromBuddyDetails(details.getFrom());
@@ -71,11 +68,7 @@ public class Message {
         // Properties
         details.setBody(body);
         details.setCreatedAt(createdAt);
-
-        // Relations
-        if (to != null) {
-            details.setTo(to.toBuddyDetails());
-        }
+        details.setMessageHash(messageHash);
 
         if (from != null) {
             details.setFrom(from.toBuddyDetails());
@@ -97,14 +90,6 @@ public class Message {
         this.from = from;
     }
 
-    public Buddy getTo() {
-        return to;
-    }
-
-    public void setTo(Buddy to) {
-        this.to = to;
-    }
-
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -121,4 +106,11 @@ public class Message {
         this.body = body;
     }
 
+    public String getMessageHash() {
+        return messageHash;
+    }
+
+    public void setMessageHash(String messageHash) {
+        this.messageHash = messageHash;
+    }
 }

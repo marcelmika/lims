@@ -18,13 +18,12 @@ create table LiferayLIMS_Conversation (
 );
 
 create table LiferayLIMS_Message (
-	mid LONG not null,
-	cid LONG not null,
+	mid LONG not null primary key,
+	cid LONG,
 	creatorId LONG,
 	createdAt LONG,
 	messageHash VARCHAR(75) null,
-	text_ VARCHAR(75) null,
-	primary key (mid, cid)
+	text_ VARCHAR(75) null
 );
 
 create table LiferayLIMS_OpenedConversation (
@@ -40,12 +39,11 @@ create table LiferayLIMS_Panel (
 );
 
 create table LiferayLIMS_Participant (
-	pid LONG not null,
-	cid LONG not null,
+	pid LONG not null primary key,
+	cid LONG,
 	participantId LONG,
 	unreadMessagesCount INTEGER,
-	isOpened BOOLEAN,
-	primary key (pid, cid)
+	isOpened BOOLEAN
 );
 
 create table LiferayLIMS_Settings (

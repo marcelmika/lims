@@ -1,13 +1,10 @@
 package com.marcelmika.lims.portal.domain;
 
-import com.liferay.portal.kernel.poller.PollerRequest;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.marcelmika.lims.api.entity.MessageDetails;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Ing. Marcel Mika
@@ -17,33 +14,12 @@ import java.util.Map;
  */
 public class Message {
 
-    // Constants
-    private static final String KEY_BODY = "message";
-
     // Properties
     private Buddy from;
-    private Buddy to;
-    private Date createdAt;
+    private String conversationId;
     private String body;
-
-    /**
-     * Factory method which creates new Message object from the PollerRequest
-     *
-     * @param pollerRequest request
-     * @return Message
-     */
-    public static Message fromPollerRequest(PollerRequest pollerRequest) {
-        // Map contains all parameters from request
-        Map<String, String> parameterMap = pollerRequest.getParameterMap();
-        // Create new conversation
-        Message message = new Message();
-        // Conversation Id
-        if (parameterMap.containsKey(KEY_BODY)) {
-            message.body = GetterUtil.getString(parameterMap.get(KEY_BODY));
-        }
-
-        return message;
-    }
+    private Date createdAt;
+    private String messageHash;
 
     /**
      * Factory method which creates a list of Messages from a list of MessageDetails
@@ -72,16 +48,13 @@ public class Message {
         // Crate new message
         Message message = new Message();
         // Map values
+        message.messageHash = details.getMessageHash();
         message.createdAt = details.getCreatedAt();
         message.body = details.getBody();
 
         // Relations
         if (details.getFrom() != null) {
             message.from = Buddy.fromBuddyDetails(details.getFrom());
-        }
-
-        if (details.getTo() != null) {
-            message.to = Buddy.fromBuddyDetails(details.getTo());
         }
 
         return message;
@@ -96,16 +69,13 @@ public class Message {
         // Create message details
         MessageDetails details = new MessageDetails();
         // Map data from message
+        details.setMessageHash(messageHash);
         details.setCreatedAt(createdAt);
         details.setBody(body);
 
         // Relations
         if (from != null) {
             details.setFrom(from.toBuddyDetails());
-        }
-
-        if (to != null) {
-            details.setTo(to.toBuddyDetails());
         }
 
         return details;
@@ -118,14 +88,6 @@ public class Message {
 
     public void setFrom(Buddy from) {
         this.from = from;
-    }
-
-    public Buddy getTo() {
-        return to;
-    }
-
-    public void setTo(Buddy to) {
-        this.to = to;
     }
 
     public Date getCreatedAt() {
@@ -144,7 +106,31 @@ public class Message {
         this.body = body;
     }
 
+    public String getConversationId() {
+        return conversationId;
+    }
 
+    public void setConversationId(String conversationId) {
+        this.conversationId = conversationId;
+    }
+
+    public String getMessageHash() {
+        return messageHash;
+    }
+
+    public void setMessageHash(String messageHash) {
+        this.messageHash = messageHash;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "from=" + from +
+                ", body='" + body + '\'' +
+                ", createdAt=" + createdAt +
+                ", messageHash='" + messageHash + '\'' +
+                '}';
+    }
 }
 
 

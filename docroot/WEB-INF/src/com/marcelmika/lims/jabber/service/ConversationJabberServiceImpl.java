@@ -156,7 +156,7 @@ public class ConversationJabberServiceImpl implements ConversationJabberService 
                 event.getMessageDetails() == null ||
                 event.getConversationDetails() == null) {
             return SendMessageResponseEvent.sendMessageFailure(
-                    new JabberException("Some of required params is missing")
+                    SendMessageResponseEvent.Status.ERROR_WRONG_PARAMETERS
             );
         }
 
@@ -171,7 +171,7 @@ public class ConversationJabberServiceImpl implements ConversationJabberService 
         // No session
         if (userSession == null) {
             return SendMessageResponseEvent.sendMessageFailure(
-                    new JabberException("There is no user session. Message cannot be sent.")
+                    SendMessageResponseEvent.Status.ERROR_NO_SESSION
             );
         }
 
@@ -193,13 +193,13 @@ public class ConversationJabberServiceImpl implements ConversationJabberService 
         // Multi user conversation
         else if (conversationType == ConversationType.MULTI_USER) {
             return SendMessageResponseEvent.sendMessageFailure(
-                    new RuntimeException("Multi user not implemented yet")
+                    SendMessageResponseEvent.Status.ERROR_NOT_IMPLEMENTED
             );
         }
         // Unrecognized type
         else {
             return SendMessageResponseEvent.sendMessageFailure(
-                    new JabberException("Unrecognized type of conversation: " + conversationType)
+                    SendMessageResponseEvent.Status.ERROR_UNKNOWN_CONVERSATION_TYPE
             );
         }
     }
@@ -250,14 +250,13 @@ public class ConversationJabberServiceImpl implements ConversationJabberService 
         SingleUserConversationManager manager = session.getSingleUserConversationManager();
 
         try {
-            conversation = manager.sendMessage(conversation, message);
-        } catch (JabberException e) {
-            return SendMessageResponseEvent.sendMessageFailure(e);
+            manager.sendMessage(conversation, message);
+        } catch (JabberException exception) {
+            return SendMessageResponseEvent.sendMessageFailure(
+                    SendMessageResponseEvent.Status.ERROR_JABBER, exception);
         }
 
-        return SendMessageResponseEvent.sendMessageSuccess(
-                "Message successfully sent", conversation.toConversationDetails()
-        );
+        return SendMessageResponseEvent.sendMessageSuccess();
     }
 
 

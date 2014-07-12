@@ -20,10 +20,13 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
+import com.liferay.portal.service.ServiceContext;
+
+import com.liferay.portlet.expando.model.ExpandoBridge;
+import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import com.marcelmika.lims.model.Participant;
 import com.marcelmika.lims.model.ParticipantModel;
-import com.marcelmika.lims.service.persistence.ParticipantPK;
 
 import java.io.Serializable;
 
@@ -60,7 +63,7 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 			{ "unreadMessagesCount", Types.INTEGER },
 			{ "isOpened", Types.BOOLEAN }
 		};
-	public static final String TABLE_SQL_CREATE = "create table LiferayLIMS_Participant (pid LONG not null,cid LONG not null,participantId LONG,unreadMessagesCount INTEGER,isOpened BOOLEAN,primary key (pid, cid))";
+	public static final String TABLE_SQL_CREATE = "create table LiferayLIMS_Participant (pid LONG not null primary key,cid LONG,participantId LONG,unreadMessagesCount INTEGER,isOpened BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table LiferayLIMS_Participant";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
@@ -74,28 +77,28 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
 				"value.object.column.bitmask.enabled.com.marcelmika.lims.model.Participant"),
 			true);
-	public static long PARTICIPANTID_COLUMN_BITMASK = 1L;
+	public static long CID_COLUMN_BITMASK = 1L;
+	public static long PARTICIPANTID_COLUMN_BITMASK = 2L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
 				"lock.expiration.time.com.marcelmika.lims.model.Participant"));
 
 	public ParticipantModelImpl() {
 	}
 
-	public ParticipantPK getPrimaryKey() {
-		return new ParticipantPK(_pid, _cid);
+	public long getPrimaryKey() {
+		return _pid;
 	}
 
-	public void setPrimaryKey(ParticipantPK primaryKey) {
-		setPid(primaryKey.pid);
-		setCid(primaryKey.cid);
+	public void setPrimaryKey(long primaryKey) {
+		setPid(primaryKey);
 	}
 
 	public Serializable getPrimaryKeyObj() {
-		return new ParticipantPK(_pid, _cid);
+		return new Long(_pid);
 	}
 
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		setPrimaryKey((ParticipantPK)primaryKeyObj);
+		setPrimaryKey(((Long)primaryKeyObj).longValue());
 	}
 
 	public Class<?> getModelClass() {
@@ -166,7 +169,19 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 	}
 
 	public void setCid(long cid) {
+		_columnBitmask |= CID_COLUMN_BITMASK;
+
+		if (!_setOriginalCid) {
+			_setOriginalCid = true;
+
+			_originalCid = _cid;
+		}
+
 		_cid = cid;
+	}
+
+	public long getOriginalCid() {
+		return _originalCid;
 	}
 
 	public long getParticipantId() {
@@ -214,6 +229,19 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+			Participant.class.getName(), getPrimaryKey());
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
+		ExpandoBridge expandoBridge = getExpandoBridge();
+
+		expandoBridge.setAttributes(serviceContext);
+	}
+
+	@Override
 	public Participant toEscapedModel() {
 		if (_escapedModel == null) {
 			_escapedModel = (Participant)ProxyUtil.newProxyInstance(_classLoader,
@@ -243,9 +271,17 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 	}
 
 	public int compareTo(Participant participant) {
-		ParticipantPK primaryKey = participant.getPrimaryKey();
+		long primaryKey = participant.getPrimaryKey();
 
-		return getPrimaryKey().compareTo(primaryKey);
+		if (getPrimaryKey() < primaryKey) {
+			return -1;
+		}
+		else if (getPrimaryKey() > primaryKey) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
 	}
 
 	@Override
@@ -260,9 +296,9 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 
 		Participant participant = (Participant)obj;
 
-		ParticipantPK primaryKey = participant.getPrimaryKey();
+		long primaryKey = participant.getPrimaryKey();
 
-		if (getPrimaryKey().equals(primaryKey)) {
+		if (getPrimaryKey() == primaryKey) {
 			return true;
 		}
 		else {
@@ -272,12 +308,16 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 
 	@Override
 	public int hashCode() {
-		return getPrimaryKey().hashCode();
+		return (int)getPrimaryKey();
 	}
 
 	@Override
 	public void resetOriginalValues() {
 		ParticipantModelImpl participantModelImpl = this;
+
+		participantModelImpl._originalCid = participantModelImpl._cid;
+
+		participantModelImpl._setOriginalCid = false;
 
 		participantModelImpl._originalParticipantId = participantModelImpl._participantId;
 
@@ -361,6 +401,8 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 		};
 	private long _pid;
 	private long _cid;
+	private long _originalCid;
+	private boolean _setOriginalCid;
 	private long _participantId;
 	private long _originalParticipantId;
 	private boolean _setOriginalParticipantId;

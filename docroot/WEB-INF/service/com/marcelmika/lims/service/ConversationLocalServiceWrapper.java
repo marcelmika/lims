@@ -264,46 +264,17 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 			arguments);
 	}
 
-	public com.marcelmika.lims.model.Conversation addConversation(long userId,
-		java.lang.String conversationId, java.lang.String conversationType,
-		java.lang.String conversationVisibility,
-		java.lang.String conversationName)
+	public com.marcelmika.lims.model.Conversation addConversation(
+		java.lang.String conversationId, java.lang.String conversationType)
 		throws com.liferay.portal.kernel.exception.SystemException {
-		return _conversationLocalService.addConversation(userId,
-			conversationId, conversationType, conversationVisibility,
-			conversationName);
+		return _conversationLocalService.addConversation(conversationId,
+			conversationType);
 	}
 
-	public void removeConversation(long userId, java.lang.String conversationId) {
-		_conversationLocalService.removeConversation(userId, conversationId);
-	}
-
-	public java.util.List<com.marcelmika.lims.model.Conversation> getAllConversations(
-		long userId) throws com.liferay.portal.kernel.exception.SystemException {
-		return _conversationLocalService.getAllConversations(userId);
-	}
-
-	public com.marcelmika.lims.model.Conversation getRoom(long userId,
+	public com.marcelmika.lims.model.Conversation getConversation(
 		java.lang.String conversationId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.NoSuchConversationException {
-		return _conversationLocalService.getRoom(userId, conversationId);
-	}
-
-	public com.marcelmika.lims.model.Conversation getConversation(long userId,
-		java.lang.String conversationId) {
-		return _conversationLocalService.getConversation(userId, conversationId);
-	}
-
-	public void incrementUnreadMessages(long userId,
-		java.lang.String conversationId) {
-		_conversationLocalService.incrementUnreadMessages(userId, conversationId);
-	}
-
-	public void setUnreadMessages(long userId, java.lang.String conversationId,
-		int unreadMessages) {
-		_conversationLocalService.setUnreadMessages(userId, conversationId,
-			unreadMessages);
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _conversationLocalService.getConversation(conversationId);
 	}
 
 	/**

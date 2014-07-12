@@ -54,27 +54,25 @@ public class MessageLocalServiceUtil {
 	/**
 	* Creates a new message with the primary key. Does not add the message to the database.
 	*
-	* @param messagePK the primary key for the new message
+	* @param mid the primary key for the new message
 	* @return the new message
 	*/
-	public static com.marcelmika.lims.model.Message createMessage(
-		com.marcelmika.lims.service.persistence.MessagePK messagePK) {
-		return getService().createMessage(messagePK);
+	public static com.marcelmika.lims.model.Message createMessage(long mid) {
+		return getService().createMessage(mid);
 	}
 
 	/**
 	* Deletes the message with the primary key from the database. Also notifies the appropriate model listeners.
 	*
-	* @param messagePK the primary key of the message
+	* @param mid the primary key of the message
 	* @return the message that was removed
 	* @throws PortalException if a message with the primary key could not be found
 	* @throws SystemException if a system exception occurred
 	*/
-	public static com.marcelmika.lims.model.Message deleteMessage(
-		com.marcelmika.lims.service.persistence.MessagePK messagePK)
+	public static com.marcelmika.lims.model.Message deleteMessage(long mid)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		return getService().deleteMessage(messagePK);
+		return getService().deleteMessage(mid);
 	}
 
 	/**
@@ -165,25 +163,23 @@ public class MessageLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
-	public static com.marcelmika.lims.model.Message fetchMessage(
-		com.marcelmika.lims.service.persistence.MessagePK messagePK)
+	public static com.marcelmika.lims.model.Message fetchMessage(long mid)
 		throws com.liferay.portal.kernel.exception.SystemException {
-		return getService().fetchMessage(messagePK);
+		return getService().fetchMessage(mid);
 	}
 
 	/**
 	* Returns the message with the primary key.
 	*
-	* @param messagePK the primary key of the message
+	* @param mid the primary key of the message
 	* @return the message
 	* @throws PortalException if a message with the primary key could not be found
 	* @throws SystemException if a system exception occurred
 	*/
-	public static com.marcelmika.lims.model.Message getMessage(
-		com.marcelmika.lims.service.persistence.MessagePK messagePK)
+	public static com.marcelmika.lims.model.Message getMessage(long mid)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		return getService().getMessage(messagePK);
+		return getService().getMessage(mid);
 	}
 
 	public static com.liferay.portal.model.PersistedModel getPersistedModel(
@@ -271,6 +267,12 @@ public class MessageLocalServiceUtil {
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
 		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	public static com.marcelmika.lims.model.Message addMessage(long cid,
+		long creatorId, java.lang.String text, java.lang.String messageHash)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().addMessage(cid, creatorId, text, messageHash);
 	}
 
 	public static void clearService() {

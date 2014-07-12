@@ -54,27 +54,27 @@ public class ParticipantLocalServiceUtil {
 	/**
 	* Creates a new participant with the primary key. Does not add the participant to the database.
 	*
-	* @param participantPK the primary key for the new participant
+	* @param pid the primary key for the new participant
 	* @return the new participant
 	*/
 	public static com.marcelmika.lims.model.Participant createParticipant(
-		com.marcelmika.lims.service.persistence.ParticipantPK participantPK) {
-		return getService().createParticipant(participantPK);
+		long pid) {
+		return getService().createParticipant(pid);
 	}
 
 	/**
 	* Deletes the participant with the primary key from the database. Also notifies the appropriate model listeners.
 	*
-	* @param participantPK the primary key of the participant
+	* @param pid the primary key of the participant
 	* @return the participant that was removed
 	* @throws PortalException if a participant with the primary key could not be found
 	* @throws SystemException if a system exception occurred
 	*/
 	public static com.marcelmika.lims.model.Participant deleteParticipant(
-		com.marcelmika.lims.service.persistence.ParticipantPK participantPK)
+		long pid)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		return getService().deleteParticipant(participantPK);
+		return getService().deleteParticipant(pid);
 	}
 
 	/**
@@ -166,24 +166,22 @@ public class ParticipantLocalServiceUtil {
 	}
 
 	public static com.marcelmika.lims.model.Participant fetchParticipant(
-		com.marcelmika.lims.service.persistence.ParticipantPK participantPK)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getService().fetchParticipant(participantPK);
+		long pid) throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().fetchParticipant(pid);
 	}
 
 	/**
 	* Returns the participant with the primary key.
 	*
-	* @param participantPK the primary key of the participant
+	* @param pid the primary key of the participant
 	* @return the participant
 	* @throws PortalException if a participant with the primary key could not be found
 	* @throws SystemException if a system exception occurred
 	*/
-	public static com.marcelmika.lims.model.Participant getParticipant(
-		com.marcelmika.lims.service.persistence.ParticipantPK participantPK)
+	public static com.marcelmika.lims.model.Participant getParticipant(long pid)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		return getService().getParticipant(participantPK);
+		return getService().getParticipant(pid);
 	}
 
 	public static com.liferay.portal.model.PersistedModel getPersistedModel(
@@ -271,6 +269,34 @@ public class ParticipantLocalServiceUtil {
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
 		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Adds new participant to the system
+	*
+	* @param cid           Id of the conversation to which the participant belongs to
+	* @param participantId User Id of the participant
+	* @return Participant Model
+	* @throws SystemException
+	*/
+	public static com.marcelmika.lims.model.Participant addParticipant(
+		java.lang.Long cid, java.lang.Long participantId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().addParticipant(cid, participantId);
+	}
+
+	/**
+	* Given method updates all participants related to the conversation. By updated we mean incrementing of the
+	* unread message count if needed and opening the conversation if needed
+	*
+	* @param cid Id of the conversation related to the participants
+	* @throws SystemException
+	* @throws PortalException
+	*/
+	public static void updateParticipants(java.lang.Long cid)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService().updateParticipants(cid);
 	}
 
 	public static void clearService() {

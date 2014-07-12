@@ -32,6 +32,6 @@ public abstract class ParticipantActionableDynamicQuery
 
 		setClassLoader(com.marcelmika.lims.service.ClpSerializer.class.getClassLoader());
 
-		setPrimaryKeyPropertyName("primaryKey.pid");
+		setPrimaryKeyPropertyName("pid");
 	}
 }

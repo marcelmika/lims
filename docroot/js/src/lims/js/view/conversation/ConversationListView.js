@@ -100,7 +100,7 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
             event.preventDefault();
             // Empty text field
             textField.set('value', '');
-            model.addMessage(new Y.LIMS.Model.MessageItemModel({message: value}));
+            model.addMessage(new Y.LIMS.Model.MessageItemModel({body: value}));
         }
     }
 }, {

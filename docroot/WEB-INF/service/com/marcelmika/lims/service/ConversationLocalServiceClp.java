@@ -116,33 +116,12 @@ public class ConversationLocalServiceClp implements ConversationLocalService {
 		_methodName19 = "addConversation";
 
 		_methodParameterTypes19 = new String[] {
-				"long", "java.lang.String", "java.lang.String",
 				"java.lang.String", "java.lang.String"
 			};
 
-		_methodName20 = "removeConversation";
+		_methodName20 = "getConversation";
 
-		_methodParameterTypes20 = new String[] { "long", "java.lang.String" };
-
-		_methodName21 = "getAllConversations";
-
-		_methodParameterTypes21 = new String[] { "long" };
-
-		_methodName22 = "getRoom";
-
-		_methodParameterTypes22 = new String[] { "long", "java.lang.String" };
-
-		_methodName23 = "getConversation";
-
-		_methodParameterTypes23 = new String[] { "long", "java.lang.String" };
-
-		_methodName24 = "incrementUnreadMessages";
-
-		_methodParameterTypes24 = new String[] { "long", "java.lang.String" };
-
-		_methodName25 = "setUnreadMessages";
-
-		_methodParameterTypes25 = new String[] { "long", "java.lang.String", "int" };
+		_methodParameterTypes20 = new String[] { "java.lang.String" };
 	}
 
 	public com.marcelmika.lims.model.Conversation addConversation(
@@ -671,10 +650,8 @@ public class ConversationLocalServiceClp implements ConversationLocalService {
 		throw new UnsupportedOperationException();
 	}
 
-	public com.marcelmika.lims.model.Conversation addConversation(long userId,
-		java.lang.String conversationId, java.lang.String conversationType,
-		java.lang.String conversationVisibility,
-		java.lang.String conversationName)
+	public com.marcelmika.lims.model.Conversation addConversation(
+		java.lang.String conversationId, java.lang.String conversationType)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
@@ -682,15 +659,9 @@ public class ConversationLocalServiceClp implements ConversationLocalService {
 			returnObj = _invokableLocalService.invokeMethod(_methodName19,
 					_methodParameterTypes19,
 					new Object[] {
-						userId,
+						ClpSerializer.translateInput(conversationId),
 						
-					ClpSerializer.translateInput(conversationId),
-						
-					ClpSerializer.translateInput(conversationType),
-						
-					ClpSerializer.translateInput(conversationVisibility),
-						
-					ClpSerializer.translateInput(conversationName)
+					ClpSerializer.translateInput(conversationType)
 					});
 		}
 		catch (Throwable t) {
@@ -712,70 +683,15 @@ public class ConversationLocalServiceClp implements ConversationLocalService {
 		return (com.marcelmika.lims.model.Conversation)ClpSerializer.translateOutput(returnObj);
 	}
 
-	public void removeConversation(long userId, java.lang.String conversationId) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName20,
-				_methodParameterTypes20,
-				new Object[] {
-					userId,
-					
-				ClpSerializer.translateInput(conversationId)
-				});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	public java.util.List<com.marcelmika.lims.model.Conversation> getAllConversations(
-		long userId) throws com.liferay.portal.kernel.exception.SystemException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName21,
-					_methodParameterTypes21, new Object[] { userId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.util.List<com.marcelmika.lims.model.Conversation>)ClpSerializer.translateOutput(returnObj);
-	}
-
-	public com.marcelmika.lims.model.Conversation getRoom(long userId,
+	public com.marcelmika.lims.model.Conversation getConversation(
 		java.lang.String conversationId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.NoSuchConversationException {
+		throws com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName22,
-					_methodParameterTypes22,
-					new Object[] {
-						userId,
-						
-					ClpSerializer.translateInput(conversationId)
-					});
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20,
+					new Object[] { ClpSerializer.translateInput(conversationId) });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -784,10 +700,6 @@ public class ConversationLocalServiceClp implements ConversationLocalService {
 				throw (com.liferay.portal.kernel.exception.SystemException)t;
 			}
 
-			if (t instanceof com.marcelmika.lims.NoSuchConversationException) {
-				throw (com.marcelmika.lims.NoSuchConversationException)t;
-			}
-
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
 			}
@@ -798,84 +710,6 @@ public class ConversationLocalServiceClp implements ConversationLocalService {
 		}
 
 		return (com.marcelmika.lims.model.Conversation)ClpSerializer.translateOutput(returnObj);
-	}
-
-	public com.marcelmika.lims.model.Conversation getConversation(long userId,
-		java.lang.String conversationId) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName23,
-					_methodParameterTypes23,
-					new Object[] {
-						userId,
-						
-					ClpSerializer.translateInput(conversationId)
-					});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.marcelmika.lims.model.Conversation)ClpSerializer.translateOutput(returnObj);
-	}
-
-	public void incrementUnreadMessages(long userId,
-		java.lang.String conversationId) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName24,
-				_methodParameterTypes24,
-				new Object[] {
-					userId,
-					
-				ClpSerializer.translateInput(conversationId)
-				});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	public void setUnreadMessages(long userId, java.lang.String conversationId,
-		int unreadMessages) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName25,
-				_methodParameterTypes25,
-				new Object[] {
-					userId,
-					
-				ClpSerializer.translateInput(conversationId),
-					
-				unreadMessages
-				});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
 	}
 
 	private InvokableLocalService _invokableLocalService;
@@ -919,14 +753,4 @@ public class ConversationLocalServiceClp implements ConversationLocalService {
 	private String[] _methodParameterTypes19;
 	private String _methodName20;
 	private String[] _methodParameterTypes20;
-	private String _methodName21;
-	private String[] _methodParameterTypes21;
-	private String _methodName22;
-	private String[] _methodParameterTypes22;
-	private String _methodName23;
-	private String[] _methodParameterTypes23;
-	private String _methodName24;
-	private String[] _methodParameterTypes24;
-	private String _methodName25;
-	private String[] _methodParameterTypes25;
 }

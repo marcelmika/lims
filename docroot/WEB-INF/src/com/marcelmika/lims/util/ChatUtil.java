@@ -172,7 +172,7 @@ public class ChatUtil {
     public static void leaveConversation(long userId, String conversationId) throws Exception {
         JabberUtil.leaveConversation(userId, conversationId);
         // Remove on the local side
-        ConversationLocalServiceUtil.removeConversation(userId, conversationId);
+//        ConversationLocalServiceUtil.removeConversation(userId, conversationId);
     }
 
     public static boolean isConversationActive(long userId, String conversationId) throws Exception {
@@ -195,11 +195,12 @@ public class ChatUtil {
     //   Unread messages
     // ------------------------------------------------------------------------------
     public static void incrementUnreadMessages(long userId, String conversationId) throws Exception {
-        ConversationLocalServiceUtil.incrementUnreadMessages(userId, conversationId);
+//        ConversationLocalServiceUtil.incrementUnreadMessages(userId, conversationId);
+
     }
 
     public static void setUnreadMessages(long userId, String conversationId, int unreadMessages) throws Exception {
-        ConversationLocalServiceUtil.setUnreadMessages(userId, conversationId, unreadMessages);
+//        ConversationLocalServiceUtil.setUnreadMessages(userId, conversationId, unreadMessages);
     }
 
     // ------------------------------------------------------------------------------

@@ -79,12 +79,13 @@ public class SUConversation implements Conversation, JSONable {
 
     //@todo: This should probably be in a separate layer to avoid model specific call
     private com.marcelmika.lims.model.Conversation getConversationModel() {
-        return com.marcelmika.lims.service.ConversationLocalServiceUtil.getConversation(owner.getUserId(), conversationId);
+//        return com.marcelmika.lims.service.ConversationLocalServiceUtil.getConversation(owner.getUserId(), conversationId);
+        return null;
     }
 
     @Override
     public String getConversationName() {
-        return getConversationModel().getConversationName();
+        return null;
     }
 
     @Override
@@ -94,7 +95,7 @@ public class SUConversation implements Conversation, JSONable {
 
     @Override
     public String getConversationVisibility() {
-        return getConversationModel().getConversationVisibility();
+        return null;
     }
 
     @Override

@@ -31,15 +31,11 @@ public class MessageLocalServiceClpInvoker {
 
 		_methodName1 = "createMessage";
 
-		_methodParameterTypes1 = new String[] {
-				"com.marcelmika.lims.service.persistence.MessagePK"
-			};
+		_methodParameterTypes1 = new String[] { "long" };
 
 		_methodName2 = "deleteMessage";
 
-		_methodParameterTypes2 = new String[] {
-				"com.marcelmika.lims.service.persistence.MessagePK"
-			};
+		_methodParameterTypes2 = new String[] { "long" };
 
 		_methodName3 = "deleteMessage";
 
@@ -78,15 +74,11 @@ public class MessageLocalServiceClpInvoker {
 
 		_methodName9 = "fetchMessage";
 
-		_methodParameterTypes9 = new String[] {
-				"com.marcelmika.lims.service.persistence.MessagePK"
-			};
+		_methodParameterTypes9 = new String[] { "long" };
 
 		_methodName10 = "getMessage";
 
-		_methodParameterTypes10 = new String[] {
-				"com.marcelmika.lims.service.persistence.MessagePK"
-			};
+		_methodParameterTypes10 = new String[] { "long" };
 
 		_methodName11 = "getPersistedModel";
 
@@ -119,6 +111,12 @@ public class MessageLocalServiceClpInvoker {
 		_methodName61 = "setBeanIdentifier";
 
 		_methodParameterTypes61 = new String[] { "java.lang.String" };
+
+		_methodName66 = "addMessage";
+
+		_methodParameterTypes66 = new String[] {
+				"long", "long", "java.lang.String", "java.lang.String"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -130,12 +128,12 @@ public class MessageLocalServiceClpInvoker {
 
 		if (_methodName1.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes1, parameterTypes)) {
-			return MessageLocalServiceUtil.createMessage((com.marcelmika.lims.service.persistence.MessagePK)arguments[0]);
+			return MessageLocalServiceUtil.createMessage(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName2.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes2, parameterTypes)) {
-			return MessageLocalServiceUtil.deleteMessage((com.marcelmika.lims.service.persistence.MessagePK)arguments[0]);
+			return MessageLocalServiceUtil.deleteMessage(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName3.equals(name) &&
@@ -175,12 +173,12 @@ public class MessageLocalServiceClpInvoker {
 
 		if (_methodName9.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes9, parameterTypes)) {
-			return MessageLocalServiceUtil.fetchMessage((com.marcelmika.lims.service.persistence.MessagePK)arguments[0]);
+			return MessageLocalServiceUtil.fetchMessage(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName10.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes10, parameterTypes)) {
-			return MessageLocalServiceUtil.getMessage((com.marcelmika.lims.service.persistence.MessagePK)arguments[0]);
+			return MessageLocalServiceUtil.getMessage(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName11.equals(name) &&
@@ -222,6 +220,13 @@ public class MessageLocalServiceClpInvoker {
 			return null;
 		}
 
+		if (_methodName66.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes66, parameterTypes)) {
+			return MessageLocalServiceUtil.addMessage(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				(java.lang.String)arguments[2], (java.lang.String)arguments[3]);
+		}
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -261,4 +266,6 @@ public class MessageLocalServiceClpInvoker {
 	private String[] _methodParameterTypes60;
 	private String _methodName61;
 	private String[] _methodParameterTypes61;
+	private String _methodName66;
+	private String[] _methodParameterTypes66;
 }

@@ -36,7 +36,7 @@ Y.LIMS.Model.MessageListModel = Y.Base.create('messageListModel', Y.ModelList, [
 
         switch (action) {
             case 'create':
-//                console.log("create message list");
+                console.log("create message list");
                 data = this.toJSON();
 //                console.log(data);
                 return;
@@ -51,7 +51,7 @@ Y.LIMS.Model.MessageListModel = Y.Base.create('messageListModel', Y.ModelList, [
 //                return;
 
             case 'read':
-//                console.log('read message list');
+                console.log('read message list');
                 // TODO: Move away
 //                url = Y.one('#chatPortletURL').get('value');
 //
@@ -96,7 +96,7 @@ Y.LIMS.Model.MessageListModel = Y.Base.create('messageListModel', Y.ModelList, [
 //                });
 
                 this.add(new Y.LIMS.Model.MessageItemModel({
-                    message: "Hi! This is just a testing message. Nothing is currently send to server." +
+                    body: "Hi! This is just a testing message. Nothing is currently send to server." +
                         " However, you can try to type messages and it should work correctly"
                 }));
 
@@ -116,8 +116,9 @@ Y.LIMS.Model.MessageListModel = Y.Base.create('messageListModel', Y.ModelList, [
 //                return;
 
             case 'update':
+                console.log('updating message list');
                 return;
-//
+
 //                data = this.toJSON();
 //
 //                // Update the record in localStorage, then call the callback.

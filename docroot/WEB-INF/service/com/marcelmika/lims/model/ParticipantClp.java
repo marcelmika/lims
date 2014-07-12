@@ -23,7 +23,6 @@ import com.liferay.portal.model.impl.BaseModelImpl;
 
 import com.marcelmika.lims.service.ClpSerializer;
 import com.marcelmika.lims.service.ParticipantLocalServiceUtil;
-import com.marcelmika.lims.service.persistence.ParticipantPK;
 
 import java.io.Serializable;
 
@@ -48,21 +47,20 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 		return Participant.class.getName();
 	}
 
-	public ParticipantPK getPrimaryKey() {
-		return new ParticipantPK(_pid, _cid);
+	public long getPrimaryKey() {
+		return _pid;
 	}
 
-	public void setPrimaryKey(ParticipantPK primaryKey) {
-		setPid(primaryKey.pid);
-		setCid(primaryKey.cid);
+	public void setPrimaryKey(long primaryKey) {
+		setPid(primaryKey);
 	}
 
 	public Serializable getPrimaryKeyObj() {
-		return new ParticipantPK(_pid, _cid);
+		return new Long(_pid);
 	}
 
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		setPrimaryKey((ParticipantPK)primaryKeyObj);
+		setPrimaryKey(((Long)primaryKeyObj).longValue());
 	}
 
 	@Override
@@ -304,9 +302,17 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 	}
 
 	public int compareTo(Participant participant) {
-		ParticipantPK primaryKey = participant.getPrimaryKey();
+		long primaryKey = participant.getPrimaryKey();
 
-		return getPrimaryKey().compareTo(primaryKey);
+		if (getPrimaryKey() < primaryKey) {
+			return -1;
+		}
+		else if (getPrimaryKey() > primaryKey) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
 	}
 
 	@Override
@@ -321,9 +327,9 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 
 		ParticipantClp participant = (ParticipantClp)obj;
 
-		ParticipantPK primaryKey = participant.getPrimaryKey();
+		long primaryKey = participant.getPrimaryKey();
 
-		if (getPrimaryKey().equals(primaryKey)) {
+		if (getPrimaryKey() == primaryKey) {
 			return true;
 		}
 		else {
@@ -333,7 +339,7 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 
 	@Override
 	public int hashCode() {
-		return getPrimaryKey().hashCode();
+		return (int)getPrimaryKey();
 	}
 
 	@Override

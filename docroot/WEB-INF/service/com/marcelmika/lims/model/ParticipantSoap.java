@@ -14,8 +14,6 @@
 
 package com.marcelmika.lims.model;
 
-import com.marcelmika.lims.service.persistence.ParticipantPK;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -80,13 +78,12 @@ public class ParticipantSoap implements Serializable {
 	public ParticipantSoap() {
 	}
 
-	public ParticipantPK getPrimaryKey() {
-		return new ParticipantPK(_pid, _cid);
+	public long getPrimaryKey() {
+		return _pid;
 	}
 
-	public void setPrimaryKey(ParticipantPK pk) {
-		setPid(pk.pid);
-		setCid(pk.cid);
+	public void setPrimaryKey(long pk) {
+		setPid(pk);
 	}
 
 	public long getPid() {

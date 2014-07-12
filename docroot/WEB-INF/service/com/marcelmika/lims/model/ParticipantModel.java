@@ -20,8 +20,6 @@ import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
 
-import com.marcelmika.lims.service.persistence.ParticipantPK;
-
 import java.io.Serializable;
 
 /**
@@ -49,14 +47,14 @@ public interface ParticipantModel extends BaseModel<Participant> {
 	 *
 	 * @return the primary key of this participant
 	 */
-	public ParticipantPK getPrimaryKey();
+	public long getPrimaryKey();
 
 	/**
 	 * Sets the primary key of this participant.
 	 *
 	 * @param primaryKey the primary key of this participant
 	 */
-	public void setPrimaryKey(ParticipantPK primaryKey);
+	public void setPrimaryKey(long primaryKey);
 
 	/**
 	 * Returns the pid of this participant.

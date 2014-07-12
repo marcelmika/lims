@@ -18,7 +18,6 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         var container = this.get('container'),
             model = this.get('model'),
             participant = model.get('participants')[0];
-
         // Create content of the container
         container.set('innerHTML',
             Y.Lang.sub(this.template, {
@@ -48,12 +47,11 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         // Hide badge at the beginning
         this.get('badge').hide();
 
-
         // Events
         this._attachEvents();
 
         model.addMessage(new Y.LIMS.Model.MessageItemModel({
-            message: "Hi! This is just a testing message. Nothing is currently send to server." +
+            body: "Hi! This is just a testing message. Nothing is currently send to server." +
                 " However, you can try to type messages and it should work correctly"
         }));
     },

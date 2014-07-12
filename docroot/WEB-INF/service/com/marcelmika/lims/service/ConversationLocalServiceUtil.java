@@ -273,46 +273,15 @@ public class ConversationLocalServiceUtil {
 	}
 
 	public static com.marcelmika.lims.model.Conversation addConversation(
-		long userId, java.lang.String conversationId,
-		java.lang.String conversationType,
-		java.lang.String conversationVisibility,
-		java.lang.String conversationName)
+		java.lang.String conversationId, java.lang.String conversationType)
 		throws com.liferay.portal.kernel.exception.SystemException {
-		return getService()
-				   .addConversation(userId, conversationId, conversationType,
-			conversationVisibility, conversationName);
-	}
-
-	public static void removeConversation(long userId,
-		java.lang.String conversationId) {
-		getService().removeConversation(userId, conversationId);
-	}
-
-	public static java.util.List<com.marcelmika.lims.model.Conversation> getAllConversations(
-		long userId) throws com.liferay.portal.kernel.exception.SystemException {
-		return getService().getAllConversations(userId);
-	}
-
-	public static com.marcelmika.lims.model.Conversation getRoom(long userId,
-		java.lang.String conversationId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.NoSuchConversationException {
-		return getService().getRoom(userId, conversationId);
+		return getService().addConversation(conversationId, conversationType);
 	}
 
 	public static com.marcelmika.lims.model.Conversation getConversation(
-		long userId, java.lang.String conversationId) {
-		return getService().getConversation(userId, conversationId);
-	}
-
-	public static void incrementUnreadMessages(long userId,
-		java.lang.String conversationId) {
-		getService().incrementUnreadMessages(userId, conversationId);
-	}
-
-	public static void setUnreadMessages(long userId,
-		java.lang.String conversationId, int unreadMessages) {
-		getService().setUnreadMessages(userId, conversationId, unreadMessages);
+		java.lang.String conversationId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getConversation(conversationId);
 	}
 
 	public static void clearService() {

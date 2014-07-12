@@ -34,10 +34,10 @@
 	</class>
 	<class name="com.marcelmika.lims.model.impl.MessageImpl" table="LiferayLIMS_Message">
 		<cache usage="read-write" />
-		<composite-id name="primaryKey" class="com.marcelmika.lims.service.persistence.MessagePK">
-			<key-property name="mid" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-			<key-property name="cid" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		</composite-id>
+		<id name="mid" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="cid" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="creatorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createdAt" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="messageHash" type="com.liferay.portal.dao.orm.hibernate.StringType" />
@@ -61,10 +61,10 @@
 	</class>
 	<class name="com.marcelmika.lims.model.impl.ParticipantImpl" table="LiferayLIMS_Participant">
 		<cache usage="read-write" />
-		<composite-id name="primaryKey" class="com.marcelmika.lims.service.persistence.ParticipantPK">
-			<key-property name="pid" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-			<key-property name="cid" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		</composite-id>
+		<id name="pid" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="cid" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="participantId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="unreadMessagesCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="isOpened" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />

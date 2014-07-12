@@ -10,25 +10,40 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
 
     // Custom sync layer.
     sync: function (action, options, callback) {
-        var data;
+        var content, url = Y.one('#chatPortletURL').get('value');
 
         switch (action) {
             case 'create':
-                data = this.toJSON();
-//                console.log("create item");
-//                console.log(data);
-                return callback(null, data);
-//                // Use the current timestamp as an id just to simplify the example. In a
-//                // real sync layer, you'd want to generate an id that's more likely to
-//                // be globally unique.
-//                data.id = Y.Lang.now();
-//
-//                // Store the new record in localStorage, then call the callback.
-//                localStorage.setItem(data.id, Y.JSON.stringify(data));
-//                callback(null, data);
-//                return;
+                console.log("Message Create");
+                content = Y.JSON.stringify(this.toJSON());
+                Y.io(url, {
+                    method: "POST",
+                    data: {
+                        query: "CreateMessage",
+                        parameters: {
+                           conversationId : 1
+                        },
+                        content: content
+                    },
+                    on: {
+//                        success: function (id, o) {
+//                            console.log('success');
+//                            console.log(id);
+//                            console.log(o.response);
+//                        },
+//                        failure: function (x, o) {
+//                            console.log(x);
+//                            console.log(o);
+//                        }
+                    }
+//                    headers: {
+//                        'Content-Type': 'application/json'
+//                    }
+                });
+                break;
 
             case 'read':
+                console.log("Message Read");
 //                console.log("read item");
                 return;
 
@@ -44,6 +59,7 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
 //                return;
 
             case 'update':
+                console.log("Message Update");
 //                console.log("update item");
                 return;
 //
@@ -55,6 +71,7 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
 //                return;
 
             case 'delete':
+                console.log("Message Delete");
 //                console.log("delete item");
                 return;
 //                localStorage.removeItem(this.get('id'));
@@ -72,12 +89,20 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
         // model's data. See the docs for Y.Attribute to learn more about defining
         // attributes.
 
-        buddy: {
+        from: {
+            // TODO: remove default
+            value: {
+                screenName: "marcel.mika"
+            } // default value
+        },
+
+        body: {
             value: "" // default value
         },
 
-        message: {
-            value: "" // default value
+        messageHash: {
+            // TODO: Generate
+            value: "asfasdfasdf" // default value
         },
 
         timestamp: {

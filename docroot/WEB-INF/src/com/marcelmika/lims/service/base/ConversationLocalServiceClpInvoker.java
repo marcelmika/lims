@@ -115,33 +115,12 @@ public class ConversationLocalServiceClpInvoker {
 		_methodName66 = "addConversation";
 
 		_methodParameterTypes66 = new String[] {
-				"long", "java.lang.String", "java.lang.String",
 				"java.lang.String", "java.lang.String"
 			};
 
-		_methodName67 = "removeConversation";
+		_methodName67 = "getConversation";
 
-		_methodParameterTypes67 = new String[] { "long", "java.lang.String" };
-
-		_methodName68 = "getAllConversations";
-
-		_methodParameterTypes68 = new String[] { "long" };
-
-		_methodName69 = "getRoom";
-
-		_methodParameterTypes69 = new String[] { "long", "java.lang.String" };
-
-		_methodName70 = "getConversation";
-
-		_methodParameterTypes70 = new String[] { "long", "java.lang.String" };
-
-		_methodName71 = "incrementUnreadMessages";
-
-		_methodParameterTypes71 = new String[] { "long", "java.lang.String" };
-
-		_methodName72 = "setUnreadMessages";
-
-		_methodParameterTypes72 = new String[] { "long", "java.lang.String", "int" };
+		_methodParameterTypes67 = new String[] { "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -247,51 +226,13 @@ public class ConversationLocalServiceClpInvoker {
 
 		if (_methodName66.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes66, parameterTypes)) {
-			return ConversationLocalServiceUtil.addConversation(((Long)arguments[0]).longValue(),
-				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
-				(java.lang.String)arguments[3], (java.lang.String)arguments[4]);
+			return ConversationLocalServiceUtil.addConversation((java.lang.String)arguments[0],
+				(java.lang.String)arguments[1]);
 		}
 
 		if (_methodName67.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes67, parameterTypes)) {
-			ConversationLocalServiceUtil.removeConversation(((Long)arguments[0]).longValue(),
-				(java.lang.String)arguments[1]);
-
-			return null;
-		}
-
-		if (_methodName68.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes68, parameterTypes)) {
-			return ConversationLocalServiceUtil.getAllConversations(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName69.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes69, parameterTypes)) {
-			return ConversationLocalServiceUtil.getRoom(((Long)arguments[0]).longValue(),
-				(java.lang.String)arguments[1]);
-		}
-
-		if (_methodName70.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes70, parameterTypes)) {
-			return ConversationLocalServiceUtil.getConversation(((Long)arguments[0]).longValue(),
-				(java.lang.String)arguments[1]);
-		}
-
-		if (_methodName71.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes71, parameterTypes)) {
-			ConversationLocalServiceUtil.incrementUnreadMessages(((Long)arguments[0]).longValue(),
-				(java.lang.String)arguments[1]);
-
-			return null;
-		}
-
-		if (_methodName72.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes72, parameterTypes)) {
-			ConversationLocalServiceUtil.setUnreadMessages(((Long)arguments[0]).longValue(),
-				(java.lang.String)arguments[1],
-				((Integer)arguments[2]).intValue());
-
-			return null;
+			return ConversationLocalServiceUtil.getConversation((java.lang.String)arguments[0]);
 		}
 
 		throw new UnsupportedOperationException();
@@ -337,14 +278,4 @@ public class ConversationLocalServiceClpInvoker {
 	private String[] _methodParameterTypes66;
 	private String _methodName67;
 	private String[] _methodParameterTypes67;
-	private String _methodName68;
-	private String[] _methodParameterTypes68;
-	private String _methodName69;
-	private String[] _methodParameterTypes69;
-	private String _methodName70;
-	private String[] _methodParameterTypes70;
-	private String _methodName71;
-	private String[] _methodParameterTypes71;
-	private String _methodName72;
-	private String[] _methodParameterTypes72;
 }

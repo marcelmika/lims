@@ -73,7 +73,10 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
 				"value.object.finder.cache.enabled.com.marcelmika.lims.model.Conversation"),
 			true);
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
+				"value.object.column.bitmask.enabled.com.marcelmika.lims.model.Conversation"),
+			true);
+	public static long CONVERSATIONID_COLUMN_BITMASK = 1L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
 				"lock.expiration.time.com.marcelmika.lims.model.Conversation"));
 
@@ -154,7 +157,17 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 	}
 
 	public void setConversationId(String conversationId) {
+		_columnBitmask |= CONVERSATIONID_COLUMN_BITMASK;
+
+		if (_originalConversationId == null) {
+			_originalConversationId = _conversationId;
+		}
+
 		_conversationId = conversationId;
+	}
+
+	public String getOriginalConversationId() {
+		return GetterUtil.getString(_originalConversationId);
 	}
 
 	public String getConversationType() {
@@ -168,6 +181,10 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 
 	public void setConversationType(String conversationType) {
 		_conversationType = conversationType;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -253,6 +270,11 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 
 	@Override
 	public void resetOriginalValues() {
+		ConversationModelImpl conversationModelImpl = this;
+
+		conversationModelImpl._originalConversationId = conversationModelImpl._conversationId;
+
+		conversationModelImpl._columnBitmask = 0;
 	}
 
 	@Override
@@ -326,6 +348,8 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 		};
 	private long _cid;
 	private String _conversationId;
+	private String _originalConversationId;
 	private String _conversationType;
+	private long _columnBitmask;
 	private Conversation _escapedModel;
 }

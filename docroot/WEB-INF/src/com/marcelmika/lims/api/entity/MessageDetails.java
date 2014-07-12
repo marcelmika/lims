@@ -11,9 +11,10 @@ import java.util.Date;
 public class MessageDetails {
 
     private BuddyDetails from;
-    private BuddyDetails to;
-    private Date createdAt;
     private String body;
+    private Date createdAt;
+    private String messageHash;
+
 
     public BuddyDetails getFrom() {
         return from;
@@ -23,12 +24,12 @@ public class MessageDetails {
         this.from = from;
     }
 
-    public BuddyDetails getTo() {
-        return to;
+    public String getMessageHash() {
+        return messageHash;
     }
 
-    public void setTo(BuddyDetails to) {
-        this.to = to;
+    public void setMessageHash(String messageHash) {
+        this.messageHash = messageHash;
     }
 
     public Date getCreatedAt() {

@@ -14,8 +14,6 @@
 
 package com.marcelmika.lims.model;
 
-import com.marcelmika.lims.service.persistence.MessagePK;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -81,13 +79,12 @@ public class MessageSoap implements Serializable {
 	public MessageSoap() {
 	}
 
-	public MessagePK getPrimaryKey() {
-		return new MessagePK(_mid, _cid);
+	public long getPrimaryKey() {
+		return _mid;
 	}
 
-	public void setPrimaryKey(MessagePK pk) {
-		setMid(pk.mid);
-		setCid(pk.cid);
+	public void setPrimaryKey(long pk) {
+		setMid(pk);
 	}
 
 	public long getMid() {

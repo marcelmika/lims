@@ -21,10 +21,13 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.impl.BaseModelImpl;
+import com.liferay.portal.service.ServiceContext;
+
+import com.liferay.portlet.expando.model.ExpandoBridge;
+import com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil;
 
 import com.marcelmika.lims.model.Message;
 import com.marcelmika.lims.model.MessageModel;
-import com.marcelmika.lims.service.persistence.MessagePK;
 
 import java.io.Serializable;
 
@@ -62,7 +65,7 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 			{ "messageHash", Types.VARCHAR },
 			{ "text_", Types.VARCHAR }
 		};
-	public static final String TABLE_SQL_CREATE = "create table LiferayLIMS_Message (mid LONG not null,cid LONG not null,creatorId LONG,createdAt LONG,messageHash VARCHAR(75) null,text_ VARCHAR(75) null,primary key (mid, cid))";
+	public static final String TABLE_SQL_CREATE = "create table LiferayLIMS_Message (mid LONG not null primary key,cid LONG,creatorId LONG,createdAt LONG,messageHash VARCHAR(75) null,text_ VARCHAR(75) null)";
 	public static final String TABLE_SQL_DROP = "drop table LiferayLIMS_Message";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
@@ -83,21 +86,20 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 	public MessageModelImpl() {
 	}
 
-	public MessagePK getPrimaryKey() {
-		return new MessagePK(_mid, _cid);
+	public long getPrimaryKey() {
+		return _mid;
 	}
 
-	public void setPrimaryKey(MessagePK primaryKey) {
-		setMid(primaryKey.mid);
-		setCid(primaryKey.cid);
+	public void setPrimaryKey(long primaryKey) {
+		setMid(primaryKey);
 	}
 
 	public Serializable getPrimaryKeyObj() {
-		return new MessagePK(_mid, _cid);
+		return new Long(_mid);
 	}
 
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		setPrimaryKey((MessagePK)primaryKeyObj);
+		setPrimaryKey(((Long)primaryKeyObj).longValue());
 	}
 
 	public Class<?> getModelClass() {
@@ -236,6 +238,19 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+			Message.class.getName(), getPrimaryKey());
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
+		ExpandoBridge expandoBridge = getExpandoBridge();
+
+		expandoBridge.setAttributes(serviceContext);
+	}
+
+	@Override
 	public Message toEscapedModel() {
 		if (_escapedModel == null) {
 			_escapedModel = (Message)ProxyUtil.newProxyInstance(_classLoader,
@@ -266,9 +281,17 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 	}
 
 	public int compareTo(Message message) {
-		MessagePK primaryKey = message.getPrimaryKey();
+		long primaryKey = message.getPrimaryKey();
 
-		return getPrimaryKey().compareTo(primaryKey);
+		if (getPrimaryKey() < primaryKey) {
+			return -1;
+		}
+		else if (getPrimaryKey() > primaryKey) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
 	}
 
 	@Override
@@ -283,9 +306,9 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 
 		Message message = (Message)obj;
 
-		MessagePK primaryKey = message.getPrimaryKey();
+		long primaryKey = message.getPrimaryKey();
 
-		if (getPrimaryKey().equals(primaryKey)) {
+		if (getPrimaryKey() == primaryKey) {
 			return true;
 		}
 		else {
@@ -295,7 +318,7 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 
 	@Override
 	public int hashCode() {
-		return getPrimaryKey().hashCode();
+		return (int)getPrimaryKey();
 	}
 
 	@Override

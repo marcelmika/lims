@@ -31,15 +31,11 @@ public class ParticipantLocalServiceClpInvoker {
 
 		_methodName1 = "createParticipant";
 
-		_methodParameterTypes1 = new String[] {
-				"com.marcelmika.lims.service.persistence.ParticipantPK"
-			};
+		_methodParameterTypes1 = new String[] { "long" };
 
 		_methodName2 = "deleteParticipant";
 
-		_methodParameterTypes2 = new String[] {
-				"com.marcelmika.lims.service.persistence.ParticipantPK"
-			};
+		_methodParameterTypes2 = new String[] { "long" };
 
 		_methodName3 = "deleteParticipant";
 
@@ -78,15 +74,11 @@ public class ParticipantLocalServiceClpInvoker {
 
 		_methodName9 = "fetchParticipant";
 
-		_methodParameterTypes9 = new String[] {
-				"com.marcelmika.lims.service.persistence.ParticipantPK"
-			};
+		_methodParameterTypes9 = new String[] { "long" };
 
 		_methodName10 = "getParticipant";
 
-		_methodParameterTypes10 = new String[] {
-				"com.marcelmika.lims.service.persistence.ParticipantPK"
-			};
+		_methodParameterTypes10 = new String[] { "long" };
 
 		_methodName11 = "getPersistedModel";
 
@@ -119,6 +111,16 @@ public class ParticipantLocalServiceClpInvoker {
 		_methodName61 = "setBeanIdentifier";
 
 		_methodParameterTypes61 = new String[] { "java.lang.String" };
+
+		_methodName66 = "addParticipant";
+
+		_methodParameterTypes66 = new String[] {
+				"java.lang.Long", "java.lang.Long"
+			};
+
+		_methodName67 = "updateParticipants";
+
+		_methodParameterTypes67 = new String[] { "java.lang.Long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -130,12 +132,12 @@ public class ParticipantLocalServiceClpInvoker {
 
 		if (_methodName1.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes1, parameterTypes)) {
-			return ParticipantLocalServiceUtil.createParticipant((com.marcelmika.lims.service.persistence.ParticipantPK)arguments[0]);
+			return ParticipantLocalServiceUtil.createParticipant(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName2.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes2, parameterTypes)) {
-			return ParticipantLocalServiceUtil.deleteParticipant((com.marcelmika.lims.service.persistence.ParticipantPK)arguments[0]);
+			return ParticipantLocalServiceUtil.deleteParticipant(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName3.equals(name) &&
@@ -175,12 +177,12 @@ public class ParticipantLocalServiceClpInvoker {
 
 		if (_methodName9.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes9, parameterTypes)) {
-			return ParticipantLocalServiceUtil.fetchParticipant((com.marcelmika.lims.service.persistence.ParticipantPK)arguments[0]);
+			return ParticipantLocalServiceUtil.fetchParticipant(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName10.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes10, parameterTypes)) {
-			return ParticipantLocalServiceUtil.getParticipant((com.marcelmika.lims.service.persistence.ParticipantPK)arguments[0]);
+			return ParticipantLocalServiceUtil.getParticipant(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName11.equals(name) &&
@@ -218,6 +220,19 @@ public class ParticipantLocalServiceClpInvoker {
 		if (_methodName61.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes61, parameterTypes)) {
 			ParticipantLocalServiceUtil.setBeanIdentifier((java.lang.String)arguments[0]);
+
+			return null;
+		}
+
+		if (_methodName66.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes66, parameterTypes)) {
+			return ParticipantLocalServiceUtil.addParticipant((java.lang.Long)arguments[0],
+				(java.lang.Long)arguments[1]);
+		}
+
+		if (_methodName67.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes67, parameterTypes)) {
+			ParticipantLocalServiceUtil.updateParticipants((java.lang.Long)arguments[0]);
 
 			return null;
 		}
@@ -261,4 +276,8 @@ public class ParticipantLocalServiceClpInvoker {
 	private String[] _methodParameterTypes60;
 	private String _methodName61;
 	private String[] _methodParameterTypes61;
+	private String _methodName66;
+	private String[] _methodParameterTypes66;
+	private String _methodName67;
+	private String[] _methodParameterTypes67;
 }

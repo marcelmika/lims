@@ -228,7 +228,7 @@ public class PollerProcessor extends BasePollerProcessor {
      */
     protected ResponseEvent createConversation(PollerRequest pollerRequest) {
         // Create objects from poller request
-        Message message = Message.fromPollerRequest(pollerRequest);
+//        Message message = Message.fromPollerRequest(pollerRequest);
         BuddyCollection buddies = BuddyCollection.fromPollerRequest(pollerRequest);
 
         // Send request to core service
@@ -329,8 +329,9 @@ public class PollerProcessor extends BasePollerProcessor {
         // Create buddy, conversation and message
         Buddy buddy = Buddy.fromPollerRequest(pollerRequest);
         Conversation conversation = Conversation.fromPollerRequest(pollerRequest);
-        Message message = Message.fromPollerRequest(pollerRequest);
+//        Message message = Message.fromPollerRequest(pollerRequest);
         // Send request to core service
+        Message message = null;
         return conversationCoreService.sendMessage(new SendMessageRequestEvent(
                 buddy.toBuddyDetails(), conversation.toConversationDetails(), message.toMessageDetails()
         ));

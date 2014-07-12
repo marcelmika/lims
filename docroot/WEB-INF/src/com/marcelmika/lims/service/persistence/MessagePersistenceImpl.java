@@ -228,14 +228,14 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	/**
 	 * Creates a new message with the primary key. Does not add the message to the database.
 	 *
-	 * @param messagePK the primary key for the new message
+	 * @param mid the primary key for the new message
 	 * @return the new message
 	 */
-	public Message create(MessagePK messagePK) {
+	public Message create(long mid) {
 		Message message = new MessageImpl();
 
 		message.setNew(true);
-		message.setPrimaryKey(messagePK);
+		message.setPrimaryKey(mid);
 
 		return message;
 	}
@@ -243,14 +243,14 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	/**
 	 * Removes the message with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
-	 * @param messagePK the primary key of the message
+	 * @param mid the primary key of the message
 	 * @return the message that was removed
 	 * @throws com.marcelmika.lims.NoSuchMessageException if a message with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
-	public Message remove(MessagePK messagePK)
+	public Message remove(long mid)
 		throws NoSuchMessageException, SystemException {
-		return remove((Serializable)messagePK);
+		return remove(Long.valueOf(mid));
 	}
 
 	/**
@@ -385,28 +385,28 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	@Override
 	public Message findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey((MessagePK)primaryKey);
+		return findByPrimaryKey(((Long)primaryKey).longValue());
 	}
 
 	/**
 	 * Returns the message with the primary key or throws a {@link com.marcelmika.lims.NoSuchMessageException} if it could not be found.
 	 *
-	 * @param messagePK the primary key of the message
+	 * @param mid the primary key of the message
 	 * @return the message
 	 * @throws com.marcelmika.lims.NoSuchMessageException if a message with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
-	public Message findByPrimaryKey(MessagePK messagePK)
+	public Message findByPrimaryKey(long mid)
 		throws NoSuchMessageException, SystemException {
-		Message message = fetchByPrimaryKey(messagePK);
+		Message message = fetchByPrimaryKey(mid);
 
 		if (message == null) {
 			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + messagePK);
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + mid);
 			}
 
 			throw new NoSuchMessageException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				messagePK);
+				mid);
 		}
 
 		return message;
@@ -422,20 +422,19 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 	@Override
 	public Message fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey((MessagePK)primaryKey);
+		return fetchByPrimaryKey(((Long)primaryKey).longValue());
 	}
 
 	/**
 	 * Returns the message with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param messagePK the primary key of the message
+	 * @param mid the primary key of the message
 	 * @return the message, or <code>null</code> if a message with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
-	public Message fetchByPrimaryKey(MessagePK messagePK)
-		throws SystemException {
+	public Message fetchByPrimaryKey(long mid) throws SystemException {
 		Message message = (Message)EntityCacheUtil.getResult(MessageModelImpl.ENTITY_CACHE_ENABLED,
-				MessageImpl.class, messagePK);
+				MessageImpl.class, mid);
 
 		if (message == _nullMessage) {
 			return null;
@@ -449,7 +448,8 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 			try {
 				session = openSession();
 
-				message = (Message)session.get(MessageImpl.class, messagePK);
+				message = (Message)session.get(MessageImpl.class,
+						Long.valueOf(mid));
 			}
 			catch (Exception e) {
 				hasException = true;
@@ -462,7 +462,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 				}
 				else if (!hasException) {
 					EntityCacheUtil.putResult(MessageModelImpl.ENTITY_CACHE_ENABLED,
-						MessageImpl.class, messagePK, _nullMessage);
+						MessageImpl.class, mid, _nullMessage);
 				}
 
 				closeSession(session);

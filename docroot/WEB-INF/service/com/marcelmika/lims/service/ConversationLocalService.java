@@ -243,31 +243,12 @@ public interface ConversationLocalService extends BaseLocalService,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable;
 
-	public com.marcelmika.lims.model.Conversation addConversation(long userId,
-		java.lang.String conversationId, java.lang.String conversationType,
-		java.lang.String conversationVisibility,
-		java.lang.String conversationName)
+	public com.marcelmika.lims.model.Conversation addConversation(
+		java.lang.String conversationId, java.lang.String conversationType)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
-	public void removeConversation(long userId, java.lang.String conversationId);
-
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.List<com.marcelmika.lims.model.Conversation> getAllConversations(
-		long userId) throws com.liferay.portal.kernel.exception.SystemException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public com.marcelmika.lims.model.Conversation getRoom(long userId,
+	public com.marcelmika.lims.model.Conversation getConversation(
 		java.lang.String conversationId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.NoSuchConversationException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public com.marcelmika.lims.model.Conversation getConversation(long userId,
-		java.lang.String conversationId);
-
-	public void incrementUnreadMessages(long userId,
-		java.lang.String conversationId);
-
-	public void setUnreadMessages(long userId, java.lang.String conversationId,
-		int unreadMessages);
+		throws com.liferay.portal.kernel.exception.SystemException;
 }

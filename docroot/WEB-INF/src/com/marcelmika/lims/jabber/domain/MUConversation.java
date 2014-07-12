@@ -148,7 +148,7 @@ public class MUConversation implements Conversation, JSONable {
 
     // @todo: This should probably be in a separate layer to avoid model specific call
     private com.marcelmika.lims.model.Conversation getConversationModel() {
-        return ConversationLocalServiceUtil.getConversation(owner.getUserId(), conversationId);
+        return null;
     }
 
     public List<Buddy> getParticipants() {
@@ -194,7 +194,7 @@ public class MUConversation implements Conversation, JSONable {
 
     @Override
     public String getConversationName() {
-        return getConversationModel().getConversationName();
+        return null;
     }
 
     @Override
@@ -204,7 +204,7 @@ public class MUConversation implements Conversation, JSONable {
 
     @Override
     public String getConversationVisibility() {
-        return getConversationModel().getConversationVisibility();
+        return null;
     }
 
     public MessageDeprecated getLastMessage() {
@@ -224,7 +224,7 @@ public class MUConversation implements Conversation, JSONable {
     }
 
     public int getUnreadMessages() {
-        return getConversationModel().getUnreadMessages();
+        return 0;
     }
 
     /**

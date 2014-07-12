@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
+import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -32,7 +33,9 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.BatchSessionUtil;
@@ -75,6 +78,15 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 		".List1";
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
 		".List2";
+	public static final FinderPath FINDER_PATH_FETCH_BY_CONVERSATIONID = new FinderPath(ConversationModelImpl.ENTITY_CACHE_ENABLED,
+			ConversationModelImpl.FINDER_CACHE_ENABLED, ConversationImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByConversationId",
+			new String[] { String.class.getName() },
+			ConversationModelImpl.CONVERSATIONID_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_CONVERSATIONID = new FinderPath(ConversationModelImpl.ENTITY_CACHE_ENABLED,
+			ConversationModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByConversationId",
+			new String[] { String.class.getName() });
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(ConversationModelImpl.ENTITY_CACHE_ENABLED,
 			ConversationModelImpl.FINDER_CACHE_ENABLED, ConversationImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
@@ -93,6 +105,9 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	public void cacheResult(Conversation conversation) {
 		EntityCacheUtil.putResult(ConversationModelImpl.ENTITY_CACHE_ENABLED,
 			ConversationImpl.class, conversation.getPrimaryKey(), conversation);
+
+		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONVERSATIONID,
+			new Object[] { conversation.getConversationId() }, conversation);
 
 		conversation.resetOriginalValues();
 	}
@@ -149,6 +164,8 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		clearUniqueFindersCache(conversation);
 	}
 
 	@Override
@@ -159,6 +176,53 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 		for (Conversation conversation : conversations) {
 			EntityCacheUtil.removeResult(ConversationModelImpl.ENTITY_CACHE_ENABLED,
 				ConversationImpl.class, conversation.getPrimaryKey());
+
+			clearUniqueFindersCache(conversation);
+		}
+	}
+
+	protected void cacheUniqueFindersCache(Conversation conversation) {
+		if (conversation.isNew()) {
+			Object[] args = new Object[] { conversation.getConversationId() };
+
+			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CONVERSATIONID,
+				args, Long.valueOf(1));
+			FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONVERSATIONID,
+				args, conversation);
+		}
+		else {
+			ConversationModelImpl conversationModelImpl = (ConversationModelImpl)conversation;
+
+			if ((conversationModelImpl.getColumnBitmask() &
+					FINDER_PATH_FETCH_BY_CONVERSATIONID.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] { conversation.getConversationId() };
+
+				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CONVERSATIONID,
+					args, Long.valueOf(1));
+				FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONVERSATIONID,
+					args, conversation);
+			}
+		}
+	}
+
+	protected void clearUniqueFindersCache(Conversation conversation) {
+		ConversationModelImpl conversationModelImpl = (ConversationModelImpl)conversation;
+
+		Object[] args = new Object[] { conversation.getConversationId() };
+
+		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONVERSATIONID, args);
+		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CONVERSATIONID, args);
+
+		if ((conversationModelImpl.getColumnBitmask() &
+				FINDER_PATH_FETCH_BY_CONVERSATIONID.getColumnBitmask()) != 0) {
+			args = new Object[] {
+					conversationModelImpl.getOriginalConversationId()
+				};
+
+			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONVERSATIONID,
+				args);
+			FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CONVERSATIONID,
+				args);
 		}
 	}
 
@@ -281,12 +345,15 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 
-		if (isNew) {
+		if (isNew || !ConversationModelImpl.COLUMN_BITMASK_ENABLED) {
 			FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
 
 		EntityCacheUtil.putResult(ConversationModelImpl.ENTITY_CACHE_ENABLED,
 			ConversationImpl.class, conversation.getPrimaryKey(), conversation);
+
+		clearUniqueFindersCache(conversation);
+		cacheUniqueFindersCache(conversation);
 
 		return conversation;
 	}
@@ -407,6 +474,157 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	}
 
 	/**
+	 * Returns the conversation where conversationId = &#63; or throws a {@link com.marcelmika.lims.NoSuchConversationException} if it could not be found.
+	 *
+	 * @param conversationId the conversation ID
+	 * @return the matching conversation
+	 * @throws com.marcelmika.lims.NoSuchConversationException if a matching conversation could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public Conversation findByConversationId(String conversationId)
+		throws NoSuchConversationException, SystemException {
+		Conversation conversation = fetchByConversationId(conversationId);
+
+		if (conversation == null) {
+			StringBundler msg = new StringBundler(4);
+
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			msg.append("conversationId=");
+			msg.append(conversationId);
+
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+			if (_log.isWarnEnabled()) {
+				_log.warn(msg.toString());
+			}
+
+			throw new NoSuchConversationException(msg.toString());
+		}
+
+		return conversation;
+	}
+
+	/**
+	 * Returns the conversation where conversationId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param conversationId the conversation ID
+	 * @return the matching conversation, or <code>null</code> if a matching conversation could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public Conversation fetchByConversationId(String conversationId)
+		throws SystemException {
+		return fetchByConversationId(conversationId, true);
+	}
+
+	/**
+	 * Returns the conversation where conversationId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param conversationId the conversation ID
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the matching conversation, or <code>null</code> if a matching conversation could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	public Conversation fetchByConversationId(String conversationId,
+		boolean retrieveFromCache) throws SystemException {
+		Object[] finderArgs = new Object[] { conversationId };
+
+		Object result = null;
+
+		if (retrieveFromCache) {
+			result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_CONVERSATIONID,
+					finderArgs, this);
+		}
+
+		if (result instanceof Conversation) {
+			Conversation conversation = (Conversation)result;
+
+			if (!Validator.equals(conversationId,
+						conversation.getConversationId())) {
+				result = null;
+			}
+		}
+
+		if (result == null) {
+			StringBundler query = new StringBundler(2);
+
+			query.append(_SQL_SELECT_CONVERSATION_WHERE);
+
+			if (conversationId == null) {
+				query.append(_FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_1);
+			}
+			else {
+				if (conversationId.equals(StringPool.BLANK)) {
+					query.append(_FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_3);
+				}
+				else {
+					query.append(_FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_2);
+				}
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (conversationId != null) {
+					qPos.add(conversationId);
+				}
+
+				List<Conversation> list = q.list();
+
+				result = list;
+
+				Conversation conversation = null;
+
+				if (list.isEmpty()) {
+					FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONVERSATIONID,
+						finderArgs, list);
+				}
+				else {
+					conversation = list.get(0);
+
+					cacheResult(conversation);
+
+					if ((conversation.getConversationId() == null) ||
+							!conversation.getConversationId()
+											 .equals(conversationId)) {
+						FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONVERSATIONID,
+							finderArgs, conversation);
+					}
+				}
+
+				return conversation;
+			}
+			catch (Exception e) {
+				throw processException(e);
+			}
+			finally {
+				if (result == null) {
+					FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CONVERSATIONID,
+						finderArgs);
+				}
+
+				closeSession(session);
+			}
+		}
+		else {
+			if (result instanceof List<?>) {
+				return null;
+			}
+			else {
+				return (Conversation)result;
+			}
+		}
+	}
+
+	/**
 	 * Returns all the conversations.
 	 *
 	 * @return the conversations
@@ -522,6 +740,20 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	}
 
 	/**
+	 * Removes the conversation where conversationId = &#63; from the database.
+	 *
+	 * @param conversationId the conversation ID
+	 * @return the conversation that was removed
+	 * @throws SystemException if a system exception occurred
+	 */
+	public Conversation removeByConversationId(String conversationId)
+		throws NoSuchConversationException, SystemException {
+		Conversation conversation = findByConversationId(conversationId);
+
+		return remove(conversation);
+	}
+
+	/**
 	 * Removes all the conversations from the database.
 	 *
 	 * @throws SystemException if a system exception occurred
@@ -530,6 +762,72 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 		for (Conversation conversation : findAll()) {
 			remove(conversation);
 		}
+	}
+
+	/**
+	 * Returns the number of conversations where conversationId = &#63;.
+	 *
+	 * @param conversationId the conversation ID
+	 * @return the number of matching conversations
+	 * @throws SystemException if a system exception occurred
+	 */
+	public int countByConversationId(String conversationId)
+		throws SystemException {
+		Object[] finderArgs = new Object[] { conversationId };
+
+		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CONVERSATIONID,
+				finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(2);
+
+			query.append(_SQL_COUNT_CONVERSATION_WHERE);
+
+			if (conversationId == null) {
+				query.append(_FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_1);
+			}
+			else {
+				if (conversationId.equals(StringPool.BLANK)) {
+					query.append(_FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_3);
+				}
+				else {
+					query.append(_FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_2);
+				}
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (conversationId != null) {
+					qPos.add(conversationId);
+				}
+
+				count = (Long)q.uniqueResult();
+			}
+			catch (Exception e) {
+				throw processException(e);
+			}
+			finally {
+				if (count == null) {
+					count = Long.valueOf(0);
+				}
+
+				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CONVERSATIONID,
+					finderArgs, count);
+
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
 	}
 
 	/**
@@ -622,9 +920,15 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
 	private static final String _SQL_SELECT_CONVERSATION = "SELECT conversation FROM Conversation conversation";
+	private static final String _SQL_SELECT_CONVERSATION_WHERE = "SELECT conversation FROM Conversation conversation WHERE ";
 	private static final String _SQL_COUNT_CONVERSATION = "SELECT COUNT(conversation) FROM Conversation conversation";
+	private static final String _SQL_COUNT_CONVERSATION_WHERE = "SELECT COUNT(conversation) FROM Conversation conversation WHERE ";
+	private static final String _FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_1 = "conversation.conversationId IS NULL";
+	private static final String _FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_2 = "conversation.conversationId = ?";
+	private static final String _FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_3 = "(conversation.conversationId IS NULL OR conversation.conversationId = ?)";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "conversation.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Conversation exists with the primary key ";
+	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Conversation exists with the key {";
 	private static final boolean _HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE = GetterUtil.getBoolean(PropsUtil.get(
 				PropsKeys.HIBERNATE_CACHE_USE_SECOND_LEVEL_CACHE));
 	private static Log _log = LogFactoryUtil.getLog(ConversationPersistenceImpl.class);

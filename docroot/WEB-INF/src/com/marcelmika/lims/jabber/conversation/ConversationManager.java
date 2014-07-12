@@ -41,16 +41,15 @@ public class ConversationManager {
         // Find all conversations that belongs to the user
 
         List<Conversation> conversations = null;
-        try {
-            conversations = ConversationLocalServiceUtil.getAllConversations(userId);
-        } catch (SystemException e) {
-            // TODO: log
-            return;
-        }
+//        try {
+////            conversations = ConversationLocalServiceUtil.getAllConversations(userId);
+//        } catch (SystemException e) {
+//            // TODO: log
+//            return;
+//        }
 
         // Create conversations from all rooms that belong to the user
         for (Conversation conversation : conversations) {
-
             // Multi user conversation
             if (conversation.getConversationType().equals(ConversationKeys.CONVERSATION_TYPE_MULTI_USER)) {
                 MUConversation muConversation = buildMUConversation(owner, connection, conversation);

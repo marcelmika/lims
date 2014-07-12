@@ -47,7 +47,6 @@ import com.marcelmika.lims.service.ParticipantLocalService;
 import com.marcelmika.lims.service.SettingsLocalService;
 import com.marcelmika.lims.service.persistence.BuddyPersistence;
 import com.marcelmika.lims.service.persistence.ConversationPersistence;
-import com.marcelmika.lims.service.persistence.MessagePK;
 import com.marcelmika.lims.service.persistence.MessagePersistence;
 import com.marcelmika.lims.service.persistence.OpenedConversationPersistence;
 import com.marcelmika.lims.service.persistence.PanelPersistence;
@@ -97,25 +96,25 @@ public abstract class MessageLocalServiceBaseImpl extends BaseLocalServiceImpl
 	/**
 	 * Creates a new message with the primary key. Does not add the message to the database.
 	 *
-	 * @param messagePK the primary key for the new message
+	 * @param mid the primary key for the new message
 	 * @return the new message
 	 */
-	public Message createMessage(MessagePK messagePK) {
-		return messagePersistence.create(messagePK);
+	public Message createMessage(long mid) {
+		return messagePersistence.create(mid);
 	}
 
 	/**
 	 * Deletes the message with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
-	 * @param messagePK the primary key of the message
+	 * @param mid the primary key of the message
 	 * @return the message that was removed
 	 * @throws PortalException if a message with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.DELETE)
-	public Message deleteMessage(MessagePK messagePK)
+	public Message deleteMessage(long mid)
 		throws PortalException, SystemException {
-		return messagePersistence.remove(messagePK);
+		return messagePersistence.remove(mid);
 	}
 
 	/**
@@ -202,21 +201,20 @@ public abstract class MessageLocalServiceBaseImpl extends BaseLocalServiceImpl
 		return messagePersistence.countWithDynamicQuery(dynamicQuery);
 	}
 
-	public Message fetchMessage(MessagePK messagePK) throws SystemException {
-		return messagePersistence.fetchByPrimaryKey(messagePK);
+	public Message fetchMessage(long mid) throws SystemException {
+		return messagePersistence.fetchByPrimaryKey(mid);
 	}
 
 	/**
 	 * Returns the message with the primary key.
 	 *
-	 * @param messagePK the primary key of the message
+	 * @param mid the primary key of the message
 	 * @return the message
 	 * @throws PortalException if a message with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
-	public Message getMessage(MessagePK messagePK)
-		throws PortalException, SystemException {
-		return messagePersistence.findByPrimaryKey(messagePK);
+	public Message getMessage(long mid) throws PortalException, SystemException {
+		return messagePersistence.findByPrimaryKey(mid);
 	}
 
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

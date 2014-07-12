@@ -36,10 +36,9 @@
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.marcelmika.lims.model.impl.MessageModelImpl">
-		<id-class class="com.marcelmika.lims.service.persistence.MessagePK" />
 		<attributes>
 			<id name="mid" />
-			<id name="cid" />
+			<basic name="cid" />
 			<basic name="creatorId" />
 			<basic name="createdAt" />
 			<basic name="messageHash" />
@@ -74,10 +73,9 @@
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.marcelmika.lims.model.impl.ParticipantModelImpl">
-		<id-class class="com.marcelmika.lims.service.persistence.ParticipantPK" />
 		<attributes>
 			<id name="pid" />
-			<id name="cid" />
+			<basic name="cid" />
 			<basic name="participantId" />
 			<basic name="unreadMessagesCount" />
 			<basic name="isOpened" />

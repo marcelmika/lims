@@ -121,7 +121,7 @@ public class SingleUserConversationManagerImpl implements SingleUserConversation
         else {
             try {
                 // Receiver
-                Buddy receiver = message.getTo();
+                Buddy receiver = conversation.getParticipant();
                 // Receiver's Jid
                 String receiverJid = Jid.getJid(receiver.getScreenName());
                 // Create a new chat
@@ -160,7 +160,7 @@ public class SingleUserConversationManagerImpl implements SingleUserConversation
             createConversation(chat);
         } else {
             // We don't need to care about it here because the chat was already
-            // created in sendMessage() method called by the local user.
+            // created in createMessage() method called by the local user.
             log.info("Chat created locally with id: " + chat.getThreadID());
         }
     }

@@ -23,7 +23,6 @@ import com.liferay.portal.model.impl.BaseModelImpl;
 
 import com.marcelmika.lims.service.ClpSerializer;
 import com.marcelmika.lims.service.MessageLocalServiceUtil;
-import com.marcelmika.lims.service.persistence.MessagePK;
 
 import java.io.Serializable;
 
@@ -47,21 +46,20 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		return Message.class.getName();
 	}
 
-	public MessagePK getPrimaryKey() {
-		return new MessagePK(_mid, _cid);
+	public long getPrimaryKey() {
+		return _mid;
 	}
 
-	public void setPrimaryKey(MessagePK primaryKey) {
-		setMid(primaryKey.mid);
-		setCid(primaryKey.cid);
+	public void setPrimaryKey(long primaryKey) {
+		setMid(primaryKey);
 	}
 
 	public Serializable getPrimaryKeyObj() {
-		return new MessagePK(_mid, _cid);
+		return new Long(_mid);
 	}
 
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		setPrimaryKey((MessagePK)primaryKeyObj);
+		setPrimaryKey(((Long)primaryKeyObj).longValue());
 	}
 
 	@Override
@@ -326,9 +324,17 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 	}
 
 	public int compareTo(Message message) {
-		MessagePK primaryKey = message.getPrimaryKey();
+		long primaryKey = message.getPrimaryKey();
 
-		return getPrimaryKey().compareTo(primaryKey);
+		if (getPrimaryKey() < primaryKey) {
+			return -1;
+		}
+		else if (getPrimaryKey() > primaryKey) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
 	}
 
 	@Override
@@ -343,9 +349,9 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 
 		MessageClp message = (MessageClp)obj;
 
-		MessagePK primaryKey = message.getPrimaryKey();
+		long primaryKey = message.getPrimaryKey();
 
-		if (getPrimaryKey().equals(primaryKey)) {
+		if (getPrimaryKey() == primaryKey) {
 			return true;
 		}
 		else {
@@ -355,7 +361,7 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 
 	@Override
 	public int hashCode() {
-		return getPrimaryKey().hashCode();
+		return (int)getPrimaryKey();
 	}
 
 	@Override

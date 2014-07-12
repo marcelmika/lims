@@ -31,15 +31,11 @@ public class MessageLocalServiceClp implements MessageLocalService {
 
 		_methodName1 = "createMessage";
 
-		_methodParameterTypes1 = new String[] {
-				"com.marcelmika.lims.service.persistence.MessagePK"
-			};
+		_methodParameterTypes1 = new String[] { "long" };
 
 		_methodName2 = "deleteMessage";
 
-		_methodParameterTypes2 = new String[] {
-				"com.marcelmika.lims.service.persistence.MessagePK"
-			};
+		_methodParameterTypes2 = new String[] { "long" };
 
 		_methodName3 = "deleteMessage";
 
@@ -78,15 +74,11 @@ public class MessageLocalServiceClp implements MessageLocalService {
 
 		_methodName9 = "fetchMessage";
 
-		_methodParameterTypes9 = new String[] {
-				"com.marcelmika.lims.service.persistence.MessagePK"
-			};
+		_methodParameterTypes9 = new String[] { "long" };
 
 		_methodName10 = "getMessage";
 
-		_methodParameterTypes10 = new String[] {
-				"com.marcelmika.lims.service.persistence.MessagePK"
-			};
+		_methodParameterTypes10 = new String[] { "long" };
 
 		_methodName11 = "getPersistedModel";
 
@@ -119,6 +111,12 @@ public class MessageLocalServiceClp implements MessageLocalService {
 		_methodName17 = "setBeanIdentifier";
 
 		_methodParameterTypes17 = new String[] { "java.lang.String" };
+
+		_methodName19 = "addMessage";
+
+		_methodParameterTypes19 = new String[] {
+				"long", "long", "java.lang.String", "java.lang.String"
+			};
 	}
 
 	public com.marcelmika.lims.model.Message addMessage(
@@ -150,14 +148,12 @@ public class MessageLocalServiceClp implements MessageLocalService {
 		return (com.marcelmika.lims.model.Message)ClpSerializer.translateOutput(returnObj);
 	}
 
-	public com.marcelmika.lims.model.Message createMessage(
-		com.marcelmika.lims.service.persistence.MessagePK messagePK) {
+	public com.marcelmika.lims.model.Message createMessage(long mid) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName1,
-					_methodParameterTypes1,
-					new Object[] { ClpSerializer.translateInput(messagePK) });
+					_methodParameterTypes1, new Object[] { mid });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -174,16 +170,14 @@ public class MessageLocalServiceClp implements MessageLocalService {
 		return (com.marcelmika.lims.model.Message)ClpSerializer.translateOutput(returnObj);
 	}
 
-	public com.marcelmika.lims.model.Message deleteMessage(
-		com.marcelmika.lims.service.persistence.MessagePK messagePK)
+	public com.marcelmika.lims.model.Message deleteMessage(long mid)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName2,
-					_methodParameterTypes2,
-					new Object[] { ClpSerializer.translateInput(messagePK) });
+					_methodParameterTypes2, new Object[] { mid });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -394,15 +388,13 @@ public class MessageLocalServiceClp implements MessageLocalService {
 		return ((Long)returnObj).longValue();
 	}
 
-	public com.marcelmika.lims.model.Message fetchMessage(
-		com.marcelmika.lims.service.persistence.MessagePK messagePK)
+	public com.marcelmika.lims.model.Message fetchMessage(long mid)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName9,
-					_methodParameterTypes9,
-					new Object[] { ClpSerializer.translateInput(messagePK) });
+					_methodParameterTypes9, new Object[] { mid });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -423,16 +415,14 @@ public class MessageLocalServiceClp implements MessageLocalService {
 		return (com.marcelmika.lims.model.Message)ClpSerializer.translateOutput(returnObj);
 	}
 
-	public com.marcelmika.lims.model.Message getMessage(
-		com.marcelmika.lims.service.persistence.MessagePK messagePK)
+	public com.marcelmika.lims.model.Message getMessage(long mid)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName10,
-					_methodParameterTypes10,
-					new Object[] { ClpSerializer.translateInput(messagePK) });
+					_methodParameterTypes10, new Object[] { mid });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -651,6 +641,43 @@ public class MessageLocalServiceClp implements MessageLocalService {
 		throw new UnsupportedOperationException();
 	}
 
+	public com.marcelmika.lims.model.Message addMessage(long cid,
+		long creatorId, java.lang.String text, java.lang.String messageHash)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName19,
+					_methodParameterTypes19,
+					new Object[] {
+						cid,
+						
+					creatorId,
+						
+					ClpSerializer.translateInput(text),
+						
+					ClpSerializer.translateInput(messageHash)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.marcelmika.lims.model.Message)ClpSerializer.translateOutput(returnObj);
+	}
+
 	private InvokableLocalService _invokableLocalService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
@@ -688,4 +715,6 @@ public class MessageLocalServiceClp implements MessageLocalService {
 	private String[] _methodParameterTypes16;
 	private String _methodName17;
 	private String[] _methodParameterTypes17;
+	private String _methodName19;
+	private String[] _methodParameterTypes19;
 }

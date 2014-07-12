@@ -21,8 +21,6 @@ import com.liferay.portal.service.ServiceContext;
 
 import com.liferay.portlet.expando.model.ExpandoBridge;
 
-import com.marcelmika.lims.service.persistence.MessagePK;
-
 import java.io.Serializable;
 
 /**
@@ -50,14 +48,14 @@ public interface MessageModel extends BaseModel<Message> {
 	 *
 	 * @return the primary key of this message
 	 */
-	public MessagePK getPrimaryKey();
+	public long getPrimaryKey();
 
 	/**
 	 * Sets the primary key of this message.
 	 *
 	 * @param primaryKey the primary key of this message
 	 */
-	public void setPrimaryKey(MessagePK primaryKey);
+	public void setPrimaryKey(long primaryKey);
 
 	/**
 	 * Returns the mid of this message.

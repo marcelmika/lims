@@ -93,7 +93,7 @@ public class ParticipantWrapper implements Participant,
 	*
 	* @return the primary key of this participant
 	*/
-	public com.marcelmika.lims.service.persistence.ParticipantPK getPrimaryKey() {
+	public long getPrimaryKey() {
 		return _participant.getPrimaryKey();
 	}
 
@@ -102,8 +102,7 @@ public class ParticipantWrapper implements Participant,
 	*
 	* @param primaryKey the primary key of this participant
 	*/
-	public void setPrimaryKey(
-		com.marcelmika.lims.service.persistence.ParticipantPK primaryKey) {
+	public void setPrimaryKey(long primaryKey) {
 		_participant.setPrimaryKey(primaryKey);
 	}
 
@@ -248,7 +247,7 @@ public class ParticipantWrapper implements Participant,
 		return new ParticipantWrapper((Participant)_participant.clone());
 	}
 
-	public int compareTo(Participant participant) {
+	public int compareTo(com.marcelmika.lims.model.Participant participant) {
 		return _participant.compareTo(participant);
 	}
 
@@ -257,15 +256,15 @@ public class ParticipantWrapper implements Participant,
 		return _participant.hashCode();
 	}
 
-	public com.liferay.portal.model.CacheModel<Participant> toCacheModel() {
+	public com.liferay.portal.model.CacheModel<com.marcelmika.lims.model.Participant> toCacheModel() {
 		return _participant.toCacheModel();
 	}
 
-	public Participant toEscapedModel() {
+	public com.marcelmika.lims.model.Participant toEscapedModel() {
 		return new ParticipantWrapper(_participant.toEscapedModel());
 	}
 
-	public Participant toUnescapedModel() {
+	public com.marcelmika.lims.model.Participant toUnescapedModel() {
 		return new ParticipantWrapper(_participant.toUnescapedModel());
 	}
 

@@ -99,6 +99,42 @@ public interface ConversationPersistence extends BasePersistence<Conversation> {
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
+	* Returns the conversation where conversationId = &#63; or throws a {@link com.marcelmika.lims.NoSuchConversationException} if it could not be found.
+	*
+	* @param conversationId the conversation ID
+	* @return the matching conversation
+	* @throws com.marcelmika.lims.NoSuchConversationException if a matching conversation could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.model.Conversation findByConversationId(
+		java.lang.String conversationId)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.NoSuchConversationException;
+
+	/**
+	* Returns the conversation where conversationId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	*
+	* @param conversationId the conversation ID
+	* @return the matching conversation, or <code>null</code> if a matching conversation could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.model.Conversation fetchByConversationId(
+		java.lang.String conversationId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the conversation where conversationId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	*
+	* @param conversationId the conversation ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching conversation, or <code>null</code> if a matching conversation could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.model.Conversation fetchByConversationId(
+		java.lang.String conversationId, boolean retrieveFromCache)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
 	* Returns all the conversations.
 	*
 	* @return the conversations
@@ -142,11 +178,33 @@ public interface ConversationPersistence extends BasePersistence<Conversation> {
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
+	* Removes the conversation where conversationId = &#63; from the database.
+	*
+	* @param conversationId the conversation ID
+	* @return the conversation that was removed
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.model.Conversation removeByConversationId(
+		java.lang.String conversationId)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.NoSuchConversationException;
+
+	/**
 	* Removes all the conversations from the database.
 	*
 	* @throws SystemException if a system exception occurred
 	*/
 	public void removeAll()
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the number of conversations where conversationId = &#63;.
+	*
+	* @param conversationId the conversation ID
+	* @return the number of matching conversations
+	* @throws SystemException if a system exception occurred
+	*/
+	public int countByConversationId(java.lang.String conversationId)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**

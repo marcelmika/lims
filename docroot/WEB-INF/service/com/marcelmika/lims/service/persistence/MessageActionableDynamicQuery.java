@@ -32,6 +32,6 @@ public abstract class MessageActionableDynamicQuery
 
 		setClassLoader(com.marcelmika.lims.service.ClpSerializer.class.getClassLoader());
 
-		setPrimaryKeyPropertyName("primaryKey.mid");
+		setPrimaryKeyPropertyName("mid");
 	}
 }

@@ -50,7 +50,6 @@ import com.marcelmika.lims.service.persistence.ConversationPersistence;
 import com.marcelmika.lims.service.persistence.MessagePersistence;
 import com.marcelmika.lims.service.persistence.OpenedConversationPersistence;
 import com.marcelmika.lims.service.persistence.PanelPersistence;
-import com.marcelmika.lims.service.persistence.ParticipantPK;
 import com.marcelmika.lims.service.persistence.ParticipantPersistence;
 import com.marcelmika.lims.service.persistence.SettingsPersistence;
 
@@ -99,25 +98,25 @@ public abstract class ParticipantLocalServiceBaseImpl
 	/**
 	 * Creates a new participant with the primary key. Does not add the participant to the database.
 	 *
-	 * @param participantPK the primary key for the new participant
+	 * @param pid the primary key for the new participant
 	 * @return the new participant
 	 */
-	public Participant createParticipant(ParticipantPK participantPK) {
-		return participantPersistence.create(participantPK);
+	public Participant createParticipant(long pid) {
+		return participantPersistence.create(pid);
 	}
 
 	/**
 	 * Deletes the participant with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
-	 * @param participantPK the primary key of the participant
+	 * @param pid the primary key of the participant
 	 * @return the participant that was removed
 	 * @throws PortalException if a participant with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Indexable(type = IndexableType.DELETE)
-	public Participant deleteParticipant(ParticipantPK participantPK)
+	public Participant deleteParticipant(long pid)
 		throws PortalException, SystemException {
-		return participantPersistence.remove(participantPK);
+		return participantPersistence.remove(pid);
 	}
 
 	/**
@@ -206,22 +205,21 @@ public abstract class ParticipantLocalServiceBaseImpl
 		return participantPersistence.countWithDynamicQuery(dynamicQuery);
 	}
 
-	public Participant fetchParticipant(ParticipantPK participantPK)
-		throws SystemException {
-		return participantPersistence.fetchByPrimaryKey(participantPK);
+	public Participant fetchParticipant(long pid) throws SystemException {
+		return participantPersistence.fetchByPrimaryKey(pid);
 	}
 
 	/**
 	 * Returns the participant with the primary key.
 	 *
-	 * @param participantPK the primary key of the participant
+	 * @param pid the primary key of the participant
 	 * @return the participant
 	 * @throws PortalException if a participant with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
-	public Participant getParticipant(ParticipantPK participantPK)
+	public Participant getParticipant(long pid)
 		throws PortalException, SystemException {
-		return participantPersistence.findByPrimaryKey(participantPK);
+		return participantPersistence.findByPrimaryKey(pid);
 	}
 
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

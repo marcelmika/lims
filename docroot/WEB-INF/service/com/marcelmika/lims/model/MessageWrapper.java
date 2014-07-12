@@ -98,7 +98,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	*
 	* @return the primary key of this message
 	*/
-	public com.marcelmika.lims.service.persistence.MessagePK getPrimaryKey() {
+	public long getPrimaryKey() {
 		return _message.getPrimaryKey();
 	}
 
@@ -107,8 +107,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	*
 	* @param primaryKey the primary key of this message
 	*/
-	public void setPrimaryKey(
-		com.marcelmika.lims.service.persistence.MessagePK primaryKey) {
+	public void setPrimaryKey(long primaryKey) {
 		_message.setPrimaryKey(primaryKey);
 	}
 
@@ -262,7 +261,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 		return new MessageWrapper((Message)_message.clone());
 	}
 
-	public int compareTo(Message message) {
+	public int compareTo(com.marcelmika.lims.model.Message message) {
 		return _message.compareTo(message);
 	}
 
@@ -271,15 +270,15 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 		return _message.hashCode();
 	}
 
-	public com.liferay.portal.model.CacheModel<Message> toCacheModel() {
+	public com.liferay.portal.model.CacheModel<com.marcelmika.lims.model.Message> toCacheModel() {
 		return _message.toCacheModel();
 	}
 
-	public Message toEscapedModel() {
+	public com.marcelmika.lims.model.Message toEscapedModel() {
 		return new MessageWrapper(_message.toEscapedModel());
 	}
 
-	public Message toUnescapedModel() {
+	public com.marcelmika.lims.model.Message toUnescapedModel() {
 		return new MessageWrapper(_message.toUnescapedModel());
 	}
 

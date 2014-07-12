@@ -1,7 +1,5 @@
 package com.marcelmika.lims.portal.processor;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -11,6 +9,8 @@ import com.marcelmika.lims.api.events.ResponseEvent;
 import com.marcelmika.lims.api.events.buddy.UpdatePresenceBuddyRequestEvent;
 import com.marcelmika.lims.api.events.conversation.CreateConversationRequestEvent;
 import com.marcelmika.lims.api.events.conversation.CreateConversationResponseEvent;
+import com.marcelmika.lims.api.events.conversation.SendMessageRequestEvent;
+import com.marcelmika.lims.api.events.conversation.SendMessageResponseEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
 import com.marcelmika.lims.api.events.settings.DisableChatRequestEvent;
@@ -19,6 +19,7 @@ import com.marcelmika.lims.api.events.settings.UpdateActivePanelRequestEvent;
 import com.marcelmika.lims.api.events.settings.UpdateSettingsRequestEvent;
 import com.marcelmika.lims.core.service.*;
 import com.marcelmika.lims.portal.domain.*;
+import com.marcelmika.lims.portal.processor.parameters.CreateMessageParameters;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -138,6 +139,46 @@ public class PortletProcessor {
         else {
             writeError(responseEvent.getStatus().toString(), response);
         }
+    }
+
+    /**
+     * Create new message in conversation
+     *
+     * @param request  ResourceRequest
+     * @param response ResourceResponse
+     */
+    public void createMessage(ResourceRequest request, ResourceResponse response) {
+        // Buddy from request
+        Buddy buddy = Buddy.fromResourceRequest(request);
+
+        // Deserialize Parameters
+        CreateMessageParameters parameters = JSONFactoryUtil.looseDeserialize(
+                request.getParameter("parameters"), CreateMessageParameters.class
+        );
+        // Deserialize Content
+        Message message = JSONFactoryUtil.looseDeserialize(
+                request.getParameter("content"), Message.class
+        );
+
+        Conversation conversation = new Conversation();
+        conversation.setConversationId(parameters.getConversationId());
+
+        log.info(request.getParameter("content"));
+        log.info(request.getParameter("parameters"));
+        log.info(message);
+        log.info(parameters);
+
+        // Add to system
+        SendMessageResponseEvent responseEvent = conversationCoreService.sendMessage(
+                new SendMessageRequestEvent(
+                        buddy.toBuddyDetails(),
+                        conversation.toConversationDetails(),
+                        message.toMessageDetails())
+        );
+
+
+        // TODO: Send response
+//        log.info("Send message STATUS: " + responseEvent.get);
     }
 
     // ---------------------------------------------------------------------------------------------------------

@@ -71,13 +71,13 @@ public class JabberImpl implements Jabber {
         muc.sendConfigurationForm(JabberFormFactory.getMUCConfigurationForm());
 
         // Add to database
-        ConversationLocalServiceUtil.addConversation(
-                buddy.getUserId(),
-                key,
-                ConversationKeys.CONVERSATION_TYPE_MULTI_USER,
-                "",
-                key
-        );
+//        ConversationLocalServiceUtil.addConversation(
+//                buddy.getUserId(),
+//                key,
+//                ConversationKeys.CONVERSATION_TYPE_MULTI_USER,
+//                "",
+//                key
+//        );
         // Create local conversation
         MUConversation conversation = new MUConversation(key, buddy, muc);
         conversation.addParticipants(participants);
@@ -125,13 +125,13 @@ public class JabberImpl implements Jabber {
         messageListener.setConversation(conversation);
 
         // Add to database
-        ConversationLocalServiceUtil.addConversation(
-                owner.getUserId(),
-                participant.getScreenName(),
-                ConversationKeys.CONVERSATION_TYPE_SINGLE_USER,
-                "",
-                participant.getFullName()
-        );
+//        ConversationLocalServiceUtil.addConversation(
+//                owner.getUserId(),
+//                participant.getScreenName(),
+//                ConversationKeys.CONVERSATION_TYPE_SINGLE_USER,
+//                "",
+//                participant.getFullName()
+//        );
 
         // Send the message
         sendMessage(userId, conversation, message, connection);
@@ -204,11 +204,11 @@ public class JabberImpl implements Jabber {
                 // Add buddy to room like an owner
                 muc.grantOwnership(getJabberId(participant.getScreenName()));
                 // Add locally
-                ConversationLocalServiceUtil.addConversation(participant.getUserId(),
-                        conversation.getConversationId(),
-                        conversation.getConversationType(),
-                        conversation.getConversationVisibility(),
-                        conversation.getConversationName());
+//                ConversationLocalServiceUtil.addConversation(participant.getUserId(),
+//                        conversation.getConversationId(),
+//                        conversation.getConversationType(),
+//                        conversation.getConversationVisibility(),
+//                        conversation.getConversationName());
 
                 // There is possibility that the participant may be connected. We need to
                 // add conversation to his conversation container thus he can see
@@ -247,7 +247,7 @@ public class JabberImpl implements Jabber {
     }
 
 
-//    public void sendMessage(long fromUserId, long toUserId, String content) {
+//    public void createMessage(long fromUserId, long toUserId, String content) {
 //        System.out.println("SENDING MESSAGE");
 //        try {
 //            if (Validator.isNull(content)) {
@@ -296,7 +296,7 @@ public class JabberImpl implements Jabber {
 //                messageListener.setConversation(conversation);
 //
 //                try {
-//                    chat.sendMessage(content);
+//                    chat.createMessage(content);
 //                } catch (XMPPException xmppe) {
 //                    System.out.println("User " + fromUserId + " could not send message" + xmppe);
 //                }

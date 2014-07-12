@@ -55,20 +55,20 @@ public interface MessagePersistence extends BasePersistence<Message> {
 	/**
 	* Creates a new message with the primary key. Does not add the message to the database.
 	*
-	* @param messagePK the primary key for the new message
+	* @param mid the primary key for the new message
 	* @return the new message
 	*/
-	public com.marcelmika.lims.model.Message create(MessagePK messagePK);
+	public com.marcelmika.lims.model.Message create(long mid);
 
 	/**
 	* Removes the message with the primary key from the database. Also notifies the appropriate model listeners.
 	*
-	* @param messagePK the primary key of the message
+	* @param mid the primary key of the message
 	* @return the message that was removed
 	* @throws com.marcelmika.lims.NoSuchMessageException if a message with the primary key could not be found
 	* @throws SystemException if a system exception occurred
 	*/
-	public com.marcelmika.lims.model.Message remove(MessagePK messagePK)
+	public com.marcelmika.lims.model.Message remove(long mid)
 		throws com.liferay.portal.kernel.exception.SystemException,
 			com.marcelmika.lims.NoSuchMessageException;
 
@@ -79,25 +79,23 @@ public interface MessagePersistence extends BasePersistence<Message> {
 	/**
 	* Returns the message with the primary key or throws a {@link com.marcelmika.lims.NoSuchMessageException} if it could not be found.
 	*
-	* @param messagePK the primary key of the message
+	* @param mid the primary key of the message
 	* @return the message
 	* @throws com.marcelmika.lims.NoSuchMessageException if a message with the primary key could not be found
 	* @throws SystemException if a system exception occurred
 	*/
-	public com.marcelmika.lims.model.Message findByPrimaryKey(
-		MessagePK messagePK)
+	public com.marcelmika.lims.model.Message findByPrimaryKey(long mid)
 		throws com.liferay.portal.kernel.exception.SystemException,
 			com.marcelmika.lims.NoSuchMessageException;
 
 	/**
 	* Returns the message with the primary key or returns <code>null</code> if it could not be found.
 	*
-	* @param messagePK the primary key of the message
+	* @param mid the primary key of the message
 	* @return the message, or <code>null</code> if a message with the primary key could not be found
 	* @throws SystemException if a system exception occurred
 	*/
-	public com.marcelmika.lims.model.Message fetchByPrimaryKey(
-		MessagePK messagePK)
+	public com.marcelmika.lims.model.Message fetchByPrimaryKey(long mid)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
