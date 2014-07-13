@@ -51,6 +51,17 @@ public class Message {
         return messages;
     }
 
+    public static Message fromMessageModel(com.marcelmika.lims.model.Message messageModel) {
+        // Create new message
+        Message message = new Message();
+        // Properties:
+        message.body = messageModel.getText();
+        message.createdAt = new Date(messageModel.getCreatedAt());
+        message.messageHash = messageModel.getMessageHash();
+
+        return message;
+    }
+
     public static List<MessageDetails> toMessageDetailsList(List<Message> messages) {
         // Create new list
         List<MessageDetails> details = new ArrayList<MessageDetails>();

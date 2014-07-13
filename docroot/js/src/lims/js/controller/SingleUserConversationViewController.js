@@ -49,11 +49,6 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
 
         // Events
         this._attachEvents();
-
-        model.addMessage(new Y.LIMS.Model.MessageItemModel({
-            body: "Hi! This is just a testing message. Nothing is currently send to server." +
-                " However, you can try to type messages and it should work correctly"
-        }));
     },
 
     /**

@@ -19,6 +19,7 @@ import com.marcelmika.lims.api.events.settings.UpdateActivePanelRequestEvent;
 import com.marcelmika.lims.api.events.settings.UpdateSettingsRequestEvent;
 import com.marcelmika.lims.core.service.*;
 import com.marcelmika.lims.portal.domain.*;
+import com.marcelmika.lims.portal.portlet.HttpStatus;
 import com.marcelmika.lims.portal.processor.parameters.CreateMessageParameters;
 
 import javax.portlet.ResourceRequest;
@@ -35,7 +36,6 @@ import java.util.List;
  */
 public class PortletProcessor {
 
-
     // Log
     private static Log log = LogFactoryUtil.getLog(PortletProcessor.class);
 
@@ -45,11 +45,41 @@ public class PortletProcessor {
     ConversationCoreService conversationCoreService = ConversationCoreServiceUtil.getConversationCoreService();
     SettingsCoreService settingsCoreService = SettingsCoreServiceUtil.getSettingsCoreService();
 
+    // Constants
+    private static final String KEY_CONTENT = "content";
+    private static final String KEY_PARAMETERS = "parameters";
+    private static final String KEY_QUERY = "query";
 
+    /**
+     * Decides which method on PortletProcessor should be called based on the request
+     *
+     * @param request  ResourceRequest
+     * @param response ResourceResponse
+     */
     public void processRequest(ResourceRequest request, ResourceResponse response) {
+
+        // Log query
+        if (request.getParameter(KEY_QUERY) != null) {
+            log.info("QUERY: " + request.getParameter(KEY_QUERY));
+        }
+        // Log request params
+        if (request.getParameter(KEY_PARAMETERS) != null) {
+            log.info("PARAMETERS: " + request.getParameter(KEY_PARAMETERS));
+        }
+        // Log request content
+        if (request.getParameter(KEY_CONTENT) != null) {
+            log.info("CONTENT: " + request.getParameter(KEY_CONTENT));
+        }
+
+        // Return error response if no query was set
+        if (request.getParameter(KEY_QUERY) == null) {
+            writeResponse(null, HttpStatus.BAD_REQUEST, response);
+            return;
+        }
+
+        // Decide which method should be called
         PortletDispatcher.dispatchRequest(request, response, this);
     }
-
 
     // ---------------------------------------------------------------------------------------------------------
     //   Buddy
@@ -80,13 +110,14 @@ public class PortletProcessor {
             settingsCoreService.enableChat(new EnableChatRequestEvent(buddy.toBuddyDetails()));
         }
 
-        // On success
+        // Success
         if (responseEvent.isSuccess()) {
-            writeSuccess("", response);
+            writeResponse(null, HttpStatus.NO_CONTENT, response);
         }
-        // On error
+        // Failure
         else {
-            writeError(responseEvent.getResult(), response);
+            // TODO: Add status handling
+            writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
         }
     }
 
@@ -102,13 +133,14 @@ public class PortletProcessor {
         // Create buddy from request
         Buddy buddy = Buddy.fromResourceRequest(request);
 
+        // Deserialize Content
         Conversation conversation = JSONFactoryUtil.looseDeserialize(
-                request.getParameter("data"), Conversation.class
+                request.getParameter(KEY_CONTENT), Conversation.class
         );
+        log.info(conversation);
 
         // TODO: This should be solved more conceptually ----
         conversation.setConversationType(ConversationType.SINGLE_USER);
-        conversation.setConversationId(conversation.getParticipants().get(0).getScreenName());
         List<Buddy> participants = conversation.getParticipants();
         Long companyId = PortalUtil.getCompanyId(request);
         for (Buddy participant : participants) {
@@ -116,28 +148,23 @@ public class PortletProcessor {
                 Long userId = UserLocalServiceUtil.getUserIdByScreenName(companyId, participant.getScreenName());
                 participant.setBuddyId(userId);
             } catch (Exception e) {
-                writeError("No user found", response);
+//                writeError("No user found", response);
                 return;
             }
         }
         // ----
-
-        log.info(request.getParameter("data"));
-        log.info(conversation);
-
         CreateConversationResponseEvent responseEvent = conversationCoreService.createConversation(
                 new CreateConversationRequestEvent(buddy.toBuddyDetails(), conversation.toConversationDetails(), null)
         );
 
-        log.info("Crate conversation STATUS: " + responseEvent.getStatus());
-
-        // On success
+        // Success
         if (responseEvent.isSuccess()) {
-            writeSuccess("", response);
+            writeResponse(HttpStatus.NO_CONTENT, response);
         }
-        // On error
+        // Failure
         else {
-            writeError(responseEvent.getStatus().toString(), response);
+            // TODO: Add status handling
+            writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
         }
     }
 
@@ -153,20 +180,15 @@ public class PortletProcessor {
 
         // Deserialize Parameters
         CreateMessageParameters parameters = JSONFactoryUtil.looseDeserialize(
-                request.getParameter("parameters"), CreateMessageParameters.class
+                request.getParameter(KEY_PARAMETERS), CreateMessageParameters.class
         );
         // Deserialize Content
         Message message = JSONFactoryUtil.looseDeserialize(
-                request.getParameter("content"), Message.class
+                request.getParameter(KEY_CONTENT), Message.class
         );
 
         Conversation conversation = new Conversation();
         conversation.setConversationId(parameters.getConversationId());
-
-        log.info(request.getParameter("content"));
-        log.info(request.getParameter("parameters"));
-        log.info(message);
-        log.info(parameters);
 
         // Add to system
         SendMessageResponseEvent responseEvent = conversationCoreService.sendMessage(
@@ -176,9 +198,36 @@ public class PortletProcessor {
                         message.toMessageDetails())
         );
 
-
-        // TODO: Send response
-//        log.info("Send message STATUS: " + responseEvent.get);
+        // Success
+        if (responseEvent.isSuccess()) {
+            // Map message from response
+            Message responseMessage = Message.fromMessageDetails(responseEvent.getMessage());
+            // Serialize
+            String serializedMessage = JSONFactoryUtil.looseSerialize(responseMessage);
+            // Write success to response
+            writeResponse(serializedMessage, HttpStatus.OK, response);
+        }
+        // Failure
+        else {
+            SendMessageResponseEvent.Status status = responseEvent.getStatus();
+            // Unauthorized
+            if (status == SendMessageResponseEvent.Status.ERROR_NO_SESSION) {
+               writeResponse(HttpStatus.UNAUTHORIZED, response);
+            }
+            // Not found
+            else if (status == SendMessageResponseEvent.Status.ERROR_NOT_FOUND) {
+                writeResponse(HttpStatus.NOT_FOUND, response);
+            }
+            // Bad Request
+            else if (status == SendMessageResponseEvent.Status.ERROR_UNKNOWN_CONVERSATION_TYPE ||
+                    status == SendMessageResponseEvent.Status.ERROR_WRONG_PARAMETERS) {
+                writeResponse(HttpStatus.BAD_REQUEST, response);
+            }
+            // Everything else is a server fault
+            else {
+              writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+            }
+        }
     }
 
     // ---------------------------------------------------------------------------------------------------------
@@ -199,7 +248,7 @@ public class PortletProcessor {
                 new GetGroupsRequestEvent(buddy.toBuddyDetails())
         );
 
-        // On success
+        // Success
         if (responseEvent.isSuccess()) {
             // Map groups from group details
             GroupCollection groupCollection = GroupCollection.fromGroupCollectionDetails(
@@ -212,17 +261,21 @@ public class PortletProcessor {
             if (etag.equals(Integer.toString(groupCollection.getEtag()))) {
                 // Etags equal which means that nothing has changed.
                 // Write only the group collection without groups and buddies (no extra traffic needed)
-                writeSuccess(JSONFactoryUtil.looseSerialize(groupCollection), response);
+                writeResponse(JSONFactoryUtil.looseSerialize(groupCollection), HttpStatus.OK, response);
             } else {
                 // Etags are different which means that groups were modified
                 // Send the whole package to the client
-                writeSuccess(JSONFactoryUtil.looseSerialize(groupCollection, "groups", "groups.buddies"), response);
+                writeResponse(
+                        JSONFactoryUtil.looseSerialize(groupCollection, "groups", "groups.buddies"),
+                        HttpStatus.OK,
+                        response
+                );
             }
         }
-        // On error
+        // Failure
         else {
-            // Write an error to the response so the client knows what went wrong
-            writeError(responseEvent.getResult(), response);
+            // TODO: Add status handling
+            writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
         }
     }
 
@@ -246,11 +299,12 @@ public class PortletProcessor {
 
         // On success
         if (responseEvent.isSuccess()) {
-            writeSuccess("", response);
+            writeResponse(HttpStatus.NO_CONTENT, response);
         }
         // On error
         else {
-            writeError(responseEvent.getResult(), response);
+            // TODO: Add status handling
+            writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
         }
     }
 
@@ -269,13 +323,14 @@ public class PortletProcessor {
                 settings.getBuddy().getBuddyId(), settings.getActivePanelId()
         ));
 
-        // On success
+        // Success
         if (responseEvent.isSuccess()) {
-            writeSuccess("", response);
+            writeResponse(HttpStatus.NO_CONTENT, response);
         }
-        // On error
+        // Failure
         else {
-            writeError(responseEvent.getResult(), response);
+            // TODO: Add status handling
+            writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
         }
     }
 
@@ -285,38 +340,40 @@ public class PortletProcessor {
     // ------------------------------------------------------------------------------
 
     /**
-     * Takes the response and writes a content given in parameter to it.
+     * Sets status code to the response. Use for no-content responses.
      *
-     * @param content  which will be written to the response
-     * @param response resource response
+     * @param statusCode HTTP Status code
+     * @param response   Resource response
      */
-    private void writeSuccess(String content, ResourceResponse response) {
-        // Get the writer
-        PrintWriter writer = getResponseWriter(response);
-        if (writer == null) {
-            return;
-        }
-
-        // Write the content to the output stream
-        writer.print(content);
+    private void writeResponse(HttpStatus statusCode, ResourceResponse response) {
+        writeResponse(null, statusCode, response);
     }
 
     /**
-     * Takes the response and writes an error message to it.
+     * Takes the response and writes a content given in parameter and sets status code.
      *
-     * @param content  Error message which will be written to the response
-     * @param response resource response
+     * @param content    Which will be written to the response
+     * @param statusCode HTTP Status code
+     * @param response   Resource response
      */
-    private void writeError(String content, ResourceResponse response) {
-        // Get the writer
-        PrintWriter writer = getResponseWriter(response);
-        if (writer == null) {
-            return;
+    private void writeResponse(String content, HttpStatus statusCode, ResourceResponse response) {
+
+        // Write the content to the output stream
+        if (content != null) {
+            // Get the writer
+            PrintWriter writer = getResponseWriter(response);
+            // If it fails it returns null. So write the content only if we have the writer.
+            if (writer != null) {
+                writer.print(content);
+            }
         }
 
-        // Writes an error to the output stream
-        writer.print(String.format("{\"error\":\"%s\"}", content));
+        // Set status code
+        response.setProperty(ResourceResponse.HTTP_STATUS_CODE, statusCode.toString());
+        // Log
+        log.info("STATUS: " + statusCode.toString());
     }
+
 
     /**
      * Returns writer from response, null on error

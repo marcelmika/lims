@@ -10,31 +10,39 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
 
     // Custom sync layer.
     sync: function (action, options, callback) {
-        var content, url = Y.one('#chatPortletURL').get('value');
+        var content, parameters, url = Y.one('#chatPortletURL').get('value');
 
         switch (action) {
             case 'create':
                 console.log("Message Create");
+
+                // Parameters
+                parameters = {
+                    conversationId: this.get('conversationId')
+                };
+                parameters = Y.JSON.stringify(parameters);
+                // Content
                 content = Y.JSON.stringify(this.toJSON());
+
+                // Send request
                 Y.io(url, {
                     method: "POST",
                     data: {
                         query: "CreateMessage",
-                        parameters: {
-                           conversationId : 1
-                        },
+                        parameters: parameters,
                         content: content
                     },
                     on: {
-//                        success: function (id, o) {
-//                            console.log('success');
-//                            console.log(id);
-//                            console.log(o.response);
-//                        },
-//                        failure: function (x, o) {
+                        success: function (id, o) {
+                            console.log('success');
+                            console.log(id);
+                            console.log(o.response);
+                        },
+                        failure: function (x, o) {
+                            console.log('failure');
 //                            console.log(x);
-//                            console.log(o);
-//                        }
+                            console.log(o.status);
+                        }
                     }
 //                    headers: {
 //                        'Content-Type': 'application/json'
@@ -88,6 +96,10 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
         // Add custom model attributes here. These attributes will contain your
         // model's data. See the docs for Y.Attribute to learn more about defining
         // attributes.
+
+        conversationId: {
+            value: ""
+        },
 
         from: {
             // TODO: remove default

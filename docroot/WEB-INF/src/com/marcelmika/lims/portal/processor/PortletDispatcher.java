@@ -14,6 +14,10 @@ import javax.portlet.ResourceResponse;
  */
 public class PortletDispatcher {
 
+    // Client returns query parameter. Thanks to this we can decide which method should be called.
+    // If we were RESTFul we would be using resources at different urls. However, since liferay gives us
+    // only one url for AJAX communication we need such query parameter to decide which method and resource
+    // should be used.
     private static final String QUERY_CREATE_SINGLE_USER_CONVERSATION = "CreateSingleUserConversation";
     private static final String QUERY_GET_GROUP_LIST = "GetGroupList";
     private static final String QUERY_CREATE_MESSAGE = "CreateMessage";
@@ -21,8 +25,13 @@ public class PortletDispatcher {
     private static final String QUERY_UPDATE_ACTIVE_PANEL = "UpdateActivePanel";
     private static final String QUERY_UPDATE_SETTINGS = "UpdateSettings";
 
+    // Keys
+    private static final String KEY_QUERY = "query";
+
     // Log
     private static Log log = LogFactoryUtil.getLog(PortletDispatcher.class);
+
+
 
 
     /**
@@ -37,8 +46,7 @@ public class PortletDispatcher {
                                        PortletProcessor processor) {
 
         // Get query type from parameter
-        String query = request.getParameter("query");
-        log.info("Dispatching query: " + query);
+        String query = request.getParameter(KEY_QUERY);
 
         // Create Single User conversation
         if(query.equals(QUERY_CREATE_SINGLE_USER_CONVERSATION)) {

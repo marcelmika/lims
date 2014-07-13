@@ -45,7 +45,7 @@
         <column name='creatorId' type='long'/>
         <column name='createdAt' type='long'/>
         <column name='messageHash' type='String'/>
-        <column name='text' type='String'/>
+        <column name='body' type='String'/>
         <finder name='CreatorId' return-type='Buddy'>
             <finder-column name='creatorId'/>
         </finder>

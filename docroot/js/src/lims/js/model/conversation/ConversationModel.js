@@ -10,27 +10,28 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
 
     addMessage: function(message) {
         var messageList = this.get('messageList');
-        messageList.add(message);
 
-        // This will send the message on server
+        // This will send the message to server
+        message.set('conversationId', this.get('conversationId'));
         message.save();
+
+        messageList.add(message);
 
         this.fire('messageAdded', message);
     },
 
     // Custom sync layer.
     sync: function (action, options, callback) {
-        var data, url = Y.one('#chatPortletURL').get('value');
+        var content, url = Y.one('#chatPortletURL').get('value');
 
         switch (action) {
             case 'create':
-                data = this.toJSON();
-                data = Y.JSON.stringify(data);
+                content = Y.JSON.stringify(this.toJSON());
                 Y.io(url, {
                     method: "POST",
                     data: {
                         query: "CreateSingleUserConversation",
-                        data: data
+                        content: content
                     },
                     on: {
 //                        success: function (id, o) {
@@ -102,12 +103,16 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
         // model's data. See the docs for Y.Attribute to learn more about defining
         // attributes.
 
+        conversationId: {
+            value: "" // default value
+        },
+
         participants: {
             value: "" // default value
         },
 
         unreadMessages: {
-            value: 10 // default value
+            value: 0 // default value
         },
 
         messageList: {

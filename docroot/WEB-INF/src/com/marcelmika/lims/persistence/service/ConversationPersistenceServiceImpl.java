@@ -1,6 +1,5 @@
 package com.marcelmika.lims.persistence.service;
 
-import com.liferay.portal.kernel.exception.SystemException;
 import com.marcelmika.lims.api.events.conversation.CreateConversationRequestEvent;
 import com.marcelmika.lims.api.events.conversation.CreateConversationResponseEvent;
 import com.marcelmika.lims.api.events.conversation.SendMessageRequestEvent;
@@ -85,7 +84,7 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             }
 
             // Create new message
-            MessageLocalServiceUtil.addMessage(
+            com.marcelmika.lims.model.Message messageModel = MessageLocalServiceUtil.addMessage(
                     conversationModel.getCid(), // Message is related to the conversation
                     buddy.getBuddyId(),         // Message is created by buddy
                     message.getBody(),          // Body of message
@@ -96,13 +95,19 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             // open conversation to users, etc.
             ParticipantLocalServiceUtil.updateParticipants(conversationModel.getCid());
 
+            // Map message from message model
+            Message successMessage = Message.fromMessageModel(messageModel);
+            // Don't forget to add the buddy as the creator
+            successMessage.setFrom(buddy);
+
+            // Call Success
+            return SendMessageResponseEvent.sendMessageSuccess(message.toMessageDetails());
+
         } catch (Exception exception) {
+            // Call Failure
             return SendMessageResponseEvent.sendMessageFailure(
                     SendMessageResponseEvent.Status.ERROR_PERSISTENCE, exception
             );
         }
-
-        // Success
-        return SendMessageResponseEvent.sendMessageSuccess();
     }
 }

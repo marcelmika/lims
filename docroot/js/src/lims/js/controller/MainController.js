@@ -25,7 +25,9 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
             settings: settings
         });
         // Conversation
-        new Y.LIMS.Controller.ConversationsController();
+        new Y.LIMS.Controller.ConversationsController({
+            buddyDetails: buddyDetails
+        });
     },
 
     /**

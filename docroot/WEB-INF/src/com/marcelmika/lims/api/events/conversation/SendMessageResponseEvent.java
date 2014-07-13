@@ -1,5 +1,6 @@
 package com.marcelmika.lims.api.events.conversation;
 
+import com.marcelmika.lims.api.entity.MessageDetails;
 import com.marcelmika.lims.api.events.ResponseEvent;
 
 /**
@@ -12,6 +13,7 @@ public class SendMessageResponseEvent extends ResponseEvent {
 
 
     private Status status;
+    private MessageDetails message;
 
     public enum Status {
         SUCCESS, // Event was successful
@@ -36,11 +38,12 @@ public class SendMessageResponseEvent extends ResponseEvent {
      *
      * @return ResponseEvent
      */
-    public static SendMessageResponseEvent sendMessageSuccess() {
+    public static SendMessageResponseEvent sendMessageSuccess(MessageDetails message) {
         SendMessageResponseEvent event = new SendMessageResponseEvent();
 
         event.status = Status.SUCCESS;
         event.success = true;
+        event.message = message;
 
         return event;
     }
@@ -69,6 +72,7 @@ public class SendMessageResponseEvent extends ResponseEvent {
      */
     public static SendMessageResponseEvent sendMessageFailure(final Status status,
                                                               final Throwable exception) {
+
         SendMessageResponseEvent event = new SendMessageResponseEvent();
 
         event.success = false;
@@ -80,5 +84,9 @@ public class SendMessageResponseEvent extends ResponseEvent {
 
     public Status getStatus() {
         return status;
+    }
+
+    public MessageDetails getMessage() {
+        return message;
     }
 }

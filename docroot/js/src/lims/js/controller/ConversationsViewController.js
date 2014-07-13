@@ -39,7 +39,9 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             if (!list.hasOwnProperty(listID)) {
                 // Create new conversation
                 conversation = new Y.LIMS.Model.ConversationModel({
-                    participants: [buddy]
+                    // TODO: Replace marcel.mika with the real value
+                    conversationId: listID + "_" + "marcel.mika",
+                    participants: [buddy, this.get('buddyDetails')]
                 });
                 conversation.save();
                 // Create new single user conversation and add it to the list
@@ -62,6 +64,11 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
         // Override the default container attribute.
         conversationMap: {
             value: {} // default value
+        },
+
+        // Currently logged user
+        buddyDetails: {
+            value: null
         }
     }
 });
