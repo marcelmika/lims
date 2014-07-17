@@ -133,6 +133,120 @@ public interface MessagePersistence extends BasePersistence<Message> {
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
+	* Returns all the messages where cid = &#63;.
+	*
+	* @param cid the cid
+	* @return the matching messages
+	* @throws SystemException if a system exception occurred
+	*/
+	public java.util.List<com.marcelmika.lims.model.Message> findByCid(long cid)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns a range of all the messages where cid = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* </p>
+	*
+	* @param cid the cid
+	* @param start the lower bound of the range of messages
+	* @param end the upper bound of the range of messages (not inclusive)
+	* @return the range of matching messages
+	* @throws SystemException if a system exception occurred
+	*/
+	public java.util.List<com.marcelmika.lims.model.Message> findByCid(
+		long cid, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns an ordered range of all the messages where cid = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* </p>
+	*
+	* @param cid the cid
+	* @param start the lower bound of the range of messages
+	* @param end the upper bound of the range of messages (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching messages
+	* @throws SystemException if a system exception occurred
+	*/
+	public java.util.List<com.marcelmika.lims.model.Message> findByCid(
+		long cid, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the first message in the ordered set where cid = &#63;.
+	*
+	* @param cid the cid
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching message
+	* @throws com.marcelmika.lims.NoSuchMessageException if a matching message could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.model.Message findByCid_First(long cid,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.NoSuchMessageException;
+
+	/**
+	* Returns the first message in the ordered set where cid = &#63;.
+	*
+	* @param cid the cid
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching message, or <code>null</code> if a matching message could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.model.Message fetchByCid_First(long cid,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the last message in the ordered set where cid = &#63;.
+	*
+	* @param cid the cid
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching message
+	* @throws com.marcelmika.lims.NoSuchMessageException if a matching message could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.model.Message findByCid_Last(long cid,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.NoSuchMessageException;
+
+	/**
+	* Returns the last message in the ordered set where cid = &#63;.
+	*
+	* @param cid the cid
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching message, or <code>null</code> if a matching message could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.model.Message fetchByCid_Last(long cid,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the messages before and after the current message in the ordered set where cid = &#63;.
+	*
+	* @param mid the primary key of the current message
+	* @param cid the cid
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next message
+	* @throws com.marcelmika.lims.NoSuchMessageException if a message with the primary key could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.model.Message[] findByCid_PrevAndNext(long mid,
+		long cid,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.NoSuchMessageException;
+
+	/**
 	* Returns all the messages.
 	*
 	* @return the messages
@@ -187,6 +301,15 @@ public interface MessagePersistence extends BasePersistence<Message> {
 			com.marcelmika.lims.NoSuchMessageException;
 
 	/**
+	* Removes all the messages where cid = &#63; from the database.
+	*
+	* @param cid the cid
+	* @throws SystemException if a system exception occurred
+	*/
+	public void removeByCid(long cid)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
 	* Removes all the messages from the database.
 	*
 	* @throws SystemException if a system exception occurred
@@ -202,6 +325,16 @@ public interface MessagePersistence extends BasePersistence<Message> {
 	* @throws SystemException if a system exception occurred
 	*/
 	public int countByCreatorId(long creatorId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the number of messages where cid = &#63;.
+	*
+	* @param cid the cid
+	* @return the number of matching messages
+	* @throws SystemException if a system exception occurred
+	*/
+	public int countByCid(long cid)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**

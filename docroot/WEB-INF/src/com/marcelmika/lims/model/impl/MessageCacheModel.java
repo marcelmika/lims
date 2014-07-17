@@ -44,8 +44,8 @@ public class MessageCacheModel implements CacheModel<Message>, Serializable {
 		sb.append(createdAt);
 		sb.append(", messageHash=");
 		sb.append(messageHash);
-		sb.append(", text=");
-		sb.append(text);
+		sb.append(", body=");
+		sb.append(body);
 		sb.append("}");
 
 		return sb.toString();
@@ -66,11 +66,11 @@ public class MessageCacheModel implements CacheModel<Message>, Serializable {
 			messageImpl.setMessageHash(messageHash);
 		}
 
-		if (text == null) {
-			messageImpl.setText(StringPool.BLANK);
+		if (body == null) {
+			messageImpl.setBody(StringPool.BLANK);
 		}
 		else {
-			messageImpl.setText(text);
+			messageImpl.setBody(body);
 		}
 
 		messageImpl.resetOriginalValues();
@@ -83,5 +83,5 @@ public class MessageCacheModel implements CacheModel<Message>, Serializable {
 	public long creatorId;
 	public long createdAt;
 	public String messageHash;
-	public String text;
+	public String body;
 }

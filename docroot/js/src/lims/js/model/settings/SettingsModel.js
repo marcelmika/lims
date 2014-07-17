@@ -67,6 +67,8 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
     _updateActivePanel: function (data, callback) {
         // Create settings that contains request url
         var settings = new Y.LIMS.Core.Settings();
+        console.log(data);
+
         // Do the request
         Y.io(settings.getServerRequestUrl(), {
             method: "POST",

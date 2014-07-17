@@ -7,10 +7,8 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.marcelmika.lims.api.events.ResponseEvent;
 import com.marcelmika.lims.api.events.buddy.UpdatePresenceBuddyRequestEvent;
-import com.marcelmika.lims.api.events.conversation.CreateConversationRequestEvent;
-import com.marcelmika.lims.api.events.conversation.CreateConversationResponseEvent;
-import com.marcelmika.lims.api.events.conversation.SendMessageRequestEvent;
-import com.marcelmika.lims.api.events.conversation.SendMessageResponseEvent;
+import com.marcelmika.lims.api.events.buddy.UpdatePresenceBuddyResponseEvent;
+import com.marcelmika.lims.api.events.conversation.*;
 import com.marcelmika.lims.api.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
 import com.marcelmika.lims.api.events.settings.DisableChatRequestEvent;
@@ -21,6 +19,7 @@ import com.marcelmika.lims.core.service.*;
 import com.marcelmika.lims.portal.domain.*;
 import com.marcelmika.lims.portal.portlet.HttpStatus;
 import com.marcelmika.lims.portal.processor.parameters.CreateMessageParameters;
+import com.marcelmika.lims.portal.processor.parameters.ReadConversationParameters;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -97,8 +96,8 @@ public class PortletProcessor {
         Presence presence = buddy.getPresence();
 
         // Send request to core service
-        ResponseEvent responseEvent = buddyCoreService.updatePresence(new UpdatePresenceBuddyRequestEvent(
-                        buddy.getBuddyId(), buddy.getPresence().toPresenceDetails())
+        UpdatePresenceBuddyResponseEvent responseEvent = buddyCoreService.updatePresence(
+                new UpdatePresenceBuddyRequestEvent(buddy.getBuddyId(), buddy.getPresence().toPresenceDetails())
         );
 
         // Disable chat if presence is offline
@@ -148,7 +147,7 @@ public class PortletProcessor {
                 Long userId = UserLocalServiceUtil.getUserIdByScreenName(companyId, participant.getScreenName());
                 participant.setBuddyId(userId);
             } catch (Exception e) {
-//                writeError("No user found", response);
+                writeResponse(HttpStatus.NOT_FOUND, response);
                 return;
             }
         }
@@ -163,8 +162,69 @@ public class PortletProcessor {
         }
         // Failure
         else {
-            // TODO: Add status handling
-            writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+            CreateConversationResponseEvent.Status status = responseEvent.getStatus();
+            // Unauthorized
+            if (status == CreateConversationResponseEvent.Status.ERROR_NO_SESSION) {
+                writeResponse(HttpStatus.UNAUTHORIZED, response);
+            }
+            // Bad request
+            else if (status == CreateConversationResponseEvent.Status.ERROR_UNKNOWN_CONVERSATION_TYPE ||
+                    status == CreateConversationResponseEvent.Status.ERROR_WRONG_PARAMETERS) {
+                writeResponse(HttpStatus.BAD_REQUEST, response);
+            }
+            // Everything else is server fault
+            else {
+                writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+            }
+        }
+    }
+
+    public void readSingleUserConversation(ResourceRequest request, ResourceResponse response) {
+        // Create buddy from request
+        Buddy buddy = Buddy.fromResourceRequest(request);
+
+        // Deserialize Parameters
+        ReadConversationParameters parameters = JSONFactoryUtil.looseDeserialize(
+                request.getParameter(KEY_PARAMETERS), ReadConversationParameters.class
+        );
+
+        // Create objects from parameters
+        Conversation conversation = new Conversation();
+        conversation.setConversationId(parameters.getConversationId());
+        Pagination pagination = parameters.getPagination();
+
+        // Read conversations
+        ReadSingleUserConversationResponseEvent responseEvent = conversationCoreService.readConversation(
+                new ReadSingleUserConversationRequestEvent(
+                        buddy.toBuddyDetails(),                 // Buddy is participant
+                        conversation.toConversationDetails(),   // Read proper conversation
+                        pagination.toPaginationDetails())       // Pagination request
+        );
+
+        // Success
+        if (responseEvent.isSuccess()) {
+            // Map messages from response
+            List<Message> messages = Message.fromMessageDetails(responseEvent.getMessages());
+            // Serialize
+            String serializedMessages = JSONFactoryUtil.looseSerialize(messages);
+            // Write success to response
+            writeResponse(serializedMessages, HttpStatus.OK, response);
+        }
+        // Failure
+        else {
+            ReadSingleUserConversationResponseEvent.Status status = responseEvent.getStatus();
+            // Not found
+            if (status == ReadSingleUserConversationResponseEvent.Status.ERROR_NOT_FOUND) {
+                writeResponse(HttpStatus.NOT_FOUND, response);
+            }
+            // Unauthorized
+            else if (status == ReadSingleUserConversationResponseEvent.Status.ERROR_NO_SESSION) {
+                writeResponse(HttpStatus.UNAUTHORIZED, response);
+            }
+            // Bad request
+            else if (status == ReadSingleUserConversationResponseEvent.Status.ERROR_WRONG_PARAMETERS) {
+                writeResponse(HttpStatus.BAD_REQUEST, response);
+            }
         }
     }
 
@@ -193,9 +253,9 @@ public class PortletProcessor {
         // Add to system
         SendMessageResponseEvent responseEvent = conversationCoreService.sendMessage(
                 new SendMessageRequestEvent(
-                        buddy.toBuddyDetails(),
-                        conversation.toConversationDetails(),
-                        message.toMessageDetails())
+                        buddy.toBuddyDetails(),                 // Creator
+                        conversation.toConversationDetails(),   // Conversation
+                        message.toMessageDetails())             // Message
         );
 
         // Success
@@ -212,7 +272,7 @@ public class PortletProcessor {
             SendMessageResponseEvent.Status status = responseEvent.getStatus();
             // Unauthorized
             if (status == SendMessageResponseEvent.Status.ERROR_NO_SESSION) {
-               writeResponse(HttpStatus.UNAUTHORIZED, response);
+                writeResponse(HttpStatus.UNAUTHORIZED, response);
             }
             // Not found
             else if (status == SendMessageResponseEvent.Status.ERROR_NOT_FOUND) {
@@ -225,7 +285,7 @@ public class PortletProcessor {
             }
             // Everything else is a server fault
             else {
-              writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
             }
         }
     }

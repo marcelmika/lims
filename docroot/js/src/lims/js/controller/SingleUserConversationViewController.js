@@ -101,7 +101,8 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
      * @private
      */
     _onBuddySelected: function (buddy) {
-        var participant = this.get('participant');
+        var model = this.get('model'),
+            participant = model.get('participants')[0];
         if (participant.get('screenName') === buddy.get('screenName')) {
             this.get('panel').show();
         }
@@ -130,7 +131,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
      *
      * @private
      */
-    _onChatEnabled: function() {
+    _onChatEnabled: function () {
         this.get('container').show();
     },
 
@@ -139,7 +140,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
      *
      * @private
      */
-    _onChatDisabled: function() {
+    _onChatDisabled: function () {
         this.get('container').hide();
     }
 

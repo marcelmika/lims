@@ -19,6 +19,7 @@ import com.marcelmika.lims.model.Message;
 import com.marcelmika.lims.service.base.MessageLocalServiceBaseImpl;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * The implementation of the message local service.
@@ -41,14 +42,14 @@ public class MessageLocalServiceImpl extends MessageLocalServiceBaseImpl {
 	 * Never reference this interface directly. Always use {@link com.marcelmika.lims.service.MessageLocalServiceUtil} to access the message local service.
 	 */
 
-    public Message addMessage(long cid, long creatorId, String text, String messageHash) throws SystemException {
+    public Message addMessage(long cid, long creatorId, String body, String messageHash) throws SystemException {
         // Fetch possible existing conversation
         Message messageModel = messagePersistence.create(counterLocalService.increment());
 
         // Map properties
         messageModel.setCid(cid);
         messageModel.setCreatorId(creatorId);
-        messageModel.setText(text);
+        messageModel.setBody(body);
         messageModel.setMessageHash(messageHash);
 
         // Time when the message was created
@@ -59,6 +60,10 @@ public class MessageLocalServiceImpl extends MessageLocalServiceBaseImpl {
         messageModel = messagePersistence.update(messageModel, false);
 
         return messageModel;
+    }
+
+    public List<Message> readMessages(long cid) throws SystemException {
+        return messagePersistence.findByCid(cid);
     }
 
 }

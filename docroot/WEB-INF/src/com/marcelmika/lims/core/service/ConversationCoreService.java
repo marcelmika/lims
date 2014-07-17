@@ -37,6 +37,14 @@ public interface ConversationCoreService {
     public CreateConversationResponseEvent createConversation(CreateConversationRequestEvent event);
 
     /**
+     * Reads messages from conversation
+     *
+     * @param event request event for method
+     * @return response event for method
+     */
+    public ReadSingleUserConversationResponseEvent readConversation(ReadSingleUserConversationRequestEvent event);
+
+    /**
      * Opens existing conversation
      *
      * @param event request event for method
@@ -76,4 +84,6 @@ public interface ConversationCoreService {
      * @return response event for method
      */
     public SendMessageResponseEvent sendMessage(SendMessageRequestEvent event);
+
+
 }

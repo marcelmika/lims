@@ -10,22 +10,16 @@ Y.LIMS.View.PortraitView = Y.Base.create('portraitView', Y.View, [], {
     // This customizes the HTML used for this view's container node.
     containerTemplate: '<img alt="" class="portrait"/>',
 
-    render: function() {
+    render: function () {
         // Vars
-        var container = this.get("container");
+        var container = this.get("container"),
+            settings = new Y.LIMS.Core.Settings();
+
         // Set portrait image src attribute based on the screen name
-        container.set('src', this.getPortraitUrl(this.get("screenName")));
+        container.set('src', settings.getPortraitUrl(this.get("screenName")));
 
         return this;
-    },
-
-    getPortraitUrl: function(screenName) {
-        var companyId = Y.LIMS.Core.Settings.companyId,
-            pathImage = Y.LIMS.Core.Settings.pathImage;
-
-        return pathImage + '/user_portrait?screenName=' + screenName + '&' + 'companyId=' + companyId;
     }
-
 }, {
 
     // Specify attributes and static properties for your View here.
@@ -41,5 +35,4 @@ Y.LIMS.View.PortraitView = Y.Base.create('portraitView', Y.View, [], {
             value: null
         }
     }
-
 });

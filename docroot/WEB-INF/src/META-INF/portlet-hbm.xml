@@ -41,7 +41,7 @@
 		<property name="creatorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createdAt" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="messageHash" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="text" type="com.liferay.portal.dao.orm.hibernate.StringType" column="text_" />
+		<property name="body" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.marcelmika.lims.model.impl.OpenedConversationImpl" table="LiferayLIMS_OpenedConversation">
 		<cache usage="read-write" />

@@ -246,4 +246,7 @@ public interface MessageLocalService extends BaseLocalService,
 	public com.marcelmika.lims.model.Message addMessage(long cid,
 		long creatorId, java.lang.String text, java.lang.String messageHash)
 		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public java.util.List<com.marcelmika.lims.model.Message> readMessages(
+		long cid) throws com.liferay.portal.kernel.exception.SystemException;
 }

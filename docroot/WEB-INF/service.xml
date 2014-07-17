@@ -41,13 +41,16 @@
     <!-- Message -->
     <entity name='Message' local-service='true' remote-service='false'>
         <column name='mid' type='long' primary='true'/>
-        <column name='cid' type='long' primary='false'/>
+        <column name='cid' type='long'/>
         <column name='creatorId' type='long'/>
         <column name='createdAt' type='long'/>
         <column name='messageHash' type='String'/>
         <column name='body' type='String'/>
         <finder name='CreatorId' return-type='Buddy'>
             <finder-column name='creatorId'/>
+        </finder>
+        <finder name='Cid' return-type='Collection'>
+            <finder-column name='cid'/>
         </finder>
     </entity>
 

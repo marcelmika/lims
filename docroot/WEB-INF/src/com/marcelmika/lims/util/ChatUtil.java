@@ -16,6 +16,7 @@ import java.util.*;
  * @link http://marcelmika.com/lims
  * Date: 11/24/13
  * Time: 11:18 PM
+ * @deprecated
  */
 public class ChatUtil {
 

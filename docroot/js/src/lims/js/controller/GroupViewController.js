@@ -53,16 +53,6 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
             model = this.get('model'),
             intervalID;
 
-
-
-//            timer = new Y.Timer({
-//                length: 10000,
-//                repeatCount: 10000,
-//                callback: function () {
-//                    model.load();
-//                }});
-//
-//
         // Start only if the chat is enabled
         if (settings.isChatEnabled()) {
             // Load model
@@ -75,9 +65,6 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
 
             this.set('timer', intervalID);
         }
-//
-//        // Store globally
-//        this.set('timer', timer);
     },
 
     /**

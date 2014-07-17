@@ -275,6 +275,11 @@ public class MessageLocalServiceUtil {
 		return getService().addMessage(cid, creatorId, text, messageHash);
 	}
 
+	public static java.util.List<com.marcelmika.lims.model.Message> readMessages(
+		long cid) throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().readMessages(cid);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

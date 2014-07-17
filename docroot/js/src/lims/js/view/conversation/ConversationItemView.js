@@ -21,7 +21,7 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
     render: function () {
         // Vars
         var container = this.get('container'),
-//            model = this.get('model'),
+            model = this.get('model'),
         // Todo: this is just for debug
             settings = new Y.LIMS.Core.Settings();
 
@@ -31,7 +31,7 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
                 Y.Lang.sub(this.template, {
                     createdPrettified: "a minute ago",
                     fullName: "John Doe",
-                    content: "Test",
+                    content: model.get('body'),
                     portrait: this._getPortrait(settings.getCurrentUserScreenName())
                 })
             );

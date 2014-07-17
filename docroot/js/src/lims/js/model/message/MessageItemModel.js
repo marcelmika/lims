@@ -13,6 +13,8 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
         var content, parameters, url = Y.one('#chatPortletURL').get('value');
 
         switch (action) {
+
+            // CREATE
             case 'create':
                 console.log("Message Create");
 
@@ -35,12 +37,11 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
                     on: {
                         success: function (id, o) {
                             console.log('success');
-                            console.log(id);
                             console.log(o.response);
                         },
                         failure: function (x, o) {
                             console.log('failure');
-//                            console.log(x);
+                            console.log(x);
                             console.log(o.status);
                         }
                     }
@@ -50,41 +51,16 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
                 });
                 break;
 
+            // READ
             case 'read':
                 console.log("Message Read");
-//                console.log("read item");
                 return;
 
-            // Look for an item in localStorage with this model's id.
-//                data = localStorage.getItem(this.get('id'));
-//
-//                if (data) {
-//                    callback(null, data);
-//                } else {
-//                    callback('Model not found.');
-//                }
-//
-//                return;
-
-            case 'update':
-                console.log("Message Update");
-//                console.log("update item");
+            // UPDATE
+            case 'update': // Message cannot be updated
+            // DELETE
+            case 'delete': // Message cannot be deleted
                 return;
-//
-//                data = this.toJSON();
-//
-//                // Update the record in localStorage, then call the callback.
-//                localStorage.setItem(this.get('id'), Y.JSON.stringify(data));
-//                callback(null, data);
-//                return;
-
-            case 'delete':
-                console.log("Message Delete");
-//                console.log("delete item");
-                return;
-//                localStorage.removeItem(this.get('id'));
-//                callback();
-//                return;
 
             default:
                 callback('Invalid action');

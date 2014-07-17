@@ -24,7 +24,7 @@
 		<field name="creatorId" type="long" />
 		<field name="createdAt" type="long" />
 		<field name="messageHash" type="String" />
-		<field name="text" type="String" />
+		<field name="body" type="String" />
 	</model>
 	<model name="com.marcelmika.lims.model.OpenedConversation">
 		<field name="ocid" type="long" />

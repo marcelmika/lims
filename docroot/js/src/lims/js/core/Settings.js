@@ -1,15 +1,16 @@
+
 /**
  * Settings
  *
- * Contains all necessary settings related to the current session
+ * Contains all necessary settings related to the current user session
  */
 Y.namespace('LIMS.Core');
 
 Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
 
-    screenName: null,
-    pathImage: null,
-    companyId: null,
+    userId: null,      // This is set main.js, to access it use Y.LIMS.Core.Settings.userId
+    companyId: null,   // This is set main.js, to access it use Y.LIMS.Core.Settings.companyId
+    pathImage: null,   // This is set main.js, to access it use Y.LIMS.Core.Settings.pathImage
 
     /**
      * Returns url of the portrait of buddy based on the screenName
@@ -17,8 +18,8 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
      * @returns {string}
      */
     getPortraitUrl: function (screenName) {
-        var companyId = this.companyId,
-            pathImage = this.pathImage;
+        var companyId = this.get('companyId'),
+            pathImage = this.get('pathImage');
 
         return pathImage + '/user_portrait?screenName=' + screenName + '&' + 'companyId=' + companyId;
     },
@@ -33,36 +34,72 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
         return Y.one('#chatPortletURL').get('value');
     },
 
-    getCurrentUserScreenName: function() {
-        return Y.one('#currentChatUserScreenName').get('value');
+    /**
+     * Returns userId of the currently connected user
+     *
+     * @returns {int}
+     */
+    getCurrentUserId: function () {
+        return this.get('userId');
     },
 
-    isChatEnabled: function() {
+    /**
+     * Returns screenName of the currently connected user
+     *
+     * @returns {string}
+     */
+    getCurrentUserScreenName: function () {
+        return this.get('screenName');
+    },
+
+    /**
+     * Returns true if the whole chat is enabled
+     *
+     * @returns {boolean}
+     */
+    isChatEnabled: function () {
         return Y.one('#chatPortletEnabled').get('value') === 'true';
     }
 
 }, {
 
     ATTRS: {
-        // Add custom model attributes here. These attributes will contain your
-        // model's data. See the docs for Y.Attribute to learn more about defining
-        // attributes.
 
-        pathImage: {
+        /**
+         * User Id of the currently logged user
+         */
+        userId: {
             valueFn: function () {
-                return this.pathImage;
+                return Y.LIMS.Core.Settings.userId;
             }
         },
 
+        /**
+         * Company Id of the currently logged user
+         */
         companyId: {
             valueFn: function () {
-                return this.companyId;
+                return Y.LIMS.Core.Settings.companyId;
             }
         },
 
+        /**
+         * Screen name of the currently logged user
+         */
         screenName: {
-            valueFn: function() {
-                return this.screenName;
+            valueFn: function () {
+                // Since it cannot be accessed via Liferay.ThemeDisplay we need to
+                // take it manually via value in HTML
+                return Y.one('#currentChatUserScreenName').get('value');
+            }
+        },
+
+        /**
+         * Path to images
+         */
+        pathImage: {
+            valueFn: function () {
+                return Y.LIMS.Core.Settings.pathImage;
             }
         }
     }

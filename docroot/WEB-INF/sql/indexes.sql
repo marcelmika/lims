@@ -2,6 +2,7 @@ create index IX_520AD229 on LiferayLIMS_Conversation (conversationId);
 create index IX_912E8671 on LiferayLIMS_Conversation (userId);
 create index IX_BF514F63 on LiferayLIMS_Conversation (userId, conversationId);
 
+create index IX_F054532F on LiferayLIMS_Message (cid);
 create index IX_2C006F58 on LiferayLIMS_Message (creatorId);
 
 create index IX_CC60DBBA on LiferayLIMS_OpenedConversation (userId);

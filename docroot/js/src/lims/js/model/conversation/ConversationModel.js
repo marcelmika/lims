@@ -1,39 +1,72 @@
 /**
- * Group Model Item
+ * Conversation Model
  *
- * The class extends Y.Model and customizes it to use a localStorage
- * sync provider or load data via ajax. It represent a single group item.
+ * This class is responsible for data related to the conversation. Such as conversation
+ * metadata, list of participants and list of messages.
  */
 Y.namespace('LIMS.Model');
 
 Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [], {
 
-    addMessage: function(message) {
+    /**
+     * Adds message to conversation. Sends request to server.
+     *
+     * @param message
+     */
+    addMessage: function (message) {
+
+        // Vars
         var messageList = this.get('messageList');
 
-        // This will send the message to server
+        // This will send the message to the server
         message.set('conversationId', this.get('conversationId'));
-        message.save();
+        message.save(); // Message model has its own sync layer
 
+        // Add it locally. We are async here. In other words we are not
+        // waiting for the response and directly add the message to the list
+        // and present it to the user. If the request fails we keep the message
+        // in the list and let the user to resend the message. Apparently we don't do
+        // this here since this is not a responsibility of the model.
         messageList.add(message);
 
+        // Notify about the event
         this.fire('messageAdded', message);
     },
 
-    // Custom sync layer.
+    /**
+     * Custom sync layer
+     *
+     * @param action
+     * @param options
+     * @param callback
+     */
     sync: function (action, options, callback) {
-        var content, url = Y.one('#chatPortletURL').get('value');
+
+        // Vars
+        var content,            // Content which will be sent as body in request
+            parameters,         // Request parameters
+            instance = this,    // Save the instance so we can call its methods in diff context
+            settings = new Y.LIMS.Core.Settings();
 
         switch (action) {
+
+            // This is called whenever the conversation is created i.e whenever
+            // the user clicks on any of the buddies in the group
             case 'create':
+                console.log("Creating conversation");
+                // Simply take the conversation object, serialize it to json
+                // and send.
                 content = Y.JSON.stringify(this.toJSON());
-                Y.io(url, {
+
+                // Send the request
+                Y.io(settings.getServerRequestUrl(), {
                     method: "POST",
                     data: {
                         query: "CreateSingleUserConversation",
                         content: content
                     },
                     on: {
+                        // TODO: Handle response
 //                        success: function (id, o) {
 //                            console.log('success');
 //                            console.log(id);
@@ -48,21 +81,43 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
 //                        'Content-Type': 'application/json'
 //                    }
                 });
-
-
-
                 return;
-//                // Use the current timestamp as an id just to simplify the example. In a
-//                // real sync layer, you'd want to generate an id that's more likely to
-//                // be globally unique.
-//                data.id = Y.Lang.now();
-//
-//                // Store the new record in localStorage, then call the callback.
-//                localStorage.setItem(data.id, Y.JSON.stringify(data));
-//                callback(null, data);
-//                return;
 
+            // Called whenever the load() method is called. Sends a request
+            // to server which loads a list of messages related to the conversation.
             case 'read':
+                console.log("Read conversation");
+
+                // Construct parameters
+                parameters = Y.JSON.stringify({
+                    conversationId: this.get('conversationId'),
+                    pagination: {
+                        firstMessageId: null,
+                        lastMessageId: null,
+                        action: "next"
+                    }
+                });
+
+                // Send the request
+                Y.io(settings.getServerRequestUrl(), {
+                    method: "GET",
+                    data: {
+                        query: "ReadSingleUserConversation",
+                        parameters: parameters
+                    },
+                    on: {
+                        success: function (id, o) {
+                            // Update message list
+                            instance.updateMessageList(Y.JSON.parse(o.response));
+                        },
+                        failure: function (x, o) {
+                            console.log(x);
+                            console.log(o);
+                            // TODO: Handle failure
+                        }
+                    }
+                });
+
                 return;
 
             // Look for an item in localStorage with this model's id.
@@ -95,6 +150,31 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
             default:
                 callback('Invalid action');
         }
+    },
+
+    /**
+     * Updates message list with the messages passed as a parameter.
+     * Contains logic which removes duplicates and keep the correct order
+     * of messages.
+     *
+     * @param messages
+     */
+    updateMessageList: function (messages) {
+
+        // Vars
+        var messageList = this.get('messageList'),
+            index;
+
+        for (index = 0; index < messages.length; index++) {
+            // TODO: Handle duplicates
+            // Add message to message list
+            messageList.add(
+                new Y.LIMS.Model.MessageItemModel(messages[index])
+            );
+        }
+
+        // Notify about the event
+        this.fire('messagesUpdated', messageList);
     }
 
 }, {
@@ -104,7 +184,15 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
         // attributes.
 
         conversationId: {
-            value: "" // default value
+            valueFn: function () {
+                // TODO: Find a better way how to do that
+                return this.get('creator').get('screenName') + "_" +
+                    this.get('participants')[0].get('screenName');
+            }
+        },
+
+        creator: {
+            value: null // to be set
         },
 
         participants: {
@@ -116,7 +204,7 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
         },
 
         messageList: {
-            valueFn: function() {
+            valueFn: function () {
                 return new Y.LIMS.Model.MessageListModel();
             }
         }

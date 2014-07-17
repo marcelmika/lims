@@ -1,9 +1,6 @@
 package com.marcelmika.lims.persistence.service;
 
-import com.marcelmika.lims.api.events.conversation.CreateConversationRequestEvent;
-import com.marcelmika.lims.api.events.conversation.CreateConversationResponseEvent;
-import com.marcelmika.lims.api.events.conversation.SendMessageRequestEvent;
-import com.marcelmika.lims.api.events.conversation.SendMessageResponseEvent;
+import com.marcelmika.lims.api.events.conversation.*;
 
 /**
  * @author Ing. Marcel Mika
@@ -20,6 +17,14 @@ public interface ConversationPersistenceService {
      * @return response event for  method
      */
     public CreateConversationResponseEvent createConversation(CreateConversationRequestEvent event);
+
+    /**
+     * Reads messages from conversation
+     *
+     * @param event request event for method
+     * @return response event for method
+     */
+    public ReadSingleUserConversationResponseEvent readConversation(ReadSingleUserConversationRequestEvent event);
 
     /**
      * Sends message to conversation

@@ -24,7 +24,8 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         var model = this.get('model');
         // Update the display when a new item is added to the list, or when the
         // entire list is reset.
-        model.after('messageAdded', this._updateConversationList, this);
+        model.after('messageAdded', this._addMessage, this);
+        model.after('messagesUpdated', this._renderMessagesList, this);
 
         // Load saved items from server or local storage
         model.load();
@@ -39,37 +40,44 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         }
     },
 
-    // Creates a new GroupView instance and renders it into the list whenever a
-    // Group item is added to the list.
-    _updateConversationList: function (event) {
-        console.log(event);
-        var animation, conversation;
-        // Hide indicator
+
+    _addMessage: function (message) {
+
+        // Vars
+        var conversation,                            // Newly created conversation
+            panelContent = this.get('panelContent'); // The place where are messages will be rendered to
+
+        // Hide indicator if it wasn't already hidden
         this.get('activityIndicator').hide();
-        // New conversation
-        conversation = new Y.LIMS.View.ConversationItemView({model: event});
+
+        // New conversation item
+        conversation = new Y.LIMS.View.ConversationItemView({model: message});
         // Render it
         conversation.render();
-        // Set opacity to zero (because of the animation
-        conversation.get('container').setStyle('opacity', 0);
         // Append to list
-        this.get('panelContent').append(conversation.get('container'));
+        panelContent.append(conversation.get('container'));
+
         // Scroll to the last message
         this._scrollToBottom();
-        // Animate
-        animation = new Y.Anim({
-            node: conversation.get('container'),
-            duration: 0.2,
-            from: {
-                opacity: 0
-            },
-            to: {
-                opacity: 1
-            }
-        });
-        // Run the effect animation
-        animation.run();
+    },
 
+    /**
+     * Renders message list
+     *
+     * @param messageList
+     * @private
+     */
+    _renderMessagesList: function (messageList) {
+
+        // Vars
+        var instance = this;
+
+        // TODO: Clear the content of panel
+
+        // Create view for each message
+        messageList.each(function (message) {
+            instance._addMessage(message, false);
+        });
     },
 
     /**
@@ -112,7 +120,7 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
             value: null
         },
 
-        // Instance of model attached to view
+        // Conversation model
         model: {
             value: null // default value
         },

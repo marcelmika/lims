@@ -95,6 +95,18 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
     }
 
     /**
+     * Reads messages from conversation
+     *
+     * @param event request event for method
+     * @return response event for method
+     */
+    @Override
+    public ReadSingleUserConversationResponseEvent readConversation(ReadSingleUserConversationRequestEvent event) {
+        // Read from persistence
+        return conversationPersistenceService.readConversation(event);
+    }
+
+    /**
      * Opens existing conversation
      *
      * @param event Request event for login method

@@ -19,6 +19,7 @@ public class PortletDispatcher {
     // only one url for AJAX communication we need such query parameter to decide which method and resource
     // should be used.
     private static final String QUERY_CREATE_SINGLE_USER_CONVERSATION = "CreateSingleUserConversation";
+    private static final String QUERY_READ_SINGLE_USER_CONVERSATION = "ReadSingleUserConversation";
     private static final String QUERY_GET_GROUP_LIST = "GetGroupList";
     private static final String QUERY_CREATE_MESSAGE = "CreateMessage";
     private static final String QUERY_UPDATE_BUDDY_PRESENCE = "UpdateBuddyPresence";
@@ -48,9 +49,13 @@ public class PortletDispatcher {
         // Get query type from parameter
         String query = request.getParameter(KEY_QUERY);
 
-        // Create Single User conversation
+        // Create Single User Conversation
         if(query.equals(QUERY_CREATE_SINGLE_USER_CONVERSATION)) {
             processor.createSingleUserConversation(request, response);
+        }
+        // Read Single User Conversation
+        else if(query.equals(QUERY_READ_SINGLE_USER_CONVERSATION)) {
+            processor.readSingleUserConversation(request, response);
         }
         // Get Group List
         else if(query.equals(QUERY_GET_GROUP_LIST)) {

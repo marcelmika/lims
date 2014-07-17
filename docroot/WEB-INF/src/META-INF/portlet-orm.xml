@@ -42,9 +42,7 @@
 			<basic name="creatorId" />
 			<basic name="createdAt" />
 			<basic name="messageHash" />
-			<basic name="text">
-				<column name="TEXT_" />
-			</basic>
+			<basic name="body" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

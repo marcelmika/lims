@@ -63,9 +63,9 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 			{ "creatorId", Types.BIGINT },
 			{ "createdAt", Types.BIGINT },
 			{ "messageHash", Types.VARCHAR },
-			{ "text_", Types.VARCHAR }
+			{ "body", Types.VARCHAR }
 		};
-	public static final String TABLE_SQL_CREATE = "create table LiferayLIMS_Message (mid LONG not null primary key,cid LONG,creatorId LONG,createdAt LONG,messageHash VARCHAR(75) null,text_ VARCHAR(75) null)";
+	public static final String TABLE_SQL_CREATE = "create table LiferayLIMS_Message (mid LONG not null primary key,cid LONG,creatorId LONG,createdAt LONG,messageHash VARCHAR(75) null,body VARCHAR(75) null)";
 	public static final String TABLE_SQL_DROP = "drop table LiferayLIMS_Message";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
@@ -79,7 +79,8 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
 				"value.object.column.bitmask.enabled.com.marcelmika.lims.model.Message"),
 			true);
-	public static long CREATORID_COLUMN_BITMASK = 1L;
+	public static long CID_COLUMN_BITMASK = 1L;
+	public static long CREATORID_COLUMN_BITMASK = 2L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
 				"lock.expiration.time.com.marcelmika.lims.model.Message"));
 
@@ -119,7 +120,7 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		attributes.put("creatorId", getCreatorId());
 		attributes.put("createdAt", getCreatedAt());
 		attributes.put("messageHash", getMessageHash());
-		attributes.put("text", getText());
+		attributes.put("body", getBody());
 
 		return attributes;
 	}
@@ -156,10 +157,10 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 			setMessageHash(messageHash);
 		}
 
-		String text = (String)attributes.get("text");
+		String body = (String)attributes.get("body");
 
-		if (text != null) {
-			setText(text);
+		if (body != null) {
+			setBody(body);
 		}
 	}
 
@@ -176,7 +177,19 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 	}
 
 	public void setCid(long cid) {
+		_columnBitmask |= CID_COLUMN_BITMASK;
+
+		if (!_setOriginalCid) {
+			_setOriginalCid = true;
+
+			_originalCid = _cid;
+		}
+
 		_cid = cid;
+	}
+
+	public long getOriginalCid() {
+		return _originalCid;
 	}
 
 	public long getCreatorId() {
@@ -220,17 +233,17 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		_messageHash = messageHash;
 	}
 
-	public String getText() {
-		if (_text == null) {
+	public String getBody() {
+		if (_body == null) {
 			return StringPool.BLANK;
 		}
 		else {
-			return _text;
+			return _body;
 		}
 	}
 
-	public void setText(String text) {
-		_text = text;
+	public void setBody(String body) {
+		_body = body;
 	}
 
 	public long getColumnBitmask() {
@@ -273,7 +286,7 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		messageImpl.setCreatorId(getCreatorId());
 		messageImpl.setCreatedAt(getCreatedAt());
 		messageImpl.setMessageHash(getMessageHash());
-		messageImpl.setText(getText());
+		messageImpl.setBody(getBody());
 
 		messageImpl.resetOriginalValues();
 
@@ -325,6 +338,10 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 	public void resetOriginalValues() {
 		MessageModelImpl messageModelImpl = this;
 
+		messageModelImpl._originalCid = messageModelImpl._cid;
+
+		messageModelImpl._setOriginalCid = false;
+
 		messageModelImpl._originalCreatorId = messageModelImpl._creatorId;
 
 		messageModelImpl._setOriginalCreatorId = false;
@@ -352,12 +369,12 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 			messageCacheModel.messageHash = null;
 		}
 
-		messageCacheModel.text = getText();
+		messageCacheModel.body = getBody();
 
-		String text = messageCacheModel.text;
+		String body = messageCacheModel.body;
 
-		if ((text != null) && (text.length() == 0)) {
-			messageCacheModel.text = null;
+		if ((body != null) && (body.length() == 0)) {
+			messageCacheModel.body = null;
 		}
 
 		return messageCacheModel;
@@ -377,8 +394,8 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		sb.append(getCreatedAt());
 		sb.append(", messageHash=");
 		sb.append(getMessageHash());
-		sb.append(", text=");
-		sb.append(getText());
+		sb.append(", body=");
+		sb.append(getBody());
 		sb.append("}");
 
 		return sb.toString();
@@ -412,8 +429,8 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		sb.append(getMessageHash());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>text</column-name><column-value><![CDATA[");
-		sb.append(getText());
+			"<column><column-name>body</column-name><column-value><![CDATA[");
+		sb.append(getBody());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -427,12 +444,14 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		};
 	private long _mid;
 	private long _cid;
+	private long _originalCid;
+	private boolean _setOriginalCid;
 	private long _creatorId;
 	private long _originalCreatorId;
 	private boolean _setOriginalCreatorId;
 	private long _createdAt;
 	private String _messageHash;
-	private String _text;
+	private String _body;
 	private long _columnBitmask;
 	private Message _escapedModel;
 }

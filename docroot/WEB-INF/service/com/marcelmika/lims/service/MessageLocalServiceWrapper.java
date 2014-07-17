@@ -268,6 +268,11 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
 		return _messageLocalService.addMessage(cid, creatorId, text, messageHash);
 	}
 
+	public java.util.List<com.marcelmika.lims.model.Message> readMessages(
+		long cid) throws com.liferay.portal.kernel.exception.SystemException {
+		return _messageLocalService.readMessages(cid);
+	}
+
 	/**
 	 * @deprecated Renamed to {@link #getWrappedService}
 	 */

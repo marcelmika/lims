@@ -23,7 +23,7 @@ create table LiferayLIMS_Message (
 	creatorId LONG,
 	createdAt LONG,
 	messageHash VARCHAR(75) null,
-	text_ VARCHAR(75) null
+	body VARCHAR(75) null
 );
 
 create table LiferayLIMS_OpenedConversation (

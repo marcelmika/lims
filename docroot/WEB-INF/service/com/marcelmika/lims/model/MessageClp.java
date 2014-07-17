@@ -71,7 +71,7 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		attributes.put("creatorId", getCreatorId());
 		attributes.put("createdAt", getCreatedAt());
 		attributes.put("messageHash", getMessageHash());
-		attributes.put("text", getText());
+		attributes.put("body", getBody());
 
 		return attributes;
 	}
@@ -108,10 +108,10 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 			setMessageHash(messageHash);
 		}
 
-		String text = (String)attributes.get("text");
+		String body = (String)attributes.get("body");
 
-		if (text != null) {
-			setText(text);
+		if (body != null) {
+			setBody(body);
 		}
 	}
 
@@ -220,20 +220,20 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		}
 	}
 
-	public String getText() {
-		return _text;
+	public String getBody() {
+		return _body;
 	}
 
-	public void setText(String text) {
-		_text = text;
+	public void setBody(String body) {
+		_body = body;
 
 		if (_messageRemoteModel != null) {
 			try {
 				Class<?> clazz = _messageRemoteModel.getClass();
 
-				Method method = clazz.getMethod("setText", String.class);
+				Method method = clazz.getMethod("setBody", String.class);
 
-				method.invoke(_messageRemoteModel, text);
+				method.invoke(_messageRemoteModel, body);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -318,7 +318,7 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		clone.setCreatorId(getCreatorId());
 		clone.setCreatedAt(getCreatedAt());
 		clone.setMessageHash(getMessageHash());
-		clone.setText(getText());
+		clone.setBody(getBody());
 
 		return clone;
 	}
@@ -378,8 +378,8 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		sb.append(getCreatedAt());
 		sb.append(", messageHash=");
 		sb.append(getMessageHash());
-		sb.append(", text=");
-		sb.append(getText());
+		sb.append(", body=");
+		sb.append(getBody());
 		sb.append("}");
 
 		return sb.toString();
@@ -413,8 +413,8 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		sb.append(getMessageHash());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>text</column-name><column-value><![CDATA[");
-		sb.append(getText());
+			"<column><column-name>body</column-name><column-value><![CDATA[");
+		sb.append(getBody());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -427,6 +427,6 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 	private long _creatorId;
 	private long _createdAt;
 	private String _messageHash;
-	private String _text;
+	private String _body;
 	private BaseModel<?> _messageRemoteModel;
 }

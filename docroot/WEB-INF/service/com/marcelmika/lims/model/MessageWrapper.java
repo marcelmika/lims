@@ -50,7 +50,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 		attributes.put("creatorId", getCreatorId());
 		attributes.put("createdAt", getCreatedAt());
 		attributes.put("messageHash", getMessageHash());
-		attributes.put("text", getText());
+		attributes.put("body", getBody());
 
 		return attributes;
 	}
@@ -86,10 +86,10 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 			setMessageHash(messageHash);
 		}
 
-		String text = (String)attributes.get("text");
+		String body = (String)attributes.get("body");
 
-		if (text != null) {
-			setText(text);
+		if (body != null) {
+			setBody(body);
 		}
 	}
 
@@ -202,21 +202,21 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	}
 
 	/**
-	* Returns the text of this message.
+	* Returns the body of this message.
 	*
-	* @return the text of this message
+	* @return the body of this message
 	*/
-	public java.lang.String getText() {
-		return _message.getText();
+	public java.lang.String getBody() {
+		return _message.getBody();
 	}
 
 	/**
-	* Sets the text of this message.
+	* Sets the body of this message.
 	*
-	* @param text the text of this message
+	* @param body the body of this message
 	*/
-	public void setText(java.lang.String text) {
-		_message.setText(text);
+	public void setBody(java.lang.String body) {
+		_message.setBody(body);
 	}
 
 	public boolean isNew() {

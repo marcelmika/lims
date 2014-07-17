@@ -129,19 +129,19 @@ public interface MessageModel extends BaseModel<Message> {
 	public void setMessageHash(String messageHash);
 
 	/**
-	 * Returns the text of this message.
+	 * Returns the body of this message.
 	 *
-	 * @return the text of this message
+	 * @return the body of this message
 	 */
 	@AutoEscape
-	public String getText();
+	public String getBody();
 
 	/**
-	 * Sets the text of this message.
+	 * Sets the body of this message.
 	 *
-	 * @param text the text of this message
+	 * @param body the body of this message
 	 */
-	public void setText(String text);
+	public void setBody(String body);
 
 	public boolean isNew();
 

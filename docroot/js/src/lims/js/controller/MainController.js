@@ -76,12 +76,22 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
 }, {
 
     ATTRS: {
+
         // Add custom model attributes here. These attributes will contain your
         // model's data. See the docs for Y.Attribute to learn more about defining
         // attributes.
-
         buddyDetails: {
-            value: null // default value
+            valueFn: function () {
+                // We need settings to determine user
+                var settings = new Y.LIMS.Core.Settings();
+                console.log("CURRENT:");
+                console.log(settings.getCurrentUserId());
+                // Get logged user
+                return new Y.LIMS.Model.BuddyModelItem({
+                    buddyId: settings.getCurrentUserId(),
+                    screenName: settings.getCurrentUserScreenName()
+                });
+            }
         },
 
         settings: {
