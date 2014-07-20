@@ -1,7 +1,7 @@
 package com.marcelmika.lims.jabber.utils;
 
 import com.liferay.portal.kernel.util.StringPool;
-import com.marcelmika.lims.util.PortletPropsValues;
+import com.marcelmika.lims.portal.properties.PortletPropertiesValues;
 import org.jivesoftware.smack.util.StringUtils;
 
 import java.util.Locale;
@@ -33,7 +33,7 @@ public class Jid {
         // Parse the jid
         String name = getJid(user);
         // Add resource
-        return name.concat(StringPool.SLASH).concat(PortletPropsValues.JABBER_RESOURCE);
+        return name.concat(StringPool.SLASH).concat(PortletPropertiesValues.JABBER_RESOURCE);
     }
 
     /**
@@ -48,7 +48,7 @@ public class Jid {
             return null;
         }
         // Add host
-        return user.concat(StringPool.AT).concat(PortletPropsValues.JABBER_SERVICE_NAME);
+        return user.concat(StringPool.AT).concat(PortletPropertiesValues.JABBER_SERVICE_NAME);
     }
 
     /**

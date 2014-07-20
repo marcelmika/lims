@@ -1,5 +1,5 @@
 
-package com.marcelmika.lims.util;
+package com.marcelmika.lims.portal.properties;
 
 /**
  * @author Ing. Marcel Mika
@@ -7,7 +7,7 @@ package com.marcelmika.lims.util;
  * Date: 11/24/13
  * Time: 11:18 PM
  */
-public interface PortletPropsKeys {
+public interface PortletPropertiesKeys {
 
     // Buddy
     public static final String BUDDY_LIST_MAX_BUDDIES = "buddy.list.max.buddies";

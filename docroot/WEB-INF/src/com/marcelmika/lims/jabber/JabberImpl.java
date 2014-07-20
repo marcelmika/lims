@@ -14,21 +14,15 @@ import com.marcelmika.lims.jabber.domain.SUConversation;
 import com.marcelmika.lims.jabber.form.JabberFormFactory;
 import com.marcelmika.lims.jabber.listener.JabberMessageListener;
 import com.marcelmika.lims.model.Buddy;
+import com.marcelmika.lims.portal.properties.PortletPropertiesValues;
 import com.marcelmika.lims.service.BuddyLocalServiceUtil;
-import com.marcelmika.lims.service.ConversationLocalServiceUtil;
-import com.marcelmika.lims.util.PortletPropsValues;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManager;
 import org.jivesoftware.smack.ChatManagerListener;
 import org.jivesoftware.smack.Connection;
-import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
-import org.jivesoftware.smackx.muc.HostedRoom;
-import org.jivesoftware.smackx.muc.InvitationListener;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -383,11 +377,11 @@ public class JabberImpl implements Jabber {
 
     protected String getFullJabberId(String screenName) {
         String jabberId = getJabberId(screenName);
-        return jabberId.concat(StringPool.SLASH).concat(PortletPropsValues.JABBER_RESOURCE);
+        return jabberId.concat(StringPool.SLASH).concat(PortletPropertiesValues.JABBER_RESOURCE);
     }
 
     protected String getJabberId(String screenName) {
-        return screenName.concat(StringPool.AT).concat(PortletPropsValues.JABBER_SERVICE_NAME);
+        return screenName.concat(StringPool.AT).concat(PortletPropertiesValues.JABBER_SERVICE_NAME);
     }
 
     public String getResource(String jabberId) {
@@ -399,6 +393,6 @@ public class JabberImpl implements Jabber {
     }
 
     public String getFullRoomId(String roomJID) {
-        return roomJID + StringPool.AT + PortletPropsValues.JABBER_SERVICE_MULTICHAT_NAME;
+        return roomJID + StringPool.AT + PortletPropertiesValues.JABBER_SERVICE_MULTICHAT_NAME;
     }
 }

@@ -2,7 +2,6 @@ package com.marcelmika.lims.jabber.session;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.marcelmika.lims.jabber.connection.manager.ConnectionManagerImpl;
@@ -12,8 +11,8 @@ import com.marcelmika.lims.jabber.JabberKeys;
 import com.marcelmika.lims.jabber.JabberMapper;
 import com.marcelmika.lims.jabber.listener.JabberRosterListener;
 import com.marcelmika.lims.model.Settings;
+import com.marcelmika.lims.portal.properties.PortletPropertiesValues;
 import com.marcelmika.lims.service.SettingsLocalServiceUtil;
-import com.marcelmika.lims.util.PortletPropsValues;
 import org.jivesoftware.smack.AccountManager;
 import org.jivesoftware.smack.Connection;
 import org.jivesoftware.smack.Roster;
@@ -133,16 +132,16 @@ public class JabberSessionManager {
 
         try {
             // Import user
-            if (PortletPropsValues.JABBER_IMPORT_USER_ENABLED) {
+            if (PortletPropertiesValues.JABBER_IMPORT_USER_ENABLED) {
                 importUser(userId, username, password, connection);
             }
 
             // If the SASL is enabled login with username, password and resource
-            if (PortletPropsValues.JABBER_SASL_PLAIN_ENABLED) {
+            if (PortletPropertiesValues.JABBER_SASL_PLAIN_ENABLED) {
                 connection.login(
                         username,
-                        PortletPropsValues.JABBER_SASL_PLAIN_PASSWORD,
-                        PortletPropsValues.JABBER_RESOURCE
+                        PortletPropertiesValues.JABBER_SASL_PLAIN_PASSWORD,
+                        PortletPropertiesValues.JABBER_RESOURCE
                 );
             } else {
                 // Login with username and password
@@ -195,7 +194,7 @@ public class JabberSessionManager {
     private void importUser(long userId, String username, String password, Connection connection) throws Exception {
 
         // Check the config if the import is enabled
-        if (!PortletPropsValues.JABBER_IMPORT_USER_ENABLED) {
+        if (!PortletPropertiesValues.JABBER_IMPORT_USER_ENABLED) {
             throw new Exception("Import user is disabled");
         }
 

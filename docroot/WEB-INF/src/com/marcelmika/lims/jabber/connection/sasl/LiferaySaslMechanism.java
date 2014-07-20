@@ -1,6 +1,6 @@
 package com.marcelmika.lims.jabber.connection.sasl;
 
-import com.marcelmika.lims.util.PortletPropsValues;
+import com.marcelmika.lims.portal.properties.PortletPropertiesValues;
 import org.jivesoftware.smack.SASLAuthentication;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.sasl.SASLPlainMechanism;
@@ -30,8 +30,8 @@ public class LiferaySaslMechanism extends SASLPlainMechanism {
     @Override
     public void authenticate(String username, String host, String password) throws IOException, XMPPException {
 
-        this.authenticationId = PortletPropsValues.JABBER_SASL_PLAIN_AUTHID;
-        this.password = PortletPropsValues.JABBER_SASL_PLAIN_PASSWORD;
+        this.authenticationId = PortletPropertiesValues.JABBER_SASL_PLAIN_AUTHID;
+        this.password = PortletPropertiesValues.JABBER_SASL_PLAIN_PASSWORD;
         this.hostname = host;
 
         String[] mechanisms = { getName() };
