@@ -34,4 +34,12 @@ public interface ConversationPersistenceService {
      */
     public SendMessageResponseEvent sendMessage(SendMessageRequestEvent event);
 
+    /**
+     * Get all opened conversations related to the particular buddy
+     *
+     * @param event request event for method
+     * @return response event for  method
+     */
+    public GetOpenedConversationsResponseEvent getOpenedConversations(GetOpenedConversationsRequestEvent event);
+
 }

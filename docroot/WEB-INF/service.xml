@@ -71,6 +71,10 @@
             <finder-column name='cid'/>
             <finder-column name='participantId'/>
         </finder>
+        <finder name='ParticipantIdIsOpened' return-type='Collection'>
+            <finder-column name='participantId'/>
+            <finder-column name='isOpened'/>
+        </finder>
     </entity>
 
     <!-- Buddy -->

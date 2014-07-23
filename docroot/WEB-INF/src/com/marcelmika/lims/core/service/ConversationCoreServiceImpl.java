@@ -49,31 +49,8 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      */
     @Override
     public GetOpenedConversationsResponseEvent getOpenedConversations(GetOpenedConversationsRequestEvent event) {
-        throw new NotImplementedException();
-        //        for (Conversation conversation : conversations) {
-//            String conversationId = conversation.getConversationId();
-//            // [1] We want to send all messages on the initial request
-//            if (pollerRequest.isInitialRequest()) {
-//                conversation.setLastMessageSent(0);
-//            }
-//
-//            // [2] Make poller faster while sending new messages
-//            if (conversation.getLastMessageSent() < conversation.getMessages().size()) {
-//                pollerResponse.setParameter(PollerResponse.POLLER_HINT_HIGH_CONNECTIVITY, Boolean.TRUE.toString());
-//            }
-//
-//            // [3] Active conversations don't have unread messages
-//            if (ChatUtil.isConversationActive(userId, conversationId)) {
-//                ChatUtil.setUnreadMessages(userId, conversationId, 0);
-//            }
-//
-//            // [4] Add conversation to json
-//            conversationsJSON.put(conversation.toFullJSON());
-//
-//            // [5] Set last message counter to the index of last message
-//            conversation.setLastMessageSent(conversation.getIndexOfLastMessage());
-//        }
-
+        // Read from persistence
+        return conversationPersistenceService.getOpenedConversations(event);
     }
 
     /**

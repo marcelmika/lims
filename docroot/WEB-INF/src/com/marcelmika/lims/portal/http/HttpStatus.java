@@ -1,4 +1,4 @@
-package com.marcelmika.lims.portal.portlet;
+package com.marcelmika.lims.portal.http;
 
 
 /**

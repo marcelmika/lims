@@ -292,6 +292,19 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 		_participantLocalService.updateParticipants(cid);
 	}
 
+	public java.util.List<com.marcelmika.lims.model.Participant> getOpenedConversations(
+		java.lang.Long participantId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _participantLocalService.getOpenedConversations(participantId);
+	}
+
+	public java.util.List<com.marcelmika.lims.model.Participant> getConversationParticipants(
+		java.lang.Long cid)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.NoSuchParticipantException {
+		return _participantLocalService.getConversationParticipants(cid);
+	}
+
 	/**
 	 * @deprecated Renamed to {@link #getWrappedService}
 	 */

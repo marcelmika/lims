@@ -78,7 +78,8 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 				"value.object.column.bitmask.enabled.com.marcelmika.lims.model.Participant"),
 			true);
 	public static long CID_COLUMN_BITMASK = 1L;
-	public static long PARTICIPANTID_COLUMN_BITMASK = 2L;
+	public static long ISOPENED_COLUMN_BITMASK = 2L;
+	public static long PARTICIPANTID_COLUMN_BITMASK = 4L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
 				"lock.expiration.time.com.marcelmika.lims.model.Participant"));
 
@@ -221,7 +222,19 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 	}
 
 	public void setIsOpened(boolean isOpened) {
+		_columnBitmask |= ISOPENED_COLUMN_BITMASK;
+
+		if (!_setOriginalIsOpened) {
+			_setOriginalIsOpened = true;
+
+			_originalIsOpened = _isOpened;
+		}
+
 		_isOpened = isOpened;
+	}
+
+	public boolean getOriginalIsOpened() {
+		return _originalIsOpened;
 	}
 
 	public long getColumnBitmask() {
@@ -323,6 +336,10 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 
 		participantModelImpl._setOriginalParticipantId = false;
 
+		participantModelImpl._originalIsOpened = participantModelImpl._isOpened;
+
+		participantModelImpl._setOriginalIsOpened = false;
+
 		participantModelImpl._columnBitmask = 0;
 	}
 
@@ -408,6 +425,8 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 	private boolean _setOriginalParticipantId;
 	private int _unreadMessagesCount;
 	private boolean _isOpened;
+	private boolean _originalIsOpened;
+	private boolean _setOriginalIsOpened;
 	private long _columnBitmask;
 	private Participant _escapedModel;
 }

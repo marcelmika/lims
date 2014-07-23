@@ -270,9 +270,9 @@ public class MessageLocalServiceUtil {
 	}
 
 	public static com.marcelmika.lims.model.Message addMessage(long cid,
-		long creatorId, java.lang.String text, java.lang.String messageHash)
+		long creatorId, java.lang.String body, java.lang.String messageHash)
 		throws com.liferay.portal.kernel.exception.SystemException {
-		return getService().addMessage(cid, creatorId, text, messageHash);
+		return getService().addMessage(cid, creatorId, body, messageHash);
 	}
 
 	public static java.util.List<com.marcelmika.lims.model.Message> readMessages(

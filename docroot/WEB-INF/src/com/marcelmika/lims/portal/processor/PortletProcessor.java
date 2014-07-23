@@ -17,7 +17,7 @@ import com.marcelmika.lims.api.events.settings.UpdateActivePanelRequestEvent;
 import com.marcelmika.lims.api.events.settings.UpdateSettingsRequestEvent;
 import com.marcelmika.lims.core.service.*;
 import com.marcelmika.lims.portal.domain.*;
-import com.marcelmika.lims.portal.portlet.HttpStatus;
+import com.marcelmika.lims.portal.http.HttpStatus;
 import com.marcelmika.lims.portal.processor.parameters.CreateMessageParameters;
 import com.marcelmika.lims.portal.processor.parameters.ReadConversationParameters;
 
@@ -204,7 +204,7 @@ public class PortletProcessor {
         // Success
         if (responseEvent.isSuccess()) {
             // Map messages from response
-            List<Message> messages = Message.fromMessageDetails(responseEvent.getMessages());
+            List<Message> messages = Message.fromMessageDetailsList(responseEvent.getMessages());
             // Serialize
             String serializedMessages = JSONFactoryUtil.looseSerialize(messages);
             // Write success to response

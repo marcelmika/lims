@@ -25,13 +25,10 @@ public class Conversation {
 
     // Properties
     private String conversationId;
-    private ConversationType conversationType;
-    private List<Buddy> participants;
     private String title;
-    private String name;
-    private String type;
-    private String visibility;
-    private Message lastMessage;
+    private ConversationType conversationType;
+    private Integer unreadMessagesCount;
+    private List<Buddy> participants;
     private List<Message> messages;
 
 
@@ -44,6 +41,7 @@ public class Conversation {
      *
      * @param pollerRequest request
      * @return Conversation
+     * @deprecated
      */
     public static Conversation fromPollerRequest(PollerRequest pollerRequest) {
         // Map contains all parameters from request
@@ -90,20 +88,18 @@ public class Conversation {
     public static Conversation fromConversationDetails(ConversationDetails details) {
         // Create new conversation
         Conversation conversation = new Conversation();
-        // Map parameters
+
+        // Parameters
         conversation.conversationId = details.getConversationId();
-        conversation.title = details.getTitle();
-        conversation.name = details.getName();
-        conversation.type = details.getType();
-        conversation.visibility = details.getVisibility();
+        conversation.unreadMessagesCount = details.getUnreadMessagesCount();
 
         // Relations
-        if (details.getLastMessage() != null) {
-            conversation.lastMessage = Message.fromMessageDetails(details.getLastMessage());
+        if (details.getParticipants() != null) {
+            conversation.participants = Buddy.fromBuddyDetailsList(details.getParticipants());
         }
 
         if (details.getMessages() != null) {
-            conversation.messages = Message.fromMessageDetails(details.getMessages());
+            conversation.messages = Message.fromMessageDetailsList(details.getMessages());
         }
 
         if (details.getConversationType() != null) {
@@ -111,6 +107,16 @@ public class Conversation {
         }
 
         return conversation;
+    }
+
+    public static List<Conversation> fromConversationDetailsList(List<ConversationDetails> details) {
+        // Create new list of conversations
+        List<Conversation> conversations = new LinkedList<Conversation>();
+        for (ConversationDetails conversationDetails : details) {
+            conversations.add(fromConversationDetails(conversationDetails));
+        }
+
+        return conversations;
     }
 
     /**
@@ -140,7 +146,6 @@ public class Conversation {
         return details;
     }
 
-
     // -------------------------------------------------------------------------------------------
     // Getters/Setters
     // -------------------------------------------------------------------------------------------
@@ -169,44 +174,20 @@ public class Conversation {
         this.participants = participants;
     }
 
+    public Integer getUnreadMessagesCount() {
+        return unreadMessagesCount;
+    }
+
+    public void setUnreadMessagesCount(Integer unreadMessagesCount) {
+        this.unreadMessagesCount = unreadMessagesCount;
+    }
+
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getVisibility() {
-        return visibility;
-    }
-
-    public void setVisibility(String visibility) {
-        this.visibility = visibility;
-    }
-
-    public Message getLastMessage() {
-        return lastMessage;
-    }
-
-    public void setLastMessage(Message lastMessage) {
-        this.lastMessage = lastMessage;
     }
 
     public List<Message> getMessages() {
@@ -224,10 +205,6 @@ public class Conversation {
                 ", conversationType=" + conversationType +
                 ", participants=" + participants +
                 ", title='" + title + '\'' +
-                ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ", visibility='" + visibility + '\'' +
-                ", lastMessage=" + lastMessage +
                 ", messages=" + messages +
                 '}';
     }

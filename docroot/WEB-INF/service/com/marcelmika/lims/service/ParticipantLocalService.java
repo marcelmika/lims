@@ -266,4 +266,15 @@ public interface ParticipantLocalService extends BaseLocalService,
 	public void updateParticipants(java.lang.Long cid)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<com.marcelmika.lims.model.Participant> getOpenedConversations(
+		java.lang.Long participantId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<com.marcelmika.lims.model.Participant> getConversationParticipants(
+		java.lang.Long cid)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.NoSuchParticipantException;
 }

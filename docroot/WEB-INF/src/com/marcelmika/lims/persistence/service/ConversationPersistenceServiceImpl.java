@@ -1,7 +1,11 @@
 package com.marcelmika.lims.persistence.service;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.marcelmika.lims.api.entity.ConversationDetails;
 import com.marcelmika.lims.api.entity.MessageDetails;
 import com.marcelmika.lims.api.events.conversation.*;
+import com.marcelmika.lims.model.Participant;
 import com.marcelmika.lims.persistence.domain.Buddy;
 import com.marcelmika.lims.persistence.domain.Conversation;
 import com.marcelmika.lims.persistence.domain.Message;
@@ -21,6 +25,8 @@ import java.util.List;
  */
 public class ConversationPersistenceServiceImpl implements ConversationPersistenceService {
 
+    // Log
+    private static Log log = LogFactoryUtil.getLog(ConversationPersistenceServiceImpl.class);
 
     /**
      * Creates new conversation
@@ -47,6 +53,8 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
                 ParticipantLocalServiceUtil.addParticipant(conversationModel.getCid(), buddy.getBuddyId());
             }
 
+            // Create is also participant
+            ParticipantLocalServiceUtil.addParticipant(conversationModel.getCid(), creator.getBuddyId());
         }
         // Failure
         catch (Exception exception) {
@@ -165,4 +173,95 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             );
         }
     }
+
+    /**
+     * Get all opened conversations related to the particular buddy
+     *
+     * @param event request event for method
+     * @return response event for  method
+     * @deprecated TODO: This should be joined and not constructed manually
+     */
+    @Override
+    public GetOpenedConversationsResponseEvent getOpenedConversations(GetOpenedConversationsRequestEvent event) {
+        // Map to persistence objects
+        Buddy buddy = Buddy.fromBuddyDetails(event.getBuddyDetails());
+
+        try {
+
+            // Prepare conversations container
+            List<Conversation> conversations = new LinkedList<Conversation>();
+
+            // Find participants
+            List<Participant> buddyParticipates = ParticipantLocalServiceUtil.getOpenedConversations(buddy.getBuddyId());
+
+            // Find conversations where the user participates
+            for (Participant participates : buddyParticipates) {
+
+                // Find by cid
+                com.marcelmika.lims.model.Conversation conversationModel = ConversationLocalServiceUtil.getConversation(
+                        participates.getCid()
+                );
+
+                // No need to map anything else
+                if (conversationModel == null) {
+                    break;
+                }
+
+                // Get messages from persistence
+                List<com.marcelmika.lims.model.Message> messageModels = MessageLocalServiceUtil.readMessages(
+                        conversationModel.getCid()
+                );
+
+                // Map to persistence
+                List<Message> messages = new LinkedList<Message>();
+                for (com.marcelmika.lims.model.Message messageModel : messageModels) {
+                    messages.add(Message.fromMessageModel(messageModel));
+                }
+
+                // Get participants
+                List<Participant> participantModels = ParticipantLocalServiceUtil.getConversationParticipants(
+                        conversationModel.getCid()
+                );
+
+                // Map to persistence
+                List<Buddy> participants = new LinkedList<Buddy>();
+                for (Participant participantModel : participantModels) {
+                    Buddy participantBuddy = new Buddy();
+                    participantBuddy.setBuddyId(participantModel.getParticipantId());
+                    participants.add(participantBuddy);
+                }
+
+                // Finally, we have everything we needed
+                Conversation conversation = Conversation.fromConversationModel(conversationModel);
+                conversation.setUnreadMessagesCount(participates.getUnreadMessagesCount());
+                conversation.setMessages(messages);
+                conversation.setParticipants(participants);
+
+                log.info("UNREAD: " + participates.getUnreadMessagesCount());
+
+                // Title is calculated
+
+
+                // Add to container
+                conversations.add(conversation);
+            }
+
+            // Create details from persistence object
+            List<ConversationDetails> conversationDetails = new LinkedList<ConversationDetails>();
+            for (Conversation conversation : conversations) {
+                conversationDetails.add(conversation.toConversationDetails());
+            }
+
+            // Call Success
+            return GetOpenedConversationsResponseEvent.success(conversationDetails);
+
+        } catch (Exception exception) {
+            // Call Failure
+            return GetOpenedConversationsResponseEvent.failure(
+                    GetOpenedConversationsResponseEvent.Status.ERROR_PERSISTENCE, exception
+            );
+        }
+    }
+
+
 }

@@ -1,7 +1,7 @@
 package com.marcelmika.lims.api.events.conversation;
 
-import com.marcelmika.lims.api.events.ResponseEvent;
 import com.marcelmika.lims.api.entity.ConversationDetails;
+import com.marcelmika.lims.api.events.ResponseEvent;
 
 import java.util.List;
 
@@ -13,30 +13,77 @@ import java.util.List;
  */
 public class GetOpenedConversationsResponseEvent extends ResponseEvent {
 
-    private List<ConversationDetails> conversations;
+    private Status status;
+    private List<ConversationDetails> conversationDetails;
 
-    public static GetOpenedConversationsResponseEvent getOpenedConversationsSuccess(
-            List<ConversationDetails> conversations) {
+    public enum Status {
+        SUCCESS, // Event was successful
+        ERROR_WRONG_PARAMETERS, // Wrong input parameters
+        ERROR_NO_SESSION, // User does not have a session
+        ERROR_PERSISTENCE, // Error with persistence occurred
+    }
 
+    /**
+     * Constructor is private. Use factory methods to create new success or failure instances
+     */
+    private GetOpenedConversationsResponseEvent() {
+        // No params
+    }
+
+    /**
+     * Factory method for success status
+     *
+     * @return ResponseEvent
+     */
+    public static GetOpenedConversationsResponseEvent success(List<ConversationDetails> conversations) {
         GetOpenedConversationsResponseEvent event = new GetOpenedConversationsResponseEvent();
+
+        event.status = Status.SUCCESS;
         event.success = true;
-        event.conversations = conversations;
+        event.conversationDetails = conversations;
 
         return event;
     }
 
-    public static GetOpenedConversationsResponseEvent getOpenedConversationsFailure(String result,
-                                                                                    Throwable exception) {
+    /**
+     * Factory method for failure status
+     *
+     * @param status Status
+     * @return ResponseEvent
+     */
+    public static GetOpenedConversationsResponseEvent failure(final Status status) {
         GetOpenedConversationsResponseEvent event = new GetOpenedConversationsResponseEvent();
-        event.result = result;
+
         event.success = false;
+        event.status = status;
+
+        return event;
+    }
+
+    /**
+     * Factory method for failure status
+     *
+     * @param status    Status
+     * @param exception Exception
+     * @return ResponseEvent
+     */
+    public static GetOpenedConversationsResponseEvent failure(final Status status,
+                                                              final Throwable exception) {
+
+        GetOpenedConversationsResponseEvent event = new GetOpenedConversationsResponseEvent();
+
+        event.success = false;
+        event.status = status;
         event.exception = exception;
 
         return event;
     }
 
-    public List<ConversationDetails> getConversations() {
-        return conversations;
+    public Status getStatus() {
+        return status;
     }
 
+    public List<ConversationDetails> getConversationDetails() {
+        return conversationDetails;
+    }
 }

@@ -60,56 +60,8 @@ public class ConversationLocalServiceImpl
     public Conversation getConversation(String conversationId) throws SystemException {
         try {
             return conversationPersistence.findByConversationId(conversationId);
-        } catch (SystemException e) {
-            throw e;
         } catch (NoSuchConversationException e) {
             return null;
         }
     }
-
-//    public List<Conversation> getAllConversations(long userId) throws SystemException {
-//        return conversationPersistence.findByUserId(userId);
-//    }
-//
-//    public Conversation getRoom(long userId, String conversationId) throws NoSuchConversationException, SystemException {
-//        return conversationPersistence.findByUserId_conversationId(userId, conversationId);
-//    }
-//
-//    public Conversation getConversation(long userId, String conversationId) {
-//        Conversation conversation = null;
-//        try {
-//           conversation = conversationPersistence.fetchByUserId_conversationId(userId, conversationId);
-//        } catch (Exception e) {
-//
-//        }
-//        return conversation;
-//    }
-//
-//    public void incrementUnreadMessages(long userId, String conversationId) {
-//        try {
-//            Conversation conversation = getConversation(userId, conversationId);
-//            if (conversation != null) {
-////                System.out.println("[INCREMENTING]");
-//                int unreadMessages = conversation.getUnreadMessages();
-//                conversation.setUnreadMessages(++unreadMessages);
-//                conversation.persist();
-//            }
-//        } catch (Exception e) {
-////            System.out.println("No such conversation " +"[" + userId + "] [" + conversationId + "]");
-//        }
-//    }
-//
-//    public void setUnreadMessages(long userId, String conversationId, int unreadMessages) {
-//        Conversation conversation = getConversation(userId, conversationId);
-//        if (conversation != null) {
-//            conversation.setUnreadMessages(unreadMessages);
-//            try {
-//                conversationPersistence.clearCache();
-//                conversation.persist();
-//                conversationPersistence.clearCache();
-//            } catch (SystemException e) {
-////                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-//            }
-//        }
-//    }
 }

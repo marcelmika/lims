@@ -27,7 +27,7 @@ public class Message {
      * @param detailsList list of MessageDetails
      * @return Message
      */
-    public static List<Message> fromMessageDetails(List<MessageDetails> detailsList) {
+    public static List<Message> fromMessageDetailsList(List<MessageDetails> detailsList) {
         // Create new list of messages
         List<Message> messages = new ArrayList<Message>();
         // Iterate through the list and add messages

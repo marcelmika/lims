@@ -2,11 +2,11 @@ package com.marcelmika.lims.persistence.domain;
 
 import com.marcelmika.lims.api.entity.BuddyDetails;
 import com.marcelmika.lims.api.entity.ConversationDetails;
+import com.marcelmika.lims.api.entity.MessageDetails;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Ing. Marcel Mika
@@ -18,6 +18,7 @@ public class Conversation {
 
     private String conversationId;
     private ConversationType conversationType;
+    private Integer unreadMessagesCount;
     private List<Buddy> participants = new ArrayList<Buddy>();
     private List<Message> messages = new ArrayList<Message>();
 
@@ -54,6 +55,7 @@ public class Conversation {
         Conversation conversation = new Conversation();
         // Map parameters
         conversation.conversationId = details.getConversationId();
+        conversation.unreadMessagesCount = details.getUnreadMessagesCount();
 
         // Relations
         if (details.getParticipants() != null) {
@@ -75,6 +77,18 @@ public class Conversation {
         return conversation;
     }
 
+    public static Conversation fromConversationModel(com.marcelmika.lims.model.Conversation conversationModel) {
+        // Create new conversation
+        Conversation conversation = new Conversation();
+        // Map parameters
+        conversation.conversationId = conversationModel.getConversationId();
+        // TODO: Implement multiuser
+//        conversation.conversationType = conversationModel.getConversationType();
+        conversation.conversationType = ConversationType.SINGLE_USER;
+
+        return conversation;
+    }
+
     /**
      * Maps conversation to conversation details
      *
@@ -85,6 +99,7 @@ public class Conversation {
         ConversationDetails details = new ConversationDetails();
         // Map data from conversation
         details.setConversationId(conversationId);
+        details.setUnreadMessagesCount(unreadMessagesCount);
 
         // Relations
         if (conversationType != null) {
@@ -99,6 +114,14 @@ public class Conversation {
             details.setParticipants(participantDetails);
         }
 
+        if (messages != null) {
+            List<MessageDetails> messageDetails = new LinkedList<MessageDetails>();
+            for (Message message : messages) {
+                messageDetails.add(message.toMessageDetails());
+            }
+            details.setMessages(messageDetails);
+        }
+
         return details;
     }
 
@@ -106,7 +129,6 @@ public class Conversation {
     // -------------------------------------------------------------------------------------------
     // Getters/Setters
     // -------------------------------------------------------------------------------------------
-
 
     public String getConversationId() {
         return conversationId;
@@ -138,5 +160,13 @@ public class Conversation {
 
     public void setMessages(List<Message> messages) {
         this.messages = messages;
+    }
+
+    public Integer getUnreadMessagesCount() {
+        return unreadMessagesCount;
+    }
+
+    public void setUnreadMessagesCount(Integer unreadMessagesCount) {
+        this.unreadMessagesCount = unreadMessagesCount;
     }
 }

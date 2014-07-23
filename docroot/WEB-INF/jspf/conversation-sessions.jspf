@@ -1,105 +1,55 @@
 
-<% {%>
+<% { %>
 
-<c:forEach items="${openedConversations}" var="conversation">
-    <c:choose> 
-        <c:when test="${settings.activePanelId == conversation.conversationId}" >
-            <c:set var="selected" value="selected"/>
-        </c:when> 
-        <c:otherwise> 
-            <c:set var="selected" value=""/>
-        </c:otherwise> 
-    </c:choose> 
-    <c:choose> 
-        <c:when test="${conversation.unreadMessages > 0}" > 
-            <c:set var="waiting" value="waiting"/>
-        </c:when> 
-        <c:otherwise> 
-            <c:set var="waiting" value=""/>
-        </c:otherwise> 
-    </c:choose>            
-    <c:choose> 
-        <c:when test="${conversation.lastMessage.buddy.portraitId != null}" >              
-            <c:set var="portraitId" value="${conversation.lastMessage.buddy.portraitId}"/>            
-        </c:when> 
-        <c:otherwise> 
-            <c:set var="portraitId" value=""/>
-        </c:otherwise> 
-    </c:choose> 
+<c:forEach items="${conversations}" var="conversation">
+
+    <%--<c:choose> --%>
+        <%--<c:when test="${conversation.unreadMessages > 0}" > --%>
+            <%--<c:set var="waiting" value="waiting"/>--%>
+        <%--</c:when> --%>
+        <%--<c:otherwise> --%>
+            <%--<c:set var="waiting" value=""/>--%>
+        <%--</c:otherwise> --%>
+    <%--</c:choose>            --%>
 
     <c:choose> 
-        <c:when test="${settings.chatEnabled}" > 
+        <c:when test="${show}" >
             <c:set var="hidden" value=""/>
         </c:when> 
         <c:otherwise> 
             <c:set var="hidden" value="aui-helper-hidden"/>
         </c:otherwise> 
-    </c:choose> 
+    </c:choose>
 
-    <li class="conversation ${selected} ${waiting} ${hidden}" id="conversation_${conversation.conversationId}" panelId="${conversation.conversationId}">
+    <li>
         <div class="panel-trigger">
-            <span class="trigger-name">${conversation.title}</span>            
-            <c:if test="${conversation.unreadMessages > 0}">                
-                <div class="unread">${conversation.unreadMessages}</div>        
-            </c:if> 
-        </div>    
+            <span class="trigger-name">${conversation.title}</span>
+
+            <c:if test="${conversation.unreadMessagesCount > 0}">
+                <div class="unread">${conversation.unreadMessagesCount}</div>
+            </c:if>
+        </div>
         <div class="chat-panel">
             <div class="panel-window">
-                <div class="panel-button minimize"></div>
                 <div class="panel-button close"></div>
-                <img alt="" class="panel-icon" src="${themeDisplay.pathImage}/user_portrait?img_id=${portraitId}" />
-                <div class="panel-title">${conversation.title}</div>            
-                <div class="panel-profile">                            
-                    <div class="panel-search hidden">
-                        <input class="panel-search-input" type="text"/>
-                        <div class="panel-serach-clear-button aui-helper-hidden"></div>
-                    </div>
-
-                    <div class="panel-button menu"></div>
-                    <div class="panel-primary-menu">
-                        <div class="menu-conversation">
-                            <ul class="menu-buttons">
-                                <li class="add"><liferay-ui:message key="add-to-conversation" /></li>                
-                                <li class="buddies-in"><liferay-ui:message key="buddies-in" /></li>                
-                                <li class="leave"><liferay-ui:message key="leave-conversation" /></li>                
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="panel-secondary-menu">
-                        <div class="menu-add-to-conversation">
-                            <input type="text" class="users-token-input"/>
-                            <div class="buttons">
-                                <div class="cancel"><liferay-ui:message key="cancel" /></div>
-                                <div class="add"><liferay-ui:message key="add" /></div>
-                            </div>
-                        </div>
-                        <div class="menu-leave-conversation">
-                            <p><liferay-ui:message key="leave-conversation-message" /></p>                
-                            <div class="buttons">
-                                <div class="cancel"><liferay-ui:message key="cancel" /></div>
-                                <div class="leave"><liferay-ui:message key="leave" /></div>
-                            </div>                
-                        </div>
-                        <ul class="menu-people-in-conversation"></ul>
-                    </div>
-                    <div class="panel-tertiary-menu">                       
-                        <div class="menu-search">
-                            <p><liferay-ui:message key="results" />: <span class="results-count">0</span></p>
-                            <div class="buttons">
-                                <div class="prev"></div>
-                                <div class="next"></div>
-                            </div>
-                            <div class="clear"></div>
-                        </div>
-                    </div>
+                <div class="panel-button minimize"></div>
+                <div class="panel-button search"></div>
+                <div class="panel-title">${conversation.title}</div>
+                <div class="panel-search hidden">
+                    <aui:input cssClass="search-input"
+                               inputCssClass="search-input-field"
+                               label=""
+                               name="searchConversation"/>
                 </div>
-                <div class="panel-output">
-                    <div class="preloader"><img alt="" src="/liferay-lims-portlet/images/preloader.gif" /></div>
+                <div class="panel-content">
+                    <div class="preloader"></div>
                 </div>
-                <div class="panel-input"><textarea></textarea></div>
+                <div class="panel-input">
+                    <textarea placeholder="<liferay-ui:message key="message-placeholder" />"></textarea>
+                </div>
+            </div>
         </div>
-    </div>
-</li>
+    </li>
 
 </c:forEach>
 

@@ -16,6 +16,7 @@ package com.marcelmika.lims.service.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.marcelmika.lims.NoSuchParticipantException;
 import com.marcelmika.lims.model.Conversation;
 import com.marcelmika.lims.model.Panel;
 import com.marcelmika.lims.model.Participant;
@@ -23,6 +24,7 @@ import com.marcelmika.lims.service.ConversationLocalServiceUtil;
 import com.marcelmika.lims.service.PanelLocalServiceUtil;
 import com.marcelmika.lims.service.base.ParticipantLocalServiceBaseImpl;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -100,4 +102,13 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
             participantPersistence.update(participant, false);
         }
     }
+
+    public List<Participant> getOpenedConversations(Long participantId) throws SystemException {
+        return participantPersistence.findByParticipantIdIsOpened(participantId, true);
+    }
+
+    public List<Participant> getConversationParticipants(Long cid) throws NoSuchParticipantException, SystemException {
+        return participantPersistence.findByCid(cid);
+    }
+
 }

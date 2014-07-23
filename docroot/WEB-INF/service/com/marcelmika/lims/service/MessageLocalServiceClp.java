@@ -646,7 +646,7 @@ public class MessageLocalServiceClp implements MessageLocalService {
 	}
 
 	public com.marcelmika.lims.model.Message addMessage(long cid,
-		long creatorId, java.lang.String text, java.lang.String messageHash)
+		long creatorId, java.lang.String body, java.lang.String messageHash)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
@@ -658,7 +658,7 @@ public class MessageLocalServiceClp implements MessageLocalService {
 						
 					creatorId,
 						
-					ClpSerializer.translateInput(text),
+					ClpSerializer.translateInput(body),
 						
 					ClpSerializer.translateInput(messageHash)
 					});

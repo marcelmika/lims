@@ -122,6 +122,14 @@ public class ParticipantLocalServiceClp implements ParticipantLocalService {
 		_methodName20 = "updateParticipants";
 
 		_methodParameterTypes20 = new String[] { "java.lang.Long" };
+
+		_methodName21 = "getOpenedConversations";
+
+		_methodParameterTypes21 = new String[] { "java.lang.Long" };
+
+		_methodName22 = "getConversationParticipants";
+
+		_methodParameterTypes22 = new String[] { "java.lang.Long" };
 	}
 
 	public com.marcelmika.lims.model.Participant addParticipant(
@@ -712,6 +720,69 @@ public class ParticipantLocalServiceClp implements ParticipantLocalService {
 		}
 	}
 
+	public java.util.List<com.marcelmika.lims.model.Participant> getOpenedConversations(
+		java.lang.Long participantId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21,
+					new Object[] { ClpSerializer.translateInput(participantId) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.marcelmika.lims.model.Participant>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	public java.util.List<com.marcelmika.lims.model.Participant> getConversationParticipants(
+		java.lang.Long cid)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.NoSuchParticipantException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22,
+					new Object[] { ClpSerializer.translateInput(cid) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof com.marcelmika.lims.NoSuchParticipantException) {
+				throw (com.marcelmika.lims.NoSuchParticipantException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.marcelmika.lims.model.Participant>)ClpSerializer.translateOutput(returnObj);
+	}
+
 	private InvokableLocalService _invokableLocalService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
@@ -753,4 +824,8 @@ public class ParticipantLocalServiceClp implements ParticipantLocalService {
 	private String[] _methodParameterTypes19;
 	private String _methodName20;
 	private String[] _methodParameterTypes20;
+	private String _methodName21;
+	private String[] _methodParameterTypes21;
+	private String _methodName22;
+	private String[] _methodParameterTypes22;
 }

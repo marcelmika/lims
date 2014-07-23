@@ -33,7 +33,7 @@ public class Group {
 
         // Relations
         if (details.getBuddies() != null) {
-            group.buddies = Buddy.fromBuddyDetails(details.getBuddies());
+            group.buddies = Buddy.fromBuddyDetailsList(details.getBuddies());
         }
 
         return group;

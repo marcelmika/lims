@@ -288,6 +288,133 @@ public interface ParticipantPersistence extends BasePersistence<Participant> {
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
+	* Returns all the participants where participantId = &#63; and isOpened = &#63;.
+	*
+	* @param participantId the participant ID
+	* @param isOpened the is opened
+	* @return the matching participants
+	* @throws SystemException if a system exception occurred
+	*/
+	public java.util.List<com.marcelmika.lims.model.Participant> findByParticipantIdIsOpened(
+		long participantId, boolean isOpened)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns a range of all the participants where participantId = &#63; and isOpened = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* </p>
+	*
+	* @param participantId the participant ID
+	* @param isOpened the is opened
+	* @param start the lower bound of the range of participants
+	* @param end the upper bound of the range of participants (not inclusive)
+	* @return the range of matching participants
+	* @throws SystemException if a system exception occurred
+	*/
+	public java.util.List<com.marcelmika.lims.model.Participant> findByParticipantIdIsOpened(
+		long participantId, boolean isOpened, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns an ordered range of all the participants where participantId = &#63; and isOpened = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* </p>
+	*
+	* @param participantId the participant ID
+	* @param isOpened the is opened
+	* @param start the lower bound of the range of participants
+	* @param end the upper bound of the range of participants (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching participants
+	* @throws SystemException if a system exception occurred
+	*/
+	public java.util.List<com.marcelmika.lims.model.Participant> findByParticipantIdIsOpened(
+		long participantId, boolean isOpened, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the first participant in the ordered set where participantId = &#63; and isOpened = &#63;.
+	*
+	* @param participantId the participant ID
+	* @param isOpened the is opened
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching participant
+	* @throws com.marcelmika.lims.NoSuchParticipantException if a matching participant could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.model.Participant findByParticipantIdIsOpened_First(
+		long participantId, boolean isOpened,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.NoSuchParticipantException;
+
+	/**
+	* Returns the first participant in the ordered set where participantId = &#63; and isOpened = &#63;.
+	*
+	* @param participantId the participant ID
+	* @param isOpened the is opened
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching participant, or <code>null</code> if a matching participant could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.model.Participant fetchByParticipantIdIsOpened_First(
+		long participantId, boolean isOpened,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the last participant in the ordered set where participantId = &#63; and isOpened = &#63;.
+	*
+	* @param participantId the participant ID
+	* @param isOpened the is opened
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching participant
+	* @throws com.marcelmika.lims.NoSuchParticipantException if a matching participant could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.model.Participant findByParticipantIdIsOpened_Last(
+		long participantId, boolean isOpened,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.NoSuchParticipantException;
+
+	/**
+	* Returns the last participant in the ordered set where participantId = &#63; and isOpened = &#63;.
+	*
+	* @param participantId the participant ID
+	* @param isOpened the is opened
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching participant, or <code>null</code> if a matching participant could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.model.Participant fetchByParticipantIdIsOpened_Last(
+		long participantId, boolean isOpened,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the participants before and after the current participant in the ordered set where participantId = &#63; and isOpened = &#63;.
+	*
+	* @param pid the primary key of the current participant
+	* @param participantId the participant ID
+	* @param isOpened the is opened
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next participant
+	* @throws com.marcelmika.lims.NoSuchParticipantException if a participant with the primary key could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.model.Participant[] findByParticipantIdIsOpened_PrevAndNext(
+		long pid, long participantId, boolean isOpened,
+		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.NoSuchParticipantException;
+
+	/**
 	* Returns all the participants.
 	*
 	* @return the participants
@@ -365,6 +492,17 @@ public interface ParticipantPersistence extends BasePersistence<Participant> {
 			com.marcelmika.lims.NoSuchParticipantException;
 
 	/**
+	* Removes all the participants where participantId = &#63; and isOpened = &#63; from the database.
+	*
+	* @param participantId the participant ID
+	* @param isOpened the is opened
+	* @throws SystemException if a system exception occurred
+	*/
+	public void removeByParticipantIdIsOpened(long participantId,
+		boolean isOpened)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
 	* Removes all the participants from the database.
 	*
 	* @throws SystemException if a system exception occurred
@@ -401,6 +539,17 @@ public interface ParticipantPersistence extends BasePersistence<Participant> {
 	* @throws SystemException if a system exception occurred
 	*/
 	public int countBycid_ParticipantId(long cid, long participantId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the number of participants where participantId = &#63; and isOpened = &#63;.
+	*
+	* @param participantId the participant ID
+	* @param isOpened the is opened
+	* @return the number of matching participants
+	* @throws SystemException if a system exception occurred
+	*/
+	public int countByParticipantIdIsOpened(long participantId, boolean isOpened)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**

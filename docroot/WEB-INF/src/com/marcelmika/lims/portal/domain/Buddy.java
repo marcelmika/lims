@@ -243,7 +243,7 @@ public class Buddy {
      * @param detailsList list of buddy details
      * @return List<Buddy> of buddies
      */
-    public static List<Buddy> fromBuddyDetails(List<BuddyDetails> detailsList) {
+    public static List<Buddy> fromBuddyDetailsList(List<BuddyDetails> detailsList) {
         // Create new list of buddies
         List<Buddy> buddies = new ArrayList<Buddy>();
 
