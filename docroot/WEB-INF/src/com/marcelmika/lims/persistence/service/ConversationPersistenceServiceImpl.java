@@ -207,17 +207,6 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
                     break;
                 }
 
-                // Get messages from persistence
-                List<com.marcelmika.lims.model.Message> messageModels = MessageLocalServiceUtil.readMessages(
-                        conversationModel.getCid()
-                );
-
-                // Map to persistence
-                List<Message> messages = new LinkedList<Message>();
-                for (com.marcelmika.lims.model.Message messageModel : messageModels) {
-                    messages.add(Message.fromMessageModel(messageModel));
-                }
-
                 // Get participants
                 List<Participant> participantModels = ParticipantLocalServiceUtil.getConversationParticipants(
                         conversationModel.getCid()
@@ -234,13 +223,8 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
                 // Finally, we have everything we needed
                 Conversation conversation = Conversation.fromConversationModel(conversationModel);
                 conversation.setUnreadMessagesCount(participates.getUnreadMessagesCount());
-                conversation.setMessages(messages);
                 conversation.setParticipants(participants);
-
-                log.info("UNREAD: " + participates.getUnreadMessagesCount());
-
-                // Title is calculated
-
+                conversation.setBuddy(buddy);
 
                 // Add to container
                 conversations.add(conversation);

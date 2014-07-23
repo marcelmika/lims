@@ -1,27 +1,29 @@
-
 <% { %>
 
 <c:forEach items="${conversations}" var="conversation">
 
-    <%--<c:choose> --%>
-        <%--<c:when test="${conversation.unreadMessages > 0}" > --%>
-            <%--<c:set var="waiting" value="waiting"/>--%>
-        <%--</c:when> --%>
-        <%--<c:otherwise> --%>
-            <%--<c:set var="waiting" value=""/>--%>
-        <%--</c:otherwise> --%>
-    <%--</c:choose>            --%>
-
-    <c:choose> 
-        <c:when test="${show}" >
-            <c:set var="hidden" value=""/>
-        </c:when> 
-        <c:otherwise> 
-            <c:set var="hidden" value="aui-helper-hidden"/>
-        </c:otherwise> 
+    <%-- Check if conversation should be opened --%>
+    <c:choose>
+        <c:when test="${settings.activePanelId == conversation.conversationId}">
+            <c:set var="selectedClass" value="selected"/>
+        </c:when>
+        <c:otherwise>
+            <c:set var="selectedClass" value=""/>
+        </c:otherwise>
     </c:choose>
 
-    <li>
+    <%-- Check portlet should be visible --%>
+    <c:choose>
+        <c:when test="${show}">
+            <c:set var="hiddenClass" value=""/>
+        </c:when>
+        <c:otherwise>
+            <c:set var="hiddenClass" value="hidden"/>
+        </c:otherwise>
+    </c:choose>
+
+    <%-- Conversation --%>
+    <li class="conversation ${selectedClass}" data-conversationId="${conversation.conversationId}">
         <div class="panel-trigger">
             <span class="trigger-name">${conversation.title}</span>
 
@@ -36,10 +38,9 @@
                 <div class="panel-button search"></div>
                 <div class="panel-title">${conversation.title}</div>
                 <div class="panel-search hidden">
-                    <aui:input cssClass="search-input"
-                               inputCssClass="search-input-field"
-                               label=""
-                               name="searchConversation"/>
+                    <label>
+                        <input class="search-input-field" name="searchConversation" type="text" value=""/>
+                    </label>
                 </div>
                 <div class="panel-content">
                     <div class="preloader"></div>

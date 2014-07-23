@@ -2,10 +2,10 @@
 
 <c:choose>
     <c:when test="${settings.activePanelId == 'groups'}">
-        <c:set var="selected" value="selected"/>
+        <c:set var="selectedClass" value="selected"/>
     </c:when>
     <c:otherwise>
-        <c:set var="selected" value=""/>
+        <c:set var="selectedClass" value=""/>
     </c:otherwise>
 </c:choose>
 

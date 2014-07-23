@@ -19,6 +19,7 @@ public class Conversation {
     private String conversationId;
     private ConversationType conversationType;
     private Integer unreadMessagesCount;
+    private Buddy buddy;
     private List<Buddy> participants = new ArrayList<Buddy>();
     private List<Message> messages = new ArrayList<Message>();
 
@@ -64,6 +65,10 @@ public class Conversation {
                 participants.add(Buddy.fromBuddyDetails(participant));
             }
             conversation.participants = participants;
+        }
+
+        if (details.getBuddy() != null) {
+            conversation.buddy = Buddy.fromBuddyDetails(details.getBuddy());
         }
 
         if (details.getMessages() != null) {
@@ -114,6 +119,10 @@ public class Conversation {
             details.setParticipants(participantDetails);
         }
 
+        if (buddy != null) {
+            details.setBuddy(buddy.toBuddyDetails());
+        }
+
         if (messages != null) {
             List<MessageDetails> messageDetails = new LinkedList<MessageDetails>();
             for (Message message : messages) {
@@ -144,6 +153,14 @@ public class Conversation {
 
     public void setConversationType(ConversationType conversationType) {
         this.conversationType = conversationType;
+    }
+
+    public Buddy getBuddy() {
+        return buddy;
+    }
+
+    public void setBuddy(Buddy buddy) {
+        this.buddy = buddy;
     }
 
     public List<Buddy> getParticipants() {

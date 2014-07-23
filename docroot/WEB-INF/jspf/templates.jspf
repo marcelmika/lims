@@ -25,10 +25,9 @@
             <div class="panel-button search"></div>
             <div class="panel-title">{conversationTitle}</div>
             <div class="panel-search hidden">
-                <aui:input cssClass="search-input"
-                           inputCssClass="search-input-field"
-                           label=""
-                           name="searchConversation"/>
+                <label>
+                    <input class="search-input-field" name="searchConversation" type="text" value=""/>
+                </label>
             </div>
             <div class="panel-content">
                 <div class="preloader"></div>

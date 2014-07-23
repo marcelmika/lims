@@ -15,9 +15,7 @@ import com.marcelmika.lims.core.service.ConversationCoreService;
 import com.marcelmika.lims.core.service.ConversationCoreServiceUtil;
 import com.marcelmika.lims.core.service.SettingsCoreService;
 import com.marcelmika.lims.core.service.SettingsCoreServiceUtil;
-import com.marcelmika.lims.portal.domain.Buddy;
-import com.marcelmika.lims.portal.domain.Conversation;
-import com.marcelmika.lims.portal.domain.ConversationType;
+import com.marcelmika.lims.portal.domain.*;
 import com.marcelmika.lims.portal.processor.PortletProcessor;
 
 import javax.portlet.*;
@@ -90,7 +88,12 @@ public class LIMSPortlet extends MVCPortlet {
 
         // Pass them to jsp only if the request was successful
         if (responseEvent.isSuccess()) {
-            renderRequest.setAttribute("settings", responseEvent.getSettingsDetails());
+
+            // Map settings from details
+            Settings settings = Settings.fromSettingsDetails(responseEvent.getSettingsDetails());
+
+            // Pass to jsp
+            renderRequest.setAttribute("settings", settings);
         }
         // Log failure
         else {
@@ -123,23 +126,8 @@ public class LIMSPortlet extends MVCPortlet {
                     responseEvent.getConversationDetails()
             );
 
-            // Don't forget to add title to each conversation
-            for (Conversation conversation : conversationList) {
-                if (conversation.getConversationType() == ConversationType.SINGLE_USER) {
-                    for (Buddy participant : conversation.getParticipants()) {
-                        if (!participant.getBuddyId().equals(buddy.getBuddyId())) {
-                            String title = PortalUtil.getUserName(participant.getBuddyId(), "");
-                            conversation.setTitle(title);
-                        }
-                    }
-                }
-            }
-
             // Pass to jsp
             renderRequest.setAttribute("conversations", conversationList);
-
-            log.info("OPENED");
-            log.info(conversationList);
         }
         // Log failure
         else {

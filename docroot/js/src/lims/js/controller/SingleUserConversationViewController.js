@@ -30,7 +30,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         // Set panel
         this.set('panel', new Y.LIMS.View.PanelView({
             container: container,
-            panelId: "conversation"
+            panelId: model.get('conversationId')
         }));
 
         // Add panel container to parent container
@@ -170,6 +170,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             value: null // default value
         },
 
+        // ConversationModel
         model: {
             value: null // default value
         },

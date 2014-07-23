@@ -2,6 +2,7 @@ package com.marcelmika.lims.portal.domain;
 
 import com.liferay.portal.kernel.poller.PollerRequest;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.util.PortalUtil;
 import com.marcelmika.lims.api.entity.BuddyDetails;
 import com.marcelmika.lims.api.entity.ConversationDetails;
 
@@ -25,9 +26,9 @@ public class Conversation {
 
     // Properties
     private String conversationId;
-    private String title;
     private ConversationType conversationType;
     private Integer unreadMessagesCount;
+    private Buddy buddy;
     private List<Buddy> participants;
     private List<Message> messages;
 
@@ -106,6 +107,10 @@ public class Conversation {
             conversation.conversationType = ConversationType.fromConversationTypeDetails(details.getConversationType());
         }
 
+        if (details.getBuddy() != null) {
+            conversation.buddy = Buddy.fromBuddyDetails(details.getBuddy());
+        }
+
         return conversation;
     }
 
@@ -143,7 +148,36 @@ public class Conversation {
             details.setParticipants(participantDetails);
         }
 
+        if (buddy != null) {
+            details.setBuddy(buddy.toBuddyDetails());
+        }
+
         return details;
+    }
+
+
+    // -------------------------------------------------------------------------------------------
+    // Computed values
+    // -------------------------------------------------------------------------------------------
+
+    /**
+     * Returns conversation title
+     *
+     * @return String title
+     */
+    public String getTitle() {
+        String title = "";
+
+        if (conversationType == ConversationType.SINGLE_USER) {
+            for (Buddy participant : participants) {
+                if (!participant.getBuddyId().equals(buddy.getBuddyId())) {
+                    title = PortalUtil.getUserName(participant.getBuddyId(), "");
+                }
+            }
+        }
+        // TODO: Implement MULTI_USER
+
+        return title;
     }
 
     // -------------------------------------------------------------------------------------------
@@ -174,20 +208,20 @@ public class Conversation {
         this.participants = participants;
     }
 
+    public Buddy getBuddy() {
+        return buddy;
+    }
+
+    public void setBuddy(Buddy buddy) {
+        this.buddy = buddy;
+    }
+
     public Integer getUnreadMessagesCount() {
         return unreadMessagesCount;
     }
 
     public void setUnreadMessagesCount(Integer unreadMessagesCount) {
         this.unreadMessagesCount = unreadMessagesCount;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public List<Message> getMessages() {
@@ -204,7 +238,7 @@ public class Conversation {
                 "conversationId='" + conversationId + '\'' +
                 ", conversationType=" + conversationType +
                 ", participants=" + participants +
-                ", title='" + title + '\'' +
+                ", title='" + getTitle() + '\'' +
                 ", messages=" + messages +
                 '}';
     }

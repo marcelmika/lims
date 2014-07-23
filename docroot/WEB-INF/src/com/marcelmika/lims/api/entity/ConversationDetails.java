@@ -13,6 +13,7 @@ public class ConversationDetails {
     private String conversationId;
     private ConversationTypeDetails conversationType;
     private Integer unreadMessagesCount;
+    private BuddyDetails buddy;
     private List<MessageDetails> messages;
     private List<BuddyDetails> participants;
     private String title;
@@ -43,6 +44,14 @@ public class ConversationDetails {
 
     public void setUnreadMessagesCount(Integer unreadMessagesCount) {
         this.unreadMessagesCount = unreadMessagesCount;
+    }
+
+    public BuddyDetails getBuddy() {
+        return buddy;
+    }
+
+    public void setBuddy(BuddyDetails buddy) {
+        this.buddy = buddy;
     }
 
     public List<BuddyDetails> getParticipants() {
