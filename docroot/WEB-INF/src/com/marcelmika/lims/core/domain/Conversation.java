@@ -1,10 +1,7 @@
 package com.marcelmika.lims.core.domain;
 
-import com.marcelmika.lims.api.entity.BuddyDetails;
 import com.marcelmika.lims.api.entity.ConversationDetails;
-import com.marcelmika.lims.api.entity.MessageDetails;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,44 +12,37 @@ import java.util.List;
  */
 public class Conversation {
 
+    // Properties
     private String conversationId;
     private ConversationType conversationType;
-    private String title;
-    private String name;
-    private String type;
-    private String visibility;
-    private Message lastMessage;
-    private List<Buddy> participants = new ArrayList<Buddy>();
-    private List<Message> messages = new ArrayList<Message>();
+    private Integer unreadMessagesCount;
+    private Buddy buddy;
+    private List<Buddy> participants;
+    private List<Message> messages;
 
+
+    // -------------------------------------------------------------------------------------------
+    // Factory Methods
+    // -------------------------------------------------------------------------------------------
 
     /**
-     * Creates new Conversation and maps data from Conversation details
+     * Factory method which creates new Conversation from the ConversationDetails
      *
-     * @param conversationDetails ConversationDetails
+     * @param details ConversationDetails
      * @return Conversation
      */
-    public static Conversation fromConversationDetails(ConversationDetails conversationDetails) {
+    public static Conversation fromConversationDetails(ConversationDetails details) {
         // Create new Conversation
         Conversation conversation = new Conversation();
-        // Map data to conversation details
-        conversation.setConversationId(conversationDetails.getConversationId());
-        conversation.setTitle(conversationDetails.getTitle());
-        conversation.setName(conversationDetails.getName());
-        conversation.setType(conversationDetails.getType());
-        conversation.setVisibility(conversationDetails.getVisibility());
+
+        // Parameters
+        conversation.conversationId = details.getConversationId();
+        conversation.unreadMessagesCount = details.getUnreadMessagesCount();
 
         // Relations
-        conversation.setLastMessage(Message.fromMessageDetails(conversationDetails.getLastMessage()));
-        // Relations - participant
-        for(BuddyDetails participant : conversationDetails.getParticipants()) {
-            conversation.addParticipant(Buddy.fromBuddyDetails(participant));
+        if (details.getBuddy() != null) {
+            conversation.buddy = Buddy.fromBuddyDetails(details.getBuddy());
         }
-        // Relations - messages
-        for(MessageDetails messageDetails : conversationDetails.getMessages()) {
-            // TODO: parse messages
-        }
-
 
         return conversation;
     }
@@ -71,6 +61,11 @@ public class Conversation {
         return details;
     }
 
+
+    // -------------------------------------------------------------------------------------------
+    // Getters/Setters
+    // -------------------------------------------------------------------------------------------
+
     public String getConversationId() {
         return conversationId;
     }
@@ -83,48 +78,12 @@ public class Conversation {
         return participants;
     }
 
+    public void setParticipants(List<Buddy> participants) {
+        this.participants = participants;
+    }
+
     public void addParticipant(Buddy participant) {
         participants.add(participant);
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getVisibility() {
-        return visibility;
-    }
-
-    public void setVisibility(String visibility) {
-        this.visibility = visibility;
-    }
-
-    public Message getLastMessage() {
-        return lastMessage;
-    }
-
-    public void setLastMessage(Message lastMessage) {
-        this.lastMessage = lastMessage;
     }
 
     public List<Message> getMessages() {
@@ -133,5 +92,29 @@ public class Conversation {
 
     public void setMessages(List<Message> messages) {
         this.messages = messages;
+    }
+
+    public ConversationType getConversationType() {
+        return conversationType;
+    }
+
+    public void setConversationType(ConversationType conversationType) {
+        this.conversationType = conversationType;
+    }
+
+    public Integer getUnreadMessagesCount() {
+        return unreadMessagesCount;
+    }
+
+    public void setUnreadMessagesCount(Integer unreadMessagesCount) {
+        this.unreadMessagesCount = unreadMessagesCount;
+    }
+
+    public Buddy getBuddy() {
+        return buddy;
+    }
+
+    public void setBuddy(Buddy buddy) {
+        this.buddy = buddy;
     }
 }

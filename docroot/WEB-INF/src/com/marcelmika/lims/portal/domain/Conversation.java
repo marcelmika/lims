@@ -1,15 +1,11 @@
 package com.marcelmika.lims.portal.domain;
 
-import com.liferay.portal.kernel.poller.PollerRequest;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.marcelmika.lims.api.entity.BuddyDetails;
 import com.marcelmika.lims.api.entity.ConversationDetails;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Ing. Marcel Mika
@@ -18,11 +14,6 @@ import java.util.Map;
  * Time: 6:39 AM
  */
 public class Conversation {
-
-    // Constants
-    public static final String KEY_CONVERSATION_ID = "roomJID";
-    public static final String KEY_CONVERSATION_TYPE = "conversationType";
-    public static final String KEY_MESSAGES = "messages";
 
     // Properties
     private String conversationId;
@@ -38,52 +29,9 @@ public class Conversation {
     // -------------------------------------------------------------------------------------------
 
     /**
-     * Factory method which creates new Conversation from the PollerRequest
-     *
-     * @param pollerRequest request
-     * @return Conversation
-     * @deprecated
-     */
-    public static Conversation fromPollerRequest(PollerRequest pollerRequest) {
-        // Map contains all parameters from request
-        Map<String, String> parameterMap = pollerRequest.getParameterMap();
-        // Create new conversation
-        Conversation conversation = new Conversation();
-        // Conversation Id
-        if (parameterMap.containsKey(KEY_CONVERSATION_ID)) {
-            conversation.conversationId = GetterUtil.getString(parameterMap.get(KEY_CONVERSATION_ID));
-        }
-        // Conversation type
-        if (parameterMap.containsKey(KEY_CONVERSATION_TYPE)) {
-            String key = GetterUtil.getString(parameterMap.get(KEY_CONVERSATION_TYPE));
-            conversation.conversationType = ConversationType.fromKey(key);
-        }
-
-        return conversation;
-    }
-
-    /**
-     * Factory method which creates new list of Conversations from the list of ConversationDetails
-     *
-     * @param detailsList list of conversation details
-     * @return List<Conversation> of conversations
-     */
-    public static List<Conversation> fromConversationDetails(List<ConversationDetails> detailsList) {
-        // Create new list of conversations
-        List<Conversation> conversations = new ArrayList<Conversation>();
-
-        // Iterate through details and create conversation based on that
-        for (ConversationDetails details : detailsList) {
-            conversations.add(Conversation.fromConversationDetails(details));
-        }
-
-        return conversations;
-    }
-
-    /**
      * Factory method which creates new Conversation from the ConversationDetails
      *
-     * @param details conversation details
+     * @param details ConversationDetails
      * @return Conversation
      */
     public static Conversation fromConversationDetails(ConversationDetails details) {
@@ -114,9 +62,17 @@ public class Conversation {
         return conversation;
     }
 
+    /**
+     * Factory method which creates new list of Conversations from the list of ConversationDetails
+     *
+     * @param details list of conversation details
+     * @return List<Conversation> of conversations
+     */
     public static List<Conversation> fromConversationDetailsList(List<ConversationDetails> details) {
         // Create new list of conversations
         List<Conversation> conversations = new LinkedList<Conversation>();
+
+        // Iterate through details and create conversation based on that
         for (ConversationDetails conversationDetails : details) {
             conversations.add(fromConversationDetails(conversationDetails));
         }
@@ -166,12 +122,14 @@ public class Conversation {
      * @return String title
      */
     public String getTitle() {
-        String title = "";
+        String title = ""; // Default
 
+        // Single user conversation title
         if (conversationType == ConversationType.SINGLE_USER) {
             for (Buddy participant : participants) {
+                // Single user conversation has two participants. Title is "the other" participant than myself.
                 if (!participant.getBuddyId().equals(buddy.getBuddyId())) {
-                    title = PortalUtil.getUserName(participant.getBuddyId(), "");
+                    title = PortalUtil.getUserName(participant.getBuddyId(), title);
                 }
             }
         }
@@ -179,6 +137,7 @@ public class Conversation {
 
         return title;
     }
+
 
     // -------------------------------------------------------------------------------------------
     // Getters/Setters

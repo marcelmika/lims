@@ -10,17 +10,18 @@ import java.util.List;
  */
 public class ConversationDetails {
 
+    // Properties
     private String conversationId;
     private ConversationTypeDetails conversationType;
     private Integer unreadMessagesCount;
     private BuddyDetails buddy;
     private List<MessageDetails> messages;
     private List<BuddyDetails> participants;
-    private String title;
-    private String name;
-    private String type;
-    private String visibility;
-    private MessageDetails lastMessage;
+
+
+    // -------------------------------------------------------------------------------------------
+    // Getters/Setters
+    // -------------------------------------------------------------------------------------------
 
     public String getConversationId() {
         return conversationId;
@@ -69,75 +70,5 @@ public class ConversationDetails {
 
     public void setMessages(List<MessageDetails> messages) {
         this.messages = messages;
-    }
-
-    /**
-     * @deprecated
-     */
-    public String getTitle() {
-        return title;
-    }
-
-    /**
-     * @deprecated
-     */
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    /**
-     * @deprecated
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @deprecated
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * @deprecated
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * @deprecated
-     */
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    /**
-     * @deprecated
-     */
-    public String getVisibility() {
-        return visibility;
-    }
-
-    /**
-     * @deprecated
-     */
-    public void setVisibility(String visibility) {
-        this.visibility = visibility;
-    }
-
-    /**
-     * @deprecated
-     */
-    public MessageDetails getLastMessage() {
-        return lastMessage;
-    }
-
-    /**
-     * @deprecated
-     */
-    public void setLastMessage(MessageDetails lastMessage) {
-        this.lastMessage = lastMessage;
     }
 }
