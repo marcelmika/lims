@@ -6,8 +6,7 @@ Y.namespace('LIMS.Controller');
 Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.LIMS.Core.ViewController, [], {
 
     /**
-     *  The initializer runs when a Group View Controller instance is created, and gives
-     *  us an opportunity to set up the view.
+     *  The initializer runs when a Group View Controller instance is created.
      */
     initializer: function () {
         // This needs to be called in each view controller
@@ -37,12 +36,27 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
     },
 
     /**
+     * Maps all events on Y object to private internal functions
+     *
+     * @private
+     */
+    _attachEvents: function () {
+        // Vars
+        var model = this.get('model');
+
+        // Local events
+        model.after('groupsLoaded', this._groupsLoaded, this);
+
+        // Global events
+        Y.on('buddySelected', this._onBuddySelected, this);
+    },
+
+    /**
      * Starts timer which periodically refreshes group list
      *
      * @private
      */
     _startTimer: function () {
-        console.log('starting timer');
         // Vars
         var settings = this.get('settings'),
             model = this.get('model'),
@@ -65,27 +79,10 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
      * @private
      */
     _pauseTimer: function () {
-        console.log('pausing timer');
         // Vars
         var timer = this.get('timer');
         // Pause
         clearTimeout(timer);
-    },
-
-    /**
-     * Maps all events on Y object to private internal functions
-     *
-     * @private
-     */
-    _attachEvents: function () {
-        // Vars
-        var model = this.get('model');
-
-        // Local events
-        model.after('groupsLoaded', this._groupsLoaded, this);
-
-        // Global events
-        Y.on('buddySelected', this._onBuddySelected, this);
     },
 
     /**
