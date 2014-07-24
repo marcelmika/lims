@@ -27,6 +27,8 @@ Y.LIMS.Core.ViewController = Y.Base.create('viewController', Y.View, [], {
         // Attach events
         Y.on('panelShown', this._onPanelShown, this);
         Y.on('panelHidden', this._onPanelHidden, this);
+        Y.on('chatEnabled', this._onChatEnabled, this);
+        Y.on('chatDisabled', this._onChatDisabled, this);
 
         // Check if panel is already opened. If so we should call onPanelDidAppear.
         // This usually happens when panel was already rendered and opened. Hence it wasn't
@@ -58,7 +60,22 @@ Y.LIMS.Core.ViewController = Y.Base.create('viewController', Y.View, [], {
     },
 
     /**
-     * Dismisses view controller
+     * Shows view controller. Panel is visible.
+     */
+    showViewController: function () {
+        this.get('container').show();
+    },
+
+    /**
+     * Hides the controller's panel. Nothing is visible.
+     */
+    hideViewController: function () {
+        this.get('container').hide();
+    },
+
+    /**
+     * Dismisses view controller.
+     * The controller panel will still be visible, only minimized.
      */
     dismissViewController: function () {
         // Simply hide the panel
@@ -126,7 +143,28 @@ Y.LIMS.Core.ViewController = Y.Base.create('viewController', Y.View, [], {
         if (panel === this.get('panel')) {
             this.onPanelDidDisappear();
         }
+    },
+
+    /**
+     * Called whenever the chat is enabled
+     *
+     * @private
+     */
+    _onChatEnabled: function () {
+        // Show controller
+        this.showViewController();
+    },
+
+    /**
+     * Called whenever the chat is disabled
+     *
+     * @private
+     */
+    _onChatDisabled: function () {
+        // Hide controller
+        this.hideViewController();
     }
+
 
 }, {
     // Attributes of the view controller

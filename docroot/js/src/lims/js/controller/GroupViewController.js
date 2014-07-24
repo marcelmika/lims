@@ -46,18 +46,16 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
         // Vars
         var settings = this.get('settings'),
             model = this.get('model'),
-            timer;
+            timerInterval = this.get('timerInterval');
 
         // Start only if the chat is enabled
         if (settings.isChatEnabled()) {
             // Load model
             model.load();
             // Start periodical update
-            timer = setInterval(function () {
+            this.set('timer', setInterval(function () {
                 model.load();
-            }, 10000);
-
-            this.set('timer', timer);
+            }, timerInterval));
         }
     },
 
@@ -88,9 +86,6 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
 
         // Global events
         Y.on('buddySelected', this._onBuddySelected, this);
-        Y.on('chatEnabled', this._onChatEnabled, this);
-        Y.on('chatDisabled', this._onChatDisabled, this);
-
     },
 
     /**
@@ -140,29 +135,6 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
      */
     _onBuddySelected: function () {
         this.dismissViewController();
-    },
-
-    /**
-     * Called whenever the chat is enabled
-     *
-     * @private
-     */
-    _onChatEnabled: function () {
-        // Show container
-        this.get('container').show();
-        // Load model
-        this.get('model').load();
-    },
-
-    /**
-     * Called whenever the chat is disabled
-     *
-     * @private
-     */
-    _onChatDisabled: function () {
-        // Hide container
-        // TODO: Add to hide view controller
-        this.get('container').hide();
     }
 
 }, {
@@ -196,11 +168,13 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
             }
         },
 
+        // Group view which contains all contacts
         groupViewList: {
-            valueFn: function() {
+            valueFn: function () {
+                // Vars
                 var container = this.get('groupViewListContainer'),
                     model = this.get('model');
-                // View
+                // Create view
                 return new Y.LIMS.View.GroupViewList({
                     container: container,
                     model: model
@@ -218,6 +192,11 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
         // Timer used to set async calls to server
         timer: {
             value: null // to be set
+        },
+
+        // Length of timer period
+        timerInterval: {
+            value: 10000 // 10 seconds
         },
 
         // Global settings
