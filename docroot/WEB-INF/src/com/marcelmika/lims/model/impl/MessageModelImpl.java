@@ -65,7 +65,7 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 			{ "messageHash", Types.VARCHAR },
 			{ "body", Types.VARCHAR }
 		};
-	public static final String TABLE_SQL_CREATE = "create table LiferayLIMS_Message (mid LONG not null primary key,cid LONG,creatorId LONG,createdAt LONG,messageHash VARCHAR(75) null,body VARCHAR(75) null)";
+	public static final String TABLE_SQL_CREATE = "create table LiferayLIMS_Message (mid LONG not null primary key,cid LONG,creatorId LONG,createdAt LONG,messageHash VARCHAR(75) null,body TEXT null)";
 	public static final String TABLE_SQL_DROP = "drop table LiferayLIMS_Message";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
