@@ -45,8 +45,6 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
 
             // Global events
             Y.on('panelClosed', this._onPanelClosed, this);
-            // TODO: Remove
-            Y.on('buddySelected', this._onBuddySelected, this); // Whenever the user click on buddy in group
         },
 
         /**
@@ -66,29 +64,12 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             badge.set('innerHTML', unreadMessages);
         },
 
-        /**
-         * Called whenever the buddy from group is selected
-         *
-         * @param buddy
-         * @private
-         * // TODO: This will be in conversation controller
-         */
-        _onBuddySelected: function (buddy) {
-            var model = this.get('model'),
-                participant = model.get('participants')[0];
-
-            // TODO: This is just temporal fix
-            if (participant === undefined) {
-                return;
-            }
-
-            if (participant.get('screenName') === buddy.get('screenName')) {
-                this.getPanel().show();
-            }
-        },
-
+        // TODO: Implement
         _onPanelClosed: function () {
-            this.fire('conversationClosed');
+//            if (panel === thi.getPanel())
+
+            // TODO: Update model
+
         },
 
         /**
