@@ -28,7 +28,7 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
      */
     _attachEvents: function () {
         // Attach click on panel's item
-        this.get('panel').get('container').delegate('click', function (event) {
+        this.getPanel().get('container').delegate('click', function (event) {
             var presence, target = event.currentTarget;
             // Element was li
             if (target.ancestor('li')) {
@@ -54,6 +54,9 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
         // Disable chat if needed
         if (presence === "jabber.status.off") {
             Y.fire("chatDisabled");
+            // Since if we call chatDisabled all controllers will be automatically
+            // hidden. Thus we need to show our controller again.
+            this.showViewController();
         } else {
             Y.fire("chatEnabled");
         }
@@ -123,12 +126,7 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
 
         // Currently logged user
         buddyDetails: {
-            value: null
-        },
-
-        // Panel view related to the controller
-        panel: {
-            value: null // to be set in initializer
+            value: null //
         },
 
         // Container for status indicator

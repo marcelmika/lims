@@ -36,7 +36,7 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
     },
 
     /**
-     * Maps all events on Y object to private internal functions
+     * Attaches events to DOM elements from container
      *
      * @private
      */
@@ -151,6 +151,13 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
             }
         },
 
+        // Y.LIMS.Model.GroupModelList
+        model: {
+            valueFn: function () {
+                return new Y.LIMS.Model.GroupModelList();
+            }
+        },
+
         // Container for activity indicator
         activityIndicator: {
             valueFn: function () {
@@ -176,13 +183,6 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
                     container: container,
                     model: model
                 });
-            }
-        },
-
-        // Group model list
-        model: {
-            valueFn: function () {
-                return new Y.LIMS.Model.GroupModelList();
             }
         },
 

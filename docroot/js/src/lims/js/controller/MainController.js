@@ -9,7 +9,7 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
     // us an opportunity to set up all sub controller
     initializer: function () {
         var buddyDetails = this.get('buddyDetails'),
-            settings = this.get('settings');
+            settingsModel = this.get('settingsModel');
 
         // Attach events
         this._attachEvents();
@@ -22,7 +22,7 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
         });
         // Settings
         new Y.LIMS.Controller.SettingsViewController({
-            settings: settings
+            model: settingsModel
         });
         // Conversation
         new Y.LIMS.Controller.ConversationsController({
@@ -52,7 +52,7 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
         // Store current active panel id
         this.set('activePanelId', panelId);
         // Update settings
-        this.get('settings').set('activePanelId', panelId).save({
+        this.get('settingsModel').set('activePanelId', panelId).save({
             action: 'updateActivePanel'
         });
     },
@@ -67,7 +67,7 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
         // If the hidden panel is currently active panel it means that no panel is currently active
         if (this.get('activePanelId') === panel.get('panelId')) {
             // Update settings
-            this.get('settings').set('activePanelId', '').save({
+            this.get('settingsModel').set('activePanelId', '').save({
                 action: 'updateActivePanel'
             });
         }
@@ -92,14 +92,14 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
             }
         },
 
-        settings: {
+        settingsModel: {
             valueFn: function () {
-                if (this.get('settings') === undefined) {
-                    this.set('settings', new Y.LIMS.Model.SettingsModel({
+                if (this.get('settingsModel') === undefined) {
+                    this.set('settingsModel', new Y.LIMS.Model.SettingsModel({
                         buddy: this.get('buddyDetails')
                     }));
                 }
-                return this.get('settings');
+                return this.get('settingsModel');
             }
         },
 

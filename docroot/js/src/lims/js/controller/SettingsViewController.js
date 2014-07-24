@@ -3,21 +3,21 @@
  */
 Y.namespace('LIMS.Controller');
 
-Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController', Y.View, [], {
+Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController', Y.LIMS.Core.ViewController, [], {
 
     /**
-     *  The initializer runs when a Settings View Controller instance is created, and gives
-     *  us an opportunity to set up the view.
+     *  The initializer runs when a Group View Controller instance is created.
      */
     initializer: function () {
-        var container = this.get('container');
-        // Set panel
-        this.set('panel', new Y.LIMS.View.PanelView({
-            container: container,
-            panelId: "settings"
-        }));
+        // This needs to be called in each view controller
+        this.setup(this.get('container'), this.get('controllerId'));
+    },
 
-        // Attach events to DOM elements from container
+    /**
+     * Panel Did Load is called when the panel is attached to the controller
+     */
+    onPanelDidLoad: function () {
+        // Events
         this._attachEvents();
     },
 
@@ -27,15 +27,11 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
      * @private
      */
     _attachEvents: function () {
+        // Vars
+        var soundCheckbox = this.get('soundCheckbox');
 
         // Local events
-        this.get('soundCheckbox').on('click', this._onSoundCheckboxUpdated, this);
-
-        // Remote events
-        Y.on('panelShown', this._onPanelShown, this);
-        Y.on('panelHidden', this._onPanelHidden, this);
-        Y.on('chatEnabled', this._onChatEnabled, this);
-        Y.on('chatDisabled', this._onChatDisabled, this);
+        soundCheckbox.on('click', this._onSoundCheckboxUpdated, this);
     },
 
     /**
@@ -44,42 +40,10 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
      * @private
      */
     _onSoundCheckboxUpdated: function () {
-        var settings = this.get('settings'),
+        var model = this.get('model'),
             isMute = this.get('soundCheckbox').get('checked') ? false : true;
         // Update model
-        settings.set('isMute', isMute).save();
-    },
-
-    /**
-     * Panel shown event handler. Closes own panel if some other panel was shown.
-     * Thanks to that only one panel can be open at one time.
-     *
-     * @param panel
-     * @private
-     */
-    _onPanelShown: function (panel) {
-        // Don't close own panel
-        if (panel !== this.get('panel')) {
-            this.get('panel').hide();
-        }
-    },
-
-    /**
-     * Called whenever the chat is enabled
-     *
-     * @private
-     */
-    _onChatEnabled: function() {
-        this.get('container').show();
-    },
-
-    /**
-     * Called whenever the chat is disabled
-     *
-     * @private
-     */
-    _onChatDisabled: function() {
-        this.get('container').hide();
+        model.set('isMute', isMute).save();
     }
 
 }, {
@@ -87,16 +51,21 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
     // Specify attributes and static properties for your View here.
     ATTRS: {
 
-        // Main container
+        // Id of the controller
+        controllerId: {
+            value: "settings"
+        },
+
+        // Container Node
         container: {
             valueFn: function () {
                 return Y.one('#chatBar .chat-settings');
             }
         },
 
-        // Panel view related to the controller
-        panel: {
-            value: null // to be set in initializer
+        // Y.LIMS.Model.SettingsModel
+        model: {
+            value: null // to be set
         },
 
         // Sound checkbox element
@@ -104,10 +73,6 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
             valueFn: function () {
                 return this.get('container').one("#playSound");
             }
-        },
-
-        settings: {
-            value: null // default value
         }
     }
 });
