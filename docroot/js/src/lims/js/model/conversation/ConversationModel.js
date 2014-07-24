@@ -184,11 +184,11 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
         // attributes.
 
         conversationId: {
-            valueFn: function () {
-                // TODO: Find a better way how to do that
-                return this.get('creator').get('screenName') + "_" +
-                    this.get('participants')[0].get('screenName');
-            }
+            value: null
+        },
+
+        title: {
+            value: ""
         },
 
         creator: {

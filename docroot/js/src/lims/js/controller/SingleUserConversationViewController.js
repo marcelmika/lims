@@ -16,25 +16,26 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
     // us an opportunity to set up all sub controllers
     initializer: function () {
         var container = this.get('container'),
-            model = this.get('model'),
-            participant = model.get('participants')[0];
-        // Create content of the container
-        container.set('innerHTML',
-            Y.Lang.sub(this.template, {
-                conversationTitle: participant.get('fullName'),
-                triggerTitle: participant.get('fullName'),
-                unreadMessages: model.get('unreadMessages')
-            })
-        );
+            model = this.get('model');
+
+        if (container === null) {
+            // Create content of the container
+            container.set('innerHTML',
+                Y.Lang.sub(this.template, {
+                    conversationTitle: model.get('title'),
+                    triggerTitle: model.get('title'),
+                    unreadMessages: model.get('unreadMessages')
+                })
+            );
+            // Add panel container to parent container
+            this.get('parentContainer').append(container);
+        }
 
         // Set panel
         this.set('panel', new Y.LIMS.View.PanelView({
             container: container,
             panelId: model.get('conversationId')
         }));
-
-        // Add panel container to parent container
-        this.get('parentContainer').append(container);
 
         // Set list view
         this.set('listView', new Y.LIMS.View.ConversationListView({
@@ -45,7 +46,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         // Set badge
         this.set('badge', container.one('.unread'));
         // Hide badge at the beginning
-        this.get('badge').hide();
+//        this.get('badge').hide();
 
         // Events
         this._attachEvents();
@@ -151,12 +152,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
 
         // Template for a single conversation
         container: {
-            valueFn: function () {
-                if (this.get('container') === undefined) {
-                    return Y.Node.create(this.containerTemplate);
-                }
-                return this.get('container');
-            }
+            value: null
         },
 
         // Main container

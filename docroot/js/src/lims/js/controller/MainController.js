@@ -84,8 +84,6 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
             valueFn: function () {
                 // We need settings to determine user
                 var settings = new Y.LIMS.Core.Settings();
-                console.log("CURRENT:");
-                console.log(settings.getCurrentUserId());
                 // Get logged user
                 return new Y.LIMS.Model.BuddyModelItem({
                     buddyId: settings.getCurrentUserId(),
