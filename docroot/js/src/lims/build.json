@@ -70,7 +70,7 @@
                 "js/controller/MainController.js",
                 "js/controller/PresenceViewController.js",
                 "js/controller/SettingsViewController.js",
-                "js/controller/ConversationsViewController.js",
+                "js/controller/ConversationsController.js",
                 "js/controller/SingleUserConversationViewController.js"
             ],
             "config": {
