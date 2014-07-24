@@ -3,21 +3,21 @@
  */
 Y.namespace('LIMS.Controller');
 
-Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController', Y.View, [], {
+Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController', Y.LIMS.Core.ViewController, [], {
 
     /**
-     *  The initializer runs when a Presence View Controller instance is created, and gives
-     *  us an opportunity to set up the view.
+     *  The initializer runs when a Presence View Controller instance is created.
      */
     initializer: function () {
-        var container = this.get('container');
-        // Set panel
-        this.set('panel', new Y.LIMS.View.PanelView({
-            container: container,
-            panelId: "presence"
-        }));
+        // This needs to be called in each view controller
+        this.setup(this.get('container'), this.get('controllerId'));
+    },
 
-        // Attach events to DOM elements from container
+    /**
+     * Panel Did Load is called when the panel is attached to the controller
+     */
+    onPanelDidLoad: function () {
+        // Events
         this._attachEvents();
     },
 
@@ -39,7 +39,6 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
         }, 'li');
 
         Y.on('presenceChanged', this._onPresenceChanged, this);
-        Y.on('panelShown', this._onPanelShown, this);
     },
 
     /**
@@ -50,28 +49,17 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
      */
     _onPresenceChanged: function (presence) {
         // Update presence indicator
-       this._updatePresenceIndicator(presence);
+        this._updatePresenceIndicator(presence);
+
+        // Disable chat if needed
         if (presence === "jabber.status.off") {
             Y.fire("chatDisabled");
         } else {
             Y.fire("chatEnabled");
         }
-        // Hide panel
-        this.get('panel').hide();
-    },
 
-    /**
-     * Panel shown event handler. Closes own panel if some other panel was shown.
-     * Thanks to that only one panel can be open at one time.
-     *
-     * @param panel
-     * @private
-     */
-    _onPanelShown: function (panel) {
-        // Don't close own panel
-        if (panel !== this.get('panel')) {
-            this.get('panel').hide();
-        }
+        // Dismiss controller
+        this.dismissViewController();
     },
 
     /**
@@ -81,8 +69,10 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
      * @private
      */
     _updatePresenceIndicator: function (presence) {
+        // Vars
         var buddyDetails = this.get('buddyDetails'),
-        presenceClass = "";
+            presenceClass = "";
+
         // Set status indicator based on the presence type
         switch (presence) {
             case "jabber.status.online":
@@ -107,8 +97,10 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
                 break;
         }
 
-        buddyDetails.save({action:"updatePresence"});
+        // Save to currently logged user
+        buddyDetails.save({action: "updatePresence"});
 
+        // Update status indicator
         this.get('statusIndicator').setAttribute('class', "status-indicator " + presenceClass);
     }
 
@@ -117,15 +109,21 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
     // Specify attributes and static properties for your View here.
     ATTRS: {
 
-        buddyDetails: {
-            value: null
+        // Id of the controller
+        controllerId: {
+            value: "presence"
         },
 
-        // Main container
+        // Container Node
         container: {
             valueFn: function () {
                 return Y.one('#chatBar .status-panel');
             }
+        },
+
+        // Currently logged user
+        buddyDetails: {
+            value: null
         },
 
         // Panel view related to the controller
