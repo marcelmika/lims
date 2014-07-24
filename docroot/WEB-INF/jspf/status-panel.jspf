@@ -32,14 +32,14 @@
 
 <c:choose> 
     <c:when test="${settings.activePanelId == 'presence'}" >
-        <c:set var="selected" value="selected"/>
+        <c:set var="selectedClass" value="selected"/>
     </c:when> 
     <c:otherwise> 
-        <c:set var="selected" value=""/>
+        <c:set var="selectedClass" value=""/>
     </c:otherwise> 
 </c:choose> 
 
-<li class="status-panel ${selected}">
+<li class="status-panel ${selectedClass}">
     <div class="panel-trigger" panelId="status">
         <div class="trigger-name">
             <div class="status-indicator ${status}" title="Status: ${status}"></div>

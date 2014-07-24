@@ -9,6 +9,10 @@
 	z-index: 1000;
 }
 
+.liferay-ims .hidden {
+	display: none;
+}
+
 .liferay-ims .portlet-borderless-bar {
 	/* Hide unnecessary portlet bars */
 	display: none;

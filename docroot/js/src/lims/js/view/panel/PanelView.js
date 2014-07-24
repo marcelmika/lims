@@ -18,6 +18,9 @@ Y.LIMS.View.PanelView = Y.Base.create('panelView', Y.View, [], {
 
         // Handle already opened panel
         if (options.container.hasClass('selected')) {
+            // Fire event
+            Y.fire('panelShown', this);
+            // Set flag
             this.set('isOpened', true);
         }
 

@@ -12,9 +12,9 @@
         </c:otherwise>
     </c:choose>
 
-    <%-- Check portlet should be visible --%>
+    <%-- Check if portlet should be visible --%>
     <c:choose>
-        <c:when test="${show}">
+        <c:when test="${settings.chatEnabled}">
             <c:set var="hiddenClass" value=""/>
         </c:when>
         <c:otherwise>
@@ -23,10 +23,9 @@
     </c:choose>
 
     <%-- Conversation --%>
-    <li class="conversation ${selectedClass}" data-conversationId="${conversation.conversationId}">
+    <li class="conversation ${selectedClass} ${hiddenClass}" data-conversationId="${conversation.conversationId}">
         <div class="panel-trigger">
             <span class="trigger-name">${conversation.title}</span>
-
             <c:if test="${conversation.unreadMessagesCount > 0}">
                 <div class="unread">${conversation.unreadMessagesCount}</div>
             </c:if>

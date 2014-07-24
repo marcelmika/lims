@@ -2,10 +2,10 @@
 
 <c:choose>
     <c:when test="${settings.activePanelId == 'settings'}">
-        <c:set var="selected" value="selected"/>
+        <c:set var="selectedClass" value="selected"/>
     </c:when>
     <c:otherwise>
-        <c:set var="selected" value=""/>
+        <c:set var="selectedClass" value=""/>
     </c:otherwise>
 </c:choose>
 <c:choose>
@@ -19,14 +19,14 @@
 
 <c:choose>
     <c:when test="${settings.chatEnabled}">
-        <c:set var="hidden" value=""/>
+        <c:set var="hiddenClass" value=""/>
     </c:when>
     <c:otherwise>
-        <c:set var="hidden" value="aui-helper-hidden"/>
+        <c:set var="hiddenClass" value="hidden"/>
     </c:otherwise>
 </c:choose>
 
-<li class="chat-settings ${selected} ${hidden}">
+<li class="chat-settings ${selectedClass} ${hiddenClass}">
     <div class="panel-trigger" panelId="settings">
         <div class="trigger-name"></div>
     </div>

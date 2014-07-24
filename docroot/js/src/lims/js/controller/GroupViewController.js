@@ -3,68 +3,75 @@
  */
 Y.namespace('LIMS.Controller');
 
-Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.View, [], {
+Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.LIMS.Core.ViewController, [], {
 
     /**
      *  The initializer runs when a Group View Controller instance is created, and gives
      *  us an opportunity to set up the view.
      */
     initializer: function () {
-        var container = this.get('container');
-        // Set panel
-        this.set('panel', new Y.LIMS.View.PanelView({
-            container: container,
-            panelId: "groups"
-        }));
-
-        // Initializations
-        this._initGroups();
-        // Events
-        this._attachEvents();
-        // Init timer
-        this._initTimer();
+        // This needs to be called in each view controller
+        this.setup(this.get('container'), this.get('controllerId'));
     },
 
     /**
-     * Initializes group view list
+     * Panel Did Load is called when the panel is attached to the controller
+     */
+    onPanelDidLoad: function () {
+        // Events
+        this._attachEvents();
+    },
+
+    /**
+     * Panel Did Appear is called when the panel did appear on the screen
+     */
+    onPanelDidAppear: function () {
+        this._startTimer();
+    },
+
+    /**
+     * Panel Did Disappear is called when the panel disappeared from the screen
+     */
+    onPanelDidDisappear: function () {
+        this._pauseTimer();
+    },
+
+    /**
+     * Starts timer which periodically refreshes group list
      *
      * @private
      */
-    _initGroups: function () {
-        var container, model, view;
-        // Container
-        container = this.get('groupListContainer');
-        // Model
-        model = new Y.LIMS.Model.GroupModelList();
-        model.after('groupsLoaded', this._groupsLoaded, this);
-        this.set('model', model);
-        // View
-        view = new Y.LIMS.View.GroupViewList({
-            container: container,
-            model: model
-        });
-
-        // Store view
-        this.groupViewList = view;
-    },
-
-    _initTimer: function () {
+    _startTimer: function () {
+        console.log('starting timer');
+        // Vars
         var settings = this.get('settings'),
             model = this.get('model'),
-            intervalID;
+            timer;
 
         // Start only if the chat is enabled
         if (settings.isChatEnabled()) {
             // Load model
             model.load();
             // Start periodical update
-//            timer.start();
-            intervalID = setInterval(function(){
+            timer = setInterval(function () {
                 model.load();
             }, 10000);
 
-            this.set('timer', intervalID);
+            this.set('timer', timer);
         }
+    },
+
+    /**
+     * Pauses timer which periodically refreshes group list
+     *
+     * @private
+     */
+    _pauseTimer: function () {
+        console.log('pausing timer');
+        // Vars
+        var timer = this.get('timer');
+        // Pause
+        clearTimeout(timer);
     },
 
     /**
@@ -73,11 +80,17 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
      * @private
      */
     _attachEvents: function () {
+        // Vars
+        var model = this.get('model');
+
+        // Local events
+        model.after('groupsLoaded', this._groupsLoaded, this);
+
+        // Global events
         Y.on('buddySelected', this._onBuddySelected, this);
-        Y.on('panelShown', this._onPanelShown, this);
-        Y.on('panelHidden', this._onPanelHidden, this);
         Y.on('chatEnabled', this._onChatEnabled, this);
         Y.on('chatDisabled', this._onChatDisabled, this);
+
     },
 
     /**
@@ -99,7 +112,7 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
      */
     _fadeInGroups: function () {
         // Container
-        var container = this.get('groupListContainer'),
+        var container = this.get('groupViewListContainer'),
             animation = new Y.Anim({
                 node: container,
                 duration: 0.5,
@@ -120,27 +133,13 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
     },
 
     /**
-     * Panel shown event handler. Closes own panel if some other panel was shown.
-     * Thanks to that only one panel can be open at one time.
-     *
-     * @param panel
-     * @private
-     */
-    _onPanelShown: function (panel) {
-        // Don't close own panel
-        if (panel !== this.get('panel')) {
-            this.get('panel').hide();
-        }
-    },
-
-    /**
      * Buddy selected event. Called whenever the user selects one of the buddies from
      * the group list
      *
      * @private
      */
     _onBuddySelected: function () {
-        this.get('panel').hide();
+        this.dismissViewController();
     },
 
     /**
@@ -153,8 +152,6 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
         this.get('container').show();
         // Load model
         this.get('model').load();
-        // Start timer that periodically updates groups model
-        this._initTimer();
     },
 
     /**
@@ -164,9 +161,8 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
      */
     _onChatDisabled: function () {
         // Hide container
+        // TODO: Add to hide view controller
         this.get('container').hide();
-        // Stop timer that periodically updates groups model
-        clearInterval(this.get('timer'));
     }
 
 }, {
@@ -174,36 +170,15 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
     // Specify attributes and static properties for your View here.
     ATTRS: {
 
-        // Main container
+        // Id of the controller
+        controllerId: {
+            value: "groups"
+        },
+
+        // Container Node
         container: {
             valueFn: function () {
                 return Y.one('#chatBar .buddy-list');
-            }
-        },
-
-        // Container for group list
-        groupListContainer: {
-            valueFn: function () {
-                return this.get('container').one('.panel-content .group-list');
-            }
-        },
-
-        // Panel view related to the controller
-        panel: {
-            value: null // to be set in initializer
-        },
-
-        timer: {
-            value: null // to be set
-        },
-
-        groupModel: {
-            value: null // to be set
-        },
-
-        settings: {
-            valueFn: function(){
-                return new Y.LIMS.Core.Settings();
             }
         },
 
@@ -214,8 +189,42 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.V
             }
         },
 
+        // Container Node for group list
+        groupViewListContainer: {
+            valueFn: function () {
+                return this.get('container').one('.panel-content .group-list');
+            }
+        },
+
         groupViewList: {
-            value: null // default value
+            valueFn: function() {
+                var container = this.get('groupViewListContainer'),
+                    model = this.get('model');
+                // View
+                return new Y.LIMS.View.GroupViewList({
+                    container: container,
+                    model: model
+                });
+            }
+        },
+
+        // Group model list
+        model: {
+            valueFn: function () {
+                return new Y.LIMS.Model.GroupModelList();
+            }
+        },
+
+        // Timer used to set async calls to server
+        timer: {
+            value: null // to be set
+        },
+
+        // Global settings
+        settings: {
+            valueFn: function () {
+                return new Y.LIMS.Core.Settings();
+            }
         }
     }
 });

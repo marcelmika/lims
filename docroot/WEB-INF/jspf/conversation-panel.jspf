@@ -14,14 +14,14 @@
 
 <c:choose> 
     <c:when test="${settings.chatEnabled}" > 
-        <c:set var="hidden" value=""/>
+        <c:set var="hiddenClass" value=""/>
     </c:when> 
     <c:otherwise> 
-        <c:set var="hidden" value="aui-helper-hidden"/>
+        <c:set var="hiddenClass" value="hidden"/>
     </c:otherwise> 
 </c:choose> 
 
-<li class="conversations ${selected} ${hidden}">
+<li class="conversations ${selectedClass} ${hiddenClass}">
     <div class="panel-trigger" panelId="conversations">
         <div class="trigger-name"></div>
     </div>

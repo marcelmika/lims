@@ -49,7 +49,6 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                 // Create new conversation
                 conversation = new Y.LIMS.Model.ConversationModel({
                     conversationId: listID,
-                    title: "foo",
                     creator: buddy
                 });
                 // Create new single user conversation and add it to the list
