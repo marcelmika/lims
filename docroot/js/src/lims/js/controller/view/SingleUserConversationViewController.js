@@ -6,58 +6,29 @@ Y.namespace('LIMS.Controller');
 Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUserConversationController',
     Y.LIMS.Core.ViewController, [], {
 
-        // This customizes the HTML used for this view's container node.
-        containerTemplate: '<li class="conversation">',
 
-        // The template property holds the contents of the #lims-group-item-template
-        // element, which will be used as the HTML template for each group item.
-        template: Y.one('#lims-conversation-template').get('innerHTML'),
-
-        // The initializer runs when a MainController instance is created, and gives
-        // us an opportunity to set up all sub controllers
+        /**
+         *  The initializer runs when a Single User Conversation View Controller instance is created.
+         */
         initializer: function () {
-            var container = this.get('container'),
-                model = this.get('model');
+            // This needs to be called in each view controller
+            this.setup(this.get('container'), this.get('controllerId'));
+        },
 
-            if (container === null) {
-                // Create content of the container
-                container.set('innerHTML',
-                    Y.Lang.sub(this.template, {
-                        conversationTitle: model.get('title'),
-                        triggerTitle: model.get('title'),
-                        unreadMessages: model.get('unreadMessages')
-                    })
-                );
-                // Add panel container to parent container
-                this.get('parentContainer').append(container);
-            }
-
-            // Set panel
-            this.set('panel', new Y.LIMS.View.PanelView({
-                container: container,
-                panelId: model.get('conversationId')
-            }));
-
-            // Set list view
-            this.set('listView', new Y.LIMS.View.ConversationListView({
-                container: container.one('.panel-window'),
-                model: model
-            }));
-
-            // Set badge
-            this.set('badge', container.one('.unread'));
-            // Hide badge at the beginning
-//        this.get('badge').hide();
-
+        /**
+         * Panel Did Load is called when the panel is attached to the controller
+         */
+        onPanelDidLoad: function () {
             // Events
             this._attachEvents();
         },
 
         /**
-         * Shows the conversation panel
+         * Panel Did Appear is called when the panel did appear on the screen
          */
-        show: function () {
-            this.get('panel').show();
+        onPanelDidAppear: function () {
+            // Hide badge
+            this._hideBadge();
         },
 
         /**
@@ -66,16 +37,15 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          * @private
          */
         _attachEvents: function () {
+            // Vars
             var model = this.get('model');
-            // Model event
+
+            // Local events
             model.after('conversationUpdated', this._onConversationUpdated, this);
-            // Panel events
-            Y.on('panelShown', this._onPanelShown, this);
-            Y.on('panelHidden', this._onPanelHidden, this);
+
+            // Global events
             Y.on('panelClosed', this._onPanelClosed, this);
-            Y.on('chatEnabled', this._onChatEnabled, this);
-            Y.on('chatDisabled', this._onChatDisabled, this);
-            // Buddy events
+            // TODO: Remove
             Y.on('buddySelected', this._onBuddySelected, this); // Whenever the user click on buddy in group
         },
 
@@ -101,26 +71,19 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          *
          * @param buddy
          * @private
+         * // TODO: This will be in conversation controller
          */
         _onBuddySelected: function (buddy) {
             var model = this.get('model'),
                 participant = model.get('participants')[0];
-            if (participant.get('screenName') === buddy.get('screenName')) {
-                this.get('panel').show();
-            }
-        },
 
-        /**
-         * Panel shown event handler. Closes own panel if some other panel was shown.
-         * Thanks to that only one panel can be open at one time.
-         *
-         * @param panel
-         * @private
-         */
-        _onPanelShown: function (panel) {
-            // Don't close own panel
-            if (panel !== this.get('panel')) {
-                this.get('panel').hide();
+            // TODO: This is just temporal fix
+            if (participant === undefined) {
+                return;
+            }
+
+            if (participant.get('screenName') === buddy.get('screenName')) {
+                this.getPanel().show();
             }
         },
 
@@ -129,21 +92,33 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         },
 
         /**
-         * Called whenever the chat is enabled
+         * Hides badge
          *
          * @private
          */
-        _onChatEnabled: function () {
-            this.get('container').show();
+        _hideBadge: function () {
+            // Vars
+            var badge = this.get('badge');
+
+            // Hide badge
+            if (badge !== null) {
+                badge.hide();
+            }
         },
 
         /**
-         * Called whenever the chat is disabled
+         * Shows badge
          *
          * @private
          */
-        _onChatDisabled: function () {
-            this.get('container').hide();
+        _showBadge: function () {
+            // Vars
+            var badge = this.get('badge');
+
+            // Show badge
+            if (badge !== null) {
+                badge.show();
+            }
         }
 
     }, {
@@ -151,34 +126,43 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         // Specify attributes and static properties for your View here.
         ATTRS: {
 
-            // Template for a single conversation
+            // Id of the controller
+            controllerId: {
+                value: null // To be set
+            },
+
+            // Container Node
             container: {
-                value: null
+                value: null // To be set
             },
 
-            // Main container
-            parentContainer: {
-                valueFn: function () {
-                    return Y.one('#chatBar .chat-tabs');
-                }
-            },
-
-            badge: {
-                value: null // default value
-            },
-
-            // ConversationModel
+            // Y.LIMS.Model.ConversationModel
             model: {
                 value: null // default value
             },
 
-            listView: {
-                value: null
+            // Badge Node
+            badge: {
+                valueFn: function () {
+                    // Vars
+                    var container = this.get('container');
+                    // Find badge
+                    return container.one('.unread');
+                }
             },
 
-            // Panel view related to the controller
-            panel: {
-                value: null // to be set in initializer
+            // List view that holds all messages
+            listView: {
+                valueFn: function () {
+                    // Vars
+                    var container = this.get('container'),
+                        model = this.get('model');
+                    // Create new view
+                    return new Y.LIMS.View.ConversationListView({
+                        container: container.one('.panel-window'),
+                        model: model
+                    });
+                }
             }
         }
     });

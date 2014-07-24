@@ -74,6 +74,13 @@ Y.LIMS.Core.ViewController = Y.Base.create('viewController', Y.View, [], {
     },
 
     /**
+     * Presents view controller. Panel is opened.
+     */
+    presentViewController: function () {
+        this.get('panel').show();
+    },
+
+    /**
      * Dismisses view controller.
      * The controller panel will still be visible, only minimized.
      */

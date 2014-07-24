@@ -5,6 +5,14 @@ Y.namespace('LIMS.Controller');
 
 Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsController', Y.Base, [], {
 
+    // This customizes the HTML used for this view's container node.
+    containerTemplate: '<li class="conversation">',
+
+    // The template property holds the contents of the #lims-group-item-template
+    // element, which will be used as the HTML template for each group item.
+    template: Y.one('#lims-conversation-template').get('innerHTML'),
+
+
     // The initializer runs when a MainController instance is created, and gives
     // us an opportunity to set up all sub controllers
     initializer: function () {
@@ -53,6 +61,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                 });
                 // Create new single user conversation and add it to the list
                 controller = new Y.LIMS.Controller.SingleUserConversationViewController({
+                    controllerId: listID,
                     container: conversationNode,
                     model: conversation
                 });
@@ -75,6 +84,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
         if (buddy !== undefined) {
             var controller,
                 conversation,
+                container,
                 list = this.get('conversationMap'),
             // TODO: Refactor
                 listID = this.get('buddyDetails').get('screenName') + "_" + buddy.get('screenName'); // Id is a screenName of the selected buddy
@@ -84,11 +94,27 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                 conversation = new Y.LIMS.Model.ConversationModel({
                     conversationId: listID,
                     creator: this.get('buddyDetails'),
-                    participants: [buddy]
+                    participants: [buddy],
+                    title: buddy.get('fullName')
                 });
+
+                container = Y.Node.create(this.containerTemplate);
+                 // TODO: Init container
+                container.set('innerHTML',
+                    Y.Lang.sub(this.template, {
+                        conversationTitle: conversation.get('title'),
+                        triggerTitle: conversation.get('title'),
+                        unreadMessages: conversation.get('unreadMessages')
+                    })
+                );
+                // Add panel container to parent container
+                this.get('parentContainer').append(container);
+
                 conversation.save();
                 // Create new single user conversation and add it to the list
                 controller = new Y.LIMS.Controller.SingleUserConversationViewController({
+                    container: container,
+                    controllerId: listID,
                     model: conversation
                 });
                 // Add to list
@@ -97,7 +123,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                 controller = list[listID];
             }
 
-            controller.show();
+            controller.presentViewController();
         }
     }
 
