@@ -68,7 +68,7 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
             value: null // to be set
         },
 
-        // Sound checkbox element
+        // Sound checkbox node
         soundCheckbox: {
             valueFn: function () {
                 return this.get('container').one("#playSound");

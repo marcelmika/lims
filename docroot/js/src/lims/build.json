@@ -66,12 +66,12 @@
         "lims-controller": {
             "jsfiles": [
                 "js/bootstrap.js",
-                "js/controller/GroupViewController.js",
                 "js/controller/MainController.js",
-                "js/controller/PresenceViewController.js",
-                "js/controller/SettingsViewController.js",
                 "js/controller/ConversationsController.js",
-                "js/controller/SingleUserConversationViewController.js"
+                "js/controller/view/GroupViewController.js",
+                "js/controller/view/PresenceViewController.js",
+                "js/controller/view/SettingsViewController.js",
+                "js/controller/view/SingleUserConversationViewController.js"
             ],
             "config": {
                 "requires": [

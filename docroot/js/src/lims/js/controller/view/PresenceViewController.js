@@ -126,7 +126,7 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
 
         // Currently logged user
         buddyDetails: {
-            value: null //
+            value: null // Y.LIMS.Model.BuddyModelItem
         },
 
         // Container for status indicator
