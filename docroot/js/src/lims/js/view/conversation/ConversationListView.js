@@ -48,9 +48,6 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         var conversation, // Newly created conversation
             panelContentList = this.get('panelContentList'); // The place where are messages will be rendered to
 
-        // Hide indicator if it wasn't already hidden
-        this.get('activityIndicator').hide();
-
         // New conversation item
         conversation = new Y.LIMS.View.ConversationItemView({model: message});
         // Render it
@@ -73,7 +70,8 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         // Vars
         var instance = this;
 
-        // TODO: Clear the content of panel
+        // Hide indicator if it wasn't already hidden
+        this.get('activityIndicator').hide();
 
         // Create view for each message
         messageList.each(function (message) {
