@@ -1,22 +1,207 @@
 /********************************************************************************
-/ PANEL
+/ PORTLET
 /********************************************************************************/
 
+/* Move container down and on top */
 .liferay-ims {
-	/* Move container down */
 	position: fixed;
 	bottom: 0;
 	z-index: 1000;
 }
 
+/* Hide unnecessary portlet bars */
+.liferay-ims .portlet-borderless-bar {
+	display: none !important;
+}
+
+/* This hides portlet bars that might appear around the chat bar */
+.liferay-ims .portlet {
+	border: none !important;
+	background: none !important;
+	box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+}
+
+/********************************************************************************
+/ HELPERS
+/********************************************************************************/
+
 .liferay-ims .hidden {
 	display: none;
 }
 
-.liferay-ims .portlet-borderless-bar {
-	/* Hide unnecessary portlet bars */
+.liferay-ims .clear {
+	clear: both;
+}
+
+.liferay-ims .pull-left {
+	float: left;
+}
+
+.liferay-ims .pull-right {
+	float: right;
+}
+
+.liferay-ims .overflow-y-scroll {
+	overflow-y: scroll;
+}
+
+/********************************************************************************
+/ LISTS
+/********************************************************************************/
+
+/* Divider between list elements */
+.liferay-ims li.divider {
+	border-bottom: 1px solid #ddd;
+}
+
+/********************************************************************************
+/ PRELOADER
+/********************************************************************************/
+
+.liferay-ims .preloader {
+	position: absolute;
+	margin: 60px auto 0;
+	text-align: center;
+	background: url(../images/preloader-light.gif) center center no-repeat;
+	width: 100%;
+	height: 40px;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+	.liferay-ims .preloader {
+		background-image: url(../images/preloader-light@2x.gif);
+		background-size: 32px;
+	}
+}
+
+/********************************************************************************
+/ CHAT CONTAINER
+/********************************************************************************/
+
+.liferay-ims .chat-bar {
+	background: #eee;
+	border: 1px solid #dddad8;
+	border-left: none;
+	border-bottom: none;
+	bottom: 0;
+	height: 24px;
+	position: fixed;
+	right: 15px;
+	z-index: 999;
+}
+
+.liferay-ims .chat-bar div ul,
+.liferay-ims .chat-bar div ul li {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+
+.liferay-ims .chat-sound {
+	position: absolute;
+}
+
+.liferay-ims .chat-bar .chat-panel {
+	bottom: 24px;
+	display: none;
+	position: absolute;
+	right: 0;
+	z-index: 20;
+	box-shadow: #bcbcbc 1px 1px 1px;
+	-webkit-box-shadow: #bcbcbc 1px 1px 1px;
+	-moz-box-shadow: #bcbcbc 1px 1px 1px;
+}
+
+.liferay-ims .chat-bar .selected .chat-panel {
+	display: block;
+}
+
+.liferay-ims .chat-bar .chat-tabs > li {
+	background: #f8f8f8;
+	float: right;
+}
+
+.liferay-ims .chat-bar div ul li.closed {
 	display: none;
 }
+
+/********************************************************************************
+/ PANEL - TRIGGER
+/********************************************************************************/
+
+.liferay-ims .chat-bar div ul li .panel-trigger {
+	cursor: pointer;
+	float: left;
+	border-left: 1px solid #dddad8;
+	color: #111;
+	font: normal 11px/24px Tahoma, Geneva, sans-serif;
+	text-decoration: none;
+	padding: 0 6px;
+}
+
+.liferay-ims .chat-bar div ul li .panel-trigger:hover {
+	background: #fff;
+}
+
+.liferay-ims .chat-bar div ul li.selected .panel-trigger {
+	background: #fff;
+	border-top: none;
+	border-bottom: none;
+	line-height: 24px;
+	height: 24px;
+	position: relative;
+	z-index: 30;
+	box-shadow: #bcbcbc 1px 1px 1px;
+	-webkit-box-shadow: #bcbcbc 1px 1px 1px;
+	-moz-box-shadow: #bcbcbc 1px 1px 1px;
+}
+
+.liferay-ims .chat-bar div ul li.waiting .panel-trigger {
+	border-right: 1px solid rgba(79, 134, 231, 0.26);
+	border-left: 1px solid #a5d6ef;
+}
+
+.liferay-ims .chat-bar div ul li.waiting .panel-trigger {
+	background: #a5d6ef;
+}
+
+.liferay-ims .chat-bar div ul li .panel-trigger .unread {
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	-khtml-border-radius: 20px;
+	border-radius: 20px;
+	background: rgb(189, 49, 49);
+	color: #fff;
+	font: bold 10px/16px Arial, Helvetica, sans-serif;
+	height: 16px;
+	position: absolute;
+	right: -7px;
+	text-align: center;
+	top: -5px;
+	width: 16px;
+	z-index: 0;
+}
+
+/********************************************************************************
+/ PANEL - WINDOW
+/********************************************************************************/
+
+.liferay-ims .panel-window {
+	background: #fff;
+	border: 1px solid #dddad8;
+	border-bottom: none;
+	border-right: none;
+	font: 11px Tahoma, Geneva, sans-serif;
+	min-width: 250px;
+	position: relative;
+}
+
+/********************************************************************************
+/ PANEL - BUTTONS
+/********************************************************************************/
 
 .liferay-ims .panel-button {
 	cursor: pointer;
@@ -27,44 +212,45 @@
 	margin-right: 7px;
 }
 
-.liferay-ims .panel-button.menu {
-	background: url(../images/menu-button.png) left bottom;
+.liferay-ims .panel-button.minimize {
+	background: url(../images/minimize-button.png) left bottom no-repeat;
 }
 
 .liferay-ims .panel-button.close {
 	background: url(../images/close-button.png) center center no-repeat;
 }
 
+.liferay-ims .panel-button.menu {
+	background: url(../images/menu-button.png) left bottom;
+}
+
 .liferay-ims .panel-button.search {
 	background: url("../images/search.png") center center no-repeat;
-	/* todo: Remove after implemented */
+	/* TODO: Remove after implemented */
 	display: none;
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+
+	.liferay-ims .panel-button.minimize {
+		background-image: url(../images/minimize-button@2x.png);
+		background-size: auto 13px;
+	}
+
 	.liferay-ims .panel-button.close {
 		background-image: url(../images/close-button@2x.png);
 		background-size: auto 18px;
 	}
-}
 
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
 	.liferay-ims .panel-button.search {
 		background-image: url(../images/search@2x.png);
 		background-size: auto 14px;
 	}
 }
 
-.liferay-ims .panel-button.minimize {
-	background: url(../images/minimize-button.png) left bottom no-repeat;
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
-	.liferay-ims .panel-button.minimize {
-		background-image: url(../images/minimize-button@2x.png);
-		background-size: auto 13px;
-	}
-}
+/********************************************************************************
+/ PANEL - TITLE
+/********************************************************************************/
 
 .liferay-ims .panel-title {
 	background: #ffffff;
@@ -78,26 +264,19 @@
 	border-bottom: 1px solid #ccc;
 }
 
-.liferay-ims .panel-search {
-	position: absolute;
-	top: 0;
-}
-
-.liferay-ims .panel-search.hidden {
-	display: none;
-}
-
-.liferay-ims .ie6 .panel-window,
-.liferay-ims .ie7 .panel-window {
-	min-width: auto;
-	width: 226px;
+.liferay-ims .panel-subtitle {
+	padding: 5px;
+	background: #f8f8f8;
+	color: #222;
+	font-weight: bold;
+	height: 16px;
 }
 
 /********************************************************************************
 / SEARCH INPUT
 /********************************************************************************/
 
-.liferay-ims .search-input .aui-field-content {
+.liferay-ims .search-input {
 	padding: 5px 4px 5px;
 	background: #ffffff;
 	border-bottom: 1px solid #ccc;
@@ -119,6 +298,7 @@
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+
 	.liferay-ims .search-input-field {
 		background-image: url(../images/search@2x.png);
 	}
@@ -127,9 +307,8 @@
 .liferay-ims .search-input-field:focus,
 .liferay-ims .search-input-field:hover {
 	outline: none;
-	background-color: #e1e1e1;
 	border: 1px solid #d4d4d4;
-	background-position-x: 4px;
+	background: #e1e1e1 4px center;
 }
 
 /********************************************************************************
@@ -217,49 +396,12 @@
 	-moz-box-shadow: none;
 	box-shadow: none;
 	resize: none;
+	outline: none;
 }
 
-.liferay-ims .conversation .panel-input textarea, .chat-height-monitor {
-	font: 11px/14px Tahoma, Geneva, sans-serif;
-}
-
-.liferay-ims .conversation .panel-input textarea.focus,
-.liferay-ims .conversation .ie6 .panel-input textarea.focus {
+.liferay-ims .conversation .panel-input textarea.focus {
 	background: #fff;
 	border-bottom-color: #fff;
-}
-
-.liferay-ims .conversation .menu-search {
-	text-indent: 0;
-	text-align: left;
-	margin: 0 0 1px 6px;
-	width: 221px;
-}
-
-.liferay-ims .conversation .menu-search p {
-	float: left;
-	margin-bottom: 0;
-}
-
-.liferay-ims .conversation .menu-search .buttons {
-	float: right;
-	margin: 0 5px 0;
-}
-
-.liferay-ims .conversation .menu-search .buttons .prev {
-	width: 16px;
-	height: 16px;
-	background: url(../images/icon-prev.png) no-repeat center center;
-	display: inline-block;
-	cursor: pointer;
-}
-
-.liferay-ims .conversation .menu-search .buttons .next {
-	width: 16px;
-	height: 16px;
-	background: url(../images/icon-next.png) no-repeat center center;
-	display: inline-block;
-	cursor: pointer;
 }
 
 .liferay-ims .conversation span.highlight {
@@ -268,55 +410,7 @@
 }
 
 /********************************************************************************
-/ STATUS INDICATOR
-/********************************************************************************/
-
-.liferay-ims .status-indicator {
-	width: 10px;
-	height: 10px;
-	opacity: 0.9;
-}
-
-.liferay-ims .status-indicator.online {
-	background: url(../images/status-online.png) no-repeat center center;
-}
-
-.liferay-ims .status-indicator.busy {
-	background: url(../images/status-busy.png) no-repeat center center;
-}
-
-.liferay-ims .status-indicator.unavailable {
-	background: url(../images/status-unavailable.png) no-repeat center center;
-}
-
-.liferay-ims .status-indicator.off {
-	background: url(../images/status-off.png) no-repeat center center;
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
-	.liferay-ims .status-indicator.online {
-		background-image: url(../images/status-online@2x.png);
-		background-size: 10px
-	}
-
-	.liferay-ims .status-indicator.busy {
-		background-image: url(../images/status-busy@2x.png);
-		background-size: 10px
-	}
-
-	.liferay-ims .status-indicator.unavailable {
-		background-image: url(../images/status-unavailable@2x.png);
-		background-size: 10px
-	}
-
-	.liferay-ims .status-indicator.off {
-		background-image: url(../images/status-off@2x.png);
-		background-size: 10px
-	}
-}
-
-/********************************************************************************
-/ GROUP PANEL
+/ CONTACTS PANEL
 /********************************************************************************/
 
 .liferay-ims .buddy-list .panel-trigger .trigger-name {
@@ -378,7 +472,7 @@
 }
 
 .liferay-ims .buddy-list .panel-content .group-buddy-item-divider {
-   clear: both;
+	clear: both;
 }
 
 .liferay-ims .buddy-list .panel-content .group-buddy-item:hover {
@@ -417,223 +511,9 @@
 	margin-top: 14px;
 }
 
-/* ---------- Util ---------- */
-.liferay-ims .clear {
-	clear: both;
-}
-
-.liferay-ims .pull-left {
-	float: left;
-}
-
-.liferay-ims .pull-right {
-	float: right;
-}
-
-.liferay-ims .overflow-y-scroll {
-	overflow-y: scroll;
-}
-
-.liferay-ims .oveflow-y-auto {
-	overflow-y: auto;
-}
-
-.liferay-ims .red {
-	background: red;
-}
-
-/* ---------- Bottom Dock ---------- */
-
-.liferay-ims .chat-bar {
-	background: #eee;
-	border: 1px solid #dddad8;
-	border-left: none;
-	border-bottom: none;
-	bottom: 0;
-	height: 24px;
-	position: fixed;
-	right: 15px;
-	z-index: 999;
-}
-
-.liferay-ims .ie6 .chat-bar {
-	position: absolute;
-}
-
-.liferay-ims .ie6 .lfr-shim {
-	bottom: 0;
-	border: 0;
-	position: absolute;
-	z-index: 100;
-}
-
-.liferay-ims .chat-sound {
-	position: absolute;
-}
-
-.liferay-ims .chat-tabs-container {
-}
-
-.liferay-ims .chat-bar textarea {
-	outline: none;
-}
-
-/* ---------- Errors ---------- */
-
-#chatBar .errorNotification {
-	position: fixed;
-	right: 15px;
-	bottom: -5px;
-	background: #f0cbcb url(../images/error.png) no-repeat 5px center;
-	border: 1px solid #e08181;
-	padding: 5px 5px 5px 40px;
-	font-size: 12px;
-	color: rgb(190, 36, 36);
-	opacity: 0;
-}
-
-#chatBar textarea.error {
-	border: 1px solid rgb(255, 89, 89) !important;
-	background-color: rgb(255, 242, 242) !important;
-}
-
-#chatBar input.error {
-	border: 1px solid rgb(255, 89, 89) !important;
-	background-color: rgb(255, 242, 242) !important;
-}
-
-#chatBar ul.error {
-	border: 1px solid rgb(255, 89, 89) !important;
-	background-color: rgb(255, 242, 242) !important;
-}
-
-/* ---------- Bottom Dock Tabs ---------- */
-
-.liferay-ims li.divider {
-	border-bottom: 1px solid #ddd;
-}
-
-.liferay-ims .chat-panel .preloader {
-	position: absolute;
-	margin: 60px auto 0;
-	text-align: center;
-	background: url(../images/preloader-light.gif) center center no-repeat;
-	width: 100%;
-	height: 40px;
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
-	.liferay-ims .chat-panel .preloader {
-		background-image: url(../images/preloader-light@2x.gif);
-		background-size: 32px;
-	}
-}
-
-.liferay-ims .chat-bar div ul, .chat-bar div ul li {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	position: relative;
-}
-
-.liferay-ims .chat-bar .chat-tabs > li {
-	background: #f8f8f8;
-	float: right;
-}
-
-.liferay-ims .chat-bar div ul li .panel-trigger {
-	cursor: pointer;
-	float: left;
-	border-left: 1px solid #dddad8;
-	color: #111;
-	font: normal 11px/24px Tahoma, Geneva, sans-serif;
-	text-decoration: none;
-	padding: 0 6px;
-}
-
-.liferay-ims .chat-bar div ul li .panel-trigger:hover {
-	background: #fff;
-}
-
-.liferay-ims .chat-bar div ul li.closed {
-	display: none;
-}
-
-.liferay-ims .chat-bar div ul li.selected .panel-trigger {
-	background: #fff;
-	border-top: none;
-	border-bottom: none;
-	line-height: 24px;
-	height: 24px;
-	position: relative;
-	z-index: 30;
-	box-shadow: #bcbcbc 1px 1px 1px;
-	-webkit-box-shadow: #bcbcbc 1px 1px 1px;
-	-moz-box-shadow: #bcbcbc 1px 1px 1px;
-}
-
-.liferay-ims .chat-bar div ul li.waiting .panel-trigger {
-	border-right: 1px solid rgba(79, 134, 231, 0.26);
-	border-left: 1px solid #a5d6ef;
-}
-
-/*
-.chat-bar div ul li.buddy-list .panel-trigger {
-        border-right: 0;
-}*/
-
-/* ---------- Unread Messages ---------- */
-
-.liferay-ims .chat-bar div ul li.waiting .panel-trigger {
-	background: #a5d6ef;
-}
-
-.liferay-ims .chat-bar div ul li .panel-trigger .unread {
-	-moz-border-radius: 20px;
-	-webkit-border-radius: 20px;
-	-khtml-border-radius: 20px;
-	border-radius: 20px;
-	background: rgb(189, 49, 49);
-	color: #fff;
-	font: bold 10px/16px Arial, Helvetica, sans-serif;
-	height: 16px;
-	position: absolute;
-	right: -7px;
-	text-align: center;
-	top: -5px;
-	width: 16px;
-	z-index: 0;
-}
-
-.liferay-ims .chat-bar div ul li.selected .panel-trigger .unread {
-	right: -5px;
-	top: -4px;
-}
-
-.liferay-ims .chat-bar div ul li.typing .panel-trigger {
-	padding-left: 24px;
-}
-
-/* ---------- Bottom Dock Popups ---------- */
-
-.liferay-ims .chat-bar .chat-panel {
-	bottom: 24px;
-	display: none;
-	position: absolute;
-	right: 0;
-	z-index: 20;
-	box-shadow: #bcbcbc 1px 1px 1px;
-	-webkit-box-shadow: #bcbcbc 1px 1px 1px;
-	-moz-box-shadow: #bcbcbc 1px 1px 1px;
-}
-
-.liferay-ims .chat-bar .selected .chat-panel {
-	display: block;
-}
-
 /************************************************************************************
-**   BUDDY LIST 
-*************************************************************************************/
+/   BUDDY LIST
+/************************************************************************************/
 
 .liferay-ims .status.online {
 	background: url(../images/status-online.png) center center no-repeat;
@@ -674,152 +554,17 @@
 }
 
 /************************************************************************************
-**   CONVERSATION LIST 
+**   CONVERSATION LIST
 *************************************************************************************/
 
+/* TODO: this will be removed */
 .liferay-ims .conversations {
-	/* todo: this will be removed */
 	display: none;
 }
 
-.liferay-ims .conversations .panel-trigger .trigger-name {
-	background: url(../images/icon-conversation.png) no-repeat center center;
-	width: 40px;
-	height: 24px;
-}
-
-.liferay-ims .conversations .switch {
-	margin-left: 1px;
-}
-
-.liferay-ims .conversations .no-conversation-info {
-	text-align: right;
-	background: transparent url(../images/no-conv-arrow.png) no-repeat center right;
-	padding-top: 40px;
-	padding-right: 35px;
-	margin: 5px 39px 0 0;
-	font-weight: bold;
-	color: #111;
-}
-
-.liferay-ims .conversations .message-textarea,
-.liferay-ims .conversations .message-textarea:focus {
-	border: 1px solid #ccc;
-	font-size: 12px;
-	margin: 6px 0 10px 6px;
-	padding: 5px 5px 5px 25px;
-	background: #fff url(../images/icon-message.png) 5px 7px no-repeat;
-	width: 294px;
-	height: 97px;
-	outline: 0 none;
-}
-
-.liferay-ims .conversations .panel-subtitle .selected {
-	color: rgb(21, 147, 211);
-}
-
-.liferay-ims .conversations .panel-subtitle .new-conversation-trigger {
-	display: block;
-	background: url(../images/icon-add-conversation.png) no-repeat left center;
-	margin-top: -2px;
-	padding: 2px 2px 2px 20px;
-}
-
-.liferay-ims .conversations .panel-subtitle .new-conversation-trigger.no-icon {
-	background: transparent;
-	cursor: auto;
-}
-
-.liferay-ims .conversations .panel-subtitle span {
-	cursor: pointer;
-}
-
-.liferay-ims .conversations .chat-panel {
-	width: 340px;
-}
-
-.liferay-ims .conversations .current-conversations li {
-	margin: 0;
-	padding: 4px;
-	list-style-type: none;
-	cursor: pointer;
-	border-top: 1px solid #ddd;
-}
-
-.liferay-ims .conversations .current-conversations li.preloader {
-	margin: 0;
-	padding: 14px;
-	list-style-type: none;
-	cursor: pointer;
-	border-top: 1px solid #ddd;
-	text-align: center;
-}
-
-.liferay-ims .conversations .current-conversations li:hover {
-	background: #f3f3f3;
-}
-
-.liferay-ims .conversations .current-conversations img.portrait {
-	float: left;
-	width: 50px;
-	height: 50px;
-}
-
-.liferay-ims .conversations .current-conversations .conversation-title {
-	font-weight: bold;
-	float: left;
-	width: 250px;
-	padding: 2px 5px 0;
-}
-
-.liferay-ims .conversations .current-conversations .conversation-last-message {
-	float: left;
-	width: 250px;
-	padding: 0 5px 2px;
-	color: #777;
-	font-size: 11px;
-	max-height: 30px;
-}
-
-.liferay-ims .conversations-container {
-	height: 258px;
-	overflow-x: hidden;
-	overflow-y: auto;
-}
-
-.liferay-ims .conversations .panel-new-conversation {
-	position: absolute;
-	overflow: hidden;
-	width: 339px;
-	height: 0;
-	background: #f8f8f8;
-	border-bottom: 1px solid #ccc;
-	z-index: 1;
-	top: 51px;
-	right: 0;
-}
-
-.liferay-ims .conversations .panel-new-conversation .buttons {
-	float: right;
-	margin: 0 5px 6px;
-}
-
-.liferay-ims .conversations .panel-new-conversation .cancel {
-	padding: 2px 2px 2px 20px;
-	margin-right: 10px;
-	background: url(../images/icon-cancel.png) no-repeat left center;
-	display: inline-block;
-	cursor: pointer;
-}
-
-.liferay-ims .conversations .panel-new-conversation .send {
-	padding: 2px 2px 2px 20px;
-	background: url(../images/icon-ok.png) no-repeat left center;
-	display: inline-block;
-	cursor: pointer;
-}
-
-/* ---------- Status ---------- */
+/************************************************************************************
+**   PRESENCE PANEL
+*************************************************************************************/
 
 .liferay-ims .status-panel .panel-trigger .trigger-name {
 	width: 20px;
@@ -882,7 +627,57 @@
 	}
 }
 
-/* ---------- Settings ---------- */
+/********************************************************************************
+/ PRESENCE PANEL - STATUS INDICATOR
+/********************************************************************************/
+
+.liferay-ims .status-indicator {
+	width: 10px;
+	height: 10px;
+	opacity: 0.9;
+}
+
+.liferay-ims .status-indicator.online {
+	background: url(../images/status-online.png) no-repeat center center;
+}
+
+.liferay-ims .status-indicator.busy {
+	background: url(../images/status-busy.png) no-repeat center center;
+}
+
+.liferay-ims .status-indicator.unavailable {
+	background: url(../images/status-unavailable.png) no-repeat center center;
+}
+
+.liferay-ims .status-indicator.off {
+	background: url(../images/status-off.png) no-repeat center center;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+	.liferay-ims .status-indicator.online {
+		background-image: url(../images/status-online@2x.png);
+		background-size: 10px
+	}
+
+	.liferay-ims .status-indicator.busy {
+		background-image: url(../images/status-busy@2x.png);
+		background-size: 10px
+	}
+
+	.liferay-ims .status-indicator.unavailable {
+		background-image: url(../images/status-unavailable@2x.png);
+		background-size: 10px
+	}
+
+	.liferay-ims .status-indicator.off {
+		background-image: url(../images/status-off@2x.png);
+		background-size: 10px
+	}
+}
+
+/************************************************************************************
+**   SETTINGS PANEL
+*************************************************************************************/
 
 .liferay-ims .chat-settings .panel-trigger .trigger-name {
 	background: url(../images/icon-settings.png) no-repeat center center;
@@ -912,7 +707,7 @@
 	float: none;
 }
 
-.liferay-ims .chat-settings li {
+.liferay-ims .chat-settings .settings li {
 	clear: both;
 	float: none;
 	padding: 10px 0 10px 10px;
@@ -934,7 +729,7 @@
 	outline: none;
 	appearance: none;
 	-webkit-appearance: none;
-	box-shadow: inset 0px 0px 0px 1px #e6e6e6;
+	box-shadow: inset 0 0 0 1px #e6e6e6;
 	border-radius: 15px;
 	background-color: #fff;
 	padding: 1px;
@@ -967,107 +762,4 @@
 
 .liferay-ims .chat-settings input:checked:after {
 	left: 22px;
-}
-
-.liferay-ims .chat-settings .ctrl-holder {
-	padding: 10px;
-}
-
-.liferay-ims .chat-status .status-message {
-	margin: 5px;
-	padding-left: 10px;
-}
-
-.liferay-ims .panel-window {
-	background: #fff;
-	border: 1px solid #dddad8;
-	border-bottom: none;
-	border-right: none;
-	font: 11px Tahoma, Geneva, sans-serif;
-	min-width: 250px;
-	position: relative;
-}
-
-.liferay-ims .panel-icon {
-	background: #fff;
-	border: 1px solid #bcbcbc;
-	height: 46px;
-	position: absolute;
-	top: 4px;
-	left: 6px;
-	display: block;
-	width: 46px;
-}
-
-.liferay-ims .panel-subtitle {
-	padding: 5px;
-	background: #f8f8f8;
-	color: #222;
-	font-weight: bold;
-	height: 16px;
-}
-
-.liferay-ims .panel-profile {
-	background: #f8f8f8;
-	border-bottom: 1px solid #ccc;
-	height: 27px;
-	padding-top: 5px;
-}
-
-.liferay-ims .panel-profile .panel-search-input {
-	position: absolute;
-	left: 60px;
-	top: 28px;
-	height: 12px;
-	border: 1px solid #ddd;
-	width: 110px;
-	padding: 5px 5px 5px 23px;
-	background: white url(../images/search.png) 5px center no-repeat;
-	box-shadow: none;
-	-webkit-box-shadow: none;
-	-moz-box-shadow: none;
-	-webkit-border-radius: 0px;
-	-ms-border-radius: 0;
-	border-radius: 0;
-	z-index: 1;
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
-	.liferay-ims .panel-profile .panel-search-input {
-		background-image: url(../images/search@2x.png);
-	}
-}
-
-.liferay-ims .panel-profile .panel-search-input.selected {
-	outline: none;
-	border: 2px solid #a5d6ef;
-	padding: 4px 3px 4px 23px;
-	background-position-x: 4px;
-}
-
-.liferay-ims .panel-profile .panel-search .panel-serach-clear-button {
-	width: 12px;
-	height: 12px;
-	background: transparent url(../images/icon-clear.png) no-repeat;
-	position: absolute;
-	top: 35px;
-	right: 10px;
-	opacity: 0.9;
-	cursor: pointer;
-	z-index: 2;
-}
-
-.chat-height-monitor {
-	left: -10000em;
-	padding: 0;
-	position: absolute;
-	top: -10000em;
-	white-space: pre-wrap;
-	white-space: -moz-pre-wrap;
-	white-space: -o-pre-wrap;
-}
-
-.ie .chat-height-monitor {
-	word-wrap: break-word;
-	zoom: 1;
 }
