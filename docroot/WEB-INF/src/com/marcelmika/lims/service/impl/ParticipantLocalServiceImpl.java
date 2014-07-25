@@ -24,7 +24,6 @@ import com.marcelmika.lims.service.ConversationLocalServiceUtil;
 import com.marcelmika.lims.service.PanelLocalServiceUtil;
 import com.marcelmika.lims.service.base.ParticipantLocalServiceBaseImpl;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -64,10 +63,14 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
             participantModel = participantPersistence.create(counterLocalService.increment());
             participantModel.setCid(cid);
             participantModel.setParticipantId(participantId);
-            participantModel.setIsOpened(true);
             participantModel.setUnreadMessagesCount(0);
-            participantPersistence.update(participantModel, false);
         }
+
+        // Open conversation for participant
+        participantModel.setIsOpened(true);
+
+        // Save
+        participantPersistence.update(participantModel, false);
 
         return participantModel;
     }

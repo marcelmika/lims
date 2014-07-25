@@ -37,7 +37,6 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
     @Override
     public CreateConversationResponseEvent createConversation(CreateConversationRequestEvent event) {
 
-        // TODO: check why we don't use creator
         Buddy creator = Buddy.fromBuddyDetails(event.getCreator());
         Conversation conversation = Conversation.fromConversationDetails(event.getConversation());
 
@@ -53,7 +52,7 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
                 ParticipantLocalServiceUtil.addParticipant(conversationModel.getCid(), buddy.getBuddyId());
             }
 
-            // Create is also participant
+            // Creator is also participant
             ParticipantLocalServiceUtil.addParticipant(conversationModel.getCid(), creator.getBuddyId());
         }
         // Failure
