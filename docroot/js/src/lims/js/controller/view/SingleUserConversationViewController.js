@@ -27,6 +27,11 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          * Panel Did Appear is called when the panel did appear on the screen
          */
         onPanelDidAppear: function () {
+            // Vars
+            var model = this.get('model');
+
+            // Reset counter of unread messages
+            model.resetUnreadMessagesCounter();
             // Hide badge
             this._hideBadge();
         },

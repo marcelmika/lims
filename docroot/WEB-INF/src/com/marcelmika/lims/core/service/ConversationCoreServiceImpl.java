@@ -107,6 +107,18 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
     }
 
     /**
+     * Reset counter of unread messages (usually displayed in badge) for the particular user and conversation
+     *
+     * @param event request event for method
+     * @return response event for method
+     */
+    @Override
+    public ResetUnreadMessagesCounterResponseEvent resetUnreadMessagesCounter(ResetUnreadMessagesCounterRequestEvent event) {
+        // Save to persistence
+        return conversationPersistenceService.resetUnreadMessagesCounter(event);
+    }
+
+    /**
      * Removes buddy from the conversation
      *
      * @param event Request event for login method

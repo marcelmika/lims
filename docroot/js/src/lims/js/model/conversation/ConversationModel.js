@@ -33,6 +33,11 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
         this.fire('messageAdded', message);
     },
 
+    /**
+     * Closes the conversation for currently logged user. The conversation however still
+     * exists in the system. Only it's not visible to the user. If the counterpart of the
+     * conversation sends message to closed conversation the conversation will open again.
+     */
     closeConversation: function () {
 
         // Vars
@@ -53,6 +58,33 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
                 // we simply don't do anything. If it fails the user will see
                 // the conversation whenever the user goes to another web page
                 // and try it again.
+            }
+        });
+    },
+
+    /**
+     * Resets counter of unread messages. This should happen when the user opens conversation.
+     * Since it's opened all messages have been read. Thus we can reset the counter.
+     */
+    resetUnreadMessagesCounter: function () {
+
+        // Vars
+        var settings = new Y.LIMS.Core.Settings(),
+            parameters = Y.JSON.stringify({
+                conversationId: this.get('conversationId')
+            });
+
+        // Send the request
+        Y.io(settings.getServerRequestUrl(), {
+            method: "POST",
+            data: {
+                query: "ResetUnreadMessagesCounter",
+                parameters: parameters
+            },
+            on: {
+                // There isn't much we can do. If the request ends with success
+                // the user is not going to see badge anymore (of course if there will be any
+                // new messages it will appear again).
             }
         });
     },

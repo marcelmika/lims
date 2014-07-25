@@ -106,10 +106,18 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
         }
     }
 
+    /**
+     * Closes conversation for the particular participant id by setting isOpened flag to false.
+     *
+     * @param conversationId Conversation which should be closed
+     * @param participantId  Participant whose conversation should be closed
+     * @throws NoSuchConversationException
+     * @throws SystemException
+     * @throws NoSuchParticipantException
+     */
     public void closeConversation(String conversationId, Long participantId)
-            throws NoSuchConversationException,
-            SystemException,
-            NoSuchParticipantException {
+            throws NoSuchConversationException, SystemException, NoSuchParticipantException {
+
         // Find conversation
         Conversation conversation = conversationPersistence.findByConversationId(conversationId);
 
@@ -123,10 +131,51 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
         participantPersistence.update(participant, false);
     }
 
+    /**
+     * Resets counter of unread messages for the user who participates in the given conversation
+     *
+     * @param conversationId Conversation where the counter should be reset
+     * @param participantId  Participant whose counter should be reset
+     * @throws NoSuchParticipantException
+     * @throws SystemException
+     * @throws NoSuchConversationException
+     */
+    public void resetUnreadMessagesCounter(String conversationId, Long participantId)
+            throws NoSuchParticipantException, SystemException, NoSuchConversationException {
+
+        // Find conversation
+        Conversation conversation = conversationPersistence.findByConversationId(conversationId);
+
+        // Find participant
+        Participant participant = participantPersistence.findBycid_ParticipantId(conversation.getCid(), participantId);
+
+        // Set counter to zero
+        participant.setUnreadMessagesCount(0);
+
+        // Save
+        participantPersistence.update(participant, false);
+    }
+
+
+    /**
+     * Returns a list of opened conversations where the the user participates
+     *
+     * @param participantId User Id of the participant
+     * @return List of opened conversations
+     * @throws SystemException
+     */
     public List<Participant> getOpenedConversations(Long participantId) throws SystemException {
         return participantPersistence.findByParticipantIdIsOpened(participantId, true);
     }
 
+    /**
+     * Returns a list of users who participates in conversation
+     *
+     * @param cid Id of the conversation related to the participants
+     * @return list of participants
+     * @throws NoSuchParticipantException
+     * @throws SystemException
+     */
     public List<Participant> getConversationParticipants(Long cid) throws NoSuchParticipantException, SystemException {
         return participantPersistence.findByCid(cid);
     }

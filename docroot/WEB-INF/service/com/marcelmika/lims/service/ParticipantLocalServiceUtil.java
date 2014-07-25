@@ -299,6 +299,15 @@ public class ParticipantLocalServiceUtil {
 		getService().updateParticipants(cid);
 	}
 
+	/**
+	* Closes conversation for the particular participant id by setting isOpened flag to false.
+	*
+	* @param conversationId Conversation which should be closed
+	* @param participantId  Participant whose conversation should be closed
+	* @throws NoSuchConversationException
+	* @throws SystemException
+	* @throws NoSuchParticipantException
+	*/
 	public static void closeConversation(java.lang.String conversationId,
 		java.lang.Long participantId)
 		throws com.liferay.portal.kernel.exception.SystemException,
@@ -307,12 +316,44 @@ public class ParticipantLocalServiceUtil {
 		getService().closeConversation(conversationId, participantId);
 	}
 
+	/**
+	* Resets counter of unread messages for the user who participates in the given conversation
+	*
+	* @param conversationId Conversation where the counter should be reset
+	* @param participantId  Participant whose counter should be reset
+	* @throws NoSuchParticipantException
+	* @throws SystemException
+	* @throws NoSuchConversationException
+	*/
+	public static void resetUnreadMessagesCounter(
+		java.lang.String conversationId, java.lang.Long participantId)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.NoSuchConversationException,
+			com.marcelmika.lims.NoSuchParticipantException {
+		getService().resetUnreadMessagesCounter(conversationId, participantId);
+	}
+
+	/**
+	* Returns a list of opened conversations where the the user participates
+	*
+	* @param participantId User Id of the participant
+	* @return List of opened conversations
+	* @throws SystemException
+	*/
 	public static java.util.List<com.marcelmika.lims.model.Participant> getOpenedConversations(
 		java.lang.Long participantId)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return getService().getOpenedConversations(participantId);
 	}
 
+	/**
+	* Returns a list of users who participates in conversation
+	*
+	* @param cid Id of the conversation related to the participants
+	* @return list of participants
+	* @throws NoSuchParticipantException
+	* @throws SystemException
+	*/
 	public static java.util.List<com.marcelmika.lims.model.Participant> getConversationParticipants(
 		java.lang.Long cid)
 		throws com.liferay.portal.kernel.exception.SystemException,

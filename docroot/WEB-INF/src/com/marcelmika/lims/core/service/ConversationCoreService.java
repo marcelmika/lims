@@ -61,6 +61,15 @@ public interface ConversationCoreService {
     public CloseConversationResponseEvent closeConversation(CloseConversationRequestEvent event);
 
     /**
+     * Reset counter of unread messages (usually displayed in badge) for the particular user and conversation
+     *
+     * @param event request event for method
+     * @return response event for method
+     */
+    public ResetUnreadMessagesCounterResponseEvent resetUnreadMessagesCounter(ResetUnreadMessagesCounterRequestEvent
+                                                                                      event);
+
+    /**
      * Removes buddy from the conversation
      *
      * @param event request event for method

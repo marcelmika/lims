@@ -21,6 +21,7 @@ import com.marcelmika.lims.portal.http.HttpStatus;
 import com.marcelmika.lims.portal.processor.parameters.CloseConversationParameters;
 import com.marcelmika.lims.portal.processor.parameters.CreateMessageParameters;
 import com.marcelmika.lims.portal.processor.parameters.ReadConversationParameters;
+import com.marcelmika.lims.portal.processor.parameters.ResetUnreadMessagesCounterParameters;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -272,7 +273,46 @@ public class PortletProcessor {
             // Not found
             if (status == CloseConversationResponseEvent.Status.ERROR_NO_CONVERSATION_FOUND ||
                     status == CloseConversationResponseEvent.Status.ERROR_NO_PARTICIPANT_FOUND) {
-              writeResponse(HttpStatus.NOT_FOUND, response);
+                writeResponse(HttpStatus.NOT_FOUND, response);
+            }
+            // Everything else is server fault
+            else {
+                writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+            }
+        }
+    }
+
+    /**
+     * Resets unread messages counter for the given conversation and participant
+     *
+     * @param request  ResourceRequest
+     * @param response ResourceResponse
+     */
+    public void resetUnreadMessagesCounter(ResourceRequest request, ResourceResponse response) {
+        // Create buddy from request
+        Buddy buddy = Buddy.fromResourceRequest(request);
+
+        // Deserialize Parameters
+        ResetUnreadMessagesCounterParameters parameters = JSONFactoryUtil.looseDeserialize(
+                request.getParameter(KEY_PARAMETERS), ResetUnreadMessagesCounterParameters.class
+        );
+
+        // Reset counter
+        ResetUnreadMessagesCounterResponseEvent responseEvent = conversationCoreService.resetUnreadMessagesCounter(
+                new ResetUnreadMessagesCounterRequestEvent(buddy.getBuddyId(), parameters.getConversationId())
+        );
+
+        // Success
+        if (responseEvent.isSuccess()) {
+            writeResponse(HttpStatus.NO_CONTENT, response);
+        }
+        // Failure
+        else {
+            ResetUnreadMessagesCounterResponseEvent.Status status = responseEvent.getStatus();
+            // Not found
+            if (status == ResetUnreadMessagesCounterResponseEvent.Status.ERROR_NO_CONVERSATION_FOUND ||
+                    status == ResetUnreadMessagesCounterResponseEvent.Status.ERROR_NO_PARTICIPANT_FOUND) {
+                writeResponse(HttpStatus.NOT_FOUND, response);
             }
             // Everything else is server fault
             else {

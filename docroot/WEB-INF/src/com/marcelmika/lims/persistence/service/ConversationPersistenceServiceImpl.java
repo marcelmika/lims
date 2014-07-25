@@ -161,6 +161,46 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
     }
 
     /**
+     * Reset counter of unread messages (usually displayed in badge) for the particular user and conversation
+     *
+     * @param event request event for method
+     * @return response event for method
+     */
+    @Override
+    public ResetUnreadMessagesCounterResponseEvent resetUnreadMessagesCounter(ResetUnreadMessagesCounterRequestEvent event) {
+        // Get parameters from event
+        String conversationId = event.getConversationId();
+        Long participantId = event.getBuddyId();
+
+        try {
+            // Reset the counter
+            ParticipantLocalServiceUtil.resetUnreadMessagesCounter(conversationId, participantId);
+
+            // Call success
+            return ResetUnreadMessagesCounterResponseEvent.success();
+
+        }
+        // Persistence error
+        catch (SystemException exception) {
+            return ResetUnreadMessagesCounterResponseEvent.failure(
+                    ResetUnreadMessagesCounterResponseEvent.Status.ERROR_PERSISTENCE, exception
+            );
+        }
+        // Conversation not found
+        catch (NoSuchConversationException exception) {
+            return ResetUnreadMessagesCounterResponseEvent.failure(
+                    ResetUnreadMessagesCounterResponseEvent.Status.ERROR_NO_CONVERSATION_FOUND, exception
+            );
+        }
+        // Participant not found
+        catch (NoSuchParticipantException exception) {
+            return ResetUnreadMessagesCounterResponseEvent.failure(
+                    ResetUnreadMessagesCounterResponseEvent.Status.ERROR_NO_PARTICIPANT_FOUND, exception
+            );
+        }
+    }
+
+    /**
      * Creates message within the conversation
      *
      * @param event request event for method
