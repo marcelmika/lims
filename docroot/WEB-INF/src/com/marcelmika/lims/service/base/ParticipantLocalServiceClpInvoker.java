@@ -122,13 +122,19 @@ public class ParticipantLocalServiceClpInvoker {
 
 		_methodParameterTypes67 = new String[] { "java.lang.Long" };
 
-		_methodName68 = "getOpenedConversations";
+		_methodName68 = "closeConversation";
 
-		_methodParameterTypes68 = new String[] { "java.lang.Long" };
+		_methodParameterTypes68 = new String[] {
+				"java.lang.String", "java.lang.Long"
+			};
 
-		_methodName69 = "getConversationParticipants";
+		_methodName69 = "getOpenedConversations";
 
 		_methodParameterTypes69 = new String[] { "java.lang.Long" };
+
+		_methodName70 = "getConversationParticipants";
+
+		_methodParameterTypes70 = new String[] { "java.lang.Long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -247,11 +253,19 @@ public class ParticipantLocalServiceClpInvoker {
 
 		if (_methodName68.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes68, parameterTypes)) {
-			return ParticipantLocalServiceUtil.getOpenedConversations((java.lang.Long)arguments[0]);
+			ParticipantLocalServiceUtil.closeConversation((java.lang.String)arguments[0],
+				(java.lang.Long)arguments[1]);
+
+			return null;
 		}
 
 		if (_methodName69.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes69, parameterTypes)) {
+			return ParticipantLocalServiceUtil.getOpenedConversations((java.lang.Long)arguments[0]);
+		}
+
+		if (_methodName70.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes70, parameterTypes)) {
 			return ParticipantLocalServiceUtil.getConversationParticipants((java.lang.Long)arguments[0]);
 		}
 
@@ -302,4 +316,6 @@ public class ParticipantLocalServiceClpInvoker {
 	private String[] _methodParameterTypes68;
 	private String _methodName69;
 	private String[] _methodParameterTypes69;
+	private String _methodName70;
+	private String[] _methodParameterTypes70;
 }

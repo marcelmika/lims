@@ -18,6 +18,7 @@ import com.marcelmika.lims.api.events.settings.UpdateSettingsRequestEvent;
 import com.marcelmika.lims.core.service.*;
 import com.marcelmika.lims.portal.domain.*;
 import com.marcelmika.lims.portal.http.HttpStatus;
+import com.marcelmika.lims.portal.processor.parameters.CloseConversationParameters;
 import com.marcelmika.lims.portal.processor.parameters.CreateMessageParameters;
 import com.marcelmika.lims.portal.processor.parameters.ReadConversationParameters;
 
@@ -127,6 +128,9 @@ public class PortletProcessor {
 
     /**
      * Creates single user conversation with a buddy selected in request
+     *
+     * @param request  ResourceRequest
+     * @param response ResourceResponse
      */
     public void createSingleUserConversation(ResourceRequest request, ResourceResponse response) {
         // Create buddy from request
@@ -179,6 +183,12 @@ public class PortletProcessor {
         }
     }
 
+    /**
+     * Reads Single User Conversation messages
+     *
+     * @param request  ResourceRequest
+     * @param response ResourceResponse
+     */
     public void readSingleUserConversation(ResourceRequest request, ResourceResponse response) {
         // Create buddy from request
         Buddy buddy = Buddy.fromResourceRequest(request);
@@ -225,8 +235,52 @@ public class PortletProcessor {
             else if (status == ReadSingleUserConversationResponseEvent.Status.ERROR_WRONG_PARAMETERS) {
                 writeResponse(HttpStatus.BAD_REQUEST, response);
             }
+            // Everything else is server fault
+            else {
+                writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+            }
         }
     }
+
+    /**
+     * Closes Single User Conversation
+     *
+     * @param request  ResourceRequest
+     * @param response ResourceResponse
+     */
+    public void closeSingleUserConversation(ResourceRequest request, ResourceResponse response) {
+        // Create buddy from request
+        Buddy buddy = Buddy.fromResourceRequest(request);
+
+        // Deserialize Parameters
+        CloseConversationParameters parameters = JSONFactoryUtil.looseDeserialize(
+                request.getParameter(KEY_PARAMETERS), CloseConversationParameters.class
+        );
+
+        // Close conversation
+        CloseConversationResponseEvent responseEvent = conversationCoreService.closeConversation(
+                new CloseConversationRequestEvent(buddy.getBuddyId(), parameters.getConversationId())
+        );
+
+        // Success
+        if (responseEvent.isSuccess()) {
+            writeResponse(HttpStatus.NO_CONTENT, response);
+        }
+        // Failure
+        else {
+            CloseConversationResponseEvent.Status status = responseEvent.getStatus();
+            // Not found
+            if (status == CloseConversationResponseEvent.Status.ERROR_NO_CONVERSATION_FOUND ||
+                    status == CloseConversationResponseEvent.Status.ERROR_NO_PARTICIPANT_FOUND) {
+              writeResponse(HttpStatus.NOT_FOUND, response);
+            }
+            // Everything else is server fault
+            else {
+                writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+            }
+        }
+    }
+
 
     /**
      * Create new message in conversation

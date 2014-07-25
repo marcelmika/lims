@@ -32,6 +32,18 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         },
 
         /**
+         * Panel Did Unload is called whenever the panel completely disappears from the screen. This happens when
+         * the user closes the whole panel.
+         */
+        onPanelDidUnload: function () {
+            // Vars
+            var model = this.get('model');
+
+            // Close conversation
+            model.closeConversation();
+        },
+
+        /**
          * Maps all events on Y object to private internal functions
          *
          * @private
@@ -42,9 +54,6 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
 
             // Local events
             model.after('conversationUpdated', this._onConversationUpdated, this);
-
-            // Global events
-            Y.on('panelClosed', this._onPanelClosed, this);
         },
 
         /**
@@ -53,8 +62,11 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          * @private
          */
         _onConversationUpdated: function () {
+            // Vars
             var unreadMessages = this.get('model').get('unreadMessages'),
                 badge = this.get('badge');
+
+            // Hide badge if needed
             if (unreadMessages === 0) {
                 badge.hide();
             } else {
@@ -62,14 +74,6 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             }
 
             badge.set('innerHTML', unreadMessages);
-        },
-
-        // TODO: Implement
-        _onPanelClosed: function () {
-//            if (panel === thi.getPanel())
-
-            // TODO: Update model
-
         },
 
         /**

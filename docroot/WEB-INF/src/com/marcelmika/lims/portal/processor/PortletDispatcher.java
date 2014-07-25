@@ -20,20 +20,16 @@ public class PortletDispatcher {
     // should be used.
     private static final String QUERY_CREATE_SINGLE_USER_CONVERSATION = "CreateSingleUserConversation";
     private static final String QUERY_READ_SINGLE_USER_CONVERSATION = "ReadSingleUserConversation";
+    private static final String QUERY_CLOSE_SINGLE_USER_CONVERSATION = "CloseSingleUserConversation";
     private static final String QUERY_GET_GROUP_LIST = "GetGroupList";
     private static final String QUERY_CREATE_MESSAGE = "CreateMessage";
     private static final String QUERY_UPDATE_BUDDY_PRESENCE = "UpdateBuddyPresence";
     private static final String QUERY_UPDATE_ACTIVE_PANEL = "UpdateActivePanel";
     private static final String QUERY_UPDATE_SETTINGS = "UpdateSettings";
-
     // Keys
     private static final String KEY_QUERY = "query";
-
     // Log
     private static Log log = LogFactoryUtil.getLog(PortletDispatcher.class);
-
-
-
 
     /**
      * Calls all appropriate methods on PollerProcessor that are scheduled for the receive request event.
@@ -50,31 +46,35 @@ public class PortletDispatcher {
         String query = request.getParameter(KEY_QUERY);
 
         // Create Single User Conversation
-        if(query.equals(QUERY_CREATE_SINGLE_USER_CONVERSATION)) {
+        if (query.equals(QUERY_CREATE_SINGLE_USER_CONVERSATION)) {
             processor.createSingleUserConversation(request, response);
         }
         // Read Single User Conversation
-        else if(query.equals(QUERY_READ_SINGLE_USER_CONVERSATION)) {
+        else if (query.equals(QUERY_READ_SINGLE_USER_CONVERSATION)) {
             processor.readSingleUserConversation(request, response);
         }
+        // Close Single User Conversation
+        else if (query.equals(QUERY_CLOSE_SINGLE_USER_CONVERSATION)) {
+            processor.closeSingleUserConversation(request, response);
+        }
         // Get Group List
-        else if(query.equals(QUERY_GET_GROUP_LIST)) {
+        else if (query.equals(QUERY_GET_GROUP_LIST)) {
             processor.getGroupList(request, response);
         }
         // Send message
-        else if(query.equals(QUERY_CREATE_MESSAGE)) {
+        else if (query.equals(QUERY_CREATE_MESSAGE)) {
             processor.createMessage(request, response);
         }
         // Update buddy presence
-        else if(query.equals(QUERY_UPDATE_BUDDY_PRESENCE)) {
+        else if (query.equals(QUERY_UPDATE_BUDDY_PRESENCE)) {
             processor.updateBuddyPresence(request, response);
         }
         // Update active panel
-        else if(query.equals(QUERY_UPDATE_ACTIVE_PANEL)) {
+        else if (query.equals(QUERY_UPDATE_ACTIVE_PANEL)) {
             processor.updateActivePanel(request, response);
         }
         // Update settings
-        else if(query.equals(QUERY_UPDATE_SETTINGS)) {
+        else if (query.equals(QUERY_UPDATE_SETTINGS)) {
             processor.updateSettings(request, response);
         }
     }

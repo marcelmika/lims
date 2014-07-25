@@ -102,19 +102,8 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      */
     @Override
     public CloseConversationResponseEvent closeConversation(CloseConversationRequestEvent event) {
-        throw new NotImplementedException();
-        // Params
-//        String conversationId = getString(pollerRequest, "roomJID");
-//
-//        // Close only opened conversations
-//        if (ChatUtil.isConversationOpened(pollerRequest.getUserId(), conversationId)) {
-//            // Close conversation
-//            Conversation c = ChatUtil.closeConversation(pollerRequest.getUserId(), conversationId);
-//            // Reset message counter
-//            if (c != null) {
-//                c.setLastMessageSent(0);
-//            }
-//        }
+        // Save to persistence
+        return conversationPersistenceService.closeConversation(event);
     }
 
     /**
@@ -140,18 +129,6 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
     @Override
     public AddBuddiesResponseEvent addBuddies(AddBuddiesRequestEvent event) {
         throw new NotImplementedException();
-
-
-        // [1] Get room
-//        Room room = ChatUtil.getRoom(pollerRequest.getUserId(), pollerRequest.getCompanyId(), roomJID);
-//        System.out.println("ROOM: " + room);
-        // [2] Add users to the newly created room
-//        ChatUtil.addBuddiesToRoom(pollerRequest.getUserId(), pollerRequest.getCompanyId(), room, buddies);
-
-        // [4] Open conversation for all buddies
-//        for (Buddy buddy : buddies) {
-//            ChatUtil.openConversation(buddy.getUserId(), buddy.getCompanyId(), room.getRoomJID());
-//        }
     }
 
     /**

@@ -267,6 +267,12 @@ public interface ParticipantLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
 
+	public void closeConversation(java.lang.String conversationId,
+		java.lang.Long participantId)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.NoSuchConversationException,
+			com.marcelmika.lims.NoSuchParticipantException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.marcelmika.lims.model.Participant> getOpenedConversations(
 		java.lang.Long participantId)

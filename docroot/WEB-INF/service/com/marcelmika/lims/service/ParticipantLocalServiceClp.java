@@ -123,13 +123,19 @@ public class ParticipantLocalServiceClp implements ParticipantLocalService {
 
 		_methodParameterTypes20 = new String[] { "java.lang.Long" };
 
-		_methodName21 = "getOpenedConversations";
+		_methodName21 = "closeConversation";
 
-		_methodParameterTypes21 = new String[] { "java.lang.Long" };
+		_methodParameterTypes21 = new String[] {
+				"java.lang.String", "java.lang.Long"
+			};
 
-		_methodName22 = "getConversationParticipants";
+		_methodName22 = "getOpenedConversations";
 
 		_methodParameterTypes22 = new String[] { "java.lang.Long" };
+
+		_methodName23 = "getConversationParticipants";
+
+		_methodParameterTypes23 = new String[] { "java.lang.Long" };
 	}
 
 	public com.marcelmika.lims.model.Participant addParticipant(
@@ -720,14 +726,53 @@ public class ParticipantLocalServiceClp implements ParticipantLocalService {
 		}
 	}
 
+	public void closeConversation(java.lang.String conversationId,
+		java.lang.Long participantId)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.NoSuchConversationException,
+			com.marcelmika.lims.NoSuchParticipantException {
+		try {
+			_invokableLocalService.invokeMethod(_methodName21,
+				_methodParameterTypes21,
+				new Object[] {
+					ClpSerializer.translateInput(conversationId),
+					
+				ClpSerializer.translateInput(participantId)
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof com.marcelmika.lims.NoSuchConversationException) {
+				throw (com.marcelmika.lims.NoSuchConversationException)t;
+			}
+
+			if (t instanceof com.marcelmika.lims.NoSuchParticipantException) {
+				throw (com.marcelmika.lims.NoSuchParticipantException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
 	public java.util.List<com.marcelmika.lims.model.Participant> getOpenedConversations(
 		java.lang.Long participantId)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName21,
-					_methodParameterTypes21,
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22,
 					new Object[] { ClpSerializer.translateInput(participantId) });
 		}
 		catch (Throwable t) {
@@ -756,8 +801,8 @@ public class ParticipantLocalServiceClp implements ParticipantLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName22,
-					_methodParameterTypes22,
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23,
 					new Object[] { ClpSerializer.translateInput(cid) });
 		}
 		catch (Throwable t) {
@@ -828,4 +873,6 @@ public class ParticipantLocalServiceClp implements ParticipantLocalService {
 	private String[] _methodParameterTypes21;
 	private String _methodName22;
 	private String[] _methodParameterTypes22;
+	private String _methodName23;
+	private String[] _methodParameterTypes23;
 }

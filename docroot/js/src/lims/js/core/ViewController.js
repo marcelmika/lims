@@ -27,6 +27,7 @@ Y.LIMS.Core.ViewController = Y.Base.create('viewController', Y.View, [], {
         // Attach events
         Y.on('panelShown', this._onPanelShown, this);
         Y.on('panelHidden', this._onPanelHidden, this);
+        Y.on('panelClosed', this._onPanelClosed, this);
         Y.on('chatEnabled', this._onChatEnabled, this);
         Y.on('chatDisabled', this._onChatDisabled, this);
 
@@ -46,16 +47,27 @@ Y.LIMS.Core.ViewController = Y.Base.create('viewController', Y.View, [], {
     },
 
     /**
-     * Panel Did Appear is called when the panel did appear on the screen
+     * Panel Did Appear is called when the panel is currently active. Only one panel
+     * can be active at one time.
      */
     onPanelDidAppear: function () {
         // Override the function
     },
 
     /**
-     * Panel Did Disappear is called when the panel disappeared from the screen
+     * Panel Did Disappear is called when the panel is not active anymore. In other words it was active
+     * but the user recently opened some other panel and since only one panel can be active at one time
+     * given panel needs to disappear.
      */
     onPanelDidDisappear: function () {
+        // Override the function
+    },
+
+    /**
+     * Panel Did Unload is called whenever the panel completely disappears from the screen. This happens when
+     * the user closes the whole panel.
+     */
+    onPanelDidUnload: function () {
         // Override the function
     },
 
@@ -146,9 +158,20 @@ Y.LIMS.Core.ViewController = Y.Base.create('viewController', Y.View, [], {
      * @private
      */
     _onPanelHidden: function (panel) {
-        // Call that view did disappear
         if (panel === this.get('panel')) {
             this.onPanelDidDisappear();
+        }
+    },
+
+    /**
+     * Panel closed event handler.
+     *
+     * @param panel
+     * @private
+     */
+    _onPanelClosed: function (panel) {
+        if (panel === this.get('panel')) {
+            this.onPanelDidUnload();
         }
     },
 

@@ -299,6 +299,14 @@ public class ParticipantLocalServiceUtil {
 		getService().updateParticipants(cid);
 	}
 
+	public static void closeConversation(java.lang.String conversationId,
+		java.lang.Long participantId)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.NoSuchConversationException,
+			com.marcelmika.lims.NoSuchParticipantException {
+		getService().closeConversation(conversationId, participantId);
+	}
+
 	public static java.util.List<com.marcelmika.lims.model.Participant> getOpenedConversations(
 		java.lang.Long participantId)
 		throws com.liferay.portal.kernel.exception.SystemException {

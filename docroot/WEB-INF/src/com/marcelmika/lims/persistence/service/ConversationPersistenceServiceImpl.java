@@ -1,7 +1,10 @@
 package com.marcelmika.lims.persistence.service;
 
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.marcelmika.lims.NoSuchConversationException;
+import com.marcelmika.lims.NoSuchParticipantException;
 import com.marcelmika.lims.api.entity.ConversationDetails;
 import com.marcelmika.lims.api.entity.MessageDetails;
 import com.marcelmika.lims.api.events.conversation.*;
@@ -114,6 +117,45 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             // Call Failure
             return ReadSingleUserConversationResponseEvent.readConversationFailure(
                     ReadSingleUserConversationResponseEvent.Status.ERROR_PERSISTENCE, exception
+            );
+        }
+    }
+
+    /**
+     * Closes existing conversation. User remains in the conversation though.
+     *
+     * @param event request event for method
+     * @return response event for method
+     */
+    @Override
+    public CloseConversationResponseEvent closeConversation(CloseConversationRequestEvent event) {
+        // Get parameters from event
+        String conversationId = event.getConversationId();
+        Long participantId = event.getBuddyId();
+
+        try {
+            // Close conversation for participant
+            ParticipantLocalServiceUtil.closeConversation(conversationId, participantId);
+
+            // Call success
+            return CloseConversationResponseEvent.success();
+        }
+        // Persistence error
+        catch (SystemException exception) {
+            return CloseConversationResponseEvent.failure(
+                    CloseConversationResponseEvent.Status.ERROR_PERSISTENCE, exception
+            );
+        }
+        // Conversation not found
+        catch (NoSuchConversationException exception) {
+            return CloseConversationResponseEvent.failure(
+                    CloseConversationResponseEvent.Status.ERROR_NO_CONVERSATION_FOUND, exception
+            );
+        }
+        // Participant not found
+        catch (NoSuchParticipantException exception) {
+            return CloseConversationResponseEvent.failure(
+                    CloseConversationResponseEvent.Status.ERROR_NO_PARTICIPANT_FOUND, exception
             );
         }
     }

@@ -33,6 +33,30 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
         this.fire('messageAdded', message);
     },
 
+    closeConversation: function () {
+
+        // Vars
+        var settings = new Y.LIMS.Core.Settings(),
+            parameters = Y.JSON.stringify({
+                conversationId: this.get('conversationId')
+            });
+
+        // Send the request
+        Y.io(settings.getServerRequestUrl(), {
+            method: "POST",
+            data: {
+                query: "CloseSingleUserConversation",
+                parameters: parameters
+            },
+            on: {
+                // There isn't much we can do. If the request ends with success
+                // we simply don't do anything. If it fails the user will see
+                // the conversation whenever the user goes to another web page
+                // and try it again.
+            }
+        });
+    },
+
     /**
      * Custom sync layer
      *
@@ -53,7 +77,6 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
             // This is called whenever the conversation is created i.e whenever
             // the user clicks on any of the buddies in the group
             case 'create':
-                console.log("Creating conversation");
                 // Simply take the conversation object, serialize it to json
                 // and send.
                 content = Y.JSON.stringify(this.toJSON());
@@ -77,17 +100,12 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
 //                            console.log(o);
 //                        }
                     }
-//                    headers: {
-//                        'Content-Type': 'application/json'
-//                    }
                 });
                 return;
 
             // Called whenever the load() method is called. Sends a request
             // to server which loads a list of messages related to the conversation.
             case 'read':
-                console.log("Read conversation");
-
                 // Construct parameters
                 parameters = Y.JSON.stringify({
                     conversationId: this.get('conversationId'),
@@ -119,33 +137,6 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
                 });
 
                 return;
-
-            // Look for an item in localStorage with this model's id.
-//                data = localStorage.getItem(this.get('id'));
-//
-//                if (data) {
-//                    callback(null, data);
-//                } else {
-//                    callback('Model not found.');
-//                }
-//
-//                return;
-
-            case 'update':
-                return;
-//
-//                data = this.toJSON();
-//
-//                // Update the record in localStorage, then call the callback.
-//                localStorage.setItem(this.get('id'), Y.JSON.stringify(data));
-//                callback(null, data);
-//                return;
-
-            case 'delete':
-                return;
-//                localStorage.removeItem(this.get('id'));
-//                callback();
-//                return;
 
             default:
                 callback('Invalid action');
