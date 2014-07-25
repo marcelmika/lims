@@ -16,6 +16,7 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         // Attach events
         this._attachEvents();
 
+
         return this;
     },
 
@@ -44,8 +45,8 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     _addMessage: function (message) {
 
         // Vars
-        var conversation,                            // Newly created conversation
-            panelContent = this.get('panelContent'); // The place where are messages will be rendered to
+        var conversation, // Newly created conversation
+            panelContentList = this.get('panelContentList'); // The place where are messages will be rendered to
 
         // Hide indicator if it wasn't already hidden
         this.get('activityIndicator').hide();
@@ -55,7 +56,7 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         // Render it
         conversation.render();
         // Append to list
-        panelContent.append(conversation.get('container'));
+        panelContentList.append(conversation.get('container'));
 
         // Scroll to the last message
         this._scrollToBottom();
@@ -129,6 +130,16 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         panelContent: {
             valueFn: function () {
                 var container = this.get('container').one('.panel-content');
+                if (container !== undefined) {
+                    return container;
+                }
+            }
+        },
+
+        // List that hold messages
+        panelContentList: {
+            valueFn: function () {
+                var container = this.get('container').one('.panel-content ul');
                 if (container !== undefined) {
                     return container;
                 }
