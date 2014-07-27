@@ -227,7 +227,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
 
             // Length of timer period
             timerInterval: {
-                value: 10000 // 10 seconds
+                value: 60000 // one minute
             },
 
             // Global settings
