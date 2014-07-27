@@ -26,18 +26,31 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
         // Vars
         var container = this.get('container'),      // Container that holds the view
             model = this.get('model'),              // Message model
-            from = model.get('from');               // Creator of the message
+            from = model.get('from'),               // Creator of the message
+            formatter = this.get('dateFormatter');  // Prettify date formatter
 
         // Fill data from model to template and set it to container
         container.set('innerHTML', Y.Lang.sub(this.template, {
-                createdPrettified: "a minute ago",  // TODO: Implement prettify
+                createdPrettified: formatter.prettyDate(model.get('createdAt')),
                 fullName: from.get('fullName'),
                 content: model.get('body'),
                 portrait: this._renderPortrait(from.get('screenName'))
             })
         );
+        // Set date node
+        this.set('dateNode', container.one('.conversation-item-date'));
 
         return this;
+    },
+
+    updateTimestamp: function() {
+        // Vars
+        var dateNode = this.get('dateNode'),        // Node that holds date
+            formatter = this.get('dateFormatter'),  // Prettify date formatter
+            model = this.get('model');              // Message model
+
+        // Update time
+        dateNode.set('innerHTML', formatter.prettyDate(model.get('createdAt')));
     },
 
     /**
@@ -66,9 +79,22 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
                 return Y.Node.create(this.containerTemplate);
             }
         },
+
         // Instance of model attached to view
         model: {
             value: null // Y.LIMS.Model.MessageItemModel
+        },
+
+        // Node that contains date
+        dateNode: {
+            value: null
+        },
+
+        // Date formatter
+        dateFormatter: {
+            valueFn: function () {
+                return new Y.LIMS.Core.DateFormatter();
+            }
         }
     }
 

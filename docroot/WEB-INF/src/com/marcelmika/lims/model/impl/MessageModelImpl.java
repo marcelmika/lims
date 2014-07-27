@@ -33,6 +33,7 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,11 +62,11 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 			{ "mid", Types.BIGINT },
 			{ "cid", Types.BIGINT },
 			{ "creatorId", Types.BIGINT },
-			{ "createdAt", Types.BIGINT },
+			{ "createdAt", Types.TIMESTAMP },
 			{ "messageHash", Types.VARCHAR },
 			{ "body", Types.VARCHAR }
 		};
-	public static final String TABLE_SQL_CREATE = "create table LiferayLIMS_Message (mid LONG not null primary key,cid LONG,creatorId LONG,createdAt LONG,messageHash VARCHAR(75) null,body TEXT null)";
+	public static final String TABLE_SQL_CREATE = "create table LiferayLIMS_Message (mid LONG not null primary key,cid LONG,creatorId LONG,createdAt DATE null,messageHash VARCHAR(75) null,body TEXT null)";
 	public static final String TABLE_SQL_DROP = "drop table LiferayLIMS_Message";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
@@ -145,7 +146,7 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 			setCreatorId(creatorId);
 		}
 
-		Long createdAt = (Long)attributes.get("createdAt");
+		Date createdAt = (Date)attributes.get("createdAt");
 
 		if (createdAt != null) {
 			setCreatedAt(createdAt);
@@ -212,11 +213,11 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		return _originalCreatorId;
 	}
 
-	public long getCreatedAt() {
+	public Date getCreatedAt() {
 		return _createdAt;
 	}
 
-	public void setCreatedAt(long createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		_createdAt = createdAt;
 	}
 
@@ -359,7 +360,14 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 
 		messageCacheModel.creatorId = getCreatorId();
 
-		messageCacheModel.createdAt = getCreatedAt();
+		Date createdAt = getCreatedAt();
+
+		if (createdAt != null) {
+			messageCacheModel.createdAt = createdAt.getTime();
+		}
+		else {
+			messageCacheModel.createdAt = Long.MIN_VALUE;
+		}
 
 		messageCacheModel.messageHash = getMessageHash();
 
@@ -449,7 +457,7 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 	private long _creatorId;
 	private long _originalCreatorId;
 	private boolean _setOriginalCreatorId;
-	private long _createdAt;
+	private Date _createdAt;
 	private String _messageHash;
 	private String _body;
 	private long _columnBitmask;

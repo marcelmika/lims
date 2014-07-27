@@ -102,8 +102,8 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
             value: "asfasdfasdf" // default value
         },
 
-        timestamp: {
-            value: "" // default value
+        createdAt: {
+            value: null // default value
         }
     }
 });

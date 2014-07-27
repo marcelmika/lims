@@ -23,6 +23,8 @@ import com.liferay.portlet.expando.model.ExpandoBridge;
 
 import java.io.Serializable;
 
+import java.util.Date;
+
 /**
  * The base model interface for the Message service. Represents a row in the &quot;LiferayLIMS_Message&quot; database table, with each column mapped to a property of this class.
  *
@@ -104,14 +106,14 @@ public interface MessageModel extends BaseModel<Message> {
 	 *
 	 * @return the created at of this message
 	 */
-	public long getCreatedAt();
+	public Date getCreatedAt();
 
 	/**
 	 * Sets the created at of this message.
 	 *
 	 * @param createdAt the created at of this message
 	 */
-	public void setCreatedAt(long createdAt);
+	public void setCreatedAt(Date createdAt);
 
 	/**
 	 * Returns the message hash of this message.

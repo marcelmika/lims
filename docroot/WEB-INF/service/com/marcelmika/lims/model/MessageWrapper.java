@@ -17,6 +17,7 @@ package com.marcelmika.lims.model;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,7 +75,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 			setCreatorId(creatorId);
 		}
 
-		Long createdAt = (Long)attributes.get("createdAt");
+		Date createdAt = (Date)attributes.get("createdAt");
 
 		if (createdAt != null) {
 			setCreatedAt(createdAt);
@@ -170,7 +171,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	*
 	* @return the created at of this message
 	*/
-	public long getCreatedAt() {
+	public java.util.Date getCreatedAt() {
 		return _message.getCreatedAt();
 	}
 
@@ -179,7 +180,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	*
 	* @param createdAt the created at of this message
 	*/
-	public void setCreatedAt(long createdAt) {
+	public void setCreatedAt(java.util.Date createdAt) {
 		_message.setCreatedAt(createdAt);
 	}
 

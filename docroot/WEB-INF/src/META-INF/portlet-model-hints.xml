@@ -22,7 +22,7 @@
 		<field name="mid" type="long" />
 		<field name="cid" type="long" />
 		<field name="creatorId" type="long" />
-		<field name="createdAt" type="long" />
+		<field name="createdAt" type="Date" />
 		<field name="messageHash" type="String" />
 		<field name="body" type="String">
 			<hint name="max-length">4096</hint>

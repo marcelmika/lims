@@ -1,5 +1,6 @@
 package com.marcelmika.lims.portal.domain;
 
+import com.liferay.portal.kernel.json.JSON;
 import com.marcelmika.lims.api.entity.MessageDetails;
 
 import java.util.ArrayList;

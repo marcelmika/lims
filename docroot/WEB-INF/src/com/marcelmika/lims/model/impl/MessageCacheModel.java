@@ -22,6 +22,8 @@ import com.marcelmika.lims.model.Message;
 
 import java.io.Serializable;
 
+import java.util.Date;
+
 /**
  * The cache model class for representing Message in entity cache.
  *
@@ -57,7 +59,13 @@ public class MessageCacheModel implements CacheModel<Message>, Serializable {
 		messageImpl.setMid(mid);
 		messageImpl.setCid(cid);
 		messageImpl.setCreatorId(creatorId);
-		messageImpl.setCreatedAt(createdAt);
+
+		if (createdAt == Long.MIN_VALUE) {
+			messageImpl.setCreatedAt(null);
+		}
+		else {
+			messageImpl.setCreatedAt(new Date(createdAt));
+		}
 
 		if (messageHash == null) {
 			messageImpl.setMessageHash(StringPool.BLANK);

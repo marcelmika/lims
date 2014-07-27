@@ -54,7 +54,7 @@ public class MessageLocalServiceImpl extends MessageLocalServiceBaseImpl {
 
         // Time when the message was created
         Date now = new Date();
-        messageModel.setCreatedAt(now.getTime());
+        messageModel.setCreatedAt(now);
 
         // Update model
         messageModel = messagePersistence.update(messageModel, false);

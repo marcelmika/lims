@@ -28,6 +28,7 @@ import java.io.Serializable;
 
 import java.lang.reflect.Method;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -96,7 +97,7 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 			setCreatorId(creatorId);
 		}
 
-		Long createdAt = (Long)attributes.get("createdAt");
+		Date createdAt = (Date)attributes.get("createdAt");
 
 		if (createdAt != null) {
 			setCreatedAt(createdAt);
@@ -178,18 +179,18 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		}
 	}
 
-	public long getCreatedAt() {
+	public Date getCreatedAt() {
 		return _createdAt;
 	}
 
-	public void setCreatedAt(long createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		_createdAt = createdAt;
 
 		if (_messageRemoteModel != null) {
 			try {
 				Class<?> clazz = _messageRemoteModel.getClass();
 
-				Method method = clazz.getMethod("setCreatedAt", long.class);
+				Method method = clazz.getMethod("setCreatedAt", Date.class);
 
 				method.invoke(_messageRemoteModel, createdAt);
 			}
@@ -425,7 +426,7 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 	private long _mid;
 	private long _cid;
 	private long _creatorId;
-	private long _createdAt;
+	private Date _createdAt;
 	private String _messageHash;
 	private String _body;
 	private BaseModel<?> _messageRemoteModel;

@@ -43,7 +43,7 @@
         <column name='mid' type='long' primary='true'/>
         <column name='cid' type='long'/>
         <column name='creatorId' type='long'/>
-        <column name='createdAt' type='long'/>
+        <column name='createdAt' type='Date'/>
         <column name='messageHash' type='String'/>
         <column name='body' type='String'/>
         <finder name='CreatorId' return-type='Buddy'>

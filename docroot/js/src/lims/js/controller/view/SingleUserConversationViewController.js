@@ -34,6 +34,15 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             model.resetUnreadMessagesCounter();
             // Hide badge
             this._hideBadge();
+            // Start timer
+            this._startTimer();
+        },
+
+        /**
+         * Panel Did Disappear is called when the panel disappeared from the screen
+         */
+        onPanelDidDisappear: function () {
+            this._pauseTimer();
         },
 
         /**
@@ -61,6 +70,41 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             // Local events
             model.after('conversationUpdated', this._onConversationUpdated, this);
             listView.on('messageSubmitted', this._onMessageSubmitted, this);
+        },
+
+        /**
+         * Starts timer which periodically refreshes group list
+         *
+         * @private
+         */
+        _startTimer: function () {
+            // Vars
+            var settings = this.get('settings'),
+                listView = this.get('listView'),
+                timerInterval = this.get('timerInterval');
+
+            // Start only if the chat is enabled
+            if (settings.isChatEnabled()) {
+                // Update all timestamps
+                listView.updateTimestamps();
+                // Start periodical update
+                this.set('timer', setInterval(function () {
+                    // Load model
+                    listView.updateTimestamps();
+                }, timerInterval));
+            }
+        },
+
+        /**
+         * Pauses timer which periodically refreshes group list
+         *
+         * @private
+         */
+        _pauseTimer: function () {
+            // Vars
+            var timer = this.get('timer');
+            // Pause
+            clearTimeout(timer);
         },
 
         /**
@@ -92,7 +136,8 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             // Add new message to the conversation
             model.addMessage(new Y.LIMS.Model.MessageItemModel({
                 from: buddyDetails,
-                body: message
+                body: message,
+                createdAt: new Date().getTime()
             }));
         },
 
@@ -173,6 +218,23 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             // Currently logged user
             buddyDetails: {
                 value: null
+            },
+
+            // Timer used to set async calls to server
+            timer: {
+                value: null // to be set
+            },
+
+            // Length of timer period
+            timerInterval: {
+                value: 10000 // 10 seconds
+            },
+
+            // Global settings
+            settings: {
+                valueFn: function () {
+                    return new Y.LIMS.Core.Settings();
+                }
             }
         }
     });

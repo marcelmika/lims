@@ -19,6 +19,21 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         return this;
     },
 
+    /**
+     * Updates timestamp in each conversations
+     */
+    updateTimestamps: function () {
+        // Vars
+        var index,
+            conversationItemViews = this.get('conversationItemViews'),
+            conversationItem;
+
+        for (index = 0; index < conversationItemViews.length; index++) {
+            conversationItem = conversationItemViews[index];
+            conversationItem.updateTimestamp();
+        }
+    },
+
     // Init model attached to the view
     _initModel: function () {
         var model = this.get('model');
@@ -46,11 +61,13 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     _addMessage: function (message) {
 
         // Vars
-        var conversation, // Newly created conversation
-            panelContentList = this.get('panelContentList'); // The place where are messages will be rendered to
+        var conversation,                                           // Newly created conversation
+            panelContentList = this.get('panelContentList'),        // The place where are messages will be rendered to
+            conversationList = this.get('conversationItemViews');   // List of conversation views
 
         // New conversation item
         conversation = new Y.LIMS.View.ConversationItemView({model: message});
+        conversationList.push(conversation);
         // Render it
         conversation.render();
         // Append to list
@@ -124,6 +141,11 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         // Conversation model
         model: {
             value: null // Y.LIMS.Model.ConversationModel
+        },
+
+        // Holds all conversation item views
+        conversationItemViews: {
+            value: []
         },
 
         // Panel content container

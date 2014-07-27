@@ -5,6 +5,7 @@
         "lims-core": {
             "jsfiles": [
                 "js/bootstrap.js",
+                "js/core/DateFormatter.js",
                 "js/core/ViewController.js",
                 "js/core/Notification.js",
                 "js/core/Settings.js"
