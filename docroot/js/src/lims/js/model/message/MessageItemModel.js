@@ -78,10 +78,19 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
         },
 
         from: {
-            // TODO: remove default
-            value: {
-                screenName: "marcel.mika"
-            } // default value
+            /**
+             * Setter
+             * @param value String or BuddyModelItem
+             * @returns {BuddyModelItem}
+             */
+            setter: function (value) {
+                // Create buddy from object
+                if (value.name !== "buddyModelItem") {
+                    return new Y.LIMS.Model.BuddyModelItem(value);
+                }
+                // Value is already an instance of Y.LIMS.Model.BuddyModelItem
+                return value;
+            }
         },
 
         body: {

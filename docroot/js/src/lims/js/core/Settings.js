@@ -53,6 +53,15 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
     },
 
     /**
+     * Returns fullName of the currently connected user
+     *
+     * @returns {string}
+     */
+    getCurrentUserFullName: function () {
+        return this.get('fullName');
+    },
+
+    /**
      * Returns true if the whole chat is enabled
      *
      * @returns {boolean}
@@ -91,6 +100,18 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
                 // Since it cannot be accessed via Liferay.ThemeDisplay we need to
                 // take it manually via value in HTML
                 return Y.one('#currentChatUserScreenName').get('value');
+            }
+        },
+
+
+        /**
+         * Screen name of the currently logged user
+         */
+        fullName: {
+            valueFn: function () {
+                // Since it cannot be accessed via Liferay.ThemeDisplay we need to
+                // take it manually via value in HTML
+                return Y.one('#currentChatUserFullName').get('value');
             }
         },
 

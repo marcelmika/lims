@@ -80,4 +80,18 @@ public class BuddyDetails {
     public void setSettingsDetails(SettingsDetails settingsDetails) {
         this.settingsDetails = settingsDetails;
     }
+
+    @Override
+    public String toString() {
+        return "BuddyDetails{" +
+                "buddyId=" + buddyId +
+                ", portraitId=" + portraitId +
+                ", fullName='" + fullName + '\'' +
+                ", screenName='" + screenName + '\'' +
+                ", password='" + password + '\'' +
+                ", status='" + status + '\'' +
+                ", presenceDetails=" + presenceDetails +
+                ", settingsDetails=" + settingsDetails +
+                '}';
+    }
 }

@@ -47,4 +47,14 @@ public class MessageDetails {
     public void setBody(String body) {
         this.body = body;
     }
+
+    @Override
+    public String toString() {
+        return "MessageDetails{" +
+                "from=" + from +
+                ", body='" + body + '\'' +
+                ", createdAt=" + createdAt +
+                ", messageHash='" + messageHash + '\'' +
+                '}';
+    }
 }

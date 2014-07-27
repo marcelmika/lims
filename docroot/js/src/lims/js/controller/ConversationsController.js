@@ -91,7 +91,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                     // set the currently opened panel.
                     controllerId: conversationId,
                     container: conversationNode,
-                    model: conversationModel
+                    model: conversationModel,
+                    buddyDetails: buddyDetails
                 });
                 // Add to map
                 map[conversationId] = controller;
@@ -151,6 +152,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
 
             // Create new single user conversation controller
             controller = new Y.LIMS.Controller.SingleUserConversationViewController({
+                buddyDetails: buddyDetails,
                 container: conversationContainer,
                 controllerId: conversationId,
                 model: conversationModel

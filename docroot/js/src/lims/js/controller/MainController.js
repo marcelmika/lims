@@ -87,7 +87,8 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
                 // Get logged user
                 return new Y.LIMS.Model.BuddyModelItem({
                     buddyId: settings.getCurrentUserId(),
-                    screenName: settings.getCurrentUserScreenName()
+                    screenName: settings.getCurrentUserScreenName(),
+                    fullName: settings.getCurrentUserFullName()
                 });
             }
         },

@@ -22,16 +22,6 @@ Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [], {
                 break;
 
             case 'read':
-            // Look for an item in localStorage with this model's id.
-//                data = localStorage.getItem(this.get('id'));
-//
-//                if (data) {
-//                    callback(null, data);
-//                } else {
-//                    callback('Model not found.');
-//                }
-                return;
-
             case 'delete':
                 return;
 
@@ -47,7 +37,7 @@ Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [], {
      * @param callback
      * @private
      */
-    _updatePresence: function(data, callback) {
+    updatePresence: function (data, callback) {
         // Create settings that contains request url
         var settings = new Y.LIMS.Core.Settings();
         // Do the request
@@ -76,7 +66,7 @@ Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [], {
         // attributes.
 
         buddyId: {
-           value: null // default value
+            value: null // default value
         },
 
         screenName: {

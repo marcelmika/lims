@@ -3,13 +3,13 @@ package com.marcelmika.lims.portal.domain;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSON;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.poller.PollerRequest;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.marcelmika.lims.api.entity.BuddyDetails;
@@ -42,11 +42,16 @@ public class Buddy {
 
     // Properties
     private Long buddyId;
+    /**
+     * @deprecated
+     */
     private Long portraitId;
     private String fullName;
     private String screenName;
     private String password;
-    /** @deprecated */
+    /**
+     * @deprecated
+     */
     private String status;
     private Presence presence;
     private Settings settings;
@@ -87,8 +92,6 @@ public class Buddy {
             buddy.status = GetterUtil.getString(parameterMap.get(KEY_STATUS));
             String key = GetterUtil.getString(parameterMap.get(KEY_STATUS));
             buddy.presence = Presence.fromKey(key);
-
-            log.info("BUDDY PRESENCE: " + buddy.presence);
         }
         // Settings
         buddy.settings = Settings.fromPollerRequest(pollerRequest);
@@ -221,10 +224,27 @@ public class Buddy {
         // Map data to user details
         buddy.buddyId = buddyDetails.getBuddyId();
         buddy.fullName = buddyDetails.getFullName();
-        buddy.portraitId = buddyDetails.getPortraitId();
         buddy.screenName = buddyDetails.getScreenName();
         buddy.password = buddyDetails.getPassword();
+        buddy.portraitId = buddyDetails.getPortraitId();
         buddy.status = buddyDetails.getStatus();
+
+        // Add additional info from local service util if it's not set in buddy details
+        try {
+            User user = UserLocalServiceUtil.getUserById(buddyDetails.getBuddyId());
+            if (buddy.screenName == null) {
+                buddy.screenName = user.getScreenName();
+            }
+
+            if (buddy.fullName == null) {
+                buddy.fullName = user.getFullName();
+            }
+
+        } catch (Exception e) {
+            // Do nothing
+            log.error(e);
+        }
+
         // Relations
         if (buddyDetails.getPresenceDetails() != null) {
             buddy.presence = Presence.fromPresenceDetails(buddyDetails.getPresenceDetails());
@@ -324,12 +344,16 @@ public class Buddy {
         this.fullName = fullName;
     }
 
-    /** @deprecated */
+    /**
+     * @deprecated
+     */
     public String getStatus() {
         return status;
     }
 
-    /** @deprecated */
+    /**
+     * @deprecated
+     */
     public void setStatus(String status) {
         this.status = status;
     }
@@ -348,5 +372,19 @@ public class Buddy {
 
     public void setSettings(Settings settings) {
         this.settings = settings;
+    }
+
+    @Override
+    public String toString() {
+        return "Buddy{" +
+                "buddyId=" + buddyId +
+                ", portraitId=" + portraitId +
+                ", fullName='" + fullName + '\'' +
+                ", screenName='" + screenName + '\'' +
+                ", password='" + password + '\'' +
+                ", status='" + status + '\'' +
+                ", presence=" + presence +
+                ", settings=" + settings +
+                '}';
     }
 }

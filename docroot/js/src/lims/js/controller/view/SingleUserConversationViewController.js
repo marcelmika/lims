@@ -55,10 +55,12 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          */
         _attachEvents: function () {
             // Vars
-            var model = this.get('model');
+            var model = this.get('model'),
+                listView = this.get('listView');
 
             // Local events
             model.after('conversationUpdated', this._onConversationUpdated, this);
+            listView.on('messageSubmitted', this._onMessageSubmitted, this);
         },
 
         /**
@@ -79,6 +81,19 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             }
 
             badge.set('innerHTML', unreadMessages);
+        },
+
+        _onMessageSubmitted: function (event) {
+            // Vars
+            var model = this.get('model'),                  // Conversation model
+                message = event.message,                    // Received message
+                buddyDetails = this.get('buddyDetails');    // Currently logged user
+
+            // Add new message to the conversation
+            model.addMessage(new Y.LIMS.Model.MessageItemModel({
+                from: buddyDetails,
+                body: message
+            }));
         },
 
         /**
@@ -126,9 +141,9 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
                 value: null // To be set
             },
 
-            // Y.LIMS.Model.ConversationModel
+            // Model attached to controller
             model: {
-                value: null // default value
+                value: null // Y.LIMS.Model.ConversationModel
             },
 
             // Badge Node
@@ -153,6 +168,11 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
                         model: model
                     });
                 }
+            },
+
+            // Currently logged user
+            buddyDetails: {
+                value: null
             }
         }
     });

@@ -217,7 +217,7 @@ public class PortletProcessor {
             // Map messages from response
             List<Message> messages = Message.fromMessageDetailsList(responseEvent.getMessages());
             // Serialize
-            String serializedMessages = JSONFactoryUtil.looseSerialize(messages);
+            String serializedMessages = JSONFactoryUtil.looseSerialize(messages, "from");
             // Write success to response
             writeResponse(serializedMessages, HttpStatus.OK, response);
         }

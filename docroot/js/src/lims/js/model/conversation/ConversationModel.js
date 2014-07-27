@@ -15,6 +15,9 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
      */
     addMessage: function (message) {
 
+        console.log('hop');
+        console.log(message.get('from'));
+
         // Vars
         var messageList = this.get('messageList');
 
@@ -102,6 +105,7 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
         var content,            // Content which will be sent as body in request
             parameters,         // Request parameters
             instance = this,    // Save the instance so we can call its methods in diff context
+            response,           // Response from the server
             settings = new Y.LIMS.Core.Settings();
 
         switch (action) {
@@ -121,16 +125,16 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
                         content: content
                     },
                     on: {
-                        // TODO: Handle response
-//                        success: function (id, o) {
-//                            console.log('success');
-//                            console.log(id);
-//                            console.log(o.response);
-//                        },
-//                        failure: function (x, o) {
-//                            console.log(x);
-//                            console.log(o);
-//                        }
+                        success: function (id, o) {
+                            // Deserialize response
+                            response = Y.JSON.parse(o.response);
+                            // Call success
+                            callback(null, response);
+                        },
+                        failure: function (x, o) {
+                            // Call failure
+                            callback("Cannot create new conversation", o);
+                        }
                     }
                 });
                 return;
@@ -157,13 +161,16 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
                     },
                     on: {
                         success: function (id, o) {
+                            // Deserialize response
+                            response = Y.JSON.parse(o.response);
                             // Update message list
-                            instance.updateMessageList(Y.JSON.parse(o.response));
+                            instance.updateMessageList(response);
+                            // Call success
+                            callback(null, response);
                         },
                         failure: function (x, o) {
-                            console.log(x);
-                            console.log(o);
-                            // TODO: Handle failure
+                            // Call failure
+                            callback("Cannot create new conversation", o);
                         }
                     }
                 });
@@ -190,6 +197,7 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
 
         for (index = 0; index < messages.length; index++) {
             // TODO: Handle duplicates
+            console.log(messages[index]);
             // Add message to message list
             messageList.add(
                 new Y.LIMS.Model.MessageItemModel(messages[index])

@@ -5,7 +5,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.marcelmika.lims.api.events.conversation.GetOpenedConversationsRequestEvent;
 import com.marcelmika.lims.api.events.conversation.GetOpenedConversationsResponseEvent;
@@ -15,7 +14,9 @@ import com.marcelmika.lims.core.service.ConversationCoreService;
 import com.marcelmika.lims.core.service.ConversationCoreServiceUtil;
 import com.marcelmika.lims.core.service.SettingsCoreService;
 import com.marcelmika.lims.core.service.SettingsCoreServiceUtil;
-import com.marcelmika.lims.portal.domain.*;
+import com.marcelmika.lims.portal.domain.Buddy;
+import com.marcelmika.lims.portal.domain.Conversation;
+import com.marcelmika.lims.portal.domain.Settings;
 import com.marcelmika.lims.portal.processor.PortletProcessor;
 
 import javax.portlet.*;
@@ -150,6 +151,7 @@ public class LIMSPortlet extends MVCPortlet {
         Buddy buddy = Buddy.fromRenderRequest(renderRequest);
         // Screen name cannot be accessed via javascript so we need to render it manually
         renderRequest.setAttribute("screenName", buddy.getScreenName());
+        renderRequest.setAttribute("fullName", buddy.getFullName());
     }
 
     /**

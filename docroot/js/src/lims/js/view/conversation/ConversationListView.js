@@ -16,7 +16,6 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         // Attach events
         this._attachEvents();
 
-
         return this;
     },
 
@@ -33,8 +32,10 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     },
 
     _attachEvents: function () {
-        // Attach event to text field
+        // Vars
         var messageTextField = this.get('messageTextField');
+
+        // Attach event to text field
         if (messageTextField !== null) {
             messageTextField.on('keydown', this._onMessageTextFieldUpdated, this);
             messageTextField.on('focus', this._onMessageTextFieldUpdated, this);
@@ -98,16 +99,17 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
      */
     _onMessageTextFieldUpdated: function (event) {
         var textField = this.get('messageTextField'),
-            model = this.get('model'),
-        // Get rid of new line characters
-            value = textField.get('value').replace(/\n|\r/gim, '');
+            value = textField.get('value').replace(/\n|\r/gim, ''); // Get rid of new line characters
 
         // Send message on enter
         if (event.keyCode === 13 && !event.shiftKey && value.length) {
             event.preventDefault();
             // Empty text field
             textField.set('value', '');
-            model.addMessage(new Y.LIMS.Model.MessageItemModel({body: value}));
+            // Fire an event that message was submitted
+            this.fire('messageSubmitted', {
+                message: value
+            });
         }
     }
 }, {
@@ -121,7 +123,7 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
 
         // Conversation model
         model: {
-            value: null // default value
+            value: null // Y.LIMS.Model.ConversationModel
         },
 
         // Panel content container

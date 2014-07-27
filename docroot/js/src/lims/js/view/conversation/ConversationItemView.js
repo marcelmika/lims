@@ -17,37 +17,42 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
     // element, which will be used as the HTML template for each group item.
     template: Y.one('#lims-conversation-item-template').get('innerHTML'),
 
-
+    /**
+     * Renders view
+     *
+     * @returns {ConversationItemView}
+     */
     render: function () {
         // Vars
-        var container = this.get('container'),
-            model = this.get('model'),
-        // Todo: this is just for debug
-            settings = new Y.LIMS.Core.Settings();
+        var container = this.get('container'),      // Container that holds the view
+            model = this.get('model'),              // Message model
+            from = model.get('from');               // Creator of the message
 
-            // Render Group:
-            // Fill data from model to template and set it to container
-            container.set('innerHTML',
-                Y.Lang.sub(this.template, {
-                    createdPrettified: "a minute ago",
-                    fullName: "John Doe",
-                    content: model.get('body'),
-                    portrait: this._getPortrait(settings.getCurrentUserScreenName())
-                })
-            );
-
-        // Render Buddies:
-//        buddiesView = new Y.LIMS.View.GroupBuddyViewList({model: group.get('buddies')});
-//        buddiesView.render();
-//        container.append(buddiesView.get("container"));
+        // Fill data from model to template and set it to container
+        container.set('innerHTML', Y.Lang.sub(this.template, {
+                createdPrettified: "a minute ago",  // TODO: Implement prettify
+                fullName: from.get('fullName'),
+                content: model.get('body'),
+                portrait: this._renderPortrait(from.get('screenName'))
+            })
+        );
 
         return this;
     },
 
-    // Returns user portrait
-    _getPortrait: function (screenName) {
+    /**
+     * Renders portrait based on screenName and returns the rendered HTML
+     *
+     * @param screenName of the user whose portrait should be rendered
+     * @returns HTML of the rendered portrait
+     * @private
+     */
+    _renderPortrait: function (screenName) {
+        // Vars
         var portraitView = new Y.LIMS.View.PortraitView({screenName: screenName});
+        // Render
         portraitView.render();
+
         return portraitView.get('container').get('outerHTML');
     }
 
@@ -63,7 +68,7 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
         },
         // Instance of model attached to view
         model: {
-            value: null // default value
+            value: null // Y.LIMS.Model.MessageItemModel
         }
     }
 
