@@ -121,6 +121,10 @@ public class ConversationLocalServiceClpInvoker {
 		_methodName67 = "getConversation";
 
 		_methodParameterTypes67 = new String[] { "java.lang.String" };
+
+		_methodName68 = "updateConversationTimestamp";
+
+		_methodParameterTypes68 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -235,6 +239,13 @@ public class ConversationLocalServiceClpInvoker {
 			return ConversationLocalServiceUtil.getConversation((java.lang.String)arguments[0]);
 		}
 
+		if (_methodName68.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes68, parameterTypes)) {
+			ConversationLocalServiceUtil.updateConversationTimestamp(((Long)arguments[0]).longValue());
+
+			return null;
+		}
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -278,4 +289,6 @@ public class ConversationLocalServiceClpInvoker {
 	private String[] _methodParameterTypes66;
 	private String _methodName67;
 	private String[] _methodParameterTypes67;
+	private String _methodName68;
+	private String[] _methodParameterTypes68;
 }

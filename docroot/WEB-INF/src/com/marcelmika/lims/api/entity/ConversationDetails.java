@@ -1,5 +1,6 @@
 package com.marcelmika.lims.api.entity;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ public class ConversationDetails {
     private BuddyDetails buddy;
     private List<MessageDetails> messages;
     private List<BuddyDetails> participants;
+    private Date updatedAt;
 
 
     // -------------------------------------------------------------------------------------------
@@ -70,5 +72,13 @@ public class ConversationDetails {
 
     public void setMessages(List<MessageDetails> messages) {
         this.messages = messages;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

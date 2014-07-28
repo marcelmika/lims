@@ -33,6 +33,7 @@
         <column name='cid' type='long' primary='true'/>
         <column name='conversationId' type='String'/>
         <column name='conversationType' type='String'/>
+        <column name='updatedAt' type='Date'/>
         <finder name='ConversationId' return-type='Conversation'>
             <finder-column name='conversationId'/>
         </finder>

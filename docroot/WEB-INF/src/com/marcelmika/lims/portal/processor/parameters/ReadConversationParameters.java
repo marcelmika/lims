@@ -12,6 +12,7 @@ public class ReadConversationParameters {
 
     private String conversationId;
     private Pagination pagination;
+    private Integer entityTag;
 
     public String getConversationId() {
         return conversationId;
@@ -29,11 +30,20 @@ public class ReadConversationParameters {
         this.pagination = pagination;
     }
 
+    public Integer getEntityTag() {
+        return entityTag;
+    }
+
+    public void setEntityTag(Integer entityTag) {
+        this.entityTag = entityTag;
+    }
+
     @Override
     public String toString() {
         return "ReadConversationParameters{" +
                 "conversationId='" + conversationId + '\'' +
                 ", pagination=" + pagination +
+                ", entityTag=" + entityTag +
                 '}';
     }
 }

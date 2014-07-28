@@ -122,6 +122,10 @@ public class ConversationLocalServiceClp implements ConversationLocalService {
 		_methodName20 = "getConversation";
 
 		_methodParameterTypes20 = new String[] { "java.lang.String" };
+
+		_methodName21 = "updateConversationTimestamp";
+
+		_methodParameterTypes21 = new String[] { "long" };
 	}
 
 	public com.marcelmika.lims.model.Conversation addConversation(
@@ -712,6 +716,29 @@ public class ConversationLocalServiceClp implements ConversationLocalService {
 		return (com.marcelmika.lims.model.Conversation)ClpSerializer.translateOutput(returnObj);
 	}
 
+	public void updateConversationTimestamp(long cid)
+		throws java.lang.Exception {
+		try {
+			_invokableLocalService.invokeMethod(_methodName21,
+				_methodParameterTypes21, new Object[] { cid });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof java.lang.Exception) {
+				throw (java.lang.Exception)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
 	private InvokableLocalService _invokableLocalService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
@@ -753,4 +780,6 @@ public class ConversationLocalServiceClp implements ConversationLocalService {
 	private String[] _methodParameterTypes19;
 	private String _methodName20;
 	private String[] _methodParameterTypes20;
+	private String _methodName21;
+	private String[] _methodParameterTypes21;
 }

@@ -371,6 +371,7 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 		conversationImpl.setCid(conversation.getCid());
 		conversationImpl.setConversationId(conversation.getConversationId());
 		conversationImpl.setConversationType(conversation.getConversationType());
+		conversationImpl.setUpdatedAt(conversation.getUpdatedAt());
 
 		return conversationImpl;
 	}

@@ -6,7 +6,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.NoSuchConversationException;
 import com.marcelmika.lims.NoSuchParticipantException;
 import com.marcelmika.lims.api.entity.ConversationDetails;
-import com.marcelmika.lims.api.entity.MessageDetails;
 import com.marcelmika.lims.api.events.conversation.*;
 import com.marcelmika.lims.model.Participant;
 import com.marcelmika.lims.persistence.domain.Buddy;
@@ -95,6 +94,8 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
                 );
             }
 
+            conversation = Conversation.fromConversationModel(conversationModel);
+
             // TODO: Add pagination
             // TODO: Check if participant in event is really in the conversation
 
@@ -103,15 +104,19 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
                     conversationModel.getCid()
             );
 
+
             // Map to persistence
-            List<MessageDetails> messageDetails = new LinkedList<MessageDetails>();
+            List<Message> messages = new LinkedList<Message>();
             for (com.marcelmika.lims.model.Message messageModel : messageModels) {
-                Message message = Message.fromMessageModel(messageModel);
-                messageDetails.add(message.toMessageDetails());
+                messages.add(Message.fromMessageModel(messageModel));
             }
 
+            conversation.setMessages(messages);
+
             // Call Success
-            return ReadSingleUserConversationResponseEvent.readConversationSuccess(messageDetails);
+            return ReadSingleUserConversationResponseEvent.readConversationSuccess(
+                    conversation.toConversationDetails()
+            );
 
         } catch (Exception exception) {
             // Call Failure

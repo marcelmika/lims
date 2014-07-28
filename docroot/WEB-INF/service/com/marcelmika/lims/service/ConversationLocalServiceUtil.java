@@ -284,6 +284,11 @@ public class ConversationLocalServiceUtil {
 		return getService().getConversation(conversationId);
 	}
 
+	public static void updateConversationTimestamp(long cid)
+		throws java.lang.Exception {
+		getService().updateConversationTimestamp(cid);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

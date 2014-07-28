@@ -15,7 +15,9 @@
 package com.marcelmika.lims.service.impl;
 
 import com.liferay.portal.kernel.exception.SystemException;
+import com.marcelmika.lims.NoSuchConversationException;
 import com.marcelmika.lims.model.Message;
+import com.marcelmika.lims.service.ConversationLocalServiceUtil;
 import com.marcelmika.lims.service.base.MessageLocalServiceBaseImpl;
 
 import java.util.Date;
@@ -42,7 +44,7 @@ public class MessageLocalServiceImpl extends MessageLocalServiceBaseImpl {
 	 * Never reference this interface directly. Always use {@link com.marcelmika.lims.service.MessageLocalServiceUtil} to access the message local service.
 	 */
 
-    public Message addMessage(long cid, long creatorId, String body, String messageHash) throws SystemException {
+    public Message addMessage(long cid, long creatorId, String body, String messageHash) throws Exception {
         // Fetch possible existing conversation
         Message messageModel = messagePersistence.create(counterLocalService.increment());
 
@@ -58,6 +60,9 @@ public class MessageLocalServiceImpl extends MessageLocalServiceBaseImpl {
 
         // Update model
         messageModel = messagePersistence.update(messageModel, false);
+
+        // Update conversation timestamp
+        ConversationLocalServiceUtil.updateConversationTimestamp(cid);
 
         return messageModel;
     }

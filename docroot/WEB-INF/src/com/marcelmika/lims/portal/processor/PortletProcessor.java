@@ -214,12 +214,20 @@ public class PortletProcessor {
 
         // Success
         if (responseEvent.isSuccess()) {
-            // Map messages from response
-            List<Message> messages = Message.fromMessageDetailsList(responseEvent.getMessages());
+            conversation = Conversation.fromConversationDetails(responseEvent.getConversation());
+
+            // Client has fresh copy so there is no need to send it
+            if (conversation.getEtag().equals(parameters.getEntityTag())) {
+                log.info("Return from cache");
+                writeResponse(HttpStatus.NO_CONTENT, response);
+                return;
+            }
+
             // Serialize
-            String serializedMessages = JSONFactoryUtil.looseSerialize(messages, "from");
+            String serialized = JSONFactoryUtil.looseSerialize(conversation, "messages", "messages.from");
+            log.info(serialized);
             // Write success to response
-            writeResponse(serializedMessages, HttpStatus.OK, response);
+            writeResponse(serialized, HttpStatus.OK, response);
         }
         // Failure
         else {

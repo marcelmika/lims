@@ -103,6 +103,7 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
             parameters,         // Request parameters
             instance = this,    // Save the instance so we can call its methods in diff context
             response,           // Response from the server
+            etag = this.get('etag'),
             settings = new Y.LIMS.Core.Settings();
 
         switch (action) {
@@ -139,9 +140,11 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
             // Called whenever the load() method is called. Sends a request
             // to server which loads a list of messages related to the conversation.
             case 'read':
+                console.log('tak se ukaz: ' + etag);
                 // Construct parameters
                 parameters = Y.JSON.stringify({
                     conversationId: this.get('conversationId'),
+                    entityTag: etag,
                     pagination: {
                         firstMessageId: null,
                         lastMessageId: null,
@@ -159,15 +162,24 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
                     on: {
                         success: function (id, o) {
                             // Deserialize response
+                            if (o.status === 204) {
+                                console.log("Je to kesly");
+                                callback(null, instance);
+                                return;
+                            }
+
                             response = Y.JSON.parse(o.response);
-                            // Update message list
-                            instance.updateMessageList(response);
+
+                            console.log('vyslo to');
+//                            // Update message list
+                            instance.updateConversation(response);
                             // Call success
                             callback(null, instance);
                         },
                         failure: function (x, o) {
+                            console.log(o.status);
                             // Call failure
-                            callback("Cannot create new conversation", o);
+                            callback("Cannot read conversation", o);
                         }
                     }
                 });
@@ -184,22 +196,36 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
      * Contains logic which removes duplicates and keep the correct order
      * of messages.
      *
-     * @param messages
+     * @param conversation
      */
-    updateMessageList: function (messages) {
+    updateConversation: function (conversation) {
 
         // Vars
         var messageList = this.get('messageList'),
             messageModels = [],
             index;
 
-        for (index = 0; index < messages.length; index++) {
-            // TODO: Handle duplicates
-            // Add message to message list
-            messageModels.push(new Y.LIMS.Model.MessageItemModel(messages[index]));
-        }
+        console.log("tak jsem tady: " + conversation.etag);
 
-        messageList.reset(messageModels);
+        this.set('etag', conversation.etag);
+
+        // Update from response
+//        this.set('etag', conversation.etag);
+        this.setAttrs({
+            etag: conversation.etag,
+            unreadMessages: conversation.unreadMessagesCount
+        });
+
+        if(conversation.messages !== undefined) {
+
+            for (index = 0; index < conversation.messages.length; index++) {
+                // TODO: Handle duplicates
+                // Add message to message list
+                messageModels.push(new Y.LIMS.Model.MessageItemModel(conversation.messages[index]));
+            }
+
+            messageList.reset(messageModels);
+        }
 
         // Notify about the event
         this.fire('messagesUpdated', messageList);
@@ -225,6 +251,10 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
 
         participants: {
             value: "" // default value
+        },
+
+        etag: {
+            value: null
         },
 
         unreadMessages: {

@@ -2,6 +2,7 @@ package com.marcelmika.lims.core.domain;
 
 import com.marcelmika.lims.api.entity.ConversationDetails;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,6 +20,7 @@ public class Conversation {
     private Buddy buddy;
     private List<Buddy> participants;
     private List<Message> messages;
+    private Date updatedAt;
 
 
     // -------------------------------------------------------------------------------------------
@@ -38,6 +40,7 @@ public class Conversation {
         // Parameters
         conversation.conversationId = details.getConversationId();
         conversation.unreadMessagesCount = details.getUnreadMessagesCount();
+        conversation.updatedAt = details.getUpdatedAt();
 
         // Relations
         if (details.getBuddy() != null) {
@@ -57,6 +60,7 @@ public class Conversation {
         ConversationDetails details = new ConversationDetails();
         // Map data from conversation
         details.setConversationId(conversationId);
+        details.setUpdatedAt(updatedAt);
 
         return details;
     }
@@ -116,5 +120,13 @@ public class Conversation {
 
     public void setBuddy(Buddy buddy) {
         this.buddy = buddy;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

@@ -5,6 +5,7 @@ import com.marcelmika.lims.api.entity.ConversationDetails;
 import com.marcelmika.lims.api.entity.MessageDetails;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class Conversation {
     private Buddy buddy;
     private List<Buddy> participants = new ArrayList<Buddy>();
     private List<Message> messages = new ArrayList<Message>();
+    private Date updatedAt;
 
     // -------------------------------------------------------------------------------------------
     // Factory Methods
@@ -57,6 +59,7 @@ public class Conversation {
         // Map parameters
         conversation.conversationId = details.getConversationId();
         conversation.unreadMessagesCount = details.getUnreadMessagesCount();
+        conversation.updatedAt = details.getUpdatedAt();
 
         // Relations
         if (details.getParticipants() != null) {
@@ -90,6 +93,7 @@ public class Conversation {
         // TODO: Implement multiuser
 //        conversation.conversationType = conversationModel.getConversationType();
         conversation.conversationType = ConversationType.SINGLE_USER;
+        conversation.updatedAt = conversationModel.getUpdatedAt();
 
         return conversation;
     }
@@ -105,6 +109,7 @@ public class Conversation {
         // Map data from conversation
         details.setConversationId(conversationId);
         details.setUnreadMessagesCount(unreadMessagesCount);
+        details.setUpdatedAt(updatedAt);
 
         // Relations
         if (conversationType != null) {
@@ -185,5 +190,13 @@ public class Conversation {
 
     public void setUnreadMessagesCount(Integer unreadMessagesCount) {
         this.unreadMessagesCount = unreadMessagesCount;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

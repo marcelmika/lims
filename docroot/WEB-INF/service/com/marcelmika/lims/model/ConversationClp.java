@@ -28,6 +28,7 @@ import java.io.Serializable;
 
 import java.lang.reflect.Method;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,6 +71,7 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 		attributes.put("cid", getCid());
 		attributes.put("conversationId", getConversationId());
 		attributes.put("conversationType", getConversationType());
+		attributes.put("updatedAt", getUpdatedAt());
 
 		return attributes;
 	}
@@ -92,6 +94,12 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 
 		if (conversationType != null) {
 			setConversationType(conversationType);
+		}
+
+		Date updatedAt = (Date)attributes.get("updatedAt");
+
+		if (updatedAt != null) {
+			setUpdatedAt(updatedAt);
 		}
 	}
 
@@ -153,6 +161,27 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 						String.class);
 
 				method.invoke(_conversationRemoteModel, conversationType);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	public Date getUpdatedAt() {
+		return _updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		_updatedAt = updatedAt;
+
+		if (_conversationRemoteModel != null) {
+			try {
+				Class<?> clazz = _conversationRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setUpdatedAt", Date.class);
+
+				method.invoke(_conversationRemoteModel, updatedAt);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -235,6 +264,7 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 		clone.setCid(getCid());
 		clone.setConversationId(getConversationId());
 		clone.setConversationType(getConversationType());
+		clone.setUpdatedAt(getUpdatedAt());
 
 		return clone;
 	}
@@ -282,7 +312,7 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(7);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("{cid=");
 		sb.append(getCid());
@@ -290,13 +320,15 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 		sb.append(getConversationId());
 		sb.append(", conversationType=");
 		sb.append(getConversationType());
+		sb.append(", updatedAt=");
+		sb.append(getUpdatedAt());
 		sb.append("}");
 
 		return sb.toString();
 	}
 
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(16);
 
 		sb.append("<model><model-name>");
 		sb.append("com.marcelmika.lims.model.Conversation");
@@ -314,6 +346,10 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 			"<column><column-name>conversationType</column-name><column-value><![CDATA[");
 		sb.append(getConversationType());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>updatedAt</column-name><column-value><![CDATA[");
+		sb.append(getUpdatedAt());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -323,5 +359,6 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 	private long _cid;
 	private String _conversationId;
 	private String _conversationType;
+	private Date _updatedAt;
 	private BaseModel<?> _conversationRemoteModel;
 }

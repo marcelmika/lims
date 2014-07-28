@@ -1,9 +1,11 @@
 package com.marcelmika.lims.portal.domain;
 
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.util.PortalUtil;
 import com.marcelmika.lims.api.entity.BuddyDetails;
 import com.marcelmika.lims.api.entity.ConversationDetails;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class Conversation {
     private Buddy buddy;
     private List<Buddy> participants;
     private List<Message> messages;
+    private Date updatedAt;
 
 
     // -------------------------------------------------------------------------------------------
@@ -41,6 +44,7 @@ public class Conversation {
         // Parameters
         conversation.conversationId = details.getConversationId();
         conversation.unreadMessagesCount = details.getUnreadMessagesCount();
+        conversation.updatedAt = details.getUpdatedAt();
 
         // Relations
         if (details.getParticipants() != null) {
@@ -90,6 +94,7 @@ public class Conversation {
         ConversationDetails details = new ConversationDetails();
         // Map data from conversation
         details.setConversationId(conversationId);
+        details.setUpdatedAt(updatedAt);
 
         // Relations
         if (conversationType != null) {
@@ -121,6 +126,7 @@ public class Conversation {
      *
      * @return String title
      */
+    @JSON
     public String getTitle() {
         String title = ""; // Default
 
@@ -138,6 +144,13 @@ public class Conversation {
         return title;
     }
 
+    @JSON
+    public Integer getEtag() {
+        if (updatedAt != null) {
+            return updatedAt.hashCode();
+        }
+        return 0;
+    }
 
     // -------------------------------------------------------------------------------------------
     // Getters/Setters
@@ -189,6 +202,14 @@ public class Conversation {
 
     public void setMessages(List<Message> messages) {
         this.messages = messages;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override

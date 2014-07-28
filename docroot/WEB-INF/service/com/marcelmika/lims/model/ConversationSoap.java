@@ -17,6 +17,7 @@ package com.marcelmika.lims.model;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +33,7 @@ public class ConversationSoap implements Serializable {
 		soapModel.setCid(model.getCid());
 		soapModel.setConversationId(model.getConversationId());
 		soapModel.setConversationType(model.getConversationType());
+		soapModel.setUpdatedAt(model.getUpdatedAt());
 
 		return soapModel;
 	}
@@ -108,7 +110,16 @@ public class ConversationSoap implements Serializable {
 		_conversationType = conversationType;
 	}
 
+	public Date getUpdatedAt() {
+		return _updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		_updatedAt = updatedAt;
+	}
+
 	private long _cid;
 	private String _conversationId;
 	private String _conversationType;
+	private Date _updatedAt;
 }

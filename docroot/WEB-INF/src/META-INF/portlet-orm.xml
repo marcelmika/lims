@@ -30,6 +30,9 @@
 			<id name="cid" />
 			<basic name="conversationId" />
 			<basic name="conversationType" />
+			<basic name="updatedAt">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

@@ -22,6 +22,8 @@ import com.marcelmika.lims.model.Conversation;
 
 import java.io.Serializable;
 
+import java.util.Date;
+
 /**
  * The cache model class for representing Conversation in entity cache.
  *
@@ -33,7 +35,7 @@ public class ConversationCacheModel implements CacheModel<Conversation>,
 	Serializable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(7);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("{cid=");
 		sb.append(cid);
@@ -41,6 +43,8 @@ public class ConversationCacheModel implements CacheModel<Conversation>,
 		sb.append(conversationId);
 		sb.append(", conversationType=");
 		sb.append(conversationType);
+		sb.append(", updatedAt=");
+		sb.append(updatedAt);
 		sb.append("}");
 
 		return sb.toString();
@@ -65,6 +69,13 @@ public class ConversationCacheModel implements CacheModel<Conversation>,
 			conversationImpl.setConversationType(conversationType);
 		}
 
+		if (updatedAt == Long.MIN_VALUE) {
+			conversationImpl.setUpdatedAt(null);
+		}
+		else {
+			conversationImpl.setUpdatedAt(new Date(updatedAt));
+		}
+
 		conversationImpl.resetOriginalValues();
 
 		return conversationImpl;
@@ -73,4 +84,5 @@ public class ConversationCacheModel implements CacheModel<Conversation>,
 	public long cid;
 	public String conversationId;
 	public String conversationType;
+	public long updatedAt;
 }

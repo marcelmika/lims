@@ -17,6 +17,7 @@
 		<field name="cid" type="long" />
 		<field name="conversationId" type="String" />
 		<field name="conversationType" type="String" />
+		<field name="updatedAt" type="Date" />
 	</model>
 	<model name="com.marcelmika.lims.model.Message">
 		<field name="mid" type="long" />

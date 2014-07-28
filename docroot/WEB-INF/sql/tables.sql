@@ -14,7 +14,8 @@ create table LiferayLIMS_Buddy (
 create table LiferayLIMS_Conversation (
 	cid LONG not null primary key,
 	conversationId VARCHAR(75) null,
-	conversationType VARCHAR(75) null
+	conversationType VARCHAR(75) null,
+	updatedAt DATE null
 );
 
 create table LiferayLIMS_Message (

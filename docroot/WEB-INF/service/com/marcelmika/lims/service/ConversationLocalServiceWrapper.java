@@ -277,6 +277,11 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 		return _conversationLocalService.getConversation(conversationId);
 	}
 
+	public void updateConversationTimestamp(long cid)
+		throws java.lang.Exception {
+		_conversationLocalService.updateConversationTimestamp(cid);
+	}
+
 	/**
 	 * @deprecated Renamed to {@link #getWrappedService}
 	 */

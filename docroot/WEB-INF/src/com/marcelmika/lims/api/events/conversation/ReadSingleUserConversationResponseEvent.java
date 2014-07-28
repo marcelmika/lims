@@ -1,5 +1,6 @@
 package com.marcelmika.lims.api.events.conversation;
 
+import com.marcelmika.lims.api.entity.ConversationDetails;
 import com.marcelmika.lims.api.entity.MessageDetails;
 import com.marcelmika.lims.api.events.ResponseEvent;
 
@@ -14,7 +15,7 @@ import java.util.List;
 public class ReadSingleUserConversationResponseEvent extends ResponseEvent {
 
     private Status status;
-    private List<MessageDetails> messages;
+    private ConversationDetails conversation;
 
     public enum Status {
         SUCCESS, // Event was successful
@@ -36,12 +37,12 @@ public class ReadSingleUserConversationResponseEvent extends ResponseEvent {
      *
      * @return ResponseEvent
      */
-    public static ReadSingleUserConversationResponseEvent readConversationSuccess(List<MessageDetails> messages) {
+    public static ReadSingleUserConversationResponseEvent readConversationSuccess(ConversationDetails conversation) {
         ReadSingleUserConversationResponseEvent event = new ReadSingleUserConversationResponseEvent();
 
         event.status = Status.SUCCESS;
         event.success = true;
-        event.messages = messages;
+        event.conversation = conversation;
 
         return event;
     }
@@ -84,7 +85,7 @@ public class ReadSingleUserConversationResponseEvent extends ResponseEvent {
         return status;
     }
 
-    public List<MessageDetails> getMessages() {
-        return messages;
+    public ConversationDetails getConversation() {
+        return conversation;
     }
 }

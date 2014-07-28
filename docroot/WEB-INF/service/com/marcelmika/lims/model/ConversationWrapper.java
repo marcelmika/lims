@@ -17,6 +17,7 @@ package com.marcelmika.lims.model;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +50,7 @@ public class ConversationWrapper implements Conversation,
 		attributes.put("cid", getCid());
 		attributes.put("conversationId", getConversationId());
 		attributes.put("conversationType", getConversationType());
+		attributes.put("updatedAt", getUpdatedAt());
 
 		return attributes;
 	}
@@ -70,6 +72,12 @@ public class ConversationWrapper implements Conversation,
 
 		if (conversationType != null) {
 			setConversationType(conversationType);
+		}
+
+		Date updatedAt = (Date)attributes.get("updatedAt");
+
+		if (updatedAt != null) {
+			setUpdatedAt(updatedAt);
 		}
 	}
 
@@ -143,6 +151,24 @@ public class ConversationWrapper implements Conversation,
 	*/
 	public void setConversationType(java.lang.String conversationType) {
 		_conversation.setConversationType(conversationType);
+	}
+
+	/**
+	* Returns the updated at of this conversation.
+	*
+	* @return the updated at of this conversation
+	*/
+	public java.util.Date getUpdatedAt() {
+		return _conversation.getUpdatedAt();
+	}
+
+	/**
+	* Sets the updated at of this conversation.
+	*
+	* @param updatedAt the updated at of this conversation
+	*/
+	public void setUpdatedAt(java.util.Date updatedAt) {
+		_conversation.setUpdatedAt(updatedAt);
 	}
 
 	public boolean isNew() {

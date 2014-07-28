@@ -251,4 +251,7 @@ public interface ConversationLocalService extends BaseLocalService,
 	public com.marcelmika.lims.model.Conversation getConversation(
 		java.lang.String conversationId)
 		throws com.liferay.portal.kernel.exception.SystemException;
+
+	public void updateConversationTimestamp(long cid)
+		throws java.lang.Exception;
 }

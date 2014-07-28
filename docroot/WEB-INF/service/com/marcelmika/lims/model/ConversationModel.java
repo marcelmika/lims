@@ -23,6 +23,8 @@ import com.liferay.portlet.expando.model.ExpandoBridge;
 
 import java.io.Serializable;
 
+import java.util.Date;
+
 /**
  * The base model interface for the Conversation service. Represents a row in the &quot;LiferayLIMS_Conversation&quot; database table, with each column mapped to a property of this class.
  *
@@ -100,6 +102,20 @@ public interface ConversationModel extends BaseModel<Conversation> {
 	 * @param conversationType the conversation type of this conversation
 	 */
 	public void setConversationType(String conversationType);
+
+	/**
+	 * Returns the updated at of this conversation.
+	 *
+	 * @return the updated at of this conversation
+	 */
+	public Date getUpdatedAt();
+
+	/**
+	 * Sets the updated at of this conversation.
+	 *
+	 * @param updatedAt the updated at of this conversation
+	 */
+	public void setUpdatedAt(Date updatedAt);
 
 	public boolean isNew();
 

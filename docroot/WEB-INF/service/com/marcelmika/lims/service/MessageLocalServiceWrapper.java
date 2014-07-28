@@ -264,7 +264,7 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
 
 	public com.marcelmika.lims.model.Message addMessage(long cid,
 		long creatorId, java.lang.String body, java.lang.String messageHash)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		throws java.lang.Exception {
 		return _messageLocalService.addMessage(cid, creatorId, body, messageHash);
 	}
 

@@ -33,6 +33,7 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,9 +61,10 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "cid", Types.BIGINT },
 			{ "conversationId", Types.VARCHAR },
-			{ "conversationType", Types.VARCHAR }
+			{ "conversationType", Types.VARCHAR },
+			{ "updatedAt", Types.TIMESTAMP }
 		};
-	public static final String TABLE_SQL_CREATE = "create table LiferayLIMS_Conversation (cid LONG not null primary key,conversationId VARCHAR(75) null,conversationType VARCHAR(75) null)";
+	public static final String TABLE_SQL_CREATE = "create table LiferayLIMS_Conversation (cid LONG not null primary key,conversationId VARCHAR(75) null,conversationType VARCHAR(75) null,updatedAt DATE null)";
 	public static final String TABLE_SQL_DROP = "drop table LiferayLIMS_Conversation";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
@@ -114,6 +116,7 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 		attributes.put("cid", getCid());
 		attributes.put("conversationId", getConversationId());
 		attributes.put("conversationType", getConversationType());
+		attributes.put("updatedAt", getUpdatedAt());
 
 		return attributes;
 	}
@@ -136,6 +139,12 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 
 		if (conversationType != null) {
 			setConversationType(conversationType);
+		}
+
+		Date updatedAt = (Date)attributes.get("updatedAt");
+
+		if (updatedAt != null) {
+			setUpdatedAt(updatedAt);
 		}
 	}
 
@@ -183,6 +192,14 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 		_conversationType = conversationType;
 	}
 
+	public Date getUpdatedAt() {
+		return _updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		_updatedAt = updatedAt;
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -221,6 +238,7 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 		conversationImpl.setCid(getCid());
 		conversationImpl.setConversationId(getConversationId());
 		conversationImpl.setConversationType(getConversationType());
+		conversationImpl.setUpdatedAt(getUpdatedAt());
 
 		conversationImpl.resetOriginalValues();
 
@@ -299,12 +317,21 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 			conversationCacheModel.conversationType = null;
 		}
 
+		Date updatedAt = getUpdatedAt();
+
+		if (updatedAt != null) {
+			conversationCacheModel.updatedAt = updatedAt.getTime();
+		}
+		else {
+			conversationCacheModel.updatedAt = Long.MIN_VALUE;
+		}
+
 		return conversationCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(7);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("{cid=");
 		sb.append(getCid());
@@ -312,13 +339,15 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 		sb.append(getConversationId());
 		sb.append(", conversationType=");
 		sb.append(getConversationType());
+		sb.append(", updatedAt=");
+		sb.append(getUpdatedAt());
 		sb.append("}");
 
 		return sb.toString();
 	}
 
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(16);
 
 		sb.append("<model><model-name>");
 		sb.append("com.marcelmika.lims.model.Conversation");
@@ -336,6 +365,10 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 			"<column><column-name>conversationType</column-name><column-value><![CDATA[");
 		sb.append(getConversationType());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>updatedAt</column-name><column-value><![CDATA[");
+		sb.append(getUpdatedAt());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -350,6 +383,7 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 	private String _conversationId;
 	private String _originalConversationId;
 	private String _conversationType;
+	private Date _updatedAt;
 	private long _columnBitmask;
 	private Conversation _escapedModel;
 }

@@ -647,7 +647,7 @@ public class MessageLocalServiceClp implements MessageLocalService {
 
 	public com.marcelmika.lims.model.Message addMessage(long cid,
 		long creatorId, java.lang.String body, java.lang.String messageHash)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		throws java.lang.Exception {
 		Object returnObj = null;
 
 		try {
@@ -666,8 +666,8 @@ public class MessageLocalServiceClp implements MessageLocalService {
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
 
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			if (t instanceof java.lang.Exception) {
+				throw (java.lang.Exception)t;
 			}
 
 			if (t instanceof RuntimeException) {

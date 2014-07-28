@@ -14,19 +14,19 @@
 
 package com.marcelmika.lims.service.impl;
 
+import com.liferay.portal.kernel.exception.SystemException;
 import com.marcelmika.lims.NoSuchConversationException;
 import com.marcelmika.lims.model.Conversation;
 import com.marcelmika.lims.service.base.ConversationLocalServiceBaseImpl;
-import com.liferay.portal.kernel.exception.SystemException;
 
-import java.util.List;
+import java.util.Date;
 
 /**
  * The implementation of the conversation local service.
- *
+ * <p/>
  * <p>
  * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the {@link com.marcelmika.lims.service.ConversationLocalService} interface.
- *
+ * <p/>
  * <p>
  * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
  * </p>
@@ -36,9 +36,9 @@ import java.util.List;
  * @see com.marcelmika.lims.service.ConversationLocalServiceUtil
  */
 public class ConversationLocalServiceImpl
-	extends ConversationLocalServiceBaseImpl {
-	/*
-	 * NOTE FOR DEVELOPERS:
+        extends ConversationLocalServiceBaseImpl {
+    /*
+     * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this interface directly. Always use {@link ConversationLocalServiceUtil} to access the conversation local service.
 	 */
@@ -51,6 +51,7 @@ public class ConversationLocalServiceImpl
             conversationModel = conversationPersistence.create(counterLocalService.increment());
             conversationModel.setConversationId(conversationId);
             conversationModel.setConversationType(conversationType);
+            conversationModel.setUpdatedAt(new Date());
             conversationModel = conversationPersistence.update(conversationModel, false);
         }
 
@@ -63,5 +64,12 @@ public class ConversationLocalServiceImpl
         } catch (NoSuchConversationException e) {
             return null;
         }
+    }
+
+    public void updateConversationTimestamp(long cid) throws Exception {
+        Conversation conversation = conversationPersistence.findByPrimaryKey(cid);
+        conversation.setUpdatedAt(new Date());
+        conversationPersistence.update(conversation, false);
+
     }
 }
