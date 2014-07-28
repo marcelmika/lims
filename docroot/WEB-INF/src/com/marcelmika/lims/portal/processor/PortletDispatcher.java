@@ -22,6 +22,7 @@ public class PortletDispatcher {
     private static final String QUERY_READ_SINGLE_USER_CONVERSATION = "ReadSingleUserConversation";
     private static final String QUERY_CLOSE_SINGLE_USER_CONVERSATION = "CloseSingleUserConversation";
     private static final String QUERY_RESET_UNREAD_MESSAGES_COUNTER = "ResetUnreadMessagesCounter";
+    private static final String QUERY_READ_OPENED_CONVERSATIONS = "ReadOpenedConversations";
     private static final String QUERY_GET_GROUP_LIST = "GetGroupList";
     private static final String QUERY_CREATE_MESSAGE = "CreateMessage";
     private static final String QUERY_UPDATE_BUDDY_PRESENCE = "UpdateBuddyPresence";
@@ -61,6 +62,10 @@ public class PortletDispatcher {
         // Reset Unread Messages Counter
         else if (query.equals(QUERY_RESET_UNREAD_MESSAGES_COUNTER)) {
             processor.resetUnreadMessagesCounter(request, response);
+        }
+        // Read Opened Conversations
+        else if (query.equals(QUERY_READ_OPENED_CONVERSATIONS)) {
+            processor.readOpenedConversations(request, response);
         }
         // Get Group List
         else if (query.equals(QUERY_GET_GROUP_LIST)) {

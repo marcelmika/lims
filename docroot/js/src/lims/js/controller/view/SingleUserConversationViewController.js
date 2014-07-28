@@ -57,6 +57,15 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             model.closeConversation();
         },
 
+        updateModel: function(model) {
+
+            // Vars
+            var conversationModel = this.get('model');
+            // TODO: This should be solved more conceptually
+            conversationModel.set('unreadMessages', model.get('unreadMessages'));
+            conversationModel.load();
+        },
+
         /**
          * Maps all events on Y object to private internal functions
          *

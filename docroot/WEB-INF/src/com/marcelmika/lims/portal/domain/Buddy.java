@@ -230,19 +230,21 @@ public class Buddy {
         buddy.status = buddyDetails.getStatus();
 
         // Add additional info from local service util if it's not set in buddy details
-        try {
-            User user = UserLocalServiceUtil.getUserById(buddyDetails.getBuddyId());
-            if (buddy.screenName == null) {
-                buddy.screenName = user.getScreenName();
-            }
+        if (buddyDetails.getBuddyId() != null) {
+            try {
+                User user = UserLocalServiceUtil.getUserById(buddyDetails.getBuddyId());
+                if (buddy.screenName == null) {
+                    buddy.screenName = user.getScreenName();
+                }
 
-            if (buddy.fullName == null) {
-                buddy.fullName = user.getFullName();
-            }
+                if (buddy.fullName == null) {
+                    buddy.fullName = user.getFullName();
+                }
 
-        } catch (Exception e) {
-            // Do nothing
-            log.error(e);
+            } catch (Exception e) {
+                // Do nothing
+                log.error(e);
+            }
         }
 
         // Relations

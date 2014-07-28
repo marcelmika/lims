@@ -39,8 +39,8 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         var model = this.get('model');
         // Update the display when a new item is added to the list, or when the
         // entire list is reset.
-        model.after('messageAdded', this._addMessage, this);
-        model.after('messagesUpdated', this._renderMessagesList, this);
+        model.after('messageAdded', this._onMessageAdded, this);
+        model.after('messagesUpdated', this._onMessagesUpdated, this);
 
         // Load saved items from server or local storage
         model.load();
@@ -57,6 +57,17 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         }
     },
 
+    _onMessageAdded: function (message) {
+        this._addMessage(message);
+        // Scroll to the last message
+        this._scrollToBottom();
+    },
+
+    _onMessagesUpdated: function (messageList) {
+        this._renderMessagesList(messageList);
+        // Scroll to the last message
+        this._scrollToBottom();
+    },
 
     _addMessage: function (message) {
 
@@ -72,9 +83,6 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         conversation.render();
         // Append to list
         panelContentList.append(conversation.get('container'));
-
-        // Scroll to the last message
-        this._scrollToBottom();
     },
 
     /**
@@ -86,15 +94,23 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     _renderMessagesList: function (messageList) {
 
         // Vars
-        var instance = this;
+        var instance = this,
+            panelContentList = this.get('panelContentList'); // The place where are messages will be rendered to
 
         // Hide indicator if it wasn't already hidden
         this.get('activityIndicator').hide();
+
+        // TODO: Reimplement
+        // This will reset the content of conversation item view
+        this.set('conversationItemViews', []);
+        panelContentList.set('innerHTML', '');
 
         // Create view for each message
         messageList.each(function (message) {
             instance._addMessage(message, false);
         });
+
+
     },
 
     /**

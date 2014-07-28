@@ -17,7 +17,7 @@ Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [], {
             case 'create':
             case 'update':
                 if (options.action === "updatePresence") {
-                    this._updatePresence(data, callback);
+                    this.updatePresence(data, callback);
                 }
                 break;
 

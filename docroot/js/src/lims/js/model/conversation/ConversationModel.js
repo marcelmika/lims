@@ -15,9 +15,6 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
      */
     addMessage: function (message) {
 
-        console.log('hop');
-        console.log(message.get('from'));
-
         // Vars
         var messageList = this.get('messageList');
 
@@ -166,7 +163,7 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
                             // Update message list
                             instance.updateMessageList(response);
                             // Call success
-                            callback(null, response);
+                            callback(null, instance);
                         },
                         failure: function (x, o) {
                             // Call failure
@@ -193,16 +190,16 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
 
         // Vars
         var messageList = this.get('messageList'),
+            messageModels = [],
             index;
 
         for (index = 0; index < messages.length; index++) {
             // TODO: Handle duplicates
-            console.log(messages[index]);
             // Add message to message list
-            messageList.add(
-                new Y.LIMS.Model.MessageItemModel(messages[index])
-            );
+            messageModels.push(new Y.LIMS.Model.MessageItemModel(messages[index]));
         }
+
+        messageList.reset(messageModels);
 
         // Notify about the event
         this.fire('messagesUpdated', messageList);

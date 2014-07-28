@@ -26,6 +26,7 @@
                 "js/model/buddy/BuddyModelItem.js",
                 "js/model/buddy/BuddyModelList.js",
                 "js/model/conversation/ConversationModel.js",
+                "js/model/conversation/ConversationListModel.js",
                 "js/model/message/MessageItemModel.js",
                 "js/model/message/MessageListModel.js",
                 "js/model/group/GroupModelItem.js",

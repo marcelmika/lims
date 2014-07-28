@@ -19,6 +19,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
         this._bindConversations();
         // Attach events
         this._attachEvents();
+        // Timer
+        this._startTimer();
     },
 
     /**
@@ -27,6 +29,12 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
      * @private
      */
     _attachEvents: function () {
+        // Vars
+        var conversationList = this.get('conversationList');
+
+        // Local
+        conversationList.on('conversationsUpdated', this._onConversationsUpdated, this);
+
         // Buddy selected in group
         Y.on('buddySelected', function (buddy) {
             this._onBuddySelected(buddy);
@@ -70,6 +78,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             buddyDetails = this.get('buddyDetails'),            // Currently logged user
             conversationId,                                     // Id of the conversation
             conversationModel,                                  // Model which will be attached to controller
+            conversationList = this.get('conversationList'),
             controller;                                         // Bind controller
 
         // Create js objects for each node
@@ -80,11 +89,15 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
 
             // Bind controller only if it's not in the map
             if (!map.hasOwnProperty(conversationId)) {
+
                 // Create new conversation model
                 conversationModel = new Y.LIMS.Model.ConversationModel({
                     conversationId: conversationId,
                     creator: buddyDetails
                 });
+                // Add conversation model to list
+                conversationList.add(conversationModel);
+
                 // Create new single user conversation and add it to the list
                 controller = new Y.LIMS.Controller.SingleUserConversationViewController({
                     // Id of controller is the id of conversation. Thanks to this we can
@@ -117,6 +130,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             conversationId,                                 // Id of the conversation passed to controller
             conversationModel,                              // Model passed to controller
             conversationContainer,                          // Container node passed to controller
+            conversationList = this.get('conversationList'),
             controller;                                     // Controller (selected or newly created)
 
         // Generate conversation id
@@ -136,6 +150,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                 participants: [buddy],
                 title: buddy.get('fullName')
             });
+            // Add model to list
+            conversationList.add(conversationModel);
 
             // Create new container node
             conversationContainer = Y.Node.create(this.containerTemplate);
@@ -161,12 +177,69 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             // Save the model, thanks to that the conversation will be created on server too.
             conversationModel.save();
 
-            // Add to list
+            // Add controller to map
             map[conversationId] = controller;
         }
 
         // At the end show the controller to the user
         controller.presentViewController();
+    },
+
+    _onConversationsUpdated: function(conversationList) {
+        // Vars
+        var map = this.get('conversationMap'),              // Map that holds all conversation controllers
+            controller,
+            conversationId;                                 // Id of the conversation passed to controller
+
+        conversationList.each(function (conversationModel) {
+            conversationId = conversationModel.get('conversationId');
+            controller = map[conversationId];
+
+            if (controller === null) {
+                // TODO: Create new controller from conversation model
+                 console.log('create new');
+
+            } else {
+               controller.updateModel(conversationModel);
+            }
+
+        });
+
+    },
+
+    /**
+     * Starts timer which periodically refreshes group list
+     *
+     * @private
+     */
+    _startTimer: function () {
+        // Vars
+        var settings = this.get('settings'),
+            conversationList = this.get('conversationList'),
+            timerInterval = this.get('timerInterval');
+
+        // Start only if the chat is enabled
+        if (settings.isChatEnabled()) {
+            // Update all timestamps
+            conversationList.load();
+            // Start periodical update
+            this.set('timer', setInterval(function () {
+                // Load model
+                conversationList.load();
+            }, timerInterval));
+        }
+    },
+
+    /**
+     * Pauses timer which periodically refreshes group list
+     *
+     * @private
+     */
+    _pauseTimer: function () {
+        // Vars
+        var timer = this.get('timer');
+        // Pause
+        clearTimeout(timer);
     }
 
 }, {
@@ -176,6 +249,12 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
         // Map holds all currently opened conversation controllers
         conversationMap: {
             value: {} // default value
+        },
+
+        conversationList: {
+            valueFn: function () {
+                return new Y.LIMS.Model.ConversationListModel();
+            }
         },
 
         // Currently logged user
@@ -194,6 +273,23 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
         conversationNodes: {
             valueFn: function () {
                 return this.get('container').all('.conversation');
+            }
+        },
+
+        // Timer used to set async calls to server
+        timer: {
+            value: null // to be set
+        },
+
+        // Length of timer period
+        timerInterval: {
+            value: 5000 // one minute
+        },
+
+        // Global settings
+        settings: {
+            valueFn: function () {
+                return new Y.LIMS.Core.Settings();
             }
         }
     }

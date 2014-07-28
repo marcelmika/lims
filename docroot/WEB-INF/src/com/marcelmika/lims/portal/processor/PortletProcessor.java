@@ -321,6 +321,49 @@ public class PortletProcessor {
         }
     }
 
+    /**
+     * Reads currently opened conversations
+     *
+     * @param request  ResourceRequest
+     * @param response ResourceResponse
+     */
+    public void readOpenedConversations(ResourceRequest request, ResourceResponse response) {
+        // Create buddy from request
+        Buddy buddy = Buddy.fromResourceRequest(request);
+
+        // Read conversations
+        GetOpenedConversationsResponseEvent responseEvent = conversationCoreService.getOpenedConversations(
+                new GetOpenedConversationsRequestEvent(buddy.toBuddyDetails())
+        );
+
+        // Success
+        if (responseEvent.isSuccess()) {
+            // Map conversation from details
+            List<Conversation> conversationList = Conversation.fromConversationDetailsList(
+                    responseEvent.getConversationDetails()
+            );
+            // Serialize
+            String serializedConversations = JSONFactoryUtil.looseSerialize(conversationList);
+            // Write success to response
+            writeResponse(serializedConversations, HttpStatus.OK, response);
+        }
+        // Failure
+        else {
+            GetOpenedConversationsResponseEvent.Status status = responseEvent.getStatus();
+            // Unauthorized
+            if (status == GetOpenedConversationsResponseEvent.Status.ERROR_NO_SESSION) {
+                writeResponse(HttpStatus.UNAUTHORIZED, response);
+            }
+            // Bad Request
+            else if (status == GetOpenedConversationsResponseEvent.Status.ERROR_WRONG_PARAMETERS) {
+                writeResponse(HttpStatus.BAD_REQUEST, response);
+            }
+            // Everything else is server fault
+            else {
+                writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+            }
+        }
+    }
 
     /**
      * Create new message in conversation
