@@ -185,7 +185,13 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
         controller.presentViewController();
     },
 
-    _onConversationsUpdated: function(conversationList) {
+    /**
+     * Called whenever we receive a notification from long pooling that conversations have been updated
+     *
+     * @param conversationList
+     * @private
+     */
+    _onConversationsUpdated: function (conversationList) {
         // Vars
         var map = this.get('conversationMap'),              // Map that holds all conversation controllers
             controller,
@@ -197,10 +203,11 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
 
             if (controller === null) {
                 // TODO: Create new controller from conversation model
-                 console.log('create new');
+                console.log('create new');
+                console.log(conversationModel);
 
             } else {
-               controller.updateModel(conversationModel);
+                controller.updateModel(conversationModel);
             }
 
         });
@@ -283,7 +290,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
 
         // Length of timer period
         timerInterval: {
-            value: 5000 // one minute
+            value: 7000 // 7 seconds
         },
 
         // Global settings

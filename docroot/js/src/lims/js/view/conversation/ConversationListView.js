@@ -11,8 +11,6 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     model: Y.LIMS.Model.MessageListModel,
 
     initializer: function () {
-        // Init model
-        this._initModel();
         // Attach events
         this._attachEvents();
 
@@ -34,41 +32,61 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         }
     },
 
-    // Init model attached to the view
-    _initModel: function () {
-        var model = this.get('model');
-        // Update the display when a new item is added to the list, or when the
-        // entire list is reset.
-        model.after('messageAdded', this._onMessageAdded, this);
-        model.after('messagesUpdated', this._onMessagesUpdated, this);
-
-        // Load saved items from server or local storage
-        model.load();
-    },
-
+    /**
+     * Attaches listener to elements
+     *
+     * @private
+     */
     _attachEvents: function () {
         // Vars
-        var messageTextField = this.get('messageTextField');
+        var messageTextField = this.get('messageTextField'),
+            model = this.get('model');
 
-        // Attach event to text field
-        if (messageTextField !== null) {
+        // Attach events to text field
+        if (messageTextField) {
             messageTextField.on('keydown', this._onMessageTextFieldUpdated, this);
             messageTextField.on('focus', this._onMessageTextFieldUpdated, this);
         }
+
+        // Attach events to model
+        model.after('messageAdded', this._onMessageAdded, this);
+        model.after('messagesUpdated', this._onMessagesUpdated, this);
     },
 
+    /**
+     * Called when a single message is added to the model
+     *
+     * @param message
+     * @private
+     */
     _onMessageAdded: function (message) {
+        // Add a single message to the list
         this._addMessage(message);
         // Scroll to the last message
         this._scrollToBottom();
     },
 
+    /**
+     * Called when the whole message list is updated
+     *
+     * @param messageList
+     * @private
+     */
     _onMessagesUpdated: function (messageList) {
+        // Hide indicator if it wasn't already hidden
+        this.get('activityIndicator').hide();
+        // Render the list
         this._renderMessagesList(messageList);
         // Scroll to the last message
         this._scrollToBottom();
     },
 
+    /**
+     * Renders and adds a single message to the list
+     *
+     * @param message
+     * @private
+     */
     _addMessage: function (message) {
 
         // Vars
@@ -86,7 +104,7 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     },
 
     /**
-     * Renders message list
+     * Renders the whole message list
      *
      * @param messageList
      * @private
@@ -94,23 +112,28 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     _renderMessagesList: function (messageList) {
 
         // Vars
-        var instance = this,
-            panelContentList = this.get('panelContentList'); // The place where are messages will be rendered to
+        var instance = this; // Store the instance
 
-        // Hide indicator if it wasn't already hidden
-        this.get('activityIndicator').hide();
-
-        // TODO: Reimplement
-        // This will reset the content of conversation item view
-        this.set('conversationItemViews', []);
-        panelContentList.set('innerHTML', '');
+        // Reset content
+        this._resetListView();
 
         // Create view for each message
         messageList.each(function (message) {
             instance._addMessage(message, false);
         });
+    },
 
-
+    /**
+     * Removes the whole content from  list view
+     *
+     * @private
+     */
+    _resetListView: function () {
+        // Vars
+        var panelContentList = this.get('panelContentList');
+        // This will reset the content of conversation item view
+        panelContentList.set('innerHTML', '');
+        this.set('conversationItemViews', []);
     },
 
     /**
@@ -168,7 +191,7 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         panelContent: {
             valueFn: function () {
                 var container = this.get('container').one('.panel-content');
-                if (container !== undefined) {
+                if (container) {
                     return container;
                 }
             }
@@ -178,7 +201,7 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         panelContentList: {
             valueFn: function () {
                 var container = this.get('container').one('.panel-content ul');
-                if (container !== undefined) {
+                if (container) {
                     return container;
                 }
             }
@@ -188,7 +211,7 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         activityIndicator: {
             valueFn: function () {
                 var container = this.get('container').one('.preloader');
-                if (container !== undefined) {
+                if (container) {
                     return container;
                 }
             }
@@ -198,7 +221,7 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         messageTextField: {
             valueFn: function () {
                 var container = this.get('container').one('.panel-input textarea');
-                if (container !== undefined) {
+                if (container) {
                     return container;
                 }
             }

@@ -32,9 +32,9 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
 
             // Reset counter of unread messages
             model.resetUnreadMessagesCounter();
-            // Hide badge
+            // Hide badge since it's not needed anymore
             this._hideBadge();
-            // Start timer
+            // Start timer that periodically updates timestamps of messages
             this._startTimer();
         },
 
@@ -62,14 +62,13 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          *
          * @param model
          */
-        updateModel: function(model) {
-
+        updateModel: function (model) {
             // Vars
             var conversationModel = this.get('model'), instance = this;
 
             // There is no need to update conversation which hasn't been changed
             if (conversationModel.get('etag') !== model.get('etag')) {
-                conversationModel.load(function(err) {
+                conversationModel.load(function (err) {
                     if (!err) {
                         instance._onConversationUpdated();
                     }
@@ -84,11 +83,9 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          */
         _attachEvents: function () {
             // Vars
-            var model = this.get('model'),
-                listView = this.get('listView');
+            var listView = this.get('listView');
 
             // Local events
-            model.after('conversationUpdated', this._onConversationUpdated, this);
             listView.on('messageSubmitted', this._onMessageSubmitted, this);
         },
 
@@ -136,10 +133,11 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             // Vars
             var unreadMessages = this.get('model').get('unreadMessages');
 
-            // Hide badge if needed
+            // No unread messages
             if (unreadMessages === 0) {
                 this._hideBadge();
             } else {
+                // TODO: Play sound
                 this._showBadge();
             }
 
@@ -147,6 +145,12 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             this._updateBadge(unreadMessages);
         },
 
+        /**
+         * Called when user submits message from text area
+         *
+         * @param event
+         * @private
+         */
         _onMessageSubmitted: function (event) {
             // Vars
             var model = this.get('model'),                  // Conversation model
@@ -168,7 +172,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          * @private
          */
         _updateBadge: function (value) {
-             // Vars
+            // Vars
             var badge = this.get('badge');
 
             // Update value
