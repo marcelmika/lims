@@ -131,10 +131,10 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          */
         _onConversationUpdated: function () {
             // Vars
-            var unreadMessages = this.get('model').get('unreadMessages');
+            var unreadMessagesCount = this.get('model').get('unreadMessagesCount');
 
             // No unread messages
-            if (unreadMessages === 0) {
+            if (unreadMessagesCount === 0) {
                 this._hideBadge();
             } else {
                 // TODO: Play sound
@@ -142,7 +142,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             }
 
             // Update badge count
-            this._updateBadge(unreadMessages);
+            this._updateBadge(unreadMessagesCount);
         },
 
         /**

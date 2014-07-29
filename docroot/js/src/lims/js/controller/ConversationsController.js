@@ -125,13 +125,13 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
     _onBuddySelected: function (buddy) {
 
         // Vars
-        var map = this.get('conversationMap'),              // Map that holds all conversation controllers
-            buddyDetails = this.get('buddyDetails'),        // Currently logged user
-            conversationId,                                 // Id of the conversation passed to controller
-            conversationModel,                              // Model passed to controller
-            conversationContainer,                          // Container node passed to controller
-            conversationList = this.get('conversationList'),
-            controller;                                     // Controller (selected or newly created)
+        var map = this.get('conversationMap'),                  // Map that holds all conversation controllers
+            buddyDetails = this.get('buddyDetails'),            // Currently logged user
+            conversationId,                                     // Id of the conversation passed to controller
+            conversationModel,                                  // Model passed to controller
+            conversationContainer,                              // Container node passed to controller
+            conversationList = this.get('conversationList'),    // Holds all conversation models
+            controller;                                         // Controller (selected or newly created)
 
         // Generate conversation id
         conversationId = this._generateConversationId(buddyDetails.get('screenName'), buddy.get('screenName'));
@@ -160,7 +160,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                 Y.Lang.sub(this.template, {
                     conversationTitle: conversationModel.get('title'),
                     triggerTitle: conversationModel.get('title'),
-                    unreadMessages: conversationModel.get('unreadMessages')
+                    unreadMessages: conversationModel.get('unreadMessagesCount')
                 })
             );
             // Add panel container to parent container
@@ -193,25 +193,64 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
      */
     _onConversationsUpdated: function (conversationList) {
         // Vars
-        var map = this.get('conversationMap'),              // Map that holds all conversation controllers
-            controller,
-            conversationId;                                 // Id of the conversation passed to controller
+        var map = this.get('conversationMap'),                  // Map that holds all conversation controllers
+            controller,                                         // Controller from map or newly created
+            instance = this,
+            buddyDetails = this.get('buddyDetails'),            // Currently logged user
+            conversationModelList = this.get('conversationList'),    // Holds all conversation models
+            conversationContainer,                              // Container node passed to controller
+            container = this.get('container'),
+            conversationId;                                     // Id of the conversation passed to controller
 
         conversationList.each(function (conversationModel) {
+            // Get the conversation id from model
             conversationId = conversationModel.get('conversationId');
-            controller = map[conversationId];
 
-            if (controller === null) {
-                // TODO: Create new controller from conversation model
-                console.log('create new');
-                console.log(conversationModel);
-
-            } else {
+            // Controller exists
+            if (map.hasOwnProperty(conversationId)) {
+                controller = map[conversationId];
                 controller.updateModel(conversationModel);
             }
+            // Create new controller from conversation model
+            else {
+                console.log('create new: MSG: ' + conversationModel.get('unreadMessagesCount'));
+                // Add creator to model
+                conversationModel.set('creator', buddyDetails);
+                conversationModel.set('etag', 0);
+                // Add it to list
+                conversationModelList.add(conversationModel);
 
+                // Create new container node
+                conversationContainer = Y.Node.create(instance.containerTemplate);
+                // Set from template
+                conversationContainer.set('innerHTML',
+                    Y.Lang.sub(instance.template, {
+                        conversationTitle: conversationModel.get('title'),
+                        triggerTitle: conversationModel.get('title'),
+                        unreadMessages: conversationModel.get('unreadMessagesCount')
+                    })
+                );
+                // Add panel container to parent container
+                container.append(conversationContainer);
+
+                // Create new single user conversation controller
+                controller = new Y.LIMS.Controller.SingleUserConversationViewController({
+                    buddyDetails: buddyDetails,
+                    container: conversationContainer,
+                    controllerId: conversationId,
+                    model: conversationModel
+                });
+
+                // Add controller to map
+                map[conversationId] = controller;
+
+                conversationModel.load(function (err) {
+                    if (!err) {
+                        controller.showViewController();
+                    }
+                });
+            }
         });
-
     },
 
     /**

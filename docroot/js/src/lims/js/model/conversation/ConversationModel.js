@@ -206,7 +206,7 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
         // Update from response
         this.setAttrs({
             etag: conversation.etag,
-            unreadMessages: conversation.unreadMessagesCount
+            unreadMessagesCount: conversation.unreadMessagesCount
         });
 
         for (index = 0; index < conversation.messages.length; index++) {
@@ -247,7 +247,7 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
             value: null
         },
 
-        unreadMessages: {
+        unreadMessagesCount: {
             value: 0 // default value
         },
 

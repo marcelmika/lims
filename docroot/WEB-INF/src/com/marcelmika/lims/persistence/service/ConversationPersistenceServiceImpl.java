@@ -104,7 +104,6 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
                     conversationModel.getCid()
             );
 
-
             // Map to persistence
             List<Message> messages = new LinkedList<Message>();
             for (com.marcelmika.lims.model.Message messageModel : messageModels) {
@@ -119,8 +118,6 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             );
             // Add to conversation
             conversation.setUnreadMessagesCount(participant.getUnreadMessagesCount());
-
-            log.info("UNREAD: " + participant.getUnreadMessagesCount());
 
             // Call Success
             return ReadSingleUserConversationResponseEvent.readConversationSuccess(
@@ -259,7 +256,7 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             successMessage.setFrom(buddy);
 
             // Call Success
-            return SendMessageResponseEvent.sendMessageSuccess(message.toMessageDetails());
+            return SendMessageResponseEvent.sendMessageSuccess(successMessage.toMessageDetails());
 
         } catch (Exception exception) {
             // Call Failure

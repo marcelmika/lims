@@ -56,10 +56,14 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
      * @return Participant Model
      * @throws SystemException
      */
-    public Participant addParticipant(Long cid, Long participantId) throws SystemException, NoSuchParticipantException {
+    public Participant addParticipant(Long cid, Long participantId) throws SystemException {
         // Fetch possible existing conversation
-        Participant participantModel = participantPersistence.findByCidParticipantId(cid, participantId);
-        if (participantModel == null) {
+        Participant participantModel;
+        try {
+            // Try to find participant
+            participantModel = participantPersistence.findByCidParticipantId(cid, participantId);
+        } catch (NoSuchParticipantException e) {
+            // No participant was found, so create a new one
             participantModel = participantPersistence.create(counterLocalService.increment());
             participantModel.setCid(cid);
             participantModel.setParticipantId(participantId);
@@ -126,6 +130,11 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
 
         // Close conversation
         participant.setIsOpened(false);
+
+        // Since the panel was closed no active panel is currently there
+        Panel panel = PanelLocalServiceUtil.getPanelByUser(participant.getParticipantId());
+        panel.setActivePanelId("");
+        panelPersistence.update(panel, false);
 
         // Save
         participantPersistence.update(participant, false);
