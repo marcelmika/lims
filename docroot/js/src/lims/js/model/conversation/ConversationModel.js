@@ -140,11 +140,10 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
             // Called whenever the load() method is called. Sends a request
             // to server which loads a list of messages related to the conversation.
             case 'read':
-                console.log('tak se ukaz: ' + etag);
                 // Construct parameters
                 parameters = Y.JSON.stringify({
                     conversationId: this.get('conversationId'),
-                    entityTag: etag,
+                    etag: etag,
                     pagination: {
                         firstMessageId: null,
                         lastMessageId: null,
@@ -161,23 +160,21 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
                     },
                     on: {
                         success: function (id, o) {
-                            // Deserialize response
-                            if (o.status === 204) {
-                                console.log("Je to kesly");
+                            console.log("SUCCESS: " + o.status);
+                            // If nothing has change the server return 304 (not modified)
+                            // As a result we don't need to refresh anything
+                            if (o.status === 304) {
                                 callback(null, instance);
                                 return;
                             }
-
+                            // Deserialize response
                             response = Y.JSON.parse(o.response);
-
-                            console.log('vyslo to');
-//                            // Update message list
+                            // Update message list
                             instance.updateConversation(response);
                             // Call success
                             callback(null, instance);
                         },
                         failure: function (x, o) {
-                            console.log(o.status);
                             // Call failure
                             callback("Cannot read conversation", o);
                         }
@@ -205,27 +202,20 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
             messageModels = [],
             index;
 
-        console.log("tak jsem tady: " + conversation.etag);
-
-        this.set('etag', conversation.etag);
-
+        console.log(conversation);
         // Update from response
-//        this.set('etag', conversation.etag);
         this.setAttrs({
             etag: conversation.etag,
             unreadMessages: conversation.unreadMessagesCount
         });
 
-        if(conversation.messages !== undefined) {
-
-            for (index = 0; index < conversation.messages.length; index++) {
-                // TODO: Handle duplicates
-                // Add message to message list
-                messageModels.push(new Y.LIMS.Model.MessageItemModel(conversation.messages[index]));
-            }
-
-            messageList.reset(messageModels);
+        for (index = 0; index < conversation.messages.length; index++) {
+            // TODO: Handle messages which wasn't yet sent to server
+            // Add message to message list
+            messageModels.push(new Y.LIMS.Model.MessageItemModel(conversation.messages[index]));
         }
+
+        messageList.reset(messageModels);
 
         // Notify about the event
         this.fire('messagesUpdated', messageList);

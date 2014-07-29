@@ -213,42 +213,6 @@ public interface ParticipantPersistence extends BasePersistence<Participant> {
 			com.marcelmika.lims.NoSuchParticipantException;
 
 	/**
-	* Returns the participant where participantId = &#63; or throws a {@link com.marcelmika.lims.NoSuchParticipantException} if it could not be found.
-	*
-	* @param participantId the participant ID
-	* @return the matching participant
-	* @throws com.marcelmika.lims.NoSuchParticipantException if a matching participant could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public com.marcelmika.lims.model.Participant findByConversationIdParticipantId(
-		long participantId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.NoSuchParticipantException;
-
-	/**
-	* Returns the participant where participantId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	*
-	* @param participantId the participant ID
-	* @return the matching participant, or <code>null</code> if a matching participant could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public com.marcelmika.lims.model.Participant fetchByConversationIdParticipantId(
-		long participantId)
-		throws com.liferay.portal.kernel.exception.SystemException;
-
-	/**
-	* Returns the participant where participantId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	*
-	* @param participantId the participant ID
-	* @param retrieveFromCache whether to use the finder cache
-	* @return the matching participant, or <code>null</code> if a matching participant could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public com.marcelmika.lims.model.Participant fetchByConversationIdParticipantId(
-		long participantId, boolean retrieveFromCache)
-		throws com.liferay.portal.kernel.exception.SystemException;
-
-	/**
 	* Returns the participant where cid = &#63; and participantId = &#63; or throws a {@link com.marcelmika.lims.NoSuchParticipantException} if it could not be found.
 	*
 	* @param cid the cid
@@ -257,7 +221,7 @@ public interface ParticipantPersistence extends BasePersistence<Participant> {
 	* @throws com.marcelmika.lims.NoSuchParticipantException if a matching participant could not be found
 	* @throws SystemException if a system exception occurred
 	*/
-	public com.marcelmika.lims.model.Participant findBycid_ParticipantId(
+	public com.marcelmika.lims.model.Participant findByCidParticipantId(
 		long cid, long participantId)
 		throws com.liferay.portal.kernel.exception.SystemException,
 			com.marcelmika.lims.NoSuchParticipantException;
@@ -270,7 +234,7 @@ public interface ParticipantPersistence extends BasePersistence<Participant> {
 	* @return the matching participant, or <code>null</code> if a matching participant could not be found
 	* @throws SystemException if a system exception occurred
 	*/
-	public com.marcelmika.lims.model.Participant fetchBycid_ParticipantId(
+	public com.marcelmika.lims.model.Participant fetchByCidParticipantId(
 		long cid, long participantId)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -283,7 +247,7 @@ public interface ParticipantPersistence extends BasePersistence<Participant> {
 	* @return the matching participant, or <code>null</code> if a matching participant could not be found
 	* @throws SystemException if a system exception occurred
 	*/
-	public com.marcelmika.lims.model.Participant fetchBycid_ParticipantId(
+	public com.marcelmika.lims.model.Participant fetchByCidParticipantId(
 		long cid, long participantId, boolean retrieveFromCache)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
@@ -467,18 +431,6 @@ public interface ParticipantPersistence extends BasePersistence<Participant> {
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
-	* Removes the participant where participantId = &#63; from the database.
-	*
-	* @param participantId the participant ID
-	* @return the participant that was removed
-	* @throws SystemException if a system exception occurred
-	*/
-	public com.marcelmika.lims.model.Participant removeByConversationIdParticipantId(
-		long participantId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.NoSuchParticipantException;
-
-	/**
 	* Removes the participant where cid = &#63; and participantId = &#63; from the database.
 	*
 	* @param cid the cid
@@ -486,7 +438,7 @@ public interface ParticipantPersistence extends BasePersistence<Participant> {
 	* @return the participant that was removed
 	* @throws SystemException if a system exception occurred
 	*/
-	public com.marcelmika.lims.model.Participant removeBycid_ParticipantId(
+	public com.marcelmika.lims.model.Participant removeByCidParticipantId(
 		long cid, long participantId)
 		throws com.liferay.portal.kernel.exception.SystemException,
 			com.marcelmika.lims.NoSuchParticipantException;
@@ -521,16 +473,6 @@ public interface ParticipantPersistence extends BasePersistence<Participant> {
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
-	* Returns the number of participants where participantId = &#63;.
-	*
-	* @param participantId the participant ID
-	* @return the number of matching participants
-	* @throws SystemException if a system exception occurred
-	*/
-	public int countByConversationIdParticipantId(long participantId)
-		throws com.liferay.portal.kernel.exception.SystemException;
-
-	/**
 	* Returns the number of participants where cid = &#63; and participantId = &#63;.
 	*
 	* @param cid the cid
@@ -538,7 +480,7 @@ public interface ParticipantPersistence extends BasePersistence<Participant> {
 	* @return the number of matching participants
 	* @throws SystemException if a system exception occurred
 	*/
-	public int countBycid_ParticipantId(long cid, long participantId)
+	public int countByCidParticipantId(long cid, long participantId)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**

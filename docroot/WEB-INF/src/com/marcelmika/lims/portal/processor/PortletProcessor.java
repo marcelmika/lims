@@ -217,15 +217,13 @@ public class PortletProcessor {
             conversation = Conversation.fromConversationDetails(responseEvent.getConversation());
 
             // Client has fresh copy so there is no need to send it
-            if (conversation.getEtag().equals(parameters.getEntityTag())) {
-                log.info("Return from cache");
-                writeResponse(HttpStatus.NO_CONTENT, response);
+            if (conversation.getEtag().equals(parameters.getEtag())) {
+                writeResponse(HttpStatus.NOT_MODIFIED, response);
                 return;
             }
 
             // Serialize
             String serialized = JSONFactoryUtil.looseSerialize(conversation, "messages", "messages.from");
-            log.info(serialized);
             // Write success to response
             writeResponse(serialized, HttpStatus.OK, response);
         }

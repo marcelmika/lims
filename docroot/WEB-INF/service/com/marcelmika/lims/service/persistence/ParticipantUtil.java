@@ -323,50 +323,6 @@ public class ParticipantUtil {
 	}
 
 	/**
-	* Returns the participant where participantId = &#63; or throws a {@link com.marcelmika.lims.NoSuchParticipantException} if it could not be found.
-	*
-	* @param participantId the participant ID
-	* @return the matching participant
-	* @throws com.marcelmika.lims.NoSuchParticipantException if a matching participant could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public static com.marcelmika.lims.model.Participant findByConversationIdParticipantId(
-		long participantId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.NoSuchParticipantException {
-		return getPersistence().findByConversationIdParticipantId(participantId);
-	}
-
-	/**
-	* Returns the participant where participantId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	*
-	* @param participantId the participant ID
-	* @return the matching participant, or <code>null</code> if a matching participant could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public static com.marcelmika.lims.model.Participant fetchByConversationIdParticipantId(
-		long participantId)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getPersistence().fetchByConversationIdParticipantId(participantId);
-	}
-
-	/**
-	* Returns the participant where participantId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	*
-	* @param participantId the participant ID
-	* @param retrieveFromCache whether to use the finder cache
-	* @return the matching participant, or <code>null</code> if a matching participant could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public static com.marcelmika.lims.model.Participant fetchByConversationIdParticipantId(
-		long participantId, boolean retrieveFromCache)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getPersistence()
-				   .fetchByConversationIdParticipantId(participantId,
-			retrieveFromCache);
-	}
-
-	/**
 	* Returns the participant where cid = &#63; and participantId = &#63; or throws a {@link com.marcelmika.lims.NoSuchParticipantException} if it could not be found.
 	*
 	* @param cid the cid
@@ -375,11 +331,11 @@ public class ParticipantUtil {
 	* @throws com.marcelmika.lims.NoSuchParticipantException if a matching participant could not be found
 	* @throws SystemException if a system exception occurred
 	*/
-	public static com.marcelmika.lims.model.Participant findBycid_ParticipantId(
+	public static com.marcelmika.lims.model.Participant findByCidParticipantId(
 		long cid, long participantId)
 		throws com.liferay.portal.kernel.exception.SystemException,
 			com.marcelmika.lims.NoSuchParticipantException {
-		return getPersistence().findBycid_ParticipantId(cid, participantId);
+		return getPersistence().findByCidParticipantId(cid, participantId);
 	}
 
 	/**
@@ -390,10 +346,10 @@ public class ParticipantUtil {
 	* @return the matching participant, or <code>null</code> if a matching participant could not be found
 	* @throws SystemException if a system exception occurred
 	*/
-	public static com.marcelmika.lims.model.Participant fetchBycid_ParticipantId(
+	public static com.marcelmika.lims.model.Participant fetchByCidParticipantId(
 		long cid, long participantId)
 		throws com.liferay.portal.kernel.exception.SystemException {
-		return getPersistence().fetchBycid_ParticipantId(cid, participantId);
+		return getPersistence().fetchByCidParticipantId(cid, participantId);
 	}
 
 	/**
@@ -405,11 +361,11 @@ public class ParticipantUtil {
 	* @return the matching participant, or <code>null</code> if a matching participant could not be found
 	* @throws SystemException if a system exception occurred
 	*/
-	public static com.marcelmika.lims.model.Participant fetchBycid_ParticipantId(
+	public static com.marcelmika.lims.model.Participant fetchByCidParticipantId(
 		long cid, long participantId, boolean retrieveFromCache)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return getPersistence()
-				   .fetchBycid_ParticipantId(cid, participantId,
+				   .fetchByCidParticipantId(cid, participantId,
 			retrieveFromCache);
 	}
 
@@ -632,21 +588,6 @@ public class ParticipantUtil {
 	}
 
 	/**
-	* Removes the participant where participantId = &#63; from the database.
-	*
-	* @param participantId the participant ID
-	* @return the participant that was removed
-	* @throws SystemException if a system exception occurred
-	*/
-	public static com.marcelmika.lims.model.Participant removeByConversationIdParticipantId(
-		long participantId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.NoSuchParticipantException {
-		return getPersistence()
-				   .removeByConversationIdParticipantId(participantId);
-	}
-
-	/**
 	* Removes the participant where cid = &#63; and participantId = &#63; from the database.
 	*
 	* @param cid the cid
@@ -654,11 +595,11 @@ public class ParticipantUtil {
 	* @return the participant that was removed
 	* @throws SystemException if a system exception occurred
 	*/
-	public static com.marcelmika.lims.model.Participant removeBycid_ParticipantId(
+	public static com.marcelmika.lims.model.Participant removeByCidParticipantId(
 		long cid, long participantId)
 		throws com.liferay.portal.kernel.exception.SystemException,
 			com.marcelmika.lims.NoSuchParticipantException {
-		return getPersistence().removeBycid_ParticipantId(cid, participantId);
+		return getPersistence().removeByCidParticipantId(cid, participantId);
 	}
 
 	/**
@@ -697,18 +638,6 @@ public class ParticipantUtil {
 	}
 
 	/**
-	* Returns the number of participants where participantId = &#63;.
-	*
-	* @param participantId the participant ID
-	* @return the number of matching participants
-	* @throws SystemException if a system exception occurred
-	*/
-	public static int countByConversationIdParticipantId(long participantId)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getPersistence().countByConversationIdParticipantId(participantId);
-	}
-
-	/**
 	* Returns the number of participants where cid = &#63; and participantId = &#63;.
 	*
 	* @param cid the cid
@@ -716,9 +645,9 @@ public class ParticipantUtil {
 	* @return the number of matching participants
 	* @throws SystemException if a system exception occurred
 	*/
-	public static int countBycid_ParticipantId(long cid, long participantId)
+	public static int countByCidParticipantId(long cid, long participantId)
 		throws com.liferay.portal.kernel.exception.SystemException {
-		return getPersistence().countBycid_ParticipantId(cid, participantId);
+		return getPersistence().countByCidParticipantId(cid, participantId);
 	}
 
 	/**

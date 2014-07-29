@@ -253,7 +253,8 @@ public interface ParticipantLocalService extends BaseLocalService,
 	*/
 	public com.marcelmika.lims.model.Participant addParticipant(
 		java.lang.Long cid, java.lang.Long participantId)
-		throws com.liferay.portal.kernel.exception.SystemException;
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.NoSuchParticipantException;
 
 	/**
 	* Given method updates all participants related to the conversation. By updated we mean incrementing of the
@@ -320,6 +321,20 @@ public interface ParticipantLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<com.marcelmika.lims.model.Participant> getConversationParticipants(
 		java.lang.Long cid)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.NoSuchParticipantException;
+
+	/**
+	* Returns particular participant based on the id
+	*
+	* @param participantId Id of the participant
+	* @return participant
+	* @throws NoSuchParticipantException
+	* @throws SystemException
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public com.marcelmika.lims.model.Participant getParticipant(
+		java.lang.Long cid, java.lang.Long participantId)
 		throws com.liferay.portal.kernel.exception.SystemException,
 			com.marcelmika.lims.NoSuchParticipantException;
 }

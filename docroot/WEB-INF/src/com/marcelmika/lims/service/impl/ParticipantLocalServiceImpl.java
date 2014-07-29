@@ -56,9 +56,9 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
      * @return Participant Model
      * @throws SystemException
      */
-    public Participant addParticipant(Long cid, Long participantId) throws SystemException {
+    public Participant addParticipant(Long cid, Long participantId) throws SystemException, NoSuchParticipantException {
         // Fetch possible existing conversation
-        Participant participantModel = participantPersistence.fetchBycid_ParticipantId(cid, participantId);
+        Participant participantModel = participantPersistence.findByCidParticipantId(cid, participantId);
         if (participantModel == null) {
             participantModel = participantPersistence.create(counterLocalService.increment());
             participantModel.setCid(cid);
@@ -122,7 +122,7 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
         Conversation conversation = conversationPersistence.findByConversationId(conversationId);
 
         // Find participant
-        Participant participant = participantPersistence.findBycid_ParticipantId(conversation.getCid(), participantId);
+        Participant participant = participantPersistence.findByCidParticipantId(conversation.getCid(), participantId);
 
         // Close conversation
         participant.setIsOpened(false);
@@ -147,7 +147,7 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
         Conversation conversation = conversationPersistence.findByConversationId(conversationId);
 
         // Find participant
-        Participant participant = participantPersistence.findBycid_ParticipantId(conversation.getCid(), participantId);
+        Participant participant = participantPersistence.findByCidParticipantId(conversation.getCid(), participantId);
 
         // Set counter to zero
         participant.setUnreadMessagesCount(0);
@@ -179,5 +179,18 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
     public List<Participant> getConversationParticipants(Long cid) throws NoSuchParticipantException, SystemException {
         return participantPersistence.findByCid(cid);
     }
+
+    /**
+     * Returns particular participant based on the id
+     *
+     * @param participantId Id of the participant
+     * @return participant
+     * @throws NoSuchParticipantException
+     * @throws SystemException
+     */
+    public Participant getParticipant(Long cid, Long participantId) throws NoSuchParticipantException, SystemException {
+        return participantPersistence.findByCidParticipantId(cid, participantId);
+    }
+
 
 }

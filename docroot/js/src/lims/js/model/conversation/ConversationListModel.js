@@ -57,49 +57,15 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
     sync: function (action, options, callback) {
 
         // Vars
-        var
-//            content,            // Content which will be sent as body in request
-//            parameters,         // Request parameters
-            instance = this,    // Save the instance so we can call its methods in diff context
+        var instance = this,    // Save the instance so we can call its methods in diff context
             response,           // Response from the server
             settings = new Y.LIMS.Core.Settings();
 
         switch (action) {
 
-            // This is called whenever the conversation is created i.e whenever
-            // the user clicks on any of the buddies in the group
-            case 'create':
-//                // Simply take the conversation object, serialize it to json
-//                // and send.
-//                content = Y.JSON.stringify(this.toJSON());
-//
-//                // Send the request
-//                Y.io(settings.getServerRequestUrl(), {
-//                    method: "POST",
-//                    data: {
-//                        query: "CreateSingleUserConversation",
-//                        content: content
-//                    },
-//                    on: {
-//                        success: function (id, o) {
-//                            // Deserialize response
-//                            response = Y.JSON.parse(o.response);
-//                            // Call success
-//                            callback(null, response);
-//                        },
-//                        failure: function (x, o) {
-//                            // Call failure
-//                            callback("Cannot create new conversation", o);
-//                        }
-//                    }
-//                });
-                return;
-
             // Called whenever the load() method is called. Sends a request
-            // to server which loads a list of messages related to the conversation.
+            // to server which loads a list of opened conversations
             case 'read':
-
-                console.log('reading conversations');
 
                 // Send the request
                 Y.io(settings.getServerRequestUrl(), {
@@ -117,7 +83,6 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
                             callback(null, response);
                         },
                         failure: function (x, o) {
-                            console.log('failure');
                             // Call failure
                             callback("Cannot create new conversation", o);
                         }
@@ -126,12 +91,16 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
 
                 return;
 
+            case 'create':
+            case 'delete':
+            case 'update':
+                break;
             default:
                 callback('Invalid action');
         }
     },
 
-    updateConversationList: function(response) {
+    updateConversationList: function (response) {
 
         // Vars
         var index, conversation, conversationModels = [];

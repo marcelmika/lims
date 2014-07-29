@@ -110,8 +110,17 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             for (com.marcelmika.lims.model.Message messageModel : messageModels) {
                 messages.add(Message.fromMessageModel(messageModel));
             }
-
+            // Add to conversation
             conversation.setMessages(messages);
+
+            // Get participant
+            com.marcelmika.lims.model.Participant participant = ParticipantLocalServiceUtil.getParticipant(
+                    conversationModel.getCid(), event.getParticipant().getBuddyId()
+            );
+            // Add to conversation
+            conversation.setUnreadMessagesCount(participant.getUnreadMessagesCount());
+
+            log.info("UNREAD: " + participant.getUnreadMessagesCount());
 
             // Call Success
             return ReadSingleUserConversationResponseEvent.readConversationSuccess(

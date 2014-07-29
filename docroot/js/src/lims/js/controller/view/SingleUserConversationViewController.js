@@ -57,13 +57,24 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             model.closeConversation();
         },
 
+        /**
+         * Takes new model and updates local model based on it's contents
+         *
+         * @param model
+         */
         updateModel: function(model) {
 
             // Vars
-            var conversationModel = this.get('model');
-            // TODO: This should be solved more conceptually
-            conversationModel.set('unreadMessages', model.get('unreadMessages'));
-            conversationModel.load();
+            var conversationModel = this.get('model'), instance = this;
+
+            // There is no need to update conversation which hasn't been changed
+            if (conversationModel.get('etag') !== model.get('etag')) {
+                conversationModel.load(function(err) {
+                    if (!err) {
+                        instance._onConversationUpdated();
+                    }
+                });
+            }
         },
 
         /**
@@ -123,17 +134,17 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          */
         _onConversationUpdated: function () {
             // Vars
-            var unreadMessages = this.get('model').get('unreadMessages'),
-                badge = this.get('badge');
+            var unreadMessages = this.get('model').get('unreadMessages');
 
             // Hide badge if needed
             if (unreadMessages === 0) {
-                badge.hide();
+                this._hideBadge();
             } else {
-                badge.show();
+                this._showBadge();
             }
 
-            badge.set('innerHTML', unreadMessages);
+            // Update badge count
+            this._updateBadge(unreadMessages);
         },
 
         _onMessageSubmitted: function (event) {
@@ -151,6 +162,22 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         },
 
         /**
+         * Updates badge value
+         *
+         * @param value
+         * @private
+         */
+        _updateBadge: function (value) {
+             // Vars
+            var badge = this.get('badge');
+
+            // Update value
+            if (badge) {
+                badge.set('innerHTML', value);
+            }
+        },
+
+        /**
          * Hides badge
          *
          * @private
@@ -160,7 +187,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             var badge = this.get('badge');
 
             // Hide badge
-            if (badge !== null) {
+            if (badge) {
                 badge.hide();
             }
         },
@@ -175,7 +202,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             var badge = this.get('badge');
 
             // Show badge
-            if (badge !== null) {
+            if (badge) {
                 badge.show();
             }
         }

@@ -12,7 +12,7 @@ public class ReadConversationParameters {
 
     private String conversationId;
     private Pagination pagination;
-    private Integer entityTag;
+    private Integer etag;
 
     public String getConversationId() {
         return conversationId;
@@ -30,12 +30,12 @@ public class ReadConversationParameters {
         this.pagination = pagination;
     }
 
-    public Integer getEntityTag() {
-        return entityTag;
+    public Integer getEtag() {
+        return etag;
     }
 
-    public void setEntityTag(Integer entityTag) {
-        this.entityTag = entityTag;
+    public void setEtag(Integer etag) {
+        this.etag = etag;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ReadConversationParameters {
         return "ReadConversationParameters{" +
                 "conversationId='" + conversationId + '\'' +
                 ", pagination=" + pagination +
-                ", entityTag=" + entityTag +
+                ", etag=" + etag +
                 '}';
     }
 }

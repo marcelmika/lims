@@ -95,28 +95,16 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 			ParticipantModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCid",
 			new String[] { Long.class.getName() });
-	public static final FinderPath FINDER_PATH_FETCH_BY_CONVERSATIONIDPARTICIPANTID =
-		new FinderPath(ParticipantModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_FETCH_BY_CIDPARTICIPANTID = new FinderPath(ParticipantModelImpl.ENTITY_CACHE_ENABLED,
 			ParticipantModelImpl.FINDER_CACHE_ENABLED, ParticipantImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByConversationIdParticipantId",
-			new String[] { Long.class.getName() },
-			ParticipantModelImpl.PARTICIPANTID_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_CONVERSATIONIDPARTICIPANTID =
-		new FinderPath(ParticipantModelImpl.ENTITY_CACHE_ENABLED,
-			ParticipantModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByConversationIdParticipantId",
-			new String[] { Long.class.getName() });
-	public static final FinderPath FINDER_PATH_FETCH_BY_CID_PARTICIPANTID = new FinderPath(ParticipantModelImpl.ENTITY_CACHE_ENABLED,
-			ParticipantModelImpl.FINDER_CACHE_ENABLED, ParticipantImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchBycid_ParticipantId",
+			FINDER_CLASS_NAME_ENTITY, "fetchByCidParticipantId",
 			new String[] { Long.class.getName(), Long.class.getName() },
 			ParticipantModelImpl.CID_COLUMN_BITMASK |
 			ParticipantModelImpl.PARTICIPANTID_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_CID_PARTICIPANTID = new FinderPath(ParticipantModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_COUNT_BY_CIDPARTICIPANTID = new FinderPath(ParticipantModelImpl.ENTITY_CACHE_ENABLED,
 			ParticipantModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countBycid_ParticipantId",
+			"countByCidParticipantId",
 			new String[] { Long.class.getName(), Long.class.getName() });
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_PARTICIPANTIDISOPENED =
 		new FinderPath(ParticipantModelImpl.ENTITY_CACHE_ENABLED,
@@ -161,11 +149,7 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 		EntityCacheUtil.putResult(ParticipantModelImpl.ENTITY_CACHE_ENABLED,
 			ParticipantImpl.class, participant.getPrimaryKey(), participant);
 
-		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONVERSATIONIDPARTICIPANTID,
-			new Object[] { Long.valueOf(participant.getParticipantId()) },
-			participant);
-
-		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CID_PARTICIPANTID,
+		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CIDPARTICIPANTID,
 			new Object[] {
 				Long.valueOf(participant.getCid()),
 				Long.valueOf(participant.getParticipantId())
@@ -246,49 +230,28 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 	protected void cacheUniqueFindersCache(Participant participant) {
 		if (participant.isNew()) {
 			Object[] args = new Object[] {
-					Long.valueOf(participant.getParticipantId())
-				};
-
-			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CONVERSATIONIDPARTICIPANTID,
-				args, Long.valueOf(1));
-			FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONVERSATIONIDPARTICIPANTID,
-				args, participant);
-
-			args = new Object[] {
 					Long.valueOf(participant.getCid()),
 					Long.valueOf(participant.getParticipantId())
 				};
 
-			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CID_PARTICIPANTID,
+			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CIDPARTICIPANTID,
 				args, Long.valueOf(1));
-			FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CID_PARTICIPANTID,
+			FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CIDPARTICIPANTID,
 				args, participant);
 		}
 		else {
 			ParticipantModelImpl participantModelImpl = (ParticipantModelImpl)participant;
 
 			if ((participantModelImpl.getColumnBitmask() &
-					FINDER_PATH_FETCH_BY_CONVERSATIONIDPARTICIPANTID.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						Long.valueOf(participant.getParticipantId())
-					};
-
-				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CONVERSATIONIDPARTICIPANTID,
-					args, Long.valueOf(1));
-				FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONVERSATIONIDPARTICIPANTID,
-					args, participant);
-			}
-
-			if ((participantModelImpl.getColumnBitmask() &
-					FINDER_PATH_FETCH_BY_CID_PARTICIPANTID.getColumnBitmask()) != 0) {
+					FINDER_PATH_FETCH_BY_CIDPARTICIPANTID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
 						Long.valueOf(participant.getCid()),
 						Long.valueOf(participant.getParticipantId())
 					};
 
-				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CID_PARTICIPANTID,
+				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CIDPARTICIPANTID,
 					args, Long.valueOf(1));
-				FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CID_PARTICIPANTID,
+				FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CIDPARTICIPANTID,
 					args, participant);
 			}
 		}
@@ -298,46 +261,23 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 		ParticipantModelImpl participantModelImpl = (ParticipantModelImpl)participant;
 
 		Object[] args = new Object[] {
-				Long.valueOf(participant.getParticipantId())
-			};
-
-		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONVERSATIONIDPARTICIPANTID,
-			args);
-		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CONVERSATIONIDPARTICIPANTID,
-			args);
-
-		if ((participantModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_CONVERSATIONIDPARTICIPANTID.getColumnBitmask()) != 0) {
-			args = new Object[] {
-					Long.valueOf(participantModelImpl.getOriginalParticipantId())
-				};
-
-			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CONVERSATIONIDPARTICIPANTID,
-				args);
-			FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CONVERSATIONIDPARTICIPANTID,
-				args);
-		}
-
-		args = new Object[] {
 				Long.valueOf(participant.getCid()),
 				Long.valueOf(participant.getParticipantId())
 			};
 
-		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CID_PARTICIPANTID,
-			args);
-		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CID_PARTICIPANTID,
-			args);
+		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CIDPARTICIPANTID, args);
+		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CIDPARTICIPANTID, args);
 
 		if ((participantModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_CID_PARTICIPANTID.getColumnBitmask()) != 0) {
+				FINDER_PATH_FETCH_BY_CIDPARTICIPANTID.getColumnBitmask()) != 0) {
 			args = new Object[] {
 					Long.valueOf(participantModelImpl.getOriginalCid()),
 					Long.valueOf(participantModelImpl.getOriginalParticipantId())
 				};
 
-			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CID_PARTICIPANTID,
+			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CIDPARTICIPANTID,
 				args);
-			FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CID_PARTICIPANTID,
+			FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CIDPARTICIPANTID,
 				args);
 		}
 	}
@@ -1006,142 +946,6 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 	}
 
 	/**
-	 * Returns the participant where participantId = &#63; or throws a {@link com.marcelmika.lims.NoSuchParticipantException} if it could not be found.
-	 *
-	 * @param participantId the participant ID
-	 * @return the matching participant
-	 * @throws com.marcelmika.lims.NoSuchParticipantException if a matching participant could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Participant findByConversationIdParticipantId(long participantId)
-		throws NoSuchParticipantException, SystemException {
-		Participant participant = fetchByConversationIdParticipantId(participantId);
-
-		if (participant == null) {
-			StringBundler msg = new StringBundler(4);
-
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-			msg.append("participantId=");
-			msg.append(participantId);
-
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
-			}
-
-			throw new NoSuchParticipantException(msg.toString());
-		}
-
-		return participant;
-	}
-
-	/**
-	 * Returns the participant where participantId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	 *
-	 * @param participantId the participant ID
-	 * @return the matching participant, or <code>null</code> if a matching participant could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Participant fetchByConversationIdParticipantId(long participantId)
-		throws SystemException {
-		return fetchByConversationIdParticipantId(participantId, true);
-	}
-
-	/**
-	 * Returns the participant where participantId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	 *
-	 * @param participantId the participant ID
-	 * @param retrieveFromCache whether to use the finder cache
-	 * @return the matching participant, or <code>null</code> if a matching participant could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Participant fetchByConversationIdParticipantId(long participantId,
-		boolean retrieveFromCache) throws SystemException {
-		Object[] finderArgs = new Object[] { participantId };
-
-		Object result = null;
-
-		if (retrieveFromCache) {
-			result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_CONVERSATIONIDPARTICIPANTID,
-					finderArgs, this);
-		}
-
-		if (result instanceof Participant) {
-			Participant participant = (Participant)result;
-
-			if ((participantId != participant.getParticipantId())) {
-				result = null;
-			}
-		}
-
-		if (result == null) {
-			StringBundler query = new StringBundler(2);
-
-			query.append(_SQL_SELECT_PARTICIPANT_WHERE);
-
-			query.append(_FINDER_COLUMN_CONVERSATIONIDPARTICIPANTID_PARTICIPANTID_2);
-
-			String sql = query.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query q = session.createQuery(sql);
-
-				QueryPos qPos = QueryPos.getInstance(q);
-
-				qPos.add(participantId);
-
-				List<Participant> list = q.list();
-
-				result = list;
-
-				Participant participant = null;
-
-				if (list.isEmpty()) {
-					FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONVERSATIONIDPARTICIPANTID,
-						finderArgs, list);
-				}
-				else {
-					participant = list.get(0);
-
-					cacheResult(participant);
-
-					if ((participant.getParticipantId() != participantId)) {
-						FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONVERSATIONIDPARTICIPANTID,
-							finderArgs, participant);
-					}
-				}
-
-				return participant;
-			}
-			catch (Exception e) {
-				throw processException(e);
-			}
-			finally {
-				if (result == null) {
-					FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CONVERSATIONIDPARTICIPANTID,
-						finderArgs);
-				}
-
-				closeSession(session);
-			}
-		}
-		else {
-			if (result instanceof List<?>) {
-				return null;
-			}
-			else {
-				return (Participant)result;
-			}
-		}
-	}
-
-	/**
 	 * Returns the participant where cid = &#63; and participantId = &#63; or throws a {@link com.marcelmika.lims.NoSuchParticipantException} if it could not be found.
 	 *
 	 * @param cid the cid
@@ -1150,9 +954,9 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 	 * @throws com.marcelmika.lims.NoSuchParticipantException if a matching participant could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
-	public Participant findBycid_ParticipantId(long cid, long participantId)
+	public Participant findByCidParticipantId(long cid, long participantId)
 		throws NoSuchParticipantException, SystemException {
-		Participant participant = fetchBycid_ParticipantId(cid, participantId);
+		Participant participant = fetchByCidParticipantId(cid, participantId);
 
 		if (participant == null) {
 			StringBundler msg = new StringBundler(6);
@@ -1185,9 +989,9 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 	 * @return the matching participant, or <code>null</code> if a matching participant could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
-	public Participant fetchBycid_ParticipantId(long cid, long participantId)
+	public Participant fetchByCidParticipantId(long cid, long participantId)
 		throws SystemException {
-		return fetchBycid_ParticipantId(cid, participantId, true);
+		return fetchByCidParticipantId(cid, participantId, true);
 	}
 
 	/**
@@ -1199,14 +1003,14 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 	 * @return the matching participant, or <code>null</code> if a matching participant could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
-	public Participant fetchBycid_ParticipantId(long cid, long participantId,
+	public Participant fetchByCidParticipantId(long cid, long participantId,
 		boolean retrieveFromCache) throws SystemException {
 		Object[] finderArgs = new Object[] { cid, participantId };
 
 		Object result = null;
 
 		if (retrieveFromCache) {
-			result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_CID_PARTICIPANTID,
+			result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_CIDPARTICIPANTID,
 					finderArgs, this);
 		}
 
@@ -1224,9 +1028,9 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 
 			query.append(_SQL_SELECT_PARTICIPANT_WHERE);
 
-			query.append(_FINDER_COLUMN_CID_PARTICIPANTID_CID_2);
+			query.append(_FINDER_COLUMN_CIDPARTICIPANTID_CID_2);
 
-			query.append(_FINDER_COLUMN_CID_PARTICIPANTID_PARTICIPANTID_2);
+			query.append(_FINDER_COLUMN_CIDPARTICIPANTID_PARTICIPANTID_2);
 
 			String sql = query.toString();
 
@@ -1250,7 +1054,7 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 				Participant participant = null;
 
 				if (list.isEmpty()) {
-					FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CID_PARTICIPANTID,
+					FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CIDPARTICIPANTID,
 						finderArgs, list);
 				}
 				else {
@@ -1260,7 +1064,7 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 
 					if ((participant.getCid() != cid) ||
 							(participant.getParticipantId() != participantId)) {
-						FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CID_PARTICIPANTID,
+						FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CIDPARTICIPANTID,
 							finderArgs, participant);
 					}
 				}
@@ -1272,7 +1076,7 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 			}
 			finally {
 				if (result == null) {
-					FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CID_PARTICIPANTID,
+					FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CIDPARTICIPANTID,
 						finderArgs);
 				}
 
@@ -1826,20 +1630,6 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 	}
 
 	/**
-	 * Removes the participant where participantId = &#63; from the database.
-	 *
-	 * @param participantId the participant ID
-	 * @return the participant that was removed
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Participant removeByConversationIdParticipantId(long participantId)
-		throws NoSuchParticipantException, SystemException {
-		Participant participant = findByConversationIdParticipantId(participantId);
-
-		return remove(participant);
-	}
-
-	/**
 	 * Removes the participant where cid = &#63; and participantId = &#63; from the database.
 	 *
 	 * @param cid the cid
@@ -1847,9 +1637,9 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 	 * @return the participant that was removed
 	 * @throws SystemException if a system exception occurred
 	 */
-	public Participant removeBycid_ParticipantId(long cid, long participantId)
+	public Participant removeByCidParticipantId(long cid, long participantId)
 		throws NoSuchParticipantException, SystemException {
-		Participant participant = findBycid_ParticipantId(cid, participantId);
+		Participant participant = findByCidParticipantId(cid, participantId);
 
 		return remove(participant);
 	}
@@ -1934,60 +1724,6 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 	}
 
 	/**
-	 * Returns the number of participants where participantId = &#63;.
-	 *
-	 * @param participantId the participant ID
-	 * @return the number of matching participants
-	 * @throws SystemException if a system exception occurred
-	 */
-	public int countByConversationIdParticipantId(long participantId)
-		throws SystemException {
-		Object[] finderArgs = new Object[] { participantId };
-
-		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CONVERSATIONIDPARTICIPANTID,
-				finderArgs, this);
-
-		if (count == null) {
-			StringBundler query = new StringBundler(2);
-
-			query.append(_SQL_COUNT_PARTICIPANT_WHERE);
-
-			query.append(_FINDER_COLUMN_CONVERSATIONIDPARTICIPANTID_PARTICIPANTID_2);
-
-			String sql = query.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query q = session.createQuery(sql);
-
-				QueryPos qPos = QueryPos.getInstance(q);
-
-				qPos.add(participantId);
-
-				count = (Long)q.uniqueResult();
-			}
-			catch (Exception e) {
-				throw processException(e);
-			}
-			finally {
-				if (count == null) {
-					count = Long.valueOf(0);
-				}
-
-				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CONVERSATIONIDPARTICIPANTID,
-					finderArgs, count);
-
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
-	}
-
-	/**
 	 * Returns the number of participants where cid = &#63; and participantId = &#63;.
 	 *
 	 * @param cid the cid
@@ -1995,11 +1731,11 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 	 * @return the number of matching participants
 	 * @throws SystemException if a system exception occurred
 	 */
-	public int countBycid_ParticipantId(long cid, long participantId)
+	public int countByCidParticipantId(long cid, long participantId)
 		throws SystemException {
 		Object[] finderArgs = new Object[] { cid, participantId };
 
-		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CID_PARTICIPANTID,
+		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CIDPARTICIPANTID,
 				finderArgs, this);
 
 		if (count == null) {
@@ -2007,9 +1743,9 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 
 			query.append(_SQL_COUNT_PARTICIPANT_WHERE);
 
-			query.append(_FINDER_COLUMN_CID_PARTICIPANTID_CID_2);
+			query.append(_FINDER_COLUMN_CIDPARTICIPANTID_CID_2);
 
-			query.append(_FINDER_COLUMN_CID_PARTICIPANTID_PARTICIPANTID_2);
+			query.append(_FINDER_COLUMN_CIDPARTICIPANTID_PARTICIPANTID_2);
 
 			String sql = query.toString();
 
@@ -2036,7 +1772,7 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 					count = Long.valueOf(0);
 				}
 
-				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CID_PARTICIPANTID,
+				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CIDPARTICIPANTID,
 					finderArgs, count);
 
 				closeSession(session);
@@ -2199,11 +1935,8 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 	private static final String _SQL_COUNT_PARTICIPANT = "SELECT COUNT(participant) FROM Participant participant";
 	private static final String _SQL_COUNT_PARTICIPANT_WHERE = "SELECT COUNT(participant) FROM Participant participant WHERE ";
 	private static final String _FINDER_COLUMN_CID_CID_2 = "participant.cid = ?";
-	private static final String _FINDER_COLUMN_CONVERSATIONIDPARTICIPANTID_PARTICIPANTID_2 =
-		"participant.participantId = ?";
-	private static final String _FINDER_COLUMN_CID_PARTICIPANTID_CID_2 = "participant.cid = ? AND ";
-	private static final String _FINDER_COLUMN_CID_PARTICIPANTID_PARTICIPANTID_2 =
-		"participant.participantId = ?";
+	private static final String _FINDER_COLUMN_CIDPARTICIPANTID_CID_2 = "participant.cid = ? AND ";
+	private static final String _FINDER_COLUMN_CIDPARTICIPANTID_PARTICIPANTID_2 = "participant.participantId = ?";
 	private static final String _FINDER_COLUMN_PARTICIPANTIDISOPENED_PARTICIPANTID_2 =
 		"participant.participantId = ? AND ";
 	private static final String _FINDER_COLUMN_PARTICIPANTIDISOPENED_ISOPENED_2 = "participant.isOpened = ?";

@@ -281,7 +281,8 @@ public class ParticipantLocalServiceUtil {
 	*/
 	public static com.marcelmika.lims.model.Participant addParticipant(
 		java.lang.Long cid, java.lang.Long participantId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.NoSuchParticipantException {
 		return getService().addParticipant(cid, participantId);
 	}
 
@@ -359,6 +360,21 @@ public class ParticipantLocalServiceUtil {
 		throws com.liferay.portal.kernel.exception.SystemException,
 			com.marcelmika.lims.NoSuchParticipantException {
 		return getService().getConversationParticipants(cid);
+	}
+
+	/**
+	* Returns particular participant based on the id
+	*
+	* @param participantId Id of the participant
+	* @return participant
+	* @throws NoSuchParticipantException
+	* @throws SystemException
+	*/
+	public static com.marcelmika.lims.model.Participant getParticipant(
+		java.lang.Long cid, java.lang.Long participantId)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.NoSuchParticipantException {
+		return getService().getParticipant(cid, participantId);
 	}
 
 	public static void clearService() {

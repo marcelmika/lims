@@ -65,10 +65,7 @@
         <finder name='Cid' return-type='Collection'>
             <finder-column name='cid'/>
         </finder>
-        <finder name='ConversationIdParticipantId' return-type='Participant'>
-            <finder-column name='participantId'/>
-        </finder>
-        <finder name='cid_ParticipantId' return-type='Participant'>
+        <finder name='CidParticipantId' return-type='Participant'>
             <finder-column name='cid'/>
             <finder-column name='participantId'/>
         </finder>
