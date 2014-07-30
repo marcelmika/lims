@@ -163,7 +163,12 @@ public class PortletProcessor {
 
         // Success
         if (responseEvent.isSuccess()) {
-            writeResponse(HttpStatus.NO_CONTENT, response);
+            // Map conversation from response
+            Conversation conversationResponse = Conversation.fromConversationDetails(responseEvent.getConversation());
+            // Serialize
+            String serialized = JSONFactoryUtil.looseSerialize(conversationResponse);
+            // Write success to response
+            writeResponse(serialized, HttpStatus.OK, response);
         }
         // Failure
         else {

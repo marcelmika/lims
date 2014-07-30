@@ -1,6 +1,7 @@
 package com.marcelmika.lims.persistence.domain;
 
 import com.marcelmika.lims.api.entity.BuddyDetails;
+import com.marcelmika.lims.model.Participant;
 
 /**
  * @author Ing. Marcel Mika
@@ -33,6 +34,15 @@ public class Buddy {
         buddy.setScreenName(buddyDetails.getScreenName());
         buddy.setPassword(buddyDetails.getPassword());
         buddy.setStatus(buddyDetails.getStatus());
+
+        return buddy;
+    }
+
+    public static Buddy fromParticipantModel(Participant participant) {
+        // Create new buddy
+        Buddy buddy = new Buddy();
+        // Map data from model
+        buddy.setBuddyId(participant.getParticipantId());
 
         return buddy;
     }

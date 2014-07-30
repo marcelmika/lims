@@ -127,7 +127,7 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
                             // Deserialize response
                             response = Y.JSON.parse(o.response);
                             // Call success
-                            callback(null, response);
+                            callback(null, instance);
                         },
                         failure: function (x, o) {
                             // Call failure
@@ -160,7 +160,6 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
                     },
                     on: {
                         success: function (id, o) {
-                            console.log("SUCCESS: " + o.status);
                             // If nothing has change the server return 304 (not modified)
                             // As a result we don't need to refresh anything
                             if (o.status === 304) {

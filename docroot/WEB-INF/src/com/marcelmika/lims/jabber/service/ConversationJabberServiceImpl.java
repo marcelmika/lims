@@ -12,7 +12,6 @@ import com.marcelmika.lims.jabber.domain.Message;
 import com.marcelmika.lims.jabber.domain.SingleUserConversation;
 import com.marcelmika.lims.jabber.session.UserSession;
 import com.marcelmika.lims.jabber.session.store.UserSessionStore;
-import com.marcelmika.lims.portal.domain.Conversation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -213,7 +212,7 @@ public class ConversationJabberServiceImpl implements ConversationJabberService 
      * Creates a single user conversation
      *
      * @param conversation SingleUserConversation
-     * @param session UserSession
+     * @param session      UserSession
      * @return CreateConversationResponseEvent
      */
     private CreateConversationResponseEvent createSingleUserConversation(SingleUserConversation conversation,
@@ -223,16 +222,18 @@ public class ConversationJabberServiceImpl implements ConversationJabberService 
 
         // Create new conversation via manager
         try {
-            manager.createConversation(conversation);
+            // Create conversation via manager
+            SingleUserConversation singleUserConversation = manager.createConversation(conversation);
+
+            // Call success
+            return CreateConversationResponseEvent.createConversationSuccess(
+                    singleUserConversation.toConversationDetails()
+            );
         } catch (JabberException exception) {
             return CreateConversationResponseEvent.createConversationFailure(
                     CreateConversationResponseEvent.Status.ERROR_JABBER, exception
             );
         }
-
-        // todo: add conversation
-        // Success
-        return CreateConversationResponseEvent.createConversationSuccess();
     }
 
     /**
@@ -256,7 +257,7 @@ public class ConversationJabberServiceImpl implements ConversationJabberService 
                     SendMessageResponseEvent.Status.ERROR_JABBER, exception);
         }
 
-        return SendMessageResponseEvent.sendMessageSuccess();
+        return SendMessageResponseEvent.sendMessageSuccess(message.toMessageDetails());
     }
 
 

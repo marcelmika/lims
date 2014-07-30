@@ -49,13 +49,28 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
                     conversation.getConversationId(), conversation.getConversationType().toString()
             );
 
+            // Add participants to response
+            List<Buddy> participants = conversation.getParticipants();
+
             // Save Participants
-            for (Buddy buddy : conversation.getParticipants()) {
+            for (Buddy buddy : participants) {
                 ParticipantLocalServiceUtil.addParticipant(conversationModel.getCid(), buddy.getBuddyId());
             }
 
             // Creator is also participant
-            ParticipantLocalServiceUtil.addParticipant(conversationModel.getCid(), creator.getBuddyId());
+            com.marcelmika.lims.model.Participant participantModel = ParticipantLocalServiceUtil.addParticipant(
+                    conversationModel.getCid(), creator.getBuddyId()
+            );
+            participants.add(creator);
+
+            // Create updated conversation
+            conversation = Conversation.fromConversationModel(conversationModel);
+            conversation.setUnreadMessagesCount(participantModel.getUnreadMessagesCount());
+            conversation.setBuddy(creator);
+            conversation.setParticipants(participants);
+
+            // Call Success
+            return CreateConversationResponseEvent.createConversationSuccess(conversation.toConversationDetails());
         }
         // Failure
         catch (Exception exception) {
@@ -63,9 +78,6 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
                     CreateConversationResponseEvent.Status.ERROR_PERSISTENCE, exception
             );
         }
-
-        // Success
-        return CreateConversationResponseEvent.createConversationSuccess();
     }
 
     /**
@@ -271,7 +283,6 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
      *
      * @param event request event for method
      * @return response event for  method
-     * @deprecated TODO: This should be joined and not constructed manually
      */
     @Override
     public GetOpenedConversationsResponseEvent getOpenedConversations(GetOpenedConversationsRequestEvent event) {
@@ -284,7 +295,9 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             List<Conversation> conversations = new LinkedList<Conversation>();
 
             // Find participants
-            List<Participant> buddyParticipates = ParticipantLocalServiceUtil.getOpenedConversations(buddy.getBuddyId());
+            List<Participant> buddyParticipates = ParticipantLocalServiceUtil.getOpenedConversations(
+                    buddy.getBuddyId()
+            );
 
             // Find conversations where the user participates
             for (Participant participates : buddyParticipates) {
@@ -307,9 +320,7 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
                 // Map to persistence
                 List<Buddy> participants = new LinkedList<Buddy>();
                 for (Participant participantModel : participantModels) {
-                    Buddy participantBuddy = new Buddy();
-                    participantBuddy.setBuddyId(participantModel.getParticipantId());
-                    participants.add(participantBuddy);
+                    participants.add(Buddy.fromParticipantModel(participantModel));
                 }
 
                 // Finally, we have everything we needed

@@ -1,5 +1,6 @@
 package com.marcelmika.lims.api.events.conversation;
 
+import com.marcelmika.lims.api.entity.ConversationDetails;
 import com.marcelmika.lims.api.events.ResponseEvent;
 
 /**
@@ -10,6 +11,7 @@ import com.marcelmika.lims.api.events.ResponseEvent;
  */
 public class CreateConversationResponseEvent extends ResponseEvent {
 
+    private ConversationDetails conversation;
     private Status status;
 
     public enum Status {
@@ -34,9 +36,10 @@ public class CreateConversationResponseEvent extends ResponseEvent {
      *
      * @return ResponseEvent
      */
-    public static CreateConversationResponseEvent createConversationSuccess() {
+    public static CreateConversationResponseEvent createConversationSuccess(ConversationDetails conversation) {
         CreateConversationResponseEvent event = new CreateConversationResponseEvent();
 
+        event.conversation = conversation;
         event.status = Status.SUCCESS;
         event.success = true;
 
@@ -78,5 +81,9 @@ public class CreateConversationResponseEvent extends ResponseEvent {
 
     public Status getStatus() {
         return status;
+    }
+
+    public ConversationDetails getConversation() {
+        return conversation;
     }
 }
