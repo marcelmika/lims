@@ -77,6 +77,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             map = this.get('conversationMap'),                  // Map that holds all conversation controllers
             buddyDetails = this.get('buddyDetails'),            // Currently logged user
             conversationId,                                     // Id of the conversation
+            unreadMessagesCount,                                // Unread messages count
             conversationModel,                                  // Model which will be attached to controller
             conversationList = this.get('conversationList'),
             controller;                                         // Bind controller
@@ -86,6 +87,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             // Since the conversation was already rendered it contains a conversation ID which we need get
             // from the attribute on conversation node
             conversationId = conversationNode.attr('data-conversationId');
+            unreadMessagesCount = conversationNode.attr('data-unreadMessagesCount');
 
             // Bind controller only if it's not in the map
             if (!map.hasOwnProperty(conversationId)) {
@@ -93,7 +95,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                 // Create new conversation model
                 conversationModel = new Y.LIMS.Model.ConversationModel({
                     conversationId: conversationId,
-                    creator: buddyDetails
+                    creator: buddyDetails,
+                    unreadMessagesCount: unreadMessagesCount
                 });
                 // Add conversation model to list
                 conversationList.add(conversationModel);
@@ -107,6 +110,12 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                     model: conversationModel,
                     buddyDetails: buddyDetails
                 });
+
+                // Remove controller from map if it's unloaded from the screen
+                controller.on('panelDidUnload', function () {
+                    delete map[conversationId];
+                });
+
                 // Add to map
                 map[conversationId] = controller;
             }
@@ -177,6 +186,11 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             // Save the model, thanks to that the conversation will be created on server too.
             conversationModel.save();
 
+            // Remove controller from map if it's unloaded from the screen
+            controller.on('panelDidUnload', function () {
+                delete map[conversationId];
+            });
+
             // Add controller to map
             map[conversationId] = controller;
         }
@@ -193,15 +207,19 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
      */
     _onConversationsUpdated: function (conversationList) {
         // Vars
-        var map = this.get('conversationMap'),                  // Map that holds all conversation controllers
-            controller,                                         // Controller from map or newly created
-            instance = this,
-            buddyDetails = this.get('buddyDetails'),            // Currently logged user
-            conversationModelList = this.get('conversationList'),    // Holds all conversation models
-            conversationContainer,                              // Container node passed to controller
-            container = this.get('container'),
-            conversationId;                                     // Id of the conversation passed to controller
+        var map = this.get('conversationMap'),                      // Map that holds all conversation controllers
+            controller,                                             // Controller from map or newly created
+            instance = this,                                        // This
+            buddyDetails = this.get('buddyDetails'),                // Currently logged user
+            conversationModelList = this.get('conversationList'),   // Holds all conversation models
+            conversationContainer,                                  // Container node passed to controller
+            container = this.get('container'),                      // Container of all conversations
+            notification = this.get('notification'),                // Notification handler
+            conversationId;                                         // Id of the conversation passed to controller
 
+        // For each conversation check if new controller should be created if some
+        // of the participants send a message to the user. Or if we should only update
+        // existing conversation
         conversationList.each(function (conversationModel) {
             // Get the conversation id from model
             conversationId = conversationModel.get('conversationId');
@@ -211,11 +229,17 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                 controller = map[conversationId];
                 controller.updateModel(conversationModel);
             }
-            // Create new controller from conversation model
-            else {
-                console.log('create new: MSG: ' + conversationModel.get('unreadMessagesCount'));
+            // Create new controller from conversation model only if there is
+            // a pending message. This check needs to be here because it is possible
+            // that the user closed the conversation but in a mean time received
+            // the long poll update. This will open the conversation again. Obviously we
+            // don't want that.
+            else if (conversationModel.get('unreadMessagesCount') !== 0) {
                 // Add creator to model
                 conversationModel.set('creator', buddyDetails);
+                // etag must be send to 0 because we want the controller
+                // to refresh the message list. Since we have received
+                // model with already set etag we need to set it to 0 here.
                 conversationModel.set('etag', 0);
                 // Add it to list
                 conversationModelList.add(conversationModel);
@@ -241,12 +265,22 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                     model: conversationModel
                 });
 
+                // Remove controller from map if it's unloaded from the screen
+                controller.on('panelDidUnload', function () {
+                    delete map[conversationId];
+                });
+
                 // Add controller to map
                 map[conversationId] = controller;
 
+                // Load conversation model (e.g. messages, etc.)
                 conversationModel.load(function (err) {
                     if (!err) {
+                        // Show the controller to the user
                         controller.showViewController();
+                        // We have created a controller based on long polling message.
+                        // We thus need to notify the user about received message.
+                        notification.notify();
                     }
                 });
             }
@@ -312,6 +346,13 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
         container: {
             valueFn: function () {
                 return Y.one('#chatBar .chat-tabs');
+            }
+        },
+
+        // Notification
+        notification: {
+            valueFn: function () {
+                return new Y.LIMS.Core.Notification();
             }
         },
 

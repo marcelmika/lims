@@ -64,12 +64,32 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          */
         updateModel: function (model) {
             // Vars
-            var conversationModel = this.get('model'), instance = this;
+            var conversationModel = this.get('model'),      // Current conversation model
+                currentUnreadMessagesCount,                 // Current unread message count
+                updatedUnreadMessageCount,                  // Unread message count of updated model
+                notification = this.get('notification'),    // Notification handler
+                instance = this;                            // This
 
             // There is no need to update conversation which hasn't been changed
             if (conversationModel.get('etag') !== model.get('etag')) {
-                conversationModel.load(function (err) {
+
+                // Remember the message count
+                currentUnreadMessagesCount = conversationModel.get('unreadMessagesCount');
+
+                // Update model
+                conversationModel.load(function (err, conversation) {
                     if (!err) {
+                        // New message count
+                        updatedUnreadMessageCount = conversation.get('unreadMessagesCount');
+
+                        console.log("WAS: " + currentUnreadMessagesCount + " IS: " + updatedUnreadMessageCount);
+
+                        // If the unread message count has been increased notify user
+                        if (updatedUnreadMessageCount > currentUnreadMessagesCount) {
+                            // Play sound
+                            notification.notify();
+                        }
+                        // Callback
                         instance._onConversationUpdated();
                     }
                 });
@@ -137,7 +157,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             if (unreadMessagesCount === 0) {
                 this._hideBadge();
             } else {
-                // TODO: Play sound
+                // Show badge
                 this._showBadge();
             }
 
@@ -252,6 +272,12 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
                         container: container.one('.panel-window'),
                         model: model
                     });
+                }
+            },
+
+            notification: {
+                valueFn: function () {
+                    return new Y.LIMS.Core.Notification();
                 }
             },
 

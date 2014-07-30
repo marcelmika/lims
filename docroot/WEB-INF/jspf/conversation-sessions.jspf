@@ -32,7 +32,9 @@
     </c:choose>
 
     <%-- Conversation --%>
-    <li class="conversation ${selectedClass} ${hiddenClass}" data-conversationId="${conversation.conversationId}">
+    <li class="conversation ${selectedClass} ${hiddenClass}"
+        data-conversationId="${conversation.conversationId}"
+        data-unreadMessagesCount="${conversation.unreadMessagesCount}">
         <div class="panel-trigger">
             <span class="trigger-name">${conversation.title}</span>
             <div class="unread ${hiddenBadgeClass}">${conversation.unreadMessagesCount}</div>

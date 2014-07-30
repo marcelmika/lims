@@ -48,7 +48,19 @@
         <span class="conversation-item-name">{fullName}</span>
         <span class="conversation-item-date" title="{created}">{createdPrettified}</span>
         <span class="conversation-item-text">{content}</span>
+
         <div class="clear"></div>
     </div>
     <div class="clear"></div>
+</script>
+
+<%-- This template HTML will be used to play a sound via swf file --%>
+<script type="text/x-template" id="lims-notification-template">
+        <object type="application/x-shockwave-flash"
+                data="{url}"
+                width="1"
+                height="1"
+                id="lims-notification">
+            <param name="movie" value="{url}" />
+        </object>
 </script>

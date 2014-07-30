@@ -1,33 +1,40 @@
 /**
- * Created by marcelmika on 4/12/14.
+ * Date Formatter
+ *
+ * Contains function that handle formatting of date
  */
+Y.namespace('LIMS.Core');
 
-Y.namespace('LIMS');
+Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
 
-Y.LIMS.Notification = function() {
-    var instance = this;
+    // This customizes the HTML used for this view's container node.
+    soundTemplate: Y.one('#lims-notification-template').get('innerHTML'),
 
-    // Private values
-//    instance._chatContainerEl = Liferay.Chat.Globals.chatContainerEl;
-//    instance._sound = new SWFObject('/liferay-lims-portlet/swf/alert.swf', 'alertsound', '0', '0', '8');
-//    instance._soundContainer = instance._chatContainerEl.one('.chat-sound');
-    instance._mute = false;
-};
 
-Y.LIMS.Notification.prototype = {
-    setMute: function(mute) {
-        var instance = this;
-        instance._mute = mute;
-    },
-    getMute: function() {
-        var instance = this;
-        return instance._mute;
-    },
-    triggerSound: function() {
-        var instance = this;
-        // Play only if sound isn't mute
-        if (!instance._mute) {
-            instance._sound.write(instance._soundContainer.getDOM());
+    notify: function () {
+       // Vars
+          var container = this.get('container');
+
+        // Fill data from model to template and set it to container.
+        // This will play the sound since alert.swf contains correct sound
+        container.set('innerHTML', Y.Lang.sub(this.soundTemplate, {
+                url: '/liferay-lims-portlet/swf/alert.swf'
+            })
+        );
+    }
+
+
+}, {
+
+    // Specify attributes and static properties for your View here.
+    ATTRS: {
+
+        // Container Node
+        container: {
+            valueFn: function () {
+                return Y.one('#chatBar .chat-sound');
+            }
         }
     }
-};
+
+});

@@ -140,6 +140,8 @@ Y.LIMS.Core.ViewController = Y.Base.create('viewController', Y.View, [], {
         if (panel === this.get('panel')) {
             // Call that panel did appear
             this.onPanelDidAppear();
+            // Fire event
+            this.fire('panelDidAppear', this);
         }
         // Some other panel was shown
         else {
@@ -147,6 +149,8 @@ Y.LIMS.Core.ViewController = Y.Base.create('viewController', Y.View, [], {
             // if it was opened.
             if (this.get('panel').get('isOpened') === true) {
                 this.dismissViewController();
+                // Fire event
+                this.fire('panelDidDisappear', this);
             }
         }
     },
@@ -160,6 +164,8 @@ Y.LIMS.Core.ViewController = Y.Base.create('viewController', Y.View, [], {
     _onPanelHidden: function (panel) {
         if (panel === this.get('panel')) {
             this.onPanelDidDisappear();
+            // Fire event
+            this.fire('panelDidAppear', this);
         }
     },
 
@@ -172,6 +178,8 @@ Y.LIMS.Core.ViewController = Y.Base.create('viewController', Y.View, [], {
     _onPanelClosed: function (panel) {
         if (panel === this.get('panel')) {
             this.onPanelDidUnload();
+            // Fire event
+            this.fire('panelDidUnload', this);
         }
     },
 
