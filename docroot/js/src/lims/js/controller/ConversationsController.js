@@ -78,6 +78,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             buddyDetails = this.get('buddyDetails'),            // Currently logged user
             conversationId,                                     // Id of the conversation
             unreadMessagesCount,                                // Unread messages count
+            settings = this.get('settings'),                    // Settings of logged user
             conversationModel,                                  // Model which will be attached to controller
             conversationList = this.get('conversationList'),
             controller;                                         // Bind controller
@@ -108,7 +109,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                     controllerId: conversationId,
                     container: conversationNode,
                     model: conversationModel,
-                    buddyDetails: buddyDetails
+                    buddyDetails: buddyDetails,
+                    settings: settings
                 });
 
                 // Remove controller from map if it's unloaded from the screen
@@ -140,6 +142,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             conversationModel,                                  // Model passed to controller
             conversationContainer,                              // Container node passed to controller
             conversationList = this.get('conversationList'),    // Holds all conversation models
+            settings = this.get('settings'),                    // Settings of logged user
             controller;                                         // Controller (selected or newly created)
 
         // Generate conversation id
@@ -180,7 +183,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                 buddyDetails: buddyDetails,
                 container: conversationContainer,
                 controllerId: conversationId,
-                model: conversationModel
+                model: conversationModel,
+                settings: settings
             });
 
             // Save the model, thanks to that the conversation will be created on server too.
@@ -215,6 +219,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             conversationContainer,                                  // Container node passed to controller
             container = this.get('container'),                      // Container of all conversations
             notification = this.get('notification'),                // Notification handler
+            settings = this.get('settings'),                        // Settings of logged user
             conversationId;                                         // Id of the conversation passed to controller
 
         // For each conversation check if new controller should be created if some
@@ -262,7 +267,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                     buddyDetails: buddyDetails,
                     container: conversationContainer,
                     controllerId: conversationId,
-                    model: conversationModel
+                    model: conversationModel,
+                    settings: settings
                 });
 
                 // Remove controller from map if it's unloaded from the screen
@@ -280,7 +286,9 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                         controller.showViewController();
                         // We have created a controller based on long polling message.
                         // We thus need to notify the user about received message.
-                        notification.notify();
+                        if (!settings.isMute()) {
+                            notification.notify();
+                        }
                     }
                 });
             }
@@ -294,12 +302,12 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
      */
     _startTimer: function () {
         // Vars
-        var settings = this.get('settings'),
+        var globals = this.get('globals'),
             conversationList = this.get('conversationList'),
             timerInterval = this.get('timerInterval');
 
         // Start only if the chat is enabled
-        if (settings.isChatEnabled()) {
+        if (globals.isChatEnabled()) {
             // Update all timestamps
             conversationList.load();
             // Start periodical update
@@ -374,10 +382,14 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
         },
 
         // Global settings
-        settings: {
+        globals: {
             valueFn: function () {
                 return new Y.LIMS.Core.Settings();
             }
+        },
+
+        settings: {
+            value: null // to be set
         }
     }
 });

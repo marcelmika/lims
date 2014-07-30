@@ -17,6 +17,8 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
      * Panel Did Load is called when the panel is attached to the controller
      */
     onPanelDidLoad: function () {
+        // Reads current settings from rendered settings view
+        this._bindSettings();
         // Events
         this._attachEvents();
     },
@@ -32,6 +34,20 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
 
         // Local events
         soundCheckbox.on('click', this._onSoundCheckboxUpdated, this);
+    },
+
+    /**
+     * Reads settings from rendered dom
+     *
+     * @private
+     */
+    _bindSettings: function () {
+        // Vars
+        var model = this.get('model'),
+            isMute = this.get('soundCheckbox').get('checked') ? false : true;
+
+        // Set to model
+        model.set('isMute', isMute);
     },
 
     /**

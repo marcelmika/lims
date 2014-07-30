@@ -8,6 +8,17 @@ Y.namespace('LIMS.Model');
 
 Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
 
+
+    /**
+     * Returns true if the user decided that he doesn't want to hear
+     * sound notifications
+     *
+     * @returns {boolean}
+     */
+    isMute: function () {
+        return this.get('isMute');
+    },
+
     // Custom sync layer.
     sync: function (action, options, callback) {
         // Get JSON representation of current object
@@ -21,12 +32,7 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
                 break;
 
             case 'read':
-                // Read Event Handler
-                this._readEventHandler(data, options, callback);
-                break;
-
             case 'delete':
-                // Delete is not provided
                 break;
 
             default:
@@ -43,8 +49,8 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
      * @param callback
      * @private
      */
-    _updateEventHandler: function(data, options, callback) {
-        if(options !== undefined) {
+    _updateEventHandler: function (data, options, callback) {
+        if (options !== undefined) {
             // Update active panel action
             if (options.hasOwnProperty("action") && options.action === "updateActivePanel") {
                 this._updateActivePanel(data, callback);
@@ -113,27 +119,7 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
                 }
             }
         });
-    },
-
-    /**
-     * Event handler decides which read function should be called based on the
-     * options.action call. Update Settings is a default fallback
-     *
-     * @param callback
-     * @private
-     */
-    _readEventHandler: function() {
-        // todo: Read from dom
-        // Look for an item in localStorage with this model's id.
-//                data = localStorage.getItem(this.get('id'));
-//
-//                if (data) {
-//                    callback(null, data);
-//                } else {
-//                    callback('Model not found.');
-//                }
     }
-
 
 }, {
     ATTRS: {

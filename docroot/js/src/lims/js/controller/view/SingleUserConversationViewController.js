@@ -68,6 +68,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
                 currentUnreadMessagesCount,                 // Current unread message count
                 updatedUnreadMessageCount,                  // Unread message count of updated model
                 notification = this.get('notification'),    // Notification handler
+                settings = this.get('settings'),            // Settings of logged user
                 instance = this;                            // This
 
             // There is no need to update conversation which hasn't been changed
@@ -81,13 +82,12 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
                     if (!err) {
                         // New message count
                         updatedUnreadMessageCount = conversation.get('unreadMessagesCount');
-
-                        console.log("WAS: " + currentUnreadMessagesCount + " IS: " + updatedUnreadMessageCount);
-
                         // If the unread message count has been increased notify user
                         if (updatedUnreadMessageCount > currentUnreadMessagesCount) {
                             // Play sound
-                            notification.notify();
+                            if (!settings.isMute()) {
+                                notification.notify();
+                            }
                         }
                         // Callback
                         instance._onConversationUpdated();
@@ -116,12 +116,12 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          */
         _startTimer: function () {
             // Vars
-            var settings = this.get('settings'),
+            var globals = this.get('globals'),
                 listView = this.get('listView'),
                 timerInterval = this.get('timerInterval');
 
             // Start only if the chat is enabled
-            if (settings.isChatEnabled()) {
+            if (globals.isChatEnabled()) {
                 // Update all timestamps
                 listView.updateTimestamps();
                 // Start periodical update
@@ -296,11 +296,16 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
                 value: 60000 // one minute
             },
 
-            // Global settings
-            settings: {
+            // Global values
+            globals: {
                 valueFn: function () {
                     return new Y.LIMS.Core.Settings();
                 }
+            },
+
+            // Holds user related settings
+            settings: {
+                value: null // to be set
             }
         }
     });
