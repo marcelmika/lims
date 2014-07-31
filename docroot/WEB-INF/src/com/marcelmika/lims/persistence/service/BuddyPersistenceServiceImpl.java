@@ -1,10 +1,10 @@
 package com.marcelmika.lims.persistence.service;
 
 import com.marcelmika.lims.api.events.buddy.*;
-import com.marcelmika.lims.model.Settings;
 import com.marcelmika.lims.persistence.domain.Buddy;
 import com.marcelmika.lims.persistence.domain.Presence;
-import com.marcelmika.lims.service.SettingsLocalServiceUtil;
+import com.marcelmika.lims.persistence.generated.model.Settings;
+import com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUtil;
 
 /**
  * @author Ing. Marcel Mika

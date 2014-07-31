@@ -4,10 +4,10 @@
         "-//Liferay//DTD Service Builder 6.1.0//EN"
         "http://www.liferay.com/dtd/liferay-service-builder_6_1_0.dtd">
 
-<service-builder package-path='com.marcelmika.lims'>
+<service-builder package-path='com.marcelmika.lims.persistence.generated'>
 
     <!-- This will be a prefix of all entity tables -->
-    <namespace>LiferayLIMS</namespace>
+    <namespace>lims</namespace>
 
     <!-- Panel -->
     <entity name='Panel' local-service='true' remote-service='false'>

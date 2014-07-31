@@ -2,12 +2,12 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping default-lazy="false" auto-import="false">
-	<import class="com.marcelmika.lims.model.Conversation" />
-	<import class="com.marcelmika.lims.model.Message" />
-	<import class="com.marcelmika.lims.model.Panel" />
-	<import class="com.marcelmika.lims.model.Participant" />
-	<import class="com.marcelmika.lims.model.Settings" />
-	<class name="com.marcelmika.lims.model.impl.ConversationImpl" table="LiferayLIMS_Conversation">
+	<import class="com.marcelmika.lims.persistence.generated.model.Conversation" />
+	<import class="com.marcelmika.lims.persistence.generated.model.Message" />
+	<import class="com.marcelmika.lims.persistence.generated.model.Panel" />
+	<import class="com.marcelmika.lims.persistence.generated.model.Participant" />
+	<import class="com.marcelmika.lims.persistence.generated.model.Settings" />
+	<class name="com.marcelmika.lims.persistence.generated.model.impl.ConversationImpl" table="lims_Conversation">
 		<cache usage="read-write" />
 		<id name="cid" type="long">
 			<generator class="assigned" />
@@ -16,7 +16,7 @@
 		<property name="conversationType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="updatedAt" type="org.hibernate.type.TimestampType" />
 	</class>
-	<class name="com.marcelmika.lims.model.impl.MessageImpl" table="LiferayLIMS_Message">
+	<class name="com.marcelmika.lims.persistence.generated.model.impl.MessageImpl" table="lims_Message">
 		<cache usage="read-write" />
 		<id name="mid" type="long">
 			<generator class="assigned" />
@@ -27,7 +27,7 @@
 		<property name="messageHash" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="body" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.marcelmika.lims.model.impl.PanelImpl" table="LiferayLIMS_Panel">
+	<class name="com.marcelmika.lims.persistence.generated.model.impl.PanelImpl" table="lims_Panel">
 		<cache usage="read-write" />
 		<id name="pid" type="long">
 			<generator class="assigned" />
@@ -35,7 +35,7 @@
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="activePanelId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.marcelmika.lims.model.impl.ParticipantImpl" table="LiferayLIMS_Participant">
+	<class name="com.marcelmika.lims.persistence.generated.model.impl.ParticipantImpl" table="lims_Participant">
 		<cache usage="read-write" />
 		<id name="pid" type="long">
 			<generator class="assigned" />
@@ -45,7 +45,7 @@
 		<property name="unreadMessagesCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="isOpened" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
-	<class name="com.marcelmika.lims.model.impl.SettingsImpl" table="LiferayLIMS_Settings">
+	<class name="com.marcelmika.lims.persistence.generated.model.impl.SettingsImpl" table="lims_Settings">
 		<cache usage="read-write" />
 		<id name="sid" type="long">
 			<generator class="assigned" />

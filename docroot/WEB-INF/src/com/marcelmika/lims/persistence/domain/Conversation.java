@@ -85,7 +85,7 @@ public class Conversation {
         return conversation;
     }
 
-    public static Conversation fromConversationModel(com.marcelmika.lims.model.Conversation conversationModel) {
+    public static Conversation fromConversationModel(com.marcelmika.lims.persistence.generated.model.Conversation conversationModel) {
         // Create new conversation
         Conversation conversation = new Conversation();
         // Map parameters

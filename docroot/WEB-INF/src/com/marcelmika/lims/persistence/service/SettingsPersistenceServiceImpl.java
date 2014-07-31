@@ -4,8 +4,9 @@ import com.marcelmika.lims.api.entity.BuddyDetails;
 import com.marcelmika.lims.api.entity.SettingsDetails;
 import com.marcelmika.lims.api.events.settings.*;
 import com.marcelmika.lims.persistence.domain.Settings;
-import com.marcelmika.lims.service.PanelLocalServiceUtil;
-import com.marcelmika.lims.service.SettingsLocalServiceUtil;
+import com.marcelmika.lims.persistence.generated.service.PanelLocalServiceUtil;
+import com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUtil;
+
 
 /**
  * @author Ing. Marcel Mika
@@ -80,7 +81,7 @@ public class SettingsPersistenceServiceImpl implements SettingsPersistenceServic
         SettingsDetails details = event.getSettingsDetails();
         try {
             // Get settings
-            com.marcelmika.lims.model.Settings settings = SettingsLocalServiceUtil.getSettingsByUser(
+            com.marcelmika.lims.persistence.generated.model.Settings settings = SettingsLocalServiceUtil.getSettingsByUser(
                     event.getBuddyId()
             );
             // Set new values

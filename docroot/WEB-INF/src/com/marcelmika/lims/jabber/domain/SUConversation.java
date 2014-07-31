@@ -73,19 +73,19 @@ public class SUConversation  {
     }
 
     //@todo: This should probably be in a separate layer to avoid model specific call
-    private com.marcelmika.lims.model.Conversation getConversationModel() {
-//        return com.marcelmika.lims.service.ConversationLocalServiceUtil.getConversation(owner.getUserId(), conversationId);
-        return null;
-    }
+//    private com.marcelmika.lims.model.Conversation getConversationModel() {
+////        return com.marcelmika.lims.service.ConversationLocalServiceUtil.getConversation(owner.getUserId(), conversationId);
+//        return null;
+//    }
 
 
     public String getConversationName() {
         return null;
     }
 
-    public String getConversationType() {
-        return getConversationModel().getConversationType();
-    }
+//    public String getConversationType() {
+//        return getConversationModel().getConversationType();
+//    }
 
     public String getConversationVisibility() {
         return null;

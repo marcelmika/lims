@@ -1,7 +1,6 @@
 package com.marcelmika.lims.persistence.domain;
 
 import com.marcelmika.lims.api.entity.SettingsDetails;
-import com.marcelmika.lims.model.Panel;
 
 /**
  * @author Ing. Marcel Mika
@@ -17,8 +16,8 @@ public class Settings {
     private boolean isChatEnabled;
 
 
-    public static Settings fromServiceBuilderModel(com.marcelmika.lims.model.Panel panelModel,
-                                                   com.marcelmika.lims.model.Settings settingsModel) {
+    public static Settings fromServiceBuilderModel(com.marcelmika.lims.persistence.generated.model.Panel panelModel,
+                                                   com.marcelmika.lims.persistence.generated.model.Settings settingsModel) {
 
         // Create new settings
         Settings settings = new Settings();

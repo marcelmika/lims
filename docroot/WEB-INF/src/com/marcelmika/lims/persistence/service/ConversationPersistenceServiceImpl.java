@@ -3,18 +3,18 @@ package com.marcelmika.lims.persistence.service;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.marcelmika.lims.NoSuchConversationException;
-import com.marcelmika.lims.NoSuchParticipantException;
 import com.marcelmika.lims.api.entity.ConversationDetails;
 import com.marcelmika.lims.api.events.conversation.*;
-import com.marcelmika.lims.model.Participant;
 import com.marcelmika.lims.persistence.domain.Buddy;
 import com.marcelmika.lims.persistence.domain.Conversation;
 import com.marcelmika.lims.persistence.domain.Message;
 import com.marcelmika.lims.persistence.domain.Pagination;
-import com.marcelmika.lims.service.ConversationLocalServiceUtil;
-import com.marcelmika.lims.service.MessageLocalServiceUtil;
-import com.marcelmika.lims.service.ParticipantLocalServiceUtil;
+import com.marcelmika.lims.persistence.generated.NoSuchConversationException;
+import com.marcelmika.lims.persistence.generated.NoSuchParticipantException;
+import com.marcelmika.lims.persistence.generated.model.Participant;
+import com.marcelmika.lims.persistence.generated.service.ConversationLocalServiceUtil;
+import com.marcelmika.lims.persistence.generated.service.MessageLocalServiceUtil;
+import com.marcelmika.lims.persistence.generated.service.ParticipantLocalServiceUtil;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -45,7 +45,8 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
         // Save to persistence
         try {
             // Save conversation
-            com.marcelmika.lims.model.Conversation conversationModel = ConversationLocalServiceUtil.addConversation(
+            com.marcelmika.lims.persistence.generated.model.Conversation conversationModel =
+                    ConversationLocalServiceUtil.addConversation(
                     conversation.getConversationId(), conversation.getConversationType().toString()
             );
 
@@ -58,9 +59,8 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             }
 
             // Creator is also participant
-            com.marcelmika.lims.model.Participant participantModel = ParticipantLocalServiceUtil.addParticipant(
-                    conversationModel.getCid(), creator.getBuddyId()
-            );
+            com.marcelmika.lims.persistence.generated.model.Participant participantModel =
+                    ParticipantLocalServiceUtil.addParticipant(conversationModel.getCid(), creator.getBuddyId());
             participants.add(creator);
 
             // Create updated conversation
@@ -95,7 +95,8 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
         // Read from persistence
         try {
             // Find conversation
-            com.marcelmika.lims.model.Conversation conversationModel = ConversationLocalServiceUtil.getConversation(
+            com.marcelmika.lims.persistence.generated.model.Conversation conversationModel =
+                    ConversationLocalServiceUtil.getConversation(
                     conversation.getConversationId()
             );
 
@@ -112,20 +113,20 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             // TODO: Check if participant in event is really in the conversation
 
             // Get messages from persistence
-            List<com.marcelmika.lims.model.Message> messageModels = MessageLocalServiceUtil.readMessages(
-                    conversationModel.getCid()
-            );
+            List<com.marcelmika.lims.persistence.generated.model.Message> messageModels =
+                    MessageLocalServiceUtil.readMessages(conversationModel.getCid());
 
             // Map to persistence
             List<Message> messages = new LinkedList<Message>();
-            for (com.marcelmika.lims.model.Message messageModel : messageModels) {
+            for (com.marcelmika.lims.persistence.generated.model.Message messageModel : messageModels) {
                 messages.add(Message.fromMessageModel(messageModel));
             }
             // Add to conversation
             conversation.setMessages(messages);
 
             // Get participant
-            com.marcelmika.lims.model.Participant participant = ParticipantLocalServiceUtil.getParticipant(
+            com.marcelmika.lims.persistence.generated.model.Participant participant =
+                    ParticipantLocalServiceUtil.getParticipant(
                     conversationModel.getCid(), event.getParticipant().getBuddyId()
             );
             // Add to conversation
@@ -239,9 +240,8 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
         // Save to persistence
         try {
             // Find conversation. Since each message is related to the conversation we need to find it first
-            com.marcelmika.lims.model.Conversation conversationModel = ConversationLocalServiceUtil.getConversation(
-                    conversation.getConversationId()
-            );
+            com.marcelmika.lims.persistence.generated.model.Conversation conversationModel =
+                    ConversationLocalServiceUtil.getConversation(conversation.getConversationId());
 
             // No such conversation was found
             if (conversationModel == null) {
@@ -251,7 +251,7 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             }
 
             // Create new message
-            com.marcelmika.lims.model.Message messageModel = MessageLocalServiceUtil.addMessage(
+            com.marcelmika.lims.persistence.generated.model.Message messageModel = MessageLocalServiceUtil.addMessage(
                     conversationModel.getCid(), // Message is related to the conversation
                     buddy.getBuddyId(),         // Message is created by buddy
                     message.getBody(),          // Body of message
@@ -303,9 +303,8 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             for (Participant participates : buddyParticipates) {
 
                 // Find by cid
-                com.marcelmika.lims.model.Conversation conversationModel = ConversationLocalServiceUtil.getConversation(
-                        participates.getCid()
-                );
+                com.marcelmika.lims.persistence.generated.model.Conversation conversationModel =
+                        ConversationLocalServiceUtil.getConversation(participates.getCid());
 
                 // No need to map anything else
                 if (conversationModel == null) {

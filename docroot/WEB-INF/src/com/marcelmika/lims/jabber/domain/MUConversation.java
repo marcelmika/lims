@@ -142,9 +142,9 @@ public class MUConversation {
     }
 
     // @todo: This should probably be in a separate layer to avoid model specific call
-    private com.marcelmika.lims.model.Conversation getConversationModel() {
-        return null;
-    }
+//    private com.marcelmika.lims.model.Conversation getConversationModel() {
+//        return null;
+//    }
 
     public List<Buddy> getParticipants() {
         return participants;
@@ -190,9 +190,9 @@ public class MUConversation {
         return null;
     }
 
-    public String getConversationType() {
-        return getConversationModel().getConversationType();
-    }
+//    public String getConversationType() {
+//        return getConversationModel().getConversationType();
+//    }
 
     public String getConversationVisibility() {
         return null;
@@ -255,7 +255,7 @@ public class MUConversation {
         jsonConversation.put("title", getTitle());
         jsonConversation.put("roomJID", getConversationId());
         jsonConversation.put("roomName", getConversationName());
-        jsonConversation.put("roomType", getConversationType());
+//        jsonConversation.put("roomType", getConversationType());
         jsonConversation.put("roomVisibility", getConversationVisibility());
 
         // Last message

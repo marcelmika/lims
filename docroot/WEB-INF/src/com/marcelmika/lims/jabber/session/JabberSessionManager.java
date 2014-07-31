@@ -174,7 +174,7 @@ public class JabberSessionManager {
         // Add connection to the connection container
 //        connectionManager.putConnection(userId, connection);
         // Build conversations for the user
-        conversationManager.buildConversations(userId, connection);
+//        conversationManager.buildConversations(userId, connection);
         // Set initial presence
         setInitialPresence(userId, connection);
         // Set roster listener

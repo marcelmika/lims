@@ -51,7 +51,7 @@ public class Message {
         return messages;
     }
 
-    public static Message fromMessageModel(com.marcelmika.lims.model.Message messageModel) {
+    public static Message fromMessageModel(com.marcelmika.lims.persistence.generated.model.Message messageModel) {
         // Create new message
         Message message = new Message();
         // Properties:
