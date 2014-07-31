@@ -17,7 +17,6 @@ package com.marcelmika.lims.service.persistence;
 import com.liferay.portal.kernel.dao.orm.BaseActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.SystemException;
 
-import com.marcelmika.lims.model.OpenedConversation;
 import com.marcelmika.lims.service.OpenedConversationLocalServiceUtil;
 
 /**

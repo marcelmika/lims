@@ -25,10 +25,8 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.BaseModel;
 
-import com.marcelmika.lims.model.BuddyClp;
 import com.marcelmika.lims.model.ConversationClp;
 import com.marcelmika.lims.model.MessageClp;
-import com.marcelmika.lims.model.OpenedConversationClp;
 import com.marcelmika.lims.model.PanelClp;
 import com.marcelmika.lims.model.ParticipantClp;
 import com.marcelmika.lims.model.SettingsClp;
@@ -108,20 +106,12 @@ public class ClpSerializer {
 
 		String oldModelClassName = oldModelClass.getName();
 
-		if (oldModelClassName.equals(BuddyClp.class.getName())) {
-			return translateInputBuddy(oldModel);
-		}
-
 		if (oldModelClassName.equals(ConversationClp.class.getName())) {
 			return translateInputConversation(oldModel);
 		}
 
 		if (oldModelClassName.equals(MessageClp.class.getName())) {
 			return translateInputMessage(oldModel);
-		}
-
-		if (oldModelClassName.equals(OpenedConversationClp.class.getName())) {
-			return translateInputOpenedConversation(oldModel);
 		}
 
 		if (oldModelClassName.equals(PanelClp.class.getName())) {
@@ -151,16 +141,6 @@ public class ClpSerializer {
 		return newList;
 	}
 
-	public static Object translateInputBuddy(BaseModel<?> oldModel) {
-		BuddyClp oldClpModel = (BuddyClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getBuddyRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
 	public static Object translateInputConversation(BaseModel<?> oldModel) {
 		ConversationClp oldClpModel = (ConversationClp)oldModel;
 
@@ -175,16 +155,6 @@ public class ClpSerializer {
 		MessageClp oldClpModel = (MessageClp)oldModel;
 
 		BaseModel<?> newModel = oldClpModel.getMessageRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputOpenedConversation(BaseModel<?> oldModel) {
-		OpenedConversationClp oldClpModel = (OpenedConversationClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getOpenedConversationRemoteModel();
 
 		newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -238,10 +208,6 @@ public class ClpSerializer {
 
 		String oldModelClassName = oldModelClass.getName();
 
-		if (oldModelClassName.equals("com.marcelmika.lims.model.impl.BuddyImpl")) {
-			return translateOutputBuddy(oldModel);
-		}
-
 		if (oldModelClassName.equals(
 					"com.marcelmika.lims.model.impl.ConversationImpl")) {
 			return translateOutputConversation(oldModel);
@@ -250,11 +216,6 @@ public class ClpSerializer {
 		if (oldModelClassName.equals(
 					"com.marcelmika.lims.model.impl.MessageImpl")) {
 			return translateOutputMessage(oldModel);
-		}
-
-		if (oldModelClassName.equals(
-					"com.marcelmika.lims.model.impl.OpenedConversationImpl")) {
-			return translateOutputOpenedConversation(oldModel);
 		}
 
 		if (oldModelClassName.equals("com.marcelmika.lims.model.impl.PanelImpl")) {
@@ -351,21 +312,12 @@ public class ClpSerializer {
 			return new SystemException();
 		}
 
-		if (className.equals("com.marcelmika.lims.NoSuchBuddyException")) {
-			return new com.marcelmika.lims.NoSuchBuddyException();
-		}
-
 		if (className.equals("com.marcelmika.lims.NoSuchConversationException")) {
 			return new com.marcelmika.lims.NoSuchConversationException();
 		}
 
 		if (className.equals("com.marcelmika.lims.NoSuchMessageException")) {
 			return new com.marcelmika.lims.NoSuchMessageException();
-		}
-
-		if (className.equals(
-					"com.marcelmika.lims.NoSuchOpenedConversationException")) {
-			return new com.marcelmika.lims.NoSuchOpenedConversationException();
 		}
 
 		if (className.equals("com.marcelmika.lims.NoSuchPanelException")) {
@@ -381,16 +333,6 @@ public class ClpSerializer {
 		}
 
 		return throwable;
-	}
-
-	public static Object translateOutputBuddy(BaseModel<?> oldModel) {
-		BuddyClp newModel = new BuddyClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setBuddyRemoteModel(oldModel);
-
-		return newModel;
 	}
 
 	public static Object translateOutputConversation(BaseModel<?> oldModel) {
@@ -409,17 +351,6 @@ public class ClpSerializer {
 		newModel.setModelAttributes(oldModel.getModelAttributes());
 
 		newModel.setMessageRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputOpenedConversation(
-		BaseModel<?> oldModel) {
-		OpenedConversationClp newModel = new OpenedConversationClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setOpenedConversationRemoteModel(oldModel);
 
 		return newModel;
 	}

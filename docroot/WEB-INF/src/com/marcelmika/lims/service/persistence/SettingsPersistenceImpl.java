@@ -1380,14 +1380,10 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@BeanReference(type = BuddyPersistence.class)
-	protected BuddyPersistence buddyPersistence;
 	@BeanReference(type = ConversationPersistence.class)
 	protected ConversationPersistence conversationPersistence;
 	@BeanReference(type = MessagePersistence.class)
 	protected MessagePersistence messagePersistence;
-	@BeanReference(type = OpenedConversationPersistence.class)
-	protected OpenedConversationPersistence openedConversationPersistence;
 	@BeanReference(type = PanelPersistence.class)
 	protected PanelPersistence panelPersistence;
 	@BeanReference(type = ParticipantPersistence.class)

@@ -16,8 +16,6 @@ package com.marcelmika.lims.service.persistence;
 
 import com.liferay.portal.service.persistence.BasePersistence;
 
-import com.marcelmika.lims.model.OpenedConversation;
-
 /**
  * The persistence interface for the opened conversation service.
  *

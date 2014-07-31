@@ -17,11 +17,9 @@ package com.marcelmika.lims.service.messaging;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
 
-import com.marcelmika.lims.service.BuddyLocalServiceUtil;
 import com.marcelmika.lims.service.ClpSerializer;
 import com.marcelmika.lims.service.ConversationLocalServiceUtil;
 import com.marcelmika.lims.service.MessageLocalServiceUtil;
-import com.marcelmika.lims.service.OpenedConversationLocalServiceUtil;
 import com.marcelmika.lims.service.PanelLocalServiceUtil;
 import com.marcelmika.lims.service.ParticipantLocalServiceUtil;
 import com.marcelmika.lims.service.SettingsLocalServiceUtil;
@@ -41,13 +39,9 @@ public class ClpMessageListener extends BaseMessageListener {
 
 		if (command.equals("undeploy") &&
 				servletContextName.equals(getServletContextName())) {
-			BuddyLocalServiceUtil.clearService();
-
 			ConversationLocalServiceUtil.clearService();
 
 			MessageLocalServiceUtil.clearService();
-
-			OpenedConversationLocalServiceUtil.clearService();
 
 			PanelLocalServiceUtil.clearService();
 

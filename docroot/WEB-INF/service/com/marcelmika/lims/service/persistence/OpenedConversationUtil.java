@@ -21,8 +21,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 import com.liferay.portal.service.ServiceContext;
 
-import com.marcelmika.lims.model.OpenedConversation;
-
 import java.util.List;
 
 /**

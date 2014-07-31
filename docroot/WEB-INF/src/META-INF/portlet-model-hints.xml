@@ -1,18 +1,6 @@
 <?xml version="1.0"?>
 
 <model-hints>
-	<model name="com.marcelmika.lims.model.Buddy">
-		<field name="bid" type="long" />
-		<field name="userId" type="long" />
-		<field name="companyId" type="long" />
-		<field name="portraitId" type="long" />
-		<field name="fullName" type="String" />
-		<field name="screenName" type="String" />
-		<field name="statusMessage" type="String" />
-		<field name="isTyping" type="boolean" />
-		<field name="awake" type="boolean" />
-		<field name="status" type="String" />
-	</model>
 	<model name="com.marcelmika.lims.model.Conversation">
 		<field name="cid" type="long" />
 		<field name="conversationId" type="String" />
@@ -28,11 +16,6 @@
 		<field name="body" type="String">
 			<hint name="max-length">4096</hint>
 		</field>
-	</model>
-	<model name="com.marcelmika.lims.model.OpenedConversation">
-		<field name="ocid" type="long" />
-		<field name="userId" type="long" />
-		<field name="conversationId" type="String" />
 	</model>
 	<model name="com.marcelmika.lims.model.Panel">
 		<field name="pid" type="long" />

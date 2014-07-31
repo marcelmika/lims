@@ -2,28 +2,11 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping default-lazy="false" auto-import="false">
-	<import class="com.marcelmika.lims.model.Buddy" />
 	<import class="com.marcelmika.lims.model.Conversation" />
 	<import class="com.marcelmika.lims.model.Message" />
-	<import class="com.marcelmika.lims.model.OpenedConversation" />
 	<import class="com.marcelmika.lims.model.Panel" />
 	<import class="com.marcelmika.lims.model.Participant" />
 	<import class="com.marcelmika.lims.model.Settings" />
-	<class name="com.marcelmika.lims.model.impl.BuddyImpl" table="LiferayLIMS_Buddy">
-		<cache usage="read-write" />
-		<id name="bid" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="portraitId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="fullName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="screenName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="statusMessage" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="isTyping" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="awake" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
 	<class name="com.marcelmika.lims.model.impl.ConversationImpl" table="LiferayLIMS_Conversation">
 		<cache usage="read-write" />
 		<id name="cid" type="long">
@@ -43,14 +26,6 @@
 		<property name="createdAt" type="org.hibernate.type.TimestampType" />
 		<property name="messageHash" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="body" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.marcelmika.lims.model.impl.OpenedConversationImpl" table="LiferayLIMS_OpenedConversation">
-		<cache usage="read-write" />
-		<id name="ocid" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="conversationId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.marcelmika.lims.model.impl.PanelImpl" table="LiferayLIMS_Panel">
 		<cache usage="read-write" />

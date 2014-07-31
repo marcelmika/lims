@@ -79,32 +79,4 @@
         </finder>
     </entity>
 
-    <!-- Buddy -->
-    <entity name='Buddy' local-service='true' remote-service='false'>
-        <column name='bid' type='long' primary='true'/>
-        <column name='userId' type='long'/>
-        <column name='companyId' type='long'/>
-        <column name='portraitId' type='long'/>
-        <column name='fullName' type='String'/>
-        <column name='screenName' type='String'/>
-        <column name='statusMessage' type='String'/>
-        <column name='isTyping' type='boolean'/>
-        <column name='awake' type='boolean'/>
-        <column name='status' type='String'/>
-    </entity>
-
-    <!-- Opened Conversation -->
-    <entity name='OpenedConversation' local-service='true' remote-service='false'>
-        <column name='ocid' type='long' primary='true'/>
-        <column name='userId' type='long'/>
-        <column name='conversationId' type='String'/>
-        <finder name='UserId_ConversationId' return-type='OpenedConversation'>
-            <finder-column name='userId'/>
-            <finder-column name='conversationId'/>
-        </finder>
-        <finder name='UserId' return-type='Collection'>
-            <finder-column name='userId'/>
-        </finder>
-    </entity>
-
 </service-builder>
