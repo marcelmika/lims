@@ -32,6 +32,18 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         }
     },
 
+
+    /**
+     * Scrolls to the last message
+     * @private
+     */
+    scrollToBottom: function () {
+        var panelContent = this.get('panelContent');
+        setTimeout(function () {
+            panelContent.set('scrollTop', panelContent.get('scrollHeight'));
+        }, 1);
+    },
+
     /**
      * Attaches listener to elements
      *
@@ -62,8 +74,8 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     _onMessageAdded: function (message) {
         // Add a single message to the list
         this._addMessage(message);
-        // Scroll to the last message
-        this._scrollToBottom();
+        // Scroll to bottom so the user sees the message
+        this.scrollToBottom();
     },
 
     /**
@@ -77,8 +89,9 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         this.get('activityIndicator').hide();
         // Render the list
         this._renderMessagesList(messageList);
-        // Scroll to the last message
-        this._scrollToBottom();
+        // Since the list is already rendered there is no need to
+        // animate any other addition to the list
+        this.set('shouldAnimateList', false);
     },
 
     /**
@@ -112,8 +125,11 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     _renderMessagesList: function (messageList) {
 
         // Vars
-        var instance = this; // Store the instance
+        var instance = this,
+            animate = this.get('shouldAnimateList'); // Store the instance
 
+        // Hide the view and show it after it's rendered
+        this._hideListView();
         // Reset content
         this._resetListView();
 
@@ -121,6 +137,11 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         messageList.each(function (message) {
             instance._addMessage(message, false);
         });
+
+        // Show it again and animate it if needed
+        this._showListView(animate);
+        // Scroll to bottom so the user sees the message
+        this.scrollToBottom();
     },
 
     /**
@@ -137,14 +158,49 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     },
 
     /**
-     * Scrolls to the last message
+     * Shows list view
+     *
+     * @param animated true if the action should be animated
      * @private
      */
-    _scrollToBottom: function () {
-        var panelContent = this.get('panelContent');
-        setTimeout(function () {
-            panelContent.set('scrollTop', panelContent.get('scrollHeight'));
-        }, 1);
+    _showListView: function (animated) {
+        // Vars
+        var panelContentList = this.get('panelContentList'),
+            animation = new Y.Anim({
+                node: panelContentList,
+                duration: 0.5,
+                from: {
+                    opacity: 0
+                },
+                to: {
+                    opacity: 1
+                }
+            });
+
+        // Opacity needs to be set to zero otherwise there will
+        // be a weird blink effect
+        if (animated) {
+            panelContentList.setStyle('opacity', 0);
+        }
+
+        panelContentList.show();
+
+        // Run the effect animation
+        if (animated) {
+            animation.run();
+        }
+    },
+
+    /**
+     * Hides list view
+     *
+     * @private
+     */
+    _hideListView: function () {
+        // Vars
+        var panelContentList = this.get('panelContentList');
+        // Hide list view
+        panelContentList.hide();
     },
 
     /**
@@ -215,6 +271,10 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
                     return container;
                 }
             }
+        },
+
+        shouldAnimateList: {
+            value: true
         },
 
         // Message text field container

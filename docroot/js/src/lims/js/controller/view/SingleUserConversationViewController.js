@@ -28,10 +28,13 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          */
         onPanelDidAppear: function () {
             // Vars
-            var model = this.get('model');
+            var model = this.get('model'),
+                listView = this.get('listView');
 
             // Reset counter of unread messages
             model.resetUnreadMessagesCounter();
+            // Always scroll to the last message when user opens the window
+            listView.scrollToBottom();
             // Hide badge since it's not needed anymore
             this._hideBadge();
             // Start timer that periodically updates timestamps of messages
