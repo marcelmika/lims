@@ -45,9 +45,6 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
                             }
                         }
                     }
-//                    headers: {
-//                        'Content-Type': 'application/json'
-//                    }
                 });
                 break;
 

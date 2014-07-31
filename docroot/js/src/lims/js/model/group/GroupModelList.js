@@ -36,7 +36,6 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
 
         switch (action) {
             case 'create':
-                Y.log("create");
                 data = this.toJSON();
                 Y.log(data);
                 return;
