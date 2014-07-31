@@ -31,5 +31,4 @@ public interface Settings extends SettingsModel, PersistedModel {
 	 *
 	 * Never modify this interface directly. Add methods to {@link com.marcelmika.lims.model.impl.SettingsImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public com.liferay.portal.kernel.json.JSONObject toJSON();
 }

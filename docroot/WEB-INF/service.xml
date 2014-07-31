@@ -1,7 +1,12 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.1.0//EN"
+
+<!DOCTYPE service-builder PUBLIC
+        "-//Liferay//DTD Service Builder 6.1.0//EN"
         "http://www.liferay.com/dtd/liferay-service-builder_6_1_0.dtd">
+
 <service-builder package-path='com.marcelmika.lims'>
+
+    <!-- This will be a prefix of all entity tables -->
     <namespace>LiferayLIMS</namespace>
 
     <!-- Panel -->

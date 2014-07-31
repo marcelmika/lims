@@ -1,12 +1,9 @@
 package com.marcelmika.lims.jabber.domain;
 
 import com.marcelmika.lims.jabber.JabberUtil;
-import com.marcelmika.lims.model.json.JSONable;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.marcelmika.lims.model.Buddy;
-import com.marcelmika.lims.service.BuddyLocalServiceUtil;
 import org.jivesoftware.smack.Chat;
 
 import java.util.ArrayList;
@@ -21,7 +18,7 @@ import java.util.List;
  * @deprecated
  */
 // @todo: Not implemented in v0.2
-public class SUConversation implements Conversation, JSONable {
+public class SUConversation  {
 
     private Buddy owner;
     private Chat chat;
@@ -40,10 +37,10 @@ public class SUConversation implements Conversation, JSONable {
     private void attachParticipant() {
         // Find participant in local db based on the screen name
         String participantsScreenName = JabberUtil.getScreenName(chat.getParticipant());
-        Buddy participant = BuddyLocalServiceUtil.getBuddyByScreenName(owner.getCompanyId(), participantsScreenName);
+//        Buddy participant = BuddyLocalServiceUtil.getBuddyByScreenName(owner.getCompanyId(), participantsScreenName);
         // There is only one participant but multi user conversation has a multiple of them
         // thus the interface accepts a list, not just a single participant
-        participants.add(participant);
+//        participants.add(participant);
         // Conversation id is based on the participant's screen name
         conversationId = participantsScreenName;
     }
@@ -52,27 +49,25 @@ public class SUConversation implements Conversation, JSONable {
         return this.chat;
     }
 
-    @Override
     public List<Buddy> getParticipants() {
         return participants;
     }
 
-    @Override
     public void addParticipant(Buddy participant) {
 //        System.out.println("Connot add another participant to the single user conversaion");
     }
 
-    @Override
+
     public List<MessageDeprecated> getMessages() {
         return messages;
     }
 
-    @Override
+
     public Buddy getOwner() {
         return owner;
     }
 
-    @Override
+
     public String getConversationId() {
         return conversationId;
     }
@@ -83,61 +78,51 @@ public class SUConversation implements Conversation, JSONable {
         return null;
     }
 
-    @Override
+
     public String getConversationName() {
         return null;
     }
 
-    @Override
     public String getConversationType() {
         return getConversationModel().getConversationType();
     }
 
-    @Override
     public String getConversationVisibility() {
         return null;
     }
 
-    @Override
     public void restart() {
         messages.clear();
         participants.clear();
         attachParticipant();
     }
 
-    @Override
     public MessageDeprecated getLastMessage() {
         return messages.peekLast();
     }
 
-    @Override
     public int getLastMessageSent() {
         return lastMessageSent;
     }
 
-    @Override
     public void setLastMessageSent(int lastMessageSent) {
         this.lastMessageSent = lastMessageSent;
     }
-
-    @Override
     public int getIndexOfLastMessage() {
         return messages.indexOf(messages.peekLast()) + 1;
     }
 
-    @Override
     public int getUnreadMessages() {
         //@todo: implement
         return 0;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    @Override
     public JSONObject toJSON() {
         // Buddies
         JSONArray jsonBuddies = JSONFactoryUtil.createJSONArray();
-        for (Buddy buddy : getParticipants()) {
-            jsonBuddies.put(buddy.toJSON());
-        }
+//        for (Buddy buddy : getParticipants()) {
+//            jsonBuddies.put(buddy.toJSON());
+//        }
 
         // Conversation properites
         JSONObject jsonConversation = JSONFactoryUtil.createJSONObject();
@@ -156,7 +141,6 @@ public class SUConversation implements Conversation, JSONable {
         return jsonConversation;
     }
 
-    @Override
     public JSONObject toFullJSON() {
         JSONObject jsonConversation = toJSON();
         JSONArray jsonMessages = JSONFactoryUtil.createJSONArray();

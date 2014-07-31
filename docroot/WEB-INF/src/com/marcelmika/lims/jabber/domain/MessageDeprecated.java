@@ -1,13 +1,10 @@
 
 package com.marcelmika.lims.jabber.domain;
 
-import com.marcelmika.lims.jabber.JabberUtil;
-import com.marcelmika.lims.model.json.JSONable;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import java.util.Date;
 
-import com.marcelmika.lims.model.Buddy;
 import org.jivesoftware.smackx.packet.DelayInformation;
 
 /**
@@ -17,7 +14,7 @@ import org.jivesoftware.smackx.packet.DelayInformation;
  * Time: 11:18 PM
  * @deprecated
  */
-public class MessageDeprecated implements JSONable {
+public class MessageDeprecated {
 
     private org.jivesoftware.smack.packet.Message smackMessage;
     private long companyId;
@@ -76,14 +73,14 @@ public class MessageDeprecated implements JSONable {
         return smackMessage.getBody();
     }
     
-    public Buddy getBuddy() {
-        return com.marcelmika.lims.service.BuddyLocalServiceUtil.getBuddyByScreenName(getCompanyId(), getFrom());
-    }
+//    public Buddy getBuddy() {
+////        return com.marcelmika.lims.service.BuddyLocalServiceUtil.getBuddyByScreenName(getCompanyId(), getFrom());
+//    }
 
-    public Buddy getParticipant() {
-        String screenName = JabberUtil.getScreenName(getTo());
-        return com.marcelmika.lims.service.BuddyLocalServiceUtil.getBuddyByScreenName(getCompanyId(), screenName);
-    }
+//    public Buddy getParticipant() {
+//        String screenName = JabberUtil.getScreenName(getTo());
+//        return com.marcelmika.lims.service.BuddyLocalServiceUtil.getBuddyByScreenName(getCompanyId(), screenName);
+//    }
 
     public Date getCreated() {
         return created;
@@ -98,10 +95,10 @@ public class MessageDeprecated implements JSONable {
         JSONObject jsonMessage = JSONFactoryUtil.createJSONObject();
 
         // Find buddy            
-        Buddy buddy = com.marcelmika.lims.service.BuddyLocalServiceUtil.getBuddyByScreenName(getCompanyId(), getFrom());
-        if (buddy != null) {
-            jsonMessage.put("from", buddy.toJSON());
-        }
+//        Buddy buddy = com.marcelmika.lims.service.BuddyLocalServiceUtil.getBuddyByScreenName(getCompanyId(), getFrom());
+//        if (buddy != null) {
+//            jsonMessage.put("from", buddy.toJSON());
+//        }
         // Content
         jsonMessage.put("content", getBody());
 

@@ -309,10 +309,6 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 		_settings.persist();
 	}
 
-	public com.liferay.portal.kernel.json.JSONObject toJSON() {
-		return _settings.toJSON();
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

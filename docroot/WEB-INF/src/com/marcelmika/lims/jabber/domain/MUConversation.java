@@ -1,12 +1,7 @@
 
 package com.marcelmika.lims.jabber.domain;
 
-import com.marcelmika.lims.jabber.JabberKeys;
 import com.marcelmika.lims.jabber.JabberUtil;
-import com.marcelmika.lims.model.Buddy;
-import com.marcelmika.lims.model.json.JSONable;
-import com.marcelmika.lims.service.BuddyLocalServiceUtil;
-import com.marcelmika.lims.service.ConversationLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -31,7 +26,7 @@ import java.util.List;
  * Time: 11:18 PM
  * @deprecated
  */
-public class MUConversation implements Conversation, JSONable {
+public class MUConversation {
 
     // Conversation
     private String conversationId;
@@ -80,7 +75,7 @@ public class MUConversation implements Conversation, JSONable {
                     MessageDeprecated msg = new MessageDeprecated((org.jivesoftware.smack.packet.Message) packet);
                     // Extract  jabber name
                     msg.setFrom(JabberUtil.getResource(msg.getFrom()));
-                    msg.setCompanyId(owner.getCompanyId());
+//                    msg.setCompanyId(owner.getCompanyId());
 
                     // Add only messages with sender
                     if (msg.getFrom() != null) {
@@ -127,11 +122,11 @@ public class MUConversation implements Conversation, JSONable {
             for (Affiliate affiliate : owners) {
                 String screenName = JabberUtil.getScreenName(affiliate.getJid());
                 // Fetch buddy by screen name
-                Buddy buddy = BuddyLocalServiceUtil.getBuddyByScreenName(owner.getCompanyId(), screenName);
+//                Buddy buddy = BuddyLocalServiceUtil.getBuddyByScreenName(owner.getCompanyId(), screenName);
                 // Add to list
-                if (buddy != null) {
-                    addParticipant(buddy);
-                }
+//                if (buddy != null) {
+//                    addParticipant(buddy);
+//                }
             }
         } catch (XMPPException ex) {
 //            System.out.println("[CONVERSATION][ERR] " + ex.getMessage());
@@ -158,14 +153,14 @@ public class MUConversation implements Conversation, JSONable {
     private boolean containsParticipant(Buddy participant) {
         //@todo: Implement in a more efficient way
         for(Buddy p: participants)  {
-            if(p.getUserId() == participant.getUserId()) {
+//            if(p.getUserId() == participant.getUserId()) {
                 return true;
-            }
+//            }
         }
         return false;
     }
 
-    @Override
+
     public void addParticipant(Buddy participant) {
         // Add only if the participant isn't already here
         if(!containsParticipant(participant)) {
@@ -187,22 +182,18 @@ public class MUConversation implements Conversation, JSONable {
         return owner;
     }
 
-    @Override
     public String getConversationId() {
         return this.conversationId;
     }
 
-    @Override
     public String getConversationName() {
         return null;
     }
 
-    @Override
     public String getConversationType() {
         return getConversationModel().getConversationType();
     }
 
-    @Override
     public String getConversationVisibility() {
         return null;
     }
@@ -242,11 +233,11 @@ public class MUConversation implements Conversation, JSONable {
         MessageDeprecated message = getLastMessage();
         String title = "";
         if (message != null) {
-            Buddy buddy = BuddyLocalServiceUtil.getBuddyByScreenName(owner.getCompanyId(), message.getFrom());
-            title = (buddy != null) ? buddy.getFullName() : "";
-            if (participants.size() > 1) {
-                title += " (+" + (participants.size() - 1) + ")";
-            }
+//            Buddy buddy = BuddyLocalServiceUtil.getBuddyByScreenName(owner.getCompanyId(), message.getFrom());
+//            title = (buddy != null) ? buddy.getFullName() : "";
+//            if (participants.size() > 1) {
+//                title += " (+" + (participants.size() - 1) + ")";
+//            }
         }
         return title;
     }
@@ -255,7 +246,7 @@ public class MUConversation implements Conversation, JSONable {
         // Buddies
         JSONArray jsonBuddies = JSONFactoryUtil.createJSONArray();
         for (Buddy buddy : getParticipants()) {
-            jsonBuddies.put(buddy.toJSON());
+//            jsonBuddies.put(buddy.toJSON());
         }
 
         // Conversation properites

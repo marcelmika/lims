@@ -13,10 +13,6 @@
  */
 package com.marcelmika.lims.model.impl;
 
-import com.marcelmika.lims.model.json.JSONable;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-
 /**
  * The extended model implementation for the Settings service. Represents a row
  * in the &quot;Chat_Settings&quot; database table, with each column mapped to a
@@ -30,7 +26,7 @@ import com.liferay.portal.kernel.json.JSONObject;
  *
  * @author Brian Wing Shun Chan
  */
-public class SettingsImpl extends SettingsBaseImpl implements JSONable {
+public class SettingsImpl extends SettingsBaseImpl {
     /*
      * NOTE FOR DEVELOPERS:
      *
@@ -38,15 +34,5 @@ public class SettingsImpl extends SettingsBaseImpl implements JSONable {
      */
 
     public SettingsImpl() {
-    }
-
-    public JSONObject toJSON() {
-        JSONObject json = JSONFactoryUtil.createJSONObject();
-        json.put("statusId", this.getSid());
-        json.put("userId", this.getUserId());
-        json.put("status", this.getStatus());
-        json.put("mute", this.getMute());        
-
-        return json;
     }
 }

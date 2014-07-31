@@ -230,24 +230,6 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		}
 	}
 
-	public com.liferay.portal.kernel.json.JSONObject toJSON() {
-		try {
-			String methodName = "toJSON";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			com.liferay.portal.kernel.json.JSONObject returnObj = (com.liferay.portal.kernel.json.JSONObject)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
 	public BaseModel<?> getSettingsRemoteModel() {
 		return _settingsRemoteModel;
 	}
