@@ -678,8 +678,7 @@ public class ParticipantLocalServiceClp implements ParticipantLocalService {
 
 	public com.marcelmika.lims.model.Participant addParticipant(
 		java.lang.Long cid, java.lang.Long participantId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.NoSuchParticipantException {
+		throws com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
@@ -696,10 +695,6 @@ public class ParticipantLocalServiceClp implements ParticipantLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
 				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
-			if (t instanceof com.marcelmika.lims.NoSuchParticipantException) {
-				throw (com.marcelmika.lims.NoSuchParticipantException)t;
 			}
 
 			if (t instanceof RuntimeException) {

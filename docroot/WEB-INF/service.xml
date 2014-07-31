@@ -1,8 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.1.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_1_0.dtd">
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.1.0//EN"
+        "http://www.liferay.com/dtd/liferay-service-builder_6_1_0.dtd">
 <service-builder package-path='com.marcelmika.lims'>
     <namespace>LiferayLIMS</namespace>
-      
+
     <!-- Panel -->
     <entity name='Panel' local-service='true' remote-service='false'>
         <column name='pid' type='long' primary='true'/>
@@ -47,6 +48,9 @@
         <column name='createdAt' type='Date'/>
         <column name='messageHash' type='String'/>
         <column name='body' type='String'/>
+        <order>
+            <order-column name="createdAt" order-by="asc"/>
+        </order>
         <finder name='CreatorId' return-type='Buddy'>
             <finder-column name='creatorId'/>
         </finder>
@@ -88,7 +92,7 @@
         <column name='awake' type='boolean'/>
         <column name='status' type='String'/>
     </entity>
-    
+
     <!-- Opened Conversation -->
     <entity name='OpenedConversation' local-service='true' remote-service='false'>
         <column name='ocid' type='long' primary='true'/>
@@ -97,10 +101,10 @@
         <finder name='UserId_ConversationId' return-type='OpenedConversation'>
             <finder-column name='userId'/>
             <finder-column name='conversationId'/>
-        </finder>  
+        </finder>
         <finder name='UserId' return-type='Collection'>
-            <finder-column name='userId'/>            
-        </finder>   
+            <finder-column name='userId'/>
+        </finder>
     </entity>
-        
+
 </service-builder>

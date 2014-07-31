@@ -582,11 +582,13 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 		}
 
 		if (result == null) {
-			StringBundler query = new StringBundler(2);
+			StringBundler query = new StringBundler(3);
 
 			query.append(_SQL_SELECT_MESSAGE_WHERE);
 
 			query.append(_FINDER_COLUMN_CREATORID_CREATORID_2);
+
+			query.append(MessageModelImpl.ORDER_BY_JPQL);
 
 			String sql = query.toString();
 
@@ -725,7 +727,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 						(orderByComparator.getOrderByFields().length * 3));
 			}
 			else {
-				query = new StringBundler(2);
+				query = new StringBundler(3);
 			}
 
 			query.append(_SQL_SELECT_MESSAGE_WHERE);
@@ -735,6 +737,10 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 			if (orderByComparator != null) {
 				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
 					orderByComparator);
+			}
+
+			else {
+				query.append(MessageModelImpl.ORDER_BY_JPQL);
 			}
 
 			String sql = query.toString();
@@ -982,6 +988,10 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 			}
 		}
 
+		else {
+			query.append(MessageModelImpl.ORDER_BY_JPQL);
+		}
+
 		String sql = query.toString();
 
 		Query q = session.createQuery(sql);
@@ -1084,7 +1094,7 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 				sql = query.toString();
 			}
 			else {
-				sql = _SQL_SELECT_MESSAGE;
+				sql = _SQL_SELECT_MESSAGE.concat(MessageModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;

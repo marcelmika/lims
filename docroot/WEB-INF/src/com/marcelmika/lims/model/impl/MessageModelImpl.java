@@ -15,6 +15,7 @@
 package com.marcelmika.lims.model.impl;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -68,6 +69,8 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		};
 	public static final String TABLE_SQL_CREATE = "create table LiferayLIMS_Message (mid LONG not null primary key,cid LONG,creatorId LONG,createdAt DATE null,messageHash VARCHAR(75) null,body TEXT null)";
 	public static final String TABLE_SQL_DROP = "drop table LiferayLIMS_Message";
+	public static final String ORDER_BY_JPQL = " ORDER BY message.createdAt ASC";
+	public static final String ORDER_BY_SQL = " ORDER BY LiferayLIMS_Message.createdAt ASC";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
@@ -218,6 +221,8 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 	}
 
 	public void setCreatedAt(Date createdAt) {
+		_columnBitmask = -1L;
+
 		_createdAt = createdAt;
 	}
 
@@ -295,17 +300,15 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 	}
 
 	public int compareTo(Message message) {
-		long primaryKey = message.getPrimaryKey();
+		int value = 0;
 
-		if (getPrimaryKey() < primaryKey) {
-			return -1;
+		value = DateUtil.compareTo(getCreatedAt(), message.getCreatedAt());
+
+		if (value != 0) {
+			return value;
 		}
-		else if (getPrimaryKey() > primaryKey) {
-			return 1;
-		}
-		else {
-			return 0;
-		}
+
+		return 0;
 	}
 
 	@Override

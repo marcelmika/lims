@@ -281,8 +281,7 @@ public class ParticipantLocalServiceUtil {
 	*/
 	public static com.marcelmika.lims.model.Participant addParticipant(
 		java.lang.Long cid, java.lang.Long participantId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.NoSuchParticipantException {
+		throws com.liferay.portal.kernel.exception.SystemException {
 		return getService().addParticipant(cid, participantId);
 	}
 

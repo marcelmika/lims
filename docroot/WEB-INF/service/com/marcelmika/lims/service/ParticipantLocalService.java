@@ -253,8 +253,7 @@ public interface ParticipantLocalService extends BaseLocalService,
 	*/
 	public com.marcelmika.lims.model.Participant addParticipant(
 		java.lang.Long cid, java.lang.Long participantId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.NoSuchParticipantException;
+		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
 	* Given method updates all participants related to the conversation. By updated we mean incrementing of the
