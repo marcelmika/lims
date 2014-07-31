@@ -30,6 +30,7 @@ Y.LIMS.Core.ViewController = Y.Base.create('viewController', Y.View, [], {
         Y.on('panelClosed', this._onPanelClosed, this);
         Y.on('chatEnabled', this._onChatEnabled, this);
         Y.on('chatDisabled', this._onChatDisabled, this);
+        Y.on('userSessionExpired', this._onSessionExpired, this);
 
         // Check if panel is already opened. If so we should call onPanelDidAppear.
         // This usually happens when panel was already rendered and opened. Hence it wasn't
@@ -68,6 +69,15 @@ Y.LIMS.Core.ViewController = Y.Base.create('viewController', Y.View, [], {
      * the user closes the whole panel.
      */
     onPanelDidUnload: function () {
+        // Override the function
+    },
+
+    /**
+     * Session Expired is called whenever the user session has expired. Provide all necessary cleaning like
+     * invalidation of timers, etc. At the end of the method the controller will be automatically hidden from
+     * the screen.
+     */
+    onSessionExpired: function () {
         // Override the function
     },
 
@@ -200,6 +210,19 @@ Y.LIMS.Core.ViewController = Y.Base.create('viewController', Y.View, [], {
      */
     _onChatDisabled: function () {
         // Hide controller
+        this.hideViewController();
+    },
+
+    /**
+     * Called whenever the user session expires
+     *
+     * @private
+     */
+    _onSessionExpired: function () {
+        // Callback
+        this.onSessionExpired();
+        // Hide controller. There shouldn't be any user interaction since the user
+        // is already logged out.
         this.hideViewController();
     }
 

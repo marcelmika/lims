@@ -39,6 +39,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
         Y.on('buddySelected', function (buddy) {
             this._onBuddySelected(buddy);
         }, this);
+        // Session expired
+        Y.on('userSessionExpired', this._onSessionExpired, this);
     },
 
     /**
@@ -296,6 +298,14 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
     },
 
     /**
+     * Called whenever the user session expires
+     * @private
+     */
+    _onSessionExpired: function () {
+        this._stopTimer();
+    },
+
+    /**
      * Starts timer which periodically refreshes group list
      *
      * @private
@@ -323,7 +333,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
      *
      * @private
      */
-    _pauseTimer: function () {
+    _stopTimer: function () {
         // Vars
         var timer = this.get('timer');
         // Pause

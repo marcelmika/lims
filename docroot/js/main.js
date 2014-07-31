@@ -1,6 +1,4 @@
-
-
-AUI().use('lims-core', "lims-model", "lims-view", "lims-controller", function(A) {
+AUI().use('lims-core', "lims-model", "lims-view", "lims-controller", function (A) {
 
     // If there is no chat bar do nothing
     if (!A.one('#chatBar')) {
@@ -8,19 +6,27 @@ AUI().use('lims-core', "lims-model", "lims-view", "lims-controller", function(A)
     }
 
     // Dom ready startup
-    A.on('domready', function() {
+    A.on('domready', function () {
+
+        // Vars
+        var mainController;
 
         // Set global settings
-        // TODO: Remove, this doesn't work anyway
         A.LIMS.Core.Settings.pathImage = Liferay.ThemeDisplay.getPathImage();
         A.LIMS.Core.Settings.userId = Liferay.ThemeDisplay.getUserId();
         A.LIMS.Core.Settings.companyId = Liferay.ThemeDisplay.getCompanyId();
 
         // Start the app!
-        new A.LIMS.Controller.MainController({
+        mainController = new A.LIMS.Controller.MainController({
             userId: Liferay.ThemeDisplay.getUserId(),
             companyId: Liferay.ThemeDisplay.getCompanyId(),
             pathImage: Liferay.ThemeDisplay.getPathImage()
         });
+
+        // Notify main controller if the user session expires
+        Liferay.bind('sessionExpired', function () {
+            mainController.sessionExpired();
+        });
+
     });
 });

@@ -58,6 +58,13 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
                 // we simply don't do anything. If it fails the user will see
                 // the conversation whenever the user goes to another web page
                 // and try it again.
+                failure: function (x, o) {
+                    // If the attempt is unauthorized session has expired
+                    if (o.status === 401) {
+                        // Notify everybody else
+                        Y.fire('userSessionExpired');
+                    }
+                }
             }
         });
     },
@@ -85,6 +92,13 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
                 // There isn't much we can do. If the request ends with success
                 // the user is not going to see badge anymore (of course if there will be any
                 // new messages it will appear again).
+                failure: function (x, o) {
+                    // If the attempt is unauthorized session has expired
+                    if (o.status === 401) {
+                        // Notify everybody else
+                        Y.fire('userSessionExpired');
+                    }
+                }
             }
         });
     },
@@ -130,6 +144,11 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
                             callback(null, instance);
                         },
                         failure: function (x, o) {
+                            // If the attempt is unauthorized session has expired
+                            if (o.status === 401) {
+                                // Notify everybody else
+                                Y.fire('userSessionExpired');
+                            }
                             // Call failure
                             callback("Cannot create new conversation", o);
                         }
@@ -174,6 +193,11 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
                             callback(null, instance);
                         },
                         failure: function (x, o) {
+                            // If the attempt is unauthorized session has expired
+                            if (o.status === 401) {
+                                // Notify everybody else
+                                Y.fire('userSessionExpired');
+                            }
                             // Call failure
                             callback("Cannot read conversation", o);
                         }
@@ -200,8 +224,6 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
         var messageList = this.get('messageList'),
             messageModels = [],
             index;
-
-        console.log(conversation);
         // Update from response
         this.setAttrs({
             etag: conversation.etag,

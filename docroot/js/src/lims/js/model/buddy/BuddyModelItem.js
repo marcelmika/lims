@@ -52,6 +52,11 @@ Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [], {
                     callback(null, o.response);
                 },
                 failure: function (x, o) {
+                    // If the attempt is unauthorized session has expired
+                    if (o.status === 401) {
+                        // Notify everybody else
+                        Y.fire('userSessionExpired');
+                    }
                     callback("Cannot update buddy presence", o.response);
                 }
             }

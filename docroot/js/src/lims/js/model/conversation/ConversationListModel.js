@@ -83,6 +83,11 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
                             callback(null, response);
                         },
                         failure: function (x, o) {
+                            // If the attempt is unauthorized session has expired
+                            if (o.status === 401) {
+                                // Notify everybody else
+                                Y.fire('userSessionExpired');
+                            }
                             // Call failure
                             callback("Cannot create new conversation", o);
                         }

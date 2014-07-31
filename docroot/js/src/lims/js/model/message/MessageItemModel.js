@@ -16,7 +16,6 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
 
             // CREATE
             case 'create':
-                console.log("Message Create");
 
                 // Parameters
                 parameters = {
@@ -35,14 +34,15 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
                         content: content
                     },
                     on: {
-                        success: function (id, o) {
-                            console.log('success');
-                            console.log(o.response);
-                        },
+//                        success: function (id, o) {
+//
+//                        },
                         failure: function (x, o) {
-                            console.log('failure');
-                            console.log(x);
-                            console.log(o.status);
+                            // If the attempt is unauthorized session has expired
+                            if (o.status === 401) {
+                                // Notify everybody else
+                                Y.fire('userSessionExpired');
+                            }
                         }
                     }
 //                    headers: {
@@ -53,7 +53,6 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
 
             // READ
             case 'read':
-                console.log("Message Read");
                 return;
 
             // UPDATE

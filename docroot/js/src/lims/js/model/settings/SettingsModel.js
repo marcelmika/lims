@@ -73,7 +73,6 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
     _updateActivePanel: function (data, callback) {
         // Create settings that contains request url
         var settings = new Y.LIMS.Core.Settings();
-        console.log(data);
 
         // Do the request
         Y.io(settings.getServerRequestUrl(), {
@@ -87,6 +86,11 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
                     callback(null, o.response);
                 },
                 failure: function (x, o) {
+                    // If the attempt is unauthorized session has expired
+                    if (o.status === 401) {
+                        // Notify everybody else
+                        Y.fire('userSessionExpired');
+                    }
                     callback("Cannot update active panel", o.response);
                 }
             }
@@ -115,6 +119,11 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
                     callback(null, o.response);
                 },
                 failure: function (x, o) {
+                    // If the attempt is unauthorized session has expired
+                    if (o.status === 401) {
+                        // Notify everybody else
+                        Y.fire('userSessionExpired');
+                    }
                     callback("Cannot update settings", o.response);
                 }
             }

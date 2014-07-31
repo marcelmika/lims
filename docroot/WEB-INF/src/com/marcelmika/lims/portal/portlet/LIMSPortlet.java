@@ -17,6 +17,7 @@ import com.marcelmika.lims.core.service.SettingsCoreServiceUtil;
 import com.marcelmika.lims.portal.domain.Buddy;
 import com.marcelmika.lims.portal.domain.Conversation;
 import com.marcelmika.lims.portal.domain.Settings;
+import com.marcelmika.lims.portal.http.HttpStatus;
 import com.marcelmika.lims.portal.processor.PortletProcessor;
 
 import javax.portlet.*;
@@ -165,8 +166,10 @@ public class LIMSPortlet extends MVCPortlet {
      */
     @Override
     public void serveResource(ResourceRequest request, ResourceResponse response) throws PortletException, IOException {
-        // Do not send anything if the user is not signed in
+        // Do not continue if the user is not signed in
         if (!isCorrectAttempt(request)) {
+            // Return unauthorized response code
+            response.setProperty(ResourceResponse.HTTP_STATUS_CODE, HttpStatus.UNAUTHORIZED.toString());
             return;
         }
         // Response content type is JSON

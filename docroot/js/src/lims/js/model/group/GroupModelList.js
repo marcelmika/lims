@@ -32,8 +32,6 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
     sync: function (action, options, callback) {
         var data, url, etag = this.get('etag'), instance = this;
 
-        console.log("Reading groups with etag: " + etag);
-
 //        instance.callback = callback;
 
         switch (action) {
@@ -98,10 +96,12 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
                             }
                         },
                         failure: function (x, o) {
+                            // If the attempt is unauthorized session has expired
+                            if (o.status === 401) {
+                                // Notify everybody else
+                                Y.fire('userSessionExpired');
+                            }
                             callback("group model error", o.response);
-//                            console.log("groups not changed");
-//                            console.log(x);
-//                            console.log(o);
                         }
                     },
                     headers: {
@@ -123,7 +123,6 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
 //                return;
 
             case 'update':
-                Y.log("update");
                 return;
 //
 //                data = this.toJSON();
@@ -134,7 +133,6 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
 //                return;
 
             case 'delete':
-                Y.log("delete");
                 return;
 //                localStorage.removeItem(this.get('id'));
 //                callback();

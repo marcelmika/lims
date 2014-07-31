@@ -32,6 +32,14 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
     },
 
     /**
+     * This is called whenever the user session expires
+     */
+    sessionExpired: function () {
+        // Fire an event so the other controllers know about the expiration
+        Y.fire('userSessionExpired');
+    },
+
+    /**
      * Attach local functions to events
      *
      * @private

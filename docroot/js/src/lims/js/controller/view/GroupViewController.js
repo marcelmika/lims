@@ -32,8 +32,18 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
      * Panel Did Disappear is called when the panel disappeared from the screen
      */
     onPanelDidDisappear: function () {
-        this._pauseTimer();
+        this._stopTimer();
     },
+
+    /**
+     * Session Expired is called whenever the user session has expired. Provide all necessary cleaning like
+     * invalidation of timers, etc. At the end of the method the controller will be automatically hidden from
+     * the screen.
+     */
+    onSessionExpired: function () {
+        this._stopTimer();
+    },
+
 
     /**
      * Attaches events to DOM elements from container
@@ -78,7 +88,7 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
      *
      * @private
      */
-    _pauseTimer: function () {
+    _stopTimer: function () {
         // Vars
         var timer = this.get('timer');
         // Pause
