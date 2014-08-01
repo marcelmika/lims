@@ -10,11 +10,7 @@
         <friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
         <friendly-url-mapping>lims</friendly-url-mapping>
         <friendly-url-routes>META-INF/lims-friendly-url-routes.xml</friendly-url-routes>
-        <!-- Poller -->
-        <poller-processor-class>com.marcelmika.lims.portal.poller.PollerProcessor</poller-processor-class>
         <!-- CSS -->
-        <header-portlet-css>/css/token-input-facebook.css</header-portlet-css>
-        <header-portlet-css>/css/token-input.css</header-portlet-css>
         <header-portlet-css>/css/main.css</header-portlet-css>
         <!-- JS -->
         <footer-portlet-javascript>/js/build/lims-core/lims-core-debug.js</footer-portlet-javascript>
