@@ -81,14 +81,13 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     /**
      * Called when the whole message list is updated
      *
-     * @param messageList
      * @private
      */
-    _onMessagesUpdated: function (messageList) {
+    _onMessagesUpdated: function () {
         // Hide indicator if it wasn't already hidden
         this.get('activityIndicator').hide();
         // Render the list
-        this._renderMessagesList(messageList);
+        this._renderMessagesList();
         // Since the list is already rendered there is no need to
         // animate any other addition to the list
         this.set('shouldAnimateList', false);
@@ -119,13 +118,13 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     /**
      * Renders the whole message list
      *
-     * @param messageList
      * @private
      */
-    _renderMessagesList: function (messageList) {
+    _renderMessagesList: function () {
 
         // Vars
         var instance = this,
+            messageList = this.get('model').get('messageList'),
             animate = this.get('shouldAnimateList'); // Store the instance
 
         // Hide the view and show it after it's rendered

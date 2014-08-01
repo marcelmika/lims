@@ -208,16 +208,15 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
     /**
      * Called whenever we receive a notification from long pooling that conversations have been updated
      *
-     * @param conversationList
      * @private
      */
-    _onConversationsUpdated: function (conversationList) {
+    _onConversationsUpdated: function () {
         // Vars
         var map = this.get('conversationMap'),                      // Map that holds all conversation controllers
             controller,                                             // Controller from map or newly created
             instance = this,                                        // This
             buddyDetails = this.get('buddyDetails'),                // Currently logged user
-            conversationModelList = this.get('conversationList'),   // Holds all conversation models
+            conversationList = this.get('conversationList'),        // Holds all conversation models
             conversationContainer,                                  // Container node passed to controller
             container = this.get('container'),                      // Container of all conversations
             notification = this.get('notification'),                // Notification handler
@@ -249,7 +248,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                 // model with already set etag we need to set it to 0 here.
                 conversationModel.set('etag', 0);
                 // Add it to list
-                conversationModelList.add(conversationModel);
+                conversationList.add(conversationModel);
 
                 // Create new container node
                 conversationContainer = Y.Node.create(instance.containerTemplate);
