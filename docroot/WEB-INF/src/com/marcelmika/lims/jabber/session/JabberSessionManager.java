@@ -10,9 +10,7 @@ import com.marcelmika.lims.jabber.JabberException;
 import com.marcelmika.lims.jabber.JabberKeys;
 import com.marcelmika.lims.jabber.JabberMapper;
 import com.marcelmika.lims.jabber.listener.JabberRosterListener;
-import com.marcelmika.lims.model.Settings;
 import com.marcelmika.lims.portal.properties.PortletPropertiesValues;
-import com.marcelmika.lims.service.SettingsLocalServiceUtil;
 import org.jivesoftware.smack.AccountManager;
 import org.jivesoftware.smack.Connection;
 import org.jivesoftware.smack.Roster;
@@ -130,38 +128,38 @@ public class JabberSessionManager {
     private void importUserAndLogin(long userId, String username, String password, Connection connection)
             throws JabberException {
 
-        try {
-            // Import user
-            if (PortletPropertiesValues.JABBER_IMPORT_USER_ENABLED) {
-                importUser(userId, username, password, connection);
-            }
-
-            // If the SASL is enabled login with username, password and resource
-            if (PortletPropertiesValues.JABBER_SASL_PLAIN_ENABLED) {
-                connection.login(
-                        username,
-                        PortletPropertiesValues.JABBER_SASL_PLAIN_PASSWORD,
-                        PortletPropertiesValues.JABBER_RESOURCE
-                );
-            } else {
-                // Login with username and password
-                connection.login(username, password);
-            }
-
-            addToSystem(userId, connection);
-
-            // Error occurred
-        } catch (Exception e) {
-            String message = e.getMessage();
-            if (message.contains("conflict(409)")) {
-                // Session did not login
-                throw new JabberException("User " + userId + " already exists but he/she has a different password.");
-
-            } else {
-                // Call Session did not login
-                throw new JabberException("User did not login", e);
-            }
-        }
+//        try {
+//            // Import user
+//            if (PortletPropertiesValues.JABBER_IMPORT_USER_ENABLED) {
+//                importUser(userId, username, password, connection);
+//            }
+//
+//            // If the SASL is enabled login with username, password and resource
+//            if (PortletPropertiesValues.JABBER_SASL_PLAIN_ENABLED) {
+//                connection.login(
+//                        username,
+//                        PortletPropertiesValues.JABBER_SASL_PLAIN_PASSWORD,
+//                        PortletPropertiesValues.JABBER_RESOURCE
+//                );
+//            } else {
+//                // Login with username and password
+//                connection.login(username, password);
+//            }
+//
+//            addToSystem(userId, connection);
+//
+//            // Error occurred
+//        } catch (Exception e) {
+//            String message = e.getMessage();
+//            if (message.contains("conflict(409)")) {
+//                // Session did not login
+//                throw new JabberException("User " + userId + " already exists but he/she has a different password.");
+//
+//            } else {
+//                // Call Session did not login
+//                throw new JabberException("User did not login", e);
+//            }
+//        }
     }
 
 
@@ -226,27 +224,27 @@ public class JabberSessionManager {
      * @param connection Connection
      */
     private void setInitialPresence(long userId, Connection connection) {
-        try {
-            // Create empty present
-            Presence presence;
-            // Get settings object for the particular user
-            Settings settings = SettingsLocalServiceUtil.getSettings(userId);
-            // Only if the chat is enabled
-            if (settings.getChatEnabled()) {
-                // Change on Liferay server side
-                SettingsLocalServiceUtil.changeStatus(userId, JabberKeys.JABBER_STATUS_ONLINE);
-                // Change on Jabber server side
-                presence = JabberMapper.mapStatusToPresence(JabberKeys.JABBER_STATUS_ONLINE);
-            } else {
-                // Chat is not enabled -> set to off
-                presence = JabberMapper.mapStatusToPresence(JabberKeys.JABBER_STATUS_OFF);
-            }
-
-            // Set presence packet to jabber server
-            connection.sendPacket(presence);
-        } catch (Exception e) {
-            log.error("Cannot set user presence. However, login continues. Reason: " + e.getMessage());
-        }
+//        try {
+//            // Create empty present
+//            Presence presence;
+//            // Get settings object for the particular user
+//            Settings settings = SettingsLocalServiceUtil.getSettings(userId);
+//            // Only if the chat is enabled
+//            if (settings.getChatEnabled()) {
+//                // Change on Liferay server side
+//                SettingsLocalServiceUtil.changeStatus(userId, JabberKeys.JABBER_STATUS_ONLINE);
+//                // Change on Jabber server side
+//                presence = JabberMapper.mapStatusToPresence(JabberKeys.JABBER_STATUS_ONLINE);
+//            } else {
+//                // Chat is not enabled -> set to off
+//                presence = JabberMapper.mapStatusToPresence(JabberKeys.JABBER_STATUS_OFF);
+//            }
+//
+//            // Set presence packet to jabber server
+//            connection.sendPacket(presence);
+//        } catch (Exception e) {
+//            log.error("Cannot set user presence. However, login continues. Reason: " + e.getMessage());
+//        }
     }
 
     /**

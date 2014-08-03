@@ -1,12 +1,10 @@
 <?xml version="1.0"?>
 
-<beans
-        default-destroy-method="destroy"
-        default-init-method="afterPropertiesSet"
-        xmlns="http://www.springframework.org/schema/beans"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
-        >
+<beans default-destroy-method="destroy"
+       default-init-method="afterPropertiesSet"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
     <!-- Settings Core Service -->
 
@@ -90,6 +88,7 @@
     <bean id="com.marcelmika.lims.core.service.GroupCoreService"
           class="com.marcelmika.lims.core.service.GroupCoreServiceImpl">
         <constructor-arg index="0" ref="com.marcelmika.lims.jabber.service.GroupJabberService"/>
+        <constructor-arg index="1" ref="com.marcelmika.lims.persistence.service.GroupPersistenceService"/>
     </bean>
 
     <bean id="com.marcelmika.lims.core.service.GroupCoreServiceUtil"
@@ -105,6 +104,10 @@
         <constructor-arg index="0" ref="com.marcelmika.lims.jabber.session.UserSessionStore"/>
     </bean>
 
+    <!-- Group Persistence Service -->
+
+    <bean id="com.marcelmika.lims.persistence.service.GroupPersistenceService"
+          class="com.marcelmika.lims.persistence.service.GroupPersistenceServiceImpl"/>
 
 
 </beans>

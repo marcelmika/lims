@@ -2,7 +2,9 @@ package com.marcelmika.lims.core.service;
 
 import com.marcelmika.lims.api.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
+import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.jabber.service.GroupJabberService;
+import com.marcelmika.lims.persistence.service.GroupPersistenceService;
 
 /**
  * @author Ing. Marcel Mika
@@ -14,14 +16,17 @@ public class GroupCoreServiceImpl implements GroupCoreService {
 
     // Dependencies
     GroupJabberService groupJabberService;
+    GroupPersistenceService groupPersistenceService;
 
     /**
      * Constructor
      *
      * @param groupJabberService jabber service
      */
-    public GroupCoreServiceImpl(GroupJabberService groupJabberService) {
+    public GroupCoreServiceImpl(GroupJabberService groupJabberService,
+                                GroupPersistenceService groupPersistenceService) {
         this.groupJabberService = groupJabberService;
+        this.groupPersistenceService = groupPersistenceService;
     }
 
     /**
@@ -32,6 +37,17 @@ public class GroupCoreServiceImpl implements GroupCoreService {
      */
     @Override
     public GetGroupsResponseEvent getGroups(GetGroupsRequestEvent event) {
-        return groupJabberService.getGroups(event);
+
+        Environment.BuddyListSource source = Environment.getBuddyListSource();
+
+        // Take the groups from jabber
+        if (source == Environment.BuddyListSource.JABBER) {
+            return groupJabberService.getGroups(event);
+        }
+        // Otherwise, take them from Liferay
+        else {
+            return groupPersistenceService.getGroups(event);
+        }
     }
+
 }

@@ -3,6 +3,7 @@ package com.marcelmika.lims.jabber.connection.manager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.jabber.JabberException;
 import com.marcelmika.lims.jabber.connection.sasl.LiferaySaslMechanism;
 import com.marcelmika.lims.portal.properties.PortletPropertiesValues;
@@ -41,7 +42,7 @@ public class ConnectionManagerImpl implements ConnectionManager, ConnectionListe
         connection = new XMPPConnection(getConnectionConfiguration());
 
         // Register for SASL Mechanism if enabled
-        if (PortletPropertiesValues.JABBER_SASL_PLAIN_ENABLED) {
+        if (Environment.isSaslPlainEnabled()) {
             SASLAuthentication.registerSASLMechanism("PLAIN", LiferaySaslMechanism.class);
             SASLAuthentication.supportSASLMechanism("PLAIN", 0);
         }
@@ -69,12 +70,9 @@ public class ConnectionManagerImpl implements ConnectionManager, ConnectionListe
     public void login(String username, String password) throws JabberException {
         try {
             // If the SASL is enabled login with username, password and resource
-            if (PortletPropertiesValues.JABBER_SASL_PLAIN_ENABLED) {
-                connection.login(
-                        username,
-                        PortletPropertiesValues.JABBER_SASL_PLAIN_PASSWORD,
-                        PortletPropertiesValues.JABBER_RESOURCE
-                );
+            if (Environment.isSaslPlainEnabled()) {
+                // Login via SASL
+                connection.login(username, Environment.getSaslPlainPassword(), Environment.getJabberResource());
             } else {
                 // Login with username and password
                 connection.login(username, password);
@@ -195,20 +193,20 @@ public class ConnectionManagerImpl implements ConnectionManager, ConnectionListe
 
         // Create new configuration
         connectionConfiguration = new ConnectionConfiguration(
-                PortletPropertiesValues.JABBER_HOST,
-                PortletPropertiesValues.JABBER_PORT,
-                PortletPropertiesValues.JABBER_SERVICE_NAME);
+                Environment.getJabberHost(),
+                Environment.getJabberPort(),
+                Environment.getJabberServiceName());
 
         // Init configuration values
         // SASL Plain auth
-        connectionConfiguration.setSASLAuthenticationEnabled(PortletPropertiesValues.JABBER_SASL_PLAIN_ENABLED);
+        connectionConfiguration.setSASLAuthenticationEnabled(Environment.isSaslPlainEnabled());
         // Is the initial available presence going to be send to the server?
         connectionConfiguration.setSendPresence(true);
 
         // Sets the socket factory used to create new xmppConnection sockets.
         // This is useful when connecting through SOCKS5 proxies.
-        SmackConfiguration.setLocalSocks5ProxyEnabled(PortletPropertiesValues.JABBER_SOCK5_PROXY_ENABLED);
-        SmackConfiguration.setLocalSocks5ProxyPort(PortletPropertiesValues.JABBER_SOCK5_PROXY_PORT);
+        SmackConfiguration.setLocalSocks5ProxyEnabled(Environment.isJabberSock5ProxyEnabled());
+        SmackConfiguration.setLocalSocks5ProxyPort(Environment.getJabberSock5ProxyPort());
 
         return connectionConfiguration;
     }

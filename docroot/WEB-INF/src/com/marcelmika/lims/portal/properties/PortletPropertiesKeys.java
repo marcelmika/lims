@@ -1,4 +1,3 @@
-
 package com.marcelmika.lims.portal.properties;
 
 /**
@@ -9,16 +8,19 @@ package com.marcelmika.lims.portal.properties;
  */
 public interface PortletPropertiesKeys {
 
-    // Buddy
+    // Buddy list
+    public static final String BUDDY_LIST_SOURCE = "buddy.list.source";
+    public static final String BUDDY_LIST_ALLOWED_SOCIAL_RELATION_TYPES = "buddy.list.allowed.social.relation.types";
     public static final String BUDDY_LIST_MAX_BUDDIES = "buddy.list.max.buddies";
+    public static final String BUDDY_LIST_SITE_EXCLUDES = "buddy.list.site.excludes";
     public static final String BUDDY_LIST_STRATEGY = "buddy.list.strategy";
 
     // Jabber
-    public static final String JABBER_HOST = "jabber.host";    
+    public static final String JABBER_ENABLED = "jabber.enabled";
+    public static final String JABBER_HOST = "jabber.host";
     public static final String JABBER_PORT = "jabber.port";
     public static final String JABBER_RESOURCE = "jabber.resource";
     public static final String JABBER_SERVICE_NAME = "jabber.service.name";
-    public static final String JABBER_SERVICE_MULTICHAT_NAME = "jabber.service.multichat.name";
 
     // Sock5
     public static final String JABBER_SOCK5_PROXY_ENABLED = "jabber.sock5.proxy.enabled";
