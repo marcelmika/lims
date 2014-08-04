@@ -3,7 +3,10 @@ package com.marcelmika.lims.portal.domain;
 import com.marcelmika.lims.api.entity.GroupCollectionDetails;
 import com.marcelmika.lims.api.entity.GroupDetails;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Ing. Marcel Mika
@@ -31,12 +34,15 @@ public class GroupCollection {
         GroupCollection groupCollection = new GroupCollection();
         // Map data to group details
         groupCollection.lastModified = details.getLastModified();
-        groupCollection.etag = details.getLastModified().hashCode();
+
+        if (details.getLastModified() != null) {
+            groupCollection.etag = details.getLastModified().hashCode();
+        }
 
         // Relations
         if (details.getGroups() != null) {
             for (GroupDetails groupDetail : details.getGroups()) {
-                 groupCollection.groups.add(Group.fromGroupDetails(groupDetail));
+                groupCollection.groups.add(Group.fromGroupDetails(groupDetail));
             }
         }
 

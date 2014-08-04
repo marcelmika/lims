@@ -60,12 +60,35 @@ public class Buddy {
         return buddies;
     }
 
-
+    /**
+     * Factory method which creates buddy from participant model
+     *
+     * @param participant Participant
+     * @return Buddy
+     */
     public static Buddy fromParticipantModel(Participant participant) {
         // Create new buddy
         Buddy buddy = new Buddy();
         // Map data from model
         buddy.setBuddyId(participant.getParticipantId());
+
+        return buddy;
+    }
+
+    /**
+     * Factory method which creates buddy from plain java object usually retrieved from database
+     *
+     * @param object Object
+     * @return Buddy
+     */
+    public static Buddy fromPlainObject(Object[] object) {
+        // Create new buddy
+        Buddy buddy = new Buddy();
+        // Map data from object
+        buddy.buddyId = (Long)object[0];
+        buddy.screenName = (String)object[1];
+        buddy.fullName = String.format("%s %s %s", object[2], object[3], object[4]);
+        buddy.status = String.format("%s", object[5]);
 
         return buddy;
     }

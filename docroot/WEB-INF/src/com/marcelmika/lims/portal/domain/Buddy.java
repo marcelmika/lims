@@ -252,7 +252,7 @@ public class Buddy {
             buddy.presence = Presence.fromPresenceDetails(buddyDetails.getPresenceDetails());
         }
 
-        if (buddyDetails.getStatus() != null) {
+        if (buddyDetails.getSettingsDetails() != null) {
             buddy.settings = Settings.fromSettingsDetails(buddyDetails.getSettingsDetails());
         }
 

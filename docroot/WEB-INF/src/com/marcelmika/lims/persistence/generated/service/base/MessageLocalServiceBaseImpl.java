@@ -47,6 +47,7 @@ import com.marcelmika.lims.persistence.generated.service.persistence.Conversatio
 import com.marcelmika.lims.persistence.generated.service.persistence.MessagePersistence;
 import com.marcelmika.lims.persistence.generated.service.persistence.PanelPersistence;
 import com.marcelmika.lims.persistence.generated.service.persistence.ParticipantPersistence;
+import com.marcelmika.lims.persistence.generated.service.persistence.SettingsFinder;
 import com.marcelmika.lims.persistence.generated.service.persistence.SettingsPersistence;
 
 import java.io.Serializable;
@@ -459,6 +460,24 @@ public abstract class MessageLocalServiceBaseImpl extends BaseLocalServiceImpl
 	}
 
 	/**
+	 * Returns the settings finder.
+	 *
+	 * @return the settings finder
+	 */
+	public SettingsFinder getSettingsFinder() {
+		return settingsFinder;
+	}
+
+	/**
+	 * Sets the settings finder.
+	 *
+	 * @param settingsFinder the settings finder
+	 */
+	public void setSettingsFinder(SettingsFinder settingsFinder) {
+		this.settingsFinder = settingsFinder;
+	}
+
+	/**
 	 * Returns the counter local service.
 	 *
 	 * @return the counter local service
@@ -684,6 +703,8 @@ public abstract class MessageLocalServiceBaseImpl extends BaseLocalServiceImpl
 	protected SettingsLocalService settingsLocalService;
 	@BeanReference(type = SettingsPersistence.class)
 	protected SettingsPersistence settingsPersistence;
+	@BeanReference(type = SettingsFinder.class)
+	protected SettingsFinder settingsFinder;
 	@BeanReference(type = CounterLocalService.class)
 	protected CounterLocalService counterLocalService;
 	@BeanReference(type = ResourceLocalService.class)

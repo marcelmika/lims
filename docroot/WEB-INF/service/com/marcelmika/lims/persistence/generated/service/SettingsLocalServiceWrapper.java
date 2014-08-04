@@ -283,6 +283,11 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 		_settingsLocalService.setChatEnabled(userId, enabled);
 	}
 
+	public java.util.List<java.lang.Object[]> getAllGroups(
+		java.lang.Long userId, int start, int end) throws java.lang.Exception {
+		return _settingsLocalService.getAllGroups(userId, start, end);
+	}
+
 	/**
 	 * @deprecated Renamed to {@link #getWrappedService}
 	 */

@@ -1,24 +1,13 @@
 package com.marcelmika.lims.persistence.service;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.GroupLocalServiceUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import com.marcelmika.lims.api.entity.GroupCollectionDetails;
-import com.marcelmika.lims.api.entity.GroupDetails;
 import com.marcelmika.lims.api.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
 import com.marcelmika.lims.persistence.domain.Buddy;
+import com.marcelmika.lims.persistence.domain.GroupCollection;
 import com.marcelmika.lims.persistence.group.GroupManager;
 import com.marcelmika.lims.persistence.group.GroupManagerImpl;
-
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @author Ing. Marcel Mika
@@ -47,33 +36,17 @@ public class GroupPersistenceServiceImpl implements GroupPersistenceService {
         Buddy buddy = Buddy.fromBuddyDetails(event.getBuddyDetails());
 
         try {
-            log.info("Getting groups");
-            List<Group> groupModels = GroupLocalServiceUtil.getUserGroups(buddy.getBuddyId());
+            // Get groups from manager
+            GroupCollection groupCollection = groupManager.getGroups(buddy.getBuddyId());
 
-            log.info("GROUPS: " + groupModels);
+            // Call success
+            return GetGroupsResponseEvent.getGroupsSuccess(groupCollection.toGroupCollectionDetails());
 
-
-            for (Group groupModel : groupModels) {
-                log.info("HEY GROUP: " + groupModel);
-
-                List<User> userModels = UserLocalServiceUtil.getGroupUsers(groupModel.getGroupId());
-
-                for (User userModel : userModels) {
-                    log.info(userModel.getFullName());
-                }
-            }
-
-        } catch (PortalException e) {
-            e.printStackTrace();
-        } catch (SystemException e) {
-            e.printStackTrace();
         }
-
-
-        GroupCollectionDetails det = new GroupCollectionDetails();
-        det.setGroups(new LinkedList<GroupDetails>());
-        det.setLastModified(new Date());
-
-        return GetGroupsResponseEvent.getGroupsSuccess(new GroupCollectionDetails());
+        // Something went wrong
+        catch (Exception exception) {
+            // Call error
+            return GetGroupsResponseEvent.getGroupsFailure(exception);
+        }
     }
 }

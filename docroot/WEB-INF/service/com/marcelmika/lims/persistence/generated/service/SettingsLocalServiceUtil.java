@@ -288,6 +288,11 @@ public class SettingsLocalServiceUtil {
 		getService().setChatEnabled(userId, enabled);
 	}
 
+	public static java.util.List<java.lang.Object[]> getAllGroups(
+		java.lang.Long userId, int start, int end) throws java.lang.Exception {
+		return getService().getAllGroups(userId, start, end);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

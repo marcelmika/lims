@@ -17,12 +17,14 @@ package com.marcelmika.lims.persistence.generated.service.impl;
 import com.marcelmika.lims.persistence.generated.model.Settings;
 import com.marcelmika.lims.persistence.generated.service.base.SettingsLocalServiceBaseImpl;
 
+import java.util.List;
+
 /**
  * The implementation of the settings local service.
- *
+ * <p/>
  * <p>
  * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the {@link com.marcelmika.lims.persistence.generated.service.SettingsLocalService} interface.
- *
+ * <p/>
  * <p>
  * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
  * </p>
@@ -32,12 +34,11 @@ import com.marcelmika.lims.persistence.generated.service.base.SettingsLocalServi
  * @see com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUtil
  */
 public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
-	/*
-	 * NOTE FOR DEVELOPERS:
+    /*
+     * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this interface directly. Always use {@link com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUtil} to access the settings local service.
 	 */
-
 
     public Settings getSettingsByUser(long userId) throws Exception {
         // Find user settings
@@ -73,5 +74,9 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
             settings.setChatEnabled(enabled);
             settingsPersistence.update(settings, true);
         }
+    }
+
+    public List<Object[]> getAllGroups(Long userId, int start, int end) throws Exception {
+        return settingsFinder.findAllGroups(userId, start, end);
     }
 }

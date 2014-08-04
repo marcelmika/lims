@@ -20,7 +20,8 @@
         </supports>
         <resource-bundle>content.Language</resource-bundle>
         <portlet-info>
-            <title>LIMS</title>
+            <!-- Title needs to be empty otherwise it will be visible on the screen -->
+            <title></title>
             <short-title>LIMS</short-title>
             <keywords>LIMS</keywords>
         </portlet-info>

@@ -40,16 +40,19 @@ public class GroupCollection {
         return details;
     }
 
-
-    public void addGroups(List<Group> groups) {
-        // Overwrite current groups
-        this.groups.clear();
-        this.groups.addAll(groups);
-        // Update modification date
-        this.lastModified = new Date();
-    }
-
     public Date getLastModified() {
         return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
     }
 }

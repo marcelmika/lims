@@ -256,4 +256,8 @@ public interface SettingsLocalService extends BaseLocalService,
 
 	public void setChatEnabled(long userId, boolean enabled)
 		throws java.lang.Exception;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<java.lang.Object[]> getAllGroups(
+		java.lang.Long userId, int start, int end) throws java.lang.Exception;
 }

@@ -1,7 +1,13 @@
 package com.marcelmika.lims.persistence.group;
 
 import com.marcelmika.lims.api.environment.Environment;
+import com.marcelmika.lims.persistence.domain.Buddy;
+import com.marcelmika.lims.persistence.domain.Group;
 import com.marcelmika.lims.persistence.domain.GroupCollection;
+import com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUtil;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Ing. Marcel Mika
@@ -19,7 +25,7 @@ public class GroupManagerImpl implements GroupManager {
      * @return GroupCollection of groups related to the user
      */
     @Override
-    public GroupCollection getGroups(Long userId) {
+    public GroupCollection getGroups(Long userId) throws Exception {
         // Get selected list strategy
         Environment.BuddyListStrategy strategy = Environment.getBuddyListStrategy();
 
@@ -42,10 +48,27 @@ public class GroupManagerImpl implements GroupManager {
     }
 
 
-    private GroupCollection getAllGroups(Long userId) {
+    private GroupCollection getAllGroups(Long userId) throws Exception {
+        List<Object[]> users = SettingsLocalServiceUtil.getAllGroups(userId, 0, 100);
+
+        Group group = new Group();
+        // TODO: i18n
+        group.setName("All contacts");
+
+        for (Object[] userObject : users) {
+            Buddy buddy = Buddy.fromPlainObject(userObject);
+            group.addBuddy(buddy);
+        }
+
+        List<Group> groups = new LinkedList<Group>();
+        groups.add(group);
+
+        GroupCollection groupCollection = new GroupCollection();
+
+        groupCollection.setGroups(groups);
 
 
-        return null;
+        return groupCollection;
     }
 
     private GroupCollection getSitesGroups(Long userId) {

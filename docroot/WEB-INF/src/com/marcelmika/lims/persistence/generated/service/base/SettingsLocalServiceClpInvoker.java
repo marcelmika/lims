@@ -105,25 +105,29 @@ public class SettingsLocalServiceClpInvoker {
 				"boolean"
 			};
 
-		_methodName52 = "getBeanIdentifier";
+		_methodName54 = "getBeanIdentifier";
 
-		_methodParameterTypes52 = new String[] {  };
+		_methodParameterTypes54 = new String[] {  };
 
-		_methodName53 = "setBeanIdentifier";
+		_methodName55 = "setBeanIdentifier";
 
-		_methodParameterTypes53 = new String[] { "java.lang.String" };
+		_methodParameterTypes55 = new String[] { "java.lang.String" };
 
-		_methodName58 = "getSettingsByUser";
+		_methodName60 = "getSettingsByUser";
 
-		_methodParameterTypes58 = new String[] { "long" };
+		_methodParameterTypes60 = new String[] { "long" };
 
-		_methodName59 = "changeStatus";
+		_methodName61 = "changeStatus";
 
-		_methodParameterTypes59 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes61 = new String[] { "long", "java.lang.String" };
 
-		_methodName60 = "setChatEnabled";
+		_methodName62 = "setChatEnabled";
 
-		_methodParameterTypes60 = new String[] { "long", "boolean" };
+		_methodParameterTypes62 = new String[] { "long", "boolean" };
+
+		_methodName63 = "getAllGroups";
+
+		_methodParameterTypes63 = new String[] { "java.lang.Long", "int", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -215,37 +219,44 @@ public class SettingsLocalServiceClpInvoker {
 				((Boolean)arguments[1]).booleanValue());
 		}
 
-		if (_methodName52.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes52, parameterTypes)) {
+		if (_methodName54.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes54, parameterTypes)) {
 			return SettingsLocalServiceUtil.getBeanIdentifier();
 		}
 
-		if (_methodName53.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes53, parameterTypes)) {
+		if (_methodName55.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes55, parameterTypes)) {
 			SettingsLocalServiceUtil.setBeanIdentifier((java.lang.String)arguments[0]);
-
-			return null;
-		}
-
-		if (_methodName58.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes58, parameterTypes)) {
-			return SettingsLocalServiceUtil.getSettingsByUser(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName59.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes59, parameterTypes)) {
-			SettingsLocalServiceUtil.changeStatus(((Long)arguments[0]).longValue(),
-				(java.lang.String)arguments[1]);
 
 			return null;
 		}
 
 		if (_methodName60.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes60, parameterTypes)) {
+			return SettingsLocalServiceUtil.getSettingsByUser(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName61.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes61, parameterTypes)) {
+			SettingsLocalServiceUtil.changeStatus(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1]);
+
+			return null;
+		}
+
+		if (_methodName62.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes62, parameterTypes)) {
 			SettingsLocalServiceUtil.setChatEnabled(((Long)arguments[0]).longValue(),
 				((Boolean)arguments[1]).booleanValue());
 
 			return null;
+		}
+
+		if (_methodName63.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes63, parameterTypes)) {
+			return SettingsLocalServiceUtil.getAllGroups((java.lang.Long)arguments[0],
+				((Integer)arguments[1]).intValue(),
+				((Integer)arguments[2]).intValue());
 		}
 
 		throw new UnsupportedOperationException();
@@ -283,14 +294,16 @@ public class SettingsLocalServiceClpInvoker {
 	private String[] _methodParameterTypes14;
 	private String _methodName15;
 	private String[] _methodParameterTypes15;
-	private String _methodName52;
-	private String[] _methodParameterTypes52;
-	private String _methodName53;
-	private String[] _methodParameterTypes53;
-	private String _methodName58;
-	private String[] _methodParameterTypes58;
-	private String _methodName59;
-	private String[] _methodParameterTypes59;
+	private String _methodName54;
+	private String[] _methodParameterTypes54;
+	private String _methodName55;
+	private String[] _methodParameterTypes55;
 	private String _methodName60;
 	private String[] _methodParameterTypes60;
+	private String _methodName61;
+	private String[] _methodParameterTypes61;
+	private String _methodName62;
+	private String[] _methodParameterTypes62;
+	private String _methodName63;
+	private String[] _methodParameterTypes63;
 }

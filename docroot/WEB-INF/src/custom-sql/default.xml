@@ -1,5 +1,27 @@
 <?xml version="1.0"?>
 
 <custom-sql>
-	
+
+    <sql id="com.marcelmika.lims.persistence.generated.service.persistence.SettingsFinder.findAllUsers">
+        <![CDATA[
+			SELECT
+				User_.userId AS userId,
+				User_.screenName AS screenName,
+				User_.firstName AS firstName,
+				User_.middleName AS middleName,
+				User_.lastName AS lastName,
+				lims_settings.status AS status
+			FROM
+				lims_settings
+			INNER JOIN
+				User_ ON (User_.userId = lims_settings.userId)
+			WHERE
+				(User_.userId != ?)
+			ORDER BY
+				User_.firstName ASC,
+				User_.middleName ASC,
+				User_.lastName ASC
+		]]>
+    </sql>
+
 </custom-sql>
