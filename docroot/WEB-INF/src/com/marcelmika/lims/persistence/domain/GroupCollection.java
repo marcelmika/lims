@@ -40,6 +40,15 @@ public class GroupCollection {
         return details;
     }
 
+    /**
+     * Adds group to groups list
+     *
+     * @param group Group
+     */
+    public void addGroup(Group group) {
+        groups.add(group);
+    }
+
     public Date getLastModified() {
         return lastModified;
     }

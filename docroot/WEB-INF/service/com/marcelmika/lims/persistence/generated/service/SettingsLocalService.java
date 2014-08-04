@@ -257,7 +257,35 @@ public interface SettingsLocalService extends BaseLocalService,
 	public void setChatEnabled(long userId, boolean enabled)
 		throws java.lang.Exception;
 
+	/**
+	* Returns all buddies in the system
+	*
+	* @param userId            of excluded user
+	* @param ignoreDefaultUser true if default users should be ignored
+	* @param start             value of the list
+	* @param end               value of the list
+	* @return List of objects where each object contains user
+	* @throws Exception
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<java.lang.Object[]> getAllGroups(
-		java.lang.Long userId, int start, int end) throws java.lang.Exception;
+		java.lang.Long userId, boolean ignoreDefaultUser, int start, int end)
+		throws java.lang.Exception;
+
+	/**
+	* Returns
+	*
+	* @param userId            of excluded user
+	* @param ignoreDefaultUser true if default users should be ignored
+	* @param excludedSties     list of names of sites which should be excluded
+	* @param start             value of the list
+	* @param end               value of the list
+	* @return List of objects where each object contains group where each group contains users
+	* @throws Exception
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<java.lang.Object[]> getSitesGroups(
+		java.lang.Long userId, boolean ignoreDefaultUser,
+		java.lang.String[] excludedSties, int start, int end)
+		throws java.lang.Exception;
 }

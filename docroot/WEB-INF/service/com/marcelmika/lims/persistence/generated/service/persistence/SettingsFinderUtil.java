@@ -22,8 +22,18 @@ import com.liferay.portal.kernel.util.ReferenceRegistry;
  */
 public class SettingsFinderUtil {
 	public static java.util.List<java.lang.Object[]> findAllGroups(
-		java.lang.Long userId, int start, int end) throws java.lang.Exception {
-		return getFinder().findAllGroups(userId, start, end);
+		java.lang.Long userId, boolean ignoreDefaultUser, int start, int end)
+		throws java.lang.Exception {
+		return getFinder().findAllGroups(userId, ignoreDefaultUser, start, end);
+	}
+
+	public static java.util.List<java.lang.Object[]> findSitesGroups(
+		java.lang.Long userId, boolean ignoreDefaultUser,
+		java.lang.String[] excludedSties, int start, int end)
+		throws java.lang.Exception {
+		return getFinder()
+				   .findSitesGroups(userId, ignoreDefaultUser, excludedSties,
+			start, end);
 	}
 
 	public static SettingsFinder getFinder() {

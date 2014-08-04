@@ -76,7 +76,41 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
         }
     }
 
-    public List<Object[]> getAllGroups(Long userId, int start, int end) throws Exception {
-        return settingsFinder.findAllGroups(userId, start, end);
+    /**
+     * Returns all buddies in the system
+     *
+     * @param userId            of excluded user
+     * @param ignoreDefaultUser true if default users should be ignored
+     * @param start             value of the list
+     * @param end               value of the list
+     * @return List of objects where each object contains user
+     * @throws Exception
+     */
+    public List<Object[]> getAllGroups(Long userId,
+                                       boolean ignoreDefaultUser,
+                                       int start,
+                                       int end) throws Exception {
+        // Find via settings finder
+        return settingsFinder.findAllGroups(userId, ignoreDefaultUser, start, end);
+    }
+
+    /**
+     * Returns all groups where the user participates
+     *
+     * @param userId            of the user whose groups are we looking for
+     * @param ignoreDefaultUser true if default users should be ignored
+     * @param excludedSties     list of names of sites which should be excluded
+     * @param start             value of the list
+     * @param end               value of the list
+     * @return List of objects where each object contains group where each group contains users
+     * @throws Exception
+     */
+    public List<Object[]> getSitesGroups(Long userId,
+                                         boolean ignoreDefaultUser,
+                                         String[] excludedSties,
+                                         int start,
+                                         int end) throws Exception {
+        // Find via settings finder
+        return settingsFinder.findSitesGroups(userId, ignoreDefaultUser, excludedSties, start, end);
     }
 }

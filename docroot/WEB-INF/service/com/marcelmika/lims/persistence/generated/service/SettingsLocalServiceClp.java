@@ -127,7 +127,16 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 
 		_methodName22 = "getAllGroups";
 
-		_methodParameterTypes22 = new String[] { "java.lang.Long", "int", "int" };
+		_methodParameterTypes22 = new String[] {
+				"java.lang.Long", "boolean", "int", "int"
+			};
+
+		_methodName23 = "getSitesGroups";
+
+		_methodParameterTypes23 = new String[] {
+				"java.lang.Long", "boolean", "java.lang.String[][]", "int",
+				"int"
+			};
 	}
 
 	public com.marcelmika.lims.persistence.generated.model.Settings addSettings(
@@ -731,7 +740,8 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 	}
 
 	public java.util.List<java.lang.Object[]> getAllGroups(
-		java.lang.Long userId, int start, int end) throws java.lang.Exception {
+		java.lang.Long userId, boolean ignoreDefaultUser, int start, int end)
+		throws java.lang.Exception {
 		Object returnObj = null;
 
 		try {
@@ -739,6 +749,48 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 					_methodParameterTypes22,
 					new Object[] {
 						ClpSerializer.translateInput(userId),
+						
+					ignoreDefaultUser,
+						
+					start,
+						
+					end
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof java.lang.Exception) {
+				throw (java.lang.Exception)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<java.lang.Object[]>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	public java.util.List<java.lang.Object[]> getSitesGroups(
+		java.lang.Long userId, boolean ignoreDefaultUser,
+		java.lang.String[] excludedSties, int start, int end)
+		throws java.lang.Exception {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23,
+					new Object[] {
+						ClpSerializer.translateInput(userId),
+						
+					ignoreDefaultUser,
+						
+					ClpSerializer.translateInput(excludedSties),
 						
 					start,
 						
@@ -809,4 +861,6 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 	private String[] _methodParameterTypes21;
 	private String _methodName22;
 	private String[] _methodParameterTypes22;
+	private String _methodName23;
+	private String[] _methodParameterTypes23;
 }

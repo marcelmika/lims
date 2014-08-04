@@ -126,6 +126,15 @@ public class Environment {
         return PortletPropertiesValues.BUDDY_LIST_SITE_EXCLUDES;
     }
 
+    /**
+     * Returns true if the default user should be ignored. Default user is the user which has
+     * the defaultUser flag in database set to true.
+     *
+     * @return boolean
+     */
+    public static boolean getBuddyListIgnoreDefaultUser() {
+        return PortletPropertiesValues.BUDDY_LIST_IGNORE_DEFAULT_USER;
+    }
 
     /**
      * Return true if communication via jabber is enabled

@@ -32,7 +32,12 @@ Y.LIMS.View.GroupViewItem = Y.Base.create('groupViewItem', Y.View, [], {
             })
         );
 
-        // Render Buddies:
+        // Hide group name if nothing was set
+        if (!group.get('name')) {
+            container.one('.group-name').hide();
+        }
+
+        // Render Buddies
         buddiesView = new Y.LIMS.View.GroupBuddyViewList({model: group.get('buddies')});
         buddiesView.render();
         container.append(buddiesView.get("container"));

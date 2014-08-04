@@ -14,6 +14,7 @@ public interface PortletPropertiesKeys {
     public static final String BUDDY_LIST_MAX_BUDDIES = "buddy.list.max.buddies";
     public static final String BUDDY_LIST_SITE_EXCLUDES = "buddy.list.site.excludes";
     public static final String BUDDY_LIST_STRATEGY = "buddy.list.strategy";
+    public static final String BUDDY_LIST_IGNORE_DEFAULT_USER = "buddy.list.ignore.default.user";
 
     // Jabber
     public static final String JABBER_ENABLED = "jabber.enabled";

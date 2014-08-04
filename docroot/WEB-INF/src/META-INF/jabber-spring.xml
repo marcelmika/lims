@@ -106,8 +106,14 @@
 
     <!-- Group Persistence Service -->
 
-    <bean id="com.marcelmika.lims.persistence.service.GroupPersistenceService"
-          class="com.marcelmika.lims.persistence.service.GroupPersistenceServiceImpl"/>
+    <bean id="com.marcelmika.lims.persistence.group.GroupManager"
+          class="com.marcelmika.lims.persistence.group.GroupManagerImpl"/>
 
+    <!-- Group Persistence Manager -->
+
+    <bean id="com.marcelmika.lims.persistence.service.GroupPersistenceService"
+          class="com.marcelmika.lims.persistence.service.GroupPersistenceServiceImpl">
+        <constructor-arg index="0" ref="com.marcelmika.lims.persistence.group.GroupManager"/>
+    </bean>
 
 </beans>

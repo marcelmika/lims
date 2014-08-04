@@ -127,7 +127,16 @@ public class SettingsLocalServiceClpInvoker {
 
 		_methodName63 = "getAllGroups";
 
-		_methodParameterTypes63 = new String[] { "java.lang.Long", "int", "int" };
+		_methodParameterTypes63 = new String[] {
+				"java.lang.Long", "boolean", "int", "int"
+			};
+
+		_methodName64 = "getSitesGroups";
+
+		_methodParameterTypes64 = new String[] {
+				"java.lang.Long", "boolean", "java.lang.String[][]", "int",
+				"int"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -255,8 +264,18 @@ public class SettingsLocalServiceClpInvoker {
 		if (_methodName63.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes63, parameterTypes)) {
 			return SettingsLocalServiceUtil.getAllGroups((java.lang.Long)arguments[0],
-				((Integer)arguments[1]).intValue(),
-				((Integer)arguments[2]).intValue());
+				((Boolean)arguments[1]).booleanValue(),
+				((Integer)arguments[2]).intValue(),
+				((Integer)arguments[3]).intValue());
+		}
+
+		if (_methodName64.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes64, parameterTypes)) {
+			return SettingsLocalServiceUtil.getSitesGroups((java.lang.Long)arguments[0],
+				((Boolean)arguments[1]).booleanValue(),
+				(java.lang.String[])arguments[2],
+				((Integer)arguments[3]).intValue(),
+				((Integer)arguments[4]).intValue());
 		}
 
 		throw new UnsupportedOperationException();
@@ -306,4 +325,6 @@ public class SettingsLocalServiceClpInvoker {
 	private String[] _methodParameterTypes62;
 	private String _methodName63;
 	private String[] _methodParameterTypes63;
+	private String _methodName64;
+	private String[] _methodParameterTypes64;
 }

@@ -10,7 +10,6 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
     initializer: function () {
         var buddyDetails = this.get('buddyDetails'),
             settingsModel = this.get('settingsModel');
-
         // Attach events
         this._attachEvents();
 

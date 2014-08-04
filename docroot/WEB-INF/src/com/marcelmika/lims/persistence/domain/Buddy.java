@@ -78,17 +78,21 @@ public class Buddy {
     /**
      * Factory method which creates buddy from plain java object usually retrieved from database
      *
-     * @param object Object
+     * @param object       Object[] array which contains buddy data
+     * @param firstElement determines first element in Object[] where the buddy serialization should start
      * @return Buddy
      */
-    public static Buddy fromPlainObject(Object[] object) {
+    public static Buddy fromPlainObject(Object[] object, int firstElement) {
         // Create new buddy
         Buddy buddy = new Buddy();
         // Map data from object
-        buddy.buddyId = (Long)object[0];
-        buddy.screenName = (String)object[1];
-        buddy.fullName = String.format("%s %s %s", object[2], object[3], object[4]);
-        buddy.status = String.format("%s", object[5]);
+        buddy.buddyId = (Long) object[firstElement++];
+        buddy.screenName = (String) object[firstElement++];
+        buddy.fullName = String.format("%s %s %s",
+                object[firstElement++],
+                object[firstElement++],
+                object[firstElement++]);
+        buddy.status = String.format("%s", object[firstElement]);
 
         return buddy;
     }

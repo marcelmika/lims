@@ -31,6 +31,10 @@ public class PortletPropertiesValues {
     public static final String BUDDY_LIST_STRATEGY = getString(
             PortletPropertiesKeys.BUDDY_LIST_STRATEGY
     );
+    // Buddy List - Ignore default user
+    public static final boolean BUDDY_LIST_IGNORE_DEFAULT_USER = getBoolean(
+            PortletPropertiesKeys.BUDDY_LIST_IGNORE_DEFAULT_USER
+    );
 
     // Jabber (Disabled by default)
     public static final Boolean JABBER_ENABLED = getBoolean(

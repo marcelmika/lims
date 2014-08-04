@@ -2,12 +2,12 @@ package com.marcelmika.lims.persistence.service;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
 import com.marcelmika.lims.persistence.domain.Buddy;
 import com.marcelmika.lims.persistence.domain.GroupCollection;
 import com.marcelmika.lims.persistence.group.GroupManager;
-import com.marcelmika.lims.persistence.group.GroupManagerImpl;
 
 /**
  * @author Ing. Marcel Mika
@@ -21,8 +21,16 @@ public class GroupPersistenceServiceImpl implements GroupPersistenceService {
     private static Log log = LogFactoryUtil.getLog(GroupPersistenceServiceImpl.class);
 
     // Dependencies
-    // TODO: Inject
-    GroupManager groupManager = new GroupManagerImpl();
+    GroupManager groupManager;
+
+    /**
+     * Constructor
+     *
+     * @param groupManager GroupManager
+     */
+    public GroupPersistenceServiceImpl(GroupManager groupManager) {
+        this.groupManager = groupManager;
+    }
 
     /**
      * Get all groups related to the particular user
@@ -36,12 +44,16 @@ public class GroupPersistenceServiceImpl implements GroupPersistenceService {
         Buddy buddy = Buddy.fromBuddyDetails(event.getBuddyDetails());
 
         try {
+
+            // TODO: Implement pagination
+            int start = 0;
+            int end = Environment.getBuddyListMaxBuddies();
+
             // Get groups from manager
-            GroupCollection groupCollection = groupManager.getGroups(buddy.getBuddyId());
+            GroupCollection groupCollection = groupManager.getGroups(buddy.getBuddyId(), start, end);
 
             // Call success
             return GetGroupsResponseEvent.getGroupsSuccess(groupCollection.toGroupCollectionDetails());
-
         }
         // Something went wrong
         catch (Exception exception) {

@@ -41,6 +41,22 @@ public class Group {
     }
 
     /**
+     * Factory method which creates group from plain java object usually retrieved from database
+     *
+     * @param object       Object[] array which contains group data
+     * @param firstElement determines first element in Object[] where the group serialization should start
+     * @return Group
+     */
+    public static Group fromPlainObject(Object[] object, int firstElement) {
+        // Create new group
+        Group group = new Group();
+        // Map data from object
+        group.name = (String) object[firstElement];
+
+        return group;
+    }
+
+    /**
      * Maps group to group details
      *
      * @return GroupDetails

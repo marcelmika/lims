@@ -14,8 +14,10 @@ public interface GroupManager {
      * Returns Group Collection of all groups related to the user
      *
      * @param userId Long
+     * @param start  of the list
+     * @param end    of the list
      * @return GroupCollection of groups related to the user
      */
-    public GroupCollection getGroups(Long userId) throws Exception;
+    public GroupCollection getGroups(Long userId, int start, int end) throws Exception;
 
 }
