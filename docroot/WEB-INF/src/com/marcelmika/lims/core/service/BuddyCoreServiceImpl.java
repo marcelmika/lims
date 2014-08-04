@@ -74,6 +74,7 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
         // ended with success. If it fails we simply do nothing. We don't want to interrupt login process
         // only because we can't send initial presence to the jabber server
         if (readPresenceEvent.isSuccess()) {
+// TODO: Fix the initial presence here
             buddyJabberService.updatePresence(new UpdatePresenceBuddyRequestEvent(
                             loginResponseEvent.getDetails().getBuddyId(),
                             readPresenceEvent.getPresenceDetails())
@@ -91,12 +92,7 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
      */
     @Override
     public LogoutBuddyResponseEvent logoutBuddy(LogoutBuddyRequestEvent event) {
-        // Do request
-        LogoutBuddyResponseEvent logoutResponseEvent = buddyJabberService.logoutBuddy(event);
-        // Log
-        log.info(logoutResponseEvent.getResult());
-
-        return logoutResponseEvent;
+        return buddyJabberService.logoutBuddy(event);
     }
 
     /**
@@ -120,8 +116,6 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
     public UpdatePresenceBuddyResponseEvent updatePresence(UpdatePresenceBuddyRequestEvent event) {
         // Save status to persistent service
         UpdatePresenceBuddyResponseEvent responseEvent = buddyPersistenceService.updatePresence(event);
-        // Log
-        log.info(responseEvent.getResult());
         // Do not continue if the change status event failed
         if (!responseEvent.isSuccess()) {
             return responseEvent;

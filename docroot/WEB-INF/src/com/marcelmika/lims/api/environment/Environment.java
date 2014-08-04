@@ -108,6 +108,15 @@ public class Environment {
     }
 
     /**
+     * Returns an array of allowed social relation types
+     *
+     * @return int[]
+     */
+    public static int[] getBuddyListAllowedSocialRelationTypes() {
+        return PortletPropertiesValues.BUDDY_LIST_ALLOWED_SOCIAL_RELATION_TYPES;
+    }
+
+    /**
      * Returns an array of sites names which should be excluded from
      * the buddy list
      *
