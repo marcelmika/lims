@@ -13,6 +13,8 @@ import com.marcelmika.lims.api.entity.GroupDetails;
 import com.marcelmika.lims.api.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
 import com.marcelmika.lims.persistence.domain.Buddy;
+import com.marcelmika.lims.persistence.group.GroupManager;
+import com.marcelmika.lims.persistence.group.GroupManagerImpl;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -28,6 +30,10 @@ public class GroupPersistenceServiceImpl implements GroupPersistenceService {
 
     // Log
     private static Log log = LogFactoryUtil.getLog(GroupPersistenceServiceImpl.class);
+
+    // Dependencies
+    // TODO: Inject
+    GroupManager groupManager = new GroupManagerImpl();
 
     /**
      * Get all groups related to the particular user

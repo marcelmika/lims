@@ -3,6 +3,9 @@ package com.marcelmika.lims.persistence.domain;
 import com.marcelmika.lims.api.entity.BuddyDetails;
 import com.marcelmika.lims.persistence.generated.model.Participant;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
@@ -37,6 +40,26 @@ public class Buddy {
 
         return buddy;
     }
+
+
+    /**
+     * Factory method which creates new list of Buddies from the list of BuddyDetails
+     *
+     * @param detailsList list of buddy details
+     * @return List<Buddy> of buddies
+     */
+    public static List<Buddy> fromBuddyDetailsList(List<BuddyDetails> detailsList) {
+        // Create new list of buddies
+        List<Buddy> buddies = new ArrayList<Buddy>();
+
+        // Iterate through details and create buddy based on that
+        for (BuddyDetails details : detailsList) {
+            buddies.add(Buddy.fromBuddyDetails(details));
+        }
+
+        return buddies;
+    }
+
 
     public static Buddy fromParticipantModel(Participant participant) {
         // Create new buddy
