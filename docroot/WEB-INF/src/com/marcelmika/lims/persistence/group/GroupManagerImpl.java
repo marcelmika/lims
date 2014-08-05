@@ -3,6 +3,7 @@ package com.marcelmika.lims.persistence.group;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.environment.Environment;
+import com.marcelmika.lims.api.environment.Environment.BuddyListSocialRelation;
 import com.marcelmika.lims.api.environment.Environment.BuddyListStrategy;
 import com.marcelmika.lims.persistence.domain.Buddy;
 import com.marcelmika.lims.persistence.domain.Group;
@@ -40,6 +41,8 @@ public class GroupManagerImpl implements GroupManager {
         boolean ignoreDefaultUser = Environment.getBuddyListIgnoreDefaultUser();
         // Some site may be excluded
         String[] excludedSites = Environment.getBuddyListExcludes();
+        // Relation types
+        BuddyListSocialRelation[] relationTypes = Environment.getBuddyListAllowedSocialRelationTypes();
 
 
         // All buddies
@@ -52,7 +55,7 @@ public class GroupManagerImpl implements GroupManager {
         }
         // Socialized buddies
         else if (strategy == BuddyListStrategy.SOCIAL) {
-            return getSocialGroups(userId);
+            return getSocialGroups(userId, ignoreDefaultUser, relationTypes, start, end);
         }
         // Socialized and buddies from sites
         else {
@@ -62,7 +65,6 @@ public class GroupManagerImpl implements GroupManager {
 
     /**
      * Returns group collection which contains all buddies in the system.
-     * Users
      *
      * @param userId            which should be excluded from the list
      * @param ignoreDefaultUser boolean set to true if the default user should be excluded
@@ -98,6 +100,18 @@ public class GroupManagerImpl implements GroupManager {
         return groupCollection;
     }
 
+    /**
+     * Returns group collection which contains groups that represents sites where the user participates.
+     * The groups contain all users that are within except for the user given in param.
+     *
+     * @param userId            which should be excluded from the list
+     * @param ignoreDefaultUser boolean set to true if the default user should be excluded
+     * @param excludedSites     names of sites (groups) that should be excluded from the group collection
+     * @param start             of the list
+     * @param end               of the list
+     * @return GroupCollection
+     * @throws Exception
+     */
     private GroupCollection getSitesGroups(Long userId,
                                            boolean ignoreDefaultUser,
                                            String[] excludedSites,
@@ -132,7 +146,7 @@ public class GroupManagerImpl implements GroupManager {
                 group = groupMap.get(group.getName());
             }
 
-            // Deserialize buddy from object, buddy start with 1
+            // Deserialize buddy from object, buddy starts at 1
             Buddy buddy = Buddy.fromPlainObject(object, 1);
 
             // Add it to group
@@ -149,9 +163,77 @@ public class GroupManagerImpl implements GroupManager {
         return groupCollection;
     }
 
-    private GroupCollection getSocialGroups(Long userId) {
+    /**
+     * Returns group collection which contains groups that represent social relations of the user.
+     * The groups contain all users that are within except for the user given in param.
+     *
+     * @param userId            which should be excluded from the list
+     * @param ignoreDefaultUser boolean set to true if the default user should be excluded
+     * @param relationTypes     an array of relation type enums
+     * @param start             of the list
+     * @param end               of the list
+     * @return GroupCollection
+     * @throws Exception
+     */
+    private GroupCollection getSocialGroups(Long userId,
+                                            boolean ignoreDefaultUser,
+                                            BuddyListSocialRelation[] relationTypes,
+                                            int start,
+                                            int end) throws Exception {
 
-        return null;
+        // Get int codes from relation types since the persistence only consumes an int array.
+        int[] relationCodes = new int[relationTypes.length];
+        for (int i = 0; i < relationTypes.length; i++) {
+            relationCodes[i] = relationTypes[i].getCode();
+        }
+
+        // Get social groups
+        List<Object[]> groupObjects = SettingsLocalServiceUtil.getSocialGroups(
+                userId, ignoreDefaultUser, relationCodes, start, end
+        );
+
+        // We are about to build a collection of groups that will contain
+        // users within the groups. However, we only get "flat" object which contains
+        // both group data and user data. Thus we need to create a hash map that will
+        // hold each group under the unique key (groupName). This should improved the
+        // speed of mapping since we can reuse groups that we already mapped.
+        Map<String, Group> groupMap = new HashMap<String, Group>();
+
+        // Build groups and users
+        for (Object[] object : groupObjects) {
+            // Relation type is first element
+            Integer relationCode = (Integer) object[0];
+            // Map to enum
+            BuddyListSocialRelation relationType = BuddyListSocialRelation.fromCode(relationCode);
+            // Get group name from relation type description
+            String groupName = relationType.getDescription();
+
+            // Get cached group
+            Group group = groupMap.get(groupName);
+
+            // If no group was created build a new one
+            if (groupMap.get(groupName) == null) {
+                group = new Group();
+                group.setName(groupName);
+                groupMap.put(groupName, group);
+            }
+
+            // Deserialize buddy from object, buddy start at 1
+            Buddy buddy = Buddy.fromPlainObject(object, 1);
+
+            // Add it to group
+            group.addBuddy(buddy);
+        }
+
+
+        // Create group collection
+        GroupCollection groupCollection = new GroupCollection();
+        // Add groups to collection
+        for (Group group : groupMap.values()) {
+            groupCollection.addGroup(group);
+        }
+
+        return groupCollection;
     }
 
     private GroupCollection getSitesAndSocialGroups(Long userId) {

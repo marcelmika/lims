@@ -137,6 +137,12 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 				"java.lang.Long", "boolean", "java.lang.String[][]", "int",
 				"int"
 			};
+
+		_methodName24 = "getSocialGroups";
+
+		_methodParameterTypes24 = new String[] {
+				"java.lang.Long", "boolean", "int[][]", "int", "int"
+			};
 	}
 
 	public com.marcelmika.lims.persistence.generated.model.Settings addSettings(
@@ -816,6 +822,45 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 		return (java.util.List<java.lang.Object[]>)ClpSerializer.translateOutput(returnObj);
 	}
 
+	public java.util.List<java.lang.Object[]> getSocialGroups(
+		java.lang.Long userId, boolean ignoreDefaultUser, int[] relationTypes,
+		int start, int end) throws java.lang.Exception {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24,
+					new Object[] {
+						ClpSerializer.translateInput(userId),
+						
+					ignoreDefaultUser,
+						
+					ClpSerializer.translateInput(relationTypes),
+						
+					start,
+						
+					end
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof java.lang.Exception) {
+				throw (java.lang.Exception)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<java.lang.Object[]>)ClpSerializer.translateOutput(returnObj);
+	}
+
 	private InvokableLocalService _invokableLocalService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
@@ -863,4 +908,6 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 	private String[] _methodParameterTypes22;
 	private String _methodName23;
 	private String[] _methodParameterTypes23;
+	private String _methodName24;
+	private String[] _methodParameterTypes24;
 }

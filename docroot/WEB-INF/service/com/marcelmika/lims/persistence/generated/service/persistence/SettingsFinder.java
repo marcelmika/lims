@@ -26,4 +26,8 @@ public interface SettingsFinder {
 		java.lang.Long userId, boolean ignoreDefaultUser,
 		java.lang.String[] excludedSties, int start, int end)
 		throws java.lang.Exception;
+
+	public java.util.List<java.lang.Object[]> findSocialGroups(
+		java.lang.Long userId, boolean ignoreDefaultUser, int[] relationTypes,
+		int start, int end) throws java.lang.Exception;
 }

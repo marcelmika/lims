@@ -482,6 +482,7 @@ public class PortletProcessor {
         }
         // Failure
         else {
+            log.error(responseEvent.getException());
             // TODO: Add status handling
             writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
         }

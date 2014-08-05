@@ -65,4 +65,33 @@
 		]]>
     </sql>
 
+    <!-- Finds all users and attaches social relation types to them -->
+    <sql id="com.marcelmika.lims.persistence.generated.service.persistence.SettingsFinder.findBySocialGroups">
+        <![CDATA[
+			SELECT DISTINCT
+			    SocialRelation.type_ AS relationType,
+				User_.userId AS userId,
+				User_.screenName AS screenName,
+				User_.firstName AS firstName,
+				User_.middleName AS middleName,
+				User_.lastName AS lastName,
+				Lims_Settings.status AS status
+			FROM
+				Lims_Settings
+			INNER JOIN
+				User_ ON (User_.userId = Lims_Settings.userId)
+			INNER JOIN
+				SocialRelation ON (SocialRelation.userId2 = User_.userId)
+			WHERE
+				(SocialRelation.userId1 = ?)
+				AND [$SOCIAL_RELATION_TYPES$]
+				AND (User_.userId != ?)
+				[$DEFAULT_USER$]
+			ORDER BY
+				User_.firstName ASC,
+				User_.middleName ASC,
+				User_.lastName ASC
+		]]>
+    </sql>
+
 </custom-sql>

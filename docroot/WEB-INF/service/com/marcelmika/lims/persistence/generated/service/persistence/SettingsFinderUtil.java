@@ -36,6 +36,14 @@ public class SettingsFinderUtil {
 			start, end);
 	}
 
+	public static java.util.List<java.lang.Object[]> findSocialGroups(
+		java.lang.Long userId, boolean ignoreDefaultUser, int[] relationTypes,
+		int start, int end) throws java.lang.Exception {
+		return getFinder()
+				   .findSocialGroups(userId, ignoreDefaultUser, relationTypes,
+			start, end);
+	}
+
 	public static SettingsFinder getFinder() {
 		if (_finder == null) {
 			_finder = (SettingsFinder)PortletBeanLocatorUtil.locate(com.marcelmika.lims.persistence.generated.service.ClpSerializer.getServletContextName(),

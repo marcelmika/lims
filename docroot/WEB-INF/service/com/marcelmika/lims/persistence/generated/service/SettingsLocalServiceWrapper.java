@@ -268,16 +268,38 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 			arguments);
 	}
 
+	/**
+	* Returns settings related to the user whose id is given in the parameter
+	*
+	* @param userId id of the user whose setting you are requesting
+	* @return Settings
+	* @throws Exception
+	*/
 	public com.marcelmika.lims.persistence.generated.model.Settings getSettingsByUser(
 		long userId) throws java.lang.Exception {
 		return _settingsLocalService.getSettingsByUser(userId);
 	}
 
+	/**
+	* Updates user status
+	*
+	* @param userId id of the user whose status should be udpated
+	* @param status new value of the status
+	* @throws Exception
+	*/
 	public void changeStatus(long userId, java.lang.String status)
 		throws java.lang.Exception {
 		_settingsLocalService.changeStatus(userId, status);
 	}
 
+	/**
+	* Updates chat enabled value. If set to true the portlet is fully functional. If set to
+	* false the chat will be disabled.
+	*
+	* @param userId  id of the user whose chat should be enabled/disabled
+	* @param enabled if set to true the chat will be enabled. If set to false it will be disabled.
+	* @throws Exception
+	*/
 	public void setChatEnabled(long userId, boolean enabled)
 		throws java.lang.Exception {
 		_settingsLocalService.setChatEnabled(userId, enabled);
@@ -290,7 +312,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @param ignoreDefaultUser true if default users should be ignored
 	* @param start             value of the list
 	* @param end               value of the list
-	* @return List of objects where each object contains user
+	* @return List of objects where each object contains user info
 	* @throws Exception
 	*/
 	public java.util.List<java.lang.Object[]> getAllGroups(
@@ -301,14 +323,14 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	}
 
 	/**
-	* Returns
+	* Returns all groups where the user participates
 	*
-	* @param userId            of excluded user
+	* @param userId            of the user whose groups are we looking for
 	* @param ignoreDefaultUser true if default users should be ignored
 	* @param excludedSties     list of names of sites which should be excluded
 	* @param start             value of the list
 	* @param end               value of the list
-	* @return List of objects where each object contains group where each group contains users
+	* @return List of objects where each object contains group name and user info
 	* @throws Exception
 	*/
 	public java.util.List<java.lang.Object[]> getSitesGroups(
@@ -317,6 +339,24 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 		throws java.lang.Exception {
 		return _settingsLocalService.getSitesGroups(userId, ignoreDefaultUser,
 			excludedSties, start, end);
+	}
+
+	/**
+	* Returns all user's social relations
+	*
+	* @param userId            of the user whose social relations are we looking for
+	* @param ignoreDefaultUser true if default users should be ignored
+	* @param relationTypes     an array of relation type codes that we are looking for
+	* @param start             value of the list
+	* @param end               value of the list
+	* @return List objects where each object contains relation type and user info
+	* @throws Exception
+	*/
+	public java.util.List<java.lang.Object[]> getSocialGroups(
+		java.lang.Long userId, boolean ignoreDefaultUser, int[] relationTypes,
+		int start, int end) throws java.lang.Exception {
+		return _settingsLocalService.getSocialGroups(userId, ignoreDefaultUser,
+			relationTypes, start, end);
 	}
 
 	/**

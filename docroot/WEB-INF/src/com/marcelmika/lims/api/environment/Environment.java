@@ -4,6 +4,9 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.portal.properties.PortletPropertiesValues;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
@@ -99,21 +102,144 @@ public class Environment {
     }
 
     /**
+     * Enum for buddy list social relation
+     */
+    public enum BuddyListSocialRelation {
+        // TODO: i18n
+        TYPE_BI_UNKNOWN(0, "Unknown relation"),
+        TYPE_BI_CONNECTION(12, "Connections"),
+        TYPE_BI_COWORKER(1, "Coworkers"),
+        TYPE_BI_FRIEND(2, "Friends"),
+        TYPE_BI_ROMANTIC_PARTNER(3, "Romantic Partners"),
+        TYPE_BI_SIBLING(4, "Siblings");
+
+        // Integer code which uniquely describes relation
+        private int code;
+        // String description of relation type
+        private String description;
+
+        /**
+         * Private constructor
+         *
+         * @param code        that uniquely represent relation type
+         * @param description string localized description of relation
+         */
+        private BuddyListSocialRelation(final int code, final String description) {
+            this.code = code;
+            this.description = description;
+        }
+
+        /**
+         * Factory method which creates buddy list social relation enum from given code
+         *
+         * @param code that uniquely represent relation type
+         * @return BuddyListSocialRelation
+         */
+        public static BuddyListSocialRelation fromCode(int code) {
+            // Connection
+            if (code == TYPE_BI_CONNECTION.getCode()) {
+                return BuddyListSocialRelation.TYPE_BI_CONNECTION;
+            }
+            // Coworker
+            else if (code == TYPE_BI_COWORKER.getCode()) {
+                return BuddyListSocialRelation.TYPE_BI_COWORKER;
+            }
+            // Friend
+            else if (code == TYPE_BI_FRIEND.getCode()) {
+                return BuddyListSocialRelation.TYPE_BI_FRIEND;
+            }
+            // Romantic Partner
+            else if (code == TYPE_BI_ROMANTIC_PARTNER.getCode()) {
+                return BuddyListSocialRelation.TYPE_BI_ROMANTIC_PARTNER;
+            }
+            // Sibling
+            else if (code == TYPE_BI_SIBLING.getCode()) {
+                return BuddyListSocialRelation.TYPE_BI_SIBLING;
+            }
+            // Unknown
+            else {
+                return BuddyListSocialRelation.TYPE_BI_UNKNOWN;
+            }
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+    }
+
+    /**
+     * Returns an array of allowed social relation types enums
+     *
+     * @return BuddyListSocialRelation[]
+     */
+    public static BuddyListSocialRelation[] getBuddyListAllowedSocialRelationTypes() {
+        // Relations types are stored in int values
+        int[] relationsTypeCodes = PortletPropertiesValues.BUDDY_LIST_ALLOWED_SOCIAL_RELATION_TYPES;
+
+        // Create a set which will contain enums that represent relation types
+        Set<BuddyListSocialRelation> relationTypeSet = new HashSet<BuddyListSocialRelation>();
+
+        // Map integer values to relation types
+        for (int value : relationsTypeCodes) {
+            // Connection
+            if (value == BuddyListSocialRelation.TYPE_BI_CONNECTION.getCode()) {
+                relationTypeSet.add(BuddyListSocialRelation.TYPE_BI_CONNECTION);
+            }
+            // Coworker
+            else if (value == BuddyListSocialRelation.TYPE_BI_COWORKER.getCode()) {
+                relationTypeSet.add(BuddyListSocialRelation.TYPE_BI_COWORKER);
+            }
+            // Friend
+            else if (value == BuddyListSocialRelation.TYPE_BI_FRIEND.getCode()) {
+                relationTypeSet.add(BuddyListSocialRelation.TYPE_BI_FRIEND);
+            }
+            // Romantic partner
+            else if (value == BuddyListSocialRelation.TYPE_BI_ROMANTIC_PARTNER.getCode()) {
+                relationTypeSet.add(BuddyListSocialRelation.TYPE_BI_ROMANTIC_PARTNER);
+            }
+            // Sibling
+            else if (value == BuddyListSocialRelation.TYPE_BI_SIBLING.getCode()) {
+                relationTypeSet.add(BuddyListSocialRelation.TYPE_BI_SIBLING);
+            }
+            // Unknown value
+            else {
+                log.error(String.format("Unknown buddy list social relation type: %d. Valid values are \"12\", \"1\"," +
+                        " \"2\", \"3\", \"4\". The value can be set in portlet-ext.properties file related to the " +
+                        "LIMS portlet.", value));
+            }
+        }
+
+
+        // Nothing was mapped at the end.
+        // This means that no relation was selected or the relation code was wrong.
+        if (relationTypeSet.size() == 0) {
+            // Log error
+            log.error("No buddy list social relation were mapped. This means that either no social relation was " +
+                    "selected or it was wrong. Since the property is required \"12 - " +
+                    "Connections\" was selected as default. The value can be set in portlet-ext.properties file " +
+                    "related to the LIMS portlet.");
+            // Connection type is default
+            return new BuddyListSocialRelation[]{BuddyListSocialRelation.TYPE_BI_CONNECTION};
+        }
+
+
+        // Map set to array
+        return relationTypeSet.toArray(
+                new BuddyListSocialRelation[relationTypeSet.size()]
+        );
+    }
+
+    /**
      * Returns maximal buddies count in list
      *
      * @return int
      */
     public static int getBuddyListMaxBuddies() {
         return PortletPropertiesValues.BUDDY_LIST_MAX_BUDDIES;
-    }
-
-    /**
-     * Returns an array of allowed social relation types
-     *
-     * @return int[]
-     */
-    public static int[] getBuddyListAllowedSocialRelationTypes() {
-        return PortletPropertiesValues.BUDDY_LIST_ALLOWED_SOCIAL_RELATION_TYPES;
     }
 
     /**

@@ -40,6 +40,14 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
 	 * Never reference this interface directly. Always use {@link com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUtil} to access the settings local service.
 	 */
 
+    /**
+     * Returns settings related to the user whose id is given in the parameter
+     *
+     * @param userId id of the user whose setting you are requesting
+     * @return Settings
+     * @throws Exception
+     */
+    @Override
     public Settings getSettingsByUser(long userId) throws Exception {
         // Find user settings
         Settings settings = settingsPersistence.fetchByUserId(userId);
@@ -56,6 +64,14 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
         return settings;
     }
 
+    /**
+     * Updates user status
+     *
+     * @param userId id of the user whose status should be udpated
+     * @param status new value of the status
+     * @throws Exception
+     */
+    @Override
     public void changeStatus(long userId, String status) throws Exception {
         // Get user settings
         Settings settings = getSettingsByUser(userId);
@@ -66,6 +82,15 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
         }
     }
 
+    /**
+     * Updates chat enabled value. If set to true the portlet is fully functional. If set to
+     * false the chat will be disabled.
+     *
+     * @param userId  id of the user whose chat should be enabled/disabled
+     * @param enabled if set to true the chat will be enabled. If set to false it will be disabled.
+     * @throws Exception
+     */
+    @Override
     public void setChatEnabled(long userId, boolean enabled) throws Exception {
         // Get user settings
         Settings settings = getSettingsByUser(userId);
@@ -83,9 +108,10 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
      * @param ignoreDefaultUser true if default users should be ignored
      * @param start             value of the list
      * @param end               value of the list
-     * @return List of objects where each object contains user
+     * @return List of objects where each object contains user info
      * @throws Exception
      */
+    @Override
     public List<Object[]> getAllGroups(Long userId,
                                        boolean ignoreDefaultUser,
                                        int start,
@@ -102,9 +128,10 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
      * @param excludedSties     list of names of sites which should be excluded
      * @param start             value of the list
      * @param end               value of the list
-     * @return List of objects where each object contains group where each group contains users
+     * @return List of objects where each object contains group name and user info
      * @throws Exception
      */
+    @Override
     public List<Object[]> getSitesGroups(Long userId,
                                          boolean ignoreDefaultUser,
                                          String[] excludedSties,
@@ -112,5 +139,26 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
                                          int end) throws Exception {
         // Find via settings finder
         return settingsFinder.findSitesGroups(userId, ignoreDefaultUser, excludedSties, start, end);
+    }
+
+    /**
+     * Returns all user's social relations
+     *
+     * @param userId            of the user whose social relations are we looking for
+     * @param ignoreDefaultUser true if default users should be ignored
+     * @param relationTypes     an array of relation type codes that we are looking for
+     * @param start             value of the list
+     * @param end               value of the list
+     * @return List objects where each object contains relation type and user info
+     * @throws Exception
+     */
+    @Override
+    public List<Object[]> getSocialGroups(Long userId,
+                                          boolean ignoreDefaultUser,
+                                          int[] relationTypes,
+                                          int start,
+                                          int end) throws Exception {
+        // Find via settings finder
+        return settingsFinder.findSocialGroups(userId, ignoreDefaultUser, relationTypes, start, end);
     }
 }
