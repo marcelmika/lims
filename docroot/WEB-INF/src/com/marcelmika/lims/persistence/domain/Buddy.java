@@ -15,18 +15,14 @@ import java.util.List;
 public class Buddy {
 
     private Long buddyId;
-    /**
-     * @deprecated
-     */
-    private Long portraitId;
     private String fullName;
     private String screenName;
     private String password;
     private Presence presence;
-    /**
-     * @deprecated
-     */
-    private String status;
+
+    // -------------------------------------------------------------------------------------------
+    // Factory Methods
+    // -------------------------------------------------------------------------------------------
 
     /**
      * Create new user and maps data from user details
@@ -40,10 +36,8 @@ public class Buddy {
         // Map data to user details
         buddy.buddyId = buddyDetails.getBuddyId();
         buddy.fullName = buddyDetails.getFullName();
-        buddy.portraitId = buddyDetails.getPortraitId();
         buddy.screenName = buddyDetails.getScreenName();
         buddy.password = buddyDetails.getPassword();
-        buddy.status = buddyDetails.getStatus();
 
         // Relations
         if (buddyDetails.getPresenceDetails() != null) {
@@ -104,10 +98,8 @@ public class Buddy {
                 object[firstElement++],
                 object[firstElement++],
                 object[firstElement++]);
-        buddy.status = String.format("%s", object[firstElement]);
 
         String presence = String.format("%s", object[firstElement]);
-
         if (presence != null) {
             buddy.presence = Presence.fromStatus(presence);
         }
@@ -126,11 +118,10 @@ public class Buddy {
         // Map data from user
         details.setBuddyId(buddyId);
         details.setFullName(fullName);
-        details.setPortraitId(portraitId);
         details.setScreenName(screenName);
         details.setPassword(password);
-        details.setStatus(status);
 
+        // Relations
         if (presence != null) {
             details.setPresenceDetails(presence.toPresenceDetails());
         }
@@ -138,20 +129,16 @@ public class Buddy {
         return details;
     }
 
+    // -------------------------------------------------------------------------------------------
+    // Getters/Setters
+    // -------------------------------------------------------------------------------------------
+
     public Long getBuddyId() {
         return buddyId;
     }
 
     public void setBuddyId(Long buddyId) {
         this.buddyId = buddyId;
-    }
-
-    public Long getPortraitId() {
-        return portraitId;
-    }
-
-    public void setPortraitId(Long portraitId) {
-        this.portraitId = portraitId;
     }
 
     public String getFullName() {
@@ -176,20 +163,6 @@ public class Buddy {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    /**
-     * @deprecated
-     */
-    public String getStatus() {
-        return status;
-    }
-
-    /**
-     * @deprecated
-     */
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public Presence getPresence() {
