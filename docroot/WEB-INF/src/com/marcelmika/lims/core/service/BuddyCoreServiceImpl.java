@@ -92,6 +92,7 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
      */
     @Override
     public LogoutBuddyResponseEvent logoutBuddy(LogoutBuddyRequestEvent event) {
+        // TODO: Logout from persistence as well
         return buddyJabberService.logoutBuddy(event);
     }
 

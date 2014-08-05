@@ -46,11 +46,6 @@ public class SettingsCoreServiceImpl implements SettingsCoreService {
     @Override
     public UpdateActivePanelResponseEvent updateActivePanel(UpdateActivePanelRequestEvent event) {
         return settingsPersistenceService.updateActivePanel(event);
-// TODO: Refactor
-//        // While user opens panel unread messages should be set to zero
-//        if (!Validator.isNull(activePanelId)) {
-//            ChatUtil.setUnreadMessages(pollerRequest.getUserId(), activePanelId, 0);
-//        }
     }
 
     /**
@@ -112,6 +107,5 @@ public class SettingsCoreServiceImpl implements SettingsCoreService {
         }
 
         return DisableChatResponseEvent.disableChatSuccess("Chat was successfully disabled");
-
     }
 }

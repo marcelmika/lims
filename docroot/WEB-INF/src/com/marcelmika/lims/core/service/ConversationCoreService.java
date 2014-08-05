@@ -17,6 +17,7 @@ public interface ConversationCoreService {
      *
      * @param event request event for method
      * @return response event for  method
+     * @deprecated
      */
     public GetConversationsResponseEvent getConversations(GetConversationsRequestEvent event);
 
@@ -49,6 +50,7 @@ public interface ConversationCoreService {
      *
      * @param event request event for method
      * @return response event for method
+     * @deprecated
      */
     public OpenConversationResponseEvent openConversation(OpenConversationRequestEvent event);
 
@@ -74,6 +76,7 @@ public interface ConversationCoreService {
      *
      * @param event request event for method
      * @return response event for method
+     * @deprecated
      */
     public LeaveConversationResponseEvent leaveConversation(LeaveConversationRequestEvent event);
 
@@ -83,6 +86,7 @@ public interface ConversationCoreService {
      *
      * @param event request event for method
      * @return response event for method
+     * @deprecated
      */
     public AddBuddiesResponseEvent addBuddies(AddBuddiesRequestEvent event);
 

@@ -127,9 +127,6 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
     @Override
     public LeaveConversationResponseEvent leaveConversation(LeaveConversationRequestEvent event) {
         throw new NotImplementedException();
-
-        // Leave conversation
-//        ChatUtil.leaveConversation(pollerRequest.getUserId(), conversationId);
     }
 
     /**

@@ -1,8 +1,8 @@
 package com.marcelmika.lims.core.service;
 
+import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
-import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.jabber.service.GroupJabberService;
 import com.marcelmika.lims.persistence.service.GroupPersistenceService;
 
@@ -40,8 +40,8 @@ public class GroupCoreServiceImpl implements GroupCoreService {
 
         Environment.BuddyListSource source = Environment.getBuddyListSource();
 
-        // Take the groups from jabber
-        if (source == Environment.BuddyListSource.JABBER) {
+        // Take the groups from jabber only if the jabber is enabled
+        if (source == Environment.BuddyListSource.JABBER && Environment.isJabberEnabled()) {
             return groupJabberService.getGroups(event);
         }
         // Otherwise, take them from Liferay
