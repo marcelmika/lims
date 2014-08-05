@@ -1,5 +1,6 @@
 package com.marcelmika.lims.core.service;
 
+import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.events.conversation.*;
 import com.marcelmika.lims.jabber.service.ConversationJabberService;
 import com.marcelmika.lims.persistence.service.ConversationPersistenceService;
@@ -38,6 +39,7 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      */
     @Override
     public GetConversationsResponseEvent getConversations(GetConversationsRequestEvent event) {
+        // TODO: Implement for persistence
         return conversationJabberService.getConversations(event);
     }
 
@@ -61,14 +63,19 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      */
     @Override
     public CreateConversationResponseEvent createConversation(CreateConversationRequestEvent event) {
-        // Create conversation in jabber
-        CreateConversationResponseEvent responseEvent = conversationJabberService.createConversation(event);
-        // Check error
+        // Create conversation locally
+        CreateConversationResponseEvent responseEvent = conversationPersistenceService.createConversation(event);
+        // Check for error
         if (!responseEvent.isSuccess()) {
             return responseEvent;
         }
-        // Save to persistence
-        return conversationPersistenceService.createConversation(event);
+
+        // If enabled create in jabber too
+        if (Environment.isJabberEnabled()) {
+            conversationJabberService.createConversation(event);
+        }
+
+        return responseEvent;
     }
 
     /**
