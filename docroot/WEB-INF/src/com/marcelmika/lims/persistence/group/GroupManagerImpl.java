@@ -1,7 +1,5 @@
 package com.marcelmika.lims.persistence.group;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.environment.Environment.BuddyListSocialRelation;
 import com.marcelmika.lims.api.environment.Environment.BuddyListStrategy;
@@ -10,6 +8,7 @@ import com.marcelmika.lims.persistence.domain.Group;
 import com.marcelmika.lims.persistence.domain.GroupCollection;
 import com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +20,6 @@ import java.util.Map;
  * Time: 9:45 AM
  */
 public class GroupManagerImpl implements GroupManager {
-
-    // Log
-    private static Log log = LogFactoryUtil.getLog(GroupManagerImpl.class);
 
     /**
      * Returns Group Collection of all groups related to the user
@@ -59,7 +55,7 @@ public class GroupManagerImpl implements GroupManager {
         }
         // Socialized and buddies from sites
         else {
-            return getSitesAndSocialGroups(userId);
+            return getSitesAndSocialGroups(userId, ignoreDefaultUser, excludedSites, relationTypes, start, end);
         }
     }
 
@@ -236,8 +232,39 @@ public class GroupManagerImpl implements GroupManager {
         return groupCollection;
     }
 
-    private GroupCollection getSitesAndSocialGroups(Long userId) {
+    /**
+     * Returns group collection which contains groups that represent social relations of the user.
+     * The groups contain all users that are within except for the user given in param.
+     *
+     * @param userId            which should be excluded from the list
+     * @param ignoreDefaultUser boolean set to true if the default user should be excluded
+     * @param excludedSites     names of sites (groups) that should be excluded from the group collection
+     * @param relationTypes     an array of relation type enums
+     * @param start             of the list
+     * @param end               of the list
+     * @return GroupCollection
+     * @throws Exception
+     */
+    private GroupCollection getSitesAndSocialGroups(Long userId,
+                                                    boolean ignoreDefaultUser,
+                                                    String[] excludedSites,
+                                                    BuddyListSocialRelation[] relationTypes,
+                                                    int start,
+                                                    int end) throws Exception {
+        // Get site groups
+        GroupCollection sitesGroupCollection = getSitesGroups(userId, ignoreDefaultUser, excludedSites, start, end);
+        // Get social groups
+        GroupCollection socialGroupCollection = getSocialGroups(userId, ignoreDefaultUser, relationTypes, start, end);
 
-        return null;
+        // Merge site and social groups
+        List<Group> mergedGroups = new ArrayList<Group>();
+        mergedGroups.addAll(sitesGroupCollection.getGroups());
+        mergedGroups.addAll(socialGroupCollection.getGroups());
+
+        // Merge
+        GroupCollection groupCollection = new GroupCollection();
+        groupCollection.setGroups(mergedGroups);
+
+        return groupCollection;
     }
 }
