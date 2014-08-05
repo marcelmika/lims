@@ -30,7 +30,7 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
      *
      * @param userSessionStore UserSessionStore
      */
-    public BuddyJabberServiceImpl(UserSessionStore userSessionStore) {
+    public BuddyJabberServiceImpl(final UserSessionStore userSessionStore) {
         this.userSessionStore = userSessionStore;
     }
 

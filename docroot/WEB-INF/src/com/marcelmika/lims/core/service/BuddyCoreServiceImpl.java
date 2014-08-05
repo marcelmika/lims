@@ -30,9 +30,8 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
      * @param buddyJabberService      jabber service
      * @param buddyPersistenceService persistence service
      */
-    public BuddyCoreServiceImpl(
-            BuddyJabberService buddyJabberService,
-            BuddyPersistenceService buddyPersistenceService) {
+    public BuddyCoreServiceImpl(final BuddyJabberService buddyJabberService,
+                                final BuddyPersistenceService buddyPersistenceService) {
 
         this.buddyJabberService = buddyJabberService;
         this.buddyPersistenceService = buddyPersistenceService;

@@ -22,7 +22,7 @@ public class SettingsCoreServiceImpl implements SettingsCoreService {
      *
      * @param settingsPersistenceService persistence service
      */
-    public SettingsCoreServiceImpl(SettingsPersistenceService settingsPersistenceService) {
+    public SettingsCoreServiceImpl(final SettingsPersistenceService settingsPersistenceService) {
         this.settingsPersistenceService = settingsPersistenceService;
     }
 

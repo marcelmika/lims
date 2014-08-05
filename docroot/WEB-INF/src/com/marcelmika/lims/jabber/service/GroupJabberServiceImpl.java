@@ -25,7 +25,7 @@ public class GroupJabberServiceImpl implements GroupJabberService {
      *
      * @param userSessionStore UserSessionStore
      */
-    public GroupJabberServiceImpl(UserSessionStore userSessionStore) {
+    public GroupJabberServiceImpl(final UserSessionStore userSessionStore) {
         this.userSessionStore = userSessionStore;
     }
 

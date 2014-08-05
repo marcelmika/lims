@@ -23,8 +23,8 @@ public class GroupCoreServiceImpl implements GroupCoreService {
      *
      * @param groupJabberService jabber service
      */
-    public GroupCoreServiceImpl(GroupJabberService groupJabberService,
-                                GroupPersistenceService groupPersistenceService) {
+    public GroupCoreServiceImpl(final GroupJabberService groupJabberService,
+                                final GroupPersistenceService groupPersistenceService) {
         this.groupJabberService = groupJabberService;
         this.groupPersistenceService = groupPersistenceService;
     }

@@ -25,8 +25,8 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      *
      * @param conversationJabberService jabber service
      */
-    public ConversationCoreServiceImpl(ConversationJabberService conversationJabberService,
-                                       ConversationPersistenceService conversationPersistenceService) {
+    public ConversationCoreServiceImpl(final ConversationJabberService conversationJabberService,
+                                       final ConversationPersistenceService conversationPersistenceService) {
         this.conversationJabberService = conversationJabberService;
         this.conversationPersistenceService = conversationPersistenceService;
     }
@@ -39,8 +39,7 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      */
     @Override
     public GetConversationsResponseEvent getConversations(GetConversationsRequestEvent event) {
-        // TODO: Implement for persistence
-        return conversationJabberService.getConversations(event);
+        throw new NotImplementedException();
     }
 
     /**

@@ -35,7 +35,7 @@ public class ConversationJabberServiceImpl implements ConversationJabberService 
      *
      * @param userSessionStore UserSessionStore
      */
-    public ConversationJabberServiceImpl(UserSessionStore userSessionStore) {
+    public ConversationJabberServiceImpl(final UserSessionStore userSessionStore) {
         this.userSessionStore = userSessionStore;
     }
 

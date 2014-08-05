@@ -28,7 +28,7 @@ public class GroupPersistenceServiceImpl implements GroupPersistenceService {
      *
      * @param groupManager GroupManager
      */
-    public GroupPersistenceServiceImpl(GroupManager groupManager) {
+    public GroupPersistenceServiceImpl(final GroupManager groupManager) {
         this.groupManager = groupManager;
     }
 

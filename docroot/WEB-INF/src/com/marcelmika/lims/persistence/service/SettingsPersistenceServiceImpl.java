@@ -16,7 +16,6 @@ import com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUti
  */
 public class SettingsPersistenceServiceImpl implements SettingsPersistenceService {
 
-
     /**
      * Reads buddy's settings
      *
