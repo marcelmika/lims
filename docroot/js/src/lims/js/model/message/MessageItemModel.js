@@ -10,7 +10,8 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
 
     // Custom sync layer.
     sync: function (action, options, callback) {
-        var content, parameters, url = Y.one('#chatPortletURL').get('value');
+        // TODO: Take from settings
+        var content, parameters, url = Y.one('#limsPortletURL').get('value');
 
         switch (action) {
 

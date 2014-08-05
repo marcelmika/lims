@@ -51,7 +51,7 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
 
             case 'read':
                 // TODO: Move away
-                url = Y.one('#chatPortletURL').get('value');
+                url = Y.one('#limsPortletURL').get('value');
 
                 Y.io(url, {
                     method: "GET",

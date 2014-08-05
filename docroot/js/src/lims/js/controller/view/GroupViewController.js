@@ -157,7 +157,7 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
         // Container Node
         container: {
             valueFn: function () {
-                return Y.one('#chatBar .buddy-list');
+                return Y.one('#lims-container .buddy-list');
             }
         },
 

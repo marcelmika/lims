@@ -12,19 +12,18 @@
 
 <c:if test="${show}">
     <%-- Resource URL --%>
-    <portlet:resourceURL var="chatPortletURL" id="view.jsp" escapeXml="false"/>
+    <portlet:resourceURL var="limsPortletURL" id="view.jsp" escapeXml="false"/>
 
-    <%-- Chat bar --%>
-    <div class="portlet-chat" id="chatBar">
-        <div class="errorNotification"></div>
-        <div class="chat-bar">
-            <div class="chat-sound"></div>
-            <div class="chat-tabs-container">
-                <ul class="chat-tabs">
+    <%-- LIMS bar --%>
+    <div id="lims-container">
+        <div class="lims-bar">
+            <div class="lims-sound"></div>
+            <div class="lims-tabs-container">
+                <ul class="lims-tabs">
                     <%@ include file="/WEB-INF/jspf/status-panel.jspf" %>
                     <%@ include file="/WEB-INF/jspf/settings-panel.jspf" %>
                     <%@ include file="/WEB-INF/jspf/group-list-panel.jspf" %>
-                    <%@ include file="/WEB-INF/jspf/conversation-sessions.jspf" %>
+                    <%@ include file="/WEB-INF/jspf/conversations.jspf" %>
                 </ul>
             </div>
         </div>
@@ -32,45 +31,38 @@
             <%-- Javascript Templates --%>
         <%@ include file="/WEB-INF/jspf/templates.jspf" %>
 
-            <%-- Hidden inputs --%>
+            <%-- Portlet Enabled Flag --%>
         <aui:input type="hidden"
-                   id="chatPortletId"
-                   name="chatPortletId"
-                   useNamespace="false"
-                   value="${portletDisplay.id}"/>
-
-            <%-- Chat Portlet Enabled Flag --%>
-        <aui:input type="hidden"
-                   id="chatPortletEnabled"
-                   name="chatPortletEnabled"
+                   id="limsPortletEnabled"
+                   name="limsPortletEnabled"
                    useNamespace="false"
                    value="${settings.chatEnabled}"/>
 
-            <%-- Chat Portlet URL --%>
+            <%-- Portlet URL --%>
         <aui:input type="hidden"
-                   id="chatPortletURL"
-                   name="portletURL"
+                   id="limsPortletURL"
+                   name="limsPortletURL"
                    useNamespace="false"
-                   value="<%= renderResponse.encodeURL(chatPortletURL.toString()) %>"/>
+                   value="<%= renderResponse.encodeURL(limsPortletURL.toString()) %>"/>
 
-            <%-- Current Server Time --%>
+            <%-- Server Time --%>
         <aui:input type="hidden"
-                   id="currentChatServerTime"
-                   name="currentChatServerTime"
+                   id="limsCurrentServerTime"
+                   name="limsCurrentServerTime"
                    useNamespace="false"
                    value="<%= System.currentTimeMillis() %>"/>
 
             <%-- Logged user screen name --%>
         <aui:input type="hidden"
-                   id="currentChatUserScreenName"
-                   name="currentChatUserScreenName"
+                   id="limsCurrentUserScreenName"
+                   name="limsCurrentUserScreenName"
                    useNamespace="false"
                    value="${screenName}"/>
 
             <%-- Logged user full name --%>
         <aui:input type="hidden"
-                   id="currentChatUserFullName"
-                   name="currentChatUserFullName"
+                   id="limsCurrentUserFullName"
+                   name="limsCurrentUserFullName"
                    useNamespace="false"
                    value="${fullName}"/>
     </div>

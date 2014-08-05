@@ -1,4 +1,3 @@
-
 /**
  * Settings
  *
@@ -31,7 +30,7 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
      * @returns {string}
      */
     getServerRequestUrl: function () {
-        return Y.one('#chatPortletURL').get('value');
+        return Y.one('#limsPortletURL').get('value');
     },
 
     /**
@@ -67,7 +66,7 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
      * @returns {boolean}
      */
     isChatEnabled: function () {
-        return Y.one('#chatPortletEnabled').get('value') === 'true';
+        return Y.one('#limsPortletEnabled').get('value') === 'true';
     }
 
 }, {
@@ -99,7 +98,7 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
             valueFn: function () {
                 // Since it cannot be accessed via Liferay.ThemeDisplay we need to
                 // take it manually via value in HTML
-                return Y.one('#currentChatUserScreenName').get('value');
+                return Y.one('#limsCurrentUserScreenName').get('value');
             }
         },
 
@@ -111,7 +110,16 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
             valueFn: function () {
                 // Since it cannot be accessed via Liferay.ThemeDisplay we need to
                 // take it manually via value in HTML
-                return Y.one('#currentChatUserFullName').get('value');
+                return Y.one('#limsCurrentUserFullName').get('value');
+            }
+        },
+
+        /**
+         * Holds current server time
+         */
+        serverTime: {
+            valueFn: function () {
+                return Y.one('#limsCurrentServerTime').get('value');
             }
         },
 

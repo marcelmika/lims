@@ -1,5 +1,5 @@
 
 // If there is no chat bar do nothing
-if (!Y.one('#chatBar')) {
+if (!Y.one('#lims-container')) {
     return;
 }

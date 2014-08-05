@@ -120,7 +120,7 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
         // Container Node
         container: {
             valueFn: function () {
-                return Y.one('#chatBar .status-panel');
+                return Y.one('#lims-container .status-panel');
             }
         },
 

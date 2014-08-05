@@ -30,7 +30,7 @@
     <div class="panel-trigger">
         <div class="trigger-name"></div>
     </div>
-    <div class="chat-panel">
+    <div class="panel">
         <div class="panel-window">
             <div class="panel-button minimize"></div>
             <div class="panel-title"><liferay-ui:message key="settings"/></div>

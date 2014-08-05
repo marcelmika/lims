@@ -80,7 +80,7 @@
 / CHAT CONTAINER
 /********************************************************************************/
 
-.liferay-ims .chat-bar {
+.liferay-ims .lims-bar {
 	background: #eee;
 	border: 1px solid #dddad8;
 	border-left: none;
@@ -92,19 +92,19 @@
 	z-index: 999;
 }
 
-.liferay-ims .chat-bar div ul,
-.liferay-ims .chat-bar div ul li {
+.liferay-ims .lims-bar div ul,
+.liferay-ims .lims-bar div ul li {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 	position: relative;
 }
 
-.liferay-ims .chat-sound {
+.liferay-ims .lims-sound {
 	position: absolute;
 }
 
-.liferay-ims .chat-bar .chat-panel {
+.liferay-ims .lims-bar .panel {
 	bottom: 24px;
 	display: none;
 	position: absolute;
@@ -115,16 +115,16 @@
 	-moz-box-shadow: #bcbcbc 1px 1px 1px;
 }
 
-.liferay-ims .chat-bar .selected .chat-panel {
+.liferay-ims .lims-bar .selected .panel {
 	display: block;
 }
 
-.liferay-ims .chat-bar .chat-tabs > li {
+.liferay-ims .lims-bar .lims-tabs > li {
 	background: #f8f8f8;
 	float: right;
 }
 
-.liferay-ims .chat-bar div ul li.closed {
+.liferay-ims .lims-bar div ul li.closed {
 	display: none;
 }
 
@@ -132,7 +132,7 @@
 / PANEL - TRIGGER
 /********************************************************************************/
 
-.liferay-ims .chat-bar div ul li .panel-trigger {
+.liferay-ims .lims-bar div ul li .panel-trigger {
 	cursor: pointer;
 	float: left;
 	border-left: 1px solid #dddad8;
@@ -142,11 +142,11 @@
 	padding: 0 6px;
 }
 
-.liferay-ims .chat-bar div ul li .panel-trigger:hover {
+.liferay-ims .lims-bar div ul li .panel-trigger:hover {
 	background: #fff;
 }
 
-.liferay-ims .chat-bar div ul li.selected .panel-trigger {
+.liferay-ims .lims-bar div ul li.selected .panel-trigger {
 	background: #fff;
 	border-top: none;
 	border-bottom: none;
@@ -159,16 +159,16 @@
 	-moz-box-shadow: #bcbcbc 1px 1px 1px;
 }
 
-.liferay-ims .chat-bar div ul li.waiting .panel-trigger {
+.liferay-ims .lims-bar div ul li.waiting .panel-trigger {
 	border-right: 1px solid rgba(79, 134, 231, 0.26);
 	border-left: 1px solid #a5d6ef;
 }
 
-.liferay-ims .chat-bar div ul li.waiting .panel-trigger {
+.liferay-ims .lims-bar div ul li.waiting .panel-trigger {
 	background: #a5d6ef;
 }
 
-.liferay-ims .chat-bar div ul li .panel-trigger .unread {
+.liferay-ims .lims-bar div ul li .panel-trigger .unread {
 	-moz-border-radius: 20px;
 	-webkit-border-radius: 20px;
 	-khtml-border-radius: 20px;

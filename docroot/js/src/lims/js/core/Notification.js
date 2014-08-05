@@ -32,7 +32,7 @@ Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
         // Container Node
         container: {
             valueFn: function () {
-                return Y.one('#chatBar .chat-sound');
+                return Y.one('#lims-container .lims-sound');
             }
         }
     }

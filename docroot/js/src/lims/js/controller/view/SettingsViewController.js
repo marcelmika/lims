@@ -75,7 +75,7 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
         // Container Node
         container: {
             valueFn: function () {
-                return Y.one('#chatBar .chat-settings');
+                return Y.one('#lims-container .chat-settings');
             }
         },
 

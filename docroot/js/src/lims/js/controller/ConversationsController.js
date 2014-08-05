@@ -362,7 +362,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
         // Main container
         container: {
             valueFn: function () {
-                return Y.one('#chatBar .chat-tabs');
+                return Y.one('#lims-container .lims-tabs');
             }
         },
 
