@@ -117,7 +117,7 @@ public class SettingsLocalServiceClpInvoker {
 
 		_methodParameterTypes60 = new String[] { "long" };
 
-		_methodName61 = "changeStatus";
+		_methodName61 = "changePresence";
 
 		_methodParameterTypes61 = new String[] { "long", "java.lang.String" };
 
@@ -253,7 +253,7 @@ public class SettingsLocalServiceClpInvoker {
 
 		if (_methodName61.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes61, parameterTypes)) {
-			SettingsLocalServiceUtil.changeStatus(((Long)arguments[0]).longValue(),
+			SettingsLocalServiceUtil.changePresence(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 
 			return null;

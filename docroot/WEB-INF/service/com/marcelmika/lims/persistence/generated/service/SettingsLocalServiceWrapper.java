@@ -281,15 +281,15 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	}
 
 	/**
-	* Updates user status
+	* Updates user presence
 	*
-	* @param userId id of the user whose status should be udpated
-	* @param status new value of the status
+	* @param userId id of the user whose status should be updated
+	* @param presence new value of the presence
 	* @throws Exception
 	*/
-	public void changeStatus(long userId, java.lang.String status)
+	public void changePresence(long userId, java.lang.String presence)
 		throws java.lang.Exception {
-		_settingsLocalService.changeStatus(userId, status);
+		_settingsLocalService.changePresence(userId, presence);
 	}
 
 	/**

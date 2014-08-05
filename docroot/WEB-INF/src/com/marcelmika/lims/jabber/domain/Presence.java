@@ -30,13 +30,13 @@ public enum Presence {
      */
     public static Presence fromPresenceDetails(PresenceDetails presenceDetails) {
 
-        if (presenceDetails == PresenceDetails.STATE_ACTIVE) {
+        if (presenceDetails == PresenceDetails.ACTIVE) {
             return Presence.STATE_ACTIVE;
-        } else if (presenceDetails == PresenceDetails.STATE_AWAY) {
+        } else if (presenceDetails == PresenceDetails.AWAY) {
             return Presence.STATE_AWAY;
-        } else if (presenceDetails == PresenceDetails.STATE_DND) {
+        } else if (presenceDetails == PresenceDetails.DND) {
             return Presence.STATE_DND;
-        } else if (presenceDetails == PresenceDetails.STATE_OFFLINE) {
+        } else if (presenceDetails == PresenceDetails.OFFLINE) {
             return Presence.STATE_OFFLINE;
         } else {
             return Presence.STATE_UNRECOGNIZED;
@@ -86,15 +86,15 @@ public enum Presence {
      */
     public PresenceDetails toPresenceDetails() {
         if (this == Presence.STATE_ACTIVE) {
-            return PresenceDetails.STATE_ACTIVE;
+            return PresenceDetails.ACTIVE;
         } else if (this == Presence.STATE_AWAY) {
-            return PresenceDetails.STATE_AWAY;
+            return PresenceDetails.AWAY;
         } else if (this == Presence.STATE_DND) {
-            return PresenceDetails.STATE_DND;
+            return PresenceDetails.DND;
         } else if (this == Presence.STATE_OFFLINE) {
-            return PresenceDetails.STATE_OFFLINE;
+            return PresenceDetails.OFFLINE;
         } else {
-            return PresenceDetails.STATE_UNRECOGNIZED;
+            return PresenceDetails.UNRECOGNIZED;
         }
     }
 

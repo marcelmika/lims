@@ -16,19 +16,19 @@ Y.LIMS.View.PresenceView = Y.Base.create('presenceView', Y.View, [], {
             container = this.get("container");
         // Add class to container based on the presence type
         switch (presenceType) {
-            case "STATE_ACTIVE":
+            case "ACTIVE":
                 container.addClass("online");
                 break;
 
-            case "STATE_AWAY":
+            case "AWAY":
                 container.addClass("busy");
                 break;
 
-            case "STATE_DND":
+            case "DND":
                 container.addClass("unavailable");
                 break;
 
-            case "STATE_OFFLINE":
+            case "OFFLINE":
                 container.addClass("off");
                 break;
 
@@ -52,7 +52,7 @@ Y.LIMS.View.PresenceView = Y.Base.create('presenceView', Y.View, [], {
         },
 
         presenceType: {
-            value: "STATE_UNRECOGNIZED"
+            value: "UNRECOGNIZED"
         }
     }
 });

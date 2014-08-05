@@ -38,7 +38,7 @@ public class SettingsCoreServiceImpl implements SettingsCoreService {
     }
 
     /**
-     * Change buddy's status
+     * Change buddy's presence
      *
      * @param event Request event for logout method
      * @return Response event for logout method

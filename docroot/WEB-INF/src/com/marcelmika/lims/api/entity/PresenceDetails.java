@@ -8,11 +8,11 @@ package com.marcelmika.lims.api.entity;
  */
 
 public enum PresenceDetails {
-    STATE_ACTIVE(0),
-    STATE_AWAY(1),
-    STATE_DND(2),
-    STATE_OFFLINE(3),
-    STATE_UNRECOGNIZED(4);
+    ACTIVE(0),
+    AWAY(1),
+    DND(2),
+    OFFLINE(3),
+    UNRECOGNIZED(4);
 
     private int code;
 

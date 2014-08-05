@@ -29,5 +29,6 @@ create index IX_C9A8BAD1 on lims_Participant (cid);
 create index IX_2E5D25ED on lims_Participant (cid, participantId);
 create index IX_BAA817A8 on lims_Participant (participantId, isOpened);
 
+create index IX_68550414 on lims_Settings (presence);
 create index IX_D09D530B on lims_Settings (status);
 create index IX_721C6C5F on lims_Settings (userId);

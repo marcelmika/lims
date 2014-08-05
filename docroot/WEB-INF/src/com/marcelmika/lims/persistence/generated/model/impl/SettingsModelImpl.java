@@ -62,11 +62,11 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "sid", Types.BIGINT },
 			{ "userId", Types.BIGINT },
-			{ "status", Types.VARCHAR },
+			{ "presence", Types.VARCHAR },
 			{ "mute", Types.BOOLEAN },
 			{ "chatEnabled", Types.BOOLEAN }
 		};
-	public static final String TABLE_SQL_CREATE = "create table lims_Settings (sid LONG not null primary key,userId LONG,status VARCHAR(75) null,mute BOOLEAN,chatEnabled BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table lims_Settings (sid LONG not null primary key,userId LONG,presence VARCHAR(75) null,mute BOOLEAN,chatEnabled BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table lims_Settings";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
@@ -80,7 +80,7 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
 				"value.object.column.bitmask.enabled.com.marcelmika.lims.persistence.generated.model.Settings"),
 			true);
-	public static long STATUS_COLUMN_BITMASK = 1L;
+	public static long PRESENCE_COLUMN_BITMASK = 1L;
 	public static long USERID_COLUMN_BITMASK = 2L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
 				"lock.expiration.time.com.marcelmika.lims.persistence.generated.model.Settings"));
@@ -118,7 +118,7 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 
 		attributes.put("sid", getSid());
 		attributes.put("userId", getUserId());
-		attributes.put("status", getStatus());
+		attributes.put("presence", getPresence());
 		attributes.put("mute", getMute());
 		attributes.put("chatEnabled", getChatEnabled());
 
@@ -139,10 +139,10 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 			setUserId(userId);
 		}
 
-		String status = (String)attributes.get("status");
+		String presence = (String)attributes.get("presence");
 
-		if (status != null) {
-			setStatus(status);
+		if (presence != null) {
+			setPresence(presence);
 		}
 
 		Boolean mute = (Boolean)attributes.get("mute");
@@ -194,27 +194,27 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		return _originalUserId;
 	}
 
-	public String getStatus() {
-		if (_status == null) {
+	public String getPresence() {
+		if (_presence == null) {
 			return StringPool.BLANK;
 		}
 		else {
-			return _status;
+			return _presence;
 		}
 	}
 
-	public void setStatus(String status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
+	public void setPresence(String presence) {
+		_columnBitmask |= PRESENCE_COLUMN_BITMASK;
 
-		if (_originalStatus == null) {
-			_originalStatus = _status;
+		if (_originalPresence == null) {
+			_originalPresence = _presence;
 		}
 
-		_status = status;
+		_presence = presence;
 	}
 
-	public String getOriginalStatus() {
-		return GetterUtil.getString(_originalStatus);
+	public String getOriginalPresence() {
+		return GetterUtil.getString(_originalPresence);
 	}
 
 	public boolean getMute() {
@@ -278,7 +278,7 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 
 		settingsImpl.setSid(getSid());
 		settingsImpl.setUserId(getUserId());
-		settingsImpl.setStatus(getStatus());
+		settingsImpl.setPresence(getPresence());
 		settingsImpl.setMute(getMute());
 		settingsImpl.setChatEnabled(getChatEnabled());
 
@@ -336,7 +336,7 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 
 		settingsModelImpl._setOriginalUserId = false;
 
-		settingsModelImpl._originalStatus = settingsModelImpl._status;
+		settingsModelImpl._originalPresence = settingsModelImpl._presence;
 
 		settingsModelImpl._columnBitmask = 0;
 	}
@@ -349,12 +349,12 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 
 		settingsCacheModel.userId = getUserId();
 
-		settingsCacheModel.status = getStatus();
+		settingsCacheModel.presence = getPresence();
 
-		String status = settingsCacheModel.status;
+		String presence = settingsCacheModel.presence;
 
-		if ((status != null) && (status.length() == 0)) {
-			settingsCacheModel.status = null;
+		if ((presence != null) && (presence.length() == 0)) {
+			settingsCacheModel.presence = null;
 		}
 
 		settingsCacheModel.mute = getMute();
@@ -372,8 +372,8 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		sb.append(getSid());
 		sb.append(", userId=");
 		sb.append(getUserId());
-		sb.append(", status=");
-		sb.append(getStatus());
+		sb.append(", presence=");
+		sb.append(getPresence());
 		sb.append(", mute=");
 		sb.append(getMute());
 		sb.append(", chatEnabled=");
@@ -399,8 +399,8 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		sb.append(getUserId());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
+			"<column><column-name>presence</column-name><column-value><![CDATA[");
+		sb.append(getPresence());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>mute</column-name><column-value><![CDATA[");
@@ -425,8 +425,8 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 	private String _userUuid;
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
-	private String _status;
-	private String _originalStatus;
+	private String _presence;
+	private String _originalPresence;
 	private boolean _mute;
 	private boolean _chatEnabled;
 	private long _columnBitmask;

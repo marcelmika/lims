@@ -37,7 +37,7 @@ public interface BuddyCoreService {
     public DeleteBuddyResponseEvent removeBuddy(DeleteBuddyRequestEvent event);
 
     /**
-     * Update buddy's status
+     * Update buddy's presence
      *
      * @param event Request event for logout method
      * @return Response event for logout method

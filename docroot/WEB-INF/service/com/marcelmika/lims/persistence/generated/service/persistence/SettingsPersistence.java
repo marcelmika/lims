@@ -139,120 +139,120 @@ public interface SettingsPersistence extends BasePersistence<Settings> {
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
-	* Returns all the settingses where status = &#63;.
+	* Returns all the settingses where presence = &#63;.
 	*
-	* @param status the status
+	* @param presence the presence
 	* @return the matching settingses
 	* @throws SystemException if a system exception occurred
 	*/
-	public java.util.List<com.marcelmika.lims.persistence.generated.model.Settings> findByStatus(
-		java.lang.String status)
+	public java.util.List<com.marcelmika.lims.persistence.generated.model.Settings> findByPresence(
+		java.lang.String presence)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
-	* Returns a range of all the settingses where status = &#63;.
+	* Returns a range of all the settingses where presence = &#63;.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
 	* </p>
 	*
-	* @param status the status
+	* @param presence the presence
 	* @param start the lower bound of the range of settingses
 	* @param end the upper bound of the range of settingses (not inclusive)
 	* @return the range of matching settingses
 	* @throws SystemException if a system exception occurred
 	*/
-	public java.util.List<com.marcelmika.lims.persistence.generated.model.Settings> findByStatus(
-		java.lang.String status, int start, int end)
+	public java.util.List<com.marcelmika.lims.persistence.generated.model.Settings> findByPresence(
+		java.lang.String presence, int start, int end)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
-	* Returns an ordered range of all the settingses where status = &#63;.
+	* Returns an ordered range of all the settingses where presence = &#63;.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
 	* </p>
 	*
-	* @param status the status
+	* @param presence the presence
 	* @param start the lower bound of the range of settingses
 	* @param end the upper bound of the range of settingses (not inclusive)
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching settingses
 	* @throws SystemException if a system exception occurred
 	*/
-	public java.util.List<com.marcelmika.lims.persistence.generated.model.Settings> findByStatus(
-		java.lang.String status, int start, int end,
+	public java.util.List<com.marcelmika.lims.persistence.generated.model.Settings> findByPresence(
+		java.lang.String presence, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
-	* Returns the first settings in the ordered set where status = &#63;.
+	* Returns the first settings in the ordered set where presence = &#63;.
 	*
-	* @param status the status
+	* @param presence the presence
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching settings
 	* @throws com.marcelmika.lims.persistence.generated.NoSuchSettingsException if a matching settings could not be found
 	* @throws SystemException if a system exception occurred
 	*/
-	public com.marcelmika.lims.persistence.generated.model.Settings findByStatus_First(
-		java.lang.String status,
+	public com.marcelmika.lims.persistence.generated.model.Settings findByPresence_First(
+		java.lang.String presence,
 		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
 		throws com.liferay.portal.kernel.exception.SystemException,
 			com.marcelmika.lims.persistence.generated.NoSuchSettingsException;
 
 	/**
-	* Returns the first settings in the ordered set where status = &#63;.
+	* Returns the first settings in the ordered set where presence = &#63;.
 	*
-	* @param status the status
+	* @param presence the presence
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching settings, or <code>null</code> if a matching settings could not be found
 	* @throws SystemException if a system exception occurred
 	*/
-	public com.marcelmika.lims.persistence.generated.model.Settings fetchByStatus_First(
-		java.lang.String status,
+	public com.marcelmika.lims.persistence.generated.model.Settings fetchByPresence_First(
+		java.lang.String presence,
 		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
-	* Returns the last settings in the ordered set where status = &#63;.
+	* Returns the last settings in the ordered set where presence = &#63;.
 	*
-	* @param status the status
+	* @param presence the presence
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching settings
 	* @throws com.marcelmika.lims.persistence.generated.NoSuchSettingsException if a matching settings could not be found
 	* @throws SystemException if a system exception occurred
 	*/
-	public com.marcelmika.lims.persistence.generated.model.Settings findByStatus_Last(
-		java.lang.String status,
+	public com.marcelmika.lims.persistence.generated.model.Settings findByPresence_Last(
+		java.lang.String presence,
 		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
 		throws com.liferay.portal.kernel.exception.SystemException,
 			com.marcelmika.lims.persistence.generated.NoSuchSettingsException;
 
 	/**
-	* Returns the last settings in the ordered set where status = &#63;.
+	* Returns the last settings in the ordered set where presence = &#63;.
 	*
-	* @param status the status
+	* @param presence the presence
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching settings, or <code>null</code> if a matching settings could not be found
 	* @throws SystemException if a system exception occurred
 	*/
-	public com.marcelmika.lims.persistence.generated.model.Settings fetchByStatus_Last(
-		java.lang.String status,
+	public com.marcelmika.lims.persistence.generated.model.Settings fetchByPresence_Last(
+		java.lang.String presence,
 		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
-	* Returns the settingses before and after the current settings in the ordered set where status = &#63;.
+	* Returns the settingses before and after the current settings in the ordered set where presence = &#63;.
 	*
 	* @param sid the primary key of the current settings
-	* @param status the status
+	* @param presence the presence
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next settings
 	* @throws com.marcelmika.lims.persistence.generated.NoSuchSettingsException if a settings with the primary key could not be found
 	* @throws SystemException if a system exception occurred
 	*/
-	public com.marcelmika.lims.persistence.generated.model.Settings[] findByStatus_PrevAndNext(
-		long sid, java.lang.String status,
+	public com.marcelmika.lims.persistence.generated.model.Settings[] findByPresence_PrevAndNext(
+		long sid, java.lang.String presence,
 		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
 		throws com.liferay.portal.kernel.exception.SystemException,
 			com.marcelmika.lims.persistence.generated.NoSuchSettingsException;
@@ -313,12 +313,12 @@ public interface SettingsPersistence extends BasePersistence<Settings> {
 			com.marcelmika.lims.persistence.generated.NoSuchSettingsException;
 
 	/**
-	* Removes all the settingses where status = &#63; from the database.
+	* Removes all the settingses where presence = &#63; from the database.
 	*
-	* @param status the status
+	* @param presence the presence
 	* @throws SystemException if a system exception occurred
 	*/
-	public void removeByStatus(java.lang.String status)
+	public void removeByPresence(java.lang.String presence)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
@@ -340,13 +340,13 @@ public interface SettingsPersistence extends BasePersistence<Settings> {
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
-	* Returns the number of settingses where status = &#63;.
+	* Returns the number of settingses where presence = &#63;.
 	*
-	* @param status the status
+	* @param presence the presence
 	* @return the number of matching settingses
 	* @throws SystemException if a system exception occurred
 	*/
-	public int countByStatus(java.lang.String status)
+	public int countByPresence(java.lang.String presence)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**

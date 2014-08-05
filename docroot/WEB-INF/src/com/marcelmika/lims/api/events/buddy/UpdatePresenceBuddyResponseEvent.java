@@ -10,7 +10,7 @@ import com.marcelmika.lims.api.events.ResponseEvent;
  */
 public class UpdatePresenceBuddyResponseEvent extends ResponseEvent {
 
-    public static UpdatePresenceBuddyResponseEvent updateStatusSuccess(String result) {
+    public static UpdatePresenceBuddyResponseEvent updatePresenceSuccess(String result) {
         UpdatePresenceBuddyResponseEvent event = new UpdatePresenceBuddyResponseEvent();
         event.result = result;
         event.success = true;
@@ -18,7 +18,7 @@ public class UpdatePresenceBuddyResponseEvent extends ResponseEvent {
         return event;
     }
 
-    public static UpdatePresenceBuddyResponseEvent updateStatusFailure(String result, Throwable exception) {
+    public static UpdatePresenceBuddyResponseEvent updatePresenceFailure(String result, Throwable exception) {
         UpdatePresenceBuddyResponseEvent event = new UpdatePresenceBuddyResponseEvent();
         event.result = result;
         event.success = false;

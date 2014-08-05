@@ -24,7 +24,6 @@
                     <%@ include file="/WEB-INF/jspf/status-panel.jspf" %>
                     <%@ include file="/WEB-INF/jspf/settings-panel.jspf" %>
                     <%@ include file="/WEB-INF/jspf/group-list-panel.jspf" %>
-                    <%@ include file="/WEB-INF/jspf/conversation-panel.jspf" %>
                     <%@ include file="/WEB-INF/jspf/conversation-sessions.jspf" %>
                 </ul>
             </div>

@@ -21,14 +21,10 @@ import java.util.List;
 public class Buddy {
 
     private Long buddyId;
-    private Long portraitId;
     private String fullName;
     private String screenName;
     private String password;
-    private String status;
     private Presence presence;
-
-    private static Log log = LogFactoryUtil.getLog(Buddy.class);
 
     // -------------------------------------------------------------------------------------------
     // Factory Methods
@@ -63,7 +59,6 @@ public class Buddy {
         // TODO: Take name from roster
         buddy.fullName = chat.getParticipant();
         buddy.screenName = Jid.getBareAddress(chat.getParticipant());
-//        buddy.setStatus(new Status(roster.getPresence(buddy.username)));
         return buddy;
     }
 
@@ -104,10 +99,8 @@ public class Buddy {
         // Map data to user details
         buddy.setBuddyId(buddyDetails.getBuddyId());
         buddy.setFullName(buddyDetails.getFullName());
-        buddy.setPortraitId(buddyDetails.getPortraitId());
         buddy.setScreenName(buddyDetails.getScreenName());
         buddy.setPassword(buddyDetails.getPassword());
-        buddy.setStatus(buddyDetails.getStatus());
 
         if (buddyDetails.getPresenceDetails() != null) {
             buddy.presence = Presence.fromPresenceDetails(buddyDetails.getPresenceDetails());
@@ -127,10 +120,8 @@ public class Buddy {
         // Map data from user
         details.setBuddyId(buddyId);
         details.setFullName(fullName);
-        details.setPortraitId(portraitId);
         details.setScreenName(screenName);
         details.setPassword(password);
-        details.setStatus(status);
 
         if (presence != null) {
             details.setPresenceDetails(presence.toPresenceDetails());
@@ -150,14 +141,6 @@ public class Buddy {
 
     public void setBuddyId(Long buddyId) {
         this.buddyId = buddyId;
-    }
-
-    public Long getPortraitId() {
-        return portraitId;
-    }
-
-    public void setPortraitId(Long portraitId) {
-        this.portraitId = portraitId;
     }
 
     public String getFullName() {
@@ -182,14 +165,6 @@ public class Buddy {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public Presence getPresence() {

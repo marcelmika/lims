@@ -10,12 +10,19 @@ import com.marcelmika.lims.api.entity.SettingsDetails;
  */
 public class Settings {
 
-    private String presence;
+    private Presence presence;
     private String activePanel;
     private boolean isMute;
     private boolean isChatEnabled;
 
 
+    /**
+     * Factory method which builds Settings object from Panel and Settings Model taken from database
+     *
+     * @param panelModel    Panel model
+     * @param settingsModel Settings model
+     * @return Settings
+     */
     public static Settings fromServiceBuilderModel(com.marcelmika.lims.persistence.generated.model.Panel panelModel,
                                                    com.marcelmika.lims.persistence.generated.model.Settings settingsModel) {
 
@@ -27,9 +34,10 @@ public class Settings {
         }
         // Map Settings
         if (settingsModel != null) {
-            settings.presence = settingsModel.getStatus();
             settings.isMute = settingsModel.getMute();
             settings.isChatEnabled = settingsModel.getChatEnabled();
+            // Relations
+            settings.presence = Presence.fromDescription(settingsModel.getPresence());
         }
 
         return settings;
@@ -45,10 +53,14 @@ public class Settings {
         // Create new Settings
         Settings settings = new Settings();
         // Map data to settings details
-        settings.presence = settingsDetails.getStatus();
         settings.activePanel = settingsDetails.getActivePanelId();
         settings.isMute = settingsDetails.isMute();
         settings.isChatEnabled = settingsDetails.isChatEnabled();
+
+        // Relations
+        if (settingsDetails.getPresenceDetails() != null) {
+            settings.presence = Presence.fromPresenceDetails(settingsDetails.getPresenceDetails());
+        }
 
         return settings;
     }
@@ -62,21 +74,23 @@ public class Settings {
         // Create new user details
         SettingsDetails details = new SettingsDetails();
         // Map data from user
-        details.setStatus(presence);
         details.setActivePanelId(activePanel);
         details.setMute(isMute);
         details.setChatEnabled(isChatEnabled);
 
+        // Relations
+        if (presence != null) {
+            details.setPresenceDetails(presence.toPresenceDetails());
+        }
+
         return details;
     }
 
-
-
-    public String getPresence() {
+    public Presence getPresence() {
         return presence;
     }
 
-    public void setPresence(String presence) {
+    public void setPresence(Presence presence) {
         this.presence = presence;
     }
 

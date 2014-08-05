@@ -23,14 +23,14 @@
     <entity name='Settings' local-service='true' remote-service='false'>
         <column name='sid' type='long' primary='true'/>
         <column name='userId' type='long'/>
-        <column name='status' type='String'/>
+        <column name='presence' type='String'/>
         <column name='mute' type='boolean'/>
         <column name='chatEnabled' type='boolean'/>
         <finder name='UserId' return-type='Settings'>
             <finder-column name='userId'/>
         </finder>
-        <finder name='Status' return-type='Collection'>
-            <finder-column name='status'/>
+        <finder name='Presence' return-type='Collection'>
+            <finder-column name='presence'/>
         </finder>
     </entity>
 

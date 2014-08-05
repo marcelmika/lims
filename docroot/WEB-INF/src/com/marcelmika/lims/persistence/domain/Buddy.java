@@ -101,7 +101,7 @@ public class Buddy {
 
         String presence = String.format("%s", object[firstElement]);
         if (presence != null) {
-            buddy.presence = Presence.fromStatus(presence);
+            buddy.presence = Presence.fromDescription(presence);
         }
 
         return buddy;

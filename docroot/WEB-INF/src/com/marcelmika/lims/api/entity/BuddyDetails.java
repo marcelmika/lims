@@ -9,11 +9,9 @@ package com.marcelmika.lims.api.entity;
 public class BuddyDetails {
 
     private Long buddyId;
-    private Long portraitId;
     private String fullName;
     private String screenName;
     private String password;
-    private String status;
     private PresenceDetails presenceDetails;
     private SettingsDetails settingsDetails;
 
@@ -23,14 +21,6 @@ public class BuddyDetails {
 
     public void setBuddyId(Long buddyId) {
         this.buddyId = buddyId;
-    }
-
-    public Long getPortraitId() {
-        return portraitId;
-    }
-
-    public void setPortraitId(Long portraitId) {
-        this.portraitId = portraitId;
     }
 
     public String getFullName() {
@@ -57,14 +47,6 @@ public class BuddyDetails {
         this.password = password;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public PresenceDetails getPresenceDetails() {
         return presenceDetails;
     }
@@ -85,11 +67,9 @@ public class BuddyDetails {
     public String toString() {
         return "BuddyDetails{" +
                 "buddyId=" + buddyId +
-                ", portraitId=" + portraitId +
                 ", fullName='" + fullName + '\'' +
                 ", screenName='" + screenName + '\'' +
                 ", password='" + password + '\'' +
-                ", status='" + status + '\'' +
                 ", presenceDetails=" + presenceDetails +
                 ", settingsDetails=" + settingsDetails +
                 '}';

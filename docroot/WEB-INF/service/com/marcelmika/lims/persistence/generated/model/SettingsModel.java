@@ -102,19 +102,19 @@ public interface SettingsModel extends BaseModel<Settings> {
 	public void setUserUuid(String userUuid);
 
 	/**
-	 * Returns the status of this settings.
+	 * Returns the presence of this settings.
 	 *
-	 * @return the status of this settings
+	 * @return the presence of this settings
 	 */
 	@AutoEscape
-	public String getStatus();
+	public String getPresence();
 
 	/**
-	 * Sets the status of this settings.
+	 * Sets the presence of this settings.
 	 *
-	 * @param status the status of this settings
+	 * @param presence the presence of this settings
 	 */
-	public void setStatus(String status);
+	public void setPresence(String presence);
 
 	/**
 	 * Returns the mute of this settings.

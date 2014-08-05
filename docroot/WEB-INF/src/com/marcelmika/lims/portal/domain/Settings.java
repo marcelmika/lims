@@ -1,10 +1,6 @@
 package com.marcelmika.lims.portal.domain;
 
-import com.liferay.portal.kernel.poller.PollerRequest;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.marcelmika.lims.api.entity.SettingsDetails;
-
-import java.util.Map;
 
 /**
  * @author Ing. Marcel Mika
@@ -14,50 +10,11 @@ import java.util.Map;
  */
 public class Settings {
 
-    private static final String KEY_STATUS = "status";
-    private static final String KEY_ACTIVE_PANEL_ID = "activePanelId";
-    private static final String KEY_MUTE = "mute";
-    private static final String KEY_CHAT_ENABLED = "chatEnabled";
-
     private Buddy buddy;
-    private String status;
+    private Presence presence;
     private String activePanelId;
     private boolean isMute;
     private boolean isChatEnabled;
-
-    /**
-     * Creates settings from poller request
-     *
-     * @param pollerRequest PollerRequest
-     * @return Settings
-     */
-    public static Settings fromPollerRequest(PollerRequest pollerRequest) {
-        // Map contains all parameters from request
-        Map<String, String> parameterMap = pollerRequest.getParameterMap();
-        // Create new buddy
-        Settings settings = new Settings();
-
-        // Status
-        if (parameterMap.containsKey(KEY_STATUS)) {
-            settings.status = GetterUtil.getString(parameterMap.get(KEY_STATUS));
-        }
-
-        // Active Panel Id
-        if (parameterMap.containsKey(KEY_ACTIVE_PANEL_ID)) {
-            settings.activePanelId = GetterUtil.getString(parameterMap.get(KEY_ACTIVE_PANEL_ID));
-        }
-        // Mute
-        if (parameterMap.containsKey(KEY_MUTE)) {
-            settings.isMute = GetterUtil.getBoolean(parameterMap.get(KEY_MUTE));
-        }
-        // Chat Enabled
-        if (parameterMap.containsKey(KEY_CHAT_ENABLED)) {
-            settings.isChatEnabled = GetterUtil.getBoolean(parameterMap.get(KEY_CHAT_ENABLED));
-        }
-
-
-        return settings;
-    }
 
 
     /**
@@ -70,10 +27,14 @@ public class Settings {
         // Create new Settings
         Settings settings = new Settings();
         // Map data to settings details
-        settings.status = settingsDetails.getStatus();
         settings.activePanelId = settingsDetails.getActivePanelId();
         settings.isMute = settingsDetails.isMute();
         settings.isChatEnabled = settingsDetails.isChatEnabled();
+
+        // Relations
+        if (settingsDetails.getPresenceDetails() != null) {
+            settings.presence = Presence.fromPresenceDetails(settingsDetails.getPresenceDetails());
+        }
 
         return settings;
     }
@@ -87,10 +48,14 @@ public class Settings {
         // Create new user details
         SettingsDetails details = new SettingsDetails();
         // Map data from user
-        details.setStatus(status);
         details.setActivePanelId(activePanelId);
         details.setMute(isMute);
         details.setChatEnabled(isChatEnabled);
+
+        // Relations
+        if (presence != null) {
+            details.setPresenceDetails(presence.toPresenceDetails());
+        }
 
         return details;
     }
@@ -103,12 +68,12 @@ public class Settings {
         this.buddy = buddy;
     }
 
-    public String getStatus() {
-        return status;
+    public Presence getPresence() {
+        return presence;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setPresence(Presence presence) {
+        this.presence = presence;
     }
 
     public String getActivePanelId() {
@@ -123,11 +88,11 @@ public class Settings {
         return isMute;
     }
 
-    public void setIsMute(boolean isMute) {
+    public void setMute(boolean isMute) {
         this.isMute = isMute;
     }
 
-    public void setMute(boolean isMute) {
+    public void setIsMute(boolean isMute) {
         this.isMute = isMute;
     }
 

@@ -88,7 +88,7 @@ create table lims_Participant (
 create table lims_Settings (
 	sid LONG not null primary key,
 	userId LONG,
-	status VARCHAR(75) null,
+	presence VARCHAR(75) null,
 	mute BOOLEAN,
 	chatEnabled BOOLEAN
 );

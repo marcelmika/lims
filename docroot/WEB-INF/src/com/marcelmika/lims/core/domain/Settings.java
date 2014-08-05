@@ -10,7 +10,7 @@ import com.marcelmika.lims.api.entity.SettingsDetails;
  */
 public class Settings {
 
-    private String status;
+    private Presence presence;
     private String activePanelId;
     private boolean isMute;
     private boolean isChatEnabled;
@@ -26,10 +26,14 @@ public class Settings {
         // Create new Settings
         Settings settings = new Settings();
         // Map data to settings details
-        settings.setStatus(settingsDetails.getStatus());
-        settings.setActivePanelId(settingsDetails.getActivePanelId());
-        settings.setMute(settingsDetails.isMute());
-        settings.setChatEnabled(settingsDetails.isChatEnabled());
+        settings.activePanelId = settingsDetails.getActivePanelId();
+        settings.isMute = settingsDetails.isMute();
+        settings.isChatEnabled = settingsDetails.isChatEnabled();
+
+        // Relations
+        if (settingsDetails.getPresenceDetails() != null) {
+            settings.presence = Presence.fromPresenceDetails(settingsDetails.getPresenceDetails());
+        }
 
         return settings;
     }
@@ -42,21 +46,16 @@ public class Settings {
     public SettingsDetails toSettingsDetails() {
         // Create new user details
         SettingsDetails details = new SettingsDetails();
-        // Map data from user
-        details.setStatus(status);
+        // Map data from users
         details.setActivePanelId(activePanelId);
         details.setMute(isMute);
         details.setChatEnabled(isChatEnabled);
 
+        if (presence != null) {
+            details.setPresenceDetails(presence.toPresenceDetails());
+        }
+
         return details;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getActivePanelId() {

@@ -1,60 +1,60 @@
-
 <% { %>
 
-<%@ page import="com.marcelmika.lims.jabber.JabberKeys" %>
+<%-- Declared variables --%>
+<%--@elvariable id="settings" type="com.marcelmika.lims.portal.domain.Settings"--%>
 
-<c:set var="JABBER_STATUS_ONLINE" value="<%= JabberKeys.JABBER_STATUS_ONLINE %>" />
-<c:set var="JABBER_STATUS_BUSY" value="<%= JabberKeys.JABBER_STATUS_BUSY %>" />
-<c:set var="JABBER_STATUS_UNAVAILABLE" value="<%= JabberKeys.JABBER_STATUS_UNAVAILABLE %>" />
-<c:set var="JABBER_STATUS_INVISIBLE" value="<%= JabberKeys.JABBER_STATUS_INVISIBLE %>" />
-<c:set var="JABBER_STATUS_OFF" value="<%= JabberKeys.JABBER_STATUS_OFF %>" />
-    
+<%-- Imports --%>
+<%@ page import="com.marcelmika.lims.portal.domain.Presence" %>
+
+<c:set var="PRESENCE_ACTIVE" value="<%= Presence.ACTIVE %>"/>
+<c:set var="PRESENCE_BUSY" value="<%= Presence.AWAY %>"/>
+<c:set var="PRESENCE_DND" value="<%= Presence.DND %>"/>
+<c:set var="PRESENCE_OFFLINE" value="<%= Presence.OFFLINE %>"/>
+
 <c:choose>
-    <c:when test="${settings.status == JABBER_STATUS_ONLINE}">
+    <c:when test="${settings.presence == PRESENCE_ACTIVE}">
         <c:set var="status" value="online"/>
-    </c:when>    
-    <c:when test="${settings.status == JABBER_STATUS_BUSY}">
+    </c:when>
+    <c:when test="${settings.presence == PRESENCE_BUSY}">
         <c:set var="status" value="busy"/>
-    </c:when>    
-    <c:when test="${settings.status == JABBER_STATUS_UNAVAILABLE}">
+    </c:when>
+    <c:when test="${settings.presence == PRESENCE_DND}">
         <c:set var="status" value="unavailable"/>
-    </c:when>    
-    <c:when test="${settings.status == JABBER_STATUS_INVISIBLE}">
-        <c:set var="status" value="invisible"/>
-    </c:when>    
-    <c:when test="${settings.status == JABBER_STATUS_OFF}">
+    </c:when>
+    <c:when test="${settings.presence == PRESENCE_OFFLINE}">
         <c:set var="status" value="off"/>
-    </c:when>    
+    </c:when>
     <c:otherwise>
         <c:set var="status" value="unknown"/>
     </c:otherwise>
 </c:choose>
 
-<c:choose> 
-    <c:when test="${settings.activePanelId == 'presence'}" >
+<c:choose>
+    <c:when test="${settings.activePanelId == 'presence'}">
         <c:set var="selectedClass" value="selected"/>
-    </c:when> 
-    <c:otherwise> 
+    </c:when>
+    <c:otherwise>
         <c:set var="selectedClass" value=""/>
-    </c:otherwise> 
-</c:choose> 
+    </c:otherwise>
+</c:choose>
 
 <li class="status-panel ${selectedClass}">
-    <div class="panel-trigger" panelId="status">
+    <div class="panel-trigger">
         <div class="trigger-name">
             <div class="status-indicator ${status}" title="Status: ${status}"></div>
         </div>
     </div>
-    <div class="chat-panel">     
+    <div class="chat-panel">
         <div class="panel-window">
             <div class="panel-button minimize"></div>
 
-            <div class="panel-title"><liferay-ui:message key="status" /></div>            
+            <div class="panel-title"><liferay-ui:message key="status"/></div>
             <ul class="lfr-component status">
-                <li class="online" data-status="${JABBER_STATUS_ONLINE}"><liferay-ui:message key="online" /></li>                
-                <li class="busy" data-status="${JABBER_STATUS_BUSY}"><liferay-ui:message key="busy" /></li>                
-                <li class="unavailable divider" data-status="${JABBER_STATUS_UNAVAILABLE}"><liferay-ui:message key="unavailable" /></li>
-                <li class="off" data-status="${JABBER_STATUS_OFF}"><liferay-ui:message key="off" /></li>                
+                <li class="online" data-status="${PRESENCE_ACTIVE}"><liferay-ui:message key="online"/></li>
+                <li class="busy" data-status="${PRESENCE_BUSY}"><liferay-ui:message key="busy"/></li>
+                <li class="unavailable divider" data-status="${PRESENCE_DND}"><liferay-ui:message
+                        key="unavailable"/></li>
+                <li class="off" data-status="${PRESENCE_OFFLINE}"><liferay-ui:message key="off"/></li>
             </ul>
         </div>
     </div>

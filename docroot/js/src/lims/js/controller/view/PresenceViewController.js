@@ -52,7 +52,7 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
         this._updatePresenceIndicator(presence);
 
         // Disable chat if needed
-        if (presence === "jabber.status.off") {
+        if (presence === "OFFLINE") {
             Y.fire("chatDisabled");
             // Since if we call chatDisabled all controllers will be automatically
             // hidden. Thus we need to show our controller again.
@@ -78,25 +78,25 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
 
         // Set status indicator based on the presence type
         switch (presence) {
-            case "jabber.status.online":
+            case "ACTIVE":
                 presenceClass = "online";
-                buddyDetails.set('presence', 'STATE_ACTIVE');
+                buddyDetails.set('presence', 'ACTIVE');
                 break;
-            case "jabber.status.busy":
+            case "AWAY":
                 presenceClass = "busy";
-                buddyDetails.set('presence', 'STATE_AWAY');
+                buddyDetails.set('presence', 'AWAY');
                 break;
-            case "jabber.status.unavailable":
+            case "DND":
                 presenceClass = "unavailable";
-                buddyDetails.set('presence', 'STATE_DND');
+                buddyDetails.set('presence', 'DND');
                 break;
-            case "jabber.status.off":
+            case "OFFLINE":
                 presenceClass = "off";
-                buddyDetails.set('presence', 'STATE_OFFLINE');
+                buddyDetails.set('presence', 'OFFLINE');
                 break;
             default:
                 presenceClass = "off";
-                buddyDetails.set('presence', 'STATE_UNRECOGNIZED');
+                buddyDetails.set('presence', 'UNRECOGNIZED');
                 break;
         }
 

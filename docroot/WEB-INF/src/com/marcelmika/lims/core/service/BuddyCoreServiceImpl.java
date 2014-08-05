@@ -108,20 +108,20 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
     }
 
     /**
-     * Change buddy's status
+     * Change buddy's presence
      *
      * @param event Request event for logout method
      * @return Response event for logout method
      */
     @Override
     public UpdatePresenceBuddyResponseEvent updatePresence(UpdatePresenceBuddyRequestEvent event) {
-        // Save status to persistent service
+        // Save presence to persistent service
         UpdatePresenceBuddyResponseEvent responseEvent = buddyPersistenceService.updatePresence(event);
-        // Do not continue if the change status event failed
+        // Do not continue if the change presence event failed
         if (!responseEvent.isSuccess()) {
             return responseEvent;
         }
-        // Save buddy status in Jabber as well
+        // Save buddy presence in Jabber as well
         return buddyJabberService.updatePresence(event);
     }
 }

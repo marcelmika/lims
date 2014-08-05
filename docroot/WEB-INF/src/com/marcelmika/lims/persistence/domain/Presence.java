@@ -10,22 +10,26 @@ import com.marcelmika.lims.api.entity.PresenceDetails;
  */
 
 public enum Presence {
-    STATE_ACTIVE(0),
-    STATE_AWAY(1),
-    STATE_DND(2),
-    STATE_OFFLINE(3),
-    STATE_UNRECOGNIZED(4);
+    ACTIVE(0, "presence.online"),
+    AWAY(1, "presence.busy"),
+    DND(2, "presence.unavailable"),
+    OFFLINE(3, "presence.off"),
+    UNRECOGNIZED(4, "presence.unrecognized");
 
-    private static final String STATUS_ACTIVE = "jabber.status.online";
-    private static final String STATUS_AWAY = "jabber.status.busy";
-    private static final String STATUS_DND = "jabber.status.unavailable";
-    private static final String STATUS_OFFLINE = "jabber.status.off";
-    private static final String STATUS_UNRECOGNIZED = "jabber.status.unrecognized";
-
+    // Code which uniquely determines presence
     private int code;
+    // String description of presence
+    private String description;
 
-    private Presence(int code) {
+    /**
+     * Constructor
+     *
+     * @param code        which uniquely determines presence
+     * @param description string description of presence
+     */
+    private Presence(int code, String description) {
         this.code = code;
+        this.description = description;
     }
 
     /**
@@ -36,22 +40,28 @@ public enum Presence {
      */
     public static Presence fromPresenceDetails(PresenceDetails presenceDetails) {
 
-        if (presenceDetails == PresenceDetails.STATE_ACTIVE) {
-            return Presence.STATE_ACTIVE;
-        } else if (presenceDetails == PresenceDetails.STATE_AWAY) {
-            return Presence.STATE_AWAY;
-        } else if (presenceDetails == PresenceDetails.STATE_DND) {
-            return Presence.STATE_DND;
-        } else if (presenceDetails == PresenceDetails.STATE_OFFLINE) {
-            return Presence.STATE_OFFLINE;
-        } else {
-            return Presence.STATE_UNRECOGNIZED;
+        // Active
+        if (presenceDetails == PresenceDetails.ACTIVE) {
+            return Presence.ACTIVE;
+        }
+        // Away
+        else if (presenceDetails == PresenceDetails.AWAY) {
+            return Presence.AWAY;
+        }
+        // Dnd
+        else if (presenceDetails == PresenceDetails.DND) {
+            return Presence.DND;
+        }
+        // Offline
+        else if (presenceDetails == PresenceDetails.OFFLINE) {
+            return Presence.OFFLINE;
+        }
+        // Unrecognized
+        else {
+            return Presence.UNRECOGNIZED;
         }
     }
 
-    public int getCode() {
-        return code;
-    }
 
     /**
      * Maps Presence to PresenceDetails
@@ -59,74 +69,69 @@ public enum Presence {
      * @return PresenceDetails
      */
     public PresenceDetails toPresenceDetails() {
-        if (this == Presence.STATE_ACTIVE) {
-            return PresenceDetails.STATE_ACTIVE;
-        } else if (this == Presence.STATE_AWAY) {
-            return PresenceDetails.STATE_AWAY;
-        } else if (this == Presence.STATE_DND) {
-            return PresenceDetails.STATE_DND;
-        } else if (this == Presence.STATE_OFFLINE) {
-            return PresenceDetails.STATE_OFFLINE;
-        } else {
-            return PresenceDetails.STATE_UNRECOGNIZED;
+
+        // Active
+        if (this == Presence.ACTIVE) {
+            return PresenceDetails.ACTIVE;
+        }
+        // Away
+        else if (this == Presence.AWAY) {
+            return PresenceDetails.AWAY;
+        }
+        // Dnd
+        else if (this == Presence.DND) {
+            return PresenceDetails.DND;
+        }
+        // Offline
+        else if (this == Presence.OFFLINE) {
+            return PresenceDetails.OFFLINE;
+        }
+        // Unrecognized
+        else {
+            return PresenceDetails.UNRECOGNIZED;
         }
     }
 
     /**
-     * Creates Presence from Status
+     * Creates Presence from String description
      *
-     * @param status Status
+     * @param description String
      * @return Presence
      */
-    public static Presence fromStatus(String status) {
+    public static Presence fromDescription(String description) {
+
         // Check preconditions
-        if (status == null) {
-            return Presence.STATE_UNRECOGNIZED;
+        if (description == null) {
+            return Presence.UNRECOGNIZED;
         }
 
         // Active
-        if (status.equals(STATUS_ACTIVE)) {
-            return Presence.STATE_ACTIVE;
+        if (description.equals(Presence.ACTIVE.getDescription())) {
+            return Presence.ACTIVE;
         }
         // Away
-        else if (status.equals(STATUS_AWAY)) {
-            return Presence.STATE_AWAY;
+        else if (description.equals(Presence.AWAY.getDescription())) {
+            return Presence.AWAY;
         }
         // Dnd
-        else if (status.equals(STATUS_DND)) {
-            return Presence.STATE_DND;
+        else if (description.equals(Presence.DND.getDescription())) {
+            return Presence.DND;
         }
         // Offline
-        else if (status.equals(STATUS_OFFLINE)) {
-            return Presence.STATE_OFFLINE;
+        else if (description.equals(Presence.OFFLINE.getDescription())) {
+            return Presence.OFFLINE;
         }
         // Unrecognized
         else {
-            return Presence.STATE_UNRECOGNIZED;
+            return Presence.UNRECOGNIZED;
         }
     }
 
-    public String toStatus() {
+    public int getCode() {
+        return code;
+    }
 
-        if (this == Presence.STATE_OFFLINE) {
-            return STATUS_OFFLINE;
-        }
-
-        // Active
-        if (this == Presence.STATE_ACTIVE) {
-            return STATUS_ACTIVE;
-        }
-        // Away
-        else if (this == Presence.STATE_AWAY) {
-            return STATUS_AWAY;
-        }
-        // Dnd
-        else if (this == Presence.STATE_DND) {
-            return STATUS_DND;
-        }
-        // Unrecognized
-        else {
-            return STATUS_UNRECOGNIZED;
-        }
+    public String getDescription() {
+        return description;
     }
 }

@@ -117,7 +117,7 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 
 		_methodParameterTypes19 = new String[] { "long" };
 
-		_methodName20 = "changeStatus";
+		_methodName20 = "changePresence";
 
 		_methodParameterTypes20 = new String[] { "long", "java.lang.String" };
 
@@ -698,12 +698,12 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 		return (com.marcelmika.lims.persistence.generated.model.Settings)ClpSerializer.translateOutput(returnObj);
 	}
 
-	public void changeStatus(long userId, java.lang.String status)
+	public void changePresence(long userId, java.lang.String presence)
 		throws java.lang.Exception {
 		try {
 			_invokableLocalService.invokeMethod(_methodName20,
 				_methodParameterTypes20,
-				new Object[] { userId, ClpSerializer.translateInput(status) });
+				new Object[] { userId, ClpSerializer.translateInput(presence) });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);

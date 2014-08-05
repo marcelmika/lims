@@ -11,7 +11,7 @@
 				User_.firstName AS firstName,
 				User_.middleName AS middleName,
 				User_.lastName AS lastName,
-				Lims_Settings.status AS status
+				Lims_Settings.presence AS presence
 			FROM
 				Lims_Settings
 			INNER JOIN
@@ -36,7 +36,7 @@
 				User_.firstName AS firstName,
 				User_.middleName AS middleName,
 				User_.lastName AS lastName,
-				Lims_Settings.status AS status
+				Lims_Settings.presence AS presence
 			FROM
 				Lims_Settings
 			INNER JOIN
@@ -75,7 +75,7 @@
 				User_.firstName AS firstName,
 				User_.middleName AS middleName,
 				User_.lastName AS lastName,
-				Lims_Settings.status AS status
+				Lims_Settings.presence AS presence
 			FROM
 				Lims_Settings
 			INNER JOIN

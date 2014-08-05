@@ -1,5 +1,9 @@
 <% { %>
 
+<%-- Declared variables --%>
+<%--@elvariable id="conversations" type="java.util.List<Conversation>"--%>
+
+
 <c:forEach items="${conversations}" var="conversation">
 
     <%-- Check if conversation should be opened --%>
@@ -37,6 +41,7 @@
         data-unreadMessagesCount="${conversation.unreadMessagesCount}">
         <div class="panel-trigger">
             <span class="trigger-name">${conversation.title}</span>
+
             <div class="unread ${hiddenBadgeClass}">${conversation.unreadMessagesCount}</div>
         </div>
         <div class="chat-panel">

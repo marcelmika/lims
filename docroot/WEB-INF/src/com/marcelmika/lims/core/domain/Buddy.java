@@ -11,11 +11,9 @@ import com.marcelmika.lims.api.entity.BuddyDetails;
 public class Buddy {
 
     private Long buddyId;
-    private Long portraitId;
     private String fullName;
     private String screenName;
     private String password;
-    private String status;
     private Settings settings;
     private Presence presence;
 
@@ -29,15 +27,14 @@ public class Buddy {
         // Create new buddy
         Buddy buddy = new Buddy();
         // Map data to user details
-        buddy.setBuddyId(buddyDetails.getBuddyId());
-        buddy.setFullName(buddyDetails.getFullName());
-        buddy.setPortraitId(buddyDetails.getPortraitId());
-        buddy.setScreenName(buddyDetails.getScreenName());
-        buddy.setPassword(buddyDetails.getPassword());
-        buddy.setStatus(buddyDetails.getStatus());
+        buddy.buddyId = buddyDetails.getBuddyId();
+        buddy.fullName = buddyDetails.getFullName();
+        buddy.screenName = buddyDetails.getScreenName();
+        buddy.password = buddyDetails.getPassword();
+
         // Relations
-        if(buddyDetails.getStatus() != null) {
-            buddy.setSettings(Settings.fromSettingsDetails(buddyDetails.getSettingsDetails()));
+        if (buddyDetails.getPresenceDetails() != null) {
+            buddy.presence = Presence.fromPresenceDetails(buddyDetails.getPresenceDetails());
         }
 
         return buddy;
@@ -54,12 +51,15 @@ public class Buddy {
         // Map data from user
         details.setBuddyId(buddyId);
         details.setFullName(fullName);
-        details.setPortraitId(portraitId);
         details.setScreenName(screenName);
         details.setPassword(password);
-        details.setStatus(status);
 
-        if(settings != null) {
+        // Relations
+        if (presence != null) {
+            details.setPresenceDetails(presence.toPresenceDetails());
+        }
+
+        if (settings != null) {
             details.setSettingsDetails(settings.toSettingsDetails());
         }
 
@@ -74,13 +74,6 @@ public class Buddy {
         this.buddyId = buddyId;
     }
 
-    public Long getPortraitId() {
-        return portraitId;
-    }
-
-    public void setPortraitId(Long portraitId) {
-        this.portraitId = portraitId;
-    }
 
     public String getFullName() {
         return fullName;
@@ -106,19 +99,19 @@ public class Buddy {
         this.password = password;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public Settings getSettings() {
         return settings;
     }
 
     public void setSettings(Settings settings) {
         this.settings = settings;
+    }
+
+    public Presence getPresence() {
+        return presence;
+    }
+
+    public void setPresence(Presence presence) {
+        this.presence = presence;
     }
 }

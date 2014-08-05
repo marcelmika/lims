@@ -38,8 +38,8 @@ public class SettingsCacheModel implements CacheModel<Settings>, Serializable {
 		sb.append(sid);
 		sb.append(", userId=");
 		sb.append(userId);
-		sb.append(", status=");
-		sb.append(status);
+		sb.append(", presence=");
+		sb.append(presence);
 		sb.append(", mute=");
 		sb.append(mute);
 		sb.append(", chatEnabled=");
@@ -55,11 +55,11 @@ public class SettingsCacheModel implements CacheModel<Settings>, Serializable {
 		settingsImpl.setSid(sid);
 		settingsImpl.setUserId(userId);
 
-		if (status == null) {
-			settingsImpl.setStatus(StringPool.BLANK);
+		if (presence == null) {
+			settingsImpl.setPresence(StringPool.BLANK);
 		}
 		else {
-			settingsImpl.setStatus(status);
+			settingsImpl.setPresence(presence);
 		}
 
 		settingsImpl.setMute(mute);
@@ -72,7 +72,7 @@ public class SettingsCacheModel implements CacheModel<Settings>, Serializable {
 
 	public long sid;
 	public long userId;
-	public String status;
+	public String presence;
 	public boolean mute;
 	public boolean chatEnabled;
 }

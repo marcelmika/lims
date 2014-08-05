@@ -166,7 +166,7 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
         UserSession userSession = userSessionStore.getUserSession(buddyId);
         // No session
         if (userSession == null) {
-            return UpdatePresenceBuddyResponseEvent.updateStatusFailure(
+            return UpdatePresenceBuddyResponseEvent.updatePresenceFailure(
                     "There is no session for buddy", null
             );
         }
@@ -181,10 +181,10 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
             // Set presence on server
             connectionManager.setPresence(presence.toSmackPresence());
             // Success
-            return UpdatePresenceBuddyResponseEvent.updateStatusSuccess("Status successfully updated");
+            return UpdatePresenceBuddyResponseEvent.updatePresenceSuccess("Status successfully updated");
         } catch (Exception e) {
             // Failure
-            return UpdatePresenceBuddyResponseEvent.updateStatusFailure("Cannot update presence", e);
+            return UpdatePresenceBuddyResponseEvent.updatePresenceFailure("Cannot update presence", e);
         }
     }
 

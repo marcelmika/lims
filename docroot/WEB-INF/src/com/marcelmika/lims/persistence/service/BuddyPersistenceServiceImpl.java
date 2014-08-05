@@ -60,8 +60,8 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
             Settings settings = SettingsLocalServiceUtil.getSettingsByUser(buddy.getBuddyId());
 
             if (settings != null) {
-                // Create Presence from status
-                Presence presence = Presence.fromStatus(settings.getStatus());
+                // Create Presence from string
+                Presence presence = Presence.fromDescription(settings.getPresence());
                 // Success
                 return ReadPresenceBuddyResponseEvent.readPresenceSuccess(
                         "Presence successfully read", presence.toPresenceDetails()
@@ -80,7 +80,7 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
     }
 
     /**
-     * Change buddy's status
+     * Change buddy's presence
      *
      * @param event Request event for logout method
      * @return Response event for logout method
@@ -92,14 +92,14 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
 
         try {
             // Save to settings
-            SettingsLocalServiceUtil.changeStatus(event.getBuddyId(), presence.toStatus());
+            SettingsLocalServiceUtil.changePresence(event.getBuddyId(), presence.getDescription());
 
-            return UpdatePresenceBuddyResponseEvent.updateStatusSuccess(
-                    "Status " + presence.toStatus() + " saved to persistence layer for user " + event.getBuddyId()
+            return UpdatePresenceBuddyResponseEvent.updatePresenceSuccess(
+                    "Presence " + presence.getDescription() + " saved to persistence layer for user " + event.getBuddyId()
             );
         } catch (Exception exception) {
-            return UpdatePresenceBuddyResponseEvent.updateStatusFailure(
-                    "Cannot update Status to a persistence layer", exception
+            return UpdatePresenceBuddyResponseEvent.updatePresenceFailure(
+                    "Cannot update presence to a persistence layer", exception
             );
         }
     }

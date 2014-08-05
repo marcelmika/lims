@@ -103,7 +103,7 @@ public class PortletProcessor {
         );
 
         // Disable chat if presence is offline
-        if (presence == Presence.STATE_OFFLINE) {
+        if (presence == Presence.OFFLINE) {
             settingsCoreService.disableChat(new DisableChatRequestEvent(buddy.toBuddyDetails()));
         }
         // Enable otherwise
@@ -117,6 +117,8 @@ public class PortletProcessor {
         }
         // Failure
         else {
+            log.error(responseEvent.getResult());
+            log.error(responseEvent.getException());
             // TODO: Add status handling
             writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
         }

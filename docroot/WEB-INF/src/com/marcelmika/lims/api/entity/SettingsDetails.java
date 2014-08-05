@@ -8,17 +8,17 @@ package com.marcelmika.lims.api.entity;
  */
 public class SettingsDetails {
 
-    private String status;
+    private PresenceDetails presenceDetails;
     private String activePanelId;
     private boolean isMute;
     private boolean isChatEnabled;
 
-    public String getStatus() {
-        return status;
+    public PresenceDetails getPresenceDetails() {
+        return presenceDetails;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setPresenceDetails(PresenceDetails presenceDetails) {
+        this.presenceDetails = presenceDetails;
     }
 
     public String getActivePanelId() {

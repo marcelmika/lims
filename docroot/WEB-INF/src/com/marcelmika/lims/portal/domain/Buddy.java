@@ -5,7 +5,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.poller.PollerRequest;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
@@ -34,71 +33,25 @@ public class Buddy {
     private static Log log = LogFactoryUtil.getLog(Buddy.class);
 
     // Constants
-    private static final String KEY_PORTRAIT_ID = "portraitId";
     private static final String KEY_FULL_NAME = "fullName";
     private static final String KEY_SCREEN_NAME = "screenName";
     private static final String KEY_PASSWORD = "password";
-    private static final String KEY_STATUS = "status";
 
     // Properties
     private Long buddyId;
-    /**
-     * @deprecated
-     */
-    private Long portraitId;
     private String fullName;
     private String screenName;
     private String password;
-    /**
-     * @deprecated
-     */
-    private String status;
     private Presence presence;
     private Settings settings;
 
 
     /**
-     * Factory method which creates new Buddy object from the PollerRequest
+     * Creates an instance of Buddy form RenderRequest
      *
-     * @param pollerRequest request
+     * @param request RenderRequest
      * @return Buddy
      */
-    public static Buddy fromPollerRequest(PollerRequest pollerRequest) {
-        // Map contains all parameters from request
-        Map<String, String> parameterMap = pollerRequest.getParameterMap();
-        // Create new buddy
-        Buddy buddy = new Buddy();
-        // BuddyID
-        buddy.setBuddyId(pollerRequest.getUserId());
-        // Portrait Id
-        if (parameterMap.containsKey(KEY_PORTRAIT_ID)) {
-            buddy.portraitId = GetterUtil.getLong(parameterMap.get(KEY_PORTRAIT_ID));
-        }
-        // Full name
-        if (parameterMap.containsKey(KEY_FULL_NAME)) {
-            buddy.fullName = GetterUtil.getString(parameterMap.get(KEY_FULL_NAME));
-        }
-        // Screen name
-        if (parameterMap.containsKey(KEY_SCREEN_NAME)) {
-            buddy.screenName = GetterUtil.getString(parameterMap.get(KEY_SCREEN_NAME));
-        }
-        // Password
-        if (parameterMap.containsKey(KEY_PASSWORD)) {
-            buddy.password = GetterUtil.getString(parameterMap.get(KEY_PASSWORD));
-        }
-        // Status
-        if (parameterMap.containsKey(KEY_STATUS)) {
-            // TODO: Deprecated, will be renamed to presence
-            buddy.status = GetterUtil.getString(parameterMap.get(KEY_STATUS));
-            String key = GetterUtil.getString(parameterMap.get(KEY_STATUS));
-            buddy.presence = Presence.fromKey(key);
-        }
-        // Settings
-        buddy.settings = Settings.fromPollerRequest(pollerRequest);
-
-        return buddy;
-    }
-
     public static Buddy fromRenderRequest(RenderRequest request) {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         Buddy buddy = new Buddy();
@@ -124,10 +77,6 @@ public class Buddy {
         Buddy buddy = new Buddy();
         // BuddyID
         buddy.buddyId = themeDisplay.getUserId();
-        // Portrait Id
-        if (parameterMap.containsKey(KEY_PORTRAIT_ID)) {
-            buddy.portraitId = GetterUtil.getLong(parameterMap.get(KEY_PORTRAIT_ID));
-        }
         // Full name
         if (parameterMap.containsKey(KEY_FULL_NAME)) {
             buddy.fullName = GetterUtil.getString(parameterMap.get(KEY_FULL_NAME));
@@ -140,17 +89,6 @@ public class Buddy {
         if (parameterMap.containsKey(KEY_PASSWORD)) {
             buddy.password = GetterUtil.getString(parameterMap.get(KEY_PASSWORD));
         }
-        // Status
-        if (parameterMap.containsKey(KEY_STATUS)) {
-            // TODO: Deprecated, will be renamed to presence
-            buddy.status = GetterUtil.getString(parameterMap.get(KEY_STATUS));
-            String key = GetterUtil.getString(parameterMap.get(KEY_STATUS));
-            buddy.presence = Presence.fromKey(key);
-
-            log.info("BUDDY PRESENCE: " + buddy.presence);
-        }
-        // Settings
-//        buddy.settings = Settings.fromPollerRequest(request);
 
         return buddy;
     }
@@ -226,8 +164,6 @@ public class Buddy {
         buddy.fullName = buddyDetails.getFullName();
         buddy.screenName = buddyDetails.getScreenName();
         buddy.password = buddyDetails.getPassword();
-        buddy.portraitId = buddyDetails.getPortraitId();
-        buddy.status = buddyDetails.getStatus();
 
         // Add additional info from local service util if it's not set in buddy details
         if (buddyDetails.getBuddyId() != null) {
@@ -288,10 +224,8 @@ public class Buddy {
         // Map data from user
         details.setBuddyId(buddyId);
         details.setFullName(fullName);
-        details.setPortraitId(portraitId);
         details.setScreenName(screenName);
         details.setPassword(password);
-        details.setStatus(status);
 
         if (presence != null) {
             details.setPresenceDetails(presence.toPresenceDetails());
@@ -330,14 +264,6 @@ public class Buddy {
         this.password = password;
     }
 
-    public Long getPortraitId() {
-        return portraitId;
-    }
-
-    public void setPortraitId(Long portraitId) {
-        this.portraitId = portraitId;
-    }
-
     public String getFullName() {
         return fullName;
     }
@@ -346,19 +272,6 @@ public class Buddy {
         this.fullName = fullName;
     }
 
-    /**
-     * @deprecated
-     */
-    public String getStatus() {
-        return status;
-    }
-
-    /**
-     * @deprecated
-     */
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public Presence getPresence() {
         return presence;
@@ -380,11 +293,9 @@ public class Buddy {
     public String toString() {
         return "Buddy{" +
                 "buddyId=" + buddyId +
-                ", portraitId=" + portraitId +
                 ", fullName='" + fullName + '\'' +
                 ", screenName='" + screenName + '\'' +
                 ", password='" + password + '\'' +
-                ", status='" + status + '\'' +
                 ", presence=" + presence +
                 ", settings=" + settings +
                 '}';

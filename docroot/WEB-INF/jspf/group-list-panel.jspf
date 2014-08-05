@@ -19,7 +19,7 @@
 </c:choose>
 
 <li class="buddy-list ${selectedClass} ${hiddenClass}">
-    <div class="panel-trigger" panelId="buddylist">
+    <div class="panel-trigger">
         <div class="trigger-name"></div>
     </div>
     <div class="chat-panel">

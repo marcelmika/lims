@@ -27,7 +27,7 @@
 </c:choose>
 
 <li class="chat-settings ${selectedClass} ${hiddenClass}">
-    <div class="panel-trigger" panelId="settings">
+    <div class="panel-trigger">
         <div class="trigger-name"></div>
     </div>
     <div class="chat-panel">

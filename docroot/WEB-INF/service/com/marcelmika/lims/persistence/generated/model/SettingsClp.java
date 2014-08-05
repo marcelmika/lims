@@ -69,7 +69,7 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 
 		attributes.put("sid", getSid());
 		attributes.put("userId", getUserId());
-		attributes.put("status", getStatus());
+		attributes.put("presence", getPresence());
 		attributes.put("mute", getMute());
 		attributes.put("chatEnabled", getChatEnabled());
 
@@ -90,10 +90,10 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 			setUserId(userId);
 		}
 
-		String status = (String)attributes.get("status");
+		String presence = (String)attributes.get("presence");
 
-		if (status != null) {
-			setStatus(status);
+		if (presence != null) {
+			setPresence(presence);
 		}
 
 		Boolean mute = (Boolean)attributes.get("mute");
@@ -159,20 +159,20 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		_userUuid = userUuid;
 	}
 
-	public String getStatus() {
-		return _status;
+	public String getPresence() {
+		return _presence;
 	}
 
-	public void setStatus(String status) {
-		_status = status;
+	public void setPresence(String presence) {
+		_presence = presence;
 
 		if (_settingsRemoteModel != null) {
 			try {
 				Class<?> clazz = _settingsRemoteModel.getClass();
 
-				Method method = clazz.getMethod("setStatus", String.class);
+				Method method = clazz.getMethod("setPresence", String.class);
 
-				method.invoke(_settingsRemoteModel, status);
+				method.invoke(_settingsRemoteModel, presence);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -304,7 +304,7 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 
 		clone.setSid(getSid());
 		clone.setUserId(getUserId());
-		clone.setStatus(getStatus());
+		clone.setPresence(getPresence());
 		clone.setMute(getMute());
 		clone.setChatEnabled(getChatEnabled());
 
@@ -360,8 +360,8 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		sb.append(getSid());
 		sb.append(", userId=");
 		sb.append(getUserId());
-		sb.append(", status=");
-		sb.append(getStatus());
+		sb.append(", presence=");
+		sb.append(getPresence());
 		sb.append(", mute=");
 		sb.append(getMute());
 		sb.append(", chatEnabled=");
@@ -387,8 +387,8 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		sb.append(getUserId());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
+			"<column><column-name>presence</column-name><column-value><![CDATA[");
+		sb.append(getPresence());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>mute</column-name><column-value><![CDATA[");
@@ -407,7 +407,7 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 	private long _sid;
 	private long _userId;
 	private String _userUuid;
-	private String _status;
+	private String _presence;
 	private boolean _mute;
 	private boolean _chatEnabled;
 	private BaseModel<?> _settingsRemoteModel;

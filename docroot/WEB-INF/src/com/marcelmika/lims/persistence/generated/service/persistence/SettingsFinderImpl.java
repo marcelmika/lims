@@ -61,7 +61,7 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             query.addScalar("firstName", Type.STRING);
             query.addScalar("middleName", Type.STRING);
             query.addScalar("lastName", Type.STRING);
-            query.addScalar("status", Type.STRING);
+            query.addScalar("presence", Type.STRING);
 
 
             // Add parameters to query
@@ -113,7 +113,7 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             query.addScalar("firstName", Type.STRING);
             query.addScalar("middleName", Type.STRING);
             query.addScalar("lastName", Type.STRING);
-            query.addScalar("status", Type.STRING);
+            query.addScalar("presence", Type.STRING);
 
             // Add parameters to query
             QueryPos queryPos = QueryPos.getInstance(query);
@@ -169,7 +169,7 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             query.addScalar("firstName", Type.STRING);
             query.addScalar("middleName", Type.STRING);
             query.addScalar("lastName", Type.STRING);
-            query.addScalar("status", Type.STRING);
+            query.addScalar("presence", Type.STRING);
 
             // Add parameters to query
             QueryPos queryPos = QueryPos.getInstance(query);

@@ -65,19 +65,19 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
     }
 
     /**
-     * Updates user status
+     * Updates user presence
      *
-     * @param userId id of the user whose status should be udpated
-     * @param status new value of the status
+     * @param userId id of the user whose presence should be updated
+     * @param presence new value of the presence
      * @throws Exception
      */
     @Override
-    public void changeStatus(long userId, String status) throws Exception {
+    public void changePresence(long userId, String presence) throws Exception {
         // Get user settings
         Settings settings = getSettingsByUser(userId);
-        // Change status
+        // Change presence
         if (settings != null) {
-            settings.setStatus(status);
+            settings.setPresence(presence);
             settingsPersistence.update(settings, true);
         }
     }

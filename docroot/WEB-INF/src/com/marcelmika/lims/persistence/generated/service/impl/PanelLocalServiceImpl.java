@@ -63,7 +63,7 @@ public class PanelLocalServiceImpl extends PanelLocalServiceBaseImpl {
     public void updateActivePanel(long userId, String activePanel) throws Exception {
         // Get user settings
         Panel panel = getPanelByUser(userId);
-        // Change status
+
         if (panel != null) {
             panel.setActivePanelId(activePanel);
             panelPersistence.update(panel, true);
