@@ -10,6 +10,23 @@ import com.marcelmika.lims.api.events.buddy.*;
  */
 public interface BuddyPersistenceService {
 
+
+    /**
+     * Login buddy to System
+     *
+     * @param event Request event for login method
+     * @return Response event for login method
+     */
+    public LoginBuddyResponseEvent loginBuddy(LoginBuddyRequestEvent event);
+
+    /**
+     * Logout buddy from System
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    public LogoutBuddyResponseEvent logoutBuddy(LogoutBuddyRequestEvent event);
+
     /**
      * Completely removes buddy from Persistence
      *

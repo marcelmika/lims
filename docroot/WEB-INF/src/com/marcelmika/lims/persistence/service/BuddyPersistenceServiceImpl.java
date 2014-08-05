@@ -15,6 +15,60 @@ import com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUti
 public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
 
     /**
+     * Login buddy to System
+     *
+     * @param event Request event for login method
+     * @return Response event for login method
+     */
+    @Override
+    public LoginBuddyResponseEvent loginBuddy(LoginBuddyRequestEvent event) {
+        // Get buddy from buddy details
+        Buddy buddy = Buddy.fromBuddyDetails(event.getDetails());
+
+        try {
+            // Take presence from user settings
+            Settings settings = SettingsLocalServiceUtil.getSettingsByUser(buddy.getBuddyId());
+
+            // If the user disabled the chat keep it offline
+            if (settings.isChatEnabled()) {
+                // When the user logs in, change the presence to active
+                SettingsLocalServiceUtil.changePresence(buddy.getBuddyId(), Presence.ACTIVE.getDescription());
+            }
+
+            // Call success
+            return LoginBuddyResponseEvent.loginSuccess("User successfully logged in", buddy.toBuddyDetails());
+
+        } catch (Exception e) {
+            // Call failure
+            return LoginBuddyResponseEvent.loginFailure(e.getLocalizedMessage(), buddy.toBuddyDetails());
+        }
+    }
+
+    /**
+     * Logout buddy from System
+     *
+     * @param event Request event for logout method
+     * @return Response event for logout method
+     */
+    @Override
+    public LogoutBuddyResponseEvent logoutBuddy(LogoutBuddyRequestEvent event) {
+        // Get buddy from buddy details
+        Buddy buddy = Buddy.fromBuddyDetails(event.getDetails());
+
+        try {
+            // Change presence to offline
+            SettingsLocalServiceUtil.changePresence(buddy.getBuddyId(), Presence.OFFLINE.getDescription());
+
+            // Call success
+            return LogoutBuddyResponseEvent.logoutSuccess("User successfully logged out", buddy.toBuddyDetails());
+
+        } catch (Exception e) {
+            // Call failure
+            return LogoutBuddyResponseEvent.logoutFailure(e.getLocalizedMessage(), buddy.toBuddyDetails());
+        }
+    }
+
+    /**
      * Completely removes buddy from Persistence
      *
      * @param event Request event for logout method
