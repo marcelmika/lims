@@ -15,10 +15,17 @@ import java.util.List;
 public class Buddy {
 
     private Long buddyId;
+    /**
+     * @deprecated
+     */
     private Long portraitId;
     private String fullName;
     private String screenName;
     private String password;
+    private Presence presence;
+    /**
+     * @deprecated
+     */
     private String status;
 
     /**
@@ -31,12 +38,17 @@ public class Buddy {
         // Create new buddy
         Buddy buddy = new Buddy();
         // Map data to user details
-        buddy.setBuddyId(buddyDetails.getBuddyId());
-        buddy.setFullName(buddyDetails.getFullName());
-        buddy.setPortraitId(buddyDetails.getPortraitId());
-        buddy.setScreenName(buddyDetails.getScreenName());
-        buddy.setPassword(buddyDetails.getPassword());
-        buddy.setStatus(buddyDetails.getStatus());
+        buddy.buddyId = buddyDetails.getBuddyId();
+        buddy.fullName = buddyDetails.getFullName();
+        buddy.portraitId = buddyDetails.getPortraitId();
+        buddy.screenName = buddyDetails.getScreenName();
+        buddy.password = buddyDetails.getPassword();
+        buddy.status = buddyDetails.getStatus();
+
+        // Relations
+        if (buddyDetails.getPresenceDetails() != null) {
+            buddy.presence = Presence.fromPresenceDetails(buddyDetails.getPresenceDetails());
+        }
 
         return buddy;
     }
@@ -94,6 +106,12 @@ public class Buddy {
                 object[firstElement++]);
         buddy.status = String.format("%s", object[firstElement]);
 
+        String presence = String.format("%s", object[firstElement]);
+
+        if (presence != null) {
+            buddy.presence = Presence.fromStatus(presence);
+        }
+
         return buddy;
     }
 
@@ -112,6 +130,10 @@ public class Buddy {
         details.setScreenName(screenName);
         details.setPassword(password);
         details.setStatus(status);
+
+        if (presence != null) {
+            details.setPresenceDetails(presence.toPresenceDetails());
+        }
 
         return details;
     }
@@ -156,11 +178,25 @@ public class Buddy {
         this.password = password;
     }
 
+    /**
+     * @deprecated
+     */
     public String getStatus() {
         return status;
     }
 
+    /**
+     * @deprecated
+     */
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Presence getPresence() {
+        return presence;
+    }
+
+    public void setPresence(Presence presence) {
+        this.presence = presence;
     }
 }
