@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -14,8 +14,6 @@
 
 package com.marcelmika.lims.persistence.generated.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -35,12 +33,10 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import com.marcelmika.lims.persistence.generated.NoSuchSettingsException;
@@ -78,6 +74,15 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 		".List1";
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
 		".List2";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(SettingsModelImpl.ENTITY_CACHE_ENABLED,
+			SettingsModelImpl.FINDER_CACHE_ENABLED, SettingsImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(SettingsModelImpl.ENTITY_CACHE_ENABLED,
+			SettingsModelImpl.FINDER_CACHE_ENABLED, SettingsImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
+	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(SettingsModelImpl.ENTITY_CACHE_ENABLED,
+			SettingsModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
 	public static final FinderPath FINDER_PATH_FETCH_BY_USERID = new FinderPath(SettingsModelImpl.ENTITY_CACHE_ENABLED,
 			SettingsModelImpl.FINDER_CACHE_ENABLED, SettingsImpl.class,
 			FINDER_CLASS_NAME_ENTITY, "fetchByUserId",
@@ -87,14 +92,222 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 			SettingsModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
 			new String[] { Long.class.getName() });
+
+	/**
+	 * Returns the settings where userId = &#63; or throws a {@link com.marcelmika.lims.persistence.generated.NoSuchSettingsException} if it could not be found.
+	 *
+	 * @param userId the user ID
+	 * @return the matching settings
+	 * @throws com.marcelmika.lims.persistence.generated.NoSuchSettingsException if a matching settings could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public Settings findByUserId(long userId)
+		throws NoSuchSettingsException, SystemException {
+		Settings settings = fetchByUserId(userId);
+
+		if (settings == null) {
+			StringBundler msg = new StringBundler(4);
+
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			msg.append("userId=");
+			msg.append(userId);
+
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+			if (_log.isWarnEnabled()) {
+				_log.warn(msg.toString());
+			}
+
+			throw new NoSuchSettingsException(msg.toString());
+		}
+
+		return settings;
+	}
+
+	/**
+	 * Returns the settings where userId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param userId the user ID
+	 * @return the matching settings, or <code>null</code> if a matching settings could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public Settings fetchByUserId(long userId) throws SystemException {
+		return fetchByUserId(userId, true);
+	}
+
+	/**
+	 * Returns the settings where userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param userId the user ID
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the matching settings, or <code>null</code> if a matching settings could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public Settings fetchByUserId(long userId, boolean retrieveFromCache)
+		throws SystemException {
+		Object[] finderArgs = new Object[] { userId };
+
+		Object result = null;
+
+		if (retrieveFromCache) {
+			result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_USERID,
+					finderArgs, this);
+		}
+
+		if (result instanceof Settings) {
+			Settings settings = (Settings)result;
+
+			if ((userId != settings.getUserId())) {
+				result = null;
+			}
+		}
+
+		if (result == null) {
+			StringBundler query = new StringBundler(3);
+
+			query.append(_SQL_SELECT_SETTINGS_WHERE);
+
+			query.append(_FINDER_COLUMN_USERID_USERID_2);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(userId);
+
+				List<Settings> list = q.list();
+
+				if (list.isEmpty()) {
+					FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERID,
+						finderArgs, list);
+				}
+				else {
+					if ((list.size() > 1) && _log.isWarnEnabled()) {
+						_log.warn(
+							"SettingsPersistenceImpl.fetchByUserId(long, boolean) with parameters (" +
+							StringUtil.merge(finderArgs) +
+							") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+					}
+
+					Settings settings = list.get(0);
+
+					result = settings;
+
+					cacheResult(settings);
+
+					if ((settings.getUserId() != userId)) {
+						FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERID,
+							finderArgs, settings);
+					}
+				}
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERID,
+					finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		if (result instanceof List<?>) {
+			return null;
+		}
+		else {
+			return (Settings)result;
+		}
+	}
+
+	/**
+	 * Removes the settings where userId = &#63; from the database.
+	 *
+	 * @param userId the user ID
+	 * @return the settings that was removed
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public Settings removeByUserId(long userId)
+		throws NoSuchSettingsException, SystemException {
+		Settings settings = findByUserId(userId);
+
+		return remove(settings);
+	}
+
+	/**
+	 * Returns the number of settingses where userId = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @return the number of matching settingses
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public int countByUserId(long userId) throws SystemException {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_USERID;
+
+		Object[] finderArgs = new Object[] { userId };
+
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
+				this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(2);
+
+			query.append(_SQL_COUNT_SETTINGS_WHERE);
+
+			query.append(_FINDER_COLUMN_USERID_USERID_2);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(userId);
+
+				count = (Long)q.uniqueResult();
+
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_USERID_USERID_2 = "settings.userId = ?";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_PRESENCE = new FinderPath(SettingsModelImpl.ENTITY_CACHE_ENABLED,
 			SettingsModelImpl.FINDER_CACHE_ENABLED, SettingsImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByPresence",
 			new String[] {
 				String.class.getName(),
 				
-			"java.lang.Integer", "java.lang.Integer",
-				"com.liferay.portal.kernel.util.OrderByComparator"
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
 			});
 	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PRESENCE =
 		new FinderPath(SettingsModelImpl.ENTITY_CACHE_ENABLED,
@@ -106,27 +319,536 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 			SettingsModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByPresence",
 			new String[] { String.class.getName() });
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(SettingsModelImpl.ENTITY_CACHE_ENABLED,
-			SettingsModelImpl.FINDER_CACHE_ENABLED, SettingsImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(SettingsModelImpl.ENTITY_CACHE_ENABLED,
-			SettingsModelImpl.FINDER_CACHE_ENABLED, SettingsImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(SettingsModelImpl.ENTITY_CACHE_ENABLED,
-			SettingsModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+
+	/**
+	 * Returns all the settingses where presence = &#63;.
+	 *
+	 * @param presence the presence
+	 * @return the matching settingses
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public List<Settings> findByPresence(String presence)
+		throws SystemException {
+		return findByPresence(presence, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			null);
+	}
+
+	/**
+	 * Returns a range of all the settingses where presence = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.SettingsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param presence the presence
+	 * @param start the lower bound of the range of settingses
+	 * @param end the upper bound of the range of settingses (not inclusive)
+	 * @return the range of matching settingses
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public List<Settings> findByPresence(String presence, int start, int end)
+		throws SystemException {
+		return findByPresence(presence, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the settingses where presence = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.SettingsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param presence the presence
+	 * @param start the lower bound of the range of settingses
+	 * @param end the upper bound of the range of settingses (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching settingses
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public List<Settings> findByPresence(String presence, int start, int end,
+		OrderByComparator orderByComparator) throws SystemException {
+		boolean pagination = true;
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PRESENCE;
+			finderArgs = new Object[] { presence };
+		}
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_PRESENCE;
+			finderArgs = new Object[] { presence, start, end, orderByComparator };
+		}
+
+		List<Settings> list = (List<Settings>)FinderCacheUtil.getResult(finderPath,
+				finderArgs, this);
+
+		if ((list != null) && !list.isEmpty()) {
+			for (Settings settings : list) {
+				if (!Validator.equals(presence, settings.getPresence())) {
+					list = null;
+
+					break;
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = null;
+
+			if (orderByComparator != null) {
+				query = new StringBundler(3 +
+						(orderByComparator.getOrderByFields().length * 3));
+			}
+			else {
+				query = new StringBundler(3);
+			}
+
+			query.append(_SQL_SELECT_SETTINGS_WHERE);
+
+			boolean bindPresence = false;
+
+			if (presence == null) {
+				query.append(_FINDER_COLUMN_PRESENCE_PRESENCE_1);
+			}
+			else if (presence.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_PRESENCE_PRESENCE_3);
+			}
+			else {
+				bindPresence = true;
+
+				query.append(_FINDER_COLUMN_PRESENCE_PRESENCE_2);
+			}
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(SettingsModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (bindPresence) {
+					qPos.add(presence);
+				}
+
+				if (!pagination) {
+					list = (List<Settings>)QueryUtil.list(q, getDialect(),
+							start, end, false);
+
+					Collections.sort(list);
+
+					list = new UnmodifiableList<Settings>(list);
+				}
+				else {
+					list = (List<Settings>)QueryUtil.list(q, getDialect(),
+							start, end);
+				}
+
+				cacheResult(list);
+
+				FinderCacheUtil.putResult(finderPath, finderArgs, list);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first settings in the ordered set where presence = &#63;.
+	 *
+	 * @param presence the presence
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching settings
+	 * @throws com.marcelmika.lims.persistence.generated.NoSuchSettingsException if a matching settings could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public Settings findByPresence_First(String presence,
+		OrderByComparator orderByComparator)
+		throws NoSuchSettingsException, SystemException {
+		Settings settings = fetchByPresence_First(presence, orderByComparator);
+
+		if (settings != null) {
+			return settings;
+		}
+
+		StringBundler msg = new StringBundler(4);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("presence=");
+		msg.append(presence);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchSettingsException(msg.toString());
+	}
+
+	/**
+	 * Returns the first settings in the ordered set where presence = &#63;.
+	 *
+	 * @param presence the presence
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching settings, or <code>null</code> if a matching settings could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public Settings fetchByPresence_First(String presence,
+		OrderByComparator orderByComparator) throws SystemException {
+		List<Settings> list = findByPresence(presence, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last settings in the ordered set where presence = &#63;.
+	 *
+	 * @param presence the presence
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching settings
+	 * @throws com.marcelmika.lims.persistence.generated.NoSuchSettingsException if a matching settings could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public Settings findByPresence_Last(String presence,
+		OrderByComparator orderByComparator)
+		throws NoSuchSettingsException, SystemException {
+		Settings settings = fetchByPresence_Last(presence, orderByComparator);
+
+		if (settings != null) {
+			return settings;
+		}
+
+		StringBundler msg = new StringBundler(4);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("presence=");
+		msg.append(presence);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchSettingsException(msg.toString());
+	}
+
+	/**
+	 * Returns the last settings in the ordered set where presence = &#63;.
+	 *
+	 * @param presence the presence
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching settings, or <code>null</code> if a matching settings could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public Settings fetchByPresence_Last(String presence,
+		OrderByComparator orderByComparator) throws SystemException {
+		int count = countByPresence(presence);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<Settings> list = findByPresence(presence, count - 1, count,
+				orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the settingses before and after the current settings in the ordered set where presence = &#63;.
+	 *
+	 * @param sid the primary key of the current settings
+	 * @param presence the presence
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next settings
+	 * @throws com.marcelmika.lims.persistence.generated.NoSuchSettingsException if a settings with the primary key could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public Settings[] findByPresence_PrevAndNext(long sid, String presence,
+		OrderByComparator orderByComparator)
+		throws NoSuchSettingsException, SystemException {
+		Settings settings = findByPrimaryKey(sid);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			Settings[] array = new SettingsImpl[3];
+
+			array[0] = getByPresence_PrevAndNext(session, settings, presence,
+					orderByComparator, true);
+
+			array[1] = settings;
+
+			array[2] = getByPresence_PrevAndNext(session, settings, presence,
+					orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected Settings getByPresence_PrevAndNext(Session session,
+		Settings settings, String presence,
+		OrderByComparator orderByComparator, boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(6 +
+					(orderByComparator.getOrderByFields().length * 6));
+		}
+		else {
+			query = new StringBundler(3);
+		}
+
+		query.append(_SQL_SELECT_SETTINGS_WHERE);
+
+		boolean bindPresence = false;
+
+		if (presence == null) {
+			query.append(_FINDER_COLUMN_PRESENCE_PRESENCE_1);
+		}
+		else if (presence.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_PRESENCE_PRESENCE_3);
+		}
+		else {
+			bindPresence = true;
+
+			query.append(_FINDER_COLUMN_PRESENCE_PRESENCE_2);
+		}
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			query.append(SettingsModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = query.toString();
+
+		Query q = session.createQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		if (bindPresence) {
+			qPos.add(presence);
+		}
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(settings);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<Settings> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the settingses where presence = &#63; from the database.
+	 *
+	 * @param presence the presence
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public void removeByPresence(String presence) throws SystemException {
+		for (Settings settings : findByPresence(presence, QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS, null)) {
+			remove(settings);
+		}
+	}
+
+	/**
+	 * Returns the number of settingses where presence = &#63;.
+	 *
+	 * @param presence the presence
+	 * @return the number of matching settingses
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public int countByPresence(String presence) throws SystemException {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_PRESENCE;
+
+		Object[] finderArgs = new Object[] { presence };
+
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
+				this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(2);
+
+			query.append(_SQL_COUNT_SETTINGS_WHERE);
+
+			boolean bindPresence = false;
+
+			if (presence == null) {
+				query.append(_FINDER_COLUMN_PRESENCE_PRESENCE_1);
+			}
+			else if (presence.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_PRESENCE_PRESENCE_3);
+			}
+			else {
+				bindPresence = true;
+
+				query.append(_FINDER_COLUMN_PRESENCE_PRESENCE_2);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (bindPresence) {
+					qPos.add(presence);
+				}
+
+				count = (Long)q.uniqueResult();
+
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_PRESENCE_PRESENCE_1 = "settings.presence IS NULL";
+	private static final String _FINDER_COLUMN_PRESENCE_PRESENCE_2 = "settings.presence = ?";
+	private static final String _FINDER_COLUMN_PRESENCE_PRESENCE_3 = "(settings.presence IS NULL OR settings.presence = '')";
+
+	public SettingsPersistenceImpl() {
+		setModelClass(Settings.class);
+	}
 
 	/**
 	 * Caches the settings in the entity cache if it is enabled.
 	 *
 	 * @param settings the settings
 	 */
+	@Override
 	public void cacheResult(Settings settings) {
 		EntityCacheUtil.putResult(SettingsModelImpl.ENTITY_CACHE_ENABLED,
 			SettingsImpl.class, settings.getPrimaryKey(), settings);
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERID,
-			new Object[] { Long.valueOf(settings.getUserId()) }, settings);
+			new Object[] { settings.getUserId() }, settings);
 
 		settings.resetOriginalValues();
 	}
@@ -136,6 +858,7 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 	 *
 	 * @param settingses the settingses
 	 */
+	@Override
 	public void cacheResult(List<Settings> settingses) {
 		for (Settings settings : settingses) {
 			if (EntityCacheUtil.getResult(
@@ -202,7 +925,7 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 
 	protected void cacheUniqueFindersCache(Settings settings) {
 		if (settings.isNew()) {
-			Object[] args = new Object[] { Long.valueOf(settings.getUserId()) };
+			Object[] args = new Object[] { settings.getUserId() };
 
 			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_USERID, args,
 				Long.valueOf(1));
@@ -214,7 +937,7 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 
 			if ((settingsModelImpl.getColumnBitmask() &
 					FINDER_PATH_FETCH_BY_USERID.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] { Long.valueOf(settings.getUserId()) };
+				Object[] args = new Object[] { settings.getUserId() };
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_USERID, args,
 					Long.valueOf(1));
@@ -227,16 +950,14 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 	protected void clearUniqueFindersCache(Settings settings) {
 		SettingsModelImpl settingsModelImpl = (SettingsModelImpl)settings;
 
-		Object[] args = new Object[] { Long.valueOf(settings.getUserId()) };
+		Object[] args = new Object[] { settings.getUserId() };
 
 		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
 		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERID, args);
 
 		if ((settingsModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_USERID.getColumnBitmask()) != 0) {
-			args = new Object[] {
-					Long.valueOf(settingsModelImpl.getOriginalUserId())
-				};
+			args = new Object[] { settingsModelImpl.getOriginalUserId() };
 
 			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
 			FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERID, args);
@@ -249,6 +970,7 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 	 * @param sid the primary key for the new settings
 	 * @return the new settings
 	 */
+	@Override
 	public Settings create(long sid) {
 		Settings settings = new SettingsImpl();
 
@@ -266,9 +988,10 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 	 * @throws com.marcelmika.lims.persistence.generated.NoSuchSettingsException if a settings with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public Settings remove(long sid)
 		throws NoSuchSettingsException, SystemException {
-		return remove(Long.valueOf(sid));
+		return remove((Serializable)sid);
 	}
 
 	/**
@@ -321,7 +1044,14 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 		try {
 			session = openSession();
 
-			BatchSessionUtil.delete(session, settings);
+			if (!session.contains(settings)) {
+				settings = (Settings)session.get(SettingsImpl.class,
+						settings.getPrimaryKeyObj());
+			}
+
+			if (settings != null) {
+				session.delete(settings);
+			}
 		}
 		catch (Exception e) {
 			throw processException(e);
@@ -330,15 +1060,17 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 			closeSession(session);
 		}
 
-		clearCache(settings);
+		if (settings != null) {
+			clearCache(settings);
+		}
 
 		return settings;
 	}
 
 	@Override
 	public Settings updateImpl(
-		com.marcelmika.lims.persistence.generated.model.Settings settings,
-		boolean merge) throws SystemException {
+		com.marcelmika.lims.persistence.generated.model.Settings settings)
+		throws SystemException {
 		settings = toUnwrappedModel(settings);
 
 		boolean isNew = settings.isNew();
@@ -350,9 +1082,14 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 		try {
 			session = openSession();
 
-			BatchSessionUtil.update(session, settings, merge);
+			if (settings.isNew()) {
+				session.save(settings);
 
-			settings.setNew(false);
+				settings.setNew(false);
+			}
+			else {
+				session.merge(settings);
+			}
 		}
 		catch (Exception e) {
 			throw processException(e);
@@ -419,13 +1156,24 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 	 *
 	 * @param primaryKey the primary key of the settings
 	 * @return the settings
-	 * @throws com.liferay.portal.NoSuchModelException if a settings with the primary key could not be found
+	 * @throws com.marcelmika.lims.persistence.generated.NoSuchSettingsException if a settings with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public Settings findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchSettingsException, SystemException {
+		Settings settings = fetchByPrimaryKey(primaryKey);
+
+		if (settings == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchSettingsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return settings;
 	}
 
 	/**
@@ -436,20 +1184,10 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 	 * @throws com.marcelmika.lims.persistence.generated.NoSuchSettingsException if a settings with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public Settings findByPrimaryKey(long sid)
 		throws NoSuchSettingsException, SystemException {
-		Settings settings = fetchByPrimaryKey(sid);
-
-		if (settings == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + sid);
-			}
-
-			throw new NoSuchSettingsException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				sid);
-		}
-
-		return settings;
+		return findByPrimaryKey((Serializable)sid);
 	}
 
 	/**
@@ -462,7 +1200,41 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 	@Override
 	public Settings fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
+		Settings settings = (Settings)EntityCacheUtil.getResult(SettingsModelImpl.ENTITY_CACHE_ENABLED,
+				SettingsImpl.class, primaryKey);
+
+		if (settings == _nullSettings) {
+			return null;
+		}
+
+		if (settings == null) {
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				settings = (Settings)session.get(SettingsImpl.class, primaryKey);
+
+				if (settings != null) {
+					cacheResult(settings);
+				}
+				else {
+					EntityCacheUtil.putResult(SettingsModelImpl.ENTITY_CACHE_ENABLED,
+						SettingsImpl.class, primaryKey, _nullSettings);
+				}
+			}
+			catch (Exception e) {
+				EntityCacheUtil.removeResult(SettingsModelImpl.ENTITY_CACHE_ENABLED,
+					SettingsImpl.class, primaryKey);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return settings;
 	}
 
 	/**
@@ -472,575 +1244,9 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 	 * @return the settings, or <code>null</code> if a settings with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public Settings fetchByPrimaryKey(long sid) throws SystemException {
-		Settings settings = (Settings)EntityCacheUtil.getResult(SettingsModelImpl.ENTITY_CACHE_ENABLED,
-				SettingsImpl.class, sid);
-
-		if (settings == _nullSettings) {
-			return null;
-		}
-
-		if (settings == null) {
-			Session session = null;
-
-			boolean hasException = false;
-
-			try {
-				session = openSession();
-
-				settings = (Settings)session.get(SettingsImpl.class,
-						Long.valueOf(sid));
-			}
-			catch (Exception e) {
-				hasException = true;
-
-				throw processException(e);
-			}
-			finally {
-				if (settings != null) {
-					cacheResult(settings);
-				}
-				else if (!hasException) {
-					EntityCacheUtil.putResult(SettingsModelImpl.ENTITY_CACHE_ENABLED,
-						SettingsImpl.class, sid, _nullSettings);
-				}
-
-				closeSession(session);
-			}
-		}
-
-		return settings;
-	}
-
-	/**
-	 * Returns the settings where userId = &#63; or throws a {@link com.marcelmika.lims.persistence.generated.NoSuchSettingsException} if it could not be found.
-	 *
-	 * @param userId the user ID
-	 * @return the matching settings
-	 * @throws com.marcelmika.lims.persistence.generated.NoSuchSettingsException if a matching settings could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Settings findByUserId(long userId)
-		throws NoSuchSettingsException, SystemException {
-		Settings settings = fetchByUserId(userId);
-
-		if (settings == null) {
-			StringBundler msg = new StringBundler(4);
-
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-			msg.append("userId=");
-			msg.append(userId);
-
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
-			}
-
-			throw new NoSuchSettingsException(msg.toString());
-		}
-
-		return settings;
-	}
-
-	/**
-	 * Returns the settings where userId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	 *
-	 * @param userId the user ID
-	 * @return the matching settings, or <code>null</code> if a matching settings could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Settings fetchByUserId(long userId) throws SystemException {
-		return fetchByUserId(userId, true);
-	}
-
-	/**
-	 * Returns the settings where userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	 *
-	 * @param userId the user ID
-	 * @param retrieveFromCache whether to use the finder cache
-	 * @return the matching settings, or <code>null</code> if a matching settings could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Settings fetchByUserId(long userId, boolean retrieveFromCache)
-		throws SystemException {
-		Object[] finderArgs = new Object[] { userId };
-
-		Object result = null;
-
-		if (retrieveFromCache) {
-			result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_USERID,
-					finderArgs, this);
-		}
-
-		if (result instanceof Settings) {
-			Settings settings = (Settings)result;
-
-			if ((userId != settings.getUserId())) {
-				result = null;
-			}
-		}
-
-		if (result == null) {
-			StringBundler query = new StringBundler(2);
-
-			query.append(_SQL_SELECT_SETTINGS_WHERE);
-
-			query.append(_FINDER_COLUMN_USERID_USERID_2);
-
-			String sql = query.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query q = session.createQuery(sql);
-
-				QueryPos qPos = QueryPos.getInstance(q);
-
-				qPos.add(userId);
-
-				List<Settings> list = q.list();
-
-				result = list;
-
-				Settings settings = null;
-
-				if (list.isEmpty()) {
-					FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERID,
-						finderArgs, list);
-				}
-				else {
-					settings = list.get(0);
-
-					cacheResult(settings);
-
-					if ((settings.getUserId() != userId)) {
-						FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERID,
-							finderArgs, settings);
-					}
-				}
-
-				return settings;
-			}
-			catch (Exception e) {
-				throw processException(e);
-			}
-			finally {
-				if (result == null) {
-					FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERID,
-						finderArgs);
-				}
-
-				closeSession(session);
-			}
-		}
-		else {
-			if (result instanceof List<?>) {
-				return null;
-			}
-			else {
-				return (Settings)result;
-			}
-		}
-	}
-
-	/**
-	 * Returns all the settingses where presence = &#63;.
-	 *
-	 * @param presence the presence
-	 * @return the matching settingses
-	 * @throws SystemException if a system exception occurred
-	 */
-	public List<Settings> findByPresence(String presence)
-		throws SystemException {
-		return findByPresence(presence, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			null);
-	}
-
-	/**
-	 * Returns a range of all the settingses where presence = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-	 * </p>
-	 *
-	 * @param presence the presence
-	 * @param start the lower bound of the range of settingses
-	 * @param end the upper bound of the range of settingses (not inclusive)
-	 * @return the range of matching settingses
-	 * @throws SystemException if a system exception occurred
-	 */
-	public List<Settings> findByPresence(String presence, int start, int end)
-		throws SystemException {
-		return findByPresence(presence, start, end, null);
-	}
-
-	/**
-	 * Returns an ordered range of all the settingses where presence = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
-	 * </p>
-	 *
-	 * @param presence the presence
-	 * @param start the lower bound of the range of settingses
-	 * @param end the upper bound of the range of settingses (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching settingses
-	 * @throws SystemException if a system exception occurred
-	 */
-	public List<Settings> findByPresence(String presence, int start, int end,
-		OrderByComparator orderByComparator) throws SystemException {
-		FinderPath finderPath = null;
-		Object[] finderArgs = null;
-
-		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PRESENCE;
-			finderArgs = new Object[] { presence };
-		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_PRESENCE;
-			finderArgs = new Object[] { presence, start, end, orderByComparator };
-		}
-
-		List<Settings> list = (List<Settings>)FinderCacheUtil.getResult(finderPath,
-				finderArgs, this);
-
-		if ((list != null) && !list.isEmpty()) {
-			for (Settings settings : list) {
-				if (!Validator.equals(presence, settings.getPresence())) {
-					list = null;
-
-					break;
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler query = null;
-
-			if (orderByComparator != null) {
-				query = new StringBundler(3 +
-						(orderByComparator.getOrderByFields().length * 3));
-			}
-			else {
-				query = new StringBundler(2);
-			}
-
-			query.append(_SQL_SELECT_SETTINGS_WHERE);
-
-			if (presence == null) {
-				query.append(_FINDER_COLUMN_PRESENCE_PRESENCE_1);
-			}
-			else {
-				if (presence.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_PRESENCE_PRESENCE_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_PRESENCE_PRESENCE_2);
-				}
-			}
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
-			}
-
-			String sql = query.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query q = session.createQuery(sql);
-
-				QueryPos qPos = QueryPos.getInstance(q);
-
-				if (presence != null) {
-					qPos.add(presence);
-				}
-
-				list = (List<Settings>)QueryUtil.list(q, getDialect(), start,
-						end);
-			}
-			catch (Exception e) {
-				throw processException(e);
-			}
-			finally {
-				if (list == null) {
-					FinderCacheUtil.removeResult(finderPath, finderArgs);
-				}
-				else {
-					cacheResult(list);
-
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
-				}
-
-				closeSession(session);
-			}
-		}
-
-		return list;
-	}
-
-	/**
-	 * Returns the first settings in the ordered set where presence = &#63;.
-	 *
-	 * @param presence the presence
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching settings
-	 * @throws com.marcelmika.lims.persistence.generated.NoSuchSettingsException if a matching settings could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Settings findByPresence_First(String presence,
-		OrderByComparator orderByComparator)
-		throws NoSuchSettingsException, SystemException {
-		Settings settings = fetchByPresence_First(presence, orderByComparator);
-
-		if (settings != null) {
-			return settings;
-		}
-
-		StringBundler msg = new StringBundler(4);
-
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-		msg.append("presence=");
-		msg.append(presence);
-
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-		throw new NoSuchSettingsException(msg.toString());
-	}
-
-	/**
-	 * Returns the first settings in the ordered set where presence = &#63;.
-	 *
-	 * @param presence the presence
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching settings, or <code>null</code> if a matching settings could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Settings fetchByPresence_First(String presence,
-		OrderByComparator orderByComparator) throws SystemException {
-		List<Settings> list = findByPresence(presence, 0, 1, orderByComparator);
-
-		if (!list.isEmpty()) {
-			return list.get(0);
-		}
-
-		return null;
-	}
-
-	/**
-	 * Returns the last settings in the ordered set where presence = &#63;.
-	 *
-	 * @param presence the presence
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching settings
-	 * @throws com.marcelmika.lims.persistence.generated.NoSuchSettingsException if a matching settings could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Settings findByPresence_Last(String presence,
-		OrderByComparator orderByComparator)
-		throws NoSuchSettingsException, SystemException {
-		Settings settings = fetchByPresence_Last(presence, orderByComparator);
-
-		if (settings != null) {
-			return settings;
-		}
-
-		StringBundler msg = new StringBundler(4);
-
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-		msg.append("presence=");
-		msg.append(presence);
-
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-		throw new NoSuchSettingsException(msg.toString());
-	}
-
-	/**
-	 * Returns the last settings in the ordered set where presence = &#63;.
-	 *
-	 * @param presence the presence
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching settings, or <code>null</code> if a matching settings could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Settings fetchByPresence_Last(String presence,
-		OrderByComparator orderByComparator) throws SystemException {
-		int count = countByPresence(presence);
-
-		List<Settings> list = findByPresence(presence, count - 1, count,
-				orderByComparator);
-
-		if (!list.isEmpty()) {
-			return list.get(0);
-		}
-
-		return null;
-	}
-
-	/**
-	 * Returns the settingses before and after the current settings in the ordered set where presence = &#63;.
-	 *
-	 * @param sid the primary key of the current settings
-	 * @param presence the presence
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next settings
-	 * @throws com.marcelmika.lims.persistence.generated.NoSuchSettingsException if a settings with the primary key could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Settings[] findByPresence_PrevAndNext(long sid, String presence,
-		OrderByComparator orderByComparator)
-		throws NoSuchSettingsException, SystemException {
-		Settings settings = findByPrimaryKey(sid);
-
-		Session session = null;
-
-		try {
-			session = openSession();
-
-			Settings[] array = new SettingsImpl[3];
-
-			array[0] = getByPresence_PrevAndNext(session, settings, presence,
-					orderByComparator, true);
-
-			array[1] = settings;
-
-			array[2] = getByPresence_PrevAndNext(session, settings, presence,
-					orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception e) {
-			throw processException(e);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected Settings getByPresence_PrevAndNext(Session session,
-		Settings settings, String presence,
-		OrderByComparator orderByComparator, boolean previous) {
-		StringBundler query = null;
-
-		if (orderByComparator != null) {
-			query = new StringBundler(6 +
-					(orderByComparator.getOrderByFields().length * 6));
-		}
-		else {
-			query = new StringBundler(3);
-		}
-
-		query.append(_SQL_SELECT_SETTINGS_WHERE);
-
-		if (presence == null) {
-			query.append(_FINDER_COLUMN_PRESENCE_PRESENCE_1);
-		}
-		else {
-			if (presence.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_PRESENCE_PRESENCE_3);
-			}
-			else {
-				query.append(_FINDER_COLUMN_PRESENCE_PRESENCE_2);
-			}
-		}
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				query.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						query.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN);
-					}
-					else {
-						query.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			query.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						query.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC);
-					}
-					else {
-						query.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-
-		String sql = query.toString();
-
-		Query q = session.createQuery(sql);
-
-		q.setFirstResult(0);
-		q.setMaxResults(2);
-
-		QueryPos qPos = QueryPos.getInstance(q);
-
-		if (presence != null) {
-			qPos.add(presence);
-		}
-
-		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(settings);
-
-			for (Object value : values) {
-				qPos.add(value);
-			}
-		}
-
-		List<Settings> list = q.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
+		return fetchByPrimaryKey((Serializable)sid);
 	}
 
 	/**
@@ -1049,6 +1255,7 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 	 * @return the settingses
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public List<Settings> findAll() throws SystemException {
 		return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
@@ -1057,7 +1264,7 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 	 * Returns a range of all the settingses.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.SettingsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of settingses
@@ -1065,6 +1272,7 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 	 * @return the range of settingses
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public List<Settings> findAll(int start, int end) throws SystemException {
 		return findAll(start, end, null);
 	}
@@ -1073,7 +1281,7 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 	 * Returns an ordered range of all the settingses.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.SettingsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of settingses
@@ -1082,13 +1290,16 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 	 * @return the ordered range of settingses
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public List<Settings> findAll(int start, int end,
 		OrderByComparator orderByComparator) throws SystemException {
+		boolean pagination = true;
 		FinderPath finderPath = null;
-		Object[] finderArgs = new Object[] { start, end, orderByComparator };
+		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 				(orderByComparator == null)) {
+			pagination = false;
 			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
 			finderArgs = FINDER_ARGS_EMPTY;
 		}
@@ -1117,6 +1328,10 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 			}
 			else {
 				sql = _SQL_SELECT_SETTINGS;
+
+				if (pagination) {
+					sql = sql.concat(SettingsModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -1126,30 +1341,29 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 
 				Query q = session.createQuery(sql);
 
-				if (orderByComparator == null) {
+				if (!pagination) {
 					list = (List<Settings>)QueryUtil.list(q, getDialect(),
 							start, end, false);
 
 					Collections.sort(list);
+
+					list = new UnmodifiableList<Settings>(list);
 				}
 				else {
 					list = (List<Settings>)QueryUtil.list(q, getDialect(),
 							start, end);
 				}
+
+				cacheResult(list);
+
+				FinderCacheUtil.putResult(finderPath, finderArgs, list);
 			}
 			catch (Exception e) {
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
+
 				throw processException(e);
 			}
 			finally {
-				if (list == null) {
-					FinderCacheUtil.removeResult(finderPath, finderArgs);
-				}
-				else {
-					cacheResult(list);
-
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
-				}
-
 				closeSession(session);
 			}
 		}
@@ -1158,158 +1372,15 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 	}
 
 	/**
-	 * Removes the settings where userId = &#63; from the database.
-	 *
-	 * @param userId the user ID
-	 * @return the settings that was removed
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Settings removeByUserId(long userId)
-		throws NoSuchSettingsException, SystemException {
-		Settings settings = findByUserId(userId);
-
-		return remove(settings);
-	}
-
-	/**
-	 * Removes all the settingses where presence = &#63; from the database.
-	 *
-	 * @param presence the presence
-	 * @throws SystemException if a system exception occurred
-	 */
-	public void removeByPresence(String presence) throws SystemException {
-		for (Settings settings : findByPresence(presence)) {
-			remove(settings);
-		}
-	}
-
-	/**
 	 * Removes all the settingses from the database.
 	 *
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public void removeAll() throws SystemException {
 		for (Settings settings : findAll()) {
 			remove(settings);
 		}
-	}
-
-	/**
-	 * Returns the number of settingses where userId = &#63;.
-	 *
-	 * @param userId the user ID
-	 * @return the number of matching settingses
-	 * @throws SystemException if a system exception occurred
-	 */
-	public int countByUserId(long userId) throws SystemException {
-		Object[] finderArgs = new Object[] { userId };
-
-		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_USERID,
-				finderArgs, this);
-
-		if (count == null) {
-			StringBundler query = new StringBundler(2);
-
-			query.append(_SQL_COUNT_SETTINGS_WHERE);
-
-			query.append(_FINDER_COLUMN_USERID_USERID_2);
-
-			String sql = query.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query q = session.createQuery(sql);
-
-				QueryPos qPos = QueryPos.getInstance(q);
-
-				qPos.add(userId);
-
-				count = (Long)q.uniqueResult();
-			}
-			catch (Exception e) {
-				throw processException(e);
-			}
-			finally {
-				if (count == null) {
-					count = Long.valueOf(0);
-				}
-
-				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_USERID,
-					finderArgs, count);
-
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
-	}
-
-	/**
-	 * Returns the number of settingses where presence = &#63;.
-	 *
-	 * @param presence the presence
-	 * @return the number of matching settingses
-	 * @throws SystemException if a system exception occurred
-	 */
-	public int countByPresence(String presence) throws SystemException {
-		Object[] finderArgs = new Object[] { presence };
-
-		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_PRESENCE,
-				finderArgs, this);
-
-		if (count == null) {
-			StringBundler query = new StringBundler(2);
-
-			query.append(_SQL_COUNT_SETTINGS_WHERE);
-
-			if (presence == null) {
-				query.append(_FINDER_COLUMN_PRESENCE_PRESENCE_1);
-			}
-			else {
-				if (presence.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_PRESENCE_PRESENCE_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_PRESENCE_PRESENCE_2);
-				}
-			}
-
-			String sql = query.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query q = session.createQuery(sql);
-
-				QueryPos qPos = QueryPos.getInstance(q);
-
-				if (presence != null) {
-					qPos.add(presence);
-				}
-
-				count = (Long)q.uniqueResult();
-			}
-			catch (Exception e) {
-				throw processException(e);
-			}
-			finally {
-				if (count == null) {
-					count = Long.valueOf(0);
-				}
-
-				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_PRESENCE,
-					finderArgs, count);
-
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
 	}
 
 	/**
@@ -1318,6 +1389,7 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 	 * @return the number of settingses
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public int countAll() throws SystemException {
 		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
 				FINDER_ARGS_EMPTY, this);
@@ -1331,18 +1403,17 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 				Query q = session.createQuery(_SQL_COUNT_SETTINGS);
 
 				count = (Long)q.uniqueResult();
-			}
-			catch (Exception e) {
-				throw processException(e);
-			}
-			finally {
-				if (count == null) {
-					count = Long.valueOf(0);
-				}
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
 					FINDER_ARGS_EMPTY, count);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
+				throw processException(e);
+			}
+			finally {
 				closeSession(session);
 			}
 		}
@@ -1363,10 +1434,8 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 				List<ModelListener<Settings>> listenersList = new ArrayList<ModelListener<Settings>>();
 
 				for (String listenerClassName : listenerClassNames) {
-					Class<?> clazz = getClass();
-
 					listenersList.add((ModelListener<Settings>)InstanceFactory.newInstance(
-							clazz.getClassLoader(), listenerClassName));
+							getClassLoader(), listenerClassName));
 				}
 
 				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -1380,31 +1449,14 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 	public void destroy() {
 		EntityCacheUtil.removeCache(SettingsImpl.class.getName());
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@BeanReference(type = ConversationPersistence.class)
-	protected ConversationPersistence conversationPersistence;
-	@BeanReference(type = MessagePersistence.class)
-	protected MessagePersistence messagePersistence;
-	@BeanReference(type = PanelPersistence.class)
-	protected PanelPersistence panelPersistence;
-	@BeanReference(type = ParticipantPersistence.class)
-	protected ParticipantPersistence participantPersistence;
-	@BeanReference(type = SettingsPersistence.class)
-	protected SettingsPersistence settingsPersistence;
-	@BeanReference(type = ResourcePersistence.class)
-	protected ResourcePersistence resourcePersistence;
-	@BeanReference(type = UserPersistence.class)
-	protected UserPersistence userPersistence;
 	private static final String _SQL_SELECT_SETTINGS = "SELECT settings FROM Settings settings";
 	private static final String _SQL_SELECT_SETTINGS_WHERE = "SELECT settings FROM Settings settings WHERE ";
 	private static final String _SQL_COUNT_SETTINGS = "SELECT COUNT(settings) FROM Settings settings";
 	private static final String _SQL_COUNT_SETTINGS_WHERE = "SELECT COUNT(settings) FROM Settings settings WHERE ";
-	private static final String _FINDER_COLUMN_USERID_USERID_2 = "settings.userId = ?";
-	private static final String _FINDER_COLUMN_PRESENCE_PRESENCE_1 = "settings.presence IS NULL";
-	private static final String _FINDER_COLUMN_PRESENCE_PRESENCE_2 = "settings.presence = ?";
-	private static final String _FINDER_COLUMN_PRESENCE_PRESENCE_3 = "(settings.presence IS NULL OR settings.presence = ?)";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "settings.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Settings exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Settings exists with the key {";
@@ -1424,6 +1476,7 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 		};
 
 	private static CacheModel<Settings> _nullSettingsCacheModel = new CacheModel<Settings>() {
+			@Override
 			public Settings toEntityModel() {
 				return _nullSettings;
 			}

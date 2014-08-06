@@ -13,12 +13,12 @@ import java.util.List;
  */
 public interface Conversation {
 
-    // Buddies
-    public com.marcelmika.lims.model.Buddy getOwner();
-
-    public List<com.marcelmika.lims.model.Buddy> getParticipants();
-
-    public void addParticipant(com.marcelmika.lims.model.Buddy participant);
+//    // Buddies
+//    public com.marcelmika.lims.model.Buddy getOwner();
+//
+//    public List<com.marcelmika.lims.model.Buddy> getParticipants();
+//
+//    public void addParticipant(com.marcelmika.lims.model.Buddy participant);
 
     // Metadata
     public String getConversationId();

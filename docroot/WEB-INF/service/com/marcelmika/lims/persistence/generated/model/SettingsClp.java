@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -39,26 +39,32 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 	public SettingsClp() {
 	}
 
+	@Override
 	public Class<?> getModelClass() {
 		return Settings.class;
 	}
 
+	@Override
 	public String getModelClassName() {
 		return Settings.class.getName();
 	}
 
+	@Override
 	public long getPrimaryKey() {
 		return _sid;
 	}
 
+	@Override
 	public void setPrimaryKey(long primaryKey) {
 		setSid(primaryKey);
 	}
 
+	@Override
 	public Serializable getPrimaryKeyObj() {
-		return new Long(_sid);
+		return _sid;
 	}
 
+	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		setPrimaryKey(((Long)primaryKeyObj).longValue());
 	}
@@ -109,10 +115,12 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		}
 	}
 
+	@Override
 	public long getSid() {
 		return _sid;
 	}
 
+	@Override
 	public void setSid(long sid) {
 		_sid = sid;
 
@@ -130,10 +138,12 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		}
 	}
 
+	@Override
 	public long getUserId() {
 		return _userId;
 	}
 
+	@Override
 	public void setUserId(long userId) {
 		_userId = userId;
 
@@ -151,18 +161,22 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		}
 	}
 
+	@Override
 	public String getUserUuid() throws SystemException {
 		return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
 	}
 
+	@Override
 	public void setUserUuid(String userUuid) {
 		_userUuid = userUuid;
 	}
 
+	@Override
 	public String getPresence() {
 		return _presence;
 	}
 
+	@Override
 	public void setPresence(String presence) {
 		_presence = presence;
 
@@ -180,14 +194,17 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		}
 	}
 
+	@Override
 	public boolean getMute() {
 		return _mute;
 	}
 
+	@Override
 	public boolean isMute() {
 		return _mute;
 	}
 
+	@Override
 	public void setMute(boolean mute) {
 		_mute = mute;
 
@@ -205,14 +222,17 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		}
 	}
 
+	@Override
 	public boolean getChatEnabled() {
 		return _chatEnabled;
 	}
 
+	@Override
 	public boolean isChatEnabled() {
 		return _chatEnabled;
 	}
 
+	@Override
 	public void setChatEnabled(boolean chatEnabled) {
 		_chatEnabled = chatEnabled;
 
@@ -279,6 +299,7 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		return returnValue;
 	}
 
+	@Override
 	public void persist() throws SystemException {
 		if (this.isNew()) {
 			SettingsLocalServiceUtil.addSettings(this);
@@ -294,10 +315,6 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 			new Class[] { Settings.class }, new AutoEscapeBeanHandler(this));
 	}
 
-	public Settings toUnescapedModel() {
-		return this;
-	}
-
 	@Override
 	public Object clone() {
 		SettingsClp clone = new SettingsClp();
@@ -311,6 +328,7 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		return clone;
 	}
 
+	@Override
 	public int compareTo(Settings settings) {
 		long primaryKey = settings.getPrimaryKey();
 
@@ -371,6 +389,7 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		return sb.toString();
 	}
 
+	@Override
 	public String toXmlString() {
 		StringBundler sb = new StringBundler(19);
 

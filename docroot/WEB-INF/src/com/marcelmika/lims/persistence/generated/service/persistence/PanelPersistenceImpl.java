@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -14,8 +14,6 @@
 
 package com.marcelmika.lims.persistence.generated.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -35,11 +33,9 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import com.marcelmika.lims.persistence.generated.NoSuchPanelException;
@@ -77,15 +73,6 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 		".List1";
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
 		".List2";
-	public static final FinderPath FINDER_PATH_FETCH_BY_USERID = new FinderPath(PanelModelImpl.ENTITY_CACHE_ENABLED,
-			PanelModelImpl.FINDER_CACHE_ENABLED, PanelImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByUserId",
-			new String[] { Long.class.getName() },
-			PanelModelImpl.USERID_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_USERID = new FinderPath(PanelModelImpl.ENTITY_CACHE_ENABLED,
-			PanelModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
-			new String[] { Long.class.getName() });
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(PanelModelImpl.ENTITY_CACHE_ENABLED,
 			PanelModelImpl.FINDER_CACHE_ENABLED, PanelImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
@@ -95,18 +82,240 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(PanelModelImpl.ENTITY_CACHE_ENABLED,
 			PanelModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final FinderPath FINDER_PATH_FETCH_BY_USERID = new FinderPath(PanelModelImpl.ENTITY_CACHE_ENABLED,
+			PanelModelImpl.FINDER_CACHE_ENABLED, PanelImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByUserId",
+			new String[] { Long.class.getName() },
+			PanelModelImpl.USERID_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_USERID = new FinderPath(PanelModelImpl.ENTITY_CACHE_ENABLED,
+			PanelModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
+			new String[] { Long.class.getName() });
+
+	/**
+	 * Returns the panel where userId = &#63; or throws a {@link com.marcelmika.lims.persistence.generated.NoSuchPanelException} if it could not be found.
+	 *
+	 * @param userId the user ID
+	 * @return the matching panel
+	 * @throws com.marcelmika.lims.persistence.generated.NoSuchPanelException if a matching panel could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public Panel findByUserId(long userId)
+		throws NoSuchPanelException, SystemException {
+		Panel panel = fetchByUserId(userId);
+
+		if (panel == null) {
+			StringBundler msg = new StringBundler(4);
+
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			msg.append("userId=");
+			msg.append(userId);
+
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+			if (_log.isWarnEnabled()) {
+				_log.warn(msg.toString());
+			}
+
+			throw new NoSuchPanelException(msg.toString());
+		}
+
+		return panel;
+	}
+
+	/**
+	 * Returns the panel where userId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param userId the user ID
+	 * @return the matching panel, or <code>null</code> if a matching panel could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public Panel fetchByUserId(long userId) throws SystemException {
+		return fetchByUserId(userId, true);
+	}
+
+	/**
+	 * Returns the panel where userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param userId the user ID
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the matching panel, or <code>null</code> if a matching panel could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public Panel fetchByUserId(long userId, boolean retrieveFromCache)
+		throws SystemException {
+		Object[] finderArgs = new Object[] { userId };
+
+		Object result = null;
+
+		if (retrieveFromCache) {
+			result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_USERID,
+					finderArgs, this);
+		}
+
+		if (result instanceof Panel) {
+			Panel panel = (Panel)result;
+
+			if ((userId != panel.getUserId())) {
+				result = null;
+			}
+		}
+
+		if (result == null) {
+			StringBundler query = new StringBundler(3);
+
+			query.append(_SQL_SELECT_PANEL_WHERE);
+
+			query.append(_FINDER_COLUMN_USERID_USERID_2);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(userId);
+
+				List<Panel> list = q.list();
+
+				if (list.isEmpty()) {
+					FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERID,
+						finderArgs, list);
+				}
+				else {
+					if ((list.size() > 1) && _log.isWarnEnabled()) {
+						_log.warn(
+							"PanelPersistenceImpl.fetchByUserId(long, boolean) with parameters (" +
+							StringUtil.merge(finderArgs) +
+							") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+					}
+
+					Panel panel = list.get(0);
+
+					result = panel;
+
+					cacheResult(panel);
+
+					if ((panel.getUserId() != userId)) {
+						FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERID,
+							finderArgs, panel);
+					}
+				}
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERID,
+					finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		if (result instanceof List<?>) {
+			return null;
+		}
+		else {
+			return (Panel)result;
+		}
+	}
+
+	/**
+	 * Removes the panel where userId = &#63; from the database.
+	 *
+	 * @param userId the user ID
+	 * @return the panel that was removed
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public Panel removeByUserId(long userId)
+		throws NoSuchPanelException, SystemException {
+		Panel panel = findByUserId(userId);
+
+		return remove(panel);
+	}
+
+	/**
+	 * Returns the number of panels where userId = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @return the number of matching panels
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public int countByUserId(long userId) throws SystemException {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_USERID;
+
+		Object[] finderArgs = new Object[] { userId };
+
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
+				this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(2);
+
+			query.append(_SQL_COUNT_PANEL_WHERE);
+
+			query.append(_FINDER_COLUMN_USERID_USERID_2);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(userId);
+
+				count = (Long)q.uniqueResult();
+
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_USERID_USERID_2 = "panel.userId = ?";
+
+	public PanelPersistenceImpl() {
+		setModelClass(Panel.class);
+	}
 
 	/**
 	 * Caches the panel in the entity cache if it is enabled.
 	 *
 	 * @param panel the panel
 	 */
+	@Override
 	public void cacheResult(Panel panel) {
 		EntityCacheUtil.putResult(PanelModelImpl.ENTITY_CACHE_ENABLED,
 			PanelImpl.class, panel.getPrimaryKey(), panel);
 
 		FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERID,
-			new Object[] { Long.valueOf(panel.getUserId()) }, panel);
+			new Object[] { panel.getUserId() }, panel);
 
 		panel.resetOriginalValues();
 	}
@@ -116,6 +325,7 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 	 *
 	 * @param panels the panels
 	 */
+	@Override
 	public void cacheResult(List<Panel> panels) {
 		for (Panel panel : panels) {
 			if (EntityCacheUtil.getResult(PanelModelImpl.ENTITY_CACHE_ENABLED,
@@ -181,7 +391,7 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 
 	protected void cacheUniqueFindersCache(Panel panel) {
 		if (panel.isNew()) {
-			Object[] args = new Object[] { Long.valueOf(panel.getUserId()) };
+			Object[] args = new Object[] { panel.getUserId() };
 
 			FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_USERID, args,
 				Long.valueOf(1));
@@ -192,7 +402,7 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 
 			if ((panelModelImpl.getColumnBitmask() &
 					FINDER_PATH_FETCH_BY_USERID.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] { Long.valueOf(panel.getUserId()) };
+				Object[] args = new Object[] { panel.getUserId() };
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_USERID, args,
 					Long.valueOf(1));
@@ -205,14 +415,14 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 	protected void clearUniqueFindersCache(Panel panel) {
 		PanelModelImpl panelModelImpl = (PanelModelImpl)panel;
 
-		Object[] args = new Object[] { Long.valueOf(panel.getUserId()) };
+		Object[] args = new Object[] { panel.getUserId() };
 
 		FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
 		FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERID, args);
 
 		if ((panelModelImpl.getColumnBitmask() &
 				FINDER_PATH_FETCH_BY_USERID.getColumnBitmask()) != 0) {
-			args = new Object[] { Long.valueOf(panelModelImpl.getOriginalUserId()) };
+			args = new Object[] { panelModelImpl.getOriginalUserId() };
 
 			FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
 			FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERID, args);
@@ -225,6 +435,7 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 	 * @param pid the primary key for the new panel
 	 * @return the new panel
 	 */
+	@Override
 	public Panel create(long pid) {
 		Panel panel = new PanelImpl();
 
@@ -242,8 +453,9 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 	 * @throws com.marcelmika.lims.persistence.generated.NoSuchPanelException if a panel with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public Panel remove(long pid) throws NoSuchPanelException, SystemException {
-		return remove(Long.valueOf(pid));
+		return remove((Serializable)pid);
 	}
 
 	/**
@@ -295,7 +507,14 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 		try {
 			session = openSession();
 
-			BatchSessionUtil.delete(session, panel);
+			if (!session.contains(panel)) {
+				panel = (Panel)session.get(PanelImpl.class,
+						panel.getPrimaryKeyObj());
+			}
+
+			if (panel != null) {
+				session.delete(panel);
+			}
 		}
 		catch (Exception e) {
 			throw processException(e);
@@ -304,15 +523,17 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 			closeSession(session);
 		}
 
-		clearCache(panel);
+		if (panel != null) {
+			clearCache(panel);
+		}
 
 		return panel;
 	}
 
 	@Override
 	public Panel updateImpl(
-		com.marcelmika.lims.persistence.generated.model.Panel panel,
-		boolean merge) throws SystemException {
+		com.marcelmika.lims.persistence.generated.model.Panel panel)
+		throws SystemException {
 		panel = toUnwrappedModel(panel);
 
 		boolean isNew = panel.isNew();
@@ -322,9 +543,14 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 		try {
 			session = openSession();
 
-			BatchSessionUtil.update(session, panel, merge);
+			if (panel.isNew()) {
+				session.save(panel);
 
-			panel.setNew(false);
+				panel.setNew(false);
+			}
+			else {
+				session.merge(panel);
+			}
 		}
 		catch (Exception e) {
 			throw processException(e);
@@ -370,13 +596,24 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 	 *
 	 * @param primaryKey the primary key of the panel
 	 * @return the panel
-	 * @throws com.liferay.portal.NoSuchModelException if a panel with the primary key could not be found
+	 * @throws com.marcelmika.lims.persistence.generated.NoSuchPanelException if a panel with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public Panel findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchPanelException, SystemException {
+		Panel panel = fetchByPrimaryKey(primaryKey);
+
+		if (panel == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchPanelException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return panel;
 	}
 
 	/**
@@ -387,20 +624,10 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 	 * @throws com.marcelmika.lims.persistence.generated.NoSuchPanelException if a panel with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public Panel findByPrimaryKey(long pid)
 		throws NoSuchPanelException, SystemException {
-		Panel panel = fetchByPrimaryKey(pid);
-
-		if (panel == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + pid);
-			}
-
-			throw new NoSuchPanelException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				pid);
-		}
-
-		return panel;
+		return findByPrimaryKey((Serializable)pid);
 	}
 
 	/**
@@ -413,7 +640,41 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 	@Override
 	public Panel fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
+		Panel panel = (Panel)EntityCacheUtil.getResult(PanelModelImpl.ENTITY_CACHE_ENABLED,
+				PanelImpl.class, primaryKey);
+
+		if (panel == _nullPanel) {
+			return null;
+		}
+
+		if (panel == null) {
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				panel = (Panel)session.get(PanelImpl.class, primaryKey);
+
+				if (panel != null) {
+					cacheResult(panel);
+				}
+				else {
+					EntityCacheUtil.putResult(PanelModelImpl.ENTITY_CACHE_ENABLED,
+						PanelImpl.class, primaryKey, _nullPanel);
+				}
+			}
+			catch (Exception e) {
+				EntityCacheUtil.removeResult(PanelModelImpl.ENTITY_CACHE_ENABLED,
+					PanelImpl.class, primaryKey);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return panel;
 	}
 
 	/**
@@ -423,178 +684,9 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 	 * @return the panel, or <code>null</code> if a panel with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public Panel fetchByPrimaryKey(long pid) throws SystemException {
-		Panel panel = (Panel)EntityCacheUtil.getResult(PanelModelImpl.ENTITY_CACHE_ENABLED,
-				PanelImpl.class, pid);
-
-		if (panel == _nullPanel) {
-			return null;
-		}
-
-		if (panel == null) {
-			Session session = null;
-
-			boolean hasException = false;
-
-			try {
-				session = openSession();
-
-				panel = (Panel)session.get(PanelImpl.class, Long.valueOf(pid));
-			}
-			catch (Exception e) {
-				hasException = true;
-
-				throw processException(e);
-			}
-			finally {
-				if (panel != null) {
-					cacheResult(panel);
-				}
-				else if (!hasException) {
-					EntityCacheUtil.putResult(PanelModelImpl.ENTITY_CACHE_ENABLED,
-						PanelImpl.class, pid, _nullPanel);
-				}
-
-				closeSession(session);
-			}
-		}
-
-		return panel;
-	}
-
-	/**
-	 * Returns the panel where userId = &#63; or throws a {@link com.marcelmika.lims.persistence.generated.NoSuchPanelException} if it could not be found.
-	 *
-	 * @param userId the user ID
-	 * @return the matching panel
-	 * @throws com.marcelmika.lims.persistence.generated.NoSuchPanelException if a matching panel could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Panel findByUserId(long userId)
-		throws NoSuchPanelException, SystemException {
-		Panel panel = fetchByUserId(userId);
-
-		if (panel == null) {
-			StringBundler msg = new StringBundler(4);
-
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-			msg.append("userId=");
-			msg.append(userId);
-
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
-			}
-
-			throw new NoSuchPanelException(msg.toString());
-		}
-
-		return panel;
-	}
-
-	/**
-	 * Returns the panel where userId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	 *
-	 * @param userId the user ID
-	 * @return the matching panel, or <code>null</code> if a matching panel could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Panel fetchByUserId(long userId) throws SystemException {
-		return fetchByUserId(userId, true);
-	}
-
-	/**
-	 * Returns the panel where userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	 *
-	 * @param userId the user ID
-	 * @param retrieveFromCache whether to use the finder cache
-	 * @return the matching panel, or <code>null</code> if a matching panel could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Panel fetchByUserId(long userId, boolean retrieveFromCache)
-		throws SystemException {
-		Object[] finderArgs = new Object[] { userId };
-
-		Object result = null;
-
-		if (retrieveFromCache) {
-			result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_USERID,
-					finderArgs, this);
-		}
-
-		if (result instanceof Panel) {
-			Panel panel = (Panel)result;
-
-			if ((userId != panel.getUserId())) {
-				result = null;
-			}
-		}
-
-		if (result == null) {
-			StringBundler query = new StringBundler(2);
-
-			query.append(_SQL_SELECT_PANEL_WHERE);
-
-			query.append(_FINDER_COLUMN_USERID_USERID_2);
-
-			String sql = query.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query q = session.createQuery(sql);
-
-				QueryPos qPos = QueryPos.getInstance(q);
-
-				qPos.add(userId);
-
-				List<Panel> list = q.list();
-
-				result = list;
-
-				Panel panel = null;
-
-				if (list.isEmpty()) {
-					FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERID,
-						finderArgs, list);
-				}
-				else {
-					panel = list.get(0);
-
-					cacheResult(panel);
-
-					if ((panel.getUserId() != userId)) {
-						FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_USERID,
-							finderArgs, panel);
-					}
-				}
-
-				return panel;
-			}
-			catch (Exception e) {
-				throw processException(e);
-			}
-			finally {
-				if (result == null) {
-					FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_USERID,
-						finderArgs);
-				}
-
-				closeSession(session);
-			}
-		}
-		else {
-			if (result instanceof List<?>) {
-				return null;
-			}
-			else {
-				return (Panel)result;
-			}
-		}
+		return fetchByPrimaryKey((Serializable)pid);
 	}
 
 	/**
@@ -603,6 +695,7 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 	 * @return the panels
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public List<Panel> findAll() throws SystemException {
 		return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
@@ -611,7 +704,7 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 	 * Returns a range of all the panels.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.PanelModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of panels
@@ -619,6 +712,7 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 	 * @return the range of panels
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public List<Panel> findAll(int start, int end) throws SystemException {
 		return findAll(start, end, null);
 	}
@@ -627,7 +721,7 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 	 * Returns an ordered range of all the panels.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.PanelModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of panels
@@ -636,13 +730,16 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 	 * @return the ordered range of panels
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public List<Panel> findAll(int start, int end,
 		OrderByComparator orderByComparator) throws SystemException {
+		boolean pagination = true;
 		FinderPath finderPath = null;
-		Object[] finderArgs = new Object[] { start, end, orderByComparator };
+		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 				(orderByComparator == null)) {
+			pagination = false;
 			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
 			finderArgs = FINDER_ARGS_EMPTY;
 		}
@@ -671,6 +768,10 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 			}
 			else {
 				sql = _SQL_SELECT_PANEL;
+
+				if (pagination) {
+					sql = sql.concat(PanelModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -680,30 +781,29 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 
 				Query q = session.createQuery(sql);
 
-				if (orderByComparator == null) {
+				if (!pagination) {
 					list = (List<Panel>)QueryUtil.list(q, getDialect(), start,
 							end, false);
 
 					Collections.sort(list);
+
+					list = new UnmodifiableList<Panel>(list);
 				}
 				else {
 					list = (List<Panel>)QueryUtil.list(q, getDialect(), start,
 							end);
 				}
+
+				cacheResult(list);
+
+				FinderCacheUtil.putResult(finderPath, finderArgs, list);
 			}
 			catch (Exception e) {
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
+
 				throw processException(e);
 			}
 			finally {
-				if (list == null) {
-					FinderCacheUtil.removeResult(finderPath, finderArgs);
-				}
-				else {
-					cacheResult(list);
-
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
-				}
-
 				closeSession(session);
 			}
 		}
@@ -712,81 +812,15 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 	}
 
 	/**
-	 * Removes the panel where userId = &#63; from the database.
-	 *
-	 * @param userId the user ID
-	 * @return the panel that was removed
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Panel removeByUserId(long userId)
-		throws NoSuchPanelException, SystemException {
-		Panel panel = findByUserId(userId);
-
-		return remove(panel);
-	}
-
-	/**
 	 * Removes all the panels from the database.
 	 *
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public void removeAll() throws SystemException {
 		for (Panel panel : findAll()) {
 			remove(panel);
 		}
-	}
-
-	/**
-	 * Returns the number of panels where userId = &#63;.
-	 *
-	 * @param userId the user ID
-	 * @return the number of matching panels
-	 * @throws SystemException if a system exception occurred
-	 */
-	public int countByUserId(long userId) throws SystemException {
-		Object[] finderArgs = new Object[] { userId };
-
-		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_USERID,
-				finderArgs, this);
-
-		if (count == null) {
-			StringBundler query = new StringBundler(2);
-
-			query.append(_SQL_COUNT_PANEL_WHERE);
-
-			query.append(_FINDER_COLUMN_USERID_USERID_2);
-
-			String sql = query.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query q = session.createQuery(sql);
-
-				QueryPos qPos = QueryPos.getInstance(q);
-
-				qPos.add(userId);
-
-				count = (Long)q.uniqueResult();
-			}
-			catch (Exception e) {
-				throw processException(e);
-			}
-			finally {
-				if (count == null) {
-					count = Long.valueOf(0);
-				}
-
-				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_USERID,
-					finderArgs, count);
-
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
 	}
 
 	/**
@@ -795,6 +829,7 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 	 * @return the number of panels
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public int countAll() throws SystemException {
 		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
 				FINDER_ARGS_EMPTY, this);
@@ -808,18 +843,17 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 				Query q = session.createQuery(_SQL_COUNT_PANEL);
 
 				count = (Long)q.uniqueResult();
-			}
-			catch (Exception e) {
-				throw processException(e);
-			}
-			finally {
-				if (count == null) {
-					count = Long.valueOf(0);
-				}
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
 					FINDER_ARGS_EMPTY, count);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
+				throw processException(e);
+			}
+			finally {
 				closeSession(session);
 			}
 		}
@@ -840,10 +874,8 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 				List<ModelListener<Panel>> listenersList = new ArrayList<ModelListener<Panel>>();
 
 				for (String listenerClassName : listenerClassNames) {
-					Class<?> clazz = getClass();
-
 					listenersList.add((ModelListener<Panel>)InstanceFactory.newInstance(
-							clazz.getClassLoader(), listenerClassName));
+							getClassLoader(), listenerClassName));
 				}
 
 				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -857,28 +889,14 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 	public void destroy() {
 		EntityCacheUtil.removeCache(PanelImpl.class.getName());
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@BeanReference(type = ConversationPersistence.class)
-	protected ConversationPersistence conversationPersistence;
-	@BeanReference(type = MessagePersistence.class)
-	protected MessagePersistence messagePersistence;
-	@BeanReference(type = PanelPersistence.class)
-	protected PanelPersistence panelPersistence;
-	@BeanReference(type = ParticipantPersistence.class)
-	protected ParticipantPersistence participantPersistence;
-	@BeanReference(type = SettingsPersistence.class)
-	protected SettingsPersistence settingsPersistence;
-	@BeanReference(type = ResourcePersistence.class)
-	protected ResourcePersistence resourcePersistence;
-	@BeanReference(type = UserPersistence.class)
-	protected UserPersistence userPersistence;
 	private static final String _SQL_SELECT_PANEL = "SELECT panel FROM Panel panel";
 	private static final String _SQL_SELECT_PANEL_WHERE = "SELECT panel FROM Panel panel WHERE ";
 	private static final String _SQL_COUNT_PANEL = "SELECT COUNT(panel) FROM Panel panel";
 	private static final String _SQL_COUNT_PANEL_WHERE = "SELECT COUNT(panel) FROM Panel panel WHERE ";
-	private static final String _FINDER_COLUMN_USERID_USERID_2 = "panel.userId = ?";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "panel.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Panel exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Panel exists with the key {";
@@ -898,6 +916,7 @@ public class PanelPersistenceImpl extends BasePersistenceImpl<Panel>
 		};
 
 	private static CacheModel<Panel> _nullPanelCacheModel = new CacheModel<Panel>() {
+			@Override
 			public Panel toEntityModel() {
 				return _nullPanel;
 			}

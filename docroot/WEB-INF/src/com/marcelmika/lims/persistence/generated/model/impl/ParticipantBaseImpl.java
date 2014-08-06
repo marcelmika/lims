@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -38,6 +38,7 @@ public abstract class ParticipantBaseImpl extends ParticipantModelImpl
 	 *
 	 * Never modify or reference this class directly. All methods that expect a participant model instance should use the {@link Participant} interface instead.
 	 */
+	@Override
 	public void persist() throws SystemException {
 		if (this.isNew()) {
 			ParticipantLocalServiceUtil.addParticipant(this);

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -40,26 +40,32 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 	public MessageClp() {
 	}
 
+	@Override
 	public Class<?> getModelClass() {
 		return Message.class;
 	}
 
+	@Override
 	public String getModelClassName() {
 		return Message.class.getName();
 	}
 
+	@Override
 	public long getPrimaryKey() {
 		return _mid;
 	}
 
+	@Override
 	public void setPrimaryKey(long primaryKey) {
 		setMid(primaryKey);
 	}
 
+	@Override
 	public Serializable getPrimaryKeyObj() {
-		return new Long(_mid);
+		return _mid;
 	}
 
+	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		setPrimaryKey(((Long)primaryKeyObj).longValue());
 	}
@@ -117,10 +123,12 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		}
 	}
 
+	@Override
 	public long getMid() {
 		return _mid;
 	}
 
+	@Override
 	public void setMid(long mid) {
 		_mid = mid;
 
@@ -138,10 +146,12 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		}
 	}
 
+	@Override
 	public long getCid() {
 		return _cid;
 	}
 
+	@Override
 	public void setCid(long cid) {
 		_cid = cid;
 
@@ -159,10 +169,12 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		}
 	}
 
+	@Override
 	public long getCreatorId() {
 		return _creatorId;
 	}
 
+	@Override
 	public void setCreatorId(long creatorId) {
 		_creatorId = creatorId;
 
@@ -180,10 +192,12 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		}
 	}
 
+	@Override
 	public Date getCreatedAt() {
 		return _createdAt;
 	}
 
+	@Override
 	public void setCreatedAt(Date createdAt) {
 		_createdAt = createdAt;
 
@@ -201,10 +215,12 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		}
 	}
 
+	@Override
 	public String getMessageHash() {
 		return _messageHash;
 	}
 
+	@Override
 	public void setMessageHash(String messageHash) {
 		_messageHash = messageHash;
 
@@ -222,10 +238,12 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		}
 	}
 
+	@Override
 	public String getBody() {
 		return _body;
 	}
 
+	@Override
 	public void setBody(String body) {
 		_body = body;
 
@@ -292,6 +310,7 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		return returnValue;
 	}
 
+	@Override
 	public void persist() throws SystemException {
 		if (this.isNew()) {
 			MessageLocalServiceUtil.addMessage(this);
@@ -305,10 +324,6 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 	public Message toEscapedModel() {
 		return (Message)ProxyUtil.newProxyInstance(Message.class.getClassLoader(),
 			new Class[] { Message.class }, new AutoEscapeBeanHandler(this));
-	}
-
-	public Message toUnescapedModel() {
-		return this;
 	}
 
 	@Override
@@ -325,6 +340,7 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		return clone;
 	}
 
+	@Override
 	public int compareTo(Message message) {
 		int value = 0;
 
@@ -385,6 +401,7 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		return sb.toString();
 	}
 
+	@Override
 	public String toXmlString() {
 		StringBundler sb = new StringBundler(22);
 

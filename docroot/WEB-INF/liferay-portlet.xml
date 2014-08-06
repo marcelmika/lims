@@ -1,15 +1,24 @@
 <?xml version="1.0"?>
-<!DOCTYPE liferay-portlet-app PUBLIC "-//Liferay//DTD Portlet Application 6.1.0//EN" "http://www.liferay.com/dtd/liferay-portlet-app_6_1_0.dtd">
-
-<!-- http://www.liferay.com/web/guest/community/wiki/-/wiki/Main/liferay-portlet.xml%20(5.2.0) -->
+<!DOCTYPE liferay-portlet-app PUBLIC
+        "-//Liferay//DTD Portlet Application 6.2.0//EN"
+        "http://www.liferay.com/dtd/liferay-portlet-app_6_2_0.dtd">
 
 <liferay-portlet-app>
     <portlet>
         <portlet-name>1</portlet-name>
+
         <!-- Friendly URL -->
-        <friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
+        <friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper
+        </friendly-url-mapper-class>
         <friendly-url-mapping>lims</friendly-url-mapping>
         <friendly-url-routes>META-INF/lims-friendly-url-routes.xml</friendly-url-routes>
+        <use-default-template>false</use-default-template>
+
+        <!-- requires-namespaced-parameters and ajaxable should fix issue with no params via ajax call:
+        https://www.liferay.com/community/forums/-/message_boards/message/33640423 -->
+        <requires-namespaced-parameters>false</requires-namespaced-parameters>
+        <ajaxable>true</ajaxable>
+
         <!-- CSS -->
         <header-portlet-css>/css/main.css</header-portlet-css>
         <!-- JS -->
@@ -20,7 +29,8 @@
         <footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 
         <css-class-wrapper>liferay-ims</css-class-wrapper>
-        <add-default-resource>true</add-default-resource>      
-        <system>true</system>                       
+        <add-default-resource>true</add-default-resource>
+        <system>true</system>
+
     </portlet>
 </liferay-portlet-app>

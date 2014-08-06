@@ -35,7 +35,7 @@ public class JabberMessageListener implements MessageListener {
         MessageDeprecated msg = new MessageDeprecated(message);
         // Extract  jabber name
         msg.setFrom(JabberUtil.getScreenName(msg.getFrom()));
-        msg.setCompanyId(conversation.getOwner().getCompanyId());
+//        msg.setCompanyId(conversation.getOwner().getCompanyId());
 
         // Add only messages with sender
         if (msg.getFrom() != null) {

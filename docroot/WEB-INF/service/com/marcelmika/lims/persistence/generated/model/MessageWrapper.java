@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -26,8 +26,8 @@ import java.util.Map;
  * This class is a wrapper for {@link Message}.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       Message
+ * @author Brian Wing Shun Chan
+ * @see Message
  * @generated
  */
 public class MessageWrapper implements Message, ModelWrapper<Message> {
@@ -35,14 +35,17 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 		_message = message;
 	}
 
+	@Override
 	public Class<?> getModelClass() {
 		return Message.class;
 	}
 
+	@Override
 	public String getModelClassName() {
 		return Message.class.getName();
 	}
 
+	@Override
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
@@ -56,6 +59,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 		return attributes;
 	}
 
+	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
 		Long mid = (Long)attributes.get("mid");
 
@@ -99,6 +103,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	*
 	* @return the primary key of this message
 	*/
+	@Override
 	public long getPrimaryKey() {
 		return _message.getPrimaryKey();
 	}
@@ -108,6 +113,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	*
 	* @param primaryKey the primary key of this message
 	*/
+	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_message.setPrimaryKey(primaryKey);
 	}
@@ -117,6 +123,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	*
 	* @return the mid of this message
 	*/
+	@Override
 	public long getMid() {
 		return _message.getMid();
 	}
@@ -126,6 +133,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	*
 	* @param mid the mid of this message
 	*/
+	@Override
 	public void setMid(long mid) {
 		_message.setMid(mid);
 	}
@@ -135,6 +143,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	*
 	* @return the cid of this message
 	*/
+	@Override
 	public long getCid() {
 		return _message.getCid();
 	}
@@ -144,6 +153,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	*
 	* @param cid the cid of this message
 	*/
+	@Override
 	public void setCid(long cid) {
 		_message.setCid(cid);
 	}
@@ -153,6 +163,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	*
 	* @return the creator ID of this message
 	*/
+	@Override
 	public long getCreatorId() {
 		return _message.getCreatorId();
 	}
@@ -162,6 +173,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	*
 	* @param creatorId the creator ID of this message
 	*/
+	@Override
 	public void setCreatorId(long creatorId) {
 		_message.setCreatorId(creatorId);
 	}
@@ -171,6 +183,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	*
 	* @return the created at of this message
 	*/
+	@Override
 	public java.util.Date getCreatedAt() {
 		return _message.getCreatedAt();
 	}
@@ -180,6 +193,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	*
 	* @param createdAt the created at of this message
 	*/
+	@Override
 	public void setCreatedAt(java.util.Date createdAt) {
 		_message.setCreatedAt(createdAt);
 	}
@@ -189,6 +203,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	*
 	* @return the message hash of this message
 	*/
+	@Override
 	public java.lang.String getMessageHash() {
 		return _message.getMessageHash();
 	}
@@ -198,6 +213,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	*
 	* @param messageHash the message hash of this message
 	*/
+	@Override
 	public void setMessageHash(java.lang.String messageHash) {
 		_message.setMessageHash(messageHash);
 	}
@@ -207,6 +223,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	*
 	* @return the body of this message
 	*/
+	@Override
 	public java.lang.String getBody() {
 		return _message.getBody();
 	}
@@ -216,42 +233,64 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	*
 	* @param body the body of this message
 	*/
+	@Override
 	public void setBody(java.lang.String body) {
 		_message.setBody(body);
 	}
 
+	@Override
 	public boolean isNew() {
 		return _message.isNew();
 	}
 
+	@Override
 	public void setNew(boolean n) {
 		_message.setNew(n);
 	}
 
+	@Override
 	public boolean isCachedModel() {
 		return _message.isCachedModel();
 	}
 
+	@Override
 	public void setCachedModel(boolean cachedModel) {
 		_message.setCachedModel(cachedModel);
 	}
 
+	@Override
 	public boolean isEscapedModel() {
 		return _message.isEscapedModel();
 	}
 
+	@Override
 	public java.io.Serializable getPrimaryKeyObj() {
 		return _message.getPrimaryKeyObj();
 	}
 
+	@Override
 	public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
 		_message.setPrimaryKeyObj(primaryKeyObj);
 	}
 
+	@Override
 	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
 		return _message.getExpandoBridge();
 	}
 
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.model.BaseModel<?> baseModel) {
+		_message.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+		_message.setExpandoBridgeAttributes(expandoBridge);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.service.ServiceContext serviceContext) {
 		_message.setExpandoBridgeAttributes(serviceContext);
@@ -262,6 +301,7 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 		return new MessageWrapper((Message)_message.clone());
 	}
 
+	@Override
 	public int compareTo(
 		com.marcelmika.lims.persistence.generated.model.Message message) {
 		return _message.compareTo(message);
@@ -272,14 +312,17 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 		return _message.hashCode();
 	}
 
+	@Override
 	public com.liferay.portal.model.CacheModel<com.marcelmika.lims.persistence.generated.model.Message> toCacheModel() {
 		return _message.toCacheModel();
 	}
 
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Message toEscapedModel() {
 		return new MessageWrapper(_message.toEscapedModel());
 	}
 
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Message toUnescapedModel() {
 		return new MessageWrapper(_message.toUnescapedModel());
 	}
@@ -289,10 +332,12 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 		return _message.toString();
 	}
 
+	@Override
 	public java.lang.String toXmlString() {
 		return _message.toXmlString();
 	}
 
+	@Override
 	public void persist()
 		throws com.liferay.portal.kernel.exception.SystemException {
 		_message.persist();
@@ -318,16 +363,18 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	}
 
 	/**
-	 * @deprecated Renamed to {@link #getWrappedModel}
+	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
 	public Message getWrappedMessage() {
 		return _message;
 	}
 
+	@Override
 	public Message getWrappedModel() {
 		return _message;
 	}
 
+	@Override
 	public void resetOriginalValues() {
 		_message.resetOriginalValues();
 	}

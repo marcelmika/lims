@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -26,8 +26,8 @@ import java.util.Map;
  * This class is a wrapper for {@link Conversation}.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       Conversation
+ * @author Brian Wing Shun Chan
+ * @see Conversation
  * @generated
  */
 public class ConversationWrapper implements Conversation,
@@ -36,14 +36,17 @@ public class ConversationWrapper implements Conversation,
 		_conversation = conversation;
 	}
 
+	@Override
 	public Class<?> getModelClass() {
 		return Conversation.class;
 	}
 
+	@Override
 	public String getModelClassName() {
 		return Conversation.class.getName();
 	}
 
+	@Override
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
@@ -55,6 +58,7 @@ public class ConversationWrapper implements Conversation,
 		return attributes;
 	}
 
+	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
 		Long cid = (Long)attributes.get("cid");
 
@@ -86,6 +90,7 @@ public class ConversationWrapper implements Conversation,
 	*
 	* @return the primary key of this conversation
 	*/
+	@Override
 	public long getPrimaryKey() {
 		return _conversation.getPrimaryKey();
 	}
@@ -95,6 +100,7 @@ public class ConversationWrapper implements Conversation,
 	*
 	* @param primaryKey the primary key of this conversation
 	*/
+	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_conversation.setPrimaryKey(primaryKey);
 	}
@@ -104,6 +110,7 @@ public class ConversationWrapper implements Conversation,
 	*
 	* @return the cid of this conversation
 	*/
+	@Override
 	public long getCid() {
 		return _conversation.getCid();
 	}
@@ -113,6 +120,7 @@ public class ConversationWrapper implements Conversation,
 	*
 	* @param cid the cid of this conversation
 	*/
+	@Override
 	public void setCid(long cid) {
 		_conversation.setCid(cid);
 	}
@@ -122,6 +130,7 @@ public class ConversationWrapper implements Conversation,
 	*
 	* @return the conversation ID of this conversation
 	*/
+	@Override
 	public java.lang.String getConversationId() {
 		return _conversation.getConversationId();
 	}
@@ -131,6 +140,7 @@ public class ConversationWrapper implements Conversation,
 	*
 	* @param conversationId the conversation ID of this conversation
 	*/
+	@Override
 	public void setConversationId(java.lang.String conversationId) {
 		_conversation.setConversationId(conversationId);
 	}
@@ -140,6 +150,7 @@ public class ConversationWrapper implements Conversation,
 	*
 	* @return the conversation type of this conversation
 	*/
+	@Override
 	public java.lang.String getConversationType() {
 		return _conversation.getConversationType();
 	}
@@ -149,6 +160,7 @@ public class ConversationWrapper implements Conversation,
 	*
 	* @param conversationType the conversation type of this conversation
 	*/
+	@Override
 	public void setConversationType(java.lang.String conversationType) {
 		_conversation.setConversationType(conversationType);
 	}
@@ -158,6 +170,7 @@ public class ConversationWrapper implements Conversation,
 	*
 	* @return the updated at of this conversation
 	*/
+	@Override
 	public java.util.Date getUpdatedAt() {
 		return _conversation.getUpdatedAt();
 	}
@@ -167,42 +180,64 @@ public class ConversationWrapper implements Conversation,
 	*
 	* @param updatedAt the updated at of this conversation
 	*/
+	@Override
 	public void setUpdatedAt(java.util.Date updatedAt) {
 		_conversation.setUpdatedAt(updatedAt);
 	}
 
+	@Override
 	public boolean isNew() {
 		return _conversation.isNew();
 	}
 
+	@Override
 	public void setNew(boolean n) {
 		_conversation.setNew(n);
 	}
 
+	@Override
 	public boolean isCachedModel() {
 		return _conversation.isCachedModel();
 	}
 
+	@Override
 	public void setCachedModel(boolean cachedModel) {
 		_conversation.setCachedModel(cachedModel);
 	}
 
+	@Override
 	public boolean isEscapedModel() {
 		return _conversation.isEscapedModel();
 	}
 
+	@Override
 	public java.io.Serializable getPrimaryKeyObj() {
 		return _conversation.getPrimaryKeyObj();
 	}
 
+	@Override
 	public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
 		_conversation.setPrimaryKeyObj(primaryKeyObj);
 	}
 
+	@Override
 	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
 		return _conversation.getExpandoBridge();
 	}
 
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.model.BaseModel<?> baseModel) {
+		_conversation.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+		_conversation.setExpandoBridgeAttributes(expandoBridge);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.service.ServiceContext serviceContext) {
 		_conversation.setExpandoBridgeAttributes(serviceContext);
@@ -213,6 +248,7 @@ public class ConversationWrapper implements Conversation,
 		return new ConversationWrapper((Conversation)_conversation.clone());
 	}
 
+	@Override
 	public int compareTo(
 		com.marcelmika.lims.persistence.generated.model.Conversation conversation) {
 		return _conversation.compareTo(conversation);
@@ -223,14 +259,17 @@ public class ConversationWrapper implements Conversation,
 		return _conversation.hashCode();
 	}
 
+	@Override
 	public com.liferay.portal.model.CacheModel<com.marcelmika.lims.persistence.generated.model.Conversation> toCacheModel() {
 		return _conversation.toCacheModel();
 	}
 
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Conversation toEscapedModel() {
 		return new ConversationWrapper(_conversation.toEscapedModel());
 	}
 
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Conversation toUnescapedModel() {
 		return new ConversationWrapper(_conversation.toUnescapedModel());
 	}
@@ -240,10 +279,12 @@ public class ConversationWrapper implements Conversation,
 		return _conversation.toString();
 	}
 
+	@Override
 	public java.lang.String toXmlString() {
 		return _conversation.toXmlString();
 	}
 
+	@Override
 	public void persist()
 		throws com.liferay.portal.kernel.exception.SystemException {
 		_conversation.persist();
@@ -269,16 +310,18 @@ public class ConversationWrapper implements Conversation,
 	}
 
 	/**
-	 * @deprecated Renamed to {@link #getWrappedModel}
+	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
 	public Conversation getWrappedConversation() {
 		return _conversation;
 	}
 
+	@Override
 	public Conversation getWrappedModel() {
 		return _conversation;
 	}
 
+	@Override
 	public void resetOriginalValues() {
 		_conversation.resetOriginalValues();
 	}

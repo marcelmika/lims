@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -65,6 +65,8 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 		};
 	public static final String TABLE_SQL_CREATE = "create table lims_Participant (pid LONG not null primary key,cid LONG,participantId LONG,unreadMessagesCount INTEGER,isOpened BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table lims_Participant";
+	public static final String ORDER_BY_JPQL = " ORDER BY participant.pid ASC";
+	public static final String ORDER_BY_SQL = " ORDER BY lims_Participant.pid ASC";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
@@ -80,32 +82,39 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 	public static long CID_COLUMN_BITMASK = 1L;
 	public static long ISOPENED_COLUMN_BITMASK = 2L;
 	public static long PARTICIPANTID_COLUMN_BITMASK = 4L;
+	public static long PID_COLUMN_BITMASK = 8L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
 				"lock.expiration.time.com.marcelmika.lims.persistence.generated.model.Participant"));
 
 	public ParticipantModelImpl() {
 	}
 
+	@Override
 	public long getPrimaryKey() {
 		return _pid;
 	}
 
+	@Override
 	public void setPrimaryKey(long primaryKey) {
 		setPid(primaryKey);
 	}
 
+	@Override
 	public Serializable getPrimaryKeyObj() {
-		return new Long(_pid);
+		return _pid;
 	}
 
+	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		setPrimaryKey(((Long)primaryKeyObj).longValue());
 	}
 
+	@Override
 	public Class<?> getModelClass() {
 		return Participant.class;
 	}
 
+	@Override
 	public String getModelClassName() {
 		return Participant.class.getName();
 	}
@@ -157,18 +166,22 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 		}
 	}
 
+	@Override
 	public long getPid() {
 		return _pid;
 	}
 
+	@Override
 	public void setPid(long pid) {
 		_pid = pid;
 	}
 
+	@Override
 	public long getCid() {
 		return _cid;
 	}
 
+	@Override
 	public void setCid(long cid) {
 		_columnBitmask |= CID_COLUMN_BITMASK;
 
@@ -185,10 +198,12 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 		return _originalCid;
 	}
 
+	@Override
 	public long getParticipantId() {
 		return _participantId;
 	}
 
+	@Override
 	public void setParticipantId(long participantId) {
 		_columnBitmask |= PARTICIPANTID_COLUMN_BITMASK;
 
@@ -205,22 +220,27 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 		return _originalParticipantId;
 	}
 
+	@Override
 	public int getUnreadMessagesCount() {
 		return _unreadMessagesCount;
 	}
 
+	@Override
 	public void setUnreadMessagesCount(int unreadMessagesCount) {
 		_unreadMessagesCount = unreadMessagesCount;
 	}
 
+	@Override
 	public boolean getIsOpened() {
 		return _isOpened;
 	}
 
+	@Override
 	public boolean isIsOpened() {
 		return _isOpened;
 	}
 
+	@Override
 	public void setIsOpened(boolean isOpened) {
 		_columnBitmask |= ISOPENED_COLUMN_BITMASK;
 
@@ -264,10 +284,6 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 		return _escapedModel;
 	}
 
-	public Participant toUnescapedModel() {
-		return (Participant)this;
-	}
-
 	@Override
 	public Object clone() {
 		ParticipantImpl participantImpl = new ParticipantImpl();
@@ -283,6 +299,7 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 		return participantImpl;
 	}
 
+	@Override
 	public int compareTo(Participant participant) {
 		long primaryKey = participant.getPrimaryKey();
 
@@ -379,6 +396,7 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 		return sb.toString();
 	}
 
+	@Override
 	public String toXmlString() {
 		StringBundler sb = new StringBundler(19);
 

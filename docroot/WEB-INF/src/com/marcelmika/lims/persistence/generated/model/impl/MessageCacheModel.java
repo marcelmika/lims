@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -20,7 +20,10 @@ import com.liferay.portal.model.CacheModel;
 
 import com.marcelmika.lims.persistence.generated.model.Message;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import java.util.Date;
 
@@ -31,7 +34,7 @@ import java.util.Date;
  * @see Message
  * @generated
  */
-public class MessageCacheModel implements CacheModel<Message>, Serializable {
+public class MessageCacheModel implements CacheModel<Message>, Externalizable {
 	@Override
 	public String toString() {
 		StringBundler sb = new StringBundler(13);
@@ -53,6 +56,7 @@ public class MessageCacheModel implements CacheModel<Message>, Serializable {
 		return sb.toString();
 	}
 
+	@Override
 	public Message toEntityModel() {
 		MessageImpl messageImpl = new MessageImpl();
 
@@ -84,6 +88,39 @@ public class MessageCacheModel implements CacheModel<Message>, Serializable {
 		messageImpl.resetOriginalValues();
 
 		return messageImpl;
+	}
+
+	@Override
+	public void readExternal(ObjectInput objectInput) throws IOException {
+		mid = objectInput.readLong();
+		cid = objectInput.readLong();
+		creatorId = objectInput.readLong();
+		createdAt = objectInput.readLong();
+		messageHash = objectInput.readUTF();
+		body = objectInput.readUTF();
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
+		objectOutput.writeLong(mid);
+		objectOutput.writeLong(cid);
+		objectOutput.writeLong(creatorId);
+		objectOutput.writeLong(createdAt);
+
+		if (messageHash == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(messageHash);
+		}
+
+		if (body == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(body);
+		}
 	}
 
 	public long mid;

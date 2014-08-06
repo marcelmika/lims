@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -66,6 +66,8 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 		};
 	public static final String TABLE_SQL_CREATE = "create table lims_Conversation (cid LONG not null primary key,conversationId VARCHAR(75) null,conversationType VARCHAR(75) null,updatedAt DATE null)";
 	public static final String TABLE_SQL_DROP = "drop table lims_Conversation";
+	public static final String ORDER_BY_JPQL = " ORDER BY conversation.cid ASC";
+	public static final String ORDER_BY_SQL = " ORDER BY lims_Conversation.cid ASC";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
@@ -79,32 +81,39 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 				"value.object.column.bitmask.enabled.com.marcelmika.lims.persistence.generated.model.Conversation"),
 			true);
 	public static long CONVERSATIONID_COLUMN_BITMASK = 1L;
+	public static long CID_COLUMN_BITMASK = 2L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
 				"lock.expiration.time.com.marcelmika.lims.persistence.generated.model.Conversation"));
 
 	public ConversationModelImpl() {
 	}
 
+	@Override
 	public long getPrimaryKey() {
 		return _cid;
 	}
 
+	@Override
 	public void setPrimaryKey(long primaryKey) {
 		setCid(primaryKey);
 	}
 
+	@Override
 	public Serializable getPrimaryKeyObj() {
-		return new Long(_cid);
+		return _cid;
 	}
 
+	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		setPrimaryKey(((Long)primaryKeyObj).longValue());
 	}
 
+	@Override
 	public Class<?> getModelClass() {
 		return Conversation.class;
 	}
 
+	@Override
 	public String getModelClassName() {
 		return Conversation.class.getName();
 	}
@@ -148,14 +157,17 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 		}
 	}
 
+	@Override
 	public long getCid() {
 		return _cid;
 	}
 
+	@Override
 	public void setCid(long cid) {
 		_cid = cid;
 	}
 
+	@Override
 	public String getConversationId() {
 		if (_conversationId == null) {
 			return StringPool.BLANK;
@@ -165,6 +177,7 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 		}
 	}
 
+	@Override
 	public void setConversationId(String conversationId) {
 		_columnBitmask |= CONVERSATIONID_COLUMN_BITMASK;
 
@@ -179,6 +192,7 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 		return GetterUtil.getString(_originalConversationId);
 	}
 
+	@Override
 	public String getConversationType() {
 		if (_conversationType == null) {
 			return StringPool.BLANK;
@@ -188,14 +202,17 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 		}
 	}
 
+	@Override
 	public void setConversationType(String conversationType) {
 		_conversationType = conversationType;
 	}
 
+	@Override
 	public Date getUpdatedAt() {
 		return _updatedAt;
 	}
 
+	@Override
 	public void setUpdatedAt(Date updatedAt) {
 		_updatedAt = updatedAt;
 	}
@@ -227,10 +244,6 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 		return _escapedModel;
 	}
 
-	public Conversation toUnescapedModel() {
-		return (Conversation)this;
-	}
-
 	@Override
 	public Object clone() {
 		ConversationImpl conversationImpl = new ConversationImpl();
@@ -245,6 +258,7 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 		return conversationImpl;
 	}
 
+	@Override
 	public int compareTo(Conversation conversation) {
 		long primaryKey = conversation.getPrimaryKey();
 
@@ -346,6 +360,7 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 		return sb.toString();
 	}
 
+	@Override
 	public String toXmlString() {
 		StringBundler sb = new StringBundler(16);
 

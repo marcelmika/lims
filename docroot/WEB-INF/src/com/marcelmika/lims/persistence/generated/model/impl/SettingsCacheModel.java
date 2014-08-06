@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -20,7 +20,10 @@ import com.liferay.portal.model.CacheModel;
 
 import com.marcelmika.lims.persistence.generated.model.Settings;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing Settings in entity cache.
@@ -29,7 +32,7 @@ import java.io.Serializable;
  * @see Settings
  * @generated
  */
-public class SettingsCacheModel implements CacheModel<Settings>, Serializable {
+public class SettingsCacheModel implements CacheModel<Settings>, Externalizable {
 	@Override
 	public String toString() {
 		StringBundler sb = new StringBundler(11);
@@ -49,6 +52,7 @@ public class SettingsCacheModel implements CacheModel<Settings>, Serializable {
 		return sb.toString();
 	}
 
+	@Override
 	public Settings toEntityModel() {
 		SettingsImpl settingsImpl = new SettingsImpl();
 
@@ -68,6 +72,32 @@ public class SettingsCacheModel implements CacheModel<Settings>, Serializable {
 		settingsImpl.resetOriginalValues();
 
 		return settingsImpl;
+	}
+
+	@Override
+	public void readExternal(ObjectInput objectInput) throws IOException {
+		sid = objectInput.readLong();
+		userId = objectInput.readLong();
+		presence = objectInput.readUTF();
+		mute = objectInput.readBoolean();
+		chatEnabled = objectInput.readBoolean();
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
+		objectOutput.writeLong(sid);
+		objectOutput.writeLong(userId);
+
+		if (presence == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(presence);
+		}
+
+		objectOutput.writeBoolean(mute);
+		objectOutput.writeBoolean(chatEnabled);
 	}
 
 	public long sid;

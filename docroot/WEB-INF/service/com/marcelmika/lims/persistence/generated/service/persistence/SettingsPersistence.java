@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -38,72 +38,6 @@ public interface SettingsPersistence extends BasePersistence<Settings> {
 	 */
 
 	/**
-	* Caches the settings in the entity cache if it is enabled.
-	*
-	* @param settings the settings
-	*/
-	public void cacheResult(
-		com.marcelmika.lims.persistence.generated.model.Settings settings);
-
-	/**
-	* Caches the settingses in the entity cache if it is enabled.
-	*
-	* @param settingses the settingses
-	*/
-	public void cacheResult(
-		java.util.List<com.marcelmika.lims.persistence.generated.model.Settings> settingses);
-
-	/**
-	* Creates a new settings with the primary key. Does not add the settings to the database.
-	*
-	* @param sid the primary key for the new settings
-	* @return the new settings
-	*/
-	public com.marcelmika.lims.persistence.generated.model.Settings create(
-		long sid);
-
-	/**
-	* Removes the settings with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param sid the primary key of the settings
-	* @return the settings that was removed
-	* @throws com.marcelmika.lims.persistence.generated.NoSuchSettingsException if a settings with the primary key could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public com.marcelmika.lims.persistence.generated.model.Settings remove(
-		long sid)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.persistence.generated.NoSuchSettingsException;
-
-	public com.marcelmika.lims.persistence.generated.model.Settings updateImpl(
-		com.marcelmika.lims.persistence.generated.model.Settings settings,
-		boolean merge)
-		throws com.liferay.portal.kernel.exception.SystemException;
-
-	/**
-	* Returns the settings with the primary key or throws a {@link com.marcelmika.lims.persistence.generated.NoSuchSettingsException} if it could not be found.
-	*
-	* @param sid the primary key of the settings
-	* @return the settings
-	* @throws com.marcelmika.lims.persistence.generated.NoSuchSettingsException if a settings with the primary key could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public com.marcelmika.lims.persistence.generated.model.Settings findByPrimaryKey(
-		long sid)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.persistence.generated.NoSuchSettingsException;
-
-	/**
-	* Returns the settings with the primary key or returns <code>null</code> if it could not be found.
-	*
-	* @param sid the primary key of the settings
-	* @return the settings, or <code>null</code> if a settings with the primary key could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public com.marcelmika.lims.persistence.generated.model.Settings fetchByPrimaryKey(
-		long sid) throws com.liferay.portal.kernel.exception.SystemException;
-
-	/**
 	* Returns the settings where userId = &#63; or throws a {@link com.marcelmika.lims.persistence.generated.NoSuchSettingsException} if it could not be found.
 	*
 	* @param userId the user ID
@@ -139,6 +73,28 @@ public interface SettingsPersistence extends BasePersistence<Settings> {
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
+	* Removes the settings where userId = &#63; from the database.
+	*
+	* @param userId the user ID
+	* @return the settings that was removed
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.persistence.generated.model.Settings removeByUserId(
+		long userId)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.persistence.generated.NoSuchSettingsException;
+
+	/**
+	* Returns the number of settingses where userId = &#63;.
+	*
+	* @param userId the user ID
+	* @return the number of matching settingses
+	* @throws SystemException if a system exception occurred
+	*/
+	public int countByUserId(long userId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
 	* Returns all the settingses where presence = &#63;.
 	*
 	* @param presence the presence
@@ -153,7 +109,7 @@ public interface SettingsPersistence extends BasePersistence<Settings> {
 	* Returns a range of all the settingses where presence = &#63;.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.SettingsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param presence the presence
@@ -170,7 +126,7 @@ public interface SettingsPersistence extends BasePersistence<Settings> {
 	* Returns an ordered range of all the settingses where presence = &#63;.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.SettingsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param presence the presence
@@ -258,6 +214,90 @@ public interface SettingsPersistence extends BasePersistence<Settings> {
 			com.marcelmika.lims.persistence.generated.NoSuchSettingsException;
 
 	/**
+	* Removes all the settingses where presence = &#63; from the database.
+	*
+	* @param presence the presence
+	* @throws SystemException if a system exception occurred
+	*/
+	public void removeByPresence(java.lang.String presence)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the number of settingses where presence = &#63;.
+	*
+	* @param presence the presence
+	* @return the number of matching settingses
+	* @throws SystemException if a system exception occurred
+	*/
+	public int countByPresence(java.lang.String presence)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Caches the settings in the entity cache if it is enabled.
+	*
+	* @param settings the settings
+	*/
+	public void cacheResult(
+		com.marcelmika.lims.persistence.generated.model.Settings settings);
+
+	/**
+	* Caches the settingses in the entity cache if it is enabled.
+	*
+	* @param settingses the settingses
+	*/
+	public void cacheResult(
+		java.util.List<com.marcelmika.lims.persistence.generated.model.Settings> settingses);
+
+	/**
+	* Creates a new settings with the primary key. Does not add the settings to the database.
+	*
+	* @param sid the primary key for the new settings
+	* @return the new settings
+	*/
+	public com.marcelmika.lims.persistence.generated.model.Settings create(
+		long sid);
+
+	/**
+	* Removes the settings with the primary key from the database. Also notifies the appropriate model listeners.
+	*
+	* @param sid the primary key of the settings
+	* @return the settings that was removed
+	* @throws com.marcelmika.lims.persistence.generated.NoSuchSettingsException if a settings with the primary key could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.persistence.generated.model.Settings remove(
+		long sid)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.persistence.generated.NoSuchSettingsException;
+
+	public com.marcelmika.lims.persistence.generated.model.Settings updateImpl(
+		com.marcelmika.lims.persistence.generated.model.Settings settings)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the settings with the primary key or throws a {@link com.marcelmika.lims.persistence.generated.NoSuchSettingsException} if it could not be found.
+	*
+	* @param sid the primary key of the settings
+	* @return the settings
+	* @throws com.marcelmika.lims.persistence.generated.NoSuchSettingsException if a settings with the primary key could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.persistence.generated.model.Settings findByPrimaryKey(
+		long sid)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.persistence.generated.NoSuchSettingsException;
+
+	/**
+	* Returns the settings with the primary key or returns <code>null</code> if it could not be found.
+	*
+	* @param sid the primary key of the settings
+	* @return the settings, or <code>null</code> if a settings with the primary key could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.persistence.generated.model.Settings fetchByPrimaryKey(
+		long sid) throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
 	* Returns all the settingses.
 	*
 	* @return the settingses
@@ -270,7 +310,7 @@ public interface SettingsPersistence extends BasePersistence<Settings> {
 	* Returns a range of all the settingses.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.SettingsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of settingses
@@ -286,7 +326,7 @@ public interface SettingsPersistence extends BasePersistence<Settings> {
 	* Returns an ordered range of all the settingses.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.SettingsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of settingses
@@ -301,52 +341,11 @@ public interface SettingsPersistence extends BasePersistence<Settings> {
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
-	* Removes the settings where userId = &#63; from the database.
-	*
-	* @param userId the user ID
-	* @return the settings that was removed
-	* @throws SystemException if a system exception occurred
-	*/
-	public com.marcelmika.lims.persistence.generated.model.Settings removeByUserId(
-		long userId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.persistence.generated.NoSuchSettingsException;
-
-	/**
-	* Removes all the settingses where presence = &#63; from the database.
-	*
-	* @param presence the presence
-	* @throws SystemException if a system exception occurred
-	*/
-	public void removeByPresence(java.lang.String presence)
-		throws com.liferay.portal.kernel.exception.SystemException;
-
-	/**
 	* Removes all the settingses from the database.
 	*
 	* @throws SystemException if a system exception occurred
 	*/
 	public void removeAll()
-		throws com.liferay.portal.kernel.exception.SystemException;
-
-	/**
-	* Returns the number of settingses where userId = &#63;.
-	*
-	* @param userId the user ID
-	* @return the number of matching settingses
-	* @throws SystemException if a system exception occurred
-	*/
-	public int countByUserId(long userId)
-		throws com.liferay.portal.kernel.exception.SystemException;
-
-	/**
-	* Returns the number of settingses where presence = &#63;.
-	*
-	* @param presence the presence
-	* @return the number of matching settingses
-	* @throws SystemException if a system exception occurred
-	*/
-	public int countByPresence(java.lang.String presence)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**

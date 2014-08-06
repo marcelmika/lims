@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -61,7 +61,7 @@ public class PanelUtil {
 	/**
 	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
-	public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+	public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
 		throws SystemException {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
@@ -94,19 +94,85 @@ public class PanelUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
 	 */
-	public static Panel update(Panel panel, boolean merge)
-		throws SystemException {
-		return getPersistence().update(panel, merge);
+	public static Panel update(Panel panel) throws SystemException {
+		return getPersistence().update(panel);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
 	 */
-	public static Panel update(Panel panel, boolean merge,
-		ServiceContext serviceContext) throws SystemException {
-		return getPersistence().update(panel, merge, serviceContext);
+	public static Panel update(Panel panel, ServiceContext serviceContext)
+		throws SystemException {
+		return getPersistence().update(panel, serviceContext);
+	}
+
+	/**
+	* Returns the panel where userId = &#63; or throws a {@link com.marcelmika.lims.persistence.generated.NoSuchPanelException} if it could not be found.
+	*
+	* @param userId the user ID
+	* @return the matching panel
+	* @throws com.marcelmika.lims.persistence.generated.NoSuchPanelException if a matching panel could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public static com.marcelmika.lims.persistence.generated.model.Panel findByUserId(
+		long userId)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.persistence.generated.NoSuchPanelException {
+		return getPersistence().findByUserId(userId);
+	}
+
+	/**
+	* Returns the panel where userId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	*
+	* @param userId the user ID
+	* @return the matching panel, or <code>null</code> if a matching panel could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public static com.marcelmika.lims.persistence.generated.model.Panel fetchByUserId(
+		long userId) throws com.liferay.portal.kernel.exception.SystemException {
+		return getPersistence().fetchByUserId(userId);
+	}
+
+	/**
+	* Returns the panel where userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	*
+	* @param userId the user ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching panel, or <code>null</code> if a matching panel could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public static com.marcelmika.lims.persistence.generated.model.Panel fetchByUserId(
+		long userId, boolean retrieveFromCache)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getPersistence().fetchByUserId(userId, retrieveFromCache);
+	}
+
+	/**
+	* Removes the panel where userId = &#63; from the database.
+	*
+	* @param userId the user ID
+	* @return the panel that was removed
+	* @throws SystemException if a system exception occurred
+	*/
+	public static com.marcelmika.lims.persistence.generated.model.Panel removeByUserId(
+		long userId)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.persistence.generated.NoSuchPanelException {
+		return getPersistence().removeByUserId(userId);
+	}
+
+	/**
+	* Returns the number of panels where userId = &#63;.
+	*
+	* @param userId the user ID
+	* @return the number of matching panels
+	* @throws SystemException if a system exception occurred
+	*/
+	public static int countByUserId(long userId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getPersistence().countByUserId(userId);
 	}
 
 	/**
@@ -156,10 +222,9 @@ public class PanelUtil {
 	}
 
 	public static com.marcelmika.lims.persistence.generated.model.Panel updateImpl(
-		com.marcelmika.lims.persistence.generated.model.Panel panel,
-		boolean merge)
+		com.marcelmika.lims.persistence.generated.model.Panel panel)
 		throws com.liferay.portal.kernel.exception.SystemException {
-		return getPersistence().updateImpl(panel, merge);
+		return getPersistence().updateImpl(panel);
 	}
 
 	/**
@@ -190,47 +255,6 @@ public class PanelUtil {
 	}
 
 	/**
-	* Returns the panel where userId = &#63; or throws a {@link com.marcelmika.lims.persistence.generated.NoSuchPanelException} if it could not be found.
-	*
-	* @param userId the user ID
-	* @return the matching panel
-	* @throws com.marcelmika.lims.persistence.generated.NoSuchPanelException if a matching panel could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public static com.marcelmika.lims.persistence.generated.model.Panel findByUserId(
-		long userId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.persistence.generated.NoSuchPanelException {
-		return getPersistence().findByUserId(userId);
-	}
-
-	/**
-	* Returns the panel where userId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	*
-	* @param userId the user ID
-	* @return the matching panel, or <code>null</code> if a matching panel could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public static com.marcelmika.lims.persistence.generated.model.Panel fetchByUserId(
-		long userId) throws com.liferay.portal.kernel.exception.SystemException {
-		return getPersistence().fetchByUserId(userId);
-	}
-
-	/**
-	* Returns the panel where userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	*
-	* @param userId the user ID
-	* @param retrieveFromCache whether to use the finder cache
-	* @return the matching panel, or <code>null</code> if a matching panel could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public static com.marcelmika.lims.persistence.generated.model.Panel fetchByUserId(
-		long userId, boolean retrieveFromCache)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getPersistence().fetchByUserId(userId, retrieveFromCache);
-	}
-
-	/**
 	* Returns all the panels.
 	*
 	* @return the panels
@@ -245,7 +269,7 @@ public class PanelUtil {
 	* Returns a range of all the panels.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.PanelModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of panels
@@ -263,7 +287,7 @@ public class PanelUtil {
 	* Returns an ordered range of all the panels.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.PanelModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of panels
@@ -280,20 +304,6 @@ public class PanelUtil {
 	}
 
 	/**
-	* Removes the panel where userId = &#63; from the database.
-	*
-	* @param userId the user ID
-	* @return the panel that was removed
-	* @throws SystemException if a system exception occurred
-	*/
-	public static com.marcelmika.lims.persistence.generated.model.Panel removeByUserId(
-		long userId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.persistence.generated.NoSuchPanelException {
-		return getPersistence().removeByUserId(userId);
-	}
-
-	/**
 	* Removes all the panels from the database.
 	*
 	* @throws SystemException if a system exception occurred
@@ -301,18 +311,6 @@ public class PanelUtil {
 	public static void removeAll()
 		throws com.liferay.portal.kernel.exception.SystemException {
 		getPersistence().removeAll();
-	}
-
-	/**
-	* Returns the number of panels where userId = &#63;.
-	*
-	* @param userId the user ID
-	* @return the number of matching panels
-	* @throws SystemException if a system exception occurred
-	*/
-	public static int countByUserId(long userId)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getPersistence().countByUserId(userId);
 	}
 
 	/**
@@ -338,7 +336,7 @@ public class PanelUtil {
 	}
 
 	/**
-	 * @deprecated
+	 * @deprecated As of 6.2.0
 	 */
 	public void setPersistence(PanelPersistence persistence) {
 	}

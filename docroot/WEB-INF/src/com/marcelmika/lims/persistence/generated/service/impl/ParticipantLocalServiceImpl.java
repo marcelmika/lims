@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -54,7 +54,7 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
      * @param cid           Id of the conversation to which the participant belongs to
      * @param participantId User Id of the participant
      * @return Participant Model
-     * @throws SystemException
+     * @throws com.liferay.portal.kernel.exception.SystemException
      */
     public Participant addParticipant(Long cid, Long participantId) throws SystemException {
         // Fetch possible existing conversation
@@ -85,7 +85,7 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
      *
      * @param cid Id of the conversation related to the participants
      * @throws SystemException
-     * @throws PortalException
+     * @throws com.liferay.portal.kernel.exception.PortalException
      */
     public void updateParticipants(Long cid) throws SystemException, PortalException {
         // Fetch all participants by the conversation id
@@ -115,7 +115,7 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
      *
      * @param conversationId Conversation which should be closed
      * @param participantId  Participant whose conversation should be closed
-     * @throws NoSuchConversationException
+     * @throws com.marcelmika.lims.persistence.generated.NoSuchConversationException
      * @throws SystemException
      * @throws NoSuchParticipantException
      */

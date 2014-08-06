@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -39,26 +39,32 @@ public class PanelClp extends BaseModelImpl<Panel> implements Panel {
 	public PanelClp() {
 	}
 
+	@Override
 	public Class<?> getModelClass() {
 		return Panel.class;
 	}
 
+	@Override
 	public String getModelClassName() {
 		return Panel.class.getName();
 	}
 
+	@Override
 	public long getPrimaryKey() {
 		return _pid;
 	}
 
+	@Override
 	public void setPrimaryKey(long primaryKey) {
 		setPid(primaryKey);
 	}
 
+	@Override
 	public Serializable getPrimaryKeyObj() {
-		return new Long(_pid);
+		return _pid;
 	}
 
+	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		setPrimaryKey(((Long)primaryKeyObj).longValue());
 	}
@@ -95,10 +101,12 @@ public class PanelClp extends BaseModelImpl<Panel> implements Panel {
 		}
 	}
 
+	@Override
 	public long getPid() {
 		return _pid;
 	}
 
+	@Override
 	public void setPid(long pid) {
 		_pid = pid;
 
@@ -116,10 +124,12 @@ public class PanelClp extends BaseModelImpl<Panel> implements Panel {
 		}
 	}
 
+	@Override
 	public long getUserId() {
 		return _userId;
 	}
 
+	@Override
 	public void setUserId(long userId) {
 		_userId = userId;
 
@@ -137,18 +147,22 @@ public class PanelClp extends BaseModelImpl<Panel> implements Panel {
 		}
 	}
 
+	@Override
 	public String getUserUuid() throws SystemException {
 		return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
 	}
 
+	@Override
 	public void setUserUuid(String userUuid) {
 		_userUuid = userUuid;
 	}
 
+	@Override
 	public String getActivePanelId() {
 		return _activePanelId;
 	}
 
+	@Override
 	public void setActivePanelId(String activePanelId) {
 		_activePanelId = activePanelId;
 
@@ -215,6 +229,7 @@ public class PanelClp extends BaseModelImpl<Panel> implements Panel {
 		return returnValue;
 	}
 
+	@Override
 	public void persist() throws SystemException {
 		if (this.isNew()) {
 			PanelLocalServiceUtil.addPanel(this);
@@ -230,10 +245,6 @@ public class PanelClp extends BaseModelImpl<Panel> implements Panel {
 			new Class[] { Panel.class }, new AutoEscapeBeanHandler(this));
 	}
 
-	public Panel toUnescapedModel() {
-		return this;
-	}
-
 	@Override
 	public Object clone() {
 		PanelClp clone = new PanelClp();
@@ -245,6 +256,7 @@ public class PanelClp extends BaseModelImpl<Panel> implements Panel {
 		return clone;
 	}
 
+	@Override
 	public int compareTo(Panel panel) {
 		long primaryKey = panel.getPrimaryKey();
 
@@ -301,6 +313,7 @@ public class PanelClp extends BaseModelImpl<Panel> implements Panel {
 		return sb.toString();
 	}
 
+	@Override
 	public String toXmlString() {
 		StringBundler sb = new StringBundler(13);
 

@@ -10,7 +10,6 @@ import com.marcelmika.lims.api.events.buddy.*;
  */
 public interface BuddyPersistenceService {
 
-
     /**
      * Login buddy to System
      *
@@ -51,4 +50,5 @@ public interface BuddyPersistenceService {
      * @return Response event
      */
     public UpdatePresenceBuddyResponseEvent updatePresence(UpdatePresenceBuddyRequestEvent event);
+
 }

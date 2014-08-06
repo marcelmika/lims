@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -18,6 +18,7 @@ import com.liferay.portal.service.InvokableLocalService;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
  */
 public class PanelLocalServiceClp implements PanelLocalService {
 	public PanelLocalServiceClp(InvokableLocalService invokableLocalService) {
@@ -72,37 +73,37 @@ public class PanelLocalServiceClp implements PanelLocalService {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName9 = "fetchPanel";
+		_methodName9 = "dynamicQueryCount";
 
-		_methodParameterTypes9 = new String[] { "long" };
+		_methodParameterTypes9 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
+				"com.liferay.portal.kernel.dao.orm.Projection"
+			};
 
-		_methodName10 = "getPanel";
+		_methodName10 = "fetchPanel";
 
 		_methodParameterTypes10 = new String[] { "long" };
 
-		_methodName11 = "getPersistedModel";
+		_methodName11 = "getPanel";
 
-		_methodParameterTypes11 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes11 = new String[] { "long" };
 
-		_methodName12 = "getPanels";
+		_methodName12 = "getPersistedModel";
 
-		_methodParameterTypes12 = new String[] { "int", "int" };
+		_methodParameterTypes12 = new String[] { "java.io.Serializable" };
 
-		_methodName13 = "getPanelsCount";
+		_methodName13 = "getPanels";
 
-		_methodParameterTypes13 = new String[] {  };
+		_methodParameterTypes13 = new String[] { "int", "int" };
 
-		_methodName14 = "updatePanel";
+		_methodName14 = "getPanelsCount";
 
-		_methodParameterTypes14 = new String[] {
-				"com.marcelmika.lims.persistence.generated.model.Panel"
-			};
+		_methodParameterTypes14 = new String[] {  };
 
 		_methodName15 = "updatePanel";
 
 		_methodParameterTypes15 = new String[] {
-				"com.marcelmika.lims.persistence.generated.model.Panel",
-				"boolean"
+				"com.marcelmika.lims.persistence.generated.model.Panel"
 			};
 
 		_methodName16 = "getBeanIdentifier";
@@ -122,6 +123,7 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		_methodParameterTypes20 = new String[] { "long", "java.lang.String" };
 	}
 
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Panel addPanel(
 		com.marcelmika.lims.persistence.generated.model.Panel panel)
 		throws com.liferay.portal.kernel.exception.SystemException {
@@ -151,6 +153,7 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		return (com.marcelmika.lims.persistence.generated.model.Panel)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Panel createPanel(
 		long pid) {
 		Object returnObj = null;
@@ -174,6 +177,7 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		return (com.marcelmika.lims.persistence.generated.model.Panel)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Panel deletePanel(
 		long pid)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -207,6 +211,7 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		return (com.marcelmika.lims.persistence.generated.model.Panel)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Panel deletePanel(
 		com.marcelmika.lims.persistence.generated.model.Panel panel)
 		throws com.liferay.portal.kernel.exception.SystemException {
@@ -236,6 +241,7 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		return (com.marcelmika.lims.persistence.generated.model.Panel)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
 	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		Object returnObj = null;
 
@@ -258,6 +264,7 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		return (com.liferay.portal.kernel.dao.orm.DynamicQuery)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
 	@SuppressWarnings("rawtypes")
 	public java.util.List dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
@@ -288,6 +295,7 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		return (java.util.List)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
 	@SuppressWarnings("rawtypes")
 	public java.util.List dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -324,6 +332,7 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		return (java.util.List)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
 	@SuppressWarnings("rawtypes")
 	public java.util.List dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -364,6 +373,7 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		return (java.util.List)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
 	public long dynamicQueryCount(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
 		throws com.liferay.portal.kernel.exception.SystemException {
@@ -393,13 +403,49 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		return ((Long)returnObj).longValue();
 	}
 
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName9,
+					_methodParameterTypes9,
+					new Object[] {
+						ClpSerializer.translateInput(dynamicQuery),
+						
+					ClpSerializer.translateInput(projection)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Long)returnObj).longValue();
+	}
+
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Panel fetchPanel(
 		long pid) throws com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName9,
-					_methodParameterTypes9, new Object[] { pid });
+			returnObj = _invokableLocalService.invokeMethod(_methodName10,
+					_methodParameterTypes10, new Object[] { pid });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -420,6 +466,7 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		return (com.marcelmika.lims.persistence.generated.model.Panel)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Panel getPanel(
 		long pid)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -427,8 +474,8 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName10,
-					_methodParameterTypes10, new Object[] { pid });
+			returnObj = _invokableLocalService.invokeMethod(_methodName11,
+					_methodParameterTypes11, new Object[] { pid });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -453,6 +500,7 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		return (com.marcelmika.lims.persistence.generated.model.Panel)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
 	public com.liferay.portal.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -460,8 +508,8 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName11,
-					_methodParameterTypes11,
+			returnObj = _invokableLocalService.invokeMethod(_methodName12,
+					_methodParameterTypes12,
 					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
 		}
 		catch (Throwable t) {
@@ -487,14 +535,15 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		return (com.liferay.portal.model.PersistedModel)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
 	public java.util.List<com.marcelmika.lims.persistence.generated.model.Panel> getPanels(
 		int start, int end)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName12,
-					_methodParameterTypes12, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName13,
+					_methodParameterTypes13, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -515,13 +564,14 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		return (java.util.List<com.marcelmika.lims.persistence.generated.model.Panel>)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
 	public int getPanelsCount()
 		throws com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName13,
-					_methodParameterTypes13, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName14,
+					_methodParameterTypes14, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -542,14 +592,15 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		return ((Integer)returnObj).intValue();
 	}
 
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Panel updatePanel(
 		com.marcelmika.lims.persistence.generated.model.Panel panel)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName14,
-					_methodParameterTypes14,
+			returnObj = _invokableLocalService.invokeMethod(_methodName15,
+					_methodParameterTypes15,
 					new Object[] { ClpSerializer.translateInput(panel) });
 		}
 		catch (Throwable t) {
@@ -571,36 +622,7 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		return (com.marcelmika.lims.persistence.generated.model.Panel)ClpSerializer.translateOutput(returnObj);
 	}
 
-	public com.marcelmika.lims.persistence.generated.model.Panel updatePanel(
-		com.marcelmika.lims.persistence.generated.model.Panel panel,
-		boolean merge)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15,
-					new Object[] { ClpSerializer.translateInput(panel), merge });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.marcelmika.lims.persistence.generated.model.Panel)ClpSerializer.translateOutput(returnObj);
-	}
-
+	@Override
 	public java.lang.String getBeanIdentifier() {
 		Object returnObj = null;
 
@@ -623,6 +645,7 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
 	public void setBeanIdentifier(java.lang.String beanIdentifier) {
 		try {
 			_invokableLocalService.invokeMethod(_methodName17,
@@ -642,12 +665,14 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		}
 	}
 
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Panel getPanelByUser(
 		long userId) {
 		Object returnObj = null;
@@ -671,6 +696,7 @@ public class PanelLocalServiceClp implements PanelLocalService {
 		return (com.marcelmika.lims.persistence.generated.model.Panel)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
 	public void updateActivePanel(long userId, java.lang.String activePanel)
 		throws java.lang.Exception {
 		try {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -36,6 +36,64 @@ public interface ConversationPersistence extends BasePersistence<Conversation> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ConversationUtil} to access the conversation persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+
+	/**
+	* Returns the conversation where conversationId = &#63; or throws a {@link com.marcelmika.lims.persistence.generated.NoSuchConversationException} if it could not be found.
+	*
+	* @param conversationId the conversation ID
+	* @return the matching conversation
+	* @throws com.marcelmika.lims.persistence.generated.NoSuchConversationException if a matching conversation could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.persistence.generated.model.Conversation findByConversationId(
+		java.lang.String conversationId)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.persistence.generated.NoSuchConversationException;
+
+	/**
+	* Returns the conversation where conversationId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	*
+	* @param conversationId the conversation ID
+	* @return the matching conversation, or <code>null</code> if a matching conversation could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.persistence.generated.model.Conversation fetchByConversationId(
+		java.lang.String conversationId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Returns the conversation where conversationId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	*
+	* @param conversationId the conversation ID
+	* @param retrieveFromCache whether to use the finder cache
+	* @return the matching conversation, or <code>null</code> if a matching conversation could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.persistence.generated.model.Conversation fetchByConversationId(
+		java.lang.String conversationId, boolean retrieveFromCache)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Removes the conversation where conversationId = &#63; from the database.
+	*
+	* @param conversationId the conversation ID
+	* @return the conversation that was removed
+	* @throws SystemException if a system exception occurred
+	*/
+	public com.marcelmika.lims.persistence.generated.model.Conversation removeByConversationId(
+		java.lang.String conversationId)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.persistence.generated.NoSuchConversationException;
+
+	/**
+	* Returns the number of conversations where conversationId = &#63;.
+	*
+	* @param conversationId the conversation ID
+	* @return the number of matching conversations
+	* @throws SystemException if a system exception occurred
+	*/
+	public int countByConversationId(java.lang.String conversationId)
+		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
 	* Caches the conversation in the entity cache if it is enabled.
@@ -76,8 +134,7 @@ public interface ConversationPersistence extends BasePersistence<Conversation> {
 			com.marcelmika.lims.persistence.generated.NoSuchConversationException;
 
 	public com.marcelmika.lims.persistence.generated.model.Conversation updateImpl(
-		com.marcelmika.lims.persistence.generated.model.Conversation conversation,
-		boolean merge)
+		com.marcelmika.lims.persistence.generated.model.Conversation conversation)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
@@ -104,42 +161,6 @@ public interface ConversationPersistence extends BasePersistence<Conversation> {
 		long cid) throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
-	* Returns the conversation where conversationId = &#63; or throws a {@link com.marcelmika.lims.persistence.generated.NoSuchConversationException} if it could not be found.
-	*
-	* @param conversationId the conversation ID
-	* @return the matching conversation
-	* @throws com.marcelmika.lims.persistence.generated.NoSuchConversationException if a matching conversation could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public com.marcelmika.lims.persistence.generated.model.Conversation findByConversationId(
-		java.lang.String conversationId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.persistence.generated.NoSuchConversationException;
-
-	/**
-	* Returns the conversation where conversationId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	*
-	* @param conversationId the conversation ID
-	* @return the matching conversation, or <code>null</code> if a matching conversation could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public com.marcelmika.lims.persistence.generated.model.Conversation fetchByConversationId(
-		java.lang.String conversationId)
-		throws com.liferay.portal.kernel.exception.SystemException;
-
-	/**
-	* Returns the conversation where conversationId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	*
-	* @param conversationId the conversation ID
-	* @param retrieveFromCache whether to use the finder cache
-	* @return the matching conversation, or <code>null</code> if a matching conversation could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public com.marcelmika.lims.persistence.generated.model.Conversation fetchByConversationId(
-		java.lang.String conversationId, boolean retrieveFromCache)
-		throws com.liferay.portal.kernel.exception.SystemException;
-
-	/**
 	* Returns all the conversations.
 	*
 	* @return the conversations
@@ -152,7 +173,7 @@ public interface ConversationPersistence extends BasePersistence<Conversation> {
 	* Returns a range of all the conversations.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.ConversationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of conversations
@@ -168,7 +189,7 @@ public interface ConversationPersistence extends BasePersistence<Conversation> {
 	* Returns an ordered range of all the conversations.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.ConversationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of conversations
@@ -183,33 +204,11 @@ public interface ConversationPersistence extends BasePersistence<Conversation> {
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**
-	* Removes the conversation where conversationId = &#63; from the database.
-	*
-	* @param conversationId the conversation ID
-	* @return the conversation that was removed
-	* @throws SystemException if a system exception occurred
-	*/
-	public com.marcelmika.lims.persistence.generated.model.Conversation removeByConversationId(
-		java.lang.String conversationId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.persistence.generated.NoSuchConversationException;
-
-	/**
 	* Removes all the conversations from the database.
 	*
 	* @throws SystemException if a system exception occurred
 	*/
 	public void removeAll()
-		throws com.liferay.portal.kernel.exception.SystemException;
-
-	/**
-	* Returns the number of conversations where conversationId = &#63;.
-	*
-	* @param conversationId the conversation ID
-	* @return the number of matching conversations
-	* @throws SystemException if a system exception occurred
-	*/
-	public int countByConversationId(java.lang.String conversationId)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	/**

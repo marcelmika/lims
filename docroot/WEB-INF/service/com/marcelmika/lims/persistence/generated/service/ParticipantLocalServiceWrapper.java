@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -17,12 +17,10 @@ package com.marcelmika.lims.persistence.generated.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link ParticipantLocalService}.
- * </p>
+ * Provides a wrapper for {@link ParticipantLocalService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       ParticipantLocalService
+ * @author Brian Wing Shun Chan
+ * @see ParticipantLocalService
  * @generated
  */
 public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
@@ -39,6 +37,7 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* @return the participant that was added
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Participant addParticipant(
 		com.marcelmika.lims.persistence.generated.model.Participant participant)
 		throws com.liferay.portal.kernel.exception.SystemException {
@@ -51,6 +50,7 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* @param pid the primary key for the new participant
 	* @return the new participant
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Participant createParticipant(
 		long pid) {
 		return _participantLocalService.createParticipant(pid);
@@ -64,6 +64,7 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* @throws PortalException if a participant with the primary key could not be found
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Participant deleteParticipant(
 		long pid)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -78,12 +79,14 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* @return the participant that was removed
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Participant deleteParticipant(
 		com.marcelmika.lims.persistence.generated.model.Participant participant)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return _participantLocalService.deleteParticipant(participant);
 	}
 
+	@Override
 	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return _participantLocalService.dynamicQuery();
 	}
@@ -95,6 +98,7 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* @return the matching rows
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	@SuppressWarnings("rawtypes")
 	public java.util.List dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
@@ -106,7 +110,7 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* Performs a dynamic query on the database and returns a range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.ParticipantModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -115,6 +119,7 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* @return the range of matching rows
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	@SuppressWarnings("rawtypes")
 	public java.util.List dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -126,7 +131,7 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.ParticipantModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -136,6 +141,7 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* @return the ordered range of matching rows
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	@SuppressWarnings("rawtypes")
 	public java.util.List dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -153,12 +159,31 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* @return the number of rows that match the dynamic query
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public long dynamicQueryCount(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return _participantLocalService.dynamicQueryCount(dynamicQuery);
 	}
 
+	/**
+	* Returns the number of rows that match the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows that match the dynamic query
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _participantLocalService.dynamicQueryCount(dynamicQuery,
+			projection);
+	}
+
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Participant fetchParticipant(
 		long pid) throws com.liferay.portal.kernel.exception.SystemException {
 		return _participantLocalService.fetchParticipant(pid);
@@ -172,6 +197,7 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* @throws PortalException if a participant with the primary key could not be found
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Participant getParticipant(
 		long pid)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -179,6 +205,7 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 		return _participantLocalService.getParticipant(pid);
 	}
 
+	@Override
 	public com.liferay.portal.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -190,7 +217,7 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* Returns a range of all the participants.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.ParticipantModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of participants
@@ -198,6 +225,7 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* @return the range of participants
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public java.util.List<com.marcelmika.lims.persistence.generated.model.Participant> getParticipants(
 		int start, int end)
 		throws com.liferay.portal.kernel.exception.SystemException {
@@ -210,6 +238,7 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* @return the number of participants
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public int getParticipantsCount()
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return _participantLocalService.getParticipantsCount();
@@ -222,6 +251,7 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* @return the participant that was updated
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Participant updateParticipant(
 		com.marcelmika.lims.persistence.generated.model.Participant participant)
 		throws com.liferay.portal.kernel.exception.SystemException {
@@ -229,25 +259,11 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	}
 
 	/**
-	* Updates the participant in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param participant the participant
-	* @param merge whether to merge the participant with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-	* @return the participant that was updated
-	* @throws SystemException if a system exception occurred
-	*/
-	public com.marcelmika.lims.persistence.generated.model.Participant updateParticipant(
-		com.marcelmika.lims.persistence.generated.model.Participant participant,
-		boolean merge)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return _participantLocalService.updateParticipant(participant, merge);
-	}
-
-	/**
 	* Returns the Spring bean ID for this bean.
 	*
 	* @return the Spring bean ID for this bean
 	*/
+	@Override
 	public java.lang.String getBeanIdentifier() {
 		return _participantLocalService.getBeanIdentifier();
 	}
@@ -257,10 +273,12 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	*
 	* @param beanIdentifier the Spring bean ID for this bean
 	*/
+	@Override
 	public void setBeanIdentifier(java.lang.String beanIdentifier) {
 		_participantLocalService.setBeanIdentifier(beanIdentifier);
 	}
 
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -274,8 +292,9 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* @param cid           Id of the conversation to which the participant belongs to
 	* @param participantId User Id of the participant
 	* @return Participant Model
-	* @throws SystemException
+	* @throws com.liferay.portal.kernel.exception.SystemException
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Participant addParticipant(
 		java.lang.Long cid, java.lang.Long participantId)
 		throws com.liferay.portal.kernel.exception.SystemException {
@@ -288,8 +307,9 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	*
 	* @param cid Id of the conversation related to the participants
 	* @throws SystemException
-	* @throws PortalException
+	* @throws com.liferay.portal.kernel.exception.PortalException
 	*/
+	@Override
 	public void updateParticipants(java.lang.Long cid)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
@@ -301,10 +321,11 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	*
 	* @param conversationId Conversation which should be closed
 	* @param participantId  Participant whose conversation should be closed
-	* @throws NoSuchConversationException
+	* @throws com.marcelmika.lims.persistence.generated.NoSuchConversationException
 	* @throws SystemException
 	* @throws NoSuchParticipantException
 	*/
+	@Override
 	public void closeConversation(java.lang.String conversationId,
 		java.lang.Long participantId)
 		throws com.liferay.portal.kernel.exception.SystemException,
@@ -322,6 +343,7 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* @throws SystemException
 	* @throws NoSuchConversationException
 	*/
+	@Override
 	public void resetUnreadMessagesCounter(java.lang.String conversationId,
 		java.lang.Long participantId)
 		throws com.liferay.portal.kernel.exception.SystemException,
@@ -338,6 +360,7 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* @return List of opened conversations
 	* @throws SystemException
 	*/
+	@Override
 	public java.util.List<com.marcelmika.lims.persistence.generated.model.Participant> getOpenedConversations(
 		java.lang.Long participantId)
 		throws com.liferay.portal.kernel.exception.SystemException {
@@ -352,6 +375,7 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* @throws NoSuchParticipantException
 	* @throws SystemException
 	*/
+	@Override
 	public java.util.List<com.marcelmika.lims.persistence.generated.model.Participant> getConversationParticipants(
 		java.lang.Long cid)
 		throws com.liferay.portal.kernel.exception.SystemException,
@@ -367,6 +391,7 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* @throws NoSuchParticipantException
 	* @throws SystemException
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Participant getParticipant(
 		java.lang.Long cid, java.lang.Long participantId)
 		throws com.liferay.portal.kernel.exception.SystemException,
@@ -375,24 +400,26 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	}
 
 	/**
-	 * @deprecated Renamed to {@link #getWrappedService}
+	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
 	public ParticipantLocalService getWrappedParticipantLocalService() {
 		return _participantLocalService;
 	}
 
 	/**
-	 * @deprecated Renamed to {@link #setWrappedService}
+	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
 	public void setWrappedParticipantLocalService(
 		ParticipantLocalService participantLocalService) {
 		_participantLocalService = participantLocalService;
 	}
 
+	@Override
 	public ParticipantLocalService getWrappedService() {
 		return _participantLocalService;
 	}
 
+	@Override
 	public void setWrappedService(
 		ParticipantLocalService participantLocalService) {
 		_participantLocalService = participantLocalService;

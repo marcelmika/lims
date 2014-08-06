@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -61,7 +61,7 @@ public class ParticipantUtil {
 	/**
 	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
-	public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+	public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
 		throws SystemException {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
@@ -95,99 +95,19 @@ public class ParticipantUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
 	 */
-	public static Participant update(Participant participant, boolean merge)
+	public static Participant update(Participant participant)
 		throws SystemException {
-		return getPersistence().update(participant, merge);
+		return getPersistence().update(participant);
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
+	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
 	 */
-	public static Participant update(Participant participant, boolean merge,
+	public static Participant update(Participant participant,
 		ServiceContext serviceContext) throws SystemException {
-		return getPersistence().update(participant, merge, serviceContext);
-	}
-
-	/**
-	* Caches the participant in the entity cache if it is enabled.
-	*
-	* @param participant the participant
-	*/
-	public static void cacheResult(
-		com.marcelmika.lims.persistence.generated.model.Participant participant) {
-		getPersistence().cacheResult(participant);
-	}
-
-	/**
-	* Caches the participants in the entity cache if it is enabled.
-	*
-	* @param participants the participants
-	*/
-	public static void cacheResult(
-		java.util.List<com.marcelmika.lims.persistence.generated.model.Participant> participants) {
-		getPersistence().cacheResult(participants);
-	}
-
-	/**
-	* Creates a new participant with the primary key. Does not add the participant to the database.
-	*
-	* @param pid the primary key for the new participant
-	* @return the new participant
-	*/
-	public static com.marcelmika.lims.persistence.generated.model.Participant create(
-		long pid) {
-		return getPersistence().create(pid);
-	}
-
-	/**
-	* Removes the participant with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param pid the primary key of the participant
-	* @return the participant that was removed
-	* @throws com.marcelmika.lims.persistence.generated.NoSuchParticipantException if a participant with the primary key could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public static com.marcelmika.lims.persistence.generated.model.Participant remove(
-		long pid)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.persistence.generated.NoSuchParticipantException {
-		return getPersistence().remove(pid);
-	}
-
-	public static com.marcelmika.lims.persistence.generated.model.Participant updateImpl(
-		com.marcelmika.lims.persistence.generated.model.Participant participant,
-		boolean merge)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getPersistence().updateImpl(participant, merge);
-	}
-
-	/**
-	* Returns the participant with the primary key or throws a {@link com.marcelmika.lims.persistence.generated.NoSuchParticipantException} if it could not be found.
-	*
-	* @param pid the primary key of the participant
-	* @return the participant
-	* @throws com.marcelmika.lims.persistence.generated.NoSuchParticipantException if a participant with the primary key could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public static com.marcelmika.lims.persistence.generated.model.Participant findByPrimaryKey(
-		long pid)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.persistence.generated.NoSuchParticipantException {
-		return getPersistence().findByPrimaryKey(pid);
-	}
-
-	/**
-	* Returns the participant with the primary key or returns <code>null</code> if it could not be found.
-	*
-	* @param pid the primary key of the participant
-	* @return the participant, or <code>null</code> if a participant with the primary key could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public static com.marcelmika.lims.persistence.generated.model.Participant fetchByPrimaryKey(
-		long pid) throws com.liferay.portal.kernel.exception.SystemException {
-		return getPersistence().fetchByPrimaryKey(pid);
+		return getPersistence().update(participant, serviceContext);
 	}
 
 	/**
@@ -206,7 +126,7 @@ public class ParticipantUtil {
 	* Returns a range of all the participants where cid = &#63;.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.ParticipantModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param cid the cid
@@ -225,7 +145,7 @@ public class ParticipantUtil {
 	* Returns an ordered range of all the participants where cid = &#63;.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.ParticipantModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param cid the cid
@@ -326,6 +246,29 @@ public class ParticipantUtil {
 	}
 
 	/**
+	* Removes all the participants where cid = &#63; from the database.
+	*
+	* @param cid the cid
+	* @throws SystemException if a system exception occurred
+	*/
+	public static void removeByCid(long cid)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		getPersistence().removeByCid(cid);
+	}
+
+	/**
+	* Returns the number of participants where cid = &#63;.
+	*
+	* @param cid the cid
+	* @return the number of matching participants
+	* @throws SystemException if a system exception occurred
+	*/
+	public static int countByCid(long cid)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getPersistence().countByCid(cid);
+	}
+
+	/**
 	* Returns the participant where cid = &#63; and participantId = &#63; or throws a {@link com.marcelmika.lims.persistence.generated.NoSuchParticipantException} if it could not be found.
 	*
 	* @param cid the cid
@@ -373,6 +316,34 @@ public class ParticipantUtil {
 	}
 
 	/**
+	* Removes the participant where cid = &#63; and participantId = &#63; from the database.
+	*
+	* @param cid the cid
+	* @param participantId the participant ID
+	* @return the participant that was removed
+	* @throws SystemException if a system exception occurred
+	*/
+	public static com.marcelmika.lims.persistence.generated.model.Participant removeByCidParticipantId(
+		long cid, long participantId)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.persistence.generated.NoSuchParticipantException {
+		return getPersistence().removeByCidParticipantId(cid, participantId);
+	}
+
+	/**
+	* Returns the number of participants where cid = &#63; and participantId = &#63;.
+	*
+	* @param cid the cid
+	* @param participantId the participant ID
+	* @return the number of matching participants
+	* @throws SystemException if a system exception occurred
+	*/
+	public static int countByCidParticipantId(long cid, long participantId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getPersistence().countByCidParticipantId(cid, participantId);
+	}
+
+	/**
 	* Returns all the participants where participantId = &#63; and isOpened = &#63;.
 	*
 	* @param participantId the participant ID
@@ -391,7 +362,7 @@ public class ParticipantUtil {
 	* Returns a range of all the participants where participantId = &#63; and isOpened = &#63;.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.ParticipantModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param participantId the participant ID
@@ -413,7 +384,7 @@ public class ParticipantUtil {
 	* Returns an ordered range of all the participants where participantId = &#63; and isOpened = &#63;.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.ParticipantModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param participantId the participant ID
@@ -531,6 +502,113 @@ public class ParticipantUtil {
 	}
 
 	/**
+	* Removes all the participants where participantId = &#63; and isOpened = &#63; from the database.
+	*
+	* @param participantId the participant ID
+	* @param isOpened the is opened
+	* @throws SystemException if a system exception occurred
+	*/
+	public static void removeByParticipantIdIsOpened(long participantId,
+		boolean isOpened)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		getPersistence().removeByParticipantIdIsOpened(participantId, isOpened);
+	}
+
+	/**
+	* Returns the number of participants where participantId = &#63; and isOpened = &#63;.
+	*
+	* @param participantId the participant ID
+	* @param isOpened the is opened
+	* @return the number of matching participants
+	* @throws SystemException if a system exception occurred
+	*/
+	public static int countByParticipantIdIsOpened(long participantId,
+		boolean isOpened)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getPersistence()
+				   .countByParticipantIdIsOpened(participantId, isOpened);
+	}
+
+	/**
+	* Caches the participant in the entity cache if it is enabled.
+	*
+	* @param participant the participant
+	*/
+	public static void cacheResult(
+		com.marcelmika.lims.persistence.generated.model.Participant participant) {
+		getPersistence().cacheResult(participant);
+	}
+
+	/**
+	* Caches the participants in the entity cache if it is enabled.
+	*
+	* @param participants the participants
+	*/
+	public static void cacheResult(
+		java.util.List<com.marcelmika.lims.persistence.generated.model.Participant> participants) {
+		getPersistence().cacheResult(participants);
+	}
+
+	/**
+	* Creates a new participant with the primary key. Does not add the participant to the database.
+	*
+	* @param pid the primary key for the new participant
+	* @return the new participant
+	*/
+	public static com.marcelmika.lims.persistence.generated.model.Participant create(
+		long pid) {
+		return getPersistence().create(pid);
+	}
+
+	/**
+	* Removes the participant with the primary key from the database. Also notifies the appropriate model listeners.
+	*
+	* @param pid the primary key of the participant
+	* @return the participant that was removed
+	* @throws com.marcelmika.lims.persistence.generated.NoSuchParticipantException if a participant with the primary key could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public static com.marcelmika.lims.persistence.generated.model.Participant remove(
+		long pid)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.persistence.generated.NoSuchParticipantException {
+		return getPersistence().remove(pid);
+	}
+
+	public static com.marcelmika.lims.persistence.generated.model.Participant updateImpl(
+		com.marcelmika.lims.persistence.generated.model.Participant participant)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getPersistence().updateImpl(participant);
+	}
+
+	/**
+	* Returns the participant with the primary key or throws a {@link com.marcelmika.lims.persistence.generated.NoSuchParticipantException} if it could not be found.
+	*
+	* @param pid the primary key of the participant
+	* @return the participant
+	* @throws com.marcelmika.lims.persistence.generated.NoSuchParticipantException if a participant with the primary key could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public static com.marcelmika.lims.persistence.generated.model.Participant findByPrimaryKey(
+		long pid)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.persistence.generated.NoSuchParticipantException {
+		return getPersistence().findByPrimaryKey(pid);
+	}
+
+	/**
+	* Returns the participant with the primary key or returns <code>null</code> if it could not be found.
+	*
+	* @param pid the primary key of the participant
+	* @return the participant, or <code>null</code> if a participant with the primary key could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public static com.marcelmika.lims.persistence.generated.model.Participant fetchByPrimaryKey(
+		long pid) throws com.liferay.portal.kernel.exception.SystemException {
+		return getPersistence().fetchByPrimaryKey(pid);
+	}
+
+	/**
 	* Returns all the participants.
 	*
 	* @return the participants
@@ -545,7 +623,7 @@ public class ParticipantUtil {
 	* Returns a range of all the participants.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.ParticipantModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of participants
@@ -563,7 +641,7 @@ public class ParticipantUtil {
 	* Returns an ordered range of all the participants.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.ParticipantModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of participants
@@ -580,45 +658,6 @@ public class ParticipantUtil {
 	}
 
 	/**
-	* Removes all the participants where cid = &#63; from the database.
-	*
-	* @param cid the cid
-	* @throws SystemException if a system exception occurred
-	*/
-	public static void removeByCid(long cid)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		getPersistence().removeByCid(cid);
-	}
-
-	/**
-	* Removes the participant where cid = &#63; and participantId = &#63; from the database.
-	*
-	* @param cid the cid
-	* @param participantId the participant ID
-	* @return the participant that was removed
-	* @throws SystemException if a system exception occurred
-	*/
-	public static com.marcelmika.lims.persistence.generated.model.Participant removeByCidParticipantId(
-		long cid, long participantId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.persistence.generated.NoSuchParticipantException {
-		return getPersistence().removeByCidParticipantId(cid, participantId);
-	}
-
-	/**
-	* Removes all the participants where participantId = &#63; and isOpened = &#63; from the database.
-	*
-	* @param participantId the participant ID
-	* @param isOpened the is opened
-	* @throws SystemException if a system exception occurred
-	*/
-	public static void removeByParticipantIdIsOpened(long participantId,
-		boolean isOpened)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		getPersistence().removeByParticipantIdIsOpened(participantId, isOpened);
-	}
-
-	/**
 	* Removes all the participants from the database.
 	*
 	* @throws SystemException if a system exception occurred
@@ -626,46 +665,6 @@ public class ParticipantUtil {
 	public static void removeAll()
 		throws com.liferay.portal.kernel.exception.SystemException {
 		getPersistence().removeAll();
-	}
-
-	/**
-	* Returns the number of participants where cid = &#63;.
-	*
-	* @param cid the cid
-	* @return the number of matching participants
-	* @throws SystemException if a system exception occurred
-	*/
-	public static int countByCid(long cid)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getPersistence().countByCid(cid);
-	}
-
-	/**
-	* Returns the number of participants where cid = &#63; and participantId = &#63;.
-	*
-	* @param cid the cid
-	* @param participantId the participant ID
-	* @return the number of matching participants
-	* @throws SystemException if a system exception occurred
-	*/
-	public static int countByCidParticipantId(long cid, long participantId)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getPersistence().countByCidParticipantId(cid, participantId);
-	}
-
-	/**
-	* Returns the number of participants where participantId = &#63; and isOpened = &#63;.
-	*
-	* @param participantId the participant ID
-	* @param isOpened the is opened
-	* @return the number of matching participants
-	* @throws SystemException if a system exception occurred
-	*/
-	public static int countByParticipantIdIsOpened(long participantId,
-		boolean isOpened)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getPersistence()
-				   .countByParticipantIdIsOpened(participantId, isOpened);
 	}
 
 	/**
@@ -692,7 +691,7 @@ public class ParticipantUtil {
 	}
 
 	/**
-	 * @deprecated
+	 * @deprecated As of 6.2.0
 	 */
 	public void setPersistence(ParticipantPersistence persistence) {
 	}

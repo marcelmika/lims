@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -39,26 +39,32 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 	public ParticipantClp() {
 	}
 
+	@Override
 	public Class<?> getModelClass() {
 		return Participant.class;
 	}
 
+	@Override
 	public String getModelClassName() {
 		return Participant.class.getName();
 	}
 
+	@Override
 	public long getPrimaryKey() {
 		return _pid;
 	}
 
+	@Override
 	public void setPrimaryKey(long primaryKey) {
 		setPid(primaryKey);
 	}
 
+	@Override
 	public Serializable getPrimaryKeyObj() {
-		return new Long(_pid);
+		return _pid;
 	}
 
+	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		setPrimaryKey(((Long)primaryKeyObj).longValue());
 	}
@@ -110,10 +116,12 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 		}
 	}
 
+	@Override
 	public long getPid() {
 		return _pid;
 	}
 
+	@Override
 	public void setPid(long pid) {
 		_pid = pid;
 
@@ -131,10 +139,12 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 		}
 	}
 
+	@Override
 	public long getCid() {
 		return _cid;
 	}
 
+	@Override
 	public void setCid(long cid) {
 		_cid = cid;
 
@@ -152,10 +162,12 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 		}
 	}
 
+	@Override
 	public long getParticipantId() {
 		return _participantId;
 	}
 
+	@Override
 	public void setParticipantId(long participantId) {
 		_participantId = participantId;
 
@@ -173,10 +185,12 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 		}
 	}
 
+	@Override
 	public int getUnreadMessagesCount() {
 		return _unreadMessagesCount;
 	}
 
+	@Override
 	public void setUnreadMessagesCount(int unreadMessagesCount) {
 		_unreadMessagesCount = unreadMessagesCount;
 
@@ -195,14 +209,17 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 		}
 	}
 
+	@Override
 	public boolean getIsOpened() {
 		return _isOpened;
 	}
 
+	@Override
 	public boolean isIsOpened() {
 		return _isOpened;
 	}
 
+	@Override
 	public void setIsOpened(boolean isOpened) {
 		_isOpened = isOpened;
 
@@ -269,6 +286,7 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 		return returnValue;
 	}
 
+	@Override
 	public void persist() throws SystemException {
 		if (this.isNew()) {
 			ParticipantLocalServiceUtil.addParticipant(this);
@@ -284,10 +302,6 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 			new Class[] { Participant.class }, new AutoEscapeBeanHandler(this));
 	}
 
-	public Participant toUnescapedModel() {
-		return this;
-	}
-
 	@Override
 	public Object clone() {
 		ParticipantClp clone = new ParticipantClp();
@@ -301,6 +315,7 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 		return clone;
 	}
 
+	@Override
 	public int compareTo(Participant participant) {
 		long primaryKey = participant.getPrimaryKey();
 
@@ -361,6 +376,7 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 		return sb.toString();
 	}
 
+	@Override
 	public String toXmlString() {
 		StringBundler sb = new StringBundler(19);
 

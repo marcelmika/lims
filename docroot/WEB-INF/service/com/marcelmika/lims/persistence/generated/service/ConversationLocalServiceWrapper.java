@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -17,12 +17,10 @@ package com.marcelmika.lims.persistence.generated.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link ConversationLocalService}.
- * </p>
+ * Provides a wrapper for {@link ConversationLocalService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       ConversationLocalService
+ * @author Brian Wing Shun Chan
+ * @see ConversationLocalService
  * @generated
  */
 public class ConversationLocalServiceWrapper implements ConversationLocalService,
@@ -39,6 +37,7 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 	* @return the conversation that was added
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Conversation addConversation(
 		com.marcelmika.lims.persistence.generated.model.Conversation conversation)
 		throws com.liferay.portal.kernel.exception.SystemException {
@@ -51,6 +50,7 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 	* @param cid the primary key for the new conversation
 	* @return the new conversation
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Conversation createConversation(
 		long cid) {
 		return _conversationLocalService.createConversation(cid);
@@ -64,6 +64,7 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 	* @throws PortalException if a conversation with the primary key could not be found
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Conversation deleteConversation(
 		long cid)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -78,12 +79,14 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 	* @return the conversation that was removed
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Conversation deleteConversation(
 		com.marcelmika.lims.persistence.generated.model.Conversation conversation)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return _conversationLocalService.deleteConversation(conversation);
 	}
 
+	@Override
 	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return _conversationLocalService.dynamicQuery();
 	}
@@ -95,6 +98,7 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 	* @return the matching rows
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	@SuppressWarnings("rawtypes")
 	public java.util.List dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
@@ -106,7 +110,7 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 	* Performs a dynamic query on the database and returns a range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.ConversationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -115,6 +119,7 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 	* @return the range of matching rows
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	@SuppressWarnings("rawtypes")
 	public java.util.List dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -126,7 +131,7 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.ConversationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -136,6 +141,7 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 	* @return the ordered range of matching rows
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	@SuppressWarnings("rawtypes")
 	public java.util.List dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -153,12 +159,31 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 	* @return the number of rows that match the dynamic query
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public long dynamicQueryCount(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return _conversationLocalService.dynamicQueryCount(dynamicQuery);
 	}
 
+	/**
+	* Returns the number of rows that match the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows that match the dynamic query
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _conversationLocalService.dynamicQueryCount(dynamicQuery,
+			projection);
+	}
+
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Conversation fetchConversation(
 		long cid) throws com.liferay.portal.kernel.exception.SystemException {
 		return _conversationLocalService.fetchConversation(cid);
@@ -172,6 +197,7 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 	* @throws PortalException if a conversation with the primary key could not be found
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Conversation getConversation(
 		long cid)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -179,6 +205,7 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 		return _conversationLocalService.getConversation(cid);
 	}
 
+	@Override
 	public com.liferay.portal.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -190,7 +217,7 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 	* Returns a range of all the conversations.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.ConversationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of conversations
@@ -198,6 +225,7 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 	* @return the range of conversations
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public java.util.List<com.marcelmika.lims.persistence.generated.model.Conversation> getConversations(
 		int start, int end)
 		throws com.liferay.portal.kernel.exception.SystemException {
@@ -210,6 +238,7 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 	* @return the number of conversations
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public int getConversationsCount()
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return _conversationLocalService.getConversationsCount();
@@ -222,6 +251,7 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 	* @return the conversation that was updated
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Conversation updateConversation(
 		com.marcelmika.lims.persistence.generated.model.Conversation conversation)
 		throws com.liferay.portal.kernel.exception.SystemException {
@@ -229,25 +259,11 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 	}
 
 	/**
-	* Updates the conversation in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param conversation the conversation
-	* @param merge whether to merge the conversation with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-	* @return the conversation that was updated
-	* @throws SystemException if a system exception occurred
-	*/
-	public com.marcelmika.lims.persistence.generated.model.Conversation updateConversation(
-		com.marcelmika.lims.persistence.generated.model.Conversation conversation,
-		boolean merge)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return _conversationLocalService.updateConversation(conversation, merge);
-	}
-
-	/**
 	* Returns the Spring bean ID for this bean.
 	*
 	* @return the Spring bean ID for this bean
 	*/
+	@Override
 	public java.lang.String getBeanIdentifier() {
 		return _conversationLocalService.getBeanIdentifier();
 	}
@@ -257,10 +273,12 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 	*
 	* @param beanIdentifier the Spring bean ID for this bean
 	*/
+	@Override
 	public void setBeanIdentifier(java.lang.String beanIdentifier) {
 		_conversationLocalService.setBeanIdentifier(beanIdentifier);
 	}
 
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -268,6 +286,7 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 			arguments);
 	}
 
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Conversation addConversation(
 		java.lang.String conversationId, java.lang.String conversationType)
 		throws com.liferay.portal.kernel.exception.SystemException {
@@ -275,36 +294,40 @@ public class ConversationLocalServiceWrapper implements ConversationLocalService
 			conversationType);
 	}
 
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Conversation getConversation(
 		java.lang.String conversationId)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return _conversationLocalService.getConversation(conversationId);
 	}
 
+	@Override
 	public void updateConversationTimestamp(long cid)
 		throws java.lang.Exception {
 		_conversationLocalService.updateConversationTimestamp(cid);
 	}
 
 	/**
-	 * @deprecated Renamed to {@link #getWrappedService}
+	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
 	public ConversationLocalService getWrappedConversationLocalService() {
 		return _conversationLocalService;
 	}
 
 	/**
-	 * @deprecated Renamed to {@link #setWrappedService}
+	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
 	public void setWrappedConversationLocalService(
 		ConversationLocalService conversationLocalService) {
 		_conversationLocalService = conversationLocalService;
 	}
 
+	@Override
 	public ConversationLocalService getWrappedService() {
 		return _conversationLocalService;
 	}
 
+	@Override
 	public void setWrappedService(
 		ConversationLocalService conversationLocalService) {
 		_conversationLocalService = conversationLocalService;

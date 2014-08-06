@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -17,12 +17,10 @@ package com.marcelmika.lims.persistence.generated.service;
 import com.liferay.portal.service.ServiceWrapper;
 
 /**
- * <p>
- * This class is a wrapper for {@link SettingsLocalService}.
- * </p>
+ * Provides a wrapper for {@link SettingsLocalService}.
  *
- * @author    Brian Wing Shun Chan
- * @see       SettingsLocalService
+ * @author Brian Wing Shun Chan
+ * @see SettingsLocalService
  * @generated
  */
 public class SettingsLocalServiceWrapper implements SettingsLocalService,
@@ -39,6 +37,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @return the settings that was added
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Settings addSettings(
 		com.marcelmika.lims.persistence.generated.model.Settings settings)
 		throws com.liferay.portal.kernel.exception.SystemException {
@@ -51,6 +50,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @param sid the primary key for the new settings
 	* @return the new settings
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Settings createSettings(
 		long sid) {
 		return _settingsLocalService.createSettings(sid);
@@ -64,6 +64,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @throws PortalException if a settings with the primary key could not be found
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Settings deleteSettings(
 		long sid)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -78,12 +79,14 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @return the settings that was removed
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Settings deleteSettings(
 		com.marcelmika.lims.persistence.generated.model.Settings settings)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return _settingsLocalService.deleteSettings(settings);
 	}
 
+	@Override
 	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return _settingsLocalService.dynamicQuery();
 	}
@@ -95,6 +98,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @return the matching rows
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	@SuppressWarnings("rawtypes")
 	public java.util.List dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
@@ -106,7 +110,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* Performs a dynamic query on the database and returns a range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.SettingsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -115,6 +119,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @return the range of matching rows
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	@SuppressWarnings("rawtypes")
 	public java.util.List dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -126,7 +131,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.SettingsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -136,6 +141,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @return the ordered range of matching rows
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	@SuppressWarnings("rawtypes")
 	public java.util.List dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
@@ -153,12 +159,30 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @return the number of rows that match the dynamic query
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public long dynamicQueryCount(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return _settingsLocalService.dynamicQueryCount(dynamicQuery);
 	}
 
+	/**
+	* Returns the number of rows that match the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows that match the dynamic query
+	* @throws SystemException if a system exception occurred
+	*/
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _settingsLocalService.dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Settings fetchSettings(
 		long sid) throws com.liferay.portal.kernel.exception.SystemException {
 		return _settingsLocalService.fetchSettings(sid);
@@ -172,6 +196,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @throws PortalException if a settings with the primary key could not be found
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Settings getSettings(
 		long sid)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -179,6 +204,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 		return _settingsLocalService.getSettings(sid);
 	}
 
+	@Override
 	public com.liferay.portal.model.PersistedModel getPersistedModel(
 		java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -190,7 +216,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* Returns a range of all the settingses.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.SettingsModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of settingses
@@ -198,6 +224,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @return the range of settingses
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public java.util.List<com.marcelmika.lims.persistence.generated.model.Settings> getSettingses(
 		int start, int end)
 		throws com.liferay.portal.kernel.exception.SystemException {
@@ -210,6 +237,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @return the number of settingses
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public int getSettingsesCount()
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return _settingsLocalService.getSettingsesCount();
@@ -222,6 +250,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @return the settings that was updated
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Settings updateSettings(
 		com.marcelmika.lims.persistence.generated.model.Settings settings)
 		throws com.liferay.portal.kernel.exception.SystemException {
@@ -229,25 +258,11 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	}
 
 	/**
-	* Updates the settings in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param settings the settings
-	* @param merge whether to merge the settings with the current session. See {@link com.liferay.portal.service.persistence.BatchSession#update(com.liferay.portal.kernel.dao.orm.Session, com.liferay.portal.model.BaseModel, boolean)} for an explanation.
-	* @return the settings that was updated
-	* @throws SystemException if a system exception occurred
-	*/
-	public com.marcelmika.lims.persistence.generated.model.Settings updateSettings(
-		com.marcelmika.lims.persistence.generated.model.Settings settings,
-		boolean merge)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return _settingsLocalService.updateSettings(settings, merge);
-	}
-
-	/**
 	* Returns the Spring bean ID for this bean.
 	*
 	* @return the Spring bean ID for this bean
 	*/
+	@Override
 	public java.lang.String getBeanIdentifier() {
 		return _settingsLocalService.getBeanIdentifier();
 	}
@@ -257,10 +272,12 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	*
 	* @param beanIdentifier the Spring bean ID for this bean
 	*/
+	@Override
 	public void setBeanIdentifier(java.lang.String beanIdentifier) {
 		_settingsLocalService.setBeanIdentifier(beanIdentifier);
 	}
 
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -275,6 +292,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @return Settings
 	* @throws Exception
 	*/
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Settings getSettingsByUser(
 		long userId) throws java.lang.Exception {
 		return _settingsLocalService.getSettingsByUser(userId);
@@ -283,10 +301,11 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	/**
 	* Updates user presence
 	*
-	* @param userId id of the user whose status should be updated
+	* @param userId id of the user whose presence should be updated
 	* @param presence new value of the presence
 	* @throws Exception
 	*/
+	@Override
 	public void changePresence(long userId, java.lang.String presence)
 		throws java.lang.Exception {
 		_settingsLocalService.changePresence(userId, presence);
@@ -300,6 +319,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @param enabled if set to true the chat will be enabled. If set to false it will be disabled.
 	* @throws Exception
 	*/
+	@Override
 	public void setChatEnabled(long userId, boolean enabled)
 		throws java.lang.Exception {
 		_settingsLocalService.setChatEnabled(userId, enabled);
@@ -315,6 +335,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @return List of objects where each object contains user info
 	* @throws Exception
 	*/
+	@Override
 	public java.util.List<java.lang.Object[]> getAllGroups(
 		java.lang.Long userId, boolean ignoreDefaultUser, int start, int end)
 		throws java.lang.Exception {
@@ -333,6 +354,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @return List of objects where each object contains group name and user info
 	* @throws Exception
 	*/
+	@Override
 	public java.util.List<java.lang.Object[]> getSitesGroups(
 		java.lang.Long userId, boolean ignoreDefaultUser,
 		java.lang.String[] excludedSties, int start, int end)
@@ -352,6 +374,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @return List objects where each object contains relation type and user info
 	* @throws Exception
 	*/
+	@Override
 	public java.util.List<java.lang.Object[]> getSocialGroups(
 		java.lang.Long userId, boolean ignoreDefaultUser, int[] relationTypes,
 		int start, int end) throws java.lang.Exception {
@@ -360,24 +383,26 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	}
 
 	/**
-	 * @deprecated Renamed to {@link #getWrappedService}
+	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
 	public SettingsLocalService getWrappedSettingsLocalService() {
 		return _settingsLocalService;
 	}
 
 	/**
-	 * @deprecated Renamed to {@link #setWrappedService}
+	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
 	public void setWrappedSettingsLocalService(
 		SettingsLocalService settingsLocalService) {
 		_settingsLocalService = settingsLocalService;
 	}
 
+	@Override
 	public SettingsLocalService getWrappedService() {
 		return _settingsLocalService;
 	}
 
+	@Override
 	public void setWrappedService(SettingsLocalService settingsLocalService) {
 		_settingsLocalService = settingsLocalService;
 	}

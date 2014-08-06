@@ -8,7 +8,7 @@
 
     <portlet>
         <portlet-name>1</portlet-name>
-        <display-name>Liferay IMS</display-name>
+        <display-name>LIMS</display-name>
         <portlet-class>com.marcelmika.lims.portal.portlet.LIMSPortlet</portlet-class>
         <init-param>
             <name>view-jsp</name>

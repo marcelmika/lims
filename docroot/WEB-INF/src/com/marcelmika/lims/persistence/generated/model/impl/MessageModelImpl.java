@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -85,32 +85,39 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 			true);
 	public static long CID_COLUMN_BITMASK = 1L;
 	public static long CREATORID_COLUMN_BITMASK = 2L;
+	public static long CREATEDAT_COLUMN_BITMASK = 4L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
 				"lock.expiration.time.com.marcelmika.lims.persistence.generated.model.Message"));
 
 	public MessageModelImpl() {
 	}
 
+	@Override
 	public long getPrimaryKey() {
 		return _mid;
 	}
 
+	@Override
 	public void setPrimaryKey(long primaryKey) {
 		setMid(primaryKey);
 	}
 
+	@Override
 	public Serializable getPrimaryKeyObj() {
-		return new Long(_mid);
+		return _mid;
 	}
 
+	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		setPrimaryKey(((Long)primaryKeyObj).longValue());
 	}
 
+	@Override
 	public Class<?> getModelClass() {
 		return Message.class;
 	}
 
+	@Override
 	public String getModelClassName() {
 		return Message.class.getName();
 	}
@@ -168,18 +175,22 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		}
 	}
 
+	@Override
 	public long getMid() {
 		return _mid;
 	}
 
+	@Override
 	public void setMid(long mid) {
 		_mid = mid;
 	}
 
+	@Override
 	public long getCid() {
 		return _cid;
 	}
 
+	@Override
 	public void setCid(long cid) {
 		_columnBitmask |= CID_COLUMN_BITMASK;
 
@@ -196,10 +207,12 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		return _originalCid;
 	}
 
+	@Override
 	public long getCreatorId() {
 		return _creatorId;
 	}
 
+	@Override
 	public void setCreatorId(long creatorId) {
 		_columnBitmask |= CREATORID_COLUMN_BITMASK;
 
@@ -216,16 +229,19 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		return _originalCreatorId;
 	}
 
+	@Override
 	public Date getCreatedAt() {
 		return _createdAt;
 	}
 
+	@Override
 	public void setCreatedAt(Date createdAt) {
 		_columnBitmask = -1L;
 
 		_createdAt = createdAt;
 	}
 
+	@Override
 	public String getMessageHash() {
 		if (_messageHash == null) {
 			return StringPool.BLANK;
@@ -235,10 +251,12 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		}
 	}
 
+	@Override
 	public void setMessageHash(String messageHash) {
 		_messageHash = messageHash;
 	}
 
+	@Override
 	public String getBody() {
 		if (_body == null) {
 			return StringPool.BLANK;
@@ -248,6 +266,7 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		}
 	}
 
+	@Override
 	public void setBody(String body) {
 		_body = body;
 	}
@@ -279,10 +298,6 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		return _escapedModel;
 	}
 
-	public Message toUnescapedModel() {
-		return (Message)this;
-	}
-
 	@Override
 	public Object clone() {
 		MessageImpl messageImpl = new MessageImpl();
@@ -299,6 +314,7 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		return messageImpl;
 	}
 
+	@Override
 	public int compareTo(Message message) {
 		int value = 0;
 
@@ -412,6 +428,7 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		return sb.toString();
 	}
 
+	@Override
 	public String toXmlString() {
 		StringBundler sb = new StringBundler(22);
 

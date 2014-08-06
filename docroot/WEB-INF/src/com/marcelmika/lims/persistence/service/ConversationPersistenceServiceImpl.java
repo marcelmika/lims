@@ -47,8 +47,8 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             // Save conversation
             com.marcelmika.lims.persistence.generated.model.Conversation conversationModel =
                     ConversationLocalServiceUtil.addConversation(
-                    conversation.getConversationId(), conversation.getConversationType().toString()
-            );
+                            conversation.getConversationId(), conversation.getConversationType().toString()
+                    );
 
             // Add participants to response
             List<Buddy> participants = conversation.getParticipants();
@@ -97,8 +97,8 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             // Find conversation
             com.marcelmika.lims.persistence.generated.model.Conversation conversationModel =
                     ConversationLocalServiceUtil.getConversation(
-                    conversation.getConversationId()
-            );
+                            conversation.getConversationId()
+                    );
 
             // No such conversation was found
             if (conversationModel == null) {
@@ -127,8 +127,8 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             // Get participant
             com.marcelmika.lims.persistence.generated.model.Participant participant =
                     ParticipantLocalServiceUtil.getParticipant(
-                    conversationModel.getCid(), event.getParticipant().getBuddyId()
-            );
+                            conversationModel.getCid(), event.getParticipant().getBuddyId()
+                    );
             // Add to conversation
             conversation.setUnreadMessagesCount(participant.getUnreadMessagesCount());
 

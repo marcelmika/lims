@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -19,7 +19,10 @@ import com.liferay.portal.model.CacheModel;
 
 import com.marcelmika.lims.persistence.generated.model.Participant;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 /**
  * The cache model class for representing Participant in entity cache.
@@ -29,7 +32,7 @@ import java.io.Serializable;
  * @generated
  */
 public class ParticipantCacheModel implements CacheModel<Participant>,
-	Serializable {
+	Externalizable {
 	@Override
 	public String toString() {
 		StringBundler sb = new StringBundler(11);
@@ -49,6 +52,7 @@ public class ParticipantCacheModel implements CacheModel<Participant>,
 		return sb.toString();
 	}
 
+	@Override
 	public Participant toEntityModel() {
 		ParticipantImpl participantImpl = new ParticipantImpl();
 
@@ -61,6 +65,25 @@ public class ParticipantCacheModel implements CacheModel<Participant>,
 		participantImpl.resetOriginalValues();
 
 		return participantImpl;
+	}
+
+	@Override
+	public void readExternal(ObjectInput objectInput) throws IOException {
+		pid = objectInput.readLong();
+		cid = objectInput.readLong();
+		participantId = objectInput.readLong();
+		unreadMessagesCount = objectInput.readInt();
+		isOpened = objectInput.readBoolean();
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput objectOutput)
+		throws IOException {
+		objectOutput.writeLong(pid);
+		objectOutput.writeLong(cid);
+		objectOutput.writeLong(participantId);
+		objectOutput.writeInt(unreadMessagesCount);
+		objectOutput.writeBoolean(isOpened);
 	}
 
 	public long pid;

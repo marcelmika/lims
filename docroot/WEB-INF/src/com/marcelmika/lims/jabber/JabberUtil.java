@@ -2,7 +2,6 @@
 package com.marcelmika.lims.jabber;
 
 import com.marcelmika.lims.jabber.domain.Conversation;
-import com.marcelmika.lims.model.Buddy;
 
 import java.util.List;
 
@@ -53,30 +52,30 @@ public class JabberUtil {
     /**
      * @done
      */
-    public static Conversation createConversation(long userId, List<Buddy> participants, String message) throws Exception {
-        Conversation conversation;
-        // Single user conversation
-        if (participants.size() == 1) {
-            // @todo: This is not going to be in v0.2 version, so just do the multi user anyway
-            conversation = getJabber().createMUConversation(userId, participants, message, null);
-            // conversation = getJabber().createSUConversation(userId, participants, message);
-        }
-        // Multi user conversation
-        else if (participants.size() > 1) {
-            conversation = getJabber().createMUConversation(userId, participants, message, null);
-        } else {
-            throw new Exception("Unknown number of participants");
-        }
-
-        return conversation;
-    }
+//    public static Conversation createConversation(long userId, List<Buddy> participants, String message) throws Exception {
+//        Conversation conversation;
+//        // Single user conversation
+//        if (participants.size() == 1) {
+//            // @todo: This is not going to be in v0.2 version, so just do the multi user anyway
+////            conversation = getJabber().createMUConversation(userId, participants, message, null);
+//            // conversation = getJabber().createSUConversation(userId, participants, message);
+//        }
+//        // Multi user conversation
+//        else if (participants.size() > 1) {
+////            conversation = getJabber().createMUConversation(userId, participants, message, null);
+//        } else {
+//            throw new Exception("Unknown number of participants");
+//        }
+//
+//        return null;
+//    }
 
     /**
      * @done
      */
-    public static void addParticipants(long userId, Conversation conversation, List<Buddy> participants) throws Exception {
-        getJabber().addParticipants(userId, conversation, participants, null);
-    }
+//    public static void addParticipants(long userId, Conversation conversation, List<Buddy> participants) throws Exception {
+////        getJabber().addParticipants(userId, conversation, participants, null);
+//    }
 
     /**
      * @done

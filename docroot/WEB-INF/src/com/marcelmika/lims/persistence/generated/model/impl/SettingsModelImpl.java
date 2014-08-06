@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -68,6 +68,8 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		};
 	public static final String TABLE_SQL_CREATE = "create table lims_Settings (sid LONG not null primary key,userId LONG,presence VARCHAR(75) null,mute BOOLEAN,chatEnabled BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table lims_Settings";
+	public static final String ORDER_BY_JPQL = " ORDER BY settings.sid ASC";
+	public static final String ORDER_BY_SQL = " ORDER BY lims_Settings.sid ASC";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
@@ -82,32 +84,39 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 			true);
 	public static long PRESENCE_COLUMN_BITMASK = 1L;
 	public static long USERID_COLUMN_BITMASK = 2L;
+	public static long SID_COLUMN_BITMASK = 4L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
 				"lock.expiration.time.com.marcelmika.lims.persistence.generated.model.Settings"));
 
 	public SettingsModelImpl() {
 	}
 
+	@Override
 	public long getPrimaryKey() {
 		return _sid;
 	}
 
+	@Override
 	public void setPrimaryKey(long primaryKey) {
 		setSid(primaryKey);
 	}
 
+	@Override
 	public Serializable getPrimaryKeyObj() {
-		return new Long(_sid);
+		return _sid;
 	}
 
+	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		setPrimaryKey(((Long)primaryKeyObj).longValue());
 	}
 
+	@Override
 	public Class<?> getModelClass() {
 		return Settings.class;
 	}
 
+	@Override
 	public String getModelClassName() {
 		return Settings.class.getName();
 	}
@@ -158,18 +167,22 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		}
 	}
 
+	@Override
 	public long getSid() {
 		return _sid;
 	}
 
+	@Override
 	public void setSid(long sid) {
 		_sid = sid;
 	}
 
+	@Override
 	public long getUserId() {
 		return _userId;
 	}
 
+	@Override
 	public void setUserId(long userId) {
 		_columnBitmask |= USERID_COLUMN_BITMASK;
 
@@ -182,10 +195,12 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		_userId = userId;
 	}
 
+	@Override
 	public String getUserUuid() throws SystemException {
 		return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
 	}
 
+	@Override
 	public void setUserUuid(String userUuid) {
 		_userUuid = userUuid;
 	}
@@ -194,6 +209,7 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		return _originalUserId;
 	}
 
+	@Override
 	public String getPresence() {
 		if (_presence == null) {
 			return StringPool.BLANK;
@@ -203,6 +219,7 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		}
 	}
 
+	@Override
 	public void setPresence(String presence) {
 		_columnBitmask |= PRESENCE_COLUMN_BITMASK;
 
@@ -217,26 +234,32 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		return GetterUtil.getString(_originalPresence);
 	}
 
+	@Override
 	public boolean getMute() {
 		return _mute;
 	}
 
+	@Override
 	public boolean isMute() {
 		return _mute;
 	}
 
+	@Override
 	public void setMute(boolean mute) {
 		_mute = mute;
 	}
 
+	@Override
 	public boolean getChatEnabled() {
 		return _chatEnabled;
 	}
 
+	@Override
 	public boolean isChatEnabled() {
 		return _chatEnabled;
 	}
 
+	@Override
 	public void setChatEnabled(boolean chatEnabled) {
 		_chatEnabled = chatEnabled;
 	}
@@ -268,10 +291,6 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		return _escapedModel;
 	}
 
-	public Settings toUnescapedModel() {
-		return (Settings)this;
-	}
-
 	@Override
 	public Object clone() {
 		SettingsImpl settingsImpl = new SettingsImpl();
@@ -287,6 +306,7 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		return settingsImpl;
 	}
 
+	@Override
 	public int compareTo(Settings settings) {
 		long primaryKey = settings.getPrimaryKey();
 
@@ -383,6 +403,7 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		return sb.toString();
 	}
 
+	@Override
 	public String toXmlString() {
 		StringBundler sb = new StringBundler(19);
 

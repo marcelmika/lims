@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -40,26 +40,32 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 	public ConversationClp() {
 	}
 
+	@Override
 	public Class<?> getModelClass() {
 		return Conversation.class;
 	}
 
+	@Override
 	public String getModelClassName() {
 		return Conversation.class.getName();
 	}
 
+	@Override
 	public long getPrimaryKey() {
 		return _cid;
 	}
 
+	@Override
 	public void setPrimaryKey(long primaryKey) {
 		setCid(primaryKey);
 	}
 
+	@Override
 	public Serializable getPrimaryKeyObj() {
-		return new Long(_cid);
+		return _cid;
 	}
 
+	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		setPrimaryKey(((Long)primaryKeyObj).longValue());
 	}
@@ -103,10 +109,12 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 		}
 	}
 
+	@Override
 	public long getCid() {
 		return _cid;
 	}
 
+	@Override
 	public void setCid(long cid) {
 		_cid = cid;
 
@@ -124,10 +132,12 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 		}
 	}
 
+	@Override
 	public String getConversationId() {
 		return _conversationId;
 	}
 
+	@Override
 	public void setConversationId(String conversationId) {
 		_conversationId = conversationId;
 
@@ -146,10 +156,12 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 		}
 	}
 
+	@Override
 	public String getConversationType() {
 		return _conversationType;
 	}
 
+	@Override
 	public void setConversationType(String conversationType) {
 		_conversationType = conversationType;
 
@@ -168,10 +180,12 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 		}
 	}
 
+	@Override
 	public Date getUpdatedAt() {
 		return _updatedAt;
 	}
 
+	@Override
 	public void setUpdatedAt(Date updatedAt) {
 		_updatedAt = updatedAt;
 
@@ -238,6 +252,7 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 		return returnValue;
 	}
 
+	@Override
 	public void persist() throws SystemException {
 		if (this.isNew()) {
 			ConversationLocalServiceUtil.addConversation(this);
@@ -253,10 +268,6 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 			new Class[] { Conversation.class }, new AutoEscapeBeanHandler(this));
 	}
 
-	public Conversation toUnescapedModel() {
-		return this;
-	}
-
 	@Override
 	public Object clone() {
 		ConversationClp clone = new ConversationClp();
@@ -269,6 +280,7 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 		return clone;
 	}
 
+	@Override
 	public int compareTo(Conversation conversation) {
 		long primaryKey = conversation.getPrimaryKey();
 
@@ -327,6 +339,7 @@ public class ConversationClp extends BaseModelImpl<Conversation>
 		return sb.toString();
 	}
 
+	@Override
 	public String toXmlString() {
 		StringBundler sb = new StringBundler(16);
 

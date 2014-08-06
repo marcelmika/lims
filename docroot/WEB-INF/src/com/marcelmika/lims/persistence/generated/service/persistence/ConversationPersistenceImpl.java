@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -14,8 +14,6 @@
 
 package com.marcelmika.lims.persistence.generated.service.persistence;
 
-import com.liferay.portal.NoSuchModelException;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -35,12 +33,10 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
-import com.liferay.portal.service.persistence.BatchSessionUtil;
-import com.liferay.portal.service.persistence.ResourcePersistence;
-import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import com.marcelmika.lims.persistence.generated.NoSuchConversationException;
@@ -78,15 +74,6 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 		".List1";
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
 		".List2";
-	public static final FinderPath FINDER_PATH_FETCH_BY_CONVERSATIONID = new FinderPath(ConversationModelImpl.ENTITY_CACHE_ENABLED,
-			ConversationModelImpl.FINDER_CACHE_ENABLED, ConversationImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByConversationId",
-			new String[] { String.class.getName() },
-			ConversationModelImpl.CONVERSATIONID_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_CONVERSATIONID = new FinderPath(ConversationModelImpl.ENTITY_CACHE_ENABLED,
-			ConversationModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByConversationId",
-			new String[] { String.class.getName() });
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(ConversationModelImpl.ENTITY_CACHE_ENABLED,
 			ConversationModelImpl.FINDER_CACHE_ENABLED, ConversationImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
@@ -96,12 +83,269 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(ConversationModelImpl.ENTITY_CACHE_ENABLED,
 			ConversationModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final FinderPath FINDER_PATH_FETCH_BY_CONVERSATIONID = new FinderPath(ConversationModelImpl.ENTITY_CACHE_ENABLED,
+			ConversationModelImpl.FINDER_CACHE_ENABLED, ConversationImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByConversationId",
+			new String[] { String.class.getName() },
+			ConversationModelImpl.CONVERSATIONID_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_CONVERSATIONID = new FinderPath(ConversationModelImpl.ENTITY_CACHE_ENABLED,
+			ConversationModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByConversationId",
+			new String[] { String.class.getName() });
+
+	/**
+	 * Returns the conversation where conversationId = &#63; or throws a {@link com.marcelmika.lims.persistence.generated.NoSuchConversationException} if it could not be found.
+	 *
+	 * @param conversationId the conversation ID
+	 * @return the matching conversation
+	 * @throws com.marcelmika.lims.persistence.generated.NoSuchConversationException if a matching conversation could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public Conversation findByConversationId(String conversationId)
+		throws NoSuchConversationException, SystemException {
+		Conversation conversation = fetchByConversationId(conversationId);
+
+		if (conversation == null) {
+			StringBundler msg = new StringBundler(4);
+
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			msg.append("conversationId=");
+			msg.append(conversationId);
+
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+			if (_log.isWarnEnabled()) {
+				_log.warn(msg.toString());
+			}
+
+			throw new NoSuchConversationException(msg.toString());
+		}
+
+		return conversation;
+	}
+
+	/**
+	 * Returns the conversation where conversationId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param conversationId the conversation ID
+	 * @return the matching conversation, or <code>null</code> if a matching conversation could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public Conversation fetchByConversationId(String conversationId)
+		throws SystemException {
+		return fetchByConversationId(conversationId, true);
+	}
+
+	/**
+	 * Returns the conversation where conversationId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param conversationId the conversation ID
+	 * @param retrieveFromCache whether to use the finder cache
+	 * @return the matching conversation, or <code>null</code> if a matching conversation could not be found
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public Conversation fetchByConversationId(String conversationId,
+		boolean retrieveFromCache) throws SystemException {
+		Object[] finderArgs = new Object[] { conversationId };
+
+		Object result = null;
+
+		if (retrieveFromCache) {
+			result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_CONVERSATIONID,
+					finderArgs, this);
+		}
+
+		if (result instanceof Conversation) {
+			Conversation conversation = (Conversation)result;
+
+			if (!Validator.equals(conversationId,
+						conversation.getConversationId())) {
+				result = null;
+			}
+		}
+
+		if (result == null) {
+			StringBundler query = new StringBundler(3);
+
+			query.append(_SQL_SELECT_CONVERSATION_WHERE);
+
+			boolean bindConversationId = false;
+
+			if (conversationId == null) {
+				query.append(_FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_1);
+			}
+			else if (conversationId.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_3);
+			}
+			else {
+				bindConversationId = true;
+
+				query.append(_FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_2);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (bindConversationId) {
+					qPos.add(conversationId);
+				}
+
+				List<Conversation> list = q.list();
+
+				if (list.isEmpty()) {
+					FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONVERSATIONID,
+						finderArgs, list);
+				}
+				else {
+					if ((list.size() > 1) && _log.isWarnEnabled()) {
+						_log.warn(
+							"ConversationPersistenceImpl.fetchByConversationId(String, boolean) with parameters (" +
+							StringUtil.merge(finderArgs) +
+							") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+					}
+
+					Conversation conversation = list.get(0);
+
+					result = conversation;
+
+					cacheResult(conversation);
+
+					if ((conversation.getConversationId() == null) ||
+							!conversation.getConversationId()
+											 .equals(conversationId)) {
+						FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONVERSATIONID,
+							finderArgs, conversation);
+					}
+				}
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CONVERSATIONID,
+					finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		if (result instanceof List<?>) {
+			return null;
+		}
+		else {
+			return (Conversation)result;
+		}
+	}
+
+	/**
+	 * Removes the conversation where conversationId = &#63; from the database.
+	 *
+	 * @param conversationId the conversation ID
+	 * @return the conversation that was removed
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public Conversation removeByConversationId(String conversationId)
+		throws NoSuchConversationException, SystemException {
+		Conversation conversation = findByConversationId(conversationId);
+
+		return remove(conversation);
+	}
+
+	/**
+	 * Returns the number of conversations where conversationId = &#63;.
+	 *
+	 * @param conversationId the conversation ID
+	 * @return the number of matching conversations
+	 * @throws SystemException if a system exception occurred
+	 */
+	@Override
+	public int countByConversationId(String conversationId)
+		throws SystemException {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_CONVERSATIONID;
+
+		Object[] finderArgs = new Object[] { conversationId };
+
+		Long count = (Long)FinderCacheUtil.getResult(finderPath, finderArgs,
+				this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(2);
+
+			query.append(_SQL_COUNT_CONVERSATION_WHERE);
+
+			boolean bindConversationId = false;
+
+			if (conversationId == null) {
+				query.append(_FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_1);
+			}
+			else if (conversationId.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_3);
+			}
+			else {
+				bindConversationId = true;
+
+				query.append(_FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_2);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (bindConversationId) {
+					qPos.add(conversationId);
+				}
+
+				count = (Long)q.uniqueResult();
+
+				FinderCacheUtil.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_1 = "conversation.conversationId IS NULL";
+	private static final String _FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_2 = "conversation.conversationId = ?";
+	private static final String _FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_3 = "(conversation.conversationId IS NULL OR conversation.conversationId = '')";
+
+	public ConversationPersistenceImpl() {
+		setModelClass(Conversation.class);
+	}
 
 	/**
 	 * Caches the conversation in the entity cache if it is enabled.
 	 *
 	 * @param conversation the conversation
 	 */
+	@Override
 	public void cacheResult(Conversation conversation) {
 		EntityCacheUtil.putResult(ConversationModelImpl.ENTITY_CACHE_ENABLED,
 			ConversationImpl.class, conversation.getPrimaryKey(), conversation);
@@ -117,6 +361,7 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	 *
 	 * @param conversations the conversations
 	 */
+	@Override
 	public void cacheResult(List<Conversation> conversations) {
 		for (Conversation conversation : conversations) {
 			if (EntityCacheUtil.getResult(
@@ -232,6 +477,7 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	 * @param cid the primary key for the new conversation
 	 * @return the new conversation
 	 */
+	@Override
 	public Conversation create(long cid) {
 		Conversation conversation = new ConversationImpl();
 
@@ -249,9 +495,10 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	 * @throws com.marcelmika.lims.persistence.generated.NoSuchConversationException if a conversation with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public Conversation remove(long cid)
 		throws NoSuchConversationException, SystemException {
-		return remove(Long.valueOf(cid));
+		return remove((Serializable)cid);
 	}
 
 	/**
@@ -305,7 +552,14 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 		try {
 			session = openSession();
 
-			BatchSessionUtil.delete(session, conversation);
+			if (!session.contains(conversation)) {
+				conversation = (Conversation)session.get(ConversationImpl.class,
+						conversation.getPrimaryKeyObj());
+			}
+
+			if (conversation != null) {
+				session.delete(conversation);
+			}
 		}
 		catch (Exception e) {
 			throw processException(e);
@@ -314,15 +568,17 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 			closeSession(session);
 		}
 
-		clearCache(conversation);
+		if (conversation != null) {
+			clearCache(conversation);
+		}
 
 		return conversation;
 	}
 
 	@Override
 	public Conversation updateImpl(
-		com.marcelmika.lims.persistence.generated.model.Conversation conversation,
-		boolean merge) throws SystemException {
+		com.marcelmika.lims.persistence.generated.model.Conversation conversation)
+		throws SystemException {
 		conversation = toUnwrappedModel(conversation);
 
 		boolean isNew = conversation.isNew();
@@ -332,9 +588,14 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 		try {
 			session = openSession();
 
-			BatchSessionUtil.update(session, conversation, merge);
+			if (conversation.isNew()) {
+				session.save(conversation);
 
-			conversation.setNew(false);
+				conversation.setNew(false);
+			}
+			else {
+				session.merge(conversation);
+			}
 		}
 		catch (Exception e) {
 			throw processException(e);
@@ -381,13 +642,24 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	 *
 	 * @param primaryKey the primary key of the conversation
 	 * @return the conversation
-	 * @throws com.liferay.portal.NoSuchModelException if a conversation with the primary key could not be found
+	 * @throws com.marcelmika.lims.persistence.generated.NoSuchConversationException if a conversation with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
 	@Override
 	public Conversation findByPrimaryKey(Serializable primaryKey)
-		throws NoSuchModelException, SystemException {
-		return findByPrimaryKey(((Long)primaryKey).longValue());
+		throws NoSuchConversationException, SystemException {
+		Conversation conversation = fetchByPrimaryKey(primaryKey);
+
+		if (conversation == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
+			}
+
+			throw new NoSuchConversationException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
+				primaryKey);
+		}
+
+		return conversation;
 	}
 
 	/**
@@ -398,20 +670,10 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	 * @throws com.marcelmika.lims.persistence.generated.NoSuchConversationException if a conversation with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public Conversation findByPrimaryKey(long cid)
 		throws NoSuchConversationException, SystemException {
-		Conversation conversation = fetchByPrimaryKey(cid);
-
-		if (conversation == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + cid);
-			}
-
-			throw new NoSuchConversationException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				cid);
-		}
-
-		return conversation;
+		return findByPrimaryKey((Serializable)cid);
 	}
 
 	/**
@@ -424,7 +686,42 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	@Override
 	public Conversation fetchByPrimaryKey(Serializable primaryKey)
 		throws SystemException {
-		return fetchByPrimaryKey(((Long)primaryKey).longValue());
+		Conversation conversation = (Conversation)EntityCacheUtil.getResult(ConversationModelImpl.ENTITY_CACHE_ENABLED,
+				ConversationImpl.class, primaryKey);
+
+		if (conversation == _nullConversation) {
+			return null;
+		}
+
+		if (conversation == null) {
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				conversation = (Conversation)session.get(ConversationImpl.class,
+						primaryKey);
+
+				if (conversation != null) {
+					cacheResult(conversation);
+				}
+				else {
+					EntityCacheUtil.putResult(ConversationModelImpl.ENTITY_CACHE_ENABLED,
+						ConversationImpl.class, primaryKey, _nullConversation);
+				}
+			}
+			catch (Exception e) {
+				EntityCacheUtil.removeResult(ConversationModelImpl.ENTITY_CACHE_ENABLED,
+					ConversationImpl.class, primaryKey);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return conversation;
 	}
 
 	/**
@@ -434,195 +731,9 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	 * @return the conversation, or <code>null</code> if a conversation with the primary key could not be found
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public Conversation fetchByPrimaryKey(long cid) throws SystemException {
-		Conversation conversation = (Conversation)EntityCacheUtil.getResult(ConversationModelImpl.ENTITY_CACHE_ENABLED,
-				ConversationImpl.class, cid);
-
-		if (conversation == _nullConversation) {
-			return null;
-		}
-
-		if (conversation == null) {
-			Session session = null;
-
-			boolean hasException = false;
-
-			try {
-				session = openSession();
-
-				conversation = (Conversation)session.get(ConversationImpl.class,
-						Long.valueOf(cid));
-			}
-			catch (Exception e) {
-				hasException = true;
-
-				throw processException(e);
-			}
-			finally {
-				if (conversation != null) {
-					cacheResult(conversation);
-				}
-				else if (!hasException) {
-					EntityCacheUtil.putResult(ConversationModelImpl.ENTITY_CACHE_ENABLED,
-						ConversationImpl.class, cid, _nullConversation);
-				}
-
-				closeSession(session);
-			}
-		}
-
-		return conversation;
-	}
-
-	/**
-	 * Returns the conversation where conversationId = &#63; or throws a {@link com.marcelmika.lims.persistence.generated.NoSuchConversationException} if it could not be found.
-	 *
-	 * @param conversationId the conversation ID
-	 * @return the matching conversation
-	 * @throws com.marcelmika.lims.persistence.generated.NoSuchConversationException if a matching conversation could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Conversation findByConversationId(String conversationId)
-		throws NoSuchConversationException, SystemException {
-		Conversation conversation = fetchByConversationId(conversationId);
-
-		if (conversation == null) {
-			StringBundler msg = new StringBundler(4);
-
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-			msg.append("conversationId=");
-			msg.append(conversationId);
-
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-			if (_log.isWarnEnabled()) {
-				_log.warn(msg.toString());
-			}
-
-			throw new NoSuchConversationException(msg.toString());
-		}
-
-		return conversation;
-	}
-
-	/**
-	 * Returns the conversation where conversationId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	 *
-	 * @param conversationId the conversation ID
-	 * @return the matching conversation, or <code>null</code> if a matching conversation could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Conversation fetchByConversationId(String conversationId)
-		throws SystemException {
-		return fetchByConversationId(conversationId, true);
-	}
-
-	/**
-	 * Returns the conversation where conversationId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	 *
-	 * @param conversationId the conversation ID
-	 * @param retrieveFromCache whether to use the finder cache
-	 * @return the matching conversation, or <code>null</code> if a matching conversation could not be found
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Conversation fetchByConversationId(String conversationId,
-		boolean retrieveFromCache) throws SystemException {
-		Object[] finderArgs = new Object[] { conversationId };
-
-		Object result = null;
-
-		if (retrieveFromCache) {
-			result = FinderCacheUtil.getResult(FINDER_PATH_FETCH_BY_CONVERSATIONID,
-					finderArgs, this);
-		}
-
-		if (result instanceof Conversation) {
-			Conversation conversation = (Conversation)result;
-
-			if (!Validator.equals(conversationId,
-						conversation.getConversationId())) {
-				result = null;
-			}
-		}
-
-		if (result == null) {
-			StringBundler query = new StringBundler(2);
-
-			query.append(_SQL_SELECT_CONVERSATION_WHERE);
-
-			if (conversationId == null) {
-				query.append(_FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_1);
-			}
-			else {
-				if (conversationId.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_2);
-				}
-			}
-
-			String sql = query.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query q = session.createQuery(sql);
-
-				QueryPos qPos = QueryPos.getInstance(q);
-
-				if (conversationId != null) {
-					qPos.add(conversationId);
-				}
-
-				List<Conversation> list = q.list();
-
-				result = list;
-
-				Conversation conversation = null;
-
-				if (list.isEmpty()) {
-					FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONVERSATIONID,
-						finderArgs, list);
-				}
-				else {
-					conversation = list.get(0);
-
-					cacheResult(conversation);
-
-					if ((conversation.getConversationId() == null) ||
-							!conversation.getConversationId()
-											 .equals(conversationId)) {
-						FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CONVERSATIONID,
-							finderArgs, conversation);
-					}
-				}
-
-				return conversation;
-			}
-			catch (Exception e) {
-				throw processException(e);
-			}
-			finally {
-				if (result == null) {
-					FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CONVERSATIONID,
-						finderArgs);
-				}
-
-				closeSession(session);
-			}
-		}
-		else {
-			if (result instanceof List<?>) {
-				return null;
-			}
-			else {
-				return (Conversation)result;
-			}
-		}
+		return fetchByPrimaryKey((Serializable)cid);
 	}
 
 	/**
@@ -631,6 +742,7 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	 * @return the conversations
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public List<Conversation> findAll() throws SystemException {
 		return findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
@@ -639,7 +751,7 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	 * Returns a range of all the conversations.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.ConversationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of conversations
@@ -647,6 +759,7 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	 * @return the range of conversations
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public List<Conversation> findAll(int start, int end)
 		throws SystemException {
 		return findAll(start, end, null);
@@ -656,7 +769,7 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	 * Returns an ordered range of all the conversations.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.ConversationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of conversations
@@ -665,13 +778,16 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	 * @return the ordered range of conversations
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public List<Conversation> findAll(int start, int end,
 		OrderByComparator orderByComparator) throws SystemException {
+		boolean pagination = true;
 		FinderPath finderPath = null;
-		Object[] finderArgs = new Object[] { start, end, orderByComparator };
+		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 				(orderByComparator == null)) {
+			pagination = false;
 			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
 			finderArgs = FINDER_ARGS_EMPTY;
 		}
@@ -700,6 +816,10 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 			}
 			else {
 				sql = _SQL_SELECT_CONVERSATION;
+
+				if (pagination) {
+					sql = sql.concat(ConversationModelImpl.ORDER_BY_JPQL);
+				}
 			}
 
 			Session session = null;
@@ -709,30 +829,29 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 
 				Query q = session.createQuery(sql);
 
-				if (orderByComparator == null) {
+				if (!pagination) {
 					list = (List<Conversation>)QueryUtil.list(q, getDialect(),
 							start, end, false);
 
 					Collections.sort(list);
+
+					list = new UnmodifiableList<Conversation>(list);
 				}
 				else {
 					list = (List<Conversation>)QueryUtil.list(q, getDialect(),
 							start, end);
 				}
+
+				cacheResult(list);
+
+				FinderCacheUtil.putResult(finderPath, finderArgs, list);
 			}
 			catch (Exception e) {
+				FinderCacheUtil.removeResult(finderPath, finderArgs);
+
 				throw processException(e);
 			}
 			finally {
-				if (list == null) {
-					FinderCacheUtil.removeResult(finderPath, finderArgs);
-				}
-				else {
-					cacheResult(list);
-
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
-				}
-
 				closeSession(session);
 			}
 		}
@@ -741,94 +860,15 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	}
 
 	/**
-	 * Removes the conversation where conversationId = &#63; from the database.
-	 *
-	 * @param conversationId the conversation ID
-	 * @return the conversation that was removed
-	 * @throws SystemException if a system exception occurred
-	 */
-	public Conversation removeByConversationId(String conversationId)
-		throws NoSuchConversationException, SystemException {
-		Conversation conversation = findByConversationId(conversationId);
-
-		return remove(conversation);
-	}
-
-	/**
 	 * Removes all the conversations from the database.
 	 *
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public void removeAll() throws SystemException {
 		for (Conversation conversation : findAll()) {
 			remove(conversation);
 		}
-	}
-
-	/**
-	 * Returns the number of conversations where conversationId = &#63;.
-	 *
-	 * @param conversationId the conversation ID
-	 * @return the number of matching conversations
-	 * @throws SystemException if a system exception occurred
-	 */
-	public int countByConversationId(String conversationId)
-		throws SystemException {
-		Object[] finderArgs = new Object[] { conversationId };
-
-		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_BY_CONVERSATIONID,
-				finderArgs, this);
-
-		if (count == null) {
-			StringBundler query = new StringBundler(2);
-
-			query.append(_SQL_COUNT_CONVERSATION_WHERE);
-
-			if (conversationId == null) {
-				query.append(_FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_1);
-			}
-			else {
-				if (conversationId.equals(StringPool.BLANK)) {
-					query.append(_FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_3);
-				}
-				else {
-					query.append(_FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_2);
-				}
-			}
-
-			String sql = query.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query q = session.createQuery(sql);
-
-				QueryPos qPos = QueryPos.getInstance(q);
-
-				if (conversationId != null) {
-					qPos.add(conversationId);
-				}
-
-				count = (Long)q.uniqueResult();
-			}
-			catch (Exception e) {
-				throw processException(e);
-			}
-			finally {
-				if (count == null) {
-					count = Long.valueOf(0);
-				}
-
-				FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CONVERSATIONID,
-					finderArgs, count);
-
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
 	}
 
 	/**
@@ -837,6 +877,7 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	 * @return the number of conversations
 	 * @throws SystemException if a system exception occurred
 	 */
+	@Override
 	public int countAll() throws SystemException {
 		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_COUNT_ALL,
 				FINDER_ARGS_EMPTY, this);
@@ -850,18 +891,17 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 				Query q = session.createQuery(_SQL_COUNT_CONVERSATION);
 
 				count = (Long)q.uniqueResult();
-			}
-			catch (Exception e) {
-				throw processException(e);
-			}
-			finally {
-				if (count == null) {
-					count = Long.valueOf(0);
-				}
 
 				FinderCacheUtil.putResult(FINDER_PATH_COUNT_ALL,
 					FINDER_ARGS_EMPTY, count);
+			}
+			catch (Exception e) {
+				FinderCacheUtil.removeResult(FINDER_PATH_COUNT_ALL,
+					FINDER_ARGS_EMPTY);
 
+				throw processException(e);
+			}
+			finally {
 				closeSession(session);
 			}
 		}
@@ -882,10 +922,8 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 				List<ModelListener<Conversation>> listenersList = new ArrayList<ModelListener<Conversation>>();
 
 				for (String listenerClassName : listenerClassNames) {
-					Class<?> clazz = getClass();
-
 					listenersList.add((ModelListener<Conversation>)InstanceFactory.newInstance(
-							clazz.getClassLoader(), listenerClassName));
+							getClassLoader(), listenerClassName));
 				}
 
 				listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
@@ -899,30 +937,14 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 	public void destroy() {
 		EntityCacheUtil.removeCache(ConversationImpl.class.getName());
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
+		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@BeanReference(type = ConversationPersistence.class)
-	protected ConversationPersistence conversationPersistence;
-	@BeanReference(type = MessagePersistence.class)
-	protected MessagePersistence messagePersistence;
-	@BeanReference(type = PanelPersistence.class)
-	protected PanelPersistence panelPersistence;
-	@BeanReference(type = ParticipantPersistence.class)
-	protected ParticipantPersistence participantPersistence;
-	@BeanReference(type = SettingsPersistence.class)
-	protected SettingsPersistence settingsPersistence;
-	@BeanReference(type = ResourcePersistence.class)
-	protected ResourcePersistence resourcePersistence;
-	@BeanReference(type = UserPersistence.class)
-	protected UserPersistence userPersistence;
 	private static final String _SQL_SELECT_CONVERSATION = "SELECT conversation FROM Conversation conversation";
 	private static final String _SQL_SELECT_CONVERSATION_WHERE = "SELECT conversation FROM Conversation conversation WHERE ";
 	private static final String _SQL_COUNT_CONVERSATION = "SELECT COUNT(conversation) FROM Conversation conversation";
 	private static final String _SQL_COUNT_CONVERSATION_WHERE = "SELECT COUNT(conversation) FROM Conversation conversation WHERE ";
-	private static final String _FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_1 = "conversation.conversationId IS NULL";
-	private static final String _FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_2 = "conversation.conversationId = ?";
-	private static final String _FINDER_COLUMN_CONVERSATIONID_CONVERSATIONID_3 = "(conversation.conversationId IS NULL OR conversation.conversationId = ?)";
 	private static final String _ORDER_BY_ENTITY_ALIAS = "conversation.";
 	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No Conversation exists with the primary key ";
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No Conversation exists with the key {";
@@ -942,6 +964,7 @@ public class ConversationPersistenceImpl extends BasePersistenceImpl<Conversatio
 		};
 
 	private static CacheModel<Conversation> _nullConversationCacheModel = new CacheModel<Conversation>() {
+			@Override
 			public Conversation toEntityModel() {
 				return _nullConversation;
 			}

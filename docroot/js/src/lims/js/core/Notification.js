@@ -30,7 +30,7 @@ Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
             // Fill data from model to template and set it to container.
             // This will play the sound since alert.swf contains correct sound
             container.set('innerHTML', Y.Lang.sub(this.soundTemplate, {
-                    url: '/liferay-lims-portlet/swf/alert.swf'
+                    url: '/lims-portlet/swf/alert.swf'
                 })
             );
         }

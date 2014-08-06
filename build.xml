@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE project>
 
-<project name="liferay-lims-portlet" basedir="." default="deploy">
+<project name="lims-portlet" basedir="." default="deploy">
     <import file="../build-common-portlet.xml" />
-
 </project>

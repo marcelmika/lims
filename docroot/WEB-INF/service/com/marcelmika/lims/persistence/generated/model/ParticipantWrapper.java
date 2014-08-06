@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -25,8 +25,8 @@ import java.util.Map;
  * This class is a wrapper for {@link Participant}.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       Participant
+ * @author Brian Wing Shun Chan
+ * @see Participant
  * @generated
  */
 public class ParticipantWrapper implements Participant,
@@ -35,14 +35,17 @@ public class ParticipantWrapper implements Participant,
 		_participant = participant;
 	}
 
+	@Override
 	public Class<?> getModelClass() {
 		return Participant.class;
 	}
 
+	@Override
 	public String getModelClassName() {
 		return Participant.class.getName();
 	}
 
+	@Override
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
@@ -55,6 +58,7 @@ public class ParticipantWrapper implements Participant,
 		return attributes;
 	}
 
+	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
 		Long pid = (Long)attributes.get("pid");
 
@@ -93,6 +97,7 @@ public class ParticipantWrapper implements Participant,
 	*
 	* @return the primary key of this participant
 	*/
+	@Override
 	public long getPrimaryKey() {
 		return _participant.getPrimaryKey();
 	}
@@ -102,6 +107,7 @@ public class ParticipantWrapper implements Participant,
 	*
 	* @param primaryKey the primary key of this participant
 	*/
+	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_participant.setPrimaryKey(primaryKey);
 	}
@@ -111,6 +117,7 @@ public class ParticipantWrapper implements Participant,
 	*
 	* @return the pid of this participant
 	*/
+	@Override
 	public long getPid() {
 		return _participant.getPid();
 	}
@@ -120,6 +127,7 @@ public class ParticipantWrapper implements Participant,
 	*
 	* @param pid the pid of this participant
 	*/
+	@Override
 	public void setPid(long pid) {
 		_participant.setPid(pid);
 	}
@@ -129,6 +137,7 @@ public class ParticipantWrapper implements Participant,
 	*
 	* @return the cid of this participant
 	*/
+	@Override
 	public long getCid() {
 		return _participant.getCid();
 	}
@@ -138,6 +147,7 @@ public class ParticipantWrapper implements Participant,
 	*
 	* @param cid the cid of this participant
 	*/
+	@Override
 	public void setCid(long cid) {
 		_participant.setCid(cid);
 	}
@@ -147,6 +157,7 @@ public class ParticipantWrapper implements Participant,
 	*
 	* @return the participant ID of this participant
 	*/
+	@Override
 	public long getParticipantId() {
 		return _participant.getParticipantId();
 	}
@@ -156,6 +167,7 @@ public class ParticipantWrapper implements Participant,
 	*
 	* @param participantId the participant ID of this participant
 	*/
+	@Override
 	public void setParticipantId(long participantId) {
 		_participant.setParticipantId(participantId);
 	}
@@ -165,6 +177,7 @@ public class ParticipantWrapper implements Participant,
 	*
 	* @return the unread messages count of this participant
 	*/
+	@Override
 	public int getUnreadMessagesCount() {
 		return _participant.getUnreadMessagesCount();
 	}
@@ -174,6 +187,7 @@ public class ParticipantWrapper implements Participant,
 	*
 	* @param unreadMessagesCount the unread messages count of this participant
 	*/
+	@Override
 	public void setUnreadMessagesCount(int unreadMessagesCount) {
 		_participant.setUnreadMessagesCount(unreadMessagesCount);
 	}
@@ -183,6 +197,7 @@ public class ParticipantWrapper implements Participant,
 	*
 	* @return the is opened of this participant
 	*/
+	@Override
 	public boolean getIsOpened() {
 		return _participant.getIsOpened();
 	}
@@ -192,6 +207,7 @@ public class ParticipantWrapper implements Participant,
 	*
 	* @return <code>true</code> if this participant is is opened; <code>false</code> otherwise
 	*/
+	@Override
 	public boolean isIsOpened() {
 		return _participant.isIsOpened();
 	}
@@ -201,42 +217,64 @@ public class ParticipantWrapper implements Participant,
 	*
 	* @param isOpened the is opened of this participant
 	*/
+	@Override
 	public void setIsOpened(boolean isOpened) {
 		_participant.setIsOpened(isOpened);
 	}
 
+	@Override
 	public boolean isNew() {
 		return _participant.isNew();
 	}
 
+	@Override
 	public void setNew(boolean n) {
 		_participant.setNew(n);
 	}
 
+	@Override
 	public boolean isCachedModel() {
 		return _participant.isCachedModel();
 	}
 
+	@Override
 	public void setCachedModel(boolean cachedModel) {
 		_participant.setCachedModel(cachedModel);
 	}
 
+	@Override
 	public boolean isEscapedModel() {
 		return _participant.isEscapedModel();
 	}
 
+	@Override
 	public java.io.Serializable getPrimaryKeyObj() {
 		return _participant.getPrimaryKeyObj();
 	}
 
+	@Override
 	public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
 		_participant.setPrimaryKeyObj(primaryKeyObj);
 	}
 
+	@Override
 	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
 		return _participant.getExpandoBridge();
 	}
 
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.model.BaseModel<?> baseModel) {
+		_participant.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+		_participant.setExpandoBridgeAttributes(expandoBridge);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.service.ServiceContext serviceContext) {
 		_participant.setExpandoBridgeAttributes(serviceContext);
@@ -247,6 +285,7 @@ public class ParticipantWrapper implements Participant,
 		return new ParticipantWrapper((Participant)_participant.clone());
 	}
 
+	@Override
 	public int compareTo(
 		com.marcelmika.lims.persistence.generated.model.Participant participant) {
 		return _participant.compareTo(participant);
@@ -257,14 +296,17 @@ public class ParticipantWrapper implements Participant,
 		return _participant.hashCode();
 	}
 
+	@Override
 	public com.liferay.portal.model.CacheModel<com.marcelmika.lims.persistence.generated.model.Participant> toCacheModel() {
 		return _participant.toCacheModel();
 	}
 
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Participant toEscapedModel() {
 		return new ParticipantWrapper(_participant.toEscapedModel());
 	}
 
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Participant toUnescapedModel() {
 		return new ParticipantWrapper(_participant.toUnescapedModel());
 	}
@@ -274,10 +316,12 @@ public class ParticipantWrapper implements Participant,
 		return _participant.toString();
 	}
 
+	@Override
 	public java.lang.String toXmlString() {
 		return _participant.toXmlString();
 	}
 
+	@Override
 	public void persist()
 		throws com.liferay.portal.kernel.exception.SystemException {
 		_participant.persist();
@@ -303,16 +347,18 @@ public class ParticipantWrapper implements Participant,
 	}
 
 	/**
-	 * @deprecated Renamed to {@link #getWrappedModel}
+	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
 	public Participant getWrappedParticipant() {
 		return _participant;
 	}
 
+	@Override
 	public Participant getWrappedModel() {
 		return _participant;
 	}
 
+	@Override
 	public void resetOriginalValues() {
 		_participant.resetOriginalValues();
 	}

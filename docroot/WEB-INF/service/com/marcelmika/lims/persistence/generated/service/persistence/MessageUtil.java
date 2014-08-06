@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -61,7 +61,7 @@ public class MessageUtil {
 	/**
 	 * @see com.liferay.portal.service.persistence.BasePersistence#countWithDynamicQuery(DynamicQuery)
 	 */
-	public long countWithDynamicQuery(DynamicQuery dynamicQuery)
+	public static long countWithDynamicQuery(DynamicQuery dynamicQuery)
 		throws SystemException {
 		return getPersistence().countWithDynamicQuery(dynamicQuery);
 	}
@@ -95,99 +95,18 @@ public class MessageUtil {
 	}
 
 	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean)
+	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel)
 	 */
-	public static Message update(Message message, boolean merge)
+	public static Message update(Message message) throws SystemException {
+		return getPersistence().update(message);
+	}
+
+	/**
+	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, ServiceContext)
+	 */
+	public static Message update(Message message, ServiceContext serviceContext)
 		throws SystemException {
-		return getPersistence().update(message, merge);
-	}
-
-	/**
-	 * @see com.liferay.portal.service.persistence.BasePersistence#update(com.liferay.portal.model.BaseModel, boolean, ServiceContext)
-	 */
-	public static Message update(Message message, boolean merge,
-		ServiceContext serviceContext) throws SystemException {
-		return getPersistence().update(message, merge, serviceContext);
-	}
-
-	/**
-	* Caches the message in the entity cache if it is enabled.
-	*
-	* @param message the message
-	*/
-	public static void cacheResult(
-		com.marcelmika.lims.persistence.generated.model.Message message) {
-		getPersistence().cacheResult(message);
-	}
-
-	/**
-	* Caches the messages in the entity cache if it is enabled.
-	*
-	* @param messages the messages
-	*/
-	public static void cacheResult(
-		java.util.List<com.marcelmika.lims.persistence.generated.model.Message> messages) {
-		getPersistence().cacheResult(messages);
-	}
-
-	/**
-	* Creates a new message with the primary key. Does not add the message to the database.
-	*
-	* @param mid the primary key for the new message
-	* @return the new message
-	*/
-	public static com.marcelmika.lims.persistence.generated.model.Message create(
-		long mid) {
-		return getPersistence().create(mid);
-	}
-
-	/**
-	* Removes the message with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param mid the primary key of the message
-	* @return the message that was removed
-	* @throws com.marcelmika.lims.persistence.generated.NoSuchMessageException if a message with the primary key could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public static com.marcelmika.lims.persistence.generated.model.Message remove(
-		long mid)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.persistence.generated.NoSuchMessageException {
-		return getPersistence().remove(mid);
-	}
-
-	public static com.marcelmika.lims.persistence.generated.model.Message updateImpl(
-		com.marcelmika.lims.persistence.generated.model.Message message,
-		boolean merge)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getPersistence().updateImpl(message, merge);
-	}
-
-	/**
-	* Returns the message with the primary key or throws a {@link com.marcelmika.lims.persistence.generated.NoSuchMessageException} if it could not be found.
-	*
-	* @param mid the primary key of the message
-	* @return the message
-	* @throws com.marcelmika.lims.persistence.generated.NoSuchMessageException if a message with the primary key could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public static com.marcelmika.lims.persistence.generated.model.Message findByPrimaryKey(
-		long mid)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.persistence.generated.NoSuchMessageException {
-		return getPersistence().findByPrimaryKey(mid);
-	}
-
-	/**
-	* Returns the message with the primary key or returns <code>null</code> if it could not be found.
-	*
-	* @param mid the primary key of the message
-	* @return the message, or <code>null</code> if a message with the primary key could not be found
-	* @throws SystemException if a system exception occurred
-	*/
-	public static com.marcelmika.lims.persistence.generated.model.Message fetchByPrimaryKey(
-		long mid) throws com.liferay.portal.kernel.exception.SystemException {
-		return getPersistence().fetchByPrimaryKey(mid);
+		return getPersistence().update(message, serviceContext);
 	}
 
 	/**
@@ -233,6 +152,32 @@ public class MessageUtil {
 	}
 
 	/**
+	* Removes the message where creatorId = &#63; from the database.
+	*
+	* @param creatorId the creator ID
+	* @return the message that was removed
+	* @throws SystemException if a system exception occurred
+	*/
+	public static com.marcelmika.lims.persistence.generated.model.Message removeByCreatorId(
+		long creatorId)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.persistence.generated.NoSuchMessageException {
+		return getPersistence().removeByCreatorId(creatorId);
+	}
+
+	/**
+	* Returns the number of messages where creatorId = &#63;.
+	*
+	* @param creatorId the creator ID
+	* @return the number of matching messages
+	* @throws SystemException if a system exception occurred
+	*/
+	public static int countByCreatorId(long creatorId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getPersistence().countByCreatorId(creatorId);
+	}
+
+	/**
 	* Returns all the messages where cid = &#63;.
 	*
 	* @param cid the cid
@@ -248,7 +193,7 @@ public class MessageUtil {
 	* Returns a range of all the messages where cid = &#63;.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.MessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param cid the cid
@@ -267,7 +212,7 @@ public class MessageUtil {
 	* Returns an ordered range of all the messages where cid = &#63;.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.MessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param cid the cid
@@ -368,6 +313,108 @@ public class MessageUtil {
 	}
 
 	/**
+	* Removes all the messages where cid = &#63; from the database.
+	*
+	* @param cid the cid
+	* @throws SystemException if a system exception occurred
+	*/
+	public static void removeByCid(long cid)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		getPersistence().removeByCid(cid);
+	}
+
+	/**
+	* Returns the number of messages where cid = &#63;.
+	*
+	* @param cid the cid
+	* @return the number of matching messages
+	* @throws SystemException if a system exception occurred
+	*/
+	public static int countByCid(long cid)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getPersistence().countByCid(cid);
+	}
+
+	/**
+	* Caches the message in the entity cache if it is enabled.
+	*
+	* @param message the message
+	*/
+	public static void cacheResult(
+		com.marcelmika.lims.persistence.generated.model.Message message) {
+		getPersistence().cacheResult(message);
+	}
+
+	/**
+	* Caches the messages in the entity cache if it is enabled.
+	*
+	* @param messages the messages
+	*/
+	public static void cacheResult(
+		java.util.List<com.marcelmika.lims.persistence.generated.model.Message> messages) {
+		getPersistence().cacheResult(messages);
+	}
+
+	/**
+	* Creates a new message with the primary key. Does not add the message to the database.
+	*
+	* @param mid the primary key for the new message
+	* @return the new message
+	*/
+	public static com.marcelmika.lims.persistence.generated.model.Message create(
+		long mid) {
+		return getPersistence().create(mid);
+	}
+
+	/**
+	* Removes the message with the primary key from the database. Also notifies the appropriate model listeners.
+	*
+	* @param mid the primary key of the message
+	* @return the message that was removed
+	* @throws com.marcelmika.lims.persistence.generated.NoSuchMessageException if a message with the primary key could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public static com.marcelmika.lims.persistence.generated.model.Message remove(
+		long mid)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.persistence.generated.NoSuchMessageException {
+		return getPersistence().remove(mid);
+	}
+
+	public static com.marcelmika.lims.persistence.generated.model.Message updateImpl(
+		com.marcelmika.lims.persistence.generated.model.Message message)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getPersistence().updateImpl(message);
+	}
+
+	/**
+	* Returns the message with the primary key or throws a {@link com.marcelmika.lims.persistence.generated.NoSuchMessageException} if it could not be found.
+	*
+	* @param mid the primary key of the message
+	* @return the message
+	* @throws com.marcelmika.lims.persistence.generated.NoSuchMessageException if a message with the primary key could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public static com.marcelmika.lims.persistence.generated.model.Message findByPrimaryKey(
+		long mid)
+		throws com.liferay.portal.kernel.exception.SystemException,
+			com.marcelmika.lims.persistence.generated.NoSuchMessageException {
+		return getPersistence().findByPrimaryKey(mid);
+	}
+
+	/**
+	* Returns the message with the primary key or returns <code>null</code> if it could not be found.
+	*
+	* @param mid the primary key of the message
+	* @return the message, or <code>null</code> if a message with the primary key could not be found
+	* @throws SystemException if a system exception occurred
+	*/
+	public static com.marcelmika.lims.persistence.generated.model.Message fetchByPrimaryKey(
+		long mid) throws com.liferay.portal.kernel.exception.SystemException {
+		return getPersistence().fetchByPrimaryKey(mid);
+	}
+
+	/**
 	* Returns all the messages.
 	*
 	* @return the messages
@@ -382,7 +429,7 @@ public class MessageUtil {
 	* Returns a range of all the messages.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.MessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of messages
@@ -400,7 +447,7 @@ public class MessageUtil {
 	* Returns an ordered range of all the messages.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.marcelmika.lims.persistence.generated.model.impl.MessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of messages
@@ -417,31 +464,6 @@ public class MessageUtil {
 	}
 
 	/**
-	* Removes the message where creatorId = &#63; from the database.
-	*
-	* @param creatorId the creator ID
-	* @return the message that was removed
-	* @throws SystemException if a system exception occurred
-	*/
-	public static com.marcelmika.lims.persistence.generated.model.Message removeByCreatorId(
-		long creatorId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.persistence.generated.NoSuchMessageException {
-		return getPersistence().removeByCreatorId(creatorId);
-	}
-
-	/**
-	* Removes all the messages where cid = &#63; from the database.
-	*
-	* @param cid the cid
-	* @throws SystemException if a system exception occurred
-	*/
-	public static void removeByCid(long cid)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		getPersistence().removeByCid(cid);
-	}
-
-	/**
 	* Removes all the messages from the database.
 	*
 	* @throws SystemException if a system exception occurred
@@ -449,30 +471,6 @@ public class MessageUtil {
 	public static void removeAll()
 		throws com.liferay.portal.kernel.exception.SystemException {
 		getPersistence().removeAll();
-	}
-
-	/**
-	* Returns the number of messages where creatorId = &#63;.
-	*
-	* @param creatorId the creator ID
-	* @return the number of matching messages
-	* @throws SystemException if a system exception occurred
-	*/
-	public static int countByCreatorId(long creatorId)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getPersistence().countByCreatorId(creatorId);
-	}
-
-	/**
-	* Returns the number of messages where cid = &#63;.
-	*
-	* @param cid the cid
-	* @return the number of matching messages
-	* @throws SystemException if a system exception occurred
-	*/
-	public static int countByCid(long cid)
-		throws com.liferay.portal.kernel.exception.SystemException {
-		return getPersistence().countByCid(cid);
 	}
 
 	/**
@@ -499,7 +497,7 @@ public class MessageUtil {
 	}
 
 	/**
-	 * @deprecated
+	 * @deprecated As of 6.2.0
 	 */
 	public void setPersistence(MessagePersistence persistence) {
 	}

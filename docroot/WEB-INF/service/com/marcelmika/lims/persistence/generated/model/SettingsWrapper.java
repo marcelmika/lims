@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -25,8 +25,8 @@ import java.util.Map;
  * This class is a wrapper for {@link Settings}.
  * </p>
  *
- * @author    Brian Wing Shun Chan
- * @see       Settings
+ * @author Brian Wing Shun Chan
+ * @see Settings
  * @generated
  */
 public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
@@ -34,14 +34,17 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 		_settings = settings;
 	}
 
+	@Override
 	public Class<?> getModelClass() {
 		return Settings.class;
 	}
 
+	@Override
 	public String getModelClassName() {
 		return Settings.class.getName();
 	}
 
+	@Override
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
@@ -54,6 +57,7 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 		return attributes;
 	}
 
+	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
 		Long sid = (Long)attributes.get("sid");
 
@@ -91,6 +95,7 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	*
 	* @return the primary key of this settings
 	*/
+	@Override
 	public long getPrimaryKey() {
 		return _settings.getPrimaryKey();
 	}
@@ -100,6 +105,7 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	*
 	* @param primaryKey the primary key of this settings
 	*/
+	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_settings.setPrimaryKey(primaryKey);
 	}
@@ -109,6 +115,7 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	*
 	* @return the sid of this settings
 	*/
+	@Override
 	public long getSid() {
 		return _settings.getSid();
 	}
@@ -118,6 +125,7 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	*
 	* @param sid the sid of this settings
 	*/
+	@Override
 	public void setSid(long sid) {
 		_settings.setSid(sid);
 	}
@@ -127,6 +135,7 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	*
 	* @return the user ID of this settings
 	*/
+	@Override
 	public long getUserId() {
 		return _settings.getUserId();
 	}
@@ -136,6 +145,7 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	*
 	* @param userId the user ID of this settings
 	*/
+	@Override
 	public void setUserId(long userId) {
 		_settings.setUserId(userId);
 	}
@@ -146,6 +156,7 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	* @return the user uuid of this settings
 	* @throws SystemException if a system exception occurred
 	*/
+	@Override
 	public java.lang.String getUserUuid()
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return _settings.getUserUuid();
@@ -156,6 +167,7 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	*
 	* @param userUuid the user uuid of this settings
 	*/
+	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_settings.setUserUuid(userUuid);
 	}
@@ -165,6 +177,7 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	*
 	* @return the presence of this settings
 	*/
+	@Override
 	public java.lang.String getPresence() {
 		return _settings.getPresence();
 	}
@@ -174,6 +187,7 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	*
 	* @param presence the presence of this settings
 	*/
+	@Override
 	public void setPresence(java.lang.String presence) {
 		_settings.setPresence(presence);
 	}
@@ -183,6 +197,7 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	*
 	* @return the mute of this settings
 	*/
+	@Override
 	public boolean getMute() {
 		return _settings.getMute();
 	}
@@ -192,6 +207,7 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	*
 	* @return <code>true</code> if this settings is mute; <code>false</code> otherwise
 	*/
+	@Override
 	public boolean isMute() {
 		return _settings.isMute();
 	}
@@ -201,6 +217,7 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	*
 	* @param mute the mute of this settings
 	*/
+	@Override
 	public void setMute(boolean mute) {
 		_settings.setMute(mute);
 	}
@@ -210,6 +227,7 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	*
 	* @return the chat enabled of this settings
 	*/
+	@Override
 	public boolean getChatEnabled() {
 		return _settings.getChatEnabled();
 	}
@@ -219,6 +237,7 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	*
 	* @return <code>true</code> if this settings is chat enabled; <code>false</code> otherwise
 	*/
+	@Override
 	public boolean isChatEnabled() {
 		return _settings.isChatEnabled();
 	}
@@ -228,42 +247,64 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	*
 	* @param chatEnabled the chat enabled of this settings
 	*/
+	@Override
 	public void setChatEnabled(boolean chatEnabled) {
 		_settings.setChatEnabled(chatEnabled);
 	}
 
+	@Override
 	public boolean isNew() {
 		return _settings.isNew();
 	}
 
+	@Override
 	public void setNew(boolean n) {
 		_settings.setNew(n);
 	}
 
+	@Override
 	public boolean isCachedModel() {
 		return _settings.isCachedModel();
 	}
 
+	@Override
 	public void setCachedModel(boolean cachedModel) {
 		_settings.setCachedModel(cachedModel);
 	}
 
+	@Override
 	public boolean isEscapedModel() {
 		return _settings.isEscapedModel();
 	}
 
+	@Override
 	public java.io.Serializable getPrimaryKeyObj() {
 		return _settings.getPrimaryKeyObj();
 	}
 
+	@Override
 	public void setPrimaryKeyObj(java.io.Serializable primaryKeyObj) {
 		_settings.setPrimaryKeyObj(primaryKeyObj);
 	}
 
+	@Override
 	public com.liferay.portlet.expando.model.ExpandoBridge getExpandoBridge() {
 		return _settings.getExpandoBridge();
 	}
 
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.model.BaseModel<?> baseModel) {
+		_settings.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(
+		com.liferay.portlet.expando.model.ExpandoBridge expandoBridge) {
+		_settings.setExpandoBridgeAttributes(expandoBridge);
+	}
+
+	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.service.ServiceContext serviceContext) {
 		_settings.setExpandoBridgeAttributes(serviceContext);
@@ -274,6 +315,7 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 		return new SettingsWrapper((Settings)_settings.clone());
 	}
 
+	@Override
 	public int compareTo(
 		com.marcelmika.lims.persistence.generated.model.Settings settings) {
 		return _settings.compareTo(settings);
@@ -284,14 +326,17 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 		return _settings.hashCode();
 	}
 
+	@Override
 	public com.liferay.portal.model.CacheModel<com.marcelmika.lims.persistence.generated.model.Settings> toCacheModel() {
 		return _settings.toCacheModel();
 	}
 
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Settings toEscapedModel() {
 		return new SettingsWrapper(_settings.toEscapedModel());
 	}
 
+	@Override
 	public com.marcelmika.lims.persistence.generated.model.Settings toUnescapedModel() {
 		return new SettingsWrapper(_settings.toUnescapedModel());
 	}
@@ -301,10 +346,12 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 		return _settings.toString();
 	}
 
+	@Override
 	public java.lang.String toXmlString() {
 		return _settings.toXmlString();
 	}
 
+	@Override
 	public void persist()
 		throws com.liferay.portal.kernel.exception.SystemException {
 		_settings.persist();
@@ -330,16 +377,18 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	}
 
 	/**
-	 * @deprecated Renamed to {@link #getWrappedModel}
+	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
 	public Settings getWrappedSettings() {
 		return _settings;
 	}
 
+	@Override
 	public Settings getWrappedModel() {
 		return _settings;
 	}
 
+	@Override
 	public void resetOriginalValues() {
 		_settings.resetOriginalValues();
 	}

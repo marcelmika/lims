@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -20,6 +20,7 @@ import java.util.Arrays;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
  */
 public class PanelLocalServiceClpInvoker {
 	public PanelLocalServiceClpInvoker() {
@@ -72,54 +73,54 @@ public class PanelLocalServiceClpInvoker {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName9 = "fetchPanel";
+		_methodName9 = "dynamicQueryCount";
 
-		_methodParameterTypes9 = new String[] { "long" };
+		_methodParameterTypes9 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
+				"com.liferay.portal.kernel.dao.orm.Projection"
+			};
 
-		_methodName10 = "getPanel";
+		_methodName10 = "fetchPanel";
 
 		_methodParameterTypes10 = new String[] { "long" };
 
-		_methodName11 = "getPersistedModel";
+		_methodName11 = "getPanel";
 
-		_methodParameterTypes11 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes11 = new String[] { "long" };
 
-		_methodName12 = "getPanels";
+		_methodName12 = "getPersistedModel";
 
-		_methodParameterTypes12 = new String[] { "int", "int" };
+		_methodParameterTypes12 = new String[] { "java.io.Serializable" };
 
-		_methodName13 = "getPanelsCount";
+		_methodName13 = "getPanels";
 
-		_methodParameterTypes13 = new String[] {  };
+		_methodParameterTypes13 = new String[] { "int", "int" };
 
-		_methodName14 = "updatePanel";
+		_methodName14 = "getPanelsCount";
 
-		_methodParameterTypes14 = new String[] {
-				"com.marcelmika.lims.persistence.generated.model.Panel"
-			};
+		_methodParameterTypes14 = new String[] {  };
 
 		_methodName15 = "updatePanel";
 
 		_methodParameterTypes15 = new String[] {
-				"com.marcelmika.lims.persistence.generated.model.Panel",
-				"boolean"
+				"com.marcelmika.lims.persistence.generated.model.Panel"
 			};
 
-		_methodName54 = "getBeanIdentifier";
+		_methodName50 = "getBeanIdentifier";
 
-		_methodParameterTypes54 = new String[] {  };
+		_methodParameterTypes50 = new String[] {  };
 
-		_methodName55 = "setBeanIdentifier";
+		_methodName51 = "setBeanIdentifier";
 
-		_methodParameterTypes55 = new String[] { "java.lang.String" };
+		_methodParameterTypes51 = new String[] { "java.lang.String" };
 
-		_methodName60 = "getPanelByUser";
+		_methodName56 = "getPanelByUser";
 
-		_methodParameterTypes60 = new String[] { "long" };
+		_methodParameterTypes56 = new String[] { "long" };
 
-		_methodName61 = "updateActivePanel";
+		_methodName57 = "updateActivePanel";
 
-		_methodParameterTypes61 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes57 = new String[] { "long", "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -176,60 +177,60 @@ public class PanelLocalServiceClpInvoker {
 
 		if (_methodName9.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes9, parameterTypes)) {
-			return PanelLocalServiceUtil.fetchPanel(((Long)arguments[0]).longValue());
+			return PanelLocalServiceUtil.dynamicQueryCount((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0],
+				(com.liferay.portal.kernel.dao.orm.Projection)arguments[1]);
 		}
 
 		if (_methodName10.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes10, parameterTypes)) {
-			return PanelLocalServiceUtil.getPanel(((Long)arguments[0]).longValue());
+			return PanelLocalServiceUtil.fetchPanel(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName11.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes11, parameterTypes)) {
-			return PanelLocalServiceUtil.getPersistedModel((java.io.Serializable)arguments[0]);
+			return PanelLocalServiceUtil.getPanel(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName12.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes12, parameterTypes)) {
-			return PanelLocalServiceUtil.getPanels(((Integer)arguments[0]).intValue(),
-				((Integer)arguments[1]).intValue());
+			return PanelLocalServiceUtil.getPersistedModel((java.io.Serializable)arguments[0]);
 		}
 
 		if (_methodName13.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes13, parameterTypes)) {
-			return PanelLocalServiceUtil.getPanelsCount();
+			return PanelLocalServiceUtil.getPanels(((Integer)arguments[0]).intValue(),
+				((Integer)arguments[1]).intValue());
 		}
 
 		if (_methodName14.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes14, parameterTypes)) {
-			return PanelLocalServiceUtil.updatePanel((com.marcelmika.lims.persistence.generated.model.Panel)arguments[0]);
+			return PanelLocalServiceUtil.getPanelsCount();
 		}
 
 		if (_methodName15.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes15, parameterTypes)) {
-			return PanelLocalServiceUtil.updatePanel((com.marcelmika.lims.persistence.generated.model.Panel)arguments[0],
-				((Boolean)arguments[1]).booleanValue());
+			return PanelLocalServiceUtil.updatePanel((com.marcelmika.lims.persistence.generated.model.Panel)arguments[0]);
 		}
 
-		if (_methodName54.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes54, parameterTypes)) {
+		if (_methodName50.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes50, parameterTypes)) {
 			return PanelLocalServiceUtil.getBeanIdentifier();
 		}
 
-		if (_methodName55.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes55, parameterTypes)) {
+		if (_methodName51.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes51, parameterTypes)) {
 			PanelLocalServiceUtil.setBeanIdentifier((java.lang.String)arguments[0]);
 
 			return null;
 		}
 
-		if (_methodName60.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes60, parameterTypes)) {
+		if (_methodName56.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes56, parameterTypes)) {
 			return PanelLocalServiceUtil.getPanelByUser(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName61.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes61, parameterTypes)) {
+		if (_methodName57.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes57, parameterTypes)) {
 			PanelLocalServiceUtil.updateActivePanel(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 
@@ -271,12 +272,12 @@ public class PanelLocalServiceClpInvoker {
 	private String[] _methodParameterTypes14;
 	private String _methodName15;
 	private String[] _methodParameterTypes15;
-	private String _methodName54;
-	private String[] _methodParameterTypes54;
-	private String _methodName55;
-	private String[] _methodParameterTypes55;
-	private String _methodName60;
-	private String[] _methodParameterTypes60;
-	private String _methodName61;
-	private String[] _methodParameterTypes61;
+	private String _methodName50;
+	private String[] _methodParameterTypes50;
+	private String _methodName51;
+	private String[] _methodParameterTypes51;
+	private String _methodName56;
+	private String[] _methodParameterTypes56;
+	private String _methodName57;
+	private String[] _methodParameterTypes57;
 }

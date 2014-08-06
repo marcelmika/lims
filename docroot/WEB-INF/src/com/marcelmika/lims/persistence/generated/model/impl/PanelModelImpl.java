@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -65,6 +65,8 @@ public class PanelModelImpl extends BaseModelImpl<Panel> implements PanelModel {
 		};
 	public static final String TABLE_SQL_CREATE = "create table lims_Panel (pid LONG not null primary key,userId LONG,activePanelId VARCHAR(75) null)";
 	public static final String TABLE_SQL_DROP = "drop table lims_Panel";
+	public static final String ORDER_BY_JPQL = " ORDER BY panel.pid ASC";
+	public static final String ORDER_BY_SQL = " ORDER BY lims_Panel.pid ASC";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
@@ -78,32 +80,39 @@ public class PanelModelImpl extends BaseModelImpl<Panel> implements PanelModel {
 				"value.object.column.bitmask.enabled.com.marcelmika.lims.persistence.generated.model.Panel"),
 			true);
 	public static long USERID_COLUMN_BITMASK = 1L;
+	public static long PID_COLUMN_BITMASK = 2L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
 				"lock.expiration.time.com.marcelmika.lims.persistence.generated.model.Panel"));
 
 	public PanelModelImpl() {
 	}
 
+	@Override
 	public long getPrimaryKey() {
 		return _pid;
 	}
 
+	@Override
 	public void setPrimaryKey(long primaryKey) {
 		setPid(primaryKey);
 	}
 
+	@Override
 	public Serializable getPrimaryKeyObj() {
-		return new Long(_pid);
+		return _pid;
 	}
 
+	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		setPrimaryKey(((Long)primaryKeyObj).longValue());
 	}
 
+	@Override
 	public Class<?> getModelClass() {
 		return Panel.class;
 	}
 
+	@Override
 	public String getModelClassName() {
 		return Panel.class.getName();
 	}
@@ -140,18 +149,22 @@ public class PanelModelImpl extends BaseModelImpl<Panel> implements PanelModel {
 		}
 	}
 
+	@Override
 	public long getPid() {
 		return _pid;
 	}
 
+	@Override
 	public void setPid(long pid) {
 		_pid = pid;
 	}
 
+	@Override
 	public long getUserId() {
 		return _userId;
 	}
 
+	@Override
 	public void setUserId(long userId) {
 		_columnBitmask |= USERID_COLUMN_BITMASK;
 
@@ -164,10 +177,12 @@ public class PanelModelImpl extends BaseModelImpl<Panel> implements PanelModel {
 		_userId = userId;
 	}
 
+	@Override
 	public String getUserUuid() throws SystemException {
 		return PortalUtil.getUserValue(getUserId(), "uuid", _userUuid);
 	}
 
+	@Override
 	public void setUserUuid(String userUuid) {
 		_userUuid = userUuid;
 	}
@@ -176,6 +191,7 @@ public class PanelModelImpl extends BaseModelImpl<Panel> implements PanelModel {
 		return _originalUserId;
 	}
 
+	@Override
 	public String getActivePanelId() {
 		if (_activePanelId == null) {
 			return StringPool.BLANK;
@@ -185,6 +201,7 @@ public class PanelModelImpl extends BaseModelImpl<Panel> implements PanelModel {
 		}
 	}
 
+	@Override
 	public void setActivePanelId(String activePanelId) {
 		_activePanelId = activePanelId;
 	}
@@ -216,10 +233,6 @@ public class PanelModelImpl extends BaseModelImpl<Panel> implements PanelModel {
 		return _escapedModel;
 	}
 
-	public Panel toUnescapedModel() {
-		return (Panel)this;
-	}
-
 	@Override
 	public Object clone() {
 		PanelImpl panelImpl = new PanelImpl();
@@ -233,6 +246,7 @@ public class PanelModelImpl extends BaseModelImpl<Panel> implements PanelModel {
 		return panelImpl;
 	}
 
+	@Override
 	public int compareTo(Panel panel) {
 		long primaryKey = panel.getPrimaryKey();
 
@@ -319,6 +333,7 @@ public class PanelModelImpl extends BaseModelImpl<Panel> implements PanelModel {
 		return sb.toString();
 	}
 
+	@Override
 	public String toXmlString() {
 		StringBundler sb = new StringBundler(13);
 
