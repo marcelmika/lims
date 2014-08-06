@@ -29,8 +29,11 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         onPanelDidAppear: function () {
             // Vars
             var model = this.get('model'),
-                listView = this.get('listView');
+                listView = this.get('listView'),
+                notification = this.get('notification');
 
+            // Messages are read so suppress the count
+            notification.suppress(model.get('unreadMessagesCount'));
             // Reset counter of unread messages
             model.resetUnreadMessagesCounter();
             // Always scroll to the last message when user opens the window
@@ -70,16 +73,14 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             var conversationModel = this.get('model'),      // Current conversation model
                 currentUnreadMessagesCount,                 // Current unread message count
                 updatedUnreadMessageCount,                  // Unread message count of updated model
+                newMessagesCount,                           // Number of newly received messages
                 notification = this.get('notification'),    // Notification handler
-                settings = this.get('settings'),            // Settings of logged user
                 instance = this;                            // This
 
             // There is no need to update conversation which hasn't been changed
             if (conversationModel.get('etag') !== model.get('etag')) {
-
                 // Remember the message count
                 currentUnreadMessagesCount = conversationModel.get('unreadMessagesCount');
-
                 // Update model
                 conversationModel.load(function (err, conversation) {
                     if (!err) {
@@ -87,10 +88,10 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
                         updatedUnreadMessageCount = conversation.get('unreadMessagesCount');
                         // If the unread message count has been increased notify user
                         if (updatedUnreadMessageCount > currentUnreadMessagesCount) {
-                            // Play sound
-                            if (!settings.isMute()) {
-                                notification.notify();
-                            }
+                            // Actual count of newly received messages
+                            newMessagesCount = updatedUnreadMessageCount - currentUnreadMessagesCount;
+                            // Notify about new message
+                            notification.notify(newMessagesCount);
                         }
                         // Callback
                         instance._onConversationUpdated();
@@ -279,9 +280,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             },
 
             notification: {
-                valueFn: function () {
-                    return new Y.LIMS.Core.Notification();
-                }
+                value: null // to be set
             },
 
             // Currently logged user

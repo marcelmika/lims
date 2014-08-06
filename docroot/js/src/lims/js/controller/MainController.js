@@ -9,7 +9,8 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
     // us an opportunity to set up all sub controller
     initializer: function () {
         var buddyDetails = this.get('buddyDetails'),
-            settingsModel = this.get('settingsModel');
+            settingsModel = this.get('settingsModel'),
+            notification = this.get('notification');
         // Attach events
         this._attachEvents();
 
@@ -26,7 +27,8 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
         // Conversation
         new Y.LIMS.Controller.ConversationsController({
             buddyDetails: buddyDetails,
-            settings: settingsModel
+            settings: settingsModel,
+            notification: notification
         });
     },
 
@@ -101,17 +103,25 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
             }
         },
 
+        // Settings related to the logged user
         settingsModel: {
             valueFn: function () {
-                if (this.get('settingsModel') === undefined) {
-                    this.set('settingsModel', new Y.LIMS.Model.SettingsModel({
-                        buddy: this.get('buddyDetails')
-                    }));
-                }
-                return this.get('settingsModel');
+                return new Y.LIMS.Model.SettingsModel({
+                    buddy: this.get('buddyDetails')
+                });
             }
         },
 
+        // Notification
+        notification: {
+            valueFn: function () {
+                return new Y.LIMS.Core.Notification({
+                    settings: this.get('settingsModel')
+                });
+            }
+        },
+
+        // Current active panel
         activePanelId: {
             value: null // default value
         }

@@ -82,7 +82,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             unreadMessagesCount,                                // Unread messages count
             settings = this.get('settings'),                    // Settings of logged user
             conversationModel,                                  // Model which will be attached to controller
-            conversationList = this.get('conversationList'),
+            conversationList = this.get('conversationList'),    // List of conversations
+            notification = this.get('notification'),            // Notification handler
             controller;                                         // Bind controller
 
         // Create js objects for each node
@@ -112,7 +113,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                     container: conversationNode,
                     model: conversationModel,
                     buddyDetails: buddyDetails,
-                    settings: settings
+                    settings: settings,
+                    notification: notification
                 });
 
                 // Remove controller from map if it's unloaded from the screen
@@ -122,6 +124,9 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
 
                 // Add to map
                 map[conversationId] = controller;
+
+                // Silently notify about new messages
+                notification.notify(unreadMessagesCount, true);
             }
         });
     },
@@ -145,6 +150,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             conversationContainer,                              // Container node passed to controller
             conversationList = this.get('conversationList'),    // Holds all conversation models
             settings = this.get('settings'),                    // Settings of logged user
+            notification = this.get('notification'),            // Notification handler
             controller;                                         // Controller (selected or newly created)
 
         // Generate conversation id
@@ -186,7 +192,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                 container: conversationContainer,
                 controllerId: conversationId,
                 model: conversationModel,
-                settings: settings
+                settings: settings,
+                notification: notification
             });
 
             // Save the model, thanks to that the conversation will be created on server too.
@@ -269,7 +276,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                     container: conversationContainer,
                     controllerId: conversationId,
                     model: conversationModel,
-                    settings: settings
+                    settings: settings,
+                    notification: notification
                 });
 
                 // Remove controller from map if it's unloaded from the screen
@@ -286,10 +294,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                         // Show the controller to the user
                         controller.showViewController();
                         // We have created a controller based on long polling message.
-                        // We thus need to notify the user about received message.
-                        if (!settings.isMute()) {
-                            notification.notify();
-                        }
+                        // We thus need to notify the user about received messages.
+                        notification.notify(conversationModel.get('unreadMessagesCount'));
                     }
                 });
             }
@@ -368,9 +374,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
 
         // Notification
         notification: {
-            valueFn: function () {
-                return new Y.LIMS.Core.Notification();
-            }
+            value: null // to be set
         },
 
         // List of already rendered conversation nodes
