@@ -275,9 +275,9 @@ public class MessageLocalServiceUtil {
 	}
 
 	public static com.marcelmika.lims.persistence.generated.model.Message addMessage(
-		long cid, long creatorId, java.lang.String body,
-		java.lang.String messageHash) throws java.lang.Exception {
-		return getService().addMessage(cid, creatorId, body, messageHash);
+		long cid, long creatorId, java.lang.String body)
+		throws java.lang.Exception {
+		return getService().addMessage(cid, creatorId, body);
 	}
 
 	public static java.util.List<com.marcelmika.lims.persistence.generated.model.Message> readMessages(

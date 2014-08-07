@@ -256,8 +256,7 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             com.marcelmika.lims.persistence.generated.model.Message messageModel = MessageLocalServiceUtil.addMessage(
                     conversationModel.getCid(), // Message is related to the conversation
                     buddy.getBuddyId(),         // Message is created by buddy
-                    message.getBody(),          // Body of message
-                    message.getMessageHash()    // Hash related to each message
+                    message.getBody()          // Body of message
             );
 
             // Notify participants about newly created messages. This will basically update message counters,

@@ -249,8 +249,8 @@ public interface MessageLocalService extends BaseLocalService,
 		throws java.lang.Throwable;
 
 	public com.marcelmika.lims.persistence.generated.model.Message addMessage(
-		long cid, long creatorId, java.lang.String body,
-		java.lang.String messageHash) throws java.lang.Exception;
+		long cid, long creatorId, java.lang.String body)
+		throws java.lang.Exception;
 
 	public java.util.List<com.marcelmika.lims.persistence.generated.model.Message> readMessages(
 		long cid, int start, int end)

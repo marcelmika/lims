@@ -43,7 +43,7 @@ public class MessageLocalServiceImpl extends MessageLocalServiceBaseImpl {
 	 * Never reference this interface directly. Always use {@link com.marcelmika.lims.persistence.generated.service.MessageLocalServiceUtil} to access the message local service.
 	 */
 
-    public Message addMessage(long cid, long creatorId, String body, String messageHash) throws Exception {
+    public Message addMessage(long cid, long creatorId, String body) throws Exception {
         // Fetch possible existing conversation
         Message messageModel = messagePersistence.create(counterLocalService.increment());
 

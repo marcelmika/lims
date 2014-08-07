@@ -13,7 +13,6 @@ public class MessageDetails {
     private BuddyDetails from;
     private String body;
     private Date createdAt;
-    private String messageHash;
 
 
     public BuddyDetails getFrom() {
@@ -22,14 +21,6 @@ public class MessageDetails {
 
     public void setFrom(BuddyDetails from) {
         this.from = from;
-    }
-
-    public String getMessageHash() {
-        return messageHash;
-    }
-
-    public void setMessageHash(String messageHash) {
-        this.messageHash = messageHash;
     }
 
     public Date getCreatedAt() {
@@ -54,7 +45,6 @@ public class MessageDetails {
                 "from=" + from +
                 ", body='" + body + '\'' +
                 ", createdAt=" + createdAt +
-                ", messageHash='" + messageHash + '\'' +
                 '}';
     }
 }

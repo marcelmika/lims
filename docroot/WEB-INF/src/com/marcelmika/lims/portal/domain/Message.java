@@ -20,7 +20,6 @@ public class Message {
     private String conversationId;
     private String body;
     private Date createdAt;
-    private String messageHash;
 
     /**
      * Factory method which creates a list of Messages from a list of MessageDetails
@@ -49,7 +48,6 @@ public class Message {
         // Crate new message
         Message message = new Message();
         // Map values
-        message.messageHash = details.getMessageHash();
         message.createdAt = details.getCreatedAt();
         message.body = details.getBody();
 
@@ -70,7 +68,6 @@ public class Message {
         // Create message details
         MessageDetails details = new MessageDetails();
         // Map data from message
-        details.setMessageHash(messageHash);
         details.setCreatedAt(createdAt);
         details.setBody(body);
 
@@ -115,21 +112,12 @@ public class Message {
         this.conversationId = conversationId;
     }
 
-    public String getMessageHash() {
-        return messageHash;
-    }
-
-    public void setMessageHash(String messageHash) {
-        this.messageHash = messageHash;
-    }
-
     @Override
     public String toString() {
         return "Message{" +
                 "from=" + from +
                 ", body='" + body + '\'' +
                 ", createdAt=" + createdAt +
-                ", messageHash='" + messageHash + '\'' +
                 '}';
     }
 }

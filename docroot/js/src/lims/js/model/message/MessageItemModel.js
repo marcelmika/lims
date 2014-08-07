@@ -35,9 +35,6 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
                         content: content
                     },
                     on: {
-//                        success: function (id, o) {
-//
-//                        },
                         failure: function (x, o) {
                             // If the attempt is unauthorized session has expired
                             if (o.status === 401) {
@@ -92,11 +89,6 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
 
         body: {
             value: "" // default value
-        },
-
-        messageHash: {
-            // TODO: Generate
-            value: "asfasdfasdf" // default value
         },
 
         createdAt: {

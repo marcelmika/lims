@@ -17,8 +17,6 @@ public class Message {
     private Buddy from;
     private String body;
     private Date createdAt;
-    private String messageHash;
-
 
     // -------------------------------------------------------------------------------------------
     // Factory Methods
@@ -30,7 +28,6 @@ public class Message {
         // Map properties
         message.body = details.getBody();
         message.createdAt = details.getCreatedAt();
-        message.messageHash = details.getMessageHash();
 
         // Relations:
         // From
@@ -82,7 +79,6 @@ public class Message {
         // Properties
         details.setBody(body);
         details.setCreatedAt(createdAt);
-        details.setMessageHash(messageHash);
 
         if (from != null) {
             details.setFrom(from.toBuddyDetails());
@@ -118,13 +114,5 @@ public class Message {
 
     public void setBody(String body) {
         this.body = body;
-    }
-
-    public String getMessageHash() {
-        return messageHash;
-    }
-
-    public void setMessageHash(String messageHash) {
-        this.messageHash = messageHash;
     }
 }
