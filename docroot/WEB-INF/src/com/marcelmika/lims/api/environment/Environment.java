@@ -277,7 +277,9 @@ public class Environment {
      * @return boolean
      */
     public static boolean isJabberEnabled() {
-        return PortletPropertiesValues.JABBER_ENABLED;
+        // TODO: Uncomment after implemented in next release
+        return false;
+//        return PortletPropertiesValues.JABBER_ENABLED;
     }
 
     /**
