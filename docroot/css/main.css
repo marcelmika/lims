@@ -164,6 +164,7 @@
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+	padding-right: 15px;
 }
 
 .liferay-ims .lims-bar div ul li .panel-trigger:hover {
@@ -193,21 +194,22 @@
 }
 
 .liferay-ims .lims-bar div ul li .panel-trigger .unread {
-	-moz-border-radius: 20px;
-	-webkit-border-radius: 20px;
-	-khtml-border-radius: 20px;
-	border-radius: 20px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px;
 	background: #bd3131;
 	color: #fff;
 	font-size: 10px;
 	width: 16px;
 	height: 16px;
 	position: absolute;
-	left: 5px;
-	top: -11px;
+	right: 3px;
+	top: 3px;
 	text-align: center;
 	line-height: 14px;
 	font-weight: bold;
+	opacity: 0.8;
 }
 
 /********************************************************************************
