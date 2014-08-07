@@ -197,15 +197,15 @@
 	-webkit-border-radius: 20px;
 	-khtml-border-radius: 20px;
 	border-radius: 20px;
-	background: rgb(189, 49, 49);
+	background: #bd3131;
 	color: #fff;
 	font-size: 10px;
+	width: 16px;
 	height: 16px;
 	position: absolute;
-	right: -7px;
+	left: 5px;
+	top: -11px;
 	text-align: center;
-	top: -5px;
-	width: 16px;
 	line-height: 14px;
 	font-weight: bold;
 }
