@@ -263,6 +263,15 @@ public class Environment {
     }
 
     /**
+     * Maximal count of messages in the conversation.
+     *
+     * @return int
+     */
+    public static int getConversationListMaxMessages() {
+        return PortletPropertiesValues.CONVERSATION_LIST_MAX_MESSAGES;
+    }
+
+    /**
      * Return true if communication via jabber is enabled
      *
      * @return boolean
