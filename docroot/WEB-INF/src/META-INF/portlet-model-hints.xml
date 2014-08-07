@@ -3,7 +3,9 @@
 <model-hints>
 	<model name="com.marcelmika.lims.persistence.generated.model.Conversation">
 		<field name="cid" type="long" />
-		<field name="conversationId" type="String" />
+		<field name="conversationId" type="String">
+			<hint name="max-length">256</hint>
+		</field>
 		<field name="conversationType" type="String" />
 		<field name="updatedAt" type="Date" />
 	</model>
@@ -13,12 +15,16 @@
 		<field name="creatorId" type="long" />
 		<field name="createdAt" type="Date" />
 		<field name="messageHash" type="String" />
-		<field name="body" type="String" />
+		<field name="body" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
 	</model>
 	<model name="com.marcelmika.lims.persistence.generated.model.Panel">
 		<field name="pid" type="long" />
 		<field name="userId" type="long" />
-		<field name="activePanelId" type="String" />
+		<field name="activePanelId" type="String">
+			<hint name="max-length">256</hint>
+		</field>
 	</model>
 	<model name="com.marcelmika.lims.persistence.generated.model.Participant">
 		<field name="pid" type="long" />

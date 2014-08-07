@@ -63,7 +63,7 @@ public class PanelModelImpl extends BaseModelImpl<Panel> implements PanelModel {
 			{ "userId", Types.BIGINT },
 			{ "activePanelId", Types.VARCHAR }
 		};
-	public static final String TABLE_SQL_CREATE = "create table lims_Panel (pid LONG not null primary key,userId LONG,activePanelId VARCHAR(75) null)";
+	public static final String TABLE_SQL_CREATE = "create table lims_Panel (pid LONG not null primary key,userId LONG,activePanelId VARCHAR(256) null)";
 	public static final String TABLE_SQL_DROP = "drop table lims_Panel";
 	public static final String ORDER_BY_JPQL = " ORDER BY panel.pid ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY lims_Panel.pid ASC";

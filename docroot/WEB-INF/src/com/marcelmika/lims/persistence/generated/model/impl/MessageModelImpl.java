@@ -67,7 +67,7 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 			{ "messageHash", Types.VARCHAR },
 			{ "body", Types.VARCHAR }
 		};
-	public static final String TABLE_SQL_CREATE = "create table lims_Message (mid LONG not null primary key,cid LONG,creatorId LONG,createdAt DATE null,messageHash VARCHAR(75) null,body VARCHAR(75) null)";
+	public static final String TABLE_SQL_CREATE = "create table lims_Message (mid LONG not null primary key,cid LONG,creatorId LONG,createdAt DATE null,messageHash VARCHAR(75) null,body TEXT null)";
 	public static final String TABLE_SQL_DROP = "drop table lims_Message";
 	public static final String ORDER_BY_JPQL = " ORDER BY message.createdAt ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY lims_Message.createdAt ASC";
