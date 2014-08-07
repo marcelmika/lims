@@ -7,6 +7,12 @@
 	position: fixed;
 	bottom: 0;
 	z-index: 1000;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	font-weight: 200;
+	padding: 0;
+	margin: 0;
+	opacity: 1;
 }
 
 /* Hide unnecessary portlet bars */
@@ -21,6 +27,17 @@
 	box-shadow: none !important;
 	-moz-box-shadow: none !important;
 	-webkit-box-shadow: none !important;
+}
+
+/********************************************************************************
+/ GLOBALS
+/********************************************************************************/
+
+.liferay-ims li {
+	line-height: 15px;
+	padding: 0;
+	margin: 0;
+	background: #ffffff;
 }
 
 /********************************************************************************
@@ -81,14 +98,14 @@
 /********************************************************************************/
 
 .liferay-ims .lims-bar {
-	background: #eee;
-	border: 1px solid #dddad8;
+	background: #fafafa;
+	border: 1px solid #ddd;
 	border-left: none;
 	border-bottom: none;
 	bottom: 0;
 	height: 24px;
 	position: fixed;
-	right: 15px;
+	right: 5em;
 	z-index: 999;
 }
 
@@ -120,8 +137,8 @@
 }
 
 .liferay-ims .lims-bar .lims-tabs > li {
-	background: #f8f8f8;
 	float: right;
+	line-height: 24px;
 }
 
 .liferay-ims .lims-bar div ul li.closed {
@@ -137,7 +154,6 @@
 	float: left;
 	border-left: 1px solid #dddad8;
 	color: #111;
-	font: normal 11px/24px Tahoma, Geneva, sans-serif;
 	text-decoration: none;
 	padding: 0 6px;
 }
@@ -194,7 +210,7 @@
 	border: 1px solid #dddad8;
 	border-bottom: none;
 	border-right: none;
-	font: 11px Tahoma, Geneva, sans-serif;
+	font-size: 12px;
 	min-width: 250px;
 	position: relative;
 }
@@ -210,6 +226,7 @@
 	float: right;
 	margin-top: 5px;
 	margin-right: 7px;
+	opacity: 0.8;
 }
 
 .liferay-ims .panel-button.minimize {
@@ -322,6 +339,10 @@
 	margin-top: 0;
 }
 
+.liferay-ims .conversation .panel-content li {
+	line-height: 15px;
+}
+
 .liferay-ims .conversation .ie .panel-content {
 	position: relative;
 }
@@ -375,31 +396,32 @@
 
 .liferay-ims .conversation .panel-input {
 	position: relative;
-	height: 30px;
+	height: 40px;
 }
 
 .liferay-ims .conversation .panel-input textarea {
-	width: 234px;
-	height: 15px;
-	position: absolute;
+	width: 239px;
+	height: 31px;
+	position: relative;
 	background: #f8f8f8;
 	border: 1px solid #dedede;
 	border-left: none;
 	border-right: none;
 	border-radius: 0;
-	bottom: 0;
+	/* Negative because we need to cover line after last message */
+	top: -1px;
 	display: block;
-	float: left;
 	overflow: hidden;
-	padding: 8px;
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
 	box-shadow: none;
 	resize: none;
 	outline: none;
+	font-size: 12px;
+	line-height: 14px;
 }
 
-.liferay-ims .conversation .panel-input textarea.focus {
+.liferay-ims .conversation .panel-input textarea:focus {
 	background: #fff;
 	border-bottom-color: #fff;
 }
@@ -455,7 +477,6 @@
 
 .liferay-ims .buddy-list .panel-content div {
 	float: left;
-	font: 12px/24px Arial, Helvetica, sans-serif;
 }
 
 .liferay-ims .buddy-list .panel-content .group-buddy-item-portrait .portrait {
@@ -480,22 +501,23 @@
 }
 
 .liferay-ims .buddy-list .panel-content .group-list .group-item .group-name {
-	width: 100%;
 	height: 25px;
 	background: #f8f8f8;
-	margin-top: -6px;
+	margin: -6px 0 0 0;
 	padding-left: 5px;
-	margin-bottom: 0;
 	padding-top: 6px;
-	font-size: 11px;
 	text-transform: uppercase;
 	float: none;
+	-moz-box-shadow: inset 0 8px 8px -8px rgba(105, 104, 104, 0.25), inset 0 -8px 8px -8px #696868;
+	-webkit-box-shadow: inset 0 8px 8px -8px #696868, inset 0 -8px 8px -8px #696868;
+	box-shadow: inset 0 0 0 0 #f8f8f8, inset 0 -2px 2px -2px rgba(105, 104, 104, 0.25);
 }
 
 .liferay-ims .buddy-list .panel-content .group-list .group-item {
 	clear: both;
 	list-style-type: none;
 	border: 1px solid #fff;
+	line-height: 27px;
 }
 
 .liferay-ims .buddy-list .panel-content .group-buddy-item {
@@ -554,15 +576,6 @@
 }
 
 /************************************************************************************
-**   CONVERSATION LIST
-*************************************************************************************/
-
-/* TODO: this will be removed */
-.liferay-ims .conversations {
-	display: none;
-}
-
-/************************************************************************************
 **   PRESENCE PANEL
 *************************************************************************************/
 
@@ -583,6 +596,7 @@
 .liferay-ims .status-panel .panel-window .status li {
 	padding: 10px 5px 10px 30px;
 	cursor: pointer;
+	line-height: 15px;
 }
 
 .liferay-ims .status-panel .panel-window .status li:hover {
@@ -717,8 +731,8 @@
 .liferay-ims .chat-settings label {
 	width: 180px;
 	float: left;
-	font-weight: normal;
-	margin-top: 8px;
+	margin-top: 6px;
+	font-size: 12px;
 }
 
 .liferay-ims .chat-settings input {
