@@ -16,46 +16,12 @@ Y.LIMS.Model.GroupModelItem = Y.Base.create('groupModelItem', Y.Model, [], {
             case 'create':
                 data = this.toJSON();
                 return;
-//                // Use the current timestamp as an id just to simplify the example. In a
-//                // real sync layer, you'd want to generate an id that's more likely to
-//                // be globally unique.
-//                data.id = Y.Lang.now();
-//
-//                // Store the new record in localStorage, then call the callback.
-//                localStorage.setItem(data.id, Y.JSON.stringify(data));
-//                callback(null, data);
-//                return;
-
             case 'read':
                 return;
-
-                // Look for an item in localStorage with this model's id.
-//                data = localStorage.getItem(this.get('id'));
-//
-//                if (data) {
-//                    callback(null, data);
-//                } else {
-//                    callback('Model not found.');
-//                }
-//
-//                return;
-
             case 'update':
                 return;
-//
-//                data = this.toJSON();
-//
-//                // Update the record in localStorage, then call the callback.
-//                localStorage.setItem(this.get('id'), Y.JSON.stringify(data));
-//                callback(null, data);
-//                return;
-
             case 'delete':
                 return;
-//                localStorage.removeItem(this.get('id'));
-//                callback();
-//                return;
-
             default:
                 callback('Invalid action');
         }
