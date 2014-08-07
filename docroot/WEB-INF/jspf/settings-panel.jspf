@@ -35,13 +35,13 @@
             <div class="panel-title">
                 <div class="panel-button minimize"></div>
                 <div class="panel-title-text">
-                    <liferay-ui:message key="settings"/>
+                    <liferay-ui:message key="panel-settings-title"/>
                 </div>
             </div>
             <ul class="lfr-component settings">
                 <li>
                     <label for="playSound">
-                        <liferay-ui:message key="sounds"/>
+                        <liferay-ui:message key="panel-settings-play-sound-label"/>
                     </label>
                     <input ${playSoundChecked} id="playSound" type="checkbox"/>
                 </li>

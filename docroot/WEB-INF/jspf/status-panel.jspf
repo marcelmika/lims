@@ -41,7 +41,7 @@
 <li class="status-panel ${selectedClass}">
     <div class="panel-trigger">
         <div class="trigger-name">
-            <div class="status-indicator ${status}" title="Status: ${status}"></div>
+            <div class="status-indicator ${status}" title="${status}"></div>
         </div>
     </div>
     <div class="panel">
@@ -49,16 +49,23 @@
             <div class="panel-title">
                 <div class="panel-button minimize"></div>
                 <div class="panel-title-text">
-                    <liferay-ui:message key="status"/>
+                    <liferay-ui:message key="panel-status-title"/>
                 </div>
             </div>
 
             <ul class="lfr-component status">
-                <li class="online" data-status="${PRESENCE_ACTIVE}"><liferay-ui:message key="online"/></li>
-                <li class="busy" data-status="${PRESENCE_BUSY}"><liferay-ui:message key="busy"/></li>
-                <li class="unavailable divider" data-status="${PRESENCE_DND}"><liferay-ui:message
-                        key="unavailable"/></li>
-                <li class="off" data-status="${PRESENCE_OFFLINE}"><liferay-ui:message key="off"/></li>
+                <li class="online" data-status="${PRESENCE_ACTIVE}">
+                    <liferay-ui:message key="presence-online"/>
+                </li>
+                <li class="busy" data-status="${PRESENCE_BUSY}">
+                    <liferay-ui:message key="presence-busy"/>
+                </li>
+                <li class="unavailable divider" data-status="${PRESENCE_DND}">
+                    <liferay-ui:message key="presence-unavailable"/>
+                </li>
+                <li class="off" data-status="${PRESENCE_OFFLINE}">
+                    <liferay-ui:message key="presence-offline"/>
+                </li>
             </ul>
         </div>
     </div>

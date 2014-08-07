@@ -36,7 +36,8 @@
                 <ul></ul>
             </div>
             <div class="panel-input">
-                <textarea placeholder="<liferay-ui:message key="message-placeholder" />"></textarea>
+                <textarea
+                        placeholder="<liferay-ui:message key="panel-conversation-message-placeholder" />"></textarea>
             </div>
         </div>
     </div>
@@ -58,11 +59,11 @@
 
 <%-- This template HTML will be used to play a sound via swf file --%>
 <script type="text/x-template" id="lims-notification-template">
-        <object type="application/x-shockwave-flash"
-                data="{url}"
-                width="1"
-                height="1"
-                id="lims-notification">
-            <param name="movie" value="{url}" />
-        </object>
+    <object type="application/x-shockwave-flash"
+            data="{url}"
+            width="1"
+            height="1"
+            id="lims-notification">
+        <param name="movie" value="{url}"/>
+    </object>
 </script>

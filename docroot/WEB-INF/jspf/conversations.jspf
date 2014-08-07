@@ -62,7 +62,8 @@
                     <ul></ul>
                 </div>
                 <div class="panel-input">
-                    <textarea placeholder="<liferay-ui:message key="message-placeholder" />"></textarea>
+                    <textarea
+                            placeholder="<liferay-ui:message key="panel-conversation-message-placeholder" />"></textarea>
                 </div>
             </div>
         </div>

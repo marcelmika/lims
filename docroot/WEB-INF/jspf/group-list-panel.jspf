@@ -28,7 +28,7 @@
                 <div class="panel-button minimize"></div>
                 <div class="panel-button search"></div>
                 <div class="panel-title-text">
-                    <liferay-ui:message key="colleagues"/>
+                    <liferay-ui:message key="panel-contacts-title"/>
                 </div>
             </div>
             <div class="panel-search hidden">
