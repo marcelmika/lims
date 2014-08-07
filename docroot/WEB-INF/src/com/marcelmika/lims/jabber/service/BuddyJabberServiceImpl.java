@@ -1,7 +1,5 @@
 package com.marcelmika.lims.jabber.service;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.events.buddy.*;
 import com.marcelmika.lims.jabber.JabberException;
 import com.marcelmika.lims.jabber.connection.manager.ConnectionManager;
@@ -18,9 +16,6 @@ import com.marcelmika.lims.jabber.session.store.UserSessionStore;
  * Time: 7:25 PM
  */
 public class BuddyJabberServiceImpl implements BuddyJabberService {
-
-    // Log
-    private static Log log = LogFactoryUtil.getLog(BuddyJabberServiceImpl.class);
 
     // Dependencies
     private UserSessionStore userSessionStore;
@@ -174,8 +169,6 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
         ConnectionManager connectionManager = userSession.getConnectionManager();
         // Map presence
         Presence presence = Presence.fromPresenceDetails(event.getPresenceDetails());
-
-        log.info("SETTING PRESENCE: " + presence);
 
         try {
             // Set presence on server

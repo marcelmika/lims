@@ -1,14 +1,13 @@
-
 package com.marcelmika.lims.portal.hooks;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.BaseModelListener;
 import com.liferay.portal.model.User;
-import com.marcelmika.lims.core.service.BuddyCoreService;
-import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
 import com.marcelmika.lims.api.events.buddy.DeleteBuddyRequestEvent;
 import com.marcelmika.lims.api.events.buddy.DeleteBuddyResponseEvent;
+import com.marcelmika.lims.core.service.BuddyCoreService;
+import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
 import com.marcelmika.lims.portal.domain.Buddy;
 
 /**
@@ -34,8 +33,11 @@ public class UserListener extends BaseModelListener<User> {
         DeleteBuddyResponseEvent responseEvent = coreService.removeBuddy(
                 new DeleteBuddyRequestEvent(buddy.toBuddyDetails())
         );
+
         // Log result
-        log.info(responseEvent.getResult());
+        if (log.isDebugEnabled()) {
+            log.debug(responseEvent.getResult());
+        }
     }
 
     @Override

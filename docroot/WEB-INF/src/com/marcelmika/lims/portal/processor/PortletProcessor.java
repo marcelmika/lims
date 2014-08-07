@@ -59,18 +59,8 @@ public class PortletProcessor {
      */
     public void processRequest(ResourceRequest request, ResourceResponse response) {
 
-        // Log query
-        if (request.getParameter(KEY_QUERY) != null) {
-            log.info("QUERY: " + request.getParameter(KEY_QUERY));
-        }
-        // Log request params
-        if (request.getParameter(KEY_PARAMETERS) != null) {
-            log.info("PARAMETERS: " + request.getParameter(KEY_PARAMETERS));
-        }
-        // Log request content
-        if (request.getParameter(KEY_CONTENT) != null) {
-            log.info("CONTENT: " + request.getParameter(KEY_CONTENT));
-        }
+        // Log
+        logRequest(request);
 
         // Return error response if no query was set
         if (request.getParameter(KEY_QUERY) == null) {
@@ -143,7 +133,6 @@ public class PortletProcessor {
         Conversation conversation = JSONFactoryUtil.looseDeserialize(
                 request.getParameter(KEY_CONTENT), Conversation.class
         );
-        log.info(conversation);
 
         // TODO: This should be solved more conceptually ----
         conversation.setConversationType(ConversationType.SINGLE_USER);
@@ -581,8 +570,11 @@ public class PortletProcessor {
 
         // Set status code
         response.setProperty(ResourceResponse.HTTP_STATUS_CODE, statusCode.toString());
+
         // Log
-        log.info("STATUS: " + statusCode.toString());
+        if (log.isDebugEnabled()) {
+            log.debug(String.format("RESPONSE STATUS CODE: %s", statusCode.toString()));
+        }
     }
 
 
@@ -601,5 +593,29 @@ public class PortletProcessor {
         }
 
         return writer;
+    }
+
+    /**
+     * Logs request data
+     *
+     * @param request ResourceRequest
+     */
+    private void logRequest(ResourceRequest request) {
+
+        // Only if debug is enabled
+        if (log.isDebugEnabled()) {
+            // Log query
+            if (request.getParameter(KEY_QUERY) != null) {
+                log.debug(String.format("REQUEST QUERY: %s", request.getParameter(KEY_QUERY)));
+            }
+            // Log request params
+            if (request.getParameter(KEY_PARAMETERS) != null) {
+                log.debug(String.format("REQUEST PARAMETERS: %s", request.getParameter(KEY_PARAMETERS)));
+            }
+            // Log request content
+            if (request.getParameter(KEY_CONTENT) != null) {
+                log.debug(String.format("REQUEST CONTENT: %s", request.getParameter(KEY_CONTENT)));
+            }
+        }
     }
 }
