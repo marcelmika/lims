@@ -515,8 +515,15 @@ public class PortletProcessor {
      * @param response ResourceResponse
      */
     protected void updateActivePanel(ResourceRequest request, ResourceResponse response) {
+
         // Create buddy and settings from poller request
-        Settings settings = JSONFactoryUtil.looseDeserialize(request.getParameter("data"), Settings.class);
+        Settings settings;
+        try {
+            settings = JSONFactoryUtil.looseDeserialize(request.getParameter("data"), Settings.class);
+        } catch (Exception exception) {
+            writeResponse(HttpStatus.BAD_REQUEST, response);
+            return;
+        }
 
         // Send request to core service
         ResponseEvent responseEvent = settingsCoreService.updateActivePanel(new UpdateActivePanelRequestEvent(

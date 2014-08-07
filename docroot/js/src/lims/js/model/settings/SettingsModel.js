@@ -128,7 +128,7 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
         },
 
         isMute: {
-            value: null // default value
+            value: false // default value
         }
     }
 });

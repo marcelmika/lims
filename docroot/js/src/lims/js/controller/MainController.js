@@ -75,7 +75,7 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
         // If the hidden panel is currently active panel it means that no panel is currently active
         if (this.get('activePanelId') === panel.get('panelId')) {
             // Update settings
-            this.get('settingsModel').updateActivePanel('', function() {});
+            this.get('settingsModel').updateActivePanel(null, function() {});
         }
     }
 
