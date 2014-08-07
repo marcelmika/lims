@@ -246,10 +246,6 @@
 	background: url(../images/close-button.png) center center no-repeat;
 }
 
-.liferay-ims .panel-button.menu {
-	background: url(../images/menu-button.png) left bottom;
-}
-
 .liferay-ims .panel-button.search {
 	background: url("../images/search.png") center center no-repeat;
 	/* TODO: Remove after implemented */
