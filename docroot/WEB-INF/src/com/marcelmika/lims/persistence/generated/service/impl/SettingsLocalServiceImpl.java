@@ -14,6 +14,7 @@
 
 package com.marcelmika.lims.persistence.generated.service.impl;
 
+import com.liferay.portal.kernel.exception.SystemException;
 import com.marcelmika.lims.persistence.generated.model.Settings;
 import com.marcelmika.lims.persistence.generated.service.base.SettingsLocalServiceBaseImpl;
 
@@ -21,10 +22,10 @@ import java.util.List;
 
 /**
  * The implementation of the settings local service.
- *
+ * <p/>
  * <p>
  * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the {@link com.marcelmika.lims.persistence.generated.service.SettingsLocalService} interface.
- *
+ * <p/>
  * <p>
  * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
  * </p>
@@ -34,7 +35,7 @@ import java.util.List;
  * @see com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUtil
  */
 public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
-	/*
+    /*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this interface directly. Always use {@link com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUtil} to access the settings local service.
@@ -65,9 +66,21 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
     }
 
     /**
+     * Saves settings object to persistence
+     *
+     * @param settings Settings model
+     * @return Updated Settings
+     * @throws SystemException
+     */
+    @Override
+    public Settings saveSettings(Settings settings) throws SystemException {
+        return settingsPersistence.update(settings, true);
+    }
+
+    /**
      * Updates user presence
      *
-     * @param userId id of the user whose presence should be updated
+     * @param userId   id of the user whose presence should be updated
      * @param presence new value of the presence
      * @throws Exception
      */

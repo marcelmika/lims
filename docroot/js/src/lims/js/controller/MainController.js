@@ -62,9 +62,7 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
         // Store current active panel id
         this.set('activePanelId', panelId);
         // Update settings
-        this.get('settingsModel').set('activePanelId', panelId).save({
-            action: 'updateActivePanel'
-        });
+        this.get('settingsModel').updateActivePanel(panelId, function() {});
     },
 
     /**
@@ -77,9 +75,7 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
         // If the hidden panel is currently active panel it means that no panel is currently active
         if (this.get('activePanelId') === panel.get('panelId')) {
             // Update settings
-            this.get('settingsModel').set('activePanelId', '').save({
-                action: 'updateActivePanel'
-            });
+            this.get('settingsModel').updateActivePanel('', function() {});
         }
     }
 

@@ -28,7 +28,7 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
             case 'create':
             case 'update': // There is no difference between create and update
                 // Update Event Handler
-                this._updateEventHandler(data, options, callback);
+                this._updateSettings(data, callback);
                 break;
 
             case 'read':
@@ -41,38 +41,21 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
     },
 
     /**
-     * Event handler decides which update function should be called based on the
-     * options.action call. Update Settings is a default fallback
-     *
-     * @param data
-     * @param options
-     * @param callback
-     * @private
-     */
-    _updateEventHandler: function (data, options, callback) {
-        if (options !== undefined) {
-            // Update active panel action
-            if (options.hasOwnProperty("action") && options.action === "updateActivePanel") {
-                this._updateActivePanel(data, callback);
-            }
-        }
-
-        // Update settings action is a default
-        else {
-            this._updateSettings(data, callback);
-        }
-    },
-
-    /**
      * Updates active panel id
      *
-     * @param data
+     * @param activePanelId
      * @param callback
-     * @private
      */
-    _updateActivePanel: function (data, callback) {
+    updateActivePanel: function (activePanelId, callback) {
         // Create settings that contains request url
-        var settings = new Y.LIMS.Core.Settings();
+        var settings = new Y.LIMS.Core.Settings(),
+            data;
+
+        // Save
+        this.set('activePanelId', activePanelId);
+
+        // Save data
+        data = Y.JSON.stringify(this.toJSON());
 
         // Do the request
         Y.io(settings.getServerRequestUrl(), {

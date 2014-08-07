@@ -85,8 +85,9 @@ public class SettingsPersistenceServiceImpl implements SettingsPersistenceServic
             );
             // Set new values
             settings.setMute(details.isMute());
+
             // Save
-            SettingsLocalServiceUtil.updateSettings(settings);
+            SettingsLocalServiceUtil.saveSettings(settings);
 
             return UpdateSettingsResponseEvent.updateSettingsSuccess(
                     "Settings saved to persistence layer for user " + event.getBuddyId(), details

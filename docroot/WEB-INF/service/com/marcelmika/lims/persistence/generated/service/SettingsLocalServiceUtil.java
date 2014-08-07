@@ -287,9 +287,22 @@ public class SettingsLocalServiceUtil {
 	}
 
 	/**
+	* Saves settings object to persistence
+	*
+	* @param settings Settings model
+	* @return Updated Settings
+	* @throws SystemException
+	*/
+	public static com.marcelmika.lims.persistence.generated.model.Settings saveSettings(
+		com.marcelmika.lims.persistence.generated.model.Settings settings)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().saveSettings(settings);
+	}
+
+	/**
 	* Updates user presence
 	*
-	* @param userId id of the user whose presence should be updated
+	* @param userId   id of the user whose presence should be updated
 	* @param presence new value of the presence
 	* @throws Exception
 	*/
