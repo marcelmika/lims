@@ -54,7 +54,7 @@
         <column name='messageHash' type='String'/>
         <column name='body' type='String'/>
         <order>
-            <order-column name="createdAt" order-by="asc"/>
+            <order-column name="createdAt" order-by="desc"/>
         </order>
         <finder name='CreatorId' return-type='Buddy'>
             <finder-column name='creatorId'/>

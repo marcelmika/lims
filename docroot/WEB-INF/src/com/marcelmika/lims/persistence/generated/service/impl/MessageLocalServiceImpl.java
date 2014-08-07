@@ -67,6 +67,9 @@ public class MessageLocalServiceImpl extends MessageLocalServiceBaseImpl {
     }
 
     public List<Message> readMessages(long cid, int start, int end) throws SystemException {
-        return messagePersistence.findByCid(cid, start, end);
+
+        int count = messagePersistence.countByCid(cid);
+
+        return messagePersistence.findByCid(cid, count - end, count);
     }
 }
