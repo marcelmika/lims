@@ -191,14 +191,15 @@
 	border-radius: 20px;
 	background: rgb(189, 49, 49);
 	color: #fff;
-	font: bold 10px/16px Arial, Helvetica, sans-serif;
+	font-size: 10px;
 	height: 16px;
 	position: absolute;
 	right: -7px;
 	text-align: center;
 	top: -5px;
 	width: 16px;
-	z-index: 0;
+	line-height: 14px;
+	font-weight: bold;
 }
 
 /********************************************************************************
