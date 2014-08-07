@@ -122,7 +122,7 @@ public class MessageLocalServiceClp implements MessageLocalService {
 
 		_methodName20 = "readMessages";
 
-		_methodParameterTypes20 = new String[] { "long" };
+		_methodParameterTypes20 = new String[] { "long", "int", "int" };
 	}
 
 	@Override
@@ -714,12 +714,13 @@ public class MessageLocalServiceClp implements MessageLocalService {
 
 	@Override
 	public java.util.List<com.marcelmika.lims.persistence.generated.model.Message> readMessages(
-		long cid) throws com.liferay.portal.kernel.exception.SystemException {
+		long cid, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20, new Object[] { cid });
+					_methodParameterTypes20, new Object[] { cid, start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);

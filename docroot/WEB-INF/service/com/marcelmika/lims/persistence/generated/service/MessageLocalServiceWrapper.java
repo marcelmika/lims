@@ -292,8 +292,9 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
 
 	@Override
 	public java.util.List<com.marcelmika.lims.persistence.generated.model.Message> readMessages(
-		long cid) throws com.liferay.portal.kernel.exception.SystemException {
-		return _messageLocalService.readMessages(cid);
+		long cid, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _messageLocalService.readMessages(cid, start, end);
 	}
 
 	/**

@@ -4,6 +4,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.entity.ConversationDetails;
+import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.events.conversation.*;
 import com.marcelmika.lims.persistence.domain.Buddy;
 import com.marcelmika.lims.persistence.domain.Conversation;
@@ -114,7 +115,8 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
 
             // Get messages from persistence
             List<com.marcelmika.lims.persistence.generated.model.Message> messageModels =
-                    MessageLocalServiceUtil.readMessages(conversationModel.getCid());
+                    MessageLocalServiceUtil.readMessages(
+                            conversationModel.getCid(), 0, Environment.getConversationListMaxMessages());
 
             // Map to persistence
             List<Message> messages = new LinkedList<Message>();
