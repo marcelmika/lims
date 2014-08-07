@@ -78,7 +78,6 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		attributes.put("cid", getCid());
 		attributes.put("creatorId", getCreatorId());
 		attributes.put("createdAt", getCreatedAt());
-		attributes.put("messageHash", getMessageHash());
 		attributes.put("body", getBody());
 
 		return attributes;
@@ -108,12 +107,6 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 
 		if (createdAt != null) {
 			setCreatedAt(createdAt);
-		}
-
-		String messageHash = (String)attributes.get("messageHash");
-
-		if (messageHash != null) {
-			setMessageHash(messageHash);
 		}
 
 		String body = (String)attributes.get("body");
@@ -208,29 +201,6 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 				Method method = clazz.getMethod("setCreatedAt", Date.class);
 
 				method.invoke(_messageRemoteModel, createdAt);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
-	public String getMessageHash() {
-		return _messageHash;
-	}
-
-	@Override
-	public void setMessageHash(String messageHash) {
-		_messageHash = messageHash;
-
-		if (_messageRemoteModel != null) {
-			try {
-				Class<?> clazz = _messageRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setMessageHash", String.class);
-
-				method.invoke(_messageRemoteModel, messageHash);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -334,7 +304,6 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		clone.setCid(getCid());
 		clone.setCreatorId(getCreatorId());
 		clone.setCreatedAt(getCreatedAt());
-		clone.setMessageHash(getMessageHash());
 		clone.setBody(getBody());
 
 		return clone;
@@ -384,7 +353,7 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(11);
 
 		sb.append("{mid=");
 		sb.append(getMid());
@@ -394,8 +363,6 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		sb.append(getCreatorId());
 		sb.append(", createdAt=");
 		sb.append(getCreatedAt());
-		sb.append(", messageHash=");
-		sb.append(getMessageHash());
 		sb.append(", body=");
 		sb.append(getBody());
 		sb.append("}");
@@ -405,7 +372,7 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(22);
+		StringBundler sb = new StringBundler(19);
 
 		sb.append("<model><model-name>");
 		sb.append("com.marcelmika.lims.persistence.generated.model.Message");
@@ -428,10 +395,6 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		sb.append(getCreatedAt());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>messageHash</column-name><column-value><![CDATA[");
-		sb.append(getMessageHash());
-		sb.append("]]></column-value></column>");
-		sb.append(
 			"<column><column-name>body</column-name><column-value><![CDATA[");
 		sb.append(getBody());
 		sb.append("]]></column-value></column>");
@@ -445,7 +408,6 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 	private long _cid;
 	private long _creatorId;
 	private Date _createdAt;
-	private String _messageHash;
 	private String _body;
 	private BaseModel<?> _messageRemoteModel;
 }

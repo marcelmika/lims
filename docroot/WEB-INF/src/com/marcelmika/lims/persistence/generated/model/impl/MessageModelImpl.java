@@ -64,10 +64,9 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 			{ "cid", Types.BIGINT },
 			{ "creatorId", Types.BIGINT },
 			{ "createdAt", Types.TIMESTAMP },
-			{ "messageHash", Types.VARCHAR },
 			{ "body", Types.VARCHAR }
 		};
-	public static final String TABLE_SQL_CREATE = "create table lims_Message (mid LONG not null primary key,cid LONG,creatorId LONG,createdAt DATE null,messageHash VARCHAR(75) null,body TEXT null)";
+	public static final String TABLE_SQL_CREATE = "create table lims_Message (mid LONG not null primary key,cid LONG,creatorId LONG,createdAt DATE null,body TEXT null)";
 	public static final String TABLE_SQL_DROP = "drop table lims_Message";
 	public static final String ORDER_BY_JPQL = " ORDER BY message.createdAt DESC";
 	public static final String ORDER_BY_SQL = " ORDER BY lims_Message.createdAt DESC";
@@ -130,7 +129,6 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		attributes.put("cid", getCid());
 		attributes.put("creatorId", getCreatorId());
 		attributes.put("createdAt", getCreatedAt());
-		attributes.put("messageHash", getMessageHash());
 		attributes.put("body", getBody());
 
 		return attributes;
@@ -160,12 +158,6 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 
 		if (createdAt != null) {
 			setCreatedAt(createdAt);
-		}
-
-		String messageHash = (String)attributes.get("messageHash");
-
-		if (messageHash != null) {
-			setMessageHash(messageHash);
 		}
 
 		String body = (String)attributes.get("body");
@@ -242,21 +234,6 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 	}
 
 	@Override
-	public String getMessageHash() {
-		if (_messageHash == null) {
-			return StringPool.BLANK;
-		}
-		else {
-			return _messageHash;
-		}
-	}
-
-	@Override
-	public void setMessageHash(String messageHash) {
-		_messageHash = messageHash;
-	}
-
-	@Override
 	public String getBody() {
 		if (_body == null) {
 			return StringPool.BLANK;
@@ -306,7 +283,6 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		messageImpl.setCid(getCid());
 		messageImpl.setCreatorId(getCreatorId());
 		messageImpl.setCreatedAt(getCreatedAt());
-		messageImpl.setMessageHash(getMessageHash());
 		messageImpl.setBody(getBody());
 
 		messageImpl.resetOriginalValues();
@@ -390,14 +366,6 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 			messageCacheModel.createdAt = Long.MIN_VALUE;
 		}
 
-		messageCacheModel.messageHash = getMessageHash();
-
-		String messageHash = messageCacheModel.messageHash;
-
-		if ((messageHash != null) && (messageHash.length() == 0)) {
-			messageCacheModel.messageHash = null;
-		}
-
 		messageCacheModel.body = getBody();
 
 		String body = messageCacheModel.body;
@@ -411,7 +379,7 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(11);
 
 		sb.append("{mid=");
 		sb.append(getMid());
@@ -421,8 +389,6 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		sb.append(getCreatorId());
 		sb.append(", createdAt=");
 		sb.append(getCreatedAt());
-		sb.append(", messageHash=");
-		sb.append(getMessageHash());
 		sb.append(", body=");
 		sb.append(getBody());
 		sb.append("}");
@@ -432,7 +398,7 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(22);
+		StringBundler sb = new StringBundler(19);
 
 		sb.append("<model><model-name>");
 		sb.append("com.marcelmika.lims.persistence.generated.model.Message");
@@ -453,10 +419,6 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		sb.append(
 			"<column><column-name>createdAt</column-name><column-value><![CDATA[");
 		sb.append(getCreatedAt());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>messageHash</column-name><column-value><![CDATA[");
-		sb.append(getMessageHash());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>body</column-name><column-value><![CDATA[");
@@ -480,7 +442,6 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 	private long _originalCreatorId;
 	private boolean _setOriginalCreatorId;
 	private Date _createdAt;
-	private String _messageHash;
 	private String _body;
 	private long _columnBitmask;
 	private Message _escapedModel;

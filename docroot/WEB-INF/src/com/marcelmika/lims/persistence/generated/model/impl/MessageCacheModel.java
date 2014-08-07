@@ -37,7 +37,7 @@ import java.util.Date;
 public class MessageCacheModel implements CacheModel<Message>, Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(11);
 
 		sb.append("{mid=");
 		sb.append(mid);
@@ -47,8 +47,6 @@ public class MessageCacheModel implements CacheModel<Message>, Externalizable {
 		sb.append(creatorId);
 		sb.append(", createdAt=");
 		sb.append(createdAt);
-		sb.append(", messageHash=");
-		sb.append(messageHash);
 		sb.append(", body=");
 		sb.append(body);
 		sb.append("}");
@@ -71,13 +69,6 @@ public class MessageCacheModel implements CacheModel<Message>, Externalizable {
 			messageImpl.setCreatedAt(new Date(createdAt));
 		}
 
-		if (messageHash == null) {
-			messageImpl.setMessageHash(StringPool.BLANK);
-		}
-		else {
-			messageImpl.setMessageHash(messageHash);
-		}
-
 		if (body == null) {
 			messageImpl.setBody(StringPool.BLANK);
 		}
@@ -96,7 +87,6 @@ public class MessageCacheModel implements CacheModel<Message>, Externalizable {
 		cid = objectInput.readLong();
 		creatorId = objectInput.readLong();
 		createdAt = objectInput.readLong();
-		messageHash = objectInput.readUTF();
 		body = objectInput.readUTF();
 	}
 
@@ -107,13 +97,6 @@ public class MessageCacheModel implements CacheModel<Message>, Externalizable {
 		objectOutput.writeLong(cid);
 		objectOutput.writeLong(creatorId);
 		objectOutput.writeLong(createdAt);
-
-		if (messageHash == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
-		}
-		else {
-			objectOutput.writeUTF(messageHash);
-		}
 
 		if (body == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
@@ -127,6 +110,5 @@ public class MessageCacheModel implements CacheModel<Message>, Externalizable {
 	public long cid;
 	public long creatorId;
 	public long createdAt;
-	public String messageHash;
 	public String body;
 }

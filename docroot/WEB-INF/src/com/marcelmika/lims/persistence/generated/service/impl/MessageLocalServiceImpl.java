@@ -51,7 +51,6 @@ public class MessageLocalServiceImpl extends MessageLocalServiceBaseImpl {
         messageModel.setCid(cid);
         messageModel.setCreatorId(creatorId);
         messageModel.setBody(body);
-        messageModel.setMessageHash(messageHash);
 
         // Time when the message was created
         Date now = new Date();

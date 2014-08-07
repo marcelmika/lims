@@ -1092,7 +1092,6 @@ public class MessagePersistenceImpl extends BasePersistenceImpl<Message>
 		messageImpl.setCid(message.getCid());
 		messageImpl.setCreatorId(message.getCreatorId());
 		messageImpl.setCreatedAt(message.getCreatedAt());
-		messageImpl.setMessageHash(message.getMessageHash());
 		messageImpl.setBody(message.getBody());
 
 		return messageImpl;

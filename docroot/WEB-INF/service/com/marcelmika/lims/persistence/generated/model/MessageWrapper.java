@@ -53,7 +53,6 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 		attributes.put("cid", getCid());
 		attributes.put("creatorId", getCreatorId());
 		attributes.put("createdAt", getCreatedAt());
-		attributes.put("messageHash", getMessageHash());
 		attributes.put("body", getBody());
 
 		return attributes;
@@ -83,12 +82,6 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 
 		if (createdAt != null) {
 			setCreatedAt(createdAt);
-		}
-
-		String messageHash = (String)attributes.get("messageHash");
-
-		if (messageHash != null) {
-			setMessageHash(messageHash);
 		}
 
 		String body = (String)attributes.get("body");
@@ -196,26 +189,6 @@ public class MessageWrapper implements Message, ModelWrapper<Message> {
 	@Override
 	public void setCreatedAt(java.util.Date createdAt) {
 		_message.setCreatedAt(createdAt);
-	}
-
-	/**
-	* Returns the message hash of this message.
-	*
-	* @return the message hash of this message
-	*/
-	@Override
-	public java.lang.String getMessageHash() {
-		return _message.getMessageHash();
-	}
-
-	/**
-	* Sets the message hash of this message.
-	*
-	* @param messageHash the message hash of this message
-	*/
-	@Override
-	public void setMessageHash(java.lang.String messageHash) {
-		_message.setMessageHash(messageHash);
 	}
 
 	/**

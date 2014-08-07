@@ -28,7 +28,6 @@
 			<basic name="createdAt">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
-			<basic name="messageHash" />
 			<basic name="body" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />

@@ -24,7 +24,6 @@
 		<property name="cid" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="creatorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="createdAt" type="org.hibernate.type.TimestampType" />
-		<property name="messageHash" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="body" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.marcelmika.lims.persistence.generated.model.impl.PanelImpl" table="lims_Panel">

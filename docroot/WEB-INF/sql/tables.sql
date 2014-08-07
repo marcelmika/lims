@@ -10,7 +10,6 @@ create table lims_Message (
 	cid LONG,
 	creatorId LONG,
 	createdAt DATE null,
-	messageHash VARCHAR(75) null,
 	body TEXT null
 );
 

@@ -34,7 +34,6 @@ public class MessageSoap implements Serializable {
 		soapModel.setCid(model.getCid());
 		soapModel.setCreatorId(model.getCreatorId());
 		soapModel.setCreatedAt(model.getCreatedAt());
-		soapModel.setMessageHash(model.getMessageHash());
 		soapModel.setBody(model.getBody());
 
 		return soapModel;
@@ -120,14 +119,6 @@ public class MessageSoap implements Serializable {
 		_createdAt = createdAt;
 	}
 
-	public String getMessageHash() {
-		return _messageHash;
-	}
-
-	public void setMessageHash(String messageHash) {
-		_messageHash = messageHash;
-	}
-
 	public String getBody() {
 		return _body;
 	}
@@ -140,6 +131,5 @@ public class MessageSoap implements Serializable {
 	private long _cid;
 	private long _creatorId;
 	private Date _createdAt;
-	private String _messageHash;
 	private String _body;
 }

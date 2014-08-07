@@ -57,7 +57,6 @@ public class Message {
         // Properties:
         message.body = messageModel.getBody();
         message.createdAt = messageModel.getCreatedAt();
-        message.messageHash = messageModel.getMessageHash();
 
         Buddy creator = new Buddy();
         creator.setBuddyId(messageModel.getCreatorId());

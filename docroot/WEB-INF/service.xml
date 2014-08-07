@@ -51,7 +51,6 @@
         <column name='cid' type='long'/>
         <column name='creatorId' type='long'/>
         <column name='createdAt' type='Date'/>
-        <column name='messageHash' type='String'/>
         <column name='body' type='String'/>
         <order>
             <order-column name="createdAt" order-by="desc"/>

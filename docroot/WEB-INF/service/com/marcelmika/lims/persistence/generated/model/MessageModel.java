@@ -116,21 +116,6 @@ public interface MessageModel extends BaseModel<Message> {
 	public void setCreatedAt(Date createdAt);
 
 	/**
-	 * Returns the message hash of this message.
-	 *
-	 * @return the message hash of this message
-	 */
-	@AutoEscape
-	public String getMessageHash();
-
-	/**
-	 * Sets the message hash of this message.
-	 *
-	 * @param messageHash the message hash of this message
-	 */
-	public void setMessageHash(String messageHash);
-
-	/**
 	 * Returns the body of this message.
 	 *
 	 * @return the body of this message
