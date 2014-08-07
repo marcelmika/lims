@@ -315,8 +315,6 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 
 		value = DateUtil.compareTo(getCreatedAt(), message.getCreatedAt());
 
-		value = value * -1;
-
 		if (value != 0) {
 			return value;
 		}

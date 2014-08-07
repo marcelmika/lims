@@ -53,7 +53,7 @@
         <column name='createdAt' type='Date'/>
         <column name='body' type='String'/>
         <order>
-            <order-column name="createdAt" order-by="desc"/>
+            <order-column name="createdAt" order-by="asc"/>
         </order>
         <finder name='CreatorId' return-type='Buddy'>
             <finder-column name='creatorId'/>

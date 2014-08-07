@@ -68,8 +68,8 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		};
 	public static final String TABLE_SQL_CREATE = "create table lims_Message (mid LONG not null primary key,cid LONG,creatorId LONG,createdAt DATE null,body TEXT null)";
 	public static final String TABLE_SQL_DROP = "drop table lims_Message";
-	public static final String ORDER_BY_JPQL = " ORDER BY message.createdAt DESC";
-	public static final String ORDER_BY_SQL = " ORDER BY lims_Message.createdAt DESC";
+	public static final String ORDER_BY_JPQL = " ORDER BY message.createdAt ASC";
+	public static final String ORDER_BY_SQL = " ORDER BY lims_Message.createdAt ASC";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
@@ -295,8 +295,6 @@ public class MessageModelImpl extends BaseModelImpl<Message>
 		int value = 0;
 
 		value = DateUtil.compareTo(getCreatedAt(), message.getCreatedAt());
-
-		value = value * -1;
 
 		if (value != 0) {
 			return value;
