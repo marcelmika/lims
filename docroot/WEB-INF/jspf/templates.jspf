@@ -20,10 +20,12 @@
     </div>
     <div class="panel">
         <div class="panel-window">
-            <div class="panel-button close"></div>
-            <div class="panel-button minimize"></div>
-            <div class="panel-button search"></div>
-            <div class="panel-title">{conversationTitle}</div>
+            <div class="panel-title">
+                <div class="panel-button close"></div>
+                <div class="panel-button minimize"></div>
+                <div class="panel-button search"></div>
+                <div class="panel-title-text">{conversationTitle}</div>
+            </div>
             <div class="panel-search hidden">
                 <label>
                     <input class="search-input-field" name="searchConversation" type="text" value=""/>

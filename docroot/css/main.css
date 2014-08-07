@@ -158,6 +158,14 @@
 	padding: 0 6px;
 }
 
+.liferay-ims .lims-bar div ul li .panel-trigger span.trigger-name {
+	max-width: 150px;
+	display: block;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
 .liferay-ims .lims-bar div ul li .panel-trigger:hover {
 	background: #fff;
 }
@@ -282,6 +290,13 @@
 	border-bottom: 1px solid #ccc;
 }
 
+.liferay-ims .panel-title .panel-title-text {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	max-width: 190px;
+}
+
 .liferay-ims .panel-subtitle {
 	padding: 5px;
 	background: #f8f8f8;
@@ -349,12 +364,11 @@
 }
 
 .liferay-ims .conversation .conversation-item {
-	border-bottom: 1px solid #efefef;
 	padding: 7px;
 }
 
 .liferay-ims .conversation .conversation-item-portrait img.portrait {
-	float: left;
+	position: absolute;
 	width: 32px;
 	height: 32px;
 	background: #fff;
@@ -372,9 +386,10 @@
 	float: left;
 	font-size: 9px;
 	display: block;
-	line-height: 8px;
 	padding: 3px 5px 3px;
 	color: #7e7e7e;
+	max-width: 120px;
+	line-height: 10px
 }
 
 .liferay-ims .conversation .conversation-item-date {
@@ -382,7 +397,9 @@
 	font-size: 9px;
 	font-style: normal;
 	color: #7e7e7e;
-	margin-top: 1px;
+	max-width: 70px;
+	line-height: 10px;
+	padding-top: 3px;
 }
 
 .liferay-ims .conversation .conversation-item-text {
@@ -391,7 +408,7 @@
 	line-height: 14px;
 	padding: 3px 8px;
 	color: #222;
-	clear: right;
+	clear: left;
 	word-wrap: break-word;
 }
 
@@ -462,9 +479,10 @@
 
 .liferay-ims .buddy-list .panel-content .group-buddy-item .group-buddy-item-name {
 	margin-top: 6px;
-	max-width: 170px;
-	max-height: 20px;
+	max-width: 165px;
 	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .liferay-ims .buddy-list .panel-content {
@@ -509,9 +527,13 @@
 	padding-top: 6px;
 	text-transform: uppercase;
 	float: none;
-	-moz-box-shadow: inset 0 8px 8px -8px rgba(105, 104, 104, 0.25), inset 0 -8px 8px -8px #696868;
-	-webkit-box-shadow: inset 0 8px 8px -8px #696868, inset 0 -8px 8px -8px #696868;
+	-moz-box-shadow: inset 0 0 0 0 #f8f8f8, inset 0 -2px 2px -2px rgba(105, 104, 104, 0.25);
+	-webkit-box-shadow: inset 0 0 0 0 #f8f8f8, inset 0 -2px 2px -2px rgba(105, 104, 104, 0.25);
 	box-shadow: inset 0 0 0 0 #f8f8f8, inset 0 -2px 2px -2px rgba(105, 104, 104, 0.25);
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	max-width: 250px;
 }
 
 .liferay-ims .buddy-list .panel-content .group-list .group-item {
@@ -732,8 +754,9 @@
 .liferay-ims .chat-settings label {
 	width: 180px;
 	float: left;
-	margin-top: 6px;
+	margin-top: 8px;
 	font-size: 12px;
+	line-height: 15px;
 }
 
 .liferay-ims .chat-settings input {

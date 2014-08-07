@@ -46,9 +46,13 @@
     </div>
     <div class="panel">
         <div class="panel-window">
-            <div class="panel-button minimize"></div>
+            <div class="panel-title">
+                <div class="panel-button minimize"></div>
+                <div class="panel-title-text">
+                    <liferay-ui:message key="status"/>
+                </div>
+            </div>
 
-            <div class="panel-title"><liferay-ui:message key="status"/></div>
             <ul class="lfr-component status">
                 <li class="online" data-status="${PRESENCE_ACTIVE}"><liferay-ui:message key="online"/></li>
                 <li class="busy" data-status="${PRESENCE_BUSY}"><liferay-ui:message key="busy"/></li>
