@@ -11,11 +11,11 @@
 				User_.firstName AS firstName,
 				User_.middleName AS middleName,
 				User_.lastName AS lastName,
-				lims_Settings.presence AS presence
+				Lims_Settings.presence AS presence
 			FROM
-				lims_Settings
+				Lims_Settings
 			INNER JOIN
-				User_ ON (User_.userId = lims_Settings.userId)
+				User_ ON (User_.userId = Lims_Settings.userId)
 			WHERE
 				User_.userId != ?
 				[$DEFAULT_USER$]
@@ -36,11 +36,11 @@
 				User_.firstName AS firstName,
 				User_.middleName AS middleName,
 				User_.lastName AS lastName,
-				lims_Settings.presence AS presence
+				Lims_Settings.presence AS presence
 			FROM
-				lims_Settings
+				Lims_Settings
 			INNER JOIN
-				User_ ON (User_.userId = lims_Settings.userId)
+				User_ ON (User_.userId = Lims_Settings.userId)
 			INNER JOIN
 				Users_Groups ON (Users_Groups.userId = User_.userId)
 			INNER JOIN
@@ -75,11 +75,11 @@
 				User_.firstName AS firstName,
 				User_.middleName AS middleName,
 				User_.lastName AS lastName,
-				lims_Settings.presence AS presence
+				Lims_Settings.presence AS presence
 			FROM
-				lims_Settings
+				Lims_Settings
 			INNER JOIN
-				User_ ON (User_.userId = lims_Settings.userId)
+				User_ ON (User_.userId = Lims_Settings.userId)
 			INNER JOIN
 				SocialRelation ON (SocialRelation.userId2 = User_.userId)
 			WHERE

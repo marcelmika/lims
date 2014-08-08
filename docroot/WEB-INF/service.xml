@@ -7,7 +7,7 @@
 <service-builder package-path='com.marcelmika.lims.persistence.generated'>
 
     <!-- This will be a prefix of all entity tables -->
-    <namespace>lims</namespace>
+    <namespace>Lims</namespace>
 
     <!-- Panel -->
     <entity name='Panel' local-service='true' remote-service='false'>

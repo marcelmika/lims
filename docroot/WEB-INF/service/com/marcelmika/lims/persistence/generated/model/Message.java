@@ -17,7 +17,7 @@ package com.marcelmika.lims.persistence.generated.model;
 import com.liferay.portal.model.PersistedModel;
 
 /**
- * The extended model interface for the Message service. Represents a row in the &quot;lims_Message&quot; database table, with each column mapped to a property of this class.
+ * The extended model interface for the Message service. Represents a row in the &quot;Lims_Message&quot; database table, with each column mapped to a property of this class.
  *
  * @author Brian Wing Shun Chan
  * @see MessageModel
