@@ -1,8 +1,7 @@
 
 package com.marcelmika.lims.jabber;
 
-import com.marcelmika.lims.conversation.Conversation;
-import com.marcelmika.lims.model.Buddy;
+import com.marcelmika.lims.jabber.domain.Conversation;
 
 import java.util.List;
 
@@ -11,6 +10,7 @@ import java.util.List;
  * @link http://marcelmika.com/lims
  * Date: 11/24/13
  * Time: 11:18 PM
+ * @deprecated
  */
 public class JabberUtil {
 
@@ -36,66 +36,46 @@ public class JabberUtil {
     }
 
     /**
-     * Performs login action
-     *
-     * @param userId   long
-     * @param username String
-     * @param password String
-     */
-    public static void login(long userId, String username, String password) {
-        getJabber().login(userId, username, password);
-    }
-
-    /**
-     * Performs logout action
-     *
-     * @param userId long
-     */
-    public static void logout(long userId) {
-        getJabber().logout(userId);
-    }
-
-    /**
      * @done
      */
     public static void sendMessage(long userId, Conversation conversation, String message) throws Exception {
-        getJabber().sendMessage(userId, conversation, message);
+        getJabber().sendMessage(userId, conversation, message, null);
     }
 
     /**
      * @done
      */
     public static void changeStatus(long userId, String status) throws Exception {
-        getJabber().changeStatus(userId, status);
+        getJabber().changeStatus(userId, status, null);
     }
 
     /**
      * @done
      */
-    public static Conversation createConversation(long userId, List<Buddy> participants, String message) throws Exception {
-        Conversation conversation;
-        // Single user conversation
-        if (participants.size() == 1) {
-            // @todo: This is not going to be in v0.2 version, so just do the multi user anyway
-            conversation = getJabber().createMUConversation(userId, participants, message);
-            // conversation = getJabber().createSUConversation(userId, participants, message);
-        }
-        // Multi user conversation
-        else if (participants.size() > 1) {
-            conversation = getJabber().createMUConversation(userId, participants, message);
-        } else {
-            throw new Exception("Unknown number of participants");
-        }
-
-        return conversation;
-    }
+//    public static Conversation createConversation(long userId, List<Buddy> participants, String message) throws Exception {
+//        Conversation conversation;
+//        // Single user conversation
+//        if (participants.size() == 1) {
+//            // @todo: This is not going to be in v0.2 version, so just do the multi user anyway
+////            conversation = getJabber().createMUConversation(userId, participants, message, null);
+//            // conversation = getJabber().createSUConversation(userId, participants, message);
+//        }
+//        // Multi user conversation
+//        else if (participants.size() > 1) {
+////            conversation = getJabber().createMUConversation(userId, participants, message, null);
+//        } else {
+//            throw new Exception("Unknown number of participants");
+//        }
+//
+//        return null;
+//    }
 
     /**
      * @done
      */
-    public static void addParticipants(long userId, Conversation conversation, List<Buddy> participants) throws Exception {
-        getJabber().addParticipants(userId, conversation, participants);
-    }
+//    public static void addParticipants(long userId, Conversation conversation, List<Buddy> participants) throws Exception {
+////        getJabber().addParticipants(userId, conversation, participants, null);
+//    }
 
     /**
      * @done
@@ -108,7 +88,7 @@ public class JabberUtil {
      * @done
      */
     public static void leaveConversation(long userId, String conversationId) throws Exception {
-        getJabber().leaveConversation(userId, conversationId);
+        getJabber().leaveConversation(userId, conversationId, null);
     }
 
     /**

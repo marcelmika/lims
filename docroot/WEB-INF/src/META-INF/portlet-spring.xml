@@ -1,12 +1,15 @@
 <?xml version="1.0"?>
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	<bean id="com.marcelmika.lims.service.BuddyLocalService" class="com.marcelmika.lims.service.impl.BuddyLocalServiceImpl" />
-	<bean id="com.marcelmika.lims.service.persistence.BuddyPersistence" class="com.marcelmika.lims.service.persistence.BuddyPersistenceImpl" parent="basePersistence" />
-	<bean id="com.marcelmika.lims.service.ConversationLocalService" class="com.marcelmika.lims.service.impl.ConversationLocalServiceImpl" />
-	<bean id="com.marcelmika.lims.service.persistence.ConversationPersistence" class="com.marcelmika.lims.service.persistence.ConversationPersistenceImpl" parent="basePersistence" />
-	<bean id="com.marcelmika.lims.service.OpenedConversationLocalService" class="com.marcelmika.lims.service.impl.OpenedConversationLocalServiceImpl" />
-	<bean id="com.marcelmika.lims.service.persistence.OpenedConversationPersistence" class="com.marcelmika.lims.service.persistence.OpenedConversationPersistenceImpl" parent="basePersistence" />
-	<bean id="com.marcelmika.lims.service.SettingsLocalService" class="com.marcelmika.lims.service.impl.SettingsLocalServiceImpl" />
-	<bean id="com.marcelmika.lims.service.persistence.SettingsPersistence" class="com.marcelmika.lims.service.persistence.SettingsPersistenceImpl" parent="basePersistence" />
+	<bean id="com.marcelmika.lims.persistence.generated.service.ConversationLocalService" class="com.marcelmika.lims.persistence.generated.service.impl.ConversationLocalServiceImpl" />
+	<bean id="com.marcelmika.lims.persistence.generated.service.persistence.ConversationPersistence" class="com.marcelmika.lims.persistence.generated.service.persistence.ConversationPersistenceImpl" parent="basePersistence" />
+	<bean id="com.marcelmika.lims.persistence.generated.service.MessageLocalService" class="com.marcelmika.lims.persistence.generated.service.impl.MessageLocalServiceImpl" />
+	<bean id="com.marcelmika.lims.persistence.generated.service.persistence.MessagePersistence" class="com.marcelmika.lims.persistence.generated.service.persistence.MessagePersistenceImpl" parent="basePersistence" />
+	<bean id="com.marcelmika.lims.persistence.generated.service.PanelLocalService" class="com.marcelmika.lims.persistence.generated.service.impl.PanelLocalServiceImpl" />
+	<bean id="com.marcelmika.lims.persistence.generated.service.persistence.PanelPersistence" class="com.marcelmika.lims.persistence.generated.service.persistence.PanelPersistenceImpl" parent="basePersistence" />
+	<bean id="com.marcelmika.lims.persistence.generated.service.ParticipantLocalService" class="com.marcelmika.lims.persistence.generated.service.impl.ParticipantLocalServiceImpl" />
+	<bean id="com.marcelmika.lims.persistence.generated.service.persistence.ParticipantPersistence" class="com.marcelmika.lims.persistence.generated.service.persistence.ParticipantPersistenceImpl" parent="basePersistence" />
+	<bean id="com.marcelmika.lims.persistence.generated.service.SettingsLocalService" class="com.marcelmika.lims.persistence.generated.service.impl.SettingsLocalServiceImpl" />
+	<bean id="com.marcelmika.lims.persistence.generated.service.persistence.SettingsPersistence" class="com.marcelmika.lims.persistence.generated.service.persistence.SettingsPersistenceImpl" parent="basePersistence" />
+	<bean id="com.marcelmika.lims.persistence.generated.service.persistence.SettingsFinder" class="com.marcelmika.lims.persistence.generated.service.persistence.SettingsFinderImpl" parent="basePersistence" />
 </beans>

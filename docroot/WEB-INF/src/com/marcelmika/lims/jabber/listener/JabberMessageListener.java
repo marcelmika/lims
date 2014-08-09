@@ -1,8 +1,8 @@
 
 package com.marcelmika.lims.jabber.listener;
 
-import com.marcelmika.lims.conversation.Conversation;
-import com.marcelmika.lims.conversation.Message;
+import com.marcelmika.lims.jabber.domain.Conversation;
+import com.marcelmika.lims.jabber.domain.MessageDeprecated;
 import com.marcelmika.lims.jabber.JabberUtil;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.MessageListener;
@@ -12,6 +12,7 @@ import org.jivesoftware.smack.MessageListener;
  * @link http://marcelmika.com/lims
  * Date: 11/24/13
  * Time: 11:18 PM
+ * @deprecated
  */
 public class JabberMessageListener implements MessageListener {
 
@@ -31,10 +32,10 @@ public class JabberMessageListener implements MessageListener {
 
     public void processMessage(Chat chat, org.jivesoftware.smack.packet.Message message) {
         // Message adapter
-        Message msg = new Message(message);
+        MessageDeprecated msg = new MessageDeprecated(message);
         // Extract  jabber name
         msg.setFrom(JabberUtil.getScreenName(msg.getFrom()));
-        msg.setCompanyId(conversation.getOwner().getCompanyId());
+//        msg.setCompanyId(conversation.getOwner().getCompanyId());
 
         // Add only messages with sender
         if (msg.getFrom() != null) {

@@ -1,0 +1,85 @@
+{
+    "name": "lims",
+    "builds": {
+
+        "lims-core": {
+            "jsfiles": [
+                "js/bootstrap.js",
+                "js/core/DateFormatter.js",
+                "js/core/ViewController.js",
+                "js/core/Notification.js",
+                "js/core/Settings.js"
+            ],
+            "config": {
+                "requires": [
+                    "view",
+                    "base",
+                    "node"
+                ]
+            }
+        },
+
+        "lims-model": {
+            "jsfiles": [
+                "js/bootstrap.js",
+                "js/model/buddy/BuddyModelItem.js",
+                "js/model/buddy/BuddyModelList.js",
+                "js/model/conversation/ConversationModel.js",
+                "js/model/conversation/ConversationListModel.js",
+                "js/model/message/MessageItemModel.js",
+                "js/model/message/MessageListModel.js",
+                "js/model/group/GroupModelItem.js",
+                "js/model/group/GroupModelList.js",
+                "js/model/settings/SettingsModel.js"
+            ],
+            "config": {
+                "requires": [
+                    "io",
+                    "json",
+                    "model",
+                    "model-list"
+                ]
+            }
+        },
+
+        "lims-view": {
+            "jsfiles": [
+                "js/bootstrap.js",
+                "js/view/conversation/ConversationItemView.js",
+                "js/view/conversation/ConversationListView.js",
+                "js/view/group/GroupBuddyViewItem.js",
+                "js/view/group/GroupBuddyViewList.js",
+                "js/view/group/GroupViewItem.js",
+                "js/view/group/GroupViewList.js",
+                "js/view/portrait/PortraitView.js",
+                "js/view/presence/PresenceView.js",
+                "js/view/panel/PanelView.js"
+            ],
+            "config": {
+                "requires": [
+                    "view",
+                    "node",
+                    "anim"
+                ]
+            }
+        },
+
+        "lims-controller": {
+            "jsfiles": [
+                "js/bootstrap.js",
+                "js/controller/MainController.js",
+                "js/controller/ConversationsController.js",
+                "js/controller/view/GroupViewController.js",
+                "js/controller/view/PresenceViewController.js",
+                "js/controller/view/SettingsViewController.js",
+                "js/controller/view/SingleUserConversationViewController.js"
+            ],
+            "config": {
+                "requires": [
+                    "view",
+                    "node"
+                ]
+            }
+        }
+    }
+}

@@ -7,57 +7,61 @@
 			<access>PROPERTY</access>
 		</persistence-unit-defaults>
 	</persistence-unit-metadata>
-	<mapped-superclass class="com.marcelmika.lims.model.impl.BuddyModelImpl">
-		<attributes>
-			<id name="bid" />
-			<basic name="userId" />
-			<basic name="companyId" />
-			<basic name="portraitId" />
-			<basic name="fullName" />
-			<basic name="screenName" />
-			<basic name="statusMessage" />
-			<basic name="isTyping" />
-			<basic name="awake" />
-			<basic name="status" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-			<transient name="userUuid" />
-		</attributes>
-	</mapped-superclass>
-	<mapped-superclass class="com.marcelmika.lims.model.impl.ConversationModelImpl">
+	<mapped-superclass class="com.marcelmika.lims.persistence.generated.model.impl.ConversationModelImpl">
 		<attributes>
 			<id name="cid" />
-			<basic name="userId" />
 			<basic name="conversationId" />
 			<basic name="conversationType" />
-			<basic name="conversationVisibility" />
-			<basic name="conversationName" />
-			<basic name="unreadMessages" />
+			<basic name="updatedAt">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
-			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.marcelmika.lims.model.impl.OpenedConversationModelImpl">
+	<mapped-superclass class="com.marcelmika.lims.persistence.generated.model.impl.MessageModelImpl">
 		<attributes>
-			<id name="ocid" />
+			<id name="mid" />
+			<basic name="cid" />
+			<basic name="creatorId" />
+			<basic name="createdAt">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="body" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.marcelmika.lims.persistence.generated.model.impl.PanelModelImpl">
+		<attributes>
+			<id name="pid" />
 			<basic name="userId" />
-			<basic name="conversationId" />
+			<basic name="activePanelId" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.marcelmika.lims.model.impl.SettingsModelImpl">
+	<mapped-superclass class="com.marcelmika.lims.persistence.generated.model.impl.ParticipantModelImpl">
+		<attributes>
+			<id name="pid" />
+			<basic name="cid" />
+			<basic name="participantId" />
+			<basic name="unreadMessagesCount" />
+			<basic name="isOpened" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.marcelmika.lims.persistence.generated.model.impl.SettingsModelImpl">
 		<attributes>
 			<id name="sid" />
 			<basic name="userId" />
-			<basic name="status" />
-			<basic name="activeRoomType" />
-			<basic name="activePanelId" />
+			<basic name="presence" />
 			<basic name="mute" />
 			<basic name="chatEnabled" />
 			<transient name="modelAttributes" />
@@ -66,20 +70,24 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
-	<entity class="com.marcelmika.lims.model.impl.BuddyImpl" name="Buddy">
-		<table name="LiferayLIMS_Buddy" />
+	<entity class="com.marcelmika.lims.persistence.generated.model.impl.ConversationImpl" name="Conversation">
+		<table name="Lims_Conversation" />
 		<attributes />
 	</entity>
-	<entity class="com.marcelmika.lims.model.impl.ConversationImpl" name="Conversation">
-		<table name="LiferayLIMS_Conversation" />
+	<entity class="com.marcelmika.lims.persistence.generated.model.impl.MessageImpl" name="Message">
+		<table name="Lims_Message" />
 		<attributes />
 	</entity>
-	<entity class="com.marcelmika.lims.model.impl.OpenedConversationImpl" name="OpenedConversation">
-		<table name="LiferayLIMS_OpenedConversation" />
+	<entity class="com.marcelmika.lims.persistence.generated.model.impl.PanelImpl" name="Panel">
+		<table name="Lims_Panel" />
 		<attributes />
 	</entity>
-	<entity class="com.marcelmika.lims.model.impl.SettingsImpl" name="Settings">
-		<table name="LiferayLIMS_Settings" />
+	<entity class="com.marcelmika.lims.persistence.generated.model.impl.ParticipantImpl" name="Participant">
+		<table name="Lims_Participant" />
+		<attributes />
+	</entity>
+	<entity class="com.marcelmika.lims.persistence.generated.model.impl.SettingsImpl" name="Settings">
+		<table name="Lims_Settings" />
 		<attributes />
 	</entity>
 </entity-mappings>

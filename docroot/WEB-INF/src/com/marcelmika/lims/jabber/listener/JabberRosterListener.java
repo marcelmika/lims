@@ -6,7 +6,6 @@ import com.marcelmika.lims.jabber.JabberMapper;
 import com.marcelmika.lims.jabber.JabberUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.marcelmika.lims.service.SettingsLocalServiceUtil;
 import org.jivesoftware.smack.RosterListener;
 import org.jivesoftware.smack.packet.Presence;
 
@@ -17,6 +16,7 @@ import java.util.Collection;
  * @link http://marcelmika.com/lims
  * Date: 11/24/13
  * Time: 11:18 PM
+ * @deprecated
  */
 public class JabberRosterListener implements RosterListener {
 
@@ -56,7 +56,7 @@ public class JabberRosterListener implements RosterListener {
             // Map Jabber status to LIMS status
             String status = JabberMapper.mapPresenceToStatus(presence);
             // Save to settings
-            SettingsLocalServiceUtil.changeStatus(fromUser.getUserId(), status);
+//            SettingsLocalServiceUtil.changeStatus(fromUser.getUserId(), status);
 
         } catch (Exception e) {
             log.error("There was an error while changing the presence. Reason: " + e.getMessage());

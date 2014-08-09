@@ -1,28 +1,30 @@
 <?xml version="1.0"?>
 
-<portlet-app
-	version="2.0"
-	xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd"
->
-	<portlet>            
-		<portlet-name>1</portlet-name>
-		<display-name>Liferay IMS</display-name>
-		<portlet-class>com.marcelmika.lims.portlet.ChatPortlet</portlet-class>
-		<init-param>
-			<name>view-jsp</name>
-			<value>/view.jsp</value>
-		</init-param>
-		<expiration-cache>0</expiration-cache>
-		<supports>
-			<mime-type>text/html</mime-type>
-		</supports>
-		<resource-bundle>content.Language</resource-bundle>
-		<portlet-info>
-			<title></title>
-			<short-title>LIMS</short-title>
-			<keywords>LIMS</keywords>
-		</portlet-info>                
-	</portlet>
+<portlet-app version="2.0"
+             xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd
+             http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
+
+    <portlet>
+        <portlet-name>1</portlet-name>
+        <display-name>LIMS</display-name>
+        <portlet-class>com.marcelmika.lims.portal.portlet.LIMSPortlet</portlet-class>
+        <init-param>
+            <name>view-jsp</name>
+            <value>/view.jsp</value>
+        </init-param>
+        <expiration-cache>0</expiration-cache>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <resource-bundle>content.Language</resource-bundle>
+        <portlet-info>
+            <!-- Title needs to be empty otherwise it will be visible on the screen -->
+            <title></title>
+            <short-title>LIMS</short-title>
+            <keywords>LIMS</keywords>
+        </portlet-info>
+    </portlet>
+
 </portlet-app>

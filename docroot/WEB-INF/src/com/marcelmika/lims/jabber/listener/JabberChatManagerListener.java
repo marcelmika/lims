@@ -1,13 +1,10 @@
 
 package com.marcelmika.lims.jabber.listener;
 
-import com.marcelmika.lims.conversation.Conversation;
-import com.marcelmika.lims.conversation.ConversationContainer;
-import com.marcelmika.lims.conversation.ConversationStore;
-import com.marcelmika.lims.conversation.SUConversation;
+import com.marcelmika.lims.jabber.domain.Conversation;
+import com.marcelmika.lims.jabber.conversation.ConversationContainer;
+import com.marcelmika.lims.jabber.conversation.ConversationStore;
 import com.marcelmika.lims.jabber.JabberUtil;
-import com.marcelmika.lims.model.Buddy;
-import com.marcelmika.lims.service.BuddyLocalServiceUtil;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManagerListener;
 
@@ -16,6 +13,7 @@ import org.jivesoftware.smack.ChatManagerListener;
  * @link http://marcelmika.com/lims
  * Date: 11/24/13
  * Time: 11:18 PM
+ * @deprecated
  */
 public class JabberChatManagerListener implements ChatManagerListener {
 
@@ -38,8 +36,8 @@ public class JabberChatManagerListener implements ChatManagerListener {
             // There is no conversation like that yet
             if (conversation == null) {
                 // Create new conversation
-                Buddy owner = BuddyLocalServiceUtil.getBuddyByUserId(this.userId);
-                conversation = new SUConversation(owner, chat);
+//                Buddy owner = BuddyLocalServiceUtil.getBuddyByUserId(this.userId);
+//                conversation = new SUConversation(owner, chat);
                 // Attach Message listener
                 JabberMessageListener messageListener = new JabberMessageListener(conversation);
                 chat.addMessageListener(messageListener);

@@ -1,69 +1,86 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.1.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_1_0.dtd">
-<service-builder package-path='com.marcelmika.lims'>
-    <namespace>LiferayLIMS</namespace>
-      
+
+<!DOCTYPE service-builder PUBLIC
+        "-//Liferay//DTD Service Builder 6.2.0//EN"
+        "http://www.liferay.com/dtd/liferay-service-builder_6_2_0.dtd">
+
+<service-builder package-path='com.marcelmika.lims.persistence.generated'>
+
+    <!-- This will be a prefix of all entity tables -->
+    <namespace>Lims</namespace>
+
+    <!-- Panel -->
+    <entity name='Panel' local-service='true' remote-service='false'>
+        <column name='pid' type='long' primary='true'/>
+        <column name='userId' type='long'/>
+        <column name='activePanelId' type='String'/>
+        <finder name='UserId' return-type='Panel'>
+            <finder-column name='userId'/>
+        </finder>
+    </entity>
+
     <!-- Settings -->
-    <entity name='Settings' local-service='true' remote-service='false'>        
+    <entity name='Settings' local-service='true' remote-service='false'>
         <column name='sid' type='long' primary='true'/>
         <column name='userId' type='long'/>
-        <column name='status' type='String'/>       
-        <column name='activeRoomType' type='String'/>        
-        <column name='activePanelId' type='String'/>        
+        <column name='presence' type='String'/>
         <column name='mute' type='boolean'/>
         <column name='chatEnabled' type='boolean'/>
         <finder name='UserId' return-type='Settings'>
             <finder-column name='userId'/>
-        </finder>        
-        <finder name='Status' return-type='Collection'>
-            <finder-column name='status'/>            
-        </finder>        
+        </finder>
+        <finder name='Presence' return-type='Collection'>
+            <finder-column name='presence'/>
+        </finder>
     </entity>
 
     <!-- Conversation -->
     <entity name='Conversation' local-service='true' remote-service='false'>
         <column name='cid' type='long' primary='true'/>
-        <column name='userId' type='long'/>
         <column name='conversationId' type='String'/>
         <column name='conversationType' type='String'/>
-        <column name='conversationVisibility' type='String'/>
-        <column name='conversationName' type='String'/>
-        <column name='unreadMessages' type='int'/>
-        <finder name='UserId_conversationId' return-type='Conversation'>
-            <finder-column name='userId'/>
+        <column name='updatedAt' type='Date'/>
+        <finder name='ConversationId' return-type='Conversation'>
             <finder-column name='conversationId'/>
-        </finder>
-        <finder name='UserId' return-type='Collection'>
-            <finder-column name='userId'/>
         </finder>
     </entity>
 
-    <!-- Buddy -->
-    <entity name='Buddy' local-service='true' remote-service='false'>
-        <column name='bid' type='long' primary='true'/>
-        <column name='userId' type='long'/>
-        <column name='companyId' type='long'/>
-        <column name='portraitId' type='long'/>
-        <column name='fullName' type='String'/>
-        <column name='screenName' type='String'/>
-        <column name='statusMessage' type='String'/>
-        <column name='isTyping' type='boolean'/>
-        <column name='awake' type='boolean'/>
-        <column name='status' type='String'/>
+    <!-- Message -->
+    <entity name='Message' local-service='true' remote-service='false'>
+        <column name='mid' type='long' primary='true'/>
+        <column name='cid' type='long'/>
+        <column name='creatorId' type='long'/>
+        <column name='createdAt' type='Date'/>
+        <column name='body' type='String'/>
+        <order>
+            <order-column name="createdAt" order-by="asc"/>
+        </order>
+        <finder name='CreatorId' return-type='Buddy'>
+            <finder-column name='creatorId'/>
+        </finder>
+        <finder name='Cid' return-type='Collection'>
+            <finder-column name='cid'/>
+        </finder>
     </entity>
-    
-    <!-- Opened Conversation -->
-    <entity name='OpenedConversation' local-service='true' remote-service='false'>
-        <column name='ocid' type='long' primary='true'/>
-        <column name='userId' type='long'/>
-        <column name='conversationId' type='String'/>
-        <finder name='UserId_ConversationId' return-type='OpenedConversation'>
-            <finder-column name='userId'/>
-            <finder-column name='conversationId'/>
-        </finder>  
-        <finder name='UserId' return-type='Collection'>
-            <finder-column name='userId'/>            
-        </finder>   
+
+    <!-- Participant -->
+    <entity name='Participant' local-service='true' remote-service='false'>
+        <column name='pid' type='long' primary='true'/>
+        <column name='cid' type='long' primary='false'/>
+        <column name='participantId' type='long'/>
+        <column name='unreadMessagesCount' type='int'/>
+        <column name='isOpened' type='boolean'/>
+        <finder name='Cid' return-type='Collection'>
+            <finder-column name='cid'/>
+        </finder>
+        <finder name='CidParticipantId' return-type='Participant'>
+            <finder-column name='cid'/>
+            <finder-column name='participantId'/>
+        </finder>
+        <finder name='ParticipantIdIsOpened' return-type='Collection'>
+            <finder-column name='participantId'/>
+            <finder-column name='isOpened'/>
+        </finder>
     </entity>
-        
+
 </service-builder>

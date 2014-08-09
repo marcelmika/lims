@@ -1,38 +1,41 @@
 <?xml version="1.0"?>
 
 <model-hints>
-	<model name="com.marcelmika.lims.model.Buddy">
-		<field name="bid" type="long" />
-		<field name="userId" type="long" />
-		<field name="companyId" type="long" />
-		<field name="portraitId" type="long" />
-		<field name="fullName" type="String" />
-		<field name="screenName" type="String" />
-		<field name="statusMessage" type="String" />
-		<field name="isTyping" type="boolean" />
-		<field name="awake" type="boolean" />
-		<field name="status" type="String" />
-	</model>
-	<model name="com.marcelmika.lims.model.Conversation">
+	<model name="com.marcelmika.lims.persistence.generated.model.Conversation">
 		<field name="cid" type="long" />
-		<field name="userId" type="long" />
-		<field name="conversationId" type="String" />
+		<field name="conversationId" type="String">
+			<hint name="max-length">256</hint>
+		</field>
 		<field name="conversationType" type="String" />
-		<field name="conversationVisibility" type="String" />
-		<field name="conversationName" type="String" />
-		<field name="unreadMessages" type="int" />
+		<field name="updatedAt" type="Date" />
 	</model>
-	<model name="com.marcelmika.lims.model.OpenedConversation">
-		<field name="ocid" type="long" />
+	<model name="com.marcelmika.lims.persistence.generated.model.Message">
+		<field name="mid" type="long" />
+		<field name="cid" type="long" />
+		<field name="creatorId" type="long" />
+		<field name="createdAt" type="Date" />
+		<field name="body" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+	</model>
+	<model name="com.marcelmika.lims.persistence.generated.model.Panel">
+		<field name="pid" type="long" />
 		<field name="userId" type="long" />
-		<field name="conversationId" type="String" />
+		<field name="activePanelId" type="String">
+			<hint name="max-length">256</hint>
+		</field>
 	</model>
-	<model name="com.marcelmika.lims.model.Settings">
+	<model name="com.marcelmika.lims.persistence.generated.model.Participant">
+		<field name="pid" type="long" />
+		<field name="cid" type="long" />
+		<field name="participantId" type="long" />
+		<field name="unreadMessagesCount" type="int" />
+		<field name="isOpened" type="boolean" />
+	</model>
+	<model name="com.marcelmika.lims.persistence.generated.model.Settings">
 		<field name="sid" type="long" />
 		<field name="userId" type="long" />
-		<field name="status" type="String" />
-		<field name="activeRoomType" type="String" />
-		<field name="activePanelId" type="String" />
+		<field name="presence" type="String" />
 		<field name="mute" type="boolean" />
 		<field name="chatEnabled" type="boolean" />
 	</model>

@@ -2,14 +2,25 @@
 /out/
 /lib/
 
+# ext properties
+/docroot/WEB-INF/src/portlet-ext.properties
+
+# js build folders
+/docroot/js/build
+
 # idea, eclipse
 /.idea/
 .project
 .classpath
 
+# tests
+/test-classes
+/test-results
+/tests
+
 # mac
 .DS_Store
 
-# css cahce
+# css cache
 /docroot/css/.sass-cache/
 

@@ -2,54 +2,55 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping default-lazy="false" auto-import="false">
-	<import class="com.marcelmika.lims.model.Buddy" />
-	<import class="com.marcelmika.lims.model.Conversation" />
-	<import class="com.marcelmika.lims.model.OpenedConversation" />
-	<import class="com.marcelmika.lims.model.Settings" />
-	<class name="com.marcelmika.lims.model.impl.BuddyImpl" table="LiferayLIMS_Buddy">
-		<cache usage="read-write" />
-		<id name="bid" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="portraitId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="fullName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="screenName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="statusMessage" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="isTyping" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="awake" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.marcelmika.lims.model.impl.ConversationImpl" table="LiferayLIMS_Conversation">
+	<import class="com.marcelmika.lims.persistence.generated.model.Conversation" />
+	<import class="com.marcelmika.lims.persistence.generated.model.Message" />
+	<import class="com.marcelmika.lims.persistence.generated.model.Panel" />
+	<import class="com.marcelmika.lims.persistence.generated.model.Participant" />
+	<import class="com.marcelmika.lims.persistence.generated.model.Settings" />
+	<class name="com.marcelmika.lims.persistence.generated.model.impl.ConversationImpl" table="Lims_Conversation">
 		<cache usage="read-write" />
 		<id name="cid" type="long">
 			<generator class="assigned" />
 		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="conversationId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="conversationType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="conversationVisibility" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="conversationName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="unreadMessages" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="updatedAt" type="org.hibernate.type.TimestampType" />
 	</class>
-	<class name="com.marcelmika.lims.model.impl.OpenedConversationImpl" table="LiferayLIMS_OpenedConversation">
+	<class name="com.marcelmika.lims.persistence.generated.model.impl.MessageImpl" table="Lims_Message">
 		<cache usage="read-write" />
-		<id name="ocid" type="long">
+		<id name="mid" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="cid" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="creatorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="createdAt" type="org.hibernate.type.TimestampType" />
+		<property name="body" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.marcelmika.lims.persistence.generated.model.impl.PanelImpl" table="Lims_Panel">
+		<cache usage="read-write" />
+		<id name="pid" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="conversationId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="activePanelId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.marcelmika.lims.model.impl.SettingsImpl" table="LiferayLIMS_Settings">
+	<class name="com.marcelmika.lims.persistence.generated.model.impl.ParticipantImpl" table="Lims_Participant">
+		<cache usage="read-write" />
+		<id name="pid" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="cid" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="participantId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="unreadMessagesCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="isOpened" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+	</class>
+	<class name="com.marcelmika.lims.persistence.generated.model.impl.SettingsImpl" table="Lims_Settings">
 		<cache usage="read-write" />
 		<id name="sid" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="activeRoomType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="activePanelId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="presence" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="mute" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="chatEnabled" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>

@@ -1,0 +1,74 @@
+<% { %>
+
+<%-- Declared variables --%>
+<%--@elvariable id="conversations" type="java.util.List<Conversation>"--%>
+
+
+<c:forEach items="${conversations}" var="conversation">
+
+    <%-- Check if conversation should be opened --%>
+    <c:choose>
+        <c:when test="${settings.activePanelId == conversation.conversationId}">
+            <c:set var="selectedClass" value="selected"/>
+        </c:when>
+        <c:otherwise>
+            <c:set var="selectedClass" value=""/>
+        </c:otherwise>
+    </c:choose>
+
+    <%-- Check if portlet should be visible --%>
+    <c:choose>
+        <c:when test="${settings.chatEnabled}">
+            <c:set var="hiddenClass" value=""/>
+        </c:when>
+        <c:otherwise>
+            <c:set var="hiddenClass" value="aui-helper-hidden hide"/>
+        </c:otherwise>
+    </c:choose>
+
+    <c:choose>
+        <c:when test="${conversation.unreadMessagesCount > 0}">
+            <c:set var="hiddenBadgeClass" value=""/>
+        </c:when>
+        <c:otherwise>
+            <c:set var="hiddenBadgeClass" value="aui-helper-hidden hide"/>
+        </c:otherwise>
+    </c:choose>
+
+    <%-- Conversation --%>
+    <li class="conversation ${selectedClass} ${hiddenClass}"
+        data-conversationId="${conversation.conversationId}"
+        data-unreadMessagesCount="${conversation.unreadMessagesCount}">
+        <div class="panel-trigger">
+            <span class="trigger-name">${conversation.title}</span>
+
+            <div class="unread ${hiddenBadgeClass}">${conversation.unreadMessagesCount}</div>
+        </div>
+        <div class="panel">
+            <div class="panel-window">
+                <div class="panel-title">
+                    <div class="panel-button close"></div>
+                    <div class="panel-button minimize"></div>
+                    <div class="panel-button search"></div>
+                    <div class="panel-title-text">${conversation.title}</div>
+                </div>
+                <div class="panel-search hidden">
+                    <label>
+                        <input class="search-input-field" name="searchConversation" type="text" value=""/>
+                    </label>
+                </div>
+                <div class="panel-content">
+                    <div class="preloader"></div>
+                    <ul></ul>
+                </div>
+                <div class="panel-input">
+                    <textarea
+                            placeholder="<liferay-ui:message key="panel-conversation-message-placeholder" />"></textarea>
+                </div>
+            </div>
+        </div>
+    </li>
+
+</c:forEach>
+
+<% }%>
