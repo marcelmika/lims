@@ -15,6 +15,7 @@ import com.marcelmika.lims.portal.request.parameters.CloseConversationParameters
 import com.marcelmika.lims.portal.request.parameters.CreateMessageParameters;
 import com.marcelmika.lims.portal.request.parameters.ReadConversationParameters;
 import com.marcelmika.lims.portal.request.parameters.ResetUnreadMessagesCounterParameters;
+import com.marcelmika.lims.portal.response.ResponseUtil;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -26,7 +27,7 @@ import java.util.List;
  * Date: 8/9/14
  * Time: 5:24 PM
  */
-public class ConversationController extends BaseController {
+public class ConversationController {
 
     // Log
     private static Log log = LogFactoryUtil.getLog(ConversationController.class);
@@ -58,7 +59,7 @@ public class ConversationController extends BaseController {
                 Long userId = UserLocalServiceUtil.getUserIdByScreenName(companyId, participant.getScreenName());
                 participant.setBuddyId(userId);
             } catch (Exception e) {
-                writeResponse(HttpStatus.NOT_FOUND, response);
+                ResponseUtil.writeResponse(HttpStatus.NOT_FOUND, response);
                 return;
             }
         }
@@ -74,23 +75,23 @@ public class ConversationController extends BaseController {
             // Serialize
             String serialized = JSONFactoryUtil.looseSerialize(conversationResponse);
             // Write success to response
-            writeResponse(serialized, HttpStatus.OK, response);
+            ResponseUtil.writeResponse(serialized, HttpStatus.OK, response);
         }
         // Failure
         else {
             CreateConversationResponseEvent.Status status = responseEvent.getStatus();
             // Unauthorized
             if (status == CreateConversationResponseEvent.Status.ERROR_NO_SESSION) {
-                writeResponse(HttpStatus.UNAUTHORIZED, response);
+                ResponseUtil.writeResponse(HttpStatus.UNAUTHORIZED, response);
             }
             // Bad request
             else if (status == CreateConversationResponseEvent.Status.ERROR_UNKNOWN_CONVERSATION_TYPE ||
                     status == CreateConversationResponseEvent.Status.ERROR_WRONG_PARAMETERS) {
-                writeResponse(HttpStatus.BAD_REQUEST, response);
+                ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
             }
             // Everything else is server fault
             else {
-                writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
             }
         }
     }
@@ -129,33 +130,33 @@ public class ConversationController extends BaseController {
 
             // Client has fresh copy so there is no need to send it
             if (conversation.getEtag().equals(parameters.getEtag())) {
-                writeResponse(HttpStatus.NOT_MODIFIED, response);
+                ResponseUtil.writeResponse(HttpStatus.NOT_MODIFIED, response);
                 return;
             }
 
             // Serialize
             String serialized = JSONFactoryUtil.looseSerialize(conversation, "messages", "messages.from");
             // Write success to response
-            writeResponse(serialized, HttpStatus.OK, response);
+            ResponseUtil.writeResponse(serialized, HttpStatus.OK, response);
         }
         // Failure
         else {
             ReadSingleUserConversationResponseEvent.Status status = responseEvent.getStatus();
             // Not found
             if (status == ReadSingleUserConversationResponseEvent.Status.ERROR_NOT_FOUND) {
-                writeResponse(HttpStatus.NOT_FOUND, response);
+                ResponseUtil.writeResponse(HttpStatus.NOT_FOUND, response);
             }
             // Unauthorized
             else if (status == ReadSingleUserConversationResponseEvent.Status.ERROR_NO_SESSION) {
-                writeResponse(HttpStatus.UNAUTHORIZED, response);
+                ResponseUtil.writeResponse(HttpStatus.UNAUTHORIZED, response);
             }
             // Bad request
             else if (status == ReadSingleUserConversationResponseEvent.Status.ERROR_WRONG_PARAMETERS) {
-                writeResponse(HttpStatus.BAD_REQUEST, response);
+                ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
             }
             // Everything else is server fault
             else {
-                writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
             }
         }
     }
@@ -182,7 +183,7 @@ public class ConversationController extends BaseController {
 
         // Success
         if (responseEvent.isSuccess()) {
-            writeResponse(HttpStatus.NO_CONTENT, response);
+            ResponseUtil.writeResponse(HttpStatus.NO_CONTENT, response);
         }
         // Failure
         else {
@@ -190,11 +191,11 @@ public class ConversationController extends BaseController {
             // Not found
             if (status == CloseConversationResponseEvent.Status.ERROR_NO_CONVERSATION_FOUND ||
                     status == CloseConversationResponseEvent.Status.ERROR_NO_PARTICIPANT_FOUND) {
-                writeResponse(HttpStatus.NOT_FOUND, response);
+                ResponseUtil.writeResponse(HttpStatus.NOT_FOUND, response);
             }
             // Everything else is server fault
             else {
-                writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
             }
         }
     }
@@ -221,7 +222,7 @@ public class ConversationController extends BaseController {
 
         // Success
         if (responseEvent.isSuccess()) {
-            writeResponse(HttpStatus.NO_CONTENT, response);
+            ResponseUtil.writeResponse(HttpStatus.NO_CONTENT, response);
         }
         // Failure
         else {
@@ -229,11 +230,11 @@ public class ConversationController extends BaseController {
             // Not found
             if (status == ResetUnreadMessagesCounterResponseEvent.Status.ERROR_NO_CONVERSATION_FOUND ||
                     status == ResetUnreadMessagesCounterResponseEvent.Status.ERROR_NO_PARTICIPANT_FOUND) {
-                writeResponse(HttpStatus.NOT_FOUND, response);
+                ResponseUtil.writeResponse(HttpStatus.NOT_FOUND, response);
             }
             // Everything else is server fault
             else {
-                writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
             }
         }
     }
@@ -262,22 +263,22 @@ public class ConversationController extends BaseController {
             // Serialize
             String serializedConversations = JSONFactoryUtil.looseSerialize(conversationList);
             // Write success to response
-            writeResponse(serializedConversations, HttpStatus.OK, response);
+            ResponseUtil.writeResponse(serializedConversations, HttpStatus.OK, response);
         }
         // Failure
         else {
             GetOpenedConversationsResponseEvent.Status status = responseEvent.getStatus();
             // Unauthorized
             if (status == GetOpenedConversationsResponseEvent.Status.ERROR_NO_SESSION) {
-                writeResponse(HttpStatus.UNAUTHORIZED, response);
+                ResponseUtil.writeResponse(HttpStatus.UNAUTHORIZED, response);
             }
             // Bad Request
             else if (status == GetOpenedConversationsResponseEvent.Status.ERROR_WRONG_PARAMETERS) {
-                writeResponse(HttpStatus.BAD_REQUEST, response);
+                ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
             }
             // Everything else is server fault
             else {
-                writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
             }
         }
     }
@@ -319,27 +320,27 @@ public class ConversationController extends BaseController {
             // Serialize
             String serializedMessage = JSONFactoryUtil.looseSerialize(responseMessage);
             // Write success to response
-            writeResponse(serializedMessage, HttpStatus.OK, response);
+            ResponseUtil.writeResponse(serializedMessage, HttpStatus.OK, response);
         }
         // Failure
         else {
             SendMessageResponseEvent.Status status = responseEvent.getStatus();
             // Unauthorized
             if (status == SendMessageResponseEvent.Status.ERROR_NO_SESSION) {
-                writeResponse(HttpStatus.UNAUTHORIZED, response);
+                ResponseUtil.writeResponse(HttpStatus.UNAUTHORIZED, response);
             }
             // Not found
             else if (status == SendMessageResponseEvent.Status.ERROR_NOT_FOUND) {
-                writeResponse(HttpStatus.NOT_FOUND, response);
+                ResponseUtil.writeResponse(HttpStatus.NOT_FOUND, response);
             }
             // Bad Request
             else if (status == SendMessageResponseEvent.Status.ERROR_UNKNOWN_CONVERSATION_TYPE ||
                     status == SendMessageResponseEvent.Status.ERROR_WRONG_PARAMETERS) {
-                writeResponse(HttpStatus.BAD_REQUEST, response);
+                ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
             }
             // Everything else is a server fault
             else {
-                writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
             }
         }
     }

@@ -14,6 +14,7 @@ import com.marcelmika.lims.core.service.SettingsCoreServiceUtil;
 import com.marcelmika.lims.portal.domain.Buddy;
 import com.marcelmika.lims.portal.domain.Presence;
 import com.marcelmika.lims.portal.http.HttpStatus;
+import com.marcelmika.lims.portal.response.ResponseUtil;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -24,7 +25,7 @@ import javax.portlet.ResourceResponse;
  * Date: 8/9/14
  * Time: 4:59 PM
  */
-public class BuddyController extends BaseController {
+public class BuddyController {
 
     // Log
     private static Log log = LogFactoryUtil.getLog(BuddyController.class);
@@ -62,14 +63,14 @@ public class BuddyController extends BaseController {
 
         // Success
         if (responseEvent.isSuccess()) {
-            writeResponse(null, HttpStatus.NO_CONTENT, response);
+            ResponseUtil.writeResponse(null, HttpStatus.NO_CONTENT, response);
         }
         // Failure
         else {
             log.error(responseEvent.getResult());
             log.error(responseEvent.getException());
             // TODO: Add status handling
-            writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+            ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
         }
     }
 

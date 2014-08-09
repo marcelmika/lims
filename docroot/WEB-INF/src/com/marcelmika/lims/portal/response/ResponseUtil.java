@@ -1,4 +1,4 @@
-package com.marcelmika.lims.portal.controller;
+package com.marcelmika.lims.portal.response;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -12,12 +12,12 @@ import java.io.PrintWriter;
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
  * Date: 8/9/14
- * Time: 5:02 PM
+ * Time: 5:41 PM
  */
-public class BaseController {
+public class ResponseUtil {
 
     // Log
-    private static Log log = LogFactoryUtil.getLog(BaseController.class);
+    private static Log log = LogFactoryUtil.getLog(ResponseUtil.class);
 
     /**
      * Sets status code to the response. Use for no-content responses.
@@ -25,7 +25,7 @@ public class BaseController {
      * @param statusCode HTTP Status code
      * @param response   Resource response
      */
-    protected void writeResponse(HttpStatus statusCode, ResourceResponse response) {
+    public static void writeResponse(HttpStatus statusCode, ResourceResponse response) {
         writeResponse(null, statusCode, response);
     }
 
@@ -36,7 +36,7 @@ public class BaseController {
      * @param statusCode HTTP Status code
      * @param response   Resource response
      */
-    protected void writeResponse(String content, HttpStatus statusCode, ResourceResponse response) {
+    public static void writeResponse(String content, HttpStatus statusCode, ResourceResponse response) {
 
         // Write the content to the output stream
         if (content != null) {
@@ -69,7 +69,7 @@ public class BaseController {
      * @param response ResourceResponse
      * @return PrintWriter, null on error
      */
-    protected PrintWriter getResponseWriter(ResourceResponse response) {
+    public static PrintWriter getResponseWriter(ResourceResponse response) {
         PrintWriter writer = null;
         try {
             writer = response.getWriter();
@@ -79,4 +79,5 @@ public class BaseController {
 
         return writer;
     }
+
 }

@@ -10,6 +10,7 @@ import com.marcelmika.lims.core.service.GroupCoreServiceUtil;
 import com.marcelmika.lims.portal.domain.Buddy;
 import com.marcelmika.lims.portal.domain.GroupCollection;
 import com.marcelmika.lims.portal.http.HttpStatus;
+import com.marcelmika.lims.portal.response.ResponseUtil;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -20,7 +21,7 @@ import javax.portlet.ResourceResponse;
  * Date: 8/9/14
  * Time: 5:33 PM
  */
-public class GroupController extends BaseController {
+public class GroupController {
 
     // Log
     private static Log log = LogFactoryUtil.getLog(GroupController.class);
@@ -55,11 +56,11 @@ public class GroupController extends BaseController {
             if (etag.equals(Integer.toString(groupCollection.getEtag()))) {
                 // Etags equal which means that nothing has changed.
                 // Write only the group collection without groups and buddies (no extra traffic needed)
-                writeResponse(JSONFactoryUtil.looseSerialize(groupCollection), HttpStatus.OK, response);
+                ResponseUtil.writeResponse(JSONFactoryUtil.looseSerialize(groupCollection), HttpStatus.OK, response);
             } else {
                 // Etags are different which means that groups were modified
                 // Send the whole package to the client
-                writeResponse(
+                ResponseUtil.writeResponse(
                         JSONFactoryUtil.looseSerialize(groupCollection, "groups", "groups.buddies"),
                         HttpStatus.OK,
                         response
@@ -70,7 +71,7 @@ public class GroupController extends BaseController {
         else {
             log.error(responseEvent.getException());
             // TODO: Add status handling
-            writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+            ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
         }
     }
 
