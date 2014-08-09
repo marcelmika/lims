@@ -578,12 +578,17 @@ public class PortletProcessor {
         // Set status code
         response.setProperty(ResourceResponse.HTTP_STATUS_CODE, statusCode.toString());
 
+        // Disable caching. It needs to be here because Internet Explorer aggressively caches
+        // ajax requests.
+        response.addProperty("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+        response.addProperty("Pragma", "no-cache"); // HTTP 1.0
+        response.addProperty("Expires", "0"); // Proxies
+
         // Log
         if (log.isDebugEnabled()) {
             log.debug(String.format("RESPONSE STATUS CODE: %s", statusCode.toString()));
         }
     }
-
 
     /**
      * Returns writer from response, null on error
