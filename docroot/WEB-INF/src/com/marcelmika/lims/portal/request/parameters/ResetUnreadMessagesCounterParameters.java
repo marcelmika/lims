@@ -1,12 +1,12 @@
-package com.marcelmika.lims.portal.processor.parameters;
+package com.marcelmika.lims.portal.request.parameters;
 
 /**
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
- * Date: 7/12/14
- * Time: 1:37 PM
+ * Date: 7/25/14
+ * Time: 8:41 PM
  */
-public class CreateMessageParameters {
+public class ResetUnreadMessagesCounterParameters {
 
     private String conversationId;
 
@@ -20,7 +20,7 @@ public class CreateMessageParameters {
 
     @Override
     public String toString() {
-        return "CreateMessageParameters{" +
+        return "CloseConversationParameters{" +
                 "conversationId='" + conversationId + '\'' +
                 '}';
     }

@@ -1,4 +1,4 @@
-package com.marcelmika.lims.portal.processor.parameters;
+package com.marcelmika.lims.portal.request.parameters;
 
 import com.marcelmika.lims.portal.domain.Pagination;
 
