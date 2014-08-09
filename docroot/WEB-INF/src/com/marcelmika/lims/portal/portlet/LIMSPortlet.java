@@ -19,6 +19,7 @@ import com.marcelmika.lims.portal.domain.Conversation;
 import com.marcelmika.lims.portal.domain.Settings;
 import com.marcelmika.lims.portal.http.HttpStatus;
 import com.marcelmika.lims.portal.processor.PortletProcessor;
+import com.marcelmika.lims.portal.processor.PortletProcessorUtil;
 
 import javax.portlet.*;
 import java.io.IOException;
@@ -32,14 +33,16 @@ import java.util.List;
  */
 public class LIMSPortlet extends MVCPortlet {
 
-    // Processor
-    // TODO: Inject
-    PortletProcessor processor = new PortletProcessor();
+    // Processor Dependency
+    PortletProcessor processor = PortletProcessorUtil.getPortletProcessor();
+
     // Service Dependencies
     SettingsCoreService settingsCoreService = SettingsCoreServiceUtil.getSettingsCoreService();
     ConversationCoreService conversationCoreService = ConversationCoreServiceUtil.getConversationCoreService();
+
     // Constants
     private static final String VIEW_JSP_PATH = "/view.jsp"; // Path to the view.jsp
+
     // Log
     private static Log log = LogFactoryUtil.getLog(LIMSPortlet.class);
 
