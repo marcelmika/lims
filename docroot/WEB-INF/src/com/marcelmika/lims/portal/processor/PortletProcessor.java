@@ -30,6 +30,22 @@ public class PortletProcessor {
     GroupController groupController;
     SettingsController settingsController;
 
+
+    // Client returns query parameter. Thanks to this we can decide which method should be called.
+    // If we were RESTFul we would be using resources at different urls. However, since liferay gives us
+    // only one url for AJAX communication we need such query parameter to decide which method and resource
+    // should be used.
+    private static final String QUERY_CREATE_SINGLE_USER_CONVERSATION = "CreateSingleUserConversation";
+    private static final String QUERY_READ_SINGLE_USER_CONVERSATION = "ReadSingleUserConversation";
+    private static final String QUERY_CLOSE_SINGLE_USER_CONVERSATION = "CloseSingleUserConversation";
+    private static final String QUERY_RESET_UNREAD_MESSAGES_COUNTER = "ResetUnreadMessagesCounter";
+    private static final String QUERY_READ_OPENED_CONVERSATIONS = "ReadOpenedConversations";
+    private static final String QUERY_GET_GROUP_LIST = "GetGroupList";
+    private static final String QUERY_CREATE_MESSAGE = "CreateMessage";
+    private static final String QUERY_UPDATE_BUDDY_PRESENCE = "UpdateBuddyPresence";
+    private static final String QUERY_UPDATE_ACTIVE_PANEL = "UpdateActivePanel";
+    private static final String QUERY_UPDATE_SETTINGS = "UpdateSettings";
+
     /**
      * Constructor
      */
@@ -40,20 +56,6 @@ public class PortletProcessor {
         this.settingsController = new SettingsController();
     }
 
-    // Constants
-    /**
-     * @deprecated
-     */
-    private static final String KEY_CONTENT = "content";
-    /**
-     * @deprecated
-     */
-    private static final String KEY_PARAMETERS = "parameters";
-    /**
-     * @deprecated
-     */
-    private static final String KEY_QUERY = "query";
-
     /**
      * Decides which method on PortletProcessor should be called based on the request
      *
@@ -62,141 +64,76 @@ public class PortletProcessor {
      */
     public void processRequest(ResourceRequest request, ResourceResponse response) {
 
-        // Log
-        logRequest(request);
+        // Log request
+        if (log.isDebugEnabled()) {
+            logRequest(request);
+        }
+
+        // Get query type from parameter
+        String query = request.getParameter(RequestParameterKeys.KEY_QUERY);
 
         // Return error response if no query was set
-        if (request.getParameter(RequestParameterKeys.KEY_QUERY) == null) {
+        if (query == null) {
             ResponseUtil.writeResponse(null, HttpStatus.BAD_REQUEST, response);
             return;
         }
 
         // Decide which method should be called
-        PortletDispatcher.dispatchRequest(request, response, this);
-    }
-
-    // ---------------------------------------------------------------------------------------------------------
-    //   Buddy
-    // ---------------------------------------------------------------------------------------------------------
-
-    /**
-     * Update buddy's status
-     *
-     * @param request  Request
-     * @param response Response
-     */
-    public void updateBuddyPresence(ResourceRequest request, ResourceResponse response) {
-        // TODO: Call directly
-        buddyController.updateBuddyPresence(request, response);
-    }
-
-
-    // ---------------------------------------------------------------------------------------------------------
-    //   Conversation
-    // ---------------------------------------------------------------------------------------------------------
-
-    /**
-     * Creates single user conversation with a buddy selected in request
-     *
-     * @param request  ResourceRequest
-     * @param response ResourceResponse
-     */
-    public void createSingleUserConversation(ResourceRequest request, ResourceResponse response) {
-        conversationController.createSingleUserConversation(request, response);
+        dispatchRequest(request, response, query);
     }
 
     /**
-     * Reads Single User Conversation messages
+     * Calls all appropriate methods on PollerProcessor that are scheduled for the receive request event.
      *
-     * @param request  ResourceRequest
-     * @param response ResourceResponse
+     * @param response request from browser
+     * @param request  response sent to browser
      */
-    public void readSingleUserConversation(ResourceRequest request, ResourceResponse response) {
-        conversationController.readSingleUserConversation(request, response);
+    private void dispatchRequest(ResourceRequest request,
+                                 ResourceResponse response,
+                                 String query) {
+
+
+        // Create Single User Conversation
+        if (query.equals(QUERY_CREATE_SINGLE_USER_CONVERSATION)) {
+            conversationController.createSingleUserConversation(request, response);
+        }
+        // Read Single User Conversation
+        else if (query.equals(QUERY_READ_SINGLE_USER_CONVERSATION)) {
+            conversationController.readSingleUserConversation(request, response);
+        }
+        // Close Single User Conversation
+        else if (query.equals(QUERY_CLOSE_SINGLE_USER_CONVERSATION)) {
+            conversationController.closeSingleUserConversation(request, response);
+        }
+        // Reset Unread Messages Counter
+        else if (query.equals(QUERY_RESET_UNREAD_MESSAGES_COUNTER)) {
+            conversationController.resetUnreadMessagesCounter(request, response);
+        }
+        // Read Opened Conversations
+        else if (query.equals(QUERY_READ_OPENED_CONVERSATIONS)) {
+            conversationController.readOpenedConversations(request, response);
+        }
+        // Get Group List
+        else if (query.equals(QUERY_GET_GROUP_LIST)) {
+            groupController.getGroupList(request, response);
+        }
+        // Send message
+        else if (query.equals(QUERY_CREATE_MESSAGE)) {
+            conversationController.createMessage(request, response);
+        }
+        // Update buddy presence
+        else if (query.equals(QUERY_UPDATE_BUDDY_PRESENCE)) {
+            buddyController.updateBuddyPresence(request, response);
+        }
+        // Update active panel
+        else if (query.equals(QUERY_UPDATE_ACTIVE_PANEL)) {
+            settingsController.updateActivePanel(request, response);
+        }
+        // Update settings
+        else if (query.equals(QUERY_UPDATE_SETTINGS)) {
+            settingsController.updateSettings(request, response);
+        }
     }
-
-    /**
-     * Closes Single User Conversation
-     *
-     * @param request  ResourceRequest
-     * @param response ResourceResponse
-     */
-    public void closeSingleUserConversation(ResourceRequest request, ResourceResponse response) {
-        conversationController.closeSingleUserConversation(request, response);
-    }
-
-    /**
-     * Resets unread messages counter for the given conversation and participant
-     *
-     * @param request  ResourceRequest
-     * @param response ResourceResponse
-     */
-    public void resetUnreadMessagesCounter(ResourceRequest request, ResourceResponse response) {
-        conversationController.resetUnreadMessagesCounter(request, response);
-    }
-
-    /**
-     * Reads currently opened conversations
-     *
-     * @param request  ResourceRequest
-     * @param response ResourceResponse
-     */
-    public void readOpenedConversations(ResourceRequest request, ResourceResponse response) {
-        conversationController.readOpenedConversations(request, response);
-    }
-
-    /**
-     * Create new message in conversation
-     *
-     * @param request  ResourceRequest
-     * @param response ResourceResponse
-     */
-    public void createMessage(ResourceRequest request, ResourceResponse response) {
-        conversationController.createMessage(request, response);
-    }
-
-    // ---------------------------------------------------------------------------------------------------------
-    //   Group
-    // ---------------------------------------------------------------------------------------------------------
-
-    /**
-     * Fetches all groups related to the buddy.
-     *
-     * @param request  ResourceRequest
-     * @param response ResourceResponse
-     */
-    public void getGroupList(ResourceRequest request, ResourceResponse response) {
-        groupController.getGroupList(request, response);
-    }
-
-    // ---------------------------------------------------------------------------------------------------------
-    //   Settings
-    // ---------------------------------------------------------------------------------------------------------
-
-    /**
-     * Update buddy's settings
-     *
-     * @param request  ResourceRequest
-     * @param response ResourceResponse
-     */
-    protected void updateSettings(ResourceRequest request, ResourceResponse response) {
-        settingsController.updateSettings(request, response);
-    }
-
-    /**
-     * Updates buddy's active panel
-     *
-     * @param request  ResourceRequest
-     * @param response ResourceResponse
-     */
-    protected void updateActivePanel(ResourceRequest request, ResourceResponse response) {
-        settingsController.updateActivePanel(request, response);
-    }
-
-
-    // ------------------------------------------------------------------------------
-    //   Helpers
-    // ------------------------------------------------------------------------------
 
     /**
      * Logs request data
@@ -205,20 +142,23 @@ public class PortletProcessor {
      */
     private void logRequest(ResourceRequest request) {
 
-        // Only if debug is enabled
-        if (log.isDebugEnabled()) {
-            // Log query
-            if (request.getParameter(KEY_QUERY) != null) {
-                log.debug(String.format("REQUEST QUERY: %s", request.getParameter(KEY_QUERY)));
-            }
-            // Log request params
-            if (request.getParameter(KEY_PARAMETERS) != null) {
-                log.debug(String.format("REQUEST PARAMETERS: %s", request.getParameter(KEY_PARAMETERS)));
-            }
-            // Log request content
-            if (request.getParameter(KEY_CONTENT) != null) {
-                log.debug(String.format("REQUEST CONTENT: %s", request.getParameter(KEY_CONTENT)));
-            }
+        // Log query
+        if (request.getParameter(RequestParameterKeys.KEY_QUERY) != null) {
+            log.debug(String.format("REQUEST QUERY: %s",
+                            request.getParameter(RequestParameterKeys.KEY_QUERY))
+            );
+        }
+        // Log request params
+        if (request.getParameter(RequestParameterKeys.KEY_PARAMETERS) != null) {
+            log.debug(String.format("REQUEST PARAMETERS: %s",
+                            request.getParameter(RequestParameterKeys.KEY_PARAMETERS))
+            );
+        }
+        // Log request content
+        if (request.getParameter(RequestParameterKeys.KEY_CONTENT) != null) {
+            log.debug(String.format("REQUEST CONTENT: %s",
+                            request.getParameter(RequestParameterKeys.KEY_CONTENT))
+            );
         }
     }
 }
