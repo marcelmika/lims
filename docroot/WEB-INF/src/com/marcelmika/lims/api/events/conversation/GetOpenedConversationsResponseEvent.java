@@ -35,7 +35,7 @@ public class GetOpenedConversationsResponseEvent extends ResponseEvent {
      *
      * @return ResponseEvent
      */
-    public static GetOpenedConversationsResponseEvent success(List<ConversationDetails> conversations) {
+    public static GetOpenedConversationsResponseEvent success(final List<ConversationDetails> conversations) {
         GetOpenedConversationsResponseEvent event = new GetOpenedConversationsResponseEvent();
 
         event.status = Status.SUCCESS;

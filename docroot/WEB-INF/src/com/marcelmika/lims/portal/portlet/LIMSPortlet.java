@@ -46,7 +46,6 @@ public class LIMSPortlet extends MVCPortlet {
     private static final String VIEW_JSP_PATH = "/view.jsp"; // Path to the view.jsp
 
     // Variables
-
     private static final String VARIABLE_SETTINGS = "settings";
     private static final String VARIABLE_CONVERSATIONS = "conversations";
     private static final String VARIABLE_IS_ENABLED = "isEnabled";
@@ -113,8 +112,7 @@ public class LIMSPortlet extends MVCPortlet {
         }
         // Log failure
         else {
-            // TODO:
-//            log.error(responseEvent.getSt);
+            log.error(responseEvent.getException());
         }
     }
 

@@ -35,11 +35,13 @@ public class SettingsPersistenceServiceImpl implements SettingsPersistenceServic
             );
 
             // Success
-            return ReadSettingsResponseEvent.readSettingsSuccess("Details read", settings.toSettingsDetails());
+            return ReadSettingsResponseEvent.readSettingsSuccess(settings.toSettingsDetails());
 
-        } catch (Exception e) {
+        } catch (Exception exception) {
             // Failure
-            return ReadSettingsResponseEvent.readSettingsFailure(e);
+            return ReadSettingsResponseEvent.readSettingsFailure(
+                    ReadSettingsResponseEvent.Status.ERROR_PERSISTENCE, exception
+            );
         }
     }
 

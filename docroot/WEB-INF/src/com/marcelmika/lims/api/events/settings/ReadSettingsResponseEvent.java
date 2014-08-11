@@ -11,24 +11,71 @@ import com.marcelmika.lims.api.events.ResponseEvent;
  */
 public class ReadSettingsResponseEvent extends ResponseEvent {
 
+    private Status status;
     private SettingsDetails settingsDetails;
 
-    public static ReadSettingsResponseEvent readSettingsSuccess(String result, SettingsDetails settingsDetails) {
+    public enum Status {
+        SUCCESS, // Event was successful
+        ERROR_PERSISTENCE, // Error with persistence occurred
+    }
+
+    /**
+     * Constructor is private. Use factory methods to create new success or failure instances
+     */
+    private ReadSettingsResponseEvent() {
+        // No params
+    }
+
+    /**
+     * Factory method for success status
+     *
+     * @return ResponseEvent
+     */
+    public static ReadSettingsResponseEvent readSettingsSuccess(SettingsDetails settingsDetails) {
         ReadSettingsResponseEvent event = new ReadSettingsResponseEvent();
-        event.settingsDetails = settingsDetails;
-        event.result = result;
+
         event.success = true;
+        event.status = Status.SUCCESS;
+        event.settingsDetails = settingsDetails;
 
         return event;
     }
 
-    public static ReadSettingsResponseEvent readSettingsFailure(Throwable exception) {
+    /**
+     * Factory method for failure status
+     *
+     * @param status Status
+     * @return ResponseEvent
+     */
+    public static ReadSettingsResponseEvent readSettingsFailure(final Status status) {
         ReadSettingsResponseEvent event = new ReadSettingsResponseEvent();
-        event.result = exception.getMessage();
+
         event.success = false;
+        event.status = status;
+
+        return event;
+    }
+
+    /**
+     * Factory method for failure status
+     *
+     * @param status    Status
+     * @param exception Exception
+     * @return ResponseEvent
+     */
+    public static ReadSettingsResponseEvent readSettingsFailure(final Status status,
+                                                                final Throwable exception) {
+        ReadSettingsResponseEvent event = new ReadSettingsResponseEvent();
+
+        event.success = false;
+        event.status = status;
         event.exception = exception;
 
         return event;
+    }
+
+    public Status getStatus() {
+        return status;
     }
 
     public SettingsDetails getSettingsDetails() {
