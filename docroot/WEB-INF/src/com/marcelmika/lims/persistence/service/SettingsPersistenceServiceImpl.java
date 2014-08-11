@@ -91,13 +91,13 @@ public class SettingsPersistenceServiceImpl implements SettingsPersistenceServic
             // Save
             SettingsLocalServiceUtil.saveSettings(settings);
 
-            return UpdateSettingsResponseEvent.updateSettingsSuccess(
-                    "Settings saved to persistence layer for user " + event.getBuddyId(), details
-            );
+            // Success
+            return UpdateSettingsResponseEvent.updateSettingsSuccess(details);
 
         } catch (Exception exception) {
+            // Failure
             return UpdateSettingsResponseEvent.updateSettingsFailure(
-                    "Cannot update Settings to a persistence layer", details, exception
+                    UpdateSettingsResponseEvent.Status.ERROR_PERSISTENCE, exception
             );
         }
     }
