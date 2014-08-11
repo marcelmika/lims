@@ -1,3 +1,8 @@
+<%-- Variables --%>
+<%--@elvariable id="isEnabled" type="boolean"--%>
+<%--@elvariable id="screenName" type="String"--%>
+<%--@elvariable id="fullName" type="String"--%>
+
 <%-- Taglib --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %>
@@ -10,7 +15,9 @@
 <liferay-theme:defineObjects/>
 <portlet:defineObjects/>
 
-<c:if test="${show}">
+
+<c:if test="${isEnabled}">
+
     <%-- Resource URL --%>
     <portlet:resourceURL var="limsPortletURL" id="view.jsp" escapeXml="false"/>
 

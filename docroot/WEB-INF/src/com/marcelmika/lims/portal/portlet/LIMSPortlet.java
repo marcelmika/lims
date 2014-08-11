@@ -60,7 +60,8 @@ public class LIMSPortlet extends MVCPortlet {
      * @throws IOException
      */
     @Override
-    public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws PortletException, IOException {
+    public void doView(RenderRequest renderRequest,
+                       RenderResponse renderResponse) throws PortletException, IOException {
 
         // Settings pane
         renderSettings(renderRequest);
@@ -147,9 +148,8 @@ public class LIMSPortlet extends MVCPortlet {
      * @param renderRequest RenderRequest
      */
     private void renderAdditions(RenderRequest renderRequest) {
-        // TODO: Refactor "show" to "isPluginEnabled"
         // Check if lims is enabled and pass it to jsp as a parameter
-        renderRequest.setAttribute("show", isCorrectAttempt(renderRequest));
+        renderRequest.setAttribute("isEnabled", isCorrectAttempt(renderRequest));
 
         // Get buddy from request
         Buddy buddy = Buddy.fromRenderRequest(renderRequest);
