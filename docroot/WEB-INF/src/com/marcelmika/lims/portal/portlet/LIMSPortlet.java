@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * Main MVC Portlet class for LIMS
+ *
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com/lims
  * Date: 11/24/13
@@ -42,6 +44,14 @@ public class LIMSPortlet extends MVCPortlet {
 
     // Constants
     private static final String VIEW_JSP_PATH = "/view.jsp"; // Path to the view.jsp
+
+    // Variables
+
+    private static final String VARIABLE_SETTINGS = "settings";
+    private static final String VARIABLE_CONVERSATIONS = "conversations";
+    private static final String VARIABLE_IS_ENABLED = "isEnabled";
+    private static final String VARIABLE_SCREEN_NAME = "screenName";
+    private static final String VARIABLE_FULL_NAME = "fullName";
 
     // Log
     private static Log log = LogFactoryUtil.getLog(LIMSPortlet.class);
@@ -99,7 +109,7 @@ public class LIMSPortlet extends MVCPortlet {
             Settings settings = Settings.fromSettingsDetails(responseEvent.getSettingsDetails());
 
             // Pass to jsp
-            renderRequest.setAttribute("settings", settings);
+            renderRequest.setAttribute(VARIABLE_SETTINGS, settings);
         }
         // Log failure
         else {
@@ -133,11 +143,10 @@ public class LIMSPortlet extends MVCPortlet {
             );
 
             // Pass to jsp
-            renderRequest.setAttribute("conversations", conversationList);
+            renderRequest.setAttribute(VARIABLE_CONVERSATIONS, conversationList);
         }
         // Log failure
         else {
-            log.error(responseEvent.getStatus());
             log.error(responseEvent.getException());
         }
     }
@@ -149,13 +158,13 @@ public class LIMSPortlet extends MVCPortlet {
      */
     private void renderAdditions(RenderRequest renderRequest) {
         // Check if lims is enabled and pass it to jsp as a parameter
-        renderRequest.setAttribute("isEnabled", isCorrectAttempt(renderRequest));
+        renderRequest.setAttribute(VARIABLE_IS_ENABLED, isCorrectAttempt(renderRequest));
 
         // Get buddy from request
         Buddy buddy = Buddy.fromRenderRequest(renderRequest);
         // Screen name cannot be accessed via javascript so we need to render it manually
-        renderRequest.setAttribute("screenName", buddy.getScreenName());
-        renderRequest.setAttribute("fullName", buddy.getFullName());
+        renderRequest.setAttribute(VARIABLE_SCREEN_NAME, buddy.getScreenName());
+        renderRequest.setAttribute(VARIABLE_FULL_NAME, buddy.getFullName());
     }
 
     /**
