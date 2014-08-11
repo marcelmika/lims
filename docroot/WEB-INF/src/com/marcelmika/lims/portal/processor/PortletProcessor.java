@@ -16,7 +16,6 @@ import javax.portlet.ResourceResponse;
  */
 public interface PortletProcessor {
 
-
     /**
      * Adds request further to the system and writes data to response if needed.
      * Contains logic that decides which resource should be accessed.

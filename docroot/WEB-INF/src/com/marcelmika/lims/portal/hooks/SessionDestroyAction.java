@@ -30,6 +30,7 @@ public class SessionDestroyAction extends SessionAction {
 
     @Override
     public void run(HttpSession session) {
+
         // Create buddy from session
         Buddy buddy = Buddy.fromHttpSession(session);
         // Logout buddy
@@ -37,9 +38,9 @@ public class SessionDestroyAction extends SessionAction {
                 new LogoutBuddyRequestEvent(buddy.toBuddyDetails())
         );
 
-        // Log result
-        if (log.isDebugEnabled()) {
-            log.debug(responseEvent.getResult());
+        // Log error
+        if (!responseEvent.isSuccess()) {
+            log.error(responseEvent.getException());
         }
     }
 }

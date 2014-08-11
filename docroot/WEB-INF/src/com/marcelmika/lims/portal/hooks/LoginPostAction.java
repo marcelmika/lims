@@ -1,12 +1,12 @@
-
 package com.marcelmika.lims.portal.hooks;
 
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.marcelmika.lims.api.events.buddy.LoginBuddyRequestEvent;
+import com.marcelmika.lims.api.events.buddy.LoginBuddyResponseEvent;
 import com.marcelmika.lims.core.service.BuddyCoreService;
 import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
-import com.marcelmika.lims.api.events.buddy.LoginBuddyRequestEvent;
 import com.marcelmika.lims.portal.domain.Buddy;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +35,14 @@ public class LoginPostAction extends Action {
             // Create buddy from portal request
             Buddy buddy = Buddy.fromPortalServletRequest(request);
             // Login buddy
-            coreService.loginBuddy(new LoginBuddyRequestEvent(buddy.toBuddyDetails()));
+            LoginBuddyResponseEvent responseEvent = coreService.loginBuddy(
+                    new LoginBuddyRequestEvent(buddy.toBuddyDetails())
+            );
+
+            // Log error
+            if (!responseEvent.isSuccess()) {
+                log.error(responseEvent.getException());
+            }
 
         } catch (Exception e) {
             // Log error

@@ -53,6 +53,7 @@ public class ResponseUtil {
 
         // Disable caching. It needs to be here because Internet Explorer aggressively caches
         // ajax requests.
+        // @see http://www.dashbay.com/2011/05/internet-explorer-caches-ajax/
         response.addProperty("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
         response.addProperty("Pragma", "no-cache"); // HTTP 1.0
         response.addProperty("Expires", "0"); // Proxies

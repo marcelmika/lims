@@ -35,15 +35,8 @@ public class UserListener extends BaseModelListener<User> {
         );
 
         // Log result
-        if (log.isDebugEnabled()) {
-            log.debug(responseEvent.getResult());
+        if (!responseEvent.isSuccess()) {
+            log.error(responseEvent.getException());
         }
     }
-
-    @Override
-    public void onAfterUpdate(User user) {
-        // TODO: Implement update user service method
-    }
-
-
 }

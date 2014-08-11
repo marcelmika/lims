@@ -1,8 +1,7 @@
 package com.marcelmika.lims.portal.http;
 
-
 /**
- * Enum which holds all necessary HTTP Status codes
+ * Enum which holds all HTTP Status codes
  */
 public enum HttpStatus {
 
