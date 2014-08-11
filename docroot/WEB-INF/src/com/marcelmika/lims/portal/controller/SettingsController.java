@@ -7,7 +7,6 @@ import com.marcelmika.lims.api.events.ResponseEvent;
 import com.marcelmika.lims.api.events.settings.UpdateActivePanelRequestEvent;
 import com.marcelmika.lims.api.events.settings.UpdateSettingsRequestEvent;
 import com.marcelmika.lims.core.service.SettingsCoreService;
-import com.marcelmika.lims.core.service.SettingsCoreServiceUtil;
 import com.marcelmika.lims.portal.domain.Settings;
 import com.marcelmika.lims.portal.http.HttpStatus;
 import com.marcelmika.lims.portal.response.ResponseUtil;
@@ -27,7 +26,16 @@ public class SettingsController {
     private static Log log = LogFactoryUtil.getLog(SettingsController.class);
 
     // Dependencies
-    SettingsCoreService settingsCoreService = SettingsCoreServiceUtil.getSettingsCoreService();
+    SettingsCoreService settingsCoreService;
+
+    /**
+     * Constructor
+     *
+     * @param settingsCoreService SettingsCoreService
+     */
+    public SettingsController(final SettingsCoreService settingsCoreService) {
+        this.settingsCoreService = settingsCoreService;
+    }
 
     /**
      * Update buddy's settings

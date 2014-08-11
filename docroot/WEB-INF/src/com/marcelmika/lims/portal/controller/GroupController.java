@@ -6,7 +6,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
 import com.marcelmika.lims.core.service.GroupCoreService;
-import com.marcelmika.lims.core.service.GroupCoreServiceUtil;
 import com.marcelmika.lims.portal.domain.Buddy;
 import com.marcelmika.lims.portal.domain.GroupCollection;
 import com.marcelmika.lims.portal.http.HttpStatus;
@@ -27,7 +26,16 @@ public class GroupController {
     private static Log log = LogFactoryUtil.getLog(GroupController.class);
 
     // Dependencies
-    GroupCoreService groupCoreService = GroupCoreServiceUtil.getGroupCoreService();
+    GroupCoreService groupCoreService;
+
+    /**
+     * Constructor
+     *
+     * @param groupCoreService GroupCoreService
+     */
+    public GroupController(final GroupCoreService groupCoreService) {
+        this.groupCoreService = groupCoreService;
+    }
 
     /**
      * Fetches all groups related to the buddy.

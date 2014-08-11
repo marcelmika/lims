@@ -8,8 +8,7 @@ package com.marcelmika.lims.portal.processor;
  */
 public class PortletProcessorUtil {
 
-    // TODO: Inject via bean
-    private static PortletProcessor portletProcessor = new PortletProcessorImpl();
+    private static PortletProcessor portletProcessor;
 
     /**
      * Return Portlet Processor implementation
@@ -18,6 +17,15 @@ public class PortletProcessorUtil {
      */
     public static PortletProcessor getPortletProcessor() {
         return portletProcessor;
+    }
+
+    /**
+     * Injects proper PortletProcessor via Dependency Injection
+     *
+     * @param portletProcessor PortletProcessor
+     */
+    public void setPortletProcessor(PortletProcessor portletProcessor) {
+        PortletProcessorUtil.portletProcessor = portletProcessor;
     }
 
 }

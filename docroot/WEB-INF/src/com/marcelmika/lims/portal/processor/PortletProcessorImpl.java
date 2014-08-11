@@ -53,12 +53,21 @@ public class PortletProcessorImpl implements PortletProcessor {
 
     /**
      * Constructor
+     *
+     * @param buddyController        BuddyController
+     * @param conversationController ConversationController
+     * @param groupController        GroupController
+     * @param settingsController     SettingsController
      */
-    public PortletProcessorImpl() {
-        this.buddyController = new BuddyController();
-        this.conversationController = new ConversationController();
-        this.groupController = new GroupController();
-        this.settingsController = new SettingsController();
+    public PortletProcessorImpl(final BuddyController buddyController,
+                                final ConversationController conversationController,
+                                final GroupController groupController,
+                                final SettingsController settingsController) {
+
+        this.buddyController = buddyController;
+        this.conversationController = conversationController;
+        this.groupController = groupController;
+        this.settingsController = settingsController;
     }
 
     /**

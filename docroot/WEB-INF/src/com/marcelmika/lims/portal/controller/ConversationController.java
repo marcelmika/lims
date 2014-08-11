@@ -7,7 +7,6 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.marcelmika.lims.api.events.conversation.*;
 import com.marcelmika.lims.core.service.ConversationCoreService;
-import com.marcelmika.lims.core.service.ConversationCoreServiceUtil;
 import com.marcelmika.lims.portal.domain.*;
 import com.marcelmika.lims.portal.http.HttpStatus;
 import com.marcelmika.lims.portal.request.RequestParameterKeys;
@@ -33,7 +32,16 @@ public class ConversationController {
     private static Log log = LogFactoryUtil.getLog(ConversationController.class);
 
     // Dependencies
-    ConversationCoreService conversationCoreService = ConversationCoreServiceUtil.getConversationCoreService();
+    ConversationCoreService conversationCoreService;
+
+    /**
+     * Constructor
+     *
+     * @param conversationCoreService ConversationCoreService
+     */
+    public ConversationController(final ConversationCoreService conversationCoreService) {
+        this.conversationCoreService = conversationCoreService;
+    }
 
     /**
      * Creates single user conversation with a buddy selected in request

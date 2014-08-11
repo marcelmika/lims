@@ -8,9 +8,7 @@ import com.marcelmika.lims.api.events.buddy.UpdatePresenceBuddyResponseEvent;
 import com.marcelmika.lims.api.events.settings.DisableChatRequestEvent;
 import com.marcelmika.lims.api.events.settings.EnableChatRequestEvent;
 import com.marcelmika.lims.core.service.BuddyCoreService;
-import com.marcelmika.lims.core.service.BuddyCoreServiceUtil;
 import com.marcelmika.lims.core.service.SettingsCoreService;
-import com.marcelmika.lims.core.service.SettingsCoreServiceUtil;
 import com.marcelmika.lims.portal.domain.Buddy;
 import com.marcelmika.lims.portal.domain.Presence;
 import com.marcelmika.lims.portal.http.HttpStatus;
@@ -31,9 +29,22 @@ public class BuddyController {
     private static Log log = LogFactoryUtil.getLog(BuddyController.class);
 
     // Dependencies
-    BuddyCoreService buddyCoreService = BuddyCoreServiceUtil.getBuddyCoreService();
-    SettingsCoreService settingsCoreService = SettingsCoreServiceUtil.getSettingsCoreService();
+    BuddyCoreService buddyCoreService;
+    SettingsCoreService settingsCoreService;
 
+
+    /**
+     * Constructor
+     *
+     * @param buddyCoreService    BuddyCoreService
+     * @param settingsCoreService SettingsCoreService
+     */
+    public BuddyController(final BuddyCoreService buddyCoreService,
+                           final SettingsCoreService settingsCoreService) {
+
+        this.buddyCoreService = buddyCoreService;
+        this.settingsCoreService = settingsCoreService;
+    }
 
     /**
      * Update buddy's status
