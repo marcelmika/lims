@@ -53,20 +53,25 @@ public class SettingsPersistenceServiceImpl implements SettingsPersistenceServic
      */
     @Override
     public UpdateActivePanelResponseEvent updateActivePanel(UpdateActivePanelRequestEvent event) {
+
+        // Check params
+        if (event.getBuddyId() == null || event.getActivePanel() == null) {
+            return UpdateActivePanelResponseEvent.updateActivePanelFailure(
+                    UpdateActivePanelResponseEvent.Status.ERROR_WRONG_PARAMETERS
+            );
+        }
+
         try {
             // Update active panel
             PanelLocalServiceUtil.updateActivePanel(event.getBuddyId(), event.getActivePanel());
 
             // Success
-            return UpdateActivePanelResponseEvent.updateActivePanelSuccess(
-                    "Active Panel" + event.getActivePanel() + " saved to persistence layer for user "
-                            + event.getBuddyId()
-            );
+            return UpdateActivePanelResponseEvent.updateActivePanelSuccess(event.getActivePanel());
 
         } catch (Exception exception) {
             // Failure
             return UpdateActivePanelResponseEvent.updateActivePanelFailure(
-                    "Cannot update Active Panel to a persistence layer", exception
+                    UpdateActivePanelResponseEvent.Status.ERROR_PERSISTENCE, exception
             );
         }
     }
