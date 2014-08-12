@@ -6,6 +6,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.events.ResponseEvent;
 import com.marcelmika.lims.api.events.settings.UpdateActivePanelRequestEvent;
 import com.marcelmika.lims.api.events.settings.UpdateSettingsRequestEvent;
+import com.marcelmika.lims.api.events.settings.UpdateSettingsResponseEvent;
 import com.marcelmika.lims.core.service.SettingsCoreService;
 import com.marcelmika.lims.portal.domain.Settings;
 import com.marcelmika.lims.portal.http.HttpStatus;
@@ -45,20 +46,31 @@ public class SettingsController {
      */
     public void updateSettings(ResourceRequest request, ResourceResponse response) {
         // Create buddy and settings from poller request
+        // TODO: Replace with content
         Settings settings = JSONFactoryUtil.looseDeserialize(request.getParameter("data"), Settings.class);
         // Send request to core service
-        ResponseEvent responseEvent = settingsCoreService.updateSettings(new UpdateSettingsRequestEvent(
+        UpdateSettingsResponseEvent responseEvent = settingsCoreService.updateSettings(new UpdateSettingsRequestEvent(
                         settings.getBuddy().getBuddyId(), settings.toSettingsDetails())
         );
 
-        // On success
+        // Success
         if (responseEvent.isSuccess()) {
             ResponseUtil.writeResponse(HttpStatus.NO_CONTENT, response);
         }
-        // On error
+        // Failure
         else {
-            // TODO: Add status handling
-            ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+            UpdateSettingsResponseEvent.Status status = responseEvent.getStatus();
+            // Bad parameters
+            if (status == UpdateSettingsResponseEvent.Status.ERROR_WRONG_PARAMETERS) {
+                ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
+            }
+            // Everything else is server fault
+            else {
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                // Log
+                log.error(responseEvent.getException());
+            }
+
         }
     }
 

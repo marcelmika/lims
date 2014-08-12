@@ -80,6 +80,14 @@ public class SettingsPersistenceServiceImpl implements SettingsPersistenceServic
     @Override
     public UpdateSettingsResponseEvent updateSettings(UpdateSettingsRequestEvent event) {
         SettingsDetails details = event.getSettingsDetails();
+
+        // Check params
+        if (event.getBuddyId() == null) {
+            return UpdateSettingsResponseEvent.updateSettingsFailure(
+                    UpdateSettingsResponseEvent.Status.ERROR_WRONG_PARAMETERS
+            );
+        }
+
         try {
             // Get settings
             com.marcelmika.lims.persistence.generated.model.Settings settings = SettingsLocalServiceUtil.getSettingsByUser(

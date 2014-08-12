@@ -16,6 +16,7 @@ public class UpdateSettingsResponseEvent extends ResponseEvent {
 
     public enum Status {
         SUCCESS, // Event was successful
+        ERROR_WRONG_PARAMETERS, // Wrong input parameters
         ERROR_PERSISTENCE, // Error with persistence occurred
     }
 
