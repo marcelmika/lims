@@ -43,8 +43,12 @@ public class GroupPersistenceServiceImpl implements GroupPersistenceService {
         // Map buddy from details
         Buddy buddy = Buddy.fromBuddyDetails(event.getBuddyDetails());
 
-        try {
+        // Check params
+        if (buddy.getBuddyId() == null) {
+            return GetGroupsResponseEvent.getGroupsFailure(GetGroupsResponseEvent.Status.ERROR_WRONG_PARAMETERS);
+        }
 
+        try {
             // TODO: Implement pagination
             int start = 0;
             int end = Environment.getBuddyListMaxBuddies();
@@ -57,8 +61,10 @@ public class GroupPersistenceServiceImpl implements GroupPersistenceService {
         }
         // Something went wrong
         catch (Exception exception) {
-            // Call error
-            return GetGroupsResponseEvent.getGroupsFailure(exception);
+            // Failure
+            return GetGroupsResponseEvent.getGroupsFailure(
+                    GetGroupsResponseEvent.Status.ERROR_PERSISTENCE, exception
+            );
         }
     }
 }

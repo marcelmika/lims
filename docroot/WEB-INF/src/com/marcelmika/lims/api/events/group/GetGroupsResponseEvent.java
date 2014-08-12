@@ -11,23 +11,74 @@ import com.marcelmika.lims.api.events.ResponseEvent;
  */
 public class GetGroupsResponseEvent extends ResponseEvent {
 
-    GroupCollectionDetails groupCollection;
+    private Status status;
+    private GroupCollectionDetails groupCollection;
 
-    public static GetGroupsResponseEvent getGroupsSuccess(GroupCollectionDetails groupCollectionDetails) {
+    public enum Status {
+        SUCCESS,                // Event was successful
+        ERROR_WRONG_PARAMETERS, // Wrong input parameters
+        ERROR_PERSISTENCE,      // Error with persistence occurred
+        ERROR_JABBER,           // Error with jabber occurred
+    }
+
+    /**
+     * Constructor is private. Use factory methods to create new success or failure instances
+     */
+    private GetGroupsResponseEvent() {
+        // No params
+    }
+
+    /**
+     * Factory method for success status
+     *
+     * @return ResponseEvent
+     */
+    public static GetGroupsResponseEvent getGroupsSuccess(final GroupCollectionDetails groupCollection) {
         GetGroupsResponseEvent event = new GetGroupsResponseEvent();
-        event.groupCollection = groupCollectionDetails;
+
         event.success = true;
+        event.status = Status.SUCCESS;
+        event.groupCollection = groupCollection;
 
         return event;
     }
 
-    public static GetGroupsResponseEvent getGroupsFailure(Throwable exception) {
+    /**
+     * Factory method for failure status
+     *
+     * @param status Status
+     * @return ResponseEvent
+     */
+    public static GetGroupsResponseEvent getGroupsFailure(final Status status) {
         GetGroupsResponseEvent event = new GetGroupsResponseEvent();
-        event.result = exception.getMessage();
+
         event.success = false;
+        event.status = status;
+
+        return event;
+    }
+
+    /**
+     * Factory method for failure status
+     *
+     * @param status    Status
+     * @param exception Exception
+     * @return ResponseEvent
+     */
+    public static GetGroupsResponseEvent getGroupsFailure(final Status status,
+                                                          final Throwable exception) {
+
+        GetGroupsResponseEvent event = new GetGroupsResponseEvent();
+
+        event.success = false;
+        event.status = status;
         event.exception = exception;
 
         return event;
+    }
+
+    public Status getStatus() {
+        return status;
     }
 
     public GroupCollectionDetails getGroupCollection() {

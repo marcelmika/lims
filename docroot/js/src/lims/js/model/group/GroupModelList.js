@@ -14,23 +14,28 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
 
     // Custom sync layer.
     sync: function (action, options, callback) {
-        var data, url, etag = this.get('etag'), instance = this;
+        var settings = new Y.LIMS.Core.Settings(),
+            parameters,
+            etag = this.get('etag'),
+            instance = this;
 
         switch (action) {
-            case 'create':
-                data = this.toJSON();
-                return;
-
 
             case 'read':
-                // TODO: Move away
-                url = Y.one('#limsPortletURL').get('value');
 
-                Y.io(url, {
+                // Set parameters
+                parameters = Y.JSON.stringify({
+                    // Send etag to server so it knows if it should send groups again or we should keep
+                    // the old cached values
+                    etag: etag
+                });
+
+                // Read from server
+                Y.io(settings.getServerRequestUrl(), {
                     method: "GET",
                     data: {
                         query: "GetGroupList",
-                        etag: etag
+                        parameters: parameters
                     },
                     on: {
                         success: function (id, o) {
@@ -62,7 +67,7 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
                                     instance.add(group);
                                 }
 
-                                if (etag === 0 ) {
+                                if (etag === 0) {
                                     instance.fire("groupsLoaded");
                                 }
                             }
@@ -81,13 +86,14 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
                     }
                 });
 
-                return;
+                break;
 
-            case 'update':
-                return;
-
+            case 'create':
             case 'delete':
-                return;
+            case 'update':
+                // Do nothing
+                break;
+
 
             default:
                 callback('Invalid action');
@@ -105,5 +111,4 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
             value: 0 // default value
         }
     }
-
 });

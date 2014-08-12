@@ -9,6 +9,8 @@ import com.marcelmika.lims.core.service.GroupCoreService;
 import com.marcelmika.lims.portal.domain.Buddy;
 import com.marcelmika.lims.portal.domain.GroupCollection;
 import com.marcelmika.lims.portal.http.HttpStatus;
+import com.marcelmika.lims.portal.request.RequestParameterKeys;
+import com.marcelmika.lims.portal.request.parameters.GetGroupListParameters;
 import com.marcelmika.lims.portal.response.ResponseUtil;
 
 import javax.portlet.ResourceRequest;
@@ -44,9 +46,31 @@ public class GroupController {
      * @param response ResourceResponse
      */
     public void getGroupList(ResourceRequest request, ResourceResponse response) {
-        // Create buddy from request
-        Buddy buddy = Buddy.fromResourceRequest(request);
-        // Get groups request
+
+        GetGroupListParameters parameters;  // Parameters for the request
+        Buddy buddy;                        // Currently logged user
+
+        // Deserialize
+        try {
+            // Parameters
+            parameters = JSONFactoryUtil.looseDeserialize(
+                    request.getParameter(RequestParameterKeys.KEY_PARAMETERS), GetGroupListParameters.class
+            );
+
+            // Create buddy from request
+            buddy = Buddy.fromResourceRequest(request);
+        }
+        // Failure
+        catch (Exception exception) {
+            // Bad request
+            ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
+            // Log
+            log.error(exception);
+            // End here
+            return;
+        }
+
+        // Get groups
         GetGroupsResponseEvent responseEvent = groupCoreService.getGroups(
                 new GetGroupsRequestEvent(buddy.toBuddyDetails())
         );
@@ -58,14 +82,15 @@ public class GroupController {
                     responseEvent.getGroupCollection()
             );
 
-            // Groups are cached, so take the etag from request ...
-            String etag = request.getParameter("etag");
             // ... and compare it with group collection etag
-            if (etag.equals(Integer.toString(groupCollection.getEtag()))) {
+            // Cached
+            if (parameters.getEtag().equals(groupCollection.getEtag())) {
                 // Etags equal which means that nothing has changed.
                 // Write only the group collection without groups and buddies (no extra traffic needed)
                 ResponseUtil.writeResponse(JSONFactoryUtil.looseSerialize(groupCollection), HttpStatus.OK, response);
-            } else {
+            }
+            // Not cached
+            else {
                 // Etags are different which means that groups were modified
                 // Send the whole package to the client
                 ResponseUtil.writeResponse(
@@ -77,10 +102,17 @@ public class GroupController {
         }
         // Failure
         else {
-            log.error(responseEvent.getException());
-            // TODO: Add status handling
-            ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+            GetGroupsResponseEvent.Status status = responseEvent.getStatus();
+            // Bad request
+            if (status == GetGroupsResponseEvent.Status.ERROR_WRONG_PARAMETERS) {
+                ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
+            }
+            // Everything else is server fault
+            else {
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                // Log
+                log.error(responseEvent.getException());
+            }
         }
     }
-
 }
