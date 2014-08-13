@@ -55,7 +55,7 @@ public class SettingsPersistenceServiceImpl implements SettingsPersistenceServic
     public UpdateActivePanelResponseEvent updateActivePanel(UpdateActivePanelRequestEvent event) {
 
         // Check params
-        if (event.getBuddyId() == null || event.getActivePanel() == null) {
+        if (event.getBuddyId() == null) {
             return UpdateActivePanelResponseEvent.updateActivePanelFailure(
                     UpdateActivePanelResponseEvent.Status.ERROR_WRONG_PARAMETERS
             );

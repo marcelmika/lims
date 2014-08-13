@@ -12,6 +12,7 @@ import com.marcelmika.lims.core.service.SettingsCoreService;
 import com.marcelmika.lims.portal.domain.Buddy;
 import com.marcelmika.lims.portal.domain.Presence;
 import com.marcelmika.lims.portal.http.HttpStatus;
+import com.marcelmika.lims.portal.request.RequestParameterKeys;
 import com.marcelmika.lims.portal.response.ResponseUtil;
 
 import javax.portlet.ResourceRequest;
@@ -53,14 +54,34 @@ public class BuddyController {
      * @param response Response
      */
     public void updateBuddyPresence(ResourceRequest request, ResourceResponse response) {
-        // Create buddy from poller request
-        // TODO: Content should by passed via content parameter and not via data, refactor
-        Buddy buddy = JSONFactoryUtil.looseDeserialize(request.getParameter("data"), Buddy.class);
-        Presence presence = buddy.getPresence();
+
+        Presence presence;      // Buddy object which holds presence
+        Buddy buddy;            // Currently logged user
+
+        // Deserialize
+        try {
+            // Presence
+            Buddy deserializedBuddy = JSONFactoryUtil.looseDeserialize(
+                    request.getParameter(RequestParameterKeys.KEY_CONTENT), Buddy.class
+            );
+            presence = deserializedBuddy.getPresence();
+
+            // Create buddy from request
+            buddy = Buddy.fromResourceRequest(request);
+        }
+        // Failure
+        catch (Exception exception) {
+            // Bad request
+            ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
+            // Log
+            log.error(exception);
+            // End here
+            return;
+        }
 
         // Send request to core service
         UpdatePresenceBuddyResponseEvent responseEvent = buddyCoreService.updatePresence(
-                new UpdatePresenceBuddyRequestEvent(buddy.getBuddyId(), buddy.getPresence().toPresenceDetails())
+                new UpdatePresenceBuddyRequestEvent(buddy.getBuddyId(), presence.toPresenceDetails())
         );
 
         // Disable chat if presence is offline
@@ -78,11 +99,21 @@ public class BuddyController {
         }
         // Failure
         else {
-            log.error(responseEvent.getResult());
-            log.error(responseEvent.getException());
-            // TODO: Add status handling
-            ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+            UpdatePresenceBuddyResponseEvent.Status status = responseEvent.getStatus();
+            // Bad request
+            if (status == UpdatePresenceBuddyResponseEvent.Status.ERROR_WRONG_PARAMETERS) {
+                ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
+            }
+            // Unauthorized
+            else if (status == UpdatePresenceBuddyResponseEvent.Status.ERROR_NO_SESSION) {
+                ResponseUtil.writeResponse(HttpStatus.UNAUTHORIZED, response);
+            }
+            // Everything else is a server fault
+            else {
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                // Log
+                log.error(responseEvent.getException());
+            }
         }
     }
-
 }

@@ -148,12 +148,13 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
             // Save to settings
             SettingsLocalServiceUtil.changePresence(event.getBuddyId(), presence.getDescription());
 
-            return UpdatePresenceBuddyResponseEvent.updatePresenceSuccess(
-                    "Presence " + presence.getDescription() + " saved to persistence layer for user " + event.getBuddyId()
-            );
+            // Success
+            return UpdatePresenceBuddyResponseEvent.updatePresenceSuccess();
+
         } catch (Exception exception) {
+            // Failure
             return UpdatePresenceBuddyResponseEvent.updatePresenceFailure(
-                    "Cannot update presence to a persistence layer", exception
+                    UpdatePresenceBuddyResponseEvent.Status.ERROR_PERSISTENCE, exception
             );
         }
     }

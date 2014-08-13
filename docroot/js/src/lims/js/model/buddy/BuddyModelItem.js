@@ -8,48 +8,36 @@ Y.namespace('LIMS.Model');
 
 Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [], {
 
-    // Custom sync layer.
-    sync: function (action, options, callback) {
-        // Get JSON representation of current object
-        var data = Y.JSON.stringify(this.toJSON());
-
-        switch (action) {
-            case 'create':
-            case 'update':
-                if (options.action === "updatePresence") {
-                    this.updatePresence(data, callback);
-                }
-                break;
-
-            case 'read':
-            case 'delete':
-                return;
-
-            default:
-                callback('Invalid action');
-        }
-    },
-
     /**
      * Updates buddy presence
      *
-     * @param data
+     * @param presence
      * @param callback
      * @private
      */
-    updatePresence: function (data, callback) {
+    updatePresence: function (presence, callback) {
         // Create settings that contains request url
-        var settings = new Y.LIMS.Core.Settings();
+        var settings = new Y.LIMS.Core.Settings(),
+            content;
+
+        // Update locally
+        this.set('presence', presence);
+
+        // Deserialize
+        content = Y.JSON.stringify(this.toJSON());
+
         // Do the request
         Y.io(settings.getServerRequestUrl(), {
             method: "POST",
             data: {
                 query: "UpdateBuddyPresence",
-                data: data
+                content: content
             },
             on: {
                 success: function (id, o) {
-                    callback(null, o.response);
+                    if (callback) {
+                        callback(null, o.response);
+                    }
                 },
                 failure: function (x, o) {
                     // If the attempt is unauthorized session has expired
@@ -57,12 +45,28 @@ Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [], {
                         // Notify everybody else
                         Y.fire('userSessionExpired');
                     }
-                    callback("Cannot update buddy presence", o.response);
+                    if (callback) {
+                        callback("Cannot update buddy presence", o.response);
+                    }
                 }
             }
         });
-    }
+    },
 
+    // Custom sync layer.
+    sync: function (action, options, callback) {
+
+        switch (action) {
+            case 'create':
+            case 'update':
+            case 'read':
+            case 'delete':
+                return;
+
+            default:
+                callback('Invalid action');
+        }
+    }
 
 }, {
     ATTRS: {

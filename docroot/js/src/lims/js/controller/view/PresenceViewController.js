@@ -80,28 +80,25 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
         switch (presence) {
             case "ACTIVE":
                 presenceClass = "online";
-                buddyDetails.set('presence', 'ACTIVE');
+                buddyDetails.updatePresence('ACTIVE');
                 break;
             case "AWAY":
                 presenceClass = "busy";
-                buddyDetails.set('presence', 'AWAY');
+                buddyDetails.updatePresence('AWAY');
                 break;
             case "DND":
                 presenceClass = "unavailable";
-                buddyDetails.set('presence', 'DND');
+                buddyDetails.updatePresence('DND');
                 break;
             case "OFFLINE":
                 presenceClass = "off";
-                buddyDetails.set('presence', 'OFFLINE');
+                buddyDetails.updatePresence('OFFLINE');
                 break;
             default:
                 presenceClass = "off";
-                buddyDetails.set('presence', 'UNRECOGNIZED');
+                buddyDetails.updatePresence('UNRECOGNIZED');
                 break;
         }
-
-        // Save to currently logged user
-        buddyDetails.save({action: "updatePresence"});
 
         // Update status indicator
         this.get('statusIndicator').setAttribute('class', "status-indicator " + presenceClass);
