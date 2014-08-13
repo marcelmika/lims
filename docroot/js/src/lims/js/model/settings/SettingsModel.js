@@ -44,7 +44,9 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
             },
             on: {
                 success: function (id, o) {
-                    callback(null, o.response);
+                    if (callback) {
+                        callback(null, o.response);
+                    }
                 },
                 failure: function (x, o) {
                     // If the attempt is unauthorized session has expired
@@ -52,7 +54,10 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
                         // Notify everybody else
                         Y.fire('userSessionExpired');
                     }
-                    callback("Cannot update active panel", o.response);
+
+                    if (callback) {
+                        callback("Cannot update active panel", o.response);
+                    }
                 }
             }
         });
