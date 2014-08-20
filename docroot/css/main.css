@@ -15,6 +15,12 @@
 	opacity: 1;
 }
 
+.liferay-ims textarea,
+.liferay-ims, input {
+	font-weight: 200;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 /* Hide unnecessary portlet bars */
 .liferay-ims .portlet-borderless-bar {
 	display: none !important;
@@ -347,7 +353,7 @@
 /********************************************************************************/
 
 .liferay-ims .conversation .panel-content {
-	height: 258px;
+	height: 250px;
 	overflow-y: auto;
 	background: #fff;
 	margin-top: 0;
@@ -416,16 +422,13 @@
 }
 
 .liferay-ims .conversation .panel-input textarea {
-	width: 239px;
-	height: 31px;
-	position: relative;
+	width: 249px;
+	padding: 5px 10px 5px;
 	background: #f8f8f8;
 	border: 1px solid #dedede;
 	border-left: none;
 	border-right: none;
 	border-radius: 0;
-	/* Negative because we need to cover line after last message */
-	top: -1px;
 	display: block;
 	overflow: hidden;
 	-webkit-box-shadow: none;
@@ -481,6 +484,7 @@
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+	line-height: 23px;
 }
 
 .liferay-ims .buddy-list .panel-content {
@@ -546,17 +550,24 @@
 	cursor: pointer;
 	height: 35px;
 	clear: both;
+	line-height: 15px;
 }
 
 .liferay-ims .buddy-list .panel-content .group-buddy-item-presence {
 	float: right;
 	margin-right: 4px;
-	margin-top: 14px;
+	margin-top: 13px;
 }
 
 /************************************************************************************
 /   BUDDY LIST
 /************************************************************************************/
+
+.liferay-ims .status-panel .panel-window .status {
+	background: #ffffff;
+	display: block;
+	font-size: 12px;
+}
 
 .liferay-ims .status.online {
 	background: url(../images/status-online.png) center center no-repeat;
@@ -755,6 +766,7 @@
 	margin-top: 8px;
 	font-size: 12px;
 	line-height: 15px;
+	font-weight: 200;
 }
 
 .liferay-ims .chat-settings input {
