@@ -135,20 +135,20 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 		_methodName23 = "getAllGroups";
 
 		_methodParameterTypes23 = new String[] {
-				"java.lang.Long", "boolean", "int", "int"
+				"java.lang.Long", "boolean", "boolean", "int", "int"
 			};
 
 		_methodName24 = "getSitesGroups";
 
 		_methodParameterTypes24 = new String[] {
-				"java.lang.Long", "boolean", "java.lang.String[][]", "int",
-				"int"
+				"java.lang.Long", "boolean", "boolean", "java.lang.String[][]",
+				"int", "int"
 			};
 
 		_methodName25 = "getSocialGroups";
 
 		_methodParameterTypes25 = new String[] {
-				"java.lang.Long", "boolean", "int[][]", "int", "int"
+				"java.lang.Long", "boolean", "boolean", "int[][]", "int", "int"
 			};
 	}
 
@@ -810,7 +810,8 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 
 	@Override
 	public java.util.List<java.lang.Object[]> getAllGroups(
-		java.lang.Long userId, boolean ignoreDefaultUser, int start, int end)
+		java.lang.Long userId, boolean ignoreDefaultUser,
+		boolean ignoreDeactivatedUser, int start, int end)
 		throws java.lang.Exception {
 		Object returnObj = null;
 
@@ -821,6 +822,8 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 						ClpSerializer.translateInput(userId),
 						
 					ignoreDefaultUser,
+						
+					ignoreDeactivatedUser,
 						
 					start,
 						
@@ -849,8 +852,8 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 	@Override
 	public java.util.List<java.lang.Object[]> getSitesGroups(
 		java.lang.Long userId, boolean ignoreDefaultUser,
-		java.lang.String[] excludedSties, int start, int end)
-		throws java.lang.Exception {
+		boolean ignoreDeactivatedUser, java.lang.String[] excludedSties,
+		int start, int end) throws java.lang.Exception {
 		Object returnObj = null;
 
 		try {
@@ -860,6 +863,8 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 						ClpSerializer.translateInput(userId),
 						
 					ignoreDefaultUser,
+						
+					ignoreDeactivatedUser,
 						
 					ClpSerializer.translateInput(excludedSties),
 						
@@ -889,8 +894,9 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 
 	@Override
 	public java.util.List<java.lang.Object[]> getSocialGroups(
-		java.lang.Long userId, boolean ignoreDefaultUser, int[] relationTypes,
-		int start, int end) throws java.lang.Exception {
+		java.lang.Long userId, boolean ignoreDefaultUser,
+		boolean ignoreDeactivatedUser, int[] relationTypes, int start, int end)
+		throws java.lang.Exception {
 		Object returnObj = null;
 
 		try {
@@ -900,6 +906,8 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 						ClpSerializer.translateInput(userId),
 						
 					ignoreDefaultUser,
+						
+					ignoreDeactivatedUser,
 						
 					ClpSerializer.translateInput(relationTypes),
 						

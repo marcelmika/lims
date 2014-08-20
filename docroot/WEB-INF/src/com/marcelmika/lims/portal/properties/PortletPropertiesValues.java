@@ -36,6 +36,11 @@ public class PortletPropertiesValues {
             PortletPropertiesKeys.BUDDY_LIST_IGNORE_DEFAULT_USER
     );
 
+    // Buddy List - Ignore deactivated user
+    public static final boolean BUDDY_LIST_IGNORE_DEACTIVATED_USER = getBoolean(
+            PortletPropertiesKeys.BUDDY_LIST_IGNORE_DEACTIVATED_USER
+    );
+
     // Conversations - Max messages count
     public static final int CONVERSATION_LIST_MAX_MESSAGES = getInteger(
             PortletPropertiesKeys.CONVERSATION_LIST_MAX_MESSAGES

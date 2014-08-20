@@ -263,6 +263,16 @@ public class Environment {
     }
 
     /**
+     * Returns true if the deactivated user should be ignored. Deactivated user is the user which has
+     * the status column set to 0 in database.
+     *
+     * @return boolean
+     */
+    public static boolean getBuddyListIgnoreDeactivatedUser() {
+        return PortletPropertiesValues.BUDDY_LIST_IGNORE_DEACTIVATED_USER;
+    }
+
+    /**
      * Maximal count of messages in the conversation.
      *
      * @return int

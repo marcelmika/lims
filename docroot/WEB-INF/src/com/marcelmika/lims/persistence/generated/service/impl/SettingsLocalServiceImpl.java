@@ -36,7 +36,7 @@ import java.util.List;
  */
 public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
     /*
-	 * NOTE FOR DEVELOPERS:
+     * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this interface directly. Always use {@link com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUtil} to access the settings local service.
 	 */
@@ -118,61 +118,73 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
     /**
      * Returns all buddies in the system
      *
-     * @param userId            of excluded user
-     * @param ignoreDefaultUser true if default users should be ignored
-     * @param start             value of the list
-     * @param end               value of the list
+     * @param userId                of excluded user
+     * @param ignoreDefaultUser     true if default users should be ignored
+     * @param ignoreDeactivatedUser true if deactivated users should be ignored
+     * @param start                 value of the list
+     * @param end                   value of the list
      * @return List of objects where each object contains user info
      * @throws Exception
      */
     @Override
     public List<Object[]> getAllGroups(Long userId,
                                        boolean ignoreDefaultUser,
+                                       boolean ignoreDeactivatedUser,
                                        int start,
                                        int end) throws Exception {
         // Find via settings finder
-        return settingsFinder.findAllGroups(userId, ignoreDefaultUser, start, end);
+        return settingsFinder.findAllGroups(
+                userId, ignoreDefaultUser, ignoreDeactivatedUser, start, end
+        );
     }
 
     /**
      * Returns all groups where the user participates
      *
-     * @param userId            of the user whose groups are we looking for
-     * @param ignoreDefaultUser true if default users should be ignored
-     * @param excludedSties     list of names of sites which should be excluded
-     * @param start             value of the list
-     * @param end               value of the list
+     * @param userId                of the user whose groups are we looking for
+     * @param ignoreDefaultUser     true if default users should be ignored
+     * @param ignoreDeactivatedUser true if deactivated users should be ignored
+     * @param excludedSties         list of names of sites which should be excluded
+     * @param start                 value of the list
+     * @param end                   value of the list
      * @return List of objects where each object contains group name and user info
      * @throws Exception
      */
     @Override
     public List<Object[]> getSitesGroups(Long userId,
                                          boolean ignoreDefaultUser,
+                                         boolean ignoreDeactivatedUser,
                                          String[] excludedSties,
                                          int start,
                                          int end) throws Exception {
         // Find via settings finder
-        return settingsFinder.findSitesGroups(userId, ignoreDefaultUser, excludedSties, start, end);
+        return settingsFinder.findSitesGroups(
+                userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedSties, start, end
+        );
     }
 
     /**
      * Returns all user's social relations
      *
-     * @param userId            of the user whose social relations are we looking for
-     * @param ignoreDefaultUser true if default users should be ignored
-     * @param relationTypes     an array of relation type codes that we are looking for
-     * @param start             value of the list
-     * @param end               value of the list
+     * @param userId                of the user whose social relations are we looking for
+     * @param ignoreDefaultUser     true if default users should be ignored
+     * @param ignoreDeactivatedUser true if deactivated users should be ignored
+     * @param relationTypes         an array of relation type codes that we are looking for
+     * @param start                 value of the list
+     * @param end                   value of the list
      * @return List objects where each object contains relation type and user info
      * @throws Exception
      */
     @Override
     public List<Object[]> getSocialGroups(Long userId,
                                           boolean ignoreDefaultUser,
+                                          boolean ignoreDeactivatedUser,
                                           int[] relationTypes,
                                           int start,
                                           int end) throws Exception {
         // Find via settings finder
-        return settingsFinder.findSocialGroups(userId, ignoreDefaultUser, relationTypes, start, end);
+        return settingsFinder.findSocialGroups(
+                userId, ignoreDefaultUser, ignoreDeactivatedUser, relationTypes, start, end
+        );
     }
 }

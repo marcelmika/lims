@@ -294,48 +294,53 @@ public interface SettingsLocalService extends BaseLocalService,
 	/**
 	* Returns all buddies in the system
 	*
-	* @param userId            of excluded user
-	* @param ignoreDefaultUser true if default users should be ignored
-	* @param start             value of the list
-	* @param end               value of the list
+	* @param userId                of excluded user
+	* @param ignoreDefaultUser     true if default users should be ignored
+	* @param ignoreDeactivatedUser true if deactivated users should be ignored
+	* @param start                 value of the list
+	* @param end                   value of the list
 	* @return List of objects where each object contains user info
 	* @throws Exception
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<java.lang.Object[]> getAllGroups(
-		java.lang.Long userId, boolean ignoreDefaultUser, int start, int end)
+		java.lang.Long userId, boolean ignoreDefaultUser,
+		boolean ignoreDeactivatedUser, int start, int end)
 		throws java.lang.Exception;
 
 	/**
 	* Returns all groups where the user participates
 	*
-	* @param userId            of the user whose groups are we looking for
-	* @param ignoreDefaultUser true if default users should be ignored
-	* @param excludedSties     list of names of sites which should be excluded
-	* @param start             value of the list
-	* @param end               value of the list
+	* @param userId                of the user whose groups are we looking for
+	* @param ignoreDefaultUser     true if default users should be ignored
+	* @param ignoreDeactivatedUser true if deactivated users should be ignored
+	* @param excludedSties         list of names of sites which should be excluded
+	* @param start                 value of the list
+	* @param end                   value of the list
 	* @return List of objects where each object contains group name and user info
 	* @throws Exception
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<java.lang.Object[]> getSitesGroups(
 		java.lang.Long userId, boolean ignoreDefaultUser,
-		java.lang.String[] excludedSties, int start, int end)
-		throws java.lang.Exception;
+		boolean ignoreDeactivatedUser, java.lang.String[] excludedSties,
+		int start, int end) throws java.lang.Exception;
 
 	/**
 	* Returns all user's social relations
 	*
-	* @param userId            of the user whose social relations are we looking for
-	* @param ignoreDefaultUser true if default users should be ignored
-	* @param relationTypes     an array of relation type codes that we are looking for
-	* @param start             value of the list
-	* @param end               value of the list
+	* @param userId                of the user whose social relations are we looking for
+	* @param ignoreDefaultUser     true if default users should be ignored
+	* @param ignoreDeactivatedUser true if deactivated users should be ignored
+	* @param relationTypes         an array of relation type codes that we are looking for
+	* @param start                 value of the list
+	* @param end                   value of the list
 	* @return List objects where each object contains relation type and user info
 	* @throws Exception
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<java.lang.Object[]> getSocialGroups(
-		java.lang.Long userId, boolean ignoreDefaultUser, int[] relationTypes,
-		int start, int end) throws java.lang.Exception;
+		java.lang.Long userId, boolean ignoreDefaultUser,
+		boolean ignoreDeactivatedUser, int[] relationTypes, int start, int end)
+		throws java.lang.Exception;
 }

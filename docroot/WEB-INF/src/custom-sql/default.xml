@@ -19,6 +19,7 @@
 			WHERE
 				User_.userId != ?
 				[$DEFAULT_USER$]
+				[$DEACTIVATED_USER$]
 			ORDER BY
 				User_.firstName ASC,
 				User_.middleName ASC,
@@ -58,6 +59,7 @@
 				)
 				AND	(User_.userId != ?)
 				[$DEFAULT_USER$]
+				[$DEACTIVATED_USER$]
 			ORDER BY
 				User_.firstName ASC,
 				User_.middleName ASC,
@@ -87,6 +89,7 @@
 				AND [$SOCIAL_RELATION_TYPES$]
 				AND (User_.userId != ?)
 				[$DEFAULT_USER$]
+				[$DEACTIVATED_USER$]
 			ORDER BY
 				User_.firstName ASC,
 				User_.middleName ASC,

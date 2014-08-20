@@ -135,20 +135,20 @@ public class SettingsLocalServiceClpInvoker {
 		_methodName60 = "getAllGroups";
 
 		_methodParameterTypes60 = new String[] {
-				"java.lang.Long", "boolean", "int", "int"
+				"java.lang.Long", "boolean", "boolean", "int", "int"
 			};
 
 		_methodName61 = "getSitesGroups";
 
 		_methodParameterTypes61 = new String[] {
-				"java.lang.Long", "boolean", "java.lang.String[][]", "int",
-				"int"
+				"java.lang.Long", "boolean", "boolean", "java.lang.String[][]",
+				"int", "int"
 			};
 
 		_methodName62 = "getSocialGroups";
 
 		_methodParameterTypes62 = new String[] {
-				"java.lang.Long", "boolean", "int[][]", "int", "int"
+				"java.lang.Long", "boolean", "boolean", "int[][]", "int", "int"
 			};
 	}
 
@@ -283,25 +283,28 @@ public class SettingsLocalServiceClpInvoker {
 				Arrays.deepEquals(_methodParameterTypes60, parameterTypes)) {
 			return SettingsLocalServiceUtil.getAllGroups((java.lang.Long)arguments[0],
 				((Boolean)arguments[1]).booleanValue(),
-				((Integer)arguments[2]).intValue(),
-				((Integer)arguments[3]).intValue());
+				((Boolean)arguments[2]).booleanValue(),
+				((Integer)arguments[3]).intValue(),
+				((Integer)arguments[4]).intValue());
 		}
 
 		if (_methodName61.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes61, parameterTypes)) {
 			return SettingsLocalServiceUtil.getSitesGroups((java.lang.Long)arguments[0],
 				((Boolean)arguments[1]).booleanValue(),
-				(java.lang.String[])arguments[2],
-				((Integer)arguments[3]).intValue(),
-				((Integer)arguments[4]).intValue());
+				((Boolean)arguments[2]).booleanValue(),
+				(java.lang.String[])arguments[3],
+				((Integer)arguments[4]).intValue(),
+				((Integer)arguments[5]).intValue());
 		}
 
 		if (_methodName62.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes62, parameterTypes)) {
 			return SettingsLocalServiceUtil.getSocialGroups((java.lang.Long)arguments[0],
-				((Boolean)arguments[1]).booleanValue(), (int[])arguments[2],
-				((Integer)arguments[3]).intValue(),
-				((Integer)arguments[4]).intValue());
+				((Boolean)arguments[1]).booleanValue(),
+				((Boolean)arguments[2]).booleanValue(), (int[])arguments[3],
+				((Integer)arguments[4]).intValue(),
+				((Integer)arguments[5]).intValue());
 		}
 
 		throw new UnsupportedOperationException();

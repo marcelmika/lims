@@ -19,15 +19,17 @@ package com.marcelmika.lims.persistence.generated.service.persistence;
  */
 public interface SettingsFinder {
 	public java.util.List<java.lang.Object[]> findAllGroups(
-		java.lang.Long userId, boolean ignoreDefaultUser, int start, int end)
+		java.lang.Long userId, boolean ignoreDefaultUser,
+		boolean ignoreDeactivatedUser, int start, int end)
 		throws java.lang.Exception;
 
 	public java.util.List<java.lang.Object[]> findSitesGroups(
 		java.lang.Long userId, boolean ignoreDefaultUser,
-		java.lang.String[] excludedSties, int start, int end)
-		throws java.lang.Exception;
+		boolean ignoreDeactivatedUser, java.lang.String[] excludedSites,
+		int start, int end) throws java.lang.Exception;
 
 	public java.util.List<java.lang.Object[]> findSocialGroups(
-		java.lang.Long userId, boolean ignoreDefaultUser, int[] relationTypes,
-		int start, int end) throws java.lang.Exception;
+		java.lang.Long userId, boolean ignoreDefaultUser,
+		boolean ignoreDeactivatedUser, int[] relationTypes, int start, int end)
+		throws java.lang.Exception;
 }
