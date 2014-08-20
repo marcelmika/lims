@@ -75,7 +75,10 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
         // Container Node
         container: {
             valueFn: function () {
-                return Y.one('#lims-container .chat-settings');
+                // Get root
+                var rootNode = this.get('globals').getRootNode();
+                // Return container
+                return rootNode.one('.chat-settings');
             }
         },
 
@@ -88,6 +91,13 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
         soundCheckbox: {
             valueFn: function () {
                 return this.get('container').one("#playSound");
+            }
+        },
+
+        // Global settings
+        globals: {
+            valueFn: function () {
+                return new Y.LIMS.Core.Settings();
             }
         }
     }

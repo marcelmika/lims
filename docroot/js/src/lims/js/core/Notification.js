@@ -123,7 +123,10 @@ Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
         // Container Node
         container: {
             valueFn: function () {
-                return Y.one('#lims-container .lims-sound');
+                // Get root
+                var rootNode = this.get('globals').getRootNode();
+                // Return container
+                return rootNode.one('.lims-sound');
             }
         },
 
@@ -140,7 +143,13 @@ Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
             valueFn: function () {
                 return Y.config.doc.title;
             }
+        },
+
+        // Global settings
+        globals: {
+            valueFn: function () {
+                return new Y.LIMS.Core.Settings();
+            }
         }
     }
-
 });

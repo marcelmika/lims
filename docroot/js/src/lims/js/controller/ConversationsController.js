@@ -365,10 +365,13 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             value: null
         },
 
-        // Main container
+        // Main container node
         container: {
             valueFn: function () {
-                return Y.one('#lims-container .lims-tabs');
+                // Get root
+                var rootNode = this.get('globals').getRootNode();
+                // Return container
+                return rootNode.one('.lims-tabs');
             }
         },
 

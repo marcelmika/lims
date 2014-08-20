@@ -119,7 +119,10 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
         // Container Node
         container: {
             valueFn: function () {
-                return Y.one('#lims-container .status-panel');
+                // Get root
+                var rootNode = this.get('globals').getRootNode();
+                // Return container
+                return rootNode.one('.status-panel');
             }
         },
 
@@ -132,6 +135,13 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
         statusIndicator: {
             valueFn: function () {
                 return this.get('container').one('.status-indicator');
+            }
+        },
+
+        // Global settings
+        globals: {
+            valueFn: function () {
+                return new Y.LIMS.Core.Settings();
             }
         }
     }

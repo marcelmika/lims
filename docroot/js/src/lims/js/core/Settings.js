@@ -11,6 +11,16 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
     companyId: null,   // This is set main.js, to access it use Y.LIMS.Core.Settings.companyId
     pathImage: null,   // This is set main.js, to access it use Y.LIMS.Core.Settings.pathImage
 
+
+    /**
+     * Returns root container node
+     *
+     * @returns {Node}
+     */
+    getRootNode: function () {
+        return this.get('rootNode');
+    },
+
     /**
      * Returns url of the portrait of buddy based on the screenName
      * @param screenName
@@ -72,6 +82,15 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
 }, {
 
     ATTRS: {
+
+        /**
+         * Root container node
+         */
+        rootNode: {
+            valueFn: function () {
+                return Y.one('#lims-container');
+            }
+        },
 
         /**
          * User Id of the currently logged user
