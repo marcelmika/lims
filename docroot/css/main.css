@@ -171,6 +171,10 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	padding-right: 15px;
+	/* UnSelectable */
+	-webkit-user-select: none; /* Chrome/Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
 }
 
 .liferay-ims .lims-bar div ul li .panel-trigger:hover {
@@ -629,6 +633,10 @@
 	padding: 10px 5px 10px 30px;
 	cursor: pointer;
 	line-height: 15px;
+	/* UnSelectable */
+	-webkit-user-select: none; /* Chrome/Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
 }
 
 .liferay-ims .status-panel .panel-window .status li:hover {
