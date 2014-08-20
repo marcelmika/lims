@@ -68,12 +68,12 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     /**
      * Called when a single message is added to the model
      *
-     * @param message
+     * @param event
      * @private
      */
-    _onMessageAdded: function (message) {
+    _onMessageAdded: function (event) {
         // Add a single message to the list
-        this._addMessage(message);
+        this._addMessage(event.message);
         // Scroll to bottom so the user sees the message
         this.scrollToBottom();
     },

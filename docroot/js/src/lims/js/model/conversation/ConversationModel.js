@@ -30,7 +30,9 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
         messageList.add(message);
 
         // Notify about the event
-        this.fire('messageAdded', message);
+        this.fire('messageAdded', {
+            message: message
+        });
     },
 
     /**
@@ -239,7 +241,9 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
         messageList.reset(messageModels);
 
         // Notify about the event
-        this.fire('messagesUpdated', messageList);
+        this.fire('messagesUpdated', {
+            messageList: messageList
+        });
     }
 
 }, {

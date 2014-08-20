@@ -68,7 +68,9 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
                                 }
 
                                 if (etag === 0) {
-                                    instance.fire("groupsLoaded");
+                                    instance.fire("groupsLoaded", {
+                                        groupsList: instance
+                                    });
                                 }
                             }
                         },

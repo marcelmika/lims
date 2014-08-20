@@ -48,6 +48,29 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
     },
 
     /**
+     * Updates list of conversations from the response
+     *
+     * @param response
+     */
+    updateConversationList: function (response) {
+
+        // Vars
+        var index, conversation, conversationModels = [];
+
+        // Create model instance from response
+        for (index = 0; index < response.length; index++) {
+            conversation = response[index];
+            conversationModels.push(new Y.LIMS.Model.ConversationModel(conversation));
+        }
+        // Repopulate the list
+        this.reset(conversationModels);
+
+        this.fire('conversationsUpdated', {
+            conversationList: this
+        });
+    },
+
+    /**
      * Custom sync layer
      *
      * @param action
@@ -103,22 +126,6 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
             default:
                 callback('Invalid action');
         }
-    },
-
-    updateConversationList: function (response) {
-
-        // Vars
-        var index, conversation, conversationModels = [];
-
-        // Create model instance from response
-        for (index = 0; index < response.length; index++) {
-            conversation = response[index];
-            conversationModels.push(new Y.LIMS.Model.ConversationModel(conversation));
-        }
-        // Repopulate the list
-        this.reset(conversationModels);
-
-        this.fire('conversationsUpdated', this);
     }
 
 }, {});

@@ -34,7 +34,9 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
             if (target.ancestor('li')) {
                 // Fire event
                 presence = target.getAttribute('data-status');
-                Y.fire('presenceChanged', presence);
+                Y.fire('presenceChanged', {
+                    presence: presence
+                });
             }
         }, 'li');
 
@@ -44,15 +46,15 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
     /**
      * Presence changed event
      *
-     * @param presence
+     * @param event
      * @private
      */
-    _onPresenceChanged: function (presence) {
+    _onPresenceChanged: function (event) {
         // Update presence indicator
-        this._updatePresenceIndicator(presence);
+        this._updatePresenceIndicator(event.presence);
 
         // Disable chat if needed
-        if (presence === "OFFLINE") {
+        if (event.presence === "OFFLINE") {
             Y.fire("chatDisabled");
             // Since if we call chatDisabled all controllers will be automatically
             // hidden. Thus we need to show our controller again.
