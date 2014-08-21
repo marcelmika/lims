@@ -39,12 +39,19 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
     // The initializer runs when a MainController instance is created, and gives
     // us an opportunity to set up all sub controllers
     initializer: function () {
+
+        // Vars
+        var globals = this.get('globals');
+
         // Bind to already rendered conversations
         this._bindConversations();
         // Attach events
         this._attachEvents();
-        // Timer
-        this._startTimer();
+
+        // Start timer only if the chat is enabled
+        if (globals.isChatEnabled()) {
+            this._startTimer();
+        }
     },
 
     /**
@@ -65,6 +72,10 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
         }, this);
         // Session expired
         Y.on('userSessionExpired', this._onSessionExpired, this);
+
+        // Chat enabled/disabled
+        Y.on('chatEnabled', this._onChatEnabled, this);
+        Y.on('chatDisabled', this._onChatDisabled, this);
     },
 
     /**
@@ -328,9 +339,31 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
 
     /**
      * Called whenever the user session expires
+     *
      * @private
      */
     _onSessionExpired: function () {
+        // Disable the timer
+        this._stopTimer();
+    },
+
+    /**
+     * Called whenever the user enables the chat
+     *
+     * @private
+     */
+    _onChatEnabled: function () {
+        // Re-enable the timer
+        this._startTimer();
+    },
+
+    /**
+     * Called whenever the user disables the chat
+     *
+     * @private
+     */
+    _onChatDisabled: function () {
+        // Disable the timer
         this._stopTimer();
     },
 
@@ -341,20 +374,16 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
      */
     _startTimer: function () {
         // Vars
-        var globals = this.get('globals'),
-            conversationList = this.get('conversationList'),
+        var conversationList = this.get('conversationList'),
             timerInterval = this.get('timerInterval');
 
-        // Start only if the chat is enabled
-        if (globals.isChatEnabled()) {
-            // Update all timestamps
+        // Update all timestamps
+        conversationList.load();
+        // Start periodical update
+        this.set('timer', setInterval(function () {
+            // Load model
             conversationList.load();
-            // Start periodical update
-            this.set('timer', setInterval(function () {
-                // Load model
-                conversationList.load();
-            }, timerInterval));
-        }
+        }, timerInterval));
     },
 
     /**

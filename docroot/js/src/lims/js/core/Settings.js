@@ -37,6 +37,14 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
 
 
     /**
+     * Called when the object is created
+     */
+    initializer: function () {
+        // Attach to events
+        this._attachEvents();
+    },
+
+    /**
      * Returns root container node
      *
      * @returns {Node}
@@ -100,7 +108,36 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
      * @returns {boolean}
      */
     isChatEnabled: function () {
-        return Y.one('#limsPortletEnabled').get('value') === 'true';
+        return this.get('isChatEnabled');
+    },
+
+    /**
+     * Attach dom events
+     *
+     * @private
+     */
+    _attachEvents: function () {
+        // Chat enabled/disabled
+        Y.on('chatEnabled', this._onChatEnabled, this);
+        Y.on('chatDisabled', this._onChatDisabled, this);
+    },
+
+    /**
+     * Called when the chat is enabled (turned on)
+     *
+     * @private
+     */
+    _onChatEnabled: function () {
+        this.set('isChatEnabled', true);
+    },
+
+    /**
+     * Called when the chat is disabled (turned off)
+     *
+     * @private
+     */
+    _onChatDisabled: function () {
+        this.set('isChatEnabled', false);
     }
 
 }, {
@@ -172,6 +209,17 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
         pathImage: {
             valueFn: function () {
                 return Y.LIMS.Core.Settings.pathImage;
+            }
+        },
+
+        /**
+         * Set to true if chat is enabled
+         */
+        isChatEnabled: {
+            valueFn: function () {
+                // Take the default value from HTML. However, if the chat is e.g. disabled
+                // in the future this value will be overridden.
+                return Y.one('#limsPortletEnabled').get('value') === 'true';
             }
         }
     }
