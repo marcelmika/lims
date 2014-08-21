@@ -127,10 +127,15 @@ Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
     _updatePageTitleMessage: function () {
         // Vars
         var defaultPageTitle = this.get('defaultPageTitle'),
-            unreadMessagesCount = this.get('unreadMessagesCount');
+            unreadMessagesCount = this.get('unreadMessagesCount'),
+            properties = this.get('properties');
 
+        // Chat is not enabled
+        if (!properties.isChatEnabled()) {
+            Y.config.doc.title = defaultPageTitle;
+        }
         // If no unread message simply keep the default title
-        if (unreadMessagesCount === 0) {
+        else if (unreadMessagesCount === 0) {
             Y.config.doc.title = defaultPageTitle;
         }
         // Append message count to title

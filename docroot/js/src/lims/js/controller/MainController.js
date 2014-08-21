@@ -147,7 +147,8 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
             valueFn: function () {
                 return new Y.LIMS.Core.Notification({
                     settings: this.get('settingsModel'),
-                    container: this.getRootNode().one('.lims-sound')
+                    container: this.getRootNode().one('.lims-sound'),
+                    properties: this.get('properties')
                 });
             }
         },
