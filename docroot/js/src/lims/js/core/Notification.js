@@ -146,16 +146,16 @@ Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
 
         // Container Node
         container: {
-            valueFn: function () {
-                // Get root
-                var rootNode = this.get('globals').getRootNode();
-                // Return container
-                return rootNode.one('.lims-sound');
-            }
+            value: null // to be set
         },
 
         // Settings
         settings: {
+            value: null // to be set
+        },
+
+        // Portlet properties
+        properties: {
             value: null // to be set
         },
 
@@ -166,13 +166,6 @@ Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
         defaultPageTitle: {
             valueFn: function () {
                 return Y.config.doc.title;
-            }
-        },
-
-        // Global settings
-        globals: {
-            valueFn: function () {
-                return new Y.LIMS.Core.Settings();
             }
         }
     }

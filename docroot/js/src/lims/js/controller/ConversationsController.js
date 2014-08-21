@@ -39,9 +39,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
     // The initializer runs when a MainController instance is created, and gives
     // us an opportunity to set up all sub controllers
     initializer: function () {
-
         // Vars
-        var globals = this.get('globals');
+        var properties = this.get('properties');
 
         // Bind to already rendered conversations
         this._bindConversations();
@@ -49,7 +48,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
         this._attachEvents();
 
         // Start timer only if the chat is enabled
-        if (globals.isChatEnabled()) {
+        if (properties.isChatEnabled()) {
             this._startTimer();
         }
     },
@@ -116,6 +115,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             conversationId,                                     // Id of the conversation
             unreadMessagesCount,                                // Unread messages count
             settings = this.get('settings'),                    // Settings of logged user
+            properties = this.get('properties'),                // Portlet properties
             conversationModel,                                  // Model which will be attached to controller
             conversationList = this.get('conversationList'),    // List of conversations
             notification = this.get('notification'),            // Notification handler
@@ -149,6 +149,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                     model: conversationModel,
                     buddyDetails: buddyDetails,
                     settings: settings,
+                    properties: properties,
                     notification: notification
                 });
 
@@ -185,6 +186,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             conversationContainer,                              // Container node passed to controller
             conversationList = this.get('conversationList'),    // Holds all conversation models
             settings = this.get('settings'),                    // Settings of logged user
+            properties = this.get('properties'),                // Portlet properties
             notification = this.get('notification'),            // Notification handler
             controller;                                         // Controller (selected or newly created)
 
@@ -228,6 +230,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                 controllerId: conversationId,
                 model: conversationModel,
                 settings: settings,
+                properties: properties,
                 notification: notification
             });
 
@@ -263,6 +266,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             container = this.get('container'),                      // Container of all conversations
             notification = this.get('notification'),                // Notification handler
             settings = this.get('settings'),                        // Settings of logged user
+            properties = this.get('properties'),                // Portlet properties
             conversationId;                                         // Id of the conversation passed to controller
 
         // For each conversation check if new controller should be created if some
@@ -312,6 +316,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                     controllerId: conversationId,
                     model: conversationModel,
                     settings: settings,
+                    properties: properties,
                     notification: notification
                 });
 
@@ -420,12 +425,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
 
         // Main container node
         container: {
-            valueFn: function () {
-                // Get root
-                var rootNode = this.get('globals').getRootNode();
-                // Return container
-                return rootNode.one('.lims-tabs');
-            }
+            value: null // to be set
         },
 
         // Notification
@@ -450,11 +450,9 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             value: 7000 // 7 seconds
         },
 
-        // Global settings
-        globals: {
-            valueFn: function () {
-                return new Y.LIMS.Core.Settings();
-            }
+        // Portlet properties
+        properties: {
+            value: null // to be set
         },
 
         settings: {

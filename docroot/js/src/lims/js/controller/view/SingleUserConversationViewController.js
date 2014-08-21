@@ -144,12 +144,12 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          */
         _startTimer: function () {
             // Vars
-            var globals = this.get('globals'),
+            var properties = this.get('properties'),
                 listView = this.get('listView'),
                 timerInterval = this.get('timerInterval');
 
             // Start only if the chat is enabled
-            if (globals.isChatEnabled()) {
+            if (properties.isChatEnabled()) {
                 // Update all timestamps
                 listView.updateTimestamps();
                 // Start periodical update
@@ -322,11 +322,9 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
                 value: 60000 // one minute
             },
 
-            // Global values
-            globals: {
-                valueFn: function () {
-                    return new Y.LIMS.Core.Settings();
-                }
+            // Portlet properties
+            properties: {
+                value: null // to be set
             },
 
             // Holds user related settings

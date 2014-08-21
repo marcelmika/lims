@@ -31,15 +31,15 @@
  */
 Y.namespace('LIMS.Model');
 
-Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
+Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LIMS.Model.ModelExtension], {
 
     // This tells the list that it will hold instances of the GroupModelItem class.
     model: Y.LIMS.Model.GroupModelItem,
 
     // Custom sync layer.
     sync: function (action, options, callback) {
-        var settings = new Y.LIMS.Core.Settings(),
-            parameters,
+        // Vars
+        var parameters,
             etag = this.get('etag'),
             instance = this;
 
@@ -55,7 +55,7 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
                 });
 
                 // Read from server
-                Y.io(settings.getServerRequestUrl(), {
+                Y.io(this.getServerRequestUrl(), {
                     method: "GET",
                     data: {
                         query: "GetGroupList",

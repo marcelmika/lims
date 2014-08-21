@@ -30,7 +30,7 @@
  */
 Y.namespace('LIMS.Model');
 
-Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
+Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [Y.LIMS.Model.ModelExtension], {
 
     /**
      * Returns true if the user decided that he doesn't want to hear
@@ -49,9 +49,8 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
      * @param callback
      */
     updateActivePanel: function (activePanelId, callback) {
-        // Create settings that contains request url
-        var settings = new Y.LIMS.Core.Settings(),
-            content;
+        // Vars
+        var content;
 
         // Save locally
         this.set('activePanelId', activePanelId);
@@ -60,7 +59,7 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
         content = Y.JSON.stringify(this.toJSON());
 
         // Do the request
-        Y.io(settings.getServerRequestUrl(), {
+        Y.io(this.getServerRequestUrl(), {
             method: "POST",
             data: {
                 query: "UpdateActivePanel",
@@ -89,9 +88,8 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
 
     // Custom sync layer.
     sync: function (action, options, callback) {
-        // Get JSON representation of current object
-        var content,
-            settings = new Y.LIMS.Core.Settings();
+        // Vars
+        var content;
 
         // Serialize
         content = Y.JSON.stringify(this.toJSON());
@@ -101,7 +99,7 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
             case 'update': // There is no difference between create and update
 
                 // Do the request
-                Y.io(settings.getServerRequestUrl(), {
+                Y.io(this.getServerRequestUrl(), {
                     method: "POST",
                     data: {
                         query: "UpdateSettings",

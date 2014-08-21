@@ -92,12 +92,12 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
      */
     _startTimer: function () {
         // Vars
-        var settings = this.get('settings'),
-            model = this.get('model'),
-            timerInterval = this.get('timerInterval');
+        var model = this.get('model'),
+            timerInterval = this.get('timerInterval'),
+            properties = this.get('properties');
 
         // Start only if the chat is enabled
-        if (settings.isChatEnabled()) {
+        if (properties.isChatEnabled()) {
             // Load model
             model.load();
             // Start periodical update
@@ -180,12 +180,7 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
 
         // Container Node
         container: {
-            valueFn: function () {
-                // Get root
-                var rootNode = this.get('settings').getRootNode();
-                // Return container
-                return rootNode.one('.buddy-list');
-            }
+            value: null // to be set
         },
 
         // Y.LIMS.Model.GroupModelList
@@ -228,16 +223,14 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
             value: null // to be set
         },
 
+        // Portlet properties
+        properties: {
+            value: null // to be set
+        },
+
         // Length of timer period
         timerInterval: {
             value: 10000 // 10 seconds
-        },
-
-        // Global settings
-        settings: {
-            valueFn: function () {
-                return new Y.LIMS.Core.Settings();
-            }
         }
     }
 });

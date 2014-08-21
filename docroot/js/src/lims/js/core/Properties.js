@@ -29,11 +29,11 @@
  */
 Y.namespace('LIMS.Core');
 
-Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
+Y.LIMS.Core.Properties = Y.Base.create('properties', Y.Base, [], {
 
-    userId: null,      // This is set main.js, to access it use Y.LIMS.Core.Settings.userId
-    companyId: null,   // This is set main.js, to access it use Y.LIMS.Core.Settings.companyId
-    pathImage: null,   // This is set main.js, to access it use Y.LIMS.Core.Settings.pathImage
+    userId: null,      // This is set main.js, to access it use Y.LIMS.Core.Properties.userId
+    companyId: null,   // This is set main.js, to access it use Y.LIMS.Core.Properties.companyId
+    pathImage: null,   // This is set main.js, to access it use Y.LIMS.Core.Properties.pathImage
 
 
     /**
@@ -42,37 +42,6 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
     initializer: function () {
         // Attach to events
         this._attachEvents();
-    },
-
-    /**
-     * Returns root container node
-     *
-     * @returns {Node}
-     */
-    getRootNode: function () {
-        return this.get('rootNode');
-    },
-
-    /**
-     * Returns url of the portrait of buddy based on the screenName
-     * @param screenName
-     * @returns {string}
-     */
-    getPortraitUrl: function (screenName) {
-        var companyId = this.get('companyId'),
-            pathImage = this.get('pathImage');
-
-        return pathImage + '/user_portrait?screenName=' + screenName + '&' + 'companyId=' + companyId;
-    },
-
-    /**
-     * Returns request url of the server. Given url is used for and request/response conversation
-     * with the server.
-     *
-     * @returns {string}
-     */
-    getServerRequestUrl: function () {
-        return Y.one('#limsPortletURL').get('value');
     },
 
     /**
@@ -145,20 +114,11 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
     ATTRS: {
 
         /**
-         * Root container node
-         */
-        rootNode: {
-            valueFn: function () {
-                return Y.one('#lims-container');
-            }
-        },
-
-        /**
          * User Id of the currently logged user
          */
         userId: {
             valueFn: function () {
-                return Y.LIMS.Core.Settings.userId;
+                return Y.LIMS.Core.Properties.userId;
             }
         },
 
@@ -167,7 +127,7 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
          */
         companyId: {
             valueFn: function () {
-                return Y.LIMS.Core.Settings.companyId;
+                return Y.LIMS.Core.Properties.companyId;
             }
         },
 
@@ -208,7 +168,7 @@ Y.LIMS.Core.Settings = Y.Base.create('settings', Y.Base, [], {
          */
         pathImage: {
             valueFn: function () {
-                return Y.LIMS.Core.Settings.pathImage;
+                return Y.LIMS.Core.Properties.pathImage;
             }
         },
 

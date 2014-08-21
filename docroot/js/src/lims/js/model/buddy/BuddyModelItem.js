@@ -30,7 +30,7 @@
  */
 Y.namespace('LIMS.Model');
 
-Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [], {
+Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [Y.LIMS.Model.ModelExtension], {
 
     /**
      * Updates buddy presence
@@ -40,9 +40,8 @@ Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [], {
      * @private
      */
     updatePresence: function (presence, callback) {
-        // Create settings that contains request url
-        var settings = new Y.LIMS.Core.Settings(),
-            content;
+        // Vars
+        var content;
 
         // Update locally
         this.set('presence', presence);
@@ -51,7 +50,7 @@ Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [], {
         content = Y.JSON.stringify(this.toJSON());
 
         // Do the request
-        Y.io(settings.getServerRequestUrl(), {
+        Y.io(this.getServerRequestUrl(), {
             method: "POST",
             data: {
                 query: "UpdateBuddyPresence",

@@ -30,7 +30,7 @@
  */
 Y.namespace('LIMS.Model');
 
-Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.ModelList, [], {
+Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.ModelList, [Y.LIMS.Model.ModelExtension], {
 
     // This tells the list that it will hold instances of the ConversationModel class.
     model: Y.LIMS.Model.ConversationModel,
@@ -105,8 +105,7 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
 
         // Vars
         var instance = this,    // Save the instance so we can call its methods in diff context
-            response,           // Response from the server
-            settings = new Y.LIMS.Core.Settings();
+            response;           // Response from the server
 
         switch (action) {
 
@@ -115,7 +114,7 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
             case 'read':
 
                 // Send the request
-                Y.io(settings.getServerRequestUrl(), {
+                Y.io(this.getServerRequestUrl(), {
                     method: "GET",
                     data: {
                         query: "ReadOpenedConversations"

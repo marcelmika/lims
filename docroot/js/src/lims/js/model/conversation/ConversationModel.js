@@ -30,7 +30,7 @@
  */
 Y.namespace('LIMS.Model');
 
-Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [], {
+Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.LIMS.Model.ModelExtension], {
 
     /**
      * Adds message to conversation. Sends request to server.
@@ -67,13 +67,12 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
     closeConversation: function () {
 
         // Vars
-        var settings = new Y.LIMS.Core.Settings(),
-            parameters = Y.JSON.stringify({
-                conversationId: this.get('conversationId')
-            });
+        var parameters = Y.JSON.stringify({
+            conversationId: this.get('conversationId')
+        });
 
         // Send the request
-        Y.io(settings.getServerRequestUrl(), {
+        Y.io(this.getServerRequestUrl(), {
             method: "POST",
             data: {
                 query: "CloseSingleUserConversation",
@@ -102,13 +101,12 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
     resetUnreadMessagesCounter: function () {
 
         // Vars
-        var settings = new Y.LIMS.Core.Settings(),
-            parameters = Y.JSON.stringify({
+        var parameters = Y.JSON.stringify({
                 conversationId: this.get('conversationId')
             });
 
         // Send the request
-        Y.io(settings.getServerRequestUrl(), {
+        Y.io(this.getServerRequestUrl(), {
             method: "POST",
             data: {
                 query: "ResetUnreadMessagesCounter",
@@ -143,8 +141,7 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
             parameters,         // Request parameters
             instance = this,    // Save the instance so we can call its methods in diff context
             response,           // Response from the server
-            etag = this.get('etag'),
-            settings = new Y.LIMS.Core.Settings();
+            etag = this.get('etag');
 
         switch (action) {
 
@@ -156,7 +153,7 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
                 content = Y.JSON.stringify(this.toJSON());
 
                 // Send the request
-                Y.io(settings.getServerRequestUrl(), {
+                Y.io(this.getServerRequestUrl(), {
                     method: "POST",
                     data: {
                         query: "CreateSingleUserConversation",
@@ -197,7 +194,7 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
                 });
 
                 // Send the request
-                Y.io(settings.getServerRequestUrl(), {
+                Y.io(this.getServerRequestUrl(), {
                     method: "GET",
                     data: {
                         query: "ReadSingleUserConversation",

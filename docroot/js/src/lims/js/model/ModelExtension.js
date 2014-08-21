@@ -23,45 +23,23 @@
  */
 
 /**
- * Portrait
- *
- * Represent buddy's portrait
+ * Model Extension
  */
-Y.namespace('LIMS.View');
+Y.namespace('LIMS.Model');
 
-Y.LIMS.View.PortraitView = Y.Base.create('portraitView', Y.View, [Y.LIMS.View.ViewExtension], {
+Y.LIMS.Model.ModelExtension = function () {
 
-    // This customizes the HTML used for this view's container node.
-    containerTemplate: '<img alt="" class="portrait"/>',
+};
+
+Y.LIMS.Model.ModelExtension.prototype = {
+
 
     /**
-     * Renders portrait
+     * Returns URL of the server request resource
      *
-     * @returns Y.LIMS.View.PortraitView
+     * @returns {URL}
      */
-    render: function () {
-        // Vars
-        var container = this.get("container");
-
-        // Set portrait image src attribute based on the screen name
-        container.set('src', this.getPortraitUrl(this.get("screenName")));
-
-        return this;
+    getServerRequestUrl: function () {
+        return Y.one('#limsPortletURL').get('value');
     }
-
-}, {
-
-    // Specify attributes and static properties for your View here.
-    ATTRS: {
-        // Override the default container attribute.
-        container: {
-            valueFn: function () {
-                return Y.Node.create(this.containerTemplate);
-            }
-        },
-
-        screenName: {
-            value: null
-        }
-    }
-});
+};

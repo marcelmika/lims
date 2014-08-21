@@ -23,45 +23,23 @@
  */
 
 /**
- * Portrait
- *
- * Represent buddy's portrait
+ * Controller Extension
  */
-Y.namespace('LIMS.View');
+Y.namespace('LIMS.Controller');
 
-Y.LIMS.View.PortraitView = Y.Base.create('portraitView', Y.View, [Y.LIMS.View.ViewExtension], {
+Y.LIMS.Controller.ControllerExtension = function () {
 
-    // This customizes the HTML used for this view's container node.
-    containerTemplate: '<img alt="" class="portrait"/>',
+};
+
+Y.LIMS.Controller.ControllerExtension.prototype = {
+
 
     /**
-     * Renders portrait
+     * Returns root container node
      *
-     * @returns Y.LIMS.View.PortraitView
+     * @returns {Node}
      */
-    render: function () {
-        // Vars
-        var container = this.get("container");
-
-        // Set portrait image src attribute based on the screen name
-        container.set('src', this.getPortraitUrl(this.get("screenName")));
-
-        return this;
+    getRootNode: function () {
+        return Y.one('#lims-container');
     }
-
-}, {
-
-    // Specify attributes and static properties for your View here.
-    ATTRS: {
-        // Override the default container attribute.
-        container: {
-            valueFn: function () {
-                return Y.Node.create(this.containerTemplate);
-            }
-        },
-
-        screenName: {
-            value: null
-        }
-    }
-});
+};

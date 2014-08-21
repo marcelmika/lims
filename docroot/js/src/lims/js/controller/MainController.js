@@ -27,32 +27,42 @@
  */
 Y.namespace('LIMS.Controller');
 
-Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
+Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LIMS.Controller.ControllerExtension], {
 
     // The initializer runs when a MainController instance is created, and gives
     // us an opportunity to set up all sub controller
     initializer: function () {
         var buddyDetails = this.get('buddyDetails'),
             settingsModel = this.get('settingsModel'),
-            notification = this.get('notification');
+            notification = this.get('notification'),
+            properties = this.get('properties'),
+            rootNode = this.getRootNode();
+
         // Attach events
         this._attachEvents();
 
         // Group
-        new Y.LIMS.Controller.GroupViewController();
+        new Y.LIMS.Controller.GroupViewController({
+            container: rootNode.one('.buddy-list'),
+            properties: properties
+        });
         // Presence
         new Y.LIMS.Controller.PresenceViewController({
+            container: rootNode.one('.status-panel'),
             buddyDetails: buddyDetails
         });
         // Settings
         new Y.LIMS.Controller.SettingsViewController({
+            container: rootNode.one('.chat-settings'),
             model: settingsModel
         });
         // Conversation
         new Y.LIMS.Controller.ConversationsController({
+            container: rootNode.one('.lims-tabs'),
             buddyDetails: buddyDetails,
             settings: settingsModel,
-            notification: notification
+            notification: notification,
+            properties: properties
         });
     },
 
@@ -113,12 +123,12 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
         buddyDetails: {
             valueFn: function () {
                 // We need settings to determine user
-                var settings = new Y.LIMS.Core.Settings();
+                var properties = new Y.LIMS.Core.Properties();
                 // Get logged user
                 return new Y.LIMS.Model.BuddyModelItem({
-                    buddyId: settings.getCurrentUserId(),
-                    screenName: settings.getCurrentUserScreenName(),
-                    fullName: settings.getCurrentUserFullName()
+                    buddyId: properties.getCurrentUserId(),
+                    screenName: properties.getCurrentUserScreenName(),
+                    fullName: properties.getCurrentUserFullName()
                 });
             }
         },
@@ -136,8 +146,15 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
         notification: {
             valueFn: function () {
                 return new Y.LIMS.Core.Notification({
-                    settings: this.get('settingsModel')
+                    settings: this.get('settingsModel'),
+                    container: this.getRootNode().one('.lims-sound')
                 });
+            }
+        },
+
+        properties: {
+            valueFn: function () {
+                return new Y.LIMS.Core.Properties();
             }
         },
 
