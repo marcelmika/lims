@@ -40,10 +40,11 @@
             </div>
             <ul class="lfr-component settings">
                 <li>
-                    <label for="playSound">
-                        <liferay-ui:message key="panel-settings-play-sound-label"/>
+                    <label for="playSound" class="switch">
+                        <input ${playSoundChecked} id="playSound" type="checkbox"/>
+                        <span></span>
                     </label>
-                    <input ${playSoundChecked} id="playSound" type="checkbox"/>
+                    <liferay-ui:message key="panel-settings-play-sound-label"/>
                 </li>
             </ul>
         </div>

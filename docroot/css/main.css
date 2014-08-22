@@ -215,7 +215,7 @@
 	height: 16px;
 	position: absolute;
 	right: 3px;
-	top: 3px;
+	top: 4px;
 	text-align: center;
 	line-height: 14px;
 	font-weight: bold;
@@ -442,6 +442,7 @@
 	outline: none;
 	font-size: 12px;
 	line-height: 14px;
+	color: #545454;
 }
 
 .liferay-ims .conversation .panel-input textarea:focus {
@@ -729,9 +730,9 @@
 	}
 }
 
-/************************************************************************************
-**   SETTINGS PANEL
-*************************************************************************************/
+/********************************************************************************
+/ SETTINGS PANEL
+/********************************************************************************/
 
 .liferay-ims .chat-settings .panel-trigger .trigger-name {
 	background: url(../images/icon-settings.png) no-repeat center center;
@@ -768,54 +769,106 @@
 	position: static;
 }
 
-.liferay-ims .chat-settings label {
-	width: 180px;
-	float: left;
-	margin-top: 8px;
-	font-size: 12px;
-	line-height: 15px;
-	font-weight: 200;
-}
+/* Switch */
 
-.liferay-ims .chat-settings input {
-	vertical-align: middle;
-}
-
-.liferay-ims .chat-settings input[type=checkbox] {
-	outline: none;
-	appearance: none;
-	-webkit-appearance: none;
-	box-shadow: inset 0 0 0 1px #e6e6e6;
-	border-radius: 15px;
-	background-color: #fff;
-	padding: 1px;
+.liferay-ims .switch {
 	display: inline-block;
-	width: 52px;
-	height: 31px;
 	position: relative;
 	cursor: pointer;
-	transition: all .3s ease-out;
-	margin: 0;
-	transform: scale(0.6);
-	-webkit-transform: scale(0.6); /* Adjust size here */
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
+	tap-highlight-color: transparent;
+	font-size: 20px;
+	margin-right: 10px;
 }
 
-.liferay-ims .chat-settings [type=checkbox]:checked {
-	box-shadow: inset 0 0 0 20px #53d76a;
-}
-
-.liferay-ims .chat-settings input[type=checkbox]:after {
-	content: '';
+.liferay-ims .switch input {
+	opacity: 0;
 	position: absolute;
-	width: 29px;
-	height: 29px;
-	border-radius: 15px;
-	box-shadow: 0 2px 2px 1px rgba(0, 0, 0, .2);
-	cursor: pointer;
-	background-color: #fff;
-	transition: all 0.1s ease-in .1s;
 }
 
-.liferay-ims .chat-settings input:checked:after {
-	left: 22px;
+.liferay-ims .switch input + span {
+	position: relative;
+	display: inline-block;
+	width: 1.65em;
+	height: 1em;
+	background: white;
+	box-shadow: inset 0 0 0 0.0625em #e9e9e9;
+	border-radius: 0.5em;
+	vertical-align: -0.15em;
+	transition: all 0.40s cubic-bezier(.17,.67,.43,.98);
+}
+
+.liferay-ims .switch:active input + span,
+.liferay-ims .switch input + span:active {
+	box-shadow: inset 0 0 0 0.73em #e9e9e9;
+}
+
+.liferay-ims .switch input + span:after {
+	position: absolute;
+	display: block;
+	content: '';
+	width: 0.875em;
+	height: 0.875em;
+	border-radius: 0.4375em;
+	top: 0.0625em;
+	left: 0.0625em;
+	background: white;
+	box-shadow: inset 0 0 0 0.03em rgba(0,0,0,0.1),
+	0 0 0.05em rgba(0,0,0,0.05),
+	0 0.1em 0.2em rgba(0,0,0,0.2);
+	transition: all 0.25s ease-out;
+}
+
+.liferay-ims .switch:active input + span:after,
+.liferay-ims .switch input + span:active:after {
+	width: 1.15em;
+}
+
+.liferay-ims .switch input:checked + span {
+	box-shadow: inset 0 0 0 0.73em #4cd964;
+}
+
+.liferay-ims .switch input:checked + span:after {
+	left: 0.7125em;
+}
+
+.liferay-ims .switch:active input:checked + span:after,
+.liferay-ims .switch input:checked + span:active:after {
+	left: 0.4375em;
+}
+
+/* accessibility styles */
+.liferay-ims .switch input:focus + span:after {
+	box-shadow: inset 0 0 0 0.03em rgba(0,0,0,0.15),
+	0 0 0.05em rgba(0,0,0,0.08),
+	0 0.1em 0.2em rgba(0,0,0,0.3);
+	background: #fff;
+}
+
+.liferay-ims .switch input:focus + span {
+	box-shadow: inset 0 0 0 0.0625em #dadada;
+}
+
+.liferay-ims .switch input:focus:checked + span {
+	box-shadow: inset 0 0 0 0.73em #33be4b;
+}
+
+/* reset accessibility style on hover */
+.liferay-ims .switch:hover input:focus + span:after {
+	box-shadow: inset 0 0 0 0.03em rgba(0,0,0,0.1),
+	0 0 0.05em rgba(0,0,0,0.05),
+	0 0.1em 0.2em rgba(0,0,0,0.2);
+	background: #fff;
+}
+
+.liferay-ims .switch:hover input:focus + span {
+	box-shadow: inset 0 0 0 0.0625em #e9e9e9;
+}
+
+.liferay-ims .switch:hover input:focus:checked + span {
+	box-shadow: inset 0 0 0 0.73em #4cd964;
 }
