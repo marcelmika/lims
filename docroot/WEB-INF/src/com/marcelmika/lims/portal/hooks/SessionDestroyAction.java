@@ -48,7 +48,7 @@ import javax.servlet.http.HttpSession;
 public class SessionDestroyAction extends SessionAction {
 
     // Log
-    private static Log log = LogFactoryUtil.getLog(LoginPostAction.class);
+    private static Log log = LogFactoryUtil.getLog(SessionDestroyAction.class);
     // Services
     BuddyCoreService coreService = BuddyCoreServiceUtil.getBuddyCoreService();
 
