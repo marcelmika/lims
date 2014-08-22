@@ -19,7 +19,7 @@ import com.marcelmika.lims.persistence.generated.model.Message;
 import com.marcelmika.lims.persistence.generated.service.ConversationLocalServiceUtil;
 import com.marcelmika.lims.persistence.generated.service.base.MessageLocalServiceBaseImpl;
 
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -37,6 +37,7 @@ import java.util.List;
  * @see com.marcelmika.lims.persistence.generated.service.MessageLocalServiceUtil
  */
 public class MessageLocalServiceImpl extends MessageLocalServiceBaseImpl {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -53,8 +54,8 @@ public class MessageLocalServiceImpl extends MessageLocalServiceBaseImpl {
         messageModel.setBody(body);
 
         // Time when the message was created
-        Date now = new Date();
-        messageModel.setCreatedAt(now);
+        Calendar calendar = Calendar.getInstance();
+        messageModel.setCreatedAt(calendar.getTime());
 
         // Update model
         messageModel = messagePersistence.update(messageModel, false);

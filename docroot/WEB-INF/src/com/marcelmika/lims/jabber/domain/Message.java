@@ -28,6 +28,7 @@ import com.marcelmika.lims.api.entity.MessageDetails;
 import org.jivesoftware.smackx.packet.DelayInformation;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -104,7 +105,8 @@ public class Message {
                 return inf.getStamp();
             }
             // Message is not offline -> return current timestamp
-            return new Date();
+            Calendar calendar = Calendar.getInstance();
+            return calendar.getTime();
 
         } catch (Exception e) {
             // Extension isn't provided so return empty date

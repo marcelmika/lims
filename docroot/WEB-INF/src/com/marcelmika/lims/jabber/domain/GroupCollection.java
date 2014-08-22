@@ -27,10 +27,11 @@ package com.marcelmika.lims.jabber.domain;
 import com.marcelmika.lims.api.entity.GroupCollectionDetails;
 import com.marcelmika.lims.api.entity.GroupDetails;
 
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author Ing. Marcel Mika
@@ -40,7 +41,7 @@ import java.util.List;
  */
 public class GroupCollection {
 
-    private Date lastModified = new Date();
+    private Date lastModified = Calendar.getInstance().getTime();
     private List<Group> groups = Collections.synchronizedList(new ArrayList<Group>());
 
     /**
@@ -70,7 +71,8 @@ public class GroupCollection {
         this.groups.clear();
         this.groups.addAll(groups);
         // Update modification date
-        this.lastModified = new Date();
+        Calendar calendar = Calendar.getInstance();
+        this.lastModified = calendar.getTime();
     }
 
     public Date getLastModified() {

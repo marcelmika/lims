@@ -27,6 +27,8 @@ package com.marcelmika.lims.jabber.domain;
 
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+
+import java.util.Calendar;
 import java.util.Date;
 
 import org.jivesoftware.smackx.packet.DelayInformation;
@@ -66,7 +68,8 @@ public class MessageDeprecated {
         }
 
         // Message is not offline -> return current timestamp
-        return new Date();
+        Calendar calendar = Calendar.getInstance();
+        return calendar.getTime();
     }
 
     public void setFrom(String from) {
