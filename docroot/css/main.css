@@ -388,6 +388,7 @@
 
 .liferay-ims .conversation .conversation-item-message {
 	margin-left: 32px;
+	max-width: 220px;
 }
 
 .liferay-ims .conversation .conversation-item-name {
@@ -443,6 +444,9 @@
 	font-size: 12px;
 	line-height: 14px;
 	color: #545454;
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
 }
 
 .liferay-ims .conversation .panel-input textarea:focus {
