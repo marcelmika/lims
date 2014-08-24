@@ -24,6 +24,8 @@
 
 package com.marcelmika.lims.core.service;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.events.conversation.*;
 import com.marcelmika.lims.jabber.service.ConversationJabberService;
@@ -43,6 +45,9 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
     // Dependencies
     ConversationJabberService conversationJabberService;
     ConversationPersistenceService conversationPersistenceService;
+
+    // Log
+    private static Log log = LogFactoryUtil.getLog(ConversationCoreServiceImpl.class);
 
     /**
      * Constructor
@@ -86,11 +91,15 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      */
     @Override
     public CreateConversationResponseEvent createConversation(CreateConversationRequestEvent event) {
+
         // Create conversation locally
-        CreateConversationResponseEvent responseEvent = conversationPersistenceService.createConversation(event);
+        CreateConversationResponseEvent persistenceResponseEvent = conversationPersistenceService.createConversation(
+                event
+        );
+
         // Check for error
-        if (!responseEvent.isSuccess()) {
-            return responseEvent;
+        if (!persistenceResponseEvent.isSuccess()) {
+            return persistenceResponseEvent;
         }
 
         // If enabled create in jabber too
@@ -98,7 +107,7 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
             conversationJabberService.createConversation(event);
         }
 
-        return responseEvent;
+        return persistenceResponseEvent;
     }
 
     /**
@@ -178,11 +187,25 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      */
     @Override
     public SendMessageResponseEvent sendMessage(SendMessageRequestEvent event) {
-// TODO: Implement
-//        return conversationJabberService.createMessage(event);
 
-        return conversationPersistenceService.sendMessage(event);
+        // Send message locally
+        SendMessageResponseEvent persistenceResponseEvent = conversationPersistenceService.sendMessage(event);
+
+        // Check for error
+        if (!persistenceResponseEvent.isSuccess()) {
+            return persistenceResponseEvent;
+        }
+
+        // If enabled send message via jabber as well
+        if (Environment.isJabberEnabled()) {
+            SendMessageResponseEvent jabberResponseEvent = conversationJabberService.sendMessage(event);
+            if (!jabberResponseEvent.isSuccess()) {
+                log.error(jabberResponseEvent.getStatus());
+                log.error(jabberResponseEvent.getException());
+            }
+        }
+
+        // Return persistence event
+        return persistenceResponseEvent;
     }
-
-
 }

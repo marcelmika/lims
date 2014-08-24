@@ -336,6 +336,7 @@ public class ConversationController {
         );
 
         Conversation conversation = new Conversation();
+        conversation.setConversationType(ConversationType.SINGLE_USER);
         conversation.setConversationId(parameters.getConversationId());
 
         // Add to system
