@@ -2,6 +2,13 @@
 / PORTLET
 /********************************************************************************/
 
+/* Reset */
+.liferay-ims * {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+}
+
 /* Move container down and on top */
 .liferay-ims {
 	position: fixed;
@@ -445,9 +452,6 @@
 	font-size: 12px;
 	line-height: 14px;
 	color: #545454;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	box-sizing: content-box;
 }
 
 .liferay-ims .conversation .panel-input textarea:focus {
