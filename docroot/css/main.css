@@ -387,6 +387,8 @@
     position: absolute;
     width: 32px;
     height: 32px;
+    left: 6px;
+    top: 6px;
     background: #fff;
     /* Circled image */
     border-radius: 16px;
