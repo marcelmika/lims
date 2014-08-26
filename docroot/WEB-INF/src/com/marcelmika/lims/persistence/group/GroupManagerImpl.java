@@ -1,3 +1,27 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 Marcel Mika, marcelmika.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.marcelmika.lims.persistence.group;
 
 import com.marcelmika.lims.api.environment.Environment;
@@ -35,47 +59,60 @@ public class GroupManagerImpl implements GroupManager {
         Environment.BuddyListStrategy strategy = Environment.getBuddyListStrategy();
         // Get the info if default user should be ignored
         boolean ignoreDefaultUser = Environment.getBuddyListIgnoreDefaultUser();
+        // Get the info if the deactivated user should be ignored
+        boolean ignoreDeactivatedUser = Environment.getBuddyListIgnoreDeactivatedUser();
         // Some site may be excluded
         String[] excludedSites = Environment.getBuddyListExcludes();
         // Relation types
         BuddyListSocialRelation[] relationTypes = Environment.getBuddyListAllowedSocialRelationTypes();
 
-
         // All buddies
         if (strategy == BuddyListStrategy.ALL) {
-            return getAllGroup(userId, ignoreDefaultUser, start, end);
+            return getAllGroup(
+                    userId, ignoreDefaultUser, ignoreDeactivatedUser, start, end
+            );
         }
         // Buddies from sites
         else if (strategy == BuddyListStrategy.SITES) {
-            return getSitesGroups(userId, ignoreDefaultUser, excludedSites, start, end);
+            return getSitesGroups(
+                    userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, start, end
+            );
         }
         // Socialized buddies
         else if (strategy == BuddyListStrategy.SOCIAL) {
-            return getSocialGroups(userId, ignoreDefaultUser, relationTypes, start, end);
+            return getSocialGroups(
+                    userId, ignoreDefaultUser, ignoreDeactivatedUser, relationTypes, start, end
+            );
         }
         // Socialized and buddies from sites
         else {
-            return getSitesAndSocialGroups(userId, ignoreDefaultUser, excludedSites, relationTypes, start, end);
+            return getSitesAndSocialGroups(
+                    userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, relationTypes, start, end
+            );
         }
     }
 
     /**
      * Returns group collection which contains all buddies in the system.
      *
-     * @param userId            which should be excluded from the list
-     * @param ignoreDefaultUser boolean set to true if the default user should be excluded
-     * @param start             of the list
-     * @param end               of the list
+     * @param userId                which should be excluded from the list
+     * @param ignoreDefaultUser     boolean set to true if the default user should be excluded
+     * @param ignoreDeactivatedUser boolean set to true if the deactivated user should be excluded
+     * @param start                 of the list
+     * @param end                   of the list
      * @return GroupCollection
      * @throws Exception
      */
     private GroupCollection getAllGroup(Long userId,
                                         boolean ignoreDefaultUser,
+                                        boolean ignoreDeactivatedUser,
                                         int start,
                                         int end) throws Exception {
 
         // Get users from persistence
-        List<Object[]> users = SettingsLocalServiceUtil.getAllGroups(userId, ignoreDefaultUser, start, end);
+        List<Object[]> users = SettingsLocalServiceUtil.getAllGroups(
+                userId, ignoreDefaultUser, ignoreDeactivatedUser, start, end
+        );
 
         // Create group which will contain all users
         Group group = new Group();
@@ -100,23 +137,25 @@ public class GroupManagerImpl implements GroupManager {
      * Returns group collection which contains groups that represents sites where the user participates.
      * The groups contain all users that are within except for the user given in param.
      *
-     * @param userId            which should be excluded from the list
-     * @param ignoreDefaultUser boolean set to true if the default user should be excluded
-     * @param excludedSites     names of sites (groups) that should be excluded from the group collection
-     * @param start             of the list
-     * @param end               of the list
+     * @param userId                which should be excluded from the list
+     * @param ignoreDefaultUser     boolean set to true if the default user should be excluded
+     * @param ignoreDeactivatedUser boolean set to true if the deactivated user should be excluded
+     * @param excludedSites         names of sites (groups) that should be excluded from the group collection
+     * @param start                 of the list
+     * @param end                   of the list
      * @return GroupCollection
      * @throws Exception
      */
     private GroupCollection getSitesGroups(Long userId,
                                            boolean ignoreDefaultUser,
+                                           boolean ignoreDeactivatedUser,
                                            String[] excludedSites,
                                            int start,
                                            int end) throws Exception {
 
         // Get sites groups
         List<Object[]> groupObjects = SettingsLocalServiceUtil.getSitesGroups(
-                userId, ignoreDefaultUser, excludedSites, start, end
+                userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, start, end
         );
 
         // We are about to build a collection of groups that will contain
@@ -163,16 +202,18 @@ public class GroupManagerImpl implements GroupManager {
      * Returns group collection which contains groups that represent social relations of the user.
      * The groups contain all users that are within except for the user given in param.
      *
-     * @param userId            which should be excluded from the list
-     * @param ignoreDefaultUser boolean set to true if the default user should be excluded
-     * @param relationTypes     an array of relation type enums
-     * @param start             of the list
-     * @param end               of the list
+     * @param userId                which should be excluded from the list
+     * @param ignoreDefaultUser     boolean set to true if the default user should be excluded
+     * @param ignoreDeactivatedUser boolean set to true if the deactivated user should be excluded
+     * @param relationTypes         an array of relation type enums
+     * @param start                 of the list
+     * @param end                   of the list
      * @return GroupCollection
      * @throws Exception
      */
     private GroupCollection getSocialGroups(Long userId,
                                             boolean ignoreDefaultUser,
+                                            boolean ignoreDeactivatedUser,
                                             BuddyListSocialRelation[] relationTypes,
                                             int start,
                                             int end) throws Exception {
@@ -185,7 +226,7 @@ public class GroupManagerImpl implements GroupManager {
 
         // Get social groups
         List<Object[]> groupObjects = SettingsLocalServiceUtil.getSocialGroups(
-                userId, ignoreDefaultUser, relationCodes, start, end
+                userId, ignoreDefaultUser, ignoreDeactivatedUser, relationCodes, start, end
         );
 
         // We are about to build a collection of groups that will contain
@@ -236,25 +277,31 @@ public class GroupManagerImpl implements GroupManager {
      * Returns group collection which contains groups that represent social relations of the user.
      * The groups contain all users that are within except for the user given in param.
      *
-     * @param userId            which should be excluded from the list
-     * @param ignoreDefaultUser boolean set to true if the default user should be excluded
-     * @param excludedSites     names of sites (groups) that should be excluded from the group collection
-     * @param relationTypes     an array of relation type enums
-     * @param start             of the list
-     * @param end               of the list
+     * @param userId                which should be excluded from the list
+     * @param ignoreDefaultUser     boolean set to true if the default user should be excluded
+     * @param ignoreDeactivatedUser boolean set to true if the deactivated user should be excluded
+     * @param excludedSites         names of sites (groups) that should be excluded from the group collection
+     * @param relationTypes         an array of relation type enums
+     * @param start                 of the list
+     * @param end                   of the list
      * @return GroupCollection
      * @throws Exception
      */
     private GroupCollection getSitesAndSocialGroups(Long userId,
                                                     boolean ignoreDefaultUser,
+                                                    boolean ignoreDeactivatedUser,
                                                     String[] excludedSites,
                                                     BuddyListSocialRelation[] relationTypes,
                                                     int start,
                                                     int end) throws Exception {
         // Get site groups
-        GroupCollection sitesGroupCollection = getSitesGroups(userId, ignoreDefaultUser, excludedSites, start, end);
+        GroupCollection sitesGroupCollection = getSitesGroups(
+                userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, start, end
+        );
         // Get social groups
-        GroupCollection socialGroupCollection = getSocialGroups(userId, ignoreDefaultUser, relationTypes, start, end);
+        GroupCollection socialGroupCollection = getSocialGroups(
+                userId, ignoreDefaultUser, ignoreDeactivatedUser, relationTypes, start, end
+        );
 
         // Merge site and social groups
         List<Group> mergedGroups = new ArrayList<Group>();

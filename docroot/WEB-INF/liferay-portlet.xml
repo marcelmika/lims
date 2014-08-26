@@ -22,10 +22,10 @@
         <!-- CSS -->
         <header-portlet-css>/css/main.css</header-portlet-css>
         <!-- JS -->
-        <footer-portlet-javascript>/js/build/lims-core/lims-core-min.js</footer-portlet-javascript>
-        <footer-portlet-javascript>/js/build/lims-model/lims-model-min.js</footer-portlet-javascript>
-        <footer-portlet-javascript>/js/build/lims-view/lims-view-min.js</footer-portlet-javascript>
-        <footer-portlet-javascript>/js/build/lims-controller/lims-controller-min.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/js/build/lims-core/lims-core-debug.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/js/build/lims-model/lims-model-debug.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/js/build/lims-view/lims-view-debug.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/js/build/lims-controller/lims-controller-debug.js</footer-portlet-javascript>
         <footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 
         <css-class-wrapper>liferay-ims</css-class-wrapper>

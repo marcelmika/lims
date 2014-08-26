@@ -1,3 +1,27 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 Marcel Mika, marcelmika.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /**
  * Conversation Model
  *
@@ -6,7 +30,7 @@
  */
 Y.namespace('LIMS.Model');
 
-Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [], {
+Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.LIMS.Model.ModelExtension], {
 
     /**
      * Adds message to conversation. Sends request to server.
@@ -30,7 +54,9 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
         messageList.add(message);
 
         // Notify about the event
-        this.fire('messageAdded', message);
+        this.fire('messageAdded', {
+            message: message
+        });
     },
 
     /**
@@ -41,13 +67,12 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
     closeConversation: function () {
 
         // Vars
-        var settings = new Y.LIMS.Core.Settings(),
-            parameters = Y.JSON.stringify({
-                conversationId: this.get('conversationId')
-            });
+        var parameters = Y.JSON.stringify({
+            conversationId: this.get('conversationId')
+        });
 
         // Send the request
-        Y.io(settings.getServerRequestUrl(), {
+        Y.io(this.getServerRequestUrl(), {
             method: "POST",
             data: {
                 query: "CloseSingleUserConversation",
@@ -76,13 +101,12 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
     resetUnreadMessagesCounter: function () {
 
         // Vars
-        var settings = new Y.LIMS.Core.Settings(),
-            parameters = Y.JSON.stringify({
+        var parameters = Y.JSON.stringify({
                 conversationId: this.get('conversationId')
             });
 
         // Send the request
-        Y.io(settings.getServerRequestUrl(), {
+        Y.io(this.getServerRequestUrl(), {
             method: "POST",
             data: {
                 query: "ResetUnreadMessagesCounter",
@@ -117,8 +141,7 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
             parameters,         // Request parameters
             instance = this,    // Save the instance so we can call its methods in diff context
             response,           // Response from the server
-            etag = this.get('etag'),
-            settings = new Y.LIMS.Core.Settings();
+            etag = this.get('etag');
 
         switch (action) {
 
@@ -130,7 +153,7 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
                 content = Y.JSON.stringify(this.toJSON());
 
                 // Send the request
-                Y.io(settings.getServerRequestUrl(), {
+                Y.io(this.getServerRequestUrl(), {
                     method: "POST",
                     data: {
                         query: "CreateSingleUserConversation",
@@ -171,7 +194,7 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
                 });
 
                 // Send the request
-                Y.io(settings.getServerRequestUrl(), {
+                Y.io(this.getServerRequestUrl(), {
                     method: "GET",
                     data: {
                         query: "ReadSingleUserConversation",
@@ -239,7 +262,9 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [],
         messageList.reset(messageModels);
 
         // Notify about the event
-        this.fire('messagesUpdated', messageList);
+        this.fire('messagesUpdated', {
+            messageList: messageList
+        });
     }
 
 }, {

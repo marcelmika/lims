@@ -1,3 +1,27 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 Marcel Mika, marcelmika.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /**
  * Single User Conversation View Controller
  */
@@ -120,12 +144,12 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          */
         _startTimer: function () {
             // Vars
-            var globals = this.get('globals'),
+            var properties = this.get('properties'),
                 listView = this.get('listView'),
                 timerInterval = this.get('timerInterval');
 
             // Start only if the chat is enabled
-            if (globals.isChatEnabled()) {
+            if (properties.isChatEnabled()) {
                 // Update all timestamps
                 listView.updateTimestamps();
                 // Start periodical update
@@ -298,11 +322,9 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
                 value: 60000 // one minute
             },
 
-            // Global values
-            globals: {
-                valueFn: function () {
-                    return new Y.LIMS.Core.Settings();
-                }
+            // Portlet properties
+            properties: {
+                value: null // to be set
             },
 
             // Holds user related settings

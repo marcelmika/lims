@@ -1,3 +1,27 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 Marcel Mika, marcelmika.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /**
  * Buddy Model Item
  *
@@ -6,50 +30,37 @@
  */
 Y.namespace('LIMS.Model');
 
-Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [], {
-
-    // Custom sync layer.
-    sync: function (action, options, callback) {
-        // Get JSON representation of current object
-        var data = Y.JSON.stringify(this.toJSON());
-
-        switch (action) {
-            case 'create':
-            case 'update':
-                if (options.action === "updatePresence") {
-                    this.updatePresence(data, callback);
-                }
-                break;
-
-            case 'read':
-            case 'delete':
-                return;
-
-            default:
-                callback('Invalid action');
-        }
-    },
+Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [Y.LIMS.Model.ModelExtension], {
 
     /**
      * Updates buddy presence
      *
-     * @param data
+     * @param presence
      * @param callback
      * @private
      */
-    updatePresence: function (data, callback) {
-        // Create settings that contains request url
-        var settings = new Y.LIMS.Core.Settings();
+    updatePresence: function (presence, callback) {
+        // Vars
+        var content;
+
+        // Update locally
+        this.set('presence', presence);
+
+        // Deserialize
+        content = Y.JSON.stringify(this.toJSON());
+
         // Do the request
-        Y.io(settings.getServerRequestUrl(), {
+        Y.io(this.getServerRequestUrl(), {
             method: "POST",
             data: {
                 query: "UpdateBuddyPresence",
-                data: data
+                content: content
             },
             on: {
                 success: function (id, o) {
-                    callback(null, o.response);
+                    if (callback) {
+                        callback(null, o.response);
+                    }
                 },
                 failure: function (x, o) {
                     // If the attempt is unauthorized session has expired
@@ -57,12 +68,28 @@ Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [], {
                         // Notify everybody else
                         Y.fire('userSessionExpired');
                     }
-                    callback("Cannot update buddy presence", o.response);
+                    if (callback) {
+                        callback("Cannot update buddy presence", o.response);
+                    }
                 }
             }
         });
-    }
+    },
 
+    // Custom sync layer.
+    sync: function (action, options, callback) {
+
+        switch (action) {
+            case 'create':
+            case 'update':
+            case 'read':
+            case 'delete':
+                return;
+
+            default:
+                callback('Invalid action');
+        }
+    }
 
 }, {
     ATTRS: {

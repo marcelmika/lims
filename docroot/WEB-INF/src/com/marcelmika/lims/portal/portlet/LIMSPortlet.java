@@ -1,3 +1,27 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 Marcel Mika, marcelmika.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.marcelmika.lims.portal.portlet;
 
 import com.liferay.portal.kernel.log.Log;
@@ -19,12 +43,15 @@ import com.marcelmika.lims.portal.domain.Conversation;
 import com.marcelmika.lims.portal.domain.Settings;
 import com.marcelmika.lims.portal.http.HttpStatus;
 import com.marcelmika.lims.portal.processor.PortletProcessor;
+import com.marcelmika.lims.portal.processor.PortletProcessorUtil;
 
 import javax.portlet.*;
 import java.io.IOException;
 import java.util.List;
 
 /**
+ * Main MVC Portlet class for LIMS
+ *
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com/lims
  * Date: 11/24/13
@@ -32,14 +59,23 @@ import java.util.List;
  */
 public class LIMSPortlet extends MVCPortlet {
 
-    // Processor
-    // TODO: Inject
-    PortletProcessor processor = new PortletProcessor();
+    // Processor Dependency
+    PortletProcessor processor = PortletProcessorUtil.getPortletProcessor();
+
     // Service Dependencies
     SettingsCoreService settingsCoreService = SettingsCoreServiceUtil.getSettingsCoreService();
     ConversationCoreService conversationCoreService = ConversationCoreServiceUtil.getConversationCoreService();
+
     // Constants
     private static final String VIEW_JSP_PATH = "/view.jsp"; // Path to the view.jsp
+
+    // Variables
+    private static final String VARIABLE_SETTINGS = "settings";
+    private static final String VARIABLE_CONVERSATIONS = "conversations";
+    private static final String VARIABLE_IS_ENABLED = "isEnabled";
+    private static final String VARIABLE_SCREEN_NAME = "screenName";
+    private static final String VARIABLE_FULL_NAME = "fullName";
+
     // Log
     private static Log log = LogFactoryUtil.getLog(LIMSPortlet.class);
 
@@ -57,7 +93,8 @@ public class LIMSPortlet extends MVCPortlet {
      * @throws IOException
      */
     @Override
-    public void doView(RenderRequest renderRequest, RenderResponse renderResponse) throws PortletException, IOException {
+    public void doView(RenderRequest renderRequest,
+                       RenderResponse renderResponse) throws PortletException, IOException {
 
         // Settings pane
         renderSettings(renderRequest);
@@ -95,12 +132,11 @@ public class LIMSPortlet extends MVCPortlet {
             Settings settings = Settings.fromSettingsDetails(responseEvent.getSettingsDetails());
 
             // Pass to jsp
-            renderRequest.setAttribute("settings", settings);
+            renderRequest.setAttribute(VARIABLE_SETTINGS, settings);
         }
         // Log failure
         else {
-            // TODO:
-//            log.error(responseEvent.getSt);
+            log.error(responseEvent.getException());
         }
     }
 
@@ -129,11 +165,10 @@ public class LIMSPortlet extends MVCPortlet {
             );
 
             // Pass to jsp
-            renderRequest.setAttribute("conversations", conversationList);
+            renderRequest.setAttribute(VARIABLE_CONVERSATIONS, conversationList);
         }
         // Log failure
         else {
-            log.error(responseEvent.getStatus());
             log.error(responseEvent.getException());
         }
     }
@@ -144,15 +179,14 @@ public class LIMSPortlet extends MVCPortlet {
      * @param renderRequest RenderRequest
      */
     private void renderAdditions(RenderRequest renderRequest) {
-        // TODO: Refactor "show" to "isPluginEnabled"
         // Check if lims is enabled and pass it to jsp as a parameter
-        renderRequest.setAttribute("show", isCorrectAttempt(renderRequest));
+        renderRequest.setAttribute(VARIABLE_IS_ENABLED, isCorrectAttempt(renderRequest));
 
         // Get buddy from request
         Buddy buddy = Buddy.fromRenderRequest(renderRequest);
         // Screen name cannot be accessed via javascript so we need to render it manually
-        renderRequest.setAttribute("screenName", buddy.getScreenName());
-        renderRequest.setAttribute("fullName", buddy.getFullName());
+        renderRequest.setAttribute(VARIABLE_SCREEN_NAME, buddy.getScreenName());
+        renderRequest.setAttribute(VARIABLE_FULL_NAME, buddy.getFullName());
     }
 
     /**

@@ -1,3 +1,27 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 Marcel Mika, marcelmika.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /**
  * Presence View Controller
  */
@@ -34,7 +58,9 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
             if (target.ancestor('li')) {
                 // Fire event
                 presence = target.getAttribute('data-status');
-                Y.fire('presenceChanged', presence);
+                Y.fire('presenceChanged', {
+                    presence: presence
+                });
             }
         }, 'li');
 
@@ -44,15 +70,15 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
     /**
      * Presence changed event
      *
-     * @param presence
+     * @param event
      * @private
      */
-    _onPresenceChanged: function (presence) {
+    _onPresenceChanged: function (event) {
         // Update presence indicator
-        this._updatePresenceIndicator(presence);
+        this._updatePresenceIndicator(event.presence);
 
         // Disable chat if needed
-        if (presence === "OFFLINE") {
+        if (event.presence === "OFFLINE") {
             Y.fire("chatDisabled");
             // Since if we call chatDisabled all controllers will be automatically
             // hidden. Thus we need to show our controller again.
@@ -80,28 +106,25 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
         switch (presence) {
             case "ACTIVE":
                 presenceClass = "online";
-                buddyDetails.set('presence', 'ACTIVE');
+                buddyDetails.updatePresence('ACTIVE');
                 break;
             case "AWAY":
                 presenceClass = "busy";
-                buddyDetails.set('presence', 'AWAY');
+                buddyDetails.updatePresence('AWAY');
                 break;
             case "DND":
                 presenceClass = "unavailable";
-                buddyDetails.set('presence', 'DND');
+                buddyDetails.updatePresence('DND');
                 break;
             case "OFFLINE":
                 presenceClass = "off";
-                buddyDetails.set('presence', 'OFFLINE');
+                buddyDetails.updatePresence('OFFLINE');
                 break;
             default:
                 presenceClass = "off";
-                buddyDetails.set('presence', 'UNRECOGNIZED');
+                buddyDetails.updatePresence('UNRECOGNIZED');
                 break;
         }
-
-        // Save to currently logged user
-        buddyDetails.save({action: "updatePresence"});
 
         // Update status indicator
         this.get('statusIndicator').setAttribute('class', "status-indicator " + presenceClass);
@@ -119,9 +142,7 @@ Y.LIMS.Controller.PresenceViewController = Y.Base.create('presenceViewController
 
         // Container Node
         container: {
-            valueFn: function () {
-                return Y.one('#lims-container .status-panel');
-            }
+            value: null // to be set
         },
 
         // Currently logged user

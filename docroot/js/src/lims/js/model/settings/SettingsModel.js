@@ -1,3 +1,27 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 Marcel Mika, marcelmika.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /**
  * Settings Model
  *
@@ -6,8 +30,7 @@
  */
 Y.namespace('LIMS.Model');
 
-Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
-
+Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [Y.LIMS.Model.ModelExtension], {
 
     /**
      * Returns true if the user decided that he doesn't want to hear
@@ -19,16 +42,83 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
         return this.get('isMute');
     },
 
+    /**
+     * Updates active panel id
+     *
+     * @param activePanelId
+     * @param callback
+     */
+    updateActivePanel: function (activePanelId, callback) {
+        // Vars
+        var content;
+
+        // Save locally
+        this.set('activePanelId', activePanelId);
+
+        // Serialize
+        content = Y.JSON.stringify(this.toJSON());
+
+        // Do the request
+        Y.io(this.getServerRequestUrl(), {
+            method: "POST",
+            data: {
+                query: "UpdateActivePanel",
+                content: content
+            },
+            on: {
+                success: function (id, o) {
+                    if (callback) {
+                        callback(null, o.response);
+                    }
+                },
+                failure: function (x, o) {
+                    // If the attempt is unauthorized session has expired
+                    if (o.status === 401) {
+                        // Notify everybody else
+                        Y.fire('userSessionExpired');
+                    }
+
+                    if (callback) {
+                        callback("Cannot update active panel", o.response);
+                    }
+                }
+            }
+        });
+    },
+
     // Custom sync layer.
     sync: function (action, options, callback) {
-        // Get JSON representation of current object
-        var data = Y.JSON.stringify(this.toJSON());
+        // Vars
+        var content;
+
+        // Serialize
+        content = Y.JSON.stringify(this.toJSON());
 
         switch (action) {
             case 'create':
             case 'update': // There is no difference between create and update
-                // Update Event Handler
-                this._updateSettings(data, callback);
+
+                // Do the request
+                Y.io(this.getServerRequestUrl(), {
+                    method: "POST",
+                    data: {
+                        query: "UpdateSettings",
+                        content: content
+                    },
+                    on: {
+                        success: function (id, o) {
+                            callback(null, o.response);
+                        },
+                        failure: function (x, o) {
+                            // If the attempt is unauthorized session has expired
+                            if (o.status === 401) {
+                                // Notify everybody else
+                                Y.fire('userSessionExpired');
+                            }
+                            callback("Cannot update settings", o.response);
+                        }
+                    }
+                });
                 break;
 
             case 'read':
@@ -38,79 +128,6 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [], {
             default:
                 callback('Invalid action');
         }
-    },
-
-    /**
-     * Updates active panel id
-     *
-     * @param activePanelId
-     * @param callback
-     */
-    updateActivePanel: function (activePanelId, callback) {
-        // Create settings that contains request url
-        var settings = new Y.LIMS.Core.Settings(),
-            data;
-
-        // Save
-        this.set('activePanelId', activePanelId);
-
-        // Save data
-        data = Y.JSON.stringify(this.toJSON());
-
-        // Do the request
-        Y.io(settings.getServerRequestUrl(), {
-            method: "POST",
-            data: {
-                query: "UpdateActivePanel",
-                data: data
-            },
-            on: {
-                success: function (id, o) {
-                    callback(null, o.response);
-                },
-                failure: function (x, o) {
-                    // If the attempt is unauthorized session has expired
-                    if (o.status === 401) {
-                        // Notify everybody else
-                        Y.fire('userSessionExpired');
-                    }
-                    callback("Cannot update active panel", o.response);
-                }
-            }
-        });
-    },
-
-    /**
-     * Updates settings
-     *
-     * @param data
-     * @param callback
-     * @private
-     */
-    _updateSettings: function (data, callback) {
-        // Create settings that contains request url
-        var settings = new Y.LIMS.Core.Settings();
-        // Do the request
-        Y.io(settings.getServerRequestUrl(), {
-            method: "POST",
-            data: {
-                query: "UpdateSettings",
-                data: data
-            },
-            on: {
-                success: function (id, o) {
-                    callback(null, o.response);
-                },
-                failure: function (x, o) {
-                    // If the attempt is unauthorized session has expired
-                    if (o.status === 401) {
-                        // Notify everybody else
-                        Y.fire('userSessionExpired');
-                    }
-                    callback("Cannot update settings", o.response);
-                }
-            }
-        });
     }
 
 }, {

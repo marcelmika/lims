@@ -19,7 +19,7 @@ import com.marcelmika.lims.persistence.generated.NoSuchConversationException;
 import com.marcelmika.lims.persistence.generated.model.Conversation;
 import com.marcelmika.lims.persistence.generated.service.base.ConversationLocalServiceBaseImpl;
 
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * The implementation of the conversation local service.
@@ -51,7 +51,12 @@ public class ConversationLocalServiceImpl
             conversationModel = conversationPersistence.create(counterLocalService.increment());
             conversationModel.setConversationId(conversationId);
             conversationModel.setConversationType(conversationType);
-            conversationModel.setUpdatedAt(new Date());
+
+            // Update calendar time
+            Calendar calendar = Calendar.getInstance();
+            conversationModel.setUpdatedAt(calendar.getTime());
+
+            // Update model
             conversationModel = conversationPersistence.update(conversationModel, false);
         }
 
@@ -67,9 +72,15 @@ public class ConversationLocalServiceImpl
     }
 
     public void updateConversationTimestamp(long cid) throws Exception {
-        Conversation conversation = conversationPersistence.findByPrimaryKey(cid);
-        conversation.setUpdatedAt(new Date());
-        conversationPersistence.update(conversation, false);
 
+        // Find conversation
+        Conversation conversation = conversationPersistence.findByPrimaryKey(cid);
+
+        // Update to current time
+        Calendar calendar = Calendar.getInstance();
+        conversation.setUpdatedAt(calendar.getTime());
+
+        // Save
+        conversationPersistence.update(conversation, false);
     }
 }

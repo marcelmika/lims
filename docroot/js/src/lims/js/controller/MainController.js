@@ -1,34 +1,68 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 Marcel Mika, marcelmika.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /**
  * Main Controller
  */
 Y.namespace('LIMS.Controller');
 
-Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
+Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LIMS.Controller.ControllerExtension], {
 
     // The initializer runs when a MainController instance is created, and gives
     // us an opportunity to set up all sub controller
     initializer: function () {
         var buddyDetails = this.get('buddyDetails'),
             settingsModel = this.get('settingsModel'),
-            notification = this.get('notification');
+            notification = this.get('notification'),
+            properties = this.get('properties'),
+            rootNode = this.getRootNode();
+
         // Attach events
         this._attachEvents();
 
         // Group
-        new Y.LIMS.Controller.GroupViewController();
+        new Y.LIMS.Controller.GroupViewController({
+            container: rootNode.one('.buddy-list'),
+            properties: properties
+        });
         // Presence
         new Y.LIMS.Controller.PresenceViewController({
+            container: rootNode.one('.status-panel'),
             buddyDetails: buddyDetails
         });
         // Settings
         new Y.LIMS.Controller.SettingsViewController({
+            container: rootNode.one('.chat-settings'),
             model: settingsModel
         });
         // Conversation
         new Y.LIMS.Controller.ConversationsController({
+            container: rootNode.one('.lims-tabs'),
             buddyDetails: buddyDetails,
             settings: settingsModel,
-            notification: notification
+            notification: notification,
+            properties: properties
         });
     },
 
@@ -62,7 +96,7 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
         // Store current active panel id
         this.set('activePanelId', panelId);
         // Update settings
-        this.get('settingsModel').updateActivePanel(panelId, function() {});
+        this.get('settingsModel').updateActivePanel(panelId);
     },
 
     /**
@@ -75,7 +109,7 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
         // If the hidden panel is currently active panel it means that no panel is currently active
         if (this.get('activePanelId') === panel.get('panelId')) {
             // Update settings
-            this.get('settingsModel').updateActivePanel(null, function() {});
+            this.get('settingsModel').updateActivePanel(null);
         }
     }
 
@@ -89,12 +123,12 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
         buddyDetails: {
             valueFn: function () {
                 // We need settings to determine user
-                var settings = new Y.LIMS.Core.Settings();
+                var properties = new Y.LIMS.Core.Properties();
                 // Get logged user
                 return new Y.LIMS.Model.BuddyModelItem({
-                    buddyId: settings.getCurrentUserId(),
-                    screenName: settings.getCurrentUserScreenName(),
-                    fullName: settings.getCurrentUserFullName()
+                    buddyId: properties.getCurrentUserId(),
+                    screenName: properties.getCurrentUserScreenName(),
+                    fullName: properties.getCurrentUserFullName()
                 });
             }
         },
@@ -112,8 +146,16 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [], {
         notification: {
             valueFn: function () {
                 return new Y.LIMS.Core.Notification({
-                    settings: this.get('settingsModel')
+                    settings: this.get('settingsModel'),
+                    container: this.getRootNode().one('.lims-sound'),
+                    properties: this.get('properties')
                 });
+            }
+        },
+
+        properties: {
+            valueFn: function () {
+                return new Y.LIMS.Core.Properties();
             }
         },
 

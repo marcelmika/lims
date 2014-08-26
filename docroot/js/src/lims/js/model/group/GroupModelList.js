@@ -1,3 +1,27 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 Marcel Mika, marcelmika.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /**
  * Group Model List
  *
@@ -7,30 +31,35 @@
  */
 Y.namespace('LIMS.Model');
 
-Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
+Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LIMS.Model.ModelExtension], {
 
     // This tells the list that it will hold instances of the GroupModelItem class.
     model: Y.LIMS.Model.GroupModelItem,
 
     // Custom sync layer.
     sync: function (action, options, callback) {
-        var data, url, etag = this.get('etag'), instance = this;
+        // Vars
+        var parameters,
+            etag = this.get('etag'),
+            instance = this;
 
         switch (action) {
-            case 'create':
-                data = this.toJSON();
-                return;
-
 
             case 'read':
-                // TODO: Move away
-                url = Y.one('#limsPortletURL').get('value');
 
-                Y.io(url, {
+                // Set parameters
+                parameters = Y.JSON.stringify({
+                    // Send etag to server so it knows if it should send groups again or we should keep
+                    // the old cached values
+                    etag: etag
+                });
+
+                // Read from server
+                Y.io(this.getServerRequestUrl(), {
                     method: "GET",
                     data: {
                         query: "GetGroupList",
-                        etag: etag
+                        parameters: parameters
                     },
                     on: {
                         success: function (id, o) {
@@ -62,8 +91,10 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
                                     instance.add(group);
                                 }
 
-                                if (etag === 0 ) {
-                                    instance.fire("groupsLoaded");
+                                if (etag === 0) {
+                                    instance.fire("groupsLoaded", {
+                                        groupsList: instance
+                                    });
                                 }
                             }
                         },
@@ -81,13 +112,14 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
                     }
                 });
 
-                return;
+                break;
 
-            case 'update':
-                return;
-
+            case 'create':
             case 'delete':
-                return;
+            case 'update':
+                // Do nothing
+                break;
+
 
             default:
                 callback('Invalid action');
@@ -105,5 +137,4 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [], {
             value: 0 // default value
         }
     }
-
 });

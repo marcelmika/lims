@@ -6,6 +6,45 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+
+    <!-- Controllers -->
+    <bean id="com.marcelmika.lims.portal.controller.BuddyController"
+          class="com.marcelmika.lims.portal.controller.BuddyController">
+        <constructor-arg index="0" ref="com.marcelmika.lims.core.service.BuddyCoreService"/>
+        <constructor-arg index="1" ref="com.marcelmika.lims.core.service.SettingsCoreService"/>
+    </bean>
+
+    <bean id="com.marcelmika.lims.portal.controller.ConversationController"
+          class="com.marcelmika.lims.portal.controller.ConversationController">
+        <constructor-arg index="0" ref="com.marcelmika.lims.core.service.ConversationCoreService"/>
+    </bean>
+
+    <bean id="com.marcelmika.lims.portal.controller.GroupController"
+          class="com.marcelmika.lims.portal.controller.GroupController">
+        <constructor-arg index="0" ref="com.marcelmika.lims.core.service.GroupCoreService"/>
+    </bean>
+
+    <bean id="com.marcelmika.lims.portal.controller.SettingsController"
+          class="com.marcelmika.lims.portal.controller.SettingsController">
+        <constructor-arg index="0" ref="com.marcelmika.lims.core.service.SettingsCoreService"/>
+    </bean>
+
+    <!-- Portlet Processor -->
+
+    <bean id="com.marcelmika.lims.portal.processor.PortletProcessor"
+          class="com.marcelmika.lims.portal.processor.PortletProcessorImpl">
+        <constructor-arg index="0" ref="com.marcelmika.lims.portal.controller.BuddyController"/>
+        <constructor-arg index="1" ref="com.marcelmika.lims.portal.controller.ConversationController"/>
+        <constructor-arg index="2" ref="com.marcelmika.lims.portal.controller.GroupController"/>
+        <constructor-arg index="3" ref="com.marcelmika.lims.portal.controller.SettingsController"/>
+    </bean>
+
+    <bean id="com.marcelmika.lims.portal.processor.PortletProcessorUtil"
+          class="com.marcelmika.lims.portal.processor.PortletProcessorUtil">
+        <property name="portletProcessor" ref="com.marcelmika.lims.portal.processor.PortletProcessor"/>
+    </bean>
+
+
     <!-- Settings Core Service -->
 
     <bean id="com.marcelmika.lims.core.service.SettingsCoreService"

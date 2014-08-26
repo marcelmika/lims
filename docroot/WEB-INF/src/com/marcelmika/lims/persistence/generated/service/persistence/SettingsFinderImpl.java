@@ -30,6 +30,7 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
 
     // Placeholders
     private static final String PLACEHOLDER_DEFAULT_USER = "[$DEFAULT_USER$]";
+    private static final String PLACEHOLDER_DEACTIVATED_USER = "[$DEACTIVATED_USER$]";
     private static final String PLACEHOLDER_USERS_GROUPS_JOIN = "[$USERS_GROUPS_JOIN$]";
     private static final String PLACEHOLDER_USERS_GROUPS_WHERE = "[$USERS_GROUPS_WHERE$]";
     private static final String PLACEHOLDER_SOCIAL_RELATION_TYPES = "[$SOCIAL_RELATION_TYPES$]";
@@ -37,12 +38,20 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
     /**
      * Finds all users except the one given in the parameter and their settings
      *
-     * @param userId Excluded user
+     * @param userId                of excluded user
+     * @param ignoreDefaultUser     true if default users should be ignored
+     * @param ignoreDeactivatedUser true if deactivated users should be ignored
+     * @param start                 value of the list
+     * @param end                   value of the list
      * @return List of objects where each object contains user info
      */
     @Override
     @SuppressWarnings("unchecked") // Cast List<Object[]> is unchecked
-    public List<Object[]> findAllGroups(Long userId, boolean ignoreDefaultUser, int start, int end) throws Exception {
+    public List<Object[]> findAllGroups(Long userId,
+                                        boolean ignoreDefaultUser,
+                                        boolean ignoreDeactivatedUser,
+                                        int start,
+                                        int end) throws Exception {
 
         Session session = null;
 
@@ -50,7 +59,7 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             // Open database session
             session = openSession();
             // Generate SQL
-            String sql = getFindAllUsersSQL(ignoreDefaultUser);
+            String sql = getFindAllUsersSQL(ignoreDefaultUser, ignoreDeactivatedUser);
 
             // Create query from sql
             SQLQuery query = session.createSQLQuery(sql);
@@ -78,13 +87,14 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
     }
 
     /**
-     * Returns
+     * Returns all groups where the user participates
      *
-     * @param userId            of excluded user
-     * @param ignoreDefaultUser true if default users should be ignored
-     * @param excludedSties     list of names of sites which should be excluded
-     * @param start             value of the list
-     * @param end               value of the list
+     * @param userId                of excluded user
+     * @param ignoreDefaultUser     true if default users should be ignored
+     * @param ignoreDeactivatedUser true if deactivated users should be ignored
+     * @param excludedSites         list of names of sites which should be excluded
+     * @param start                 value of the list
+     * @param end                   value of the list
      * @return List of objects where each object contains group name and user info
      * @throws Exception
      */
@@ -92,7 +102,8 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
     @SuppressWarnings("unchecked") // Cast List<Object[]> is unchecked
     public List<Object[]> findSitesGroups(Long userId,
                                           boolean ignoreDefaultUser,
-                                          String[] excludedSties,
+                                          boolean ignoreDeactivatedUser,
+                                          String[] excludedSites,
                                           int start,
                                           int end) throws Exception {
         Session session = null;
@@ -101,7 +112,7 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             // Open database session
             session = openSession();
             // Generate SQL
-            String sql = getFindByUsersGroupsSQL(ignoreDefaultUser, excludedSties);
+            String sql = getFindByUsersGroupsSQL(ignoreDefaultUser, ignoreDeactivatedUser, excludedSites);
 
             // Create query from sql
             SQLQuery query = session.createSQLQuery(sql);
@@ -118,8 +129,8 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             // Add parameters to query
             QueryPos queryPos = QueryPos.getInstance(query);
             queryPos.add(userId);
-            if (excludedSties.length > 0) {
-                queryPos.add(excludedSties);
+            if (excludedSites.length > 0) {
+                queryPos.add(excludedSites);
             }
             queryPos.add(userId);
 
@@ -135,11 +146,12 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
     /**
      * Returns all user's social relations
      *
-     * @param userId            of the user whose social relations are we looking for
-     * @param ignoreDefaultUser true if default users should be ignored
-     * @param relationTypes     an array of relation type codes that we are looking for
-     * @param start             value of the list
-     * @param end               value of the list
+     * @param userId                of the user whose social relations are we looking for
+     * @param ignoreDefaultUser     true if default users should be ignored
+     * @param ignoreDeactivatedUser true if deactivated users should be ignored
+     * @param relationTypes         an array of relation type codes that we are looking for
+     * @param start                 value of the list
+     * @param end                   value of the list
      * @return List objects where each object contains relation type and user info
      * @throws Exception
      */
@@ -147,6 +159,7 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
     @SuppressWarnings("unchecked") // Cast List<Object[]> is unchecked
     public List<Object[]> findSocialGroups(Long userId,
                                            boolean ignoreDefaultUser,
+                                           boolean ignoreDeactivatedUser,
                                            int[] relationTypes,
                                            int start,
                                            int end) throws Exception {
@@ -157,7 +170,7 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             // Open database session
             session = openSession();
             // Generate SQL
-            String sql = getFindSocialGroups(ignoreDefaultUser, relationTypes);
+            String sql = getFindSocialGroups(ignoreDefaultUser, ignoreDeactivatedUser, relationTypes);
 
             // Create query from sql
             SQLQuery query = session.createSQLQuery(sql);
@@ -191,19 +204,19 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
     /**
      * Generates SQL for find all users query
      *
-     * @param ignoreDefaultUser determines if the default user should be ignored
+     * @param ignoreDefaultUser     determines if the default user should be ignored
+     * @param ignoreDeactivatedUser determines if the deactivated user should be ignored
      * @return SQL string for find all users query
      */
-    private String getFindAllUsersSQL(boolean ignoreDefaultUser) {
+    private String getFindAllUsersSQL(boolean ignoreDefaultUser,
+                                      boolean ignoreDeactivatedUser) {
+
         // Get custom query sql (check /src/custom-sql/default.xml)
         String sql = CustomSQLUtil.get(FIND_ALL_USERS);
 
-        // Add ignore default user query if needed
-        if (ignoreDefaultUser) {
-            sql = StringUtil.replace(sql, PLACEHOLDER_DEFAULT_USER, "AND (User_.defaultUser != true)");
-        } else {
-            sql = StringUtil.replace(sql, PLACEHOLDER_DEFAULT_USER, StringPool.BLANK);
-        }
+        // Add ignored users queries if needed
+        sql = addIgnoreDefaultUserToSql(sql, ignoreDefaultUser);
+        sql = addIgnoreDeactivatedUserToSql(sql, ignoreDeactivatedUser);
 
         return sql;
     }
@@ -211,20 +224,21 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
     /**
      * Generates SQL for find by users query
      *
-     * @param ignoreDefaultUser true if default users should be ignored
-     * @param excludedGroups    names of groups that should be excluded from the query
+     * @param ignoreDefaultUser     true if default users should be ignored
+     * @param ignoreDeactivatedUser true if deactivated users should be ignored
+     * @param excludedGroups        names of groups that should be excluded from the query
      * @return SQL string for find by users groups query
      */
-    private String getFindByUsersGroupsSQL(boolean ignoreDefaultUser, String[] excludedGroups) {
+    private String getFindByUsersGroupsSQL(boolean ignoreDefaultUser,
+                                           boolean ignoreDeactivatedUser,
+                                           String[] excludedGroups) {
+
         // Get custom query sql (check /src/custom-sql/default.xml)
         String sql = CustomSQLUtil.get(FIND_BY_USERS_GROUPS);
 
         // Add ignore default user query if needed
-        if (ignoreDefaultUser) {
-            sql = StringUtil.replace(sql, PLACEHOLDER_DEFAULT_USER, "AND (User_.defaultUser != true)");
-        } else {
-            sql = StringUtil.replace(sql, PLACEHOLDER_DEFAULT_USER, StringPool.BLANK);
-        }
+        sql = addIgnoreDefaultUserToSql(sql, ignoreDefaultUser);
+        sql = addIgnoreDeactivatedUserToSql(sql, ignoreDeactivatedUser);
 
         // If no excluded groups are set clear placeholders and return custom sql
         if (excludedGroups.length == 0) {
@@ -255,20 +269,21 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
     /**
      * Generates SQL for find by social groups query
      *
-     * @param ignoreDefaultUser true if default users should be ignored
-     * @param types             relation types that should be counted in
+     * @param ignoreDefaultUser     true if default users should be ignored
+     * @param ignoreDeactivatedUser true if deactivated users should be ignored
+     * @param types                 relation types that should be counted in
      * @return SQL string for find by social groups query
      */
-    private String getFindSocialGroups(boolean ignoreDefaultUser, int[] types) {
+    private String getFindSocialGroups(boolean ignoreDefaultUser,
+                                       boolean ignoreDeactivatedUser,
+                                       int[] types) {
+
         // Get custom query sql (check /src/custom-sql/default.xml)
         String sql = CustomSQLUtil.get(FIND_BY_SOCIAL_GROUPS);
 
-        // Add ignore default user query if needed
-        if (ignoreDefaultUser) {
-            sql = StringUtil.replace(sql, PLACEHOLDER_DEFAULT_USER, "AND (User_.defaultUser != true)");
-        } else {
-            sql = StringUtil.replace(sql, PLACEHOLDER_DEFAULT_USER, StringPool.BLANK);
-        }
+        // Add ignore user queries if needed
+        sql = addIgnoreDefaultUserToSql(sql, ignoreDefaultUser);
+        sql = addIgnoreDeactivatedUserToSql(sql, ignoreDeactivatedUser);
 
         // We need to build a query which will add all relation types
         StringBundler sb = new StringBundler(types.length * 2 - 1);
@@ -284,5 +299,39 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
         return StringUtil.replace(sql,
                 PLACEHOLDER_SOCIAL_RELATION_TYPES,
                 "SocialRelation.type_ IN (" + sb.toString() + ")");
+    }
+
+    /**
+     * Takes sql string from parameter and replaces default user placeholder
+     * if set to true in ignoreDefaultUser parameter
+     *
+     * @param sql               String
+     * @param ignoreDefaultUser boolean
+     * @return updated sql string
+     */
+    private String addIgnoreDefaultUserToSql(String sql, boolean ignoreDefaultUser) {
+        // Add ignore default user query if needed
+        if (ignoreDefaultUser) {
+            return StringUtil.replace(sql, PLACEHOLDER_DEFAULT_USER, "AND (User_.defaultUser != true)");
+        } else {
+            return StringUtil.replace(sql, PLACEHOLDER_DEFAULT_USER, StringPool.BLANK);
+        }
+    }
+
+    /**
+     * Takes sql string from parameter and replaces default user placeholder
+     * if set to true in ignoreDefaultUser parameter
+     *
+     * @param sql                   String
+     * @param ignoreDeactivatedUser boolean
+     * @return updated sql string
+     */
+    private String addIgnoreDeactivatedUserToSql(String sql, boolean ignoreDeactivatedUser) {
+        // Add ignore default user query if needed
+        if (ignoreDeactivatedUser) {
+            return StringUtil.replace(sql, PLACEHOLDER_DEACTIVATED_USER, "AND (User_.status = 0)");
+        } else {
+            return StringUtil.replace(sql, PLACEHOLDER_DEACTIVATED_USER, StringPool.BLANK);
+        }
     }
 }

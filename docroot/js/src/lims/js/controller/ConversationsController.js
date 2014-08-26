@@ -1,3 +1,27 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 Marcel Mika, marcelmika.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 /**
  * Main Controller
  */
@@ -15,12 +39,18 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
     // The initializer runs when a MainController instance is created, and gives
     // us an opportunity to set up all sub controllers
     initializer: function () {
+        // Vars
+        var properties = this.get('properties');
+
         // Bind to already rendered conversations
         this._bindConversations();
         // Attach events
         this._attachEvents();
-        // Timer
-        this._startTimer();
+
+        // Start timer only if the chat is enabled
+        if (properties.isChatEnabled()) {
+            this._startTimer();
+        }
     },
 
     /**
@@ -41,6 +71,10 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
         }, this);
         // Session expired
         Y.on('userSessionExpired', this._onSessionExpired, this);
+
+        // Chat enabled/disabled
+        Y.on('chatEnabled', this._onChatEnabled, this);
+        Y.on('chatDisabled', this._onChatDisabled, this);
     },
 
     /**
@@ -81,6 +115,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             conversationId,                                     // Id of the conversation
             unreadMessagesCount,                                // Unread messages count
             settings = this.get('settings'),                    // Settings of logged user
+            properties = this.get('properties'),                // Portlet properties
             conversationModel,                                  // Model which will be attached to controller
             conversationList = this.get('conversationList'),    // List of conversations
             notification = this.get('notification'),            // Notification handler
@@ -114,6 +149,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                     model: conversationModel,
                     buddyDetails: buddyDetails,
                     settings: settings,
+                    properties: properties,
                     notification: notification
                 });
 
@@ -150,6 +186,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             conversationContainer,                              // Container node passed to controller
             conversationList = this.get('conversationList'),    // Holds all conversation models
             settings = this.get('settings'),                    // Settings of logged user
+            properties = this.get('properties'),                // Portlet properties
             notification = this.get('notification'),            // Notification handler
             controller;                                         // Controller (selected or newly created)
 
@@ -193,6 +230,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                 controllerId: conversationId,
                 model: conversationModel,
                 settings: settings,
+                properties: properties,
                 notification: notification
             });
 
@@ -228,6 +266,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             container = this.get('container'),                      // Container of all conversations
             notification = this.get('notification'),                // Notification handler
             settings = this.get('settings'),                        // Settings of logged user
+            properties = this.get('properties'),                // Portlet properties
             conversationId;                                         // Id of the conversation passed to controller
 
         // For each conversation check if new controller should be created if some
@@ -277,6 +316,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                     controllerId: conversationId,
                     model: conversationModel,
                     settings: settings,
+                    properties: properties,
                     notification: notification
                 });
 
@@ -304,9 +344,31 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
 
     /**
      * Called whenever the user session expires
+     *
      * @private
      */
     _onSessionExpired: function () {
+        // Disable the timer
+        this._stopTimer();
+    },
+
+    /**
+     * Called whenever the user enables the chat
+     *
+     * @private
+     */
+    _onChatEnabled: function () {
+        // Re-enable the timer
+        this._startTimer();
+    },
+
+    /**
+     * Called whenever the user disables the chat
+     *
+     * @private
+     */
+    _onChatDisabled: function () {
+        // Disable the timer
         this._stopTimer();
     },
 
@@ -317,20 +379,16 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
      */
     _startTimer: function () {
         // Vars
-        var globals = this.get('globals'),
-            conversationList = this.get('conversationList'),
+        var conversationList = this.get('conversationList'),
             timerInterval = this.get('timerInterval');
 
-        // Start only if the chat is enabled
-        if (globals.isChatEnabled()) {
-            // Update all timestamps
+        // Update all timestamps
+        conversationList.load();
+        // Start periodical update
+        this.set('timer', setInterval(function () {
+            // Load model
             conversationList.load();
-            // Start periodical update
-            this.set('timer', setInterval(function () {
-                // Load model
-                conversationList.load();
-            }, timerInterval));
-        }
+        }, timerInterval));
     },
 
     /**
@@ -365,11 +423,9 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             value: null
         },
 
-        // Main container
+        // Main container node
         container: {
-            valueFn: function () {
-                return Y.one('#lims-container .lims-tabs');
-            }
+            value: null // to be set
         },
 
         // Notification
@@ -394,11 +450,9 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             value: 7000 // 7 seconds
         },
 
-        // Global settings
-        globals: {
-            valueFn: function () {
-                return new Y.LIMS.Core.Settings();
-            }
+        // Portlet properties
+        properties: {
+            value: null // to be set
         },
 
         settings: {

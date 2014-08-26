@@ -12,9 +12,9 @@ AUI().use('lims-core', "lims-model", "lims-view", "lims-controller", function (A
         var mainController;
 
         // Set global settings
-        A.LIMS.Core.Settings.pathImage = Liferay.ThemeDisplay.getPathImage();
-        A.LIMS.Core.Settings.userId = Liferay.ThemeDisplay.getUserId();
-        A.LIMS.Core.Settings.companyId = Liferay.ThemeDisplay.getCompanyId();
+        A.LIMS.Core.Properties.pathImage = Liferay.ThemeDisplay.getPathImage();
+        A.LIMS.Core.Properties.userId = Liferay.ThemeDisplay.getUserId();
+        A.LIMS.Core.Properties.companyId = Liferay.ThemeDisplay.getCompanyId();
 
         // Start the app!
         mainController = new A.LIMS.Controller.MainController({

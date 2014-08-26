@@ -1,3 +1,27 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 Marcel Mika, marcelmika.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.marcelmika.lims.persistence.service;
 
 import com.marcelmika.lims.api.entity.BuddyDetails;
@@ -35,11 +59,13 @@ public class SettingsPersistenceServiceImpl implements SettingsPersistenceServic
             );
 
             // Success
-            return ReadSettingsResponseEvent.readSettingsSuccess("Details read", settings.toSettingsDetails());
+            return ReadSettingsResponseEvent.readSettingsSuccess(settings.toSettingsDetails());
 
-        } catch (Exception e) {
+        } catch (Exception exception) {
             // Failure
-            return ReadSettingsResponseEvent.readSettingsFailure(e);
+            return ReadSettingsResponseEvent.readSettingsFailure(
+                    ReadSettingsResponseEvent.Status.ERROR_PERSISTENCE, exception
+            );
         }
     }
 
@@ -51,20 +77,25 @@ public class SettingsPersistenceServiceImpl implements SettingsPersistenceServic
      */
     @Override
     public UpdateActivePanelResponseEvent updateActivePanel(UpdateActivePanelRequestEvent event) {
+
+        // Check params
+        if (event.getBuddyId() == null) {
+            return UpdateActivePanelResponseEvent.updateActivePanelFailure(
+                    UpdateActivePanelResponseEvent.Status.ERROR_WRONG_PARAMETERS
+            );
+        }
+
         try {
             // Update active panel
             PanelLocalServiceUtil.updateActivePanel(event.getBuddyId(), event.getActivePanel());
 
             // Success
-            return UpdateActivePanelResponseEvent.updateActivePanelSuccess(
-                    "Active Panel" + event.getActivePanel() + " saved to persistence layer for user "
-                            + event.getBuddyId()
-            );
+            return UpdateActivePanelResponseEvent.updateActivePanelSuccess(event.getActivePanel());
 
         } catch (Exception exception) {
             // Failure
             return UpdateActivePanelResponseEvent.updateActivePanelFailure(
-                    "Cannot update Active Panel to a persistence layer", exception
+                    UpdateActivePanelResponseEvent.Status.ERROR_PERSISTENCE, exception
             );
         }
     }
@@ -78,6 +109,14 @@ public class SettingsPersistenceServiceImpl implements SettingsPersistenceServic
     @Override
     public UpdateSettingsResponseEvent updateSettings(UpdateSettingsRequestEvent event) {
         SettingsDetails details = event.getSettingsDetails();
+
+        // Check params
+        if (event.getBuddyId() == null) {
+            return UpdateSettingsResponseEvent.updateSettingsFailure(
+                    UpdateSettingsResponseEvent.Status.ERROR_WRONG_PARAMETERS
+            );
+        }
+
         try {
             // Get settings
             com.marcelmika.lims.persistence.generated.model.Settings settings = SettingsLocalServiceUtil.getSettingsByUser(
@@ -89,13 +128,13 @@ public class SettingsPersistenceServiceImpl implements SettingsPersistenceServic
             // Save
             SettingsLocalServiceUtil.saveSettings(settings);
 
-            return UpdateSettingsResponseEvent.updateSettingsSuccess(
-                    "Settings saved to persistence layer for user " + event.getBuddyId(), details
-            );
+            // Success
+            return UpdateSettingsResponseEvent.updateSettingsSuccess(details);
 
         } catch (Exception exception) {
+            // Failure
             return UpdateSettingsResponseEvent.updateSettingsFailure(
-                    "Cannot update Settings to a persistence layer", details, exception
+                    UpdateSettingsResponseEvent.Status.ERROR_PERSISTENCE, exception
             );
         }
     }
