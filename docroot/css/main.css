@@ -51,6 +51,7 @@
     padding: 0;
     margin: 0;
     background: #ffffff;
+    text-align: left;
 }
 
 /********************************************************************************
@@ -128,6 +129,7 @@
     margin: 0;
     padding: 0;
     position: relative;
+    text-align: left;
 }
 
 .liferay-ims .lims-sound {
@@ -496,7 +498,7 @@
 
 .liferay-ims .buddy-list .panel-content .group-buddy-item .group-buddy-item-name {
     margin-top: 6px;
-    max-width: 165px;
+    max-width: 145px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
