@@ -27,8 +27,6 @@ package com.marcelmika.lims.portal.controller;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.util.PortalUtil;
 import com.marcelmika.lims.api.events.conversation.*;
 import com.marcelmika.lims.core.service.ConversationCoreService;
 import com.marcelmika.lims.portal.domain.*;
@@ -82,20 +80,9 @@ public class ConversationController {
                 request.getParameter(RequestParameterKeys.KEY_CONTENT), Conversation.class
         );
 
-        // TODO: This should be solved more conceptually ----
+        // This is a single user chat conversation
         conversation.setConversationType(ConversationType.SINGLE_USER);
-        List<Buddy> participants = conversation.getParticipants();
-        Long companyId = PortalUtil.getCompanyId(request);
-        for (Buddy participant : participants) {
-            try {
-                Long userId = UserLocalServiceUtil.getUserIdByScreenName(companyId, participant.getScreenName());
-                participant.setBuddyId(userId);
-            } catch (Exception e) {
-                ResponseUtil.writeResponse(HttpStatus.NOT_FOUND, response);
-                return;
-            }
-        }
-        // ----
+
         CreateConversationResponseEvent responseEvent = conversationCoreService.createConversation(
                 new CreateConversationRequestEvent(buddy.toBuddyDetails(), conversation.toConversationDetails(), null)
         );
