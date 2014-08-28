@@ -79,26 +79,26 @@ public class BuddyController {
      */
     public void updateBuddyPresence(ResourceRequest request, ResourceResponse response) {
 
-        Presence presence;      // Buddy object which holds presence
-        Buddy buddy;            // Currently logged user
+        Buddy buddy;            // Authorized user
+        Presence presence;      // Buddy's presence
 
         // Deserialize
         try {
+            // Create buddy from request
+            buddy = Buddy.fromResourceRequest(request);
+
             // Presence
             Buddy deserializedBuddy = JSONFactoryUtil.looseDeserialize(
                     request.getParameter(RequestParameterKeys.KEY_CONTENT), Buddy.class
             );
             presence = deserializedBuddy.getPresence();
-
-            // Create buddy from request
-            buddy = Buddy.fromResourceRequest(request);
         }
         // Failure
         catch (Exception exception) {
             // Bad request
             ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
             // Log
-            log.error(exception);
+            log.debug(exception);
             // End here
             return;
         }

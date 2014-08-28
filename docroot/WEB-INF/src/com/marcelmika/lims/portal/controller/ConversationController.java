@@ -72,13 +72,30 @@ public class ConversationController {
      * @param response ResourceResponse
      */
     public void createSingleUserConversation(ResourceRequest request, ResourceResponse response) {
-        // Create buddy from request
-        Buddy buddy = Buddy.fromResourceRequest(request);
 
-        // Deserialize Content
-        Conversation conversation = JSONFactoryUtil.looseDeserialize(
-                request.getParameter(RequestParameterKeys.KEY_CONTENT), Conversation.class
-        );
+        Buddy buddy;                // Authorized user
+        Conversation conversation;  // Conversation that should be created
+
+        // Deserizalize
+        try {
+            // Create buddy from request
+            buddy = Buddy.fromResourceRequest(request);
+
+            // Deserialize Content
+            conversation = JSONFactoryUtil.looseDeserialize(
+                    request.getParameter(RequestParameterKeys.KEY_CONTENT), Conversation.class
+            );
+        }
+        // Failure
+        catch (Exception exception) {
+            // Bad request
+            ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
+            // Log
+            log.debug(exception);
+            // End here
+            return;
+        }
+
 
         // This is a single user chat conversation
         conversation.setConversationType(ConversationType.SINGLE_USER);
@@ -111,6 +128,8 @@ public class ConversationController {
             // Everything else is server fault
             else {
                 ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                // Log
+                log.error(responseEvent.getException());
             }
         }
     }
@@ -122,13 +141,29 @@ public class ConversationController {
      * @param response ResourceResponse
      */
     public void readSingleUserConversation(ResourceRequest request, ResourceResponse response) {
-        // Create buddy from request
-        Buddy buddy = Buddy.fromResourceRequest(request);
 
-        // Deserialize Parameters
-        ReadConversationParameters parameters = JSONFactoryUtil.looseDeserialize(
-                request.getParameter(RequestParameterKeys.KEY_PARAMETERS), ReadConversationParameters.class
-        );
+        Buddy buddy;                            // Authorized user
+        ReadConversationParameters parameters;  // Request parameters
+
+        // Deserialize
+        try {
+            // Buddy from request
+            buddy = Buddy.fromResourceRequest(request);
+
+            // Parameters
+            parameters = JSONFactoryUtil.looseDeserialize(
+                    request.getParameter(RequestParameterKeys.KEY_PARAMETERS), ReadConversationParameters.class
+            );
+        }
+        // Failure
+        catch (Exception exception) {
+            // Bad request
+            ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
+            // Log
+            log.debug(exception);
+            // End here
+            return;
+        }
 
         // Create objects from parameters
         Conversation conversation = new Conversation();
@@ -177,6 +212,8 @@ public class ConversationController {
             // Everything else is server fault
             else {
                 ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                // Log
+                log.error(responseEvent.getException());
             }
         }
     }
@@ -188,13 +225,30 @@ public class ConversationController {
      * @param response ResourceResponse
      */
     public void closeSingleUserConversation(ResourceRequest request, ResourceResponse response) {
-        // Create buddy from request
-        Buddy buddy = Buddy.fromResourceRequest(request);
 
-        // Deserialize Parameters
-        CloseConversationParameters parameters = JSONFactoryUtil.looseDeserialize(
-                request.getParameter(RequestParameterKeys.KEY_PARAMETERS), CloseConversationParameters.class
-        );
+        Buddy buddy;                                // Authorized user
+        CloseConversationParameters parameters;     // Request parameters
+
+
+        // Deserizalize
+        try {
+            // Create buddy from request
+            buddy = Buddy.fromResourceRequest(request);
+
+            // Deserialize Parameters
+            parameters = JSONFactoryUtil.looseDeserialize(
+                    request.getParameter(RequestParameterKeys.KEY_PARAMETERS), CloseConversationParameters.class
+            );
+        }
+        // Failure
+        catch (Exception exception) {
+            // Bad request
+            ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
+            // Log
+            log.debug(exception);
+            // End here
+            return;
+        }
 
         // Close conversation
         CloseConversationResponseEvent responseEvent = conversationCoreService.closeConversation(
@@ -227,13 +281,30 @@ public class ConversationController {
      * @param response ResourceResponse
      */
     public void resetUnreadMessagesCounter(ResourceRequest request, ResourceResponse response) {
-        // Create buddy from request
-        Buddy buddy = Buddy.fromResourceRequest(request);
 
-        // Deserialize Parameters
-        ResetUnreadMessagesCounterParameters parameters = JSONFactoryUtil.looseDeserialize(
-                request.getParameter(RequestParameterKeys.KEY_PARAMETERS), ResetUnreadMessagesCounterParameters.class
-        );
+        Buddy buddy;                                        // Authorized user
+        ResetUnreadMessagesCounterParameters parameters;    // Request parameters
+
+        // Deserialize
+        try {
+            // Create buddy from request
+            buddy = Buddy.fromResourceRequest(request);
+
+            // Deserialize Parameters
+            parameters = JSONFactoryUtil.looseDeserialize(
+                    request.getParameter(RequestParameterKeys.KEY_PARAMETERS),
+                    ResetUnreadMessagesCounterParameters.class
+            );
+        }
+        // Failure
+        catch (Exception exception) {
+            // Bad request
+            ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
+            // Log
+            log.debug(exception);
+            // End here
+            return;
+        }
 
         // Reset counter
         ResetUnreadMessagesCounterResponseEvent responseEvent = conversationCoreService.resetUnreadMessagesCounter(
@@ -255,6 +326,8 @@ public class ConversationController {
             // Everything else is server fault
             else {
                 ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                // Log
+                log.error(responseEvent.getException());
             }
         }
     }
@@ -266,8 +339,23 @@ public class ConversationController {
      * @param response ResourceResponse
      */
     public void readOpenedConversations(ResourceRequest request, ResourceResponse response) {
-        // Create buddy from request
-        Buddy buddy = Buddy.fromResourceRequest(request);
+
+        Buddy buddy;        // Authorized user
+
+        // Deserialize
+        try {
+            // Create buddy from request
+            buddy = Buddy.fromResourceRequest(request);
+        }
+        // Failure
+        catch (Exception exception) {
+            // Bad request
+            ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
+            // Log
+            log.debug(exception);
+            // End here
+            return;
+        }
 
         // Read conversations
         GetOpenedConversationsResponseEvent responseEvent = conversationCoreService.getOpenedConversations(
@@ -299,6 +387,8 @@ public class ConversationController {
             // Everything else is server fault
             else {
                 ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                // Log
+                log.error(responseEvent.getException());
             }
         }
     }
@@ -310,17 +400,35 @@ public class ConversationController {
      * @param response ResourceResponse
      */
     public void createMessage(ResourceRequest request, ResourceResponse response) {
-        // Buddy from request
-        Buddy buddy = Buddy.fromResourceRequest(request);
 
-        // Deserialize Parameters
-        CreateMessageParameters parameters = JSONFactoryUtil.looseDeserialize(
-                request.getParameter(RequestParameterKeys.KEY_PARAMETERS), CreateMessageParameters.class
-        );
-        // Deserialize Content
-        Message message = JSONFactoryUtil.looseDeserialize(
-                request.getParameter(RequestParameterKeys.KEY_CONTENT), Message.class
-        );
+        Buddy buddy;                        // Authorized user
+        CreateMessageParameters parameters; // Request parameters
+        Message message;                    // Message that should be sent
+
+        // Deserialize
+        try {
+            // Buddy from request
+            buddy = Buddy.fromResourceRequest(request);
+
+            // Deserialize Parameters
+            parameters = JSONFactoryUtil.looseDeserialize(
+                    request.getParameter(RequestParameterKeys.KEY_PARAMETERS), CreateMessageParameters.class
+            );
+            // Deserialize Content
+            message = JSONFactoryUtil.looseDeserialize(
+                    request.getParameter(RequestParameterKeys.KEY_CONTENT), Message.class
+            );
+        }
+        // Failure
+        catch (Exception exception) {
+            // Bad request
+            ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
+            // Log
+            log.debug(exception);
+            // End here
+            return;
+        }
+
 
         Conversation conversation = new Conversation();
         conversation.setConversationType(ConversationType.SINGLE_USER);
@@ -362,6 +470,8 @@ public class ConversationController {
             // Everything else is a server fault
             else {
                 ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                // Log
+                log.error(responseEvent.getException());
             }
         }
     }

@@ -71,8 +71,8 @@ public class GroupController {
      */
     public void getGroupList(ResourceRequest request, ResourceResponse response) {
 
+        Buddy buddy;                        // Authorized user
         GetGroupListParameters parameters;  // Parameters for the request
-        Buddy buddy;                        // Currently logged user
 
         // Deserialize
         try {
@@ -89,7 +89,7 @@ public class GroupController {
             // Bad request
             ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
             // Log
-            log.error(exception);
+            log.debug(exception);
             // End here
             return;
         }
