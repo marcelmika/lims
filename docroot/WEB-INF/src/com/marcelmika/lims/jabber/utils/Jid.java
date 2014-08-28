@@ -71,7 +71,7 @@ public class Jid {
             return null;
         }
         // Add host
-        return user.concat(StringPool.AT).concat(Environment.getJabberResource());
+        return user.concat(StringPool.AT).concat(Environment.getJabberServiceName());
     }
 
     /**

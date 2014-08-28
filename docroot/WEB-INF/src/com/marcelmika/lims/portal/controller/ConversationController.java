@@ -429,10 +429,11 @@ public class ConversationController {
             return;
         }
 
-
+        // Create new conversation that will be passed to the system
         Conversation conversation = new Conversation();
         conversation.setConversationType(ConversationType.SINGLE_USER);
         conversation.setConversationId(parameters.getConversationId());
+        conversation.setBuddy(buddy);
 
         // Add to system
         SendMessageResponseEvent responseEvent = conversationCoreService.sendMessage(

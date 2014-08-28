@@ -203,7 +203,7 @@ public class JabberSessionManager {
         setRosterListener(userId, connection);
 
         // Log
-        log.info("Session for user " + userId + " was successfully created.");
+        log.debug("Session for user " + userId + " was successfully created.");
     }
 
     /**

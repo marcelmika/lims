@@ -22,32 +22,26 @@
  * SOFTWARE.
  */
 
-package com.marcelmika.lims.jabber.service;
+package com.marcelmika.lims.api.events.conversation;
 
-import com.marcelmika.lims.api.events.conversation.*;
+import com.marcelmika.lims.api.entity.ConversationDetails;
+import com.marcelmika.lims.api.events.RequestEvent;
 
 /**
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
- * Date: 2/22/14
- * Time: 8:08 PM
+ * Date: 28/08/14
+ * Time: 10:35
  */
-public interface ConversationJabberService {
+public class GetConversationParticipantsRequestEvent extends RequestEvent {
 
-    /**
-     * Creates new conversation
-     *
-     * @param event request event for method
-     * @return response event for  method
-     */
-    public CreateConversationResponseEvent createConversation(CreateConversationRequestEvent event);
+    private final ConversationDetails conversation;
 
-    /**
-     * Sends message to conversation
-     *
-     * @param event request event for method
-     * @return response event for method
-     */
-    public SendMessageResponseEvent sendMessage(SendMessageRequestEvent event);
+    public GetConversationParticipantsRequestEvent(final ConversationDetails conversation) {
+        this.conversation = conversation;
+    }
 
+    public ConversationDetails getConversation() {
+        return conversation;
+    }
 }

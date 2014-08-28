@@ -108,7 +108,7 @@ public class ConnectionManagerImpl implements ConnectionManager, ConnectionListe
             // Check if the reason of failure was authorization
             if (Validator.isNotNull(message) && message.contains("not-authorized")) {
                 // Call Session did not authorize
-                log.info("Session for user: " + username + " did not authorize. Trying to import a user " +
+                log.debug("Session for user: " + username + " did not authorize. Trying to import a user " +
                         "(if enabled in config) and reauthorize.");
                 // Try to import user and login again
 //                importUserAndLogin(userId, username, password, connection);

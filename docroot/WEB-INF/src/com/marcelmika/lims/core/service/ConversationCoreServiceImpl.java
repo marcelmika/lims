@@ -188,24 +188,50 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
     @Override
     public SendMessageResponseEvent sendMessage(SendMessageRequestEvent event) {
 
-        // Send message locally
-        SendMessageResponseEvent persistenceResponseEvent = conversationPersistenceService.sendMessage(event);
+        // Add participants to the conversation. We are not receiving a list of participants from
+        // the request thus we need to retrieve a list from persistence first
+        GetConversationParticipantsResponseEvent participantListEvent = conversationPersistenceService.getParticipants(
+                new GetConversationParticipantsRequestEvent(event.getConversationDetails())
+        );
+        // Failure
+        if (!participantListEvent.isSuccess()) {
+            return SendMessageResponseEvent.sendMessageFailure(
+                    SendMessageResponseEvent.Status.ERROR_PERSISTENCE, participantListEvent.getException()
+            );
+        }
 
-        // Check for error
+        // Send message locally
+        SendMessageResponseEvent persistenceResponseEvent = conversationPersistenceService.sendMessage(
+                new SendMessageRequestEvent(
+                        event.getBuddyDetails(),
+                        participantListEvent.getConversation(),
+                        event.getMessageDetails())
+        );
+        // Failure
         if (!persistenceResponseEvent.isSuccess()) {
             return persistenceResponseEvent;
         }
 
-        // If enabled send message via jabber as well
+        // Send message to Jabber
         if (Environment.isJabberEnabled()) {
-            SendMessageResponseEvent jabberResponseEvent = conversationJabberService.sendMessage(event);
+            // Send message via jabber service
+            SendMessageResponseEvent jabberResponseEvent = conversationJabberService.sendMessage(
+                    new SendMessageRequestEvent(
+                            event.getBuddyDetails(),
+                            participantListEvent.getConversation(),
+                            event.getMessageDetails())
+            );
+            // Failure
             if (!jabberResponseEvent.isSuccess()) {
-                log.error(jabberResponseEvent.getStatus());
-                log.error(jabberResponseEvent.getException());
+                return SendMessageResponseEvent.sendMessageFailure(
+                        SendMessageResponseEvent.Status.ERROR_JABBER, jabberResponseEvent.getException()
+                );
             }
         }
 
         // Return persistence event
-        return persistenceResponseEvent;
+        return SendMessageResponseEvent.sendMessageSuccess(
+                persistenceResponseEvent.getMessage()
+        );
     }
 }

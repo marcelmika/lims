@@ -87,10 +87,25 @@ public class SingleUserConversation implements MessageListener {
             conversation.conversationType = ConversationType.fromConversationTypeDetails(details.getConversationType());
         }
 
-        if (details.getParticipants() != null && details.getParticipants().size() > 0) {
-            // Get first participant (in general there shouldn't ever by more than 1 participants in a
-            // single user conversation
-            conversation.participant = Buddy.fromBuddyDetails(details.getParticipants().get(0));
+        if (details.getParticipants() != null) {
+            // The size of the participant list for a single user chat cannot be bigger than 2.
+            // However, we should fail gracefully here. So we just take the first participant in the list
+            // which isn't the owner of conversation and show a log message that should warn us.
+            if (details.getParticipants().size() > 2) {
+                log.error("The size of participants list for a single user conversation is bigger than 2." +
+                        "This shouldn't normally happen.");
+            }
+
+            // Get from by listing the participants
+            for (BuddyDetails participant : details.getParticipants()) {
+                // The creator of the conversation is not the participant
+                if (participant.getBuddyId().equals(details.getBuddy().getBuddyId())) {
+                    continue;
+                }
+                // Take first participant
+                conversation.participant = Buddy.fromBuddyDetails(participant);
+                break;
+            }
         }
 
         if (details.getMessages() != null) {
@@ -150,7 +165,7 @@ public class SingleUserConversation implements MessageListener {
         // Create new message from smack message
         Message message = Message.fromSmackMessage(smackMessage);
 
-        log.info(String.format("From: %s, Body: %s", message.getFrom().getScreenName(), message.getBody()));
+        log.debug(String.format("From: %s, Body: %s", message.getFrom().getScreenName(), message.getBody()));
 
         messages.add(message);
     }

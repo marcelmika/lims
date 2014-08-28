@@ -27,6 +27,8 @@ package com.marcelmika.lims.persistence.service;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.marcelmika.lims.api.entity.ConversationDetails;
 import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.events.conversation.*;
@@ -167,6 +169,54 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             // Call Failure
             return ReadSingleUserConversationResponseEvent.readConversationFailure(
                     ReadSingleUserConversationResponseEvent.Status.ERROR_PERSISTENCE, exception
+            );
+        }
+    }
+
+    /**
+     * Returns a list of participants related to the conversation
+     *
+     * @param event request event for method
+     * @return response event for method
+     */
+    @Override
+    public GetConversationParticipantsResponseEvent getParticipants(GetConversationParticipantsRequestEvent event) {
+        // Get conversation from event
+        Conversation conversation = Conversation.fromConversationDetails(event.getConversation());
+
+        try {
+            // Find conversation based on conversation ID
+            com.marcelmika.lims.persistence.generated.model.Conversation conversationModel =
+                    ConversationLocalServiceUtil.getConversation(conversation.getConversationId());
+
+            // Find participant related to the conversation
+            List<Participant> participants = ParticipantLocalServiceUtil.getConversationParticipants(
+                    conversationModel.getCid()
+            );
+
+            // Map participants to buddies
+            List<Buddy> buddies = new LinkedList<Buddy>();
+            for (Participant participant : participants) {
+                // Find user in Liferay
+                User user = UserLocalServiceUtil.getUser(participant.getParticipantId());
+                // Map Liferay user to buddy
+                Buddy buddy = Buddy.fromUser(user);
+                // Add to list
+                buddies.add(buddy);
+            }
+
+            // Add buddies to conversation
+            conversation.setParticipants(buddies);
+
+            // Success
+            return GetConversationParticipantsResponseEvent.getParticipantsSuccess(
+                    conversation.toConversationDetails()
+            );
+        }
+        // Failure
+        catch (Exception exception) {
+            return GetConversationParticipantsResponseEvent.getParticipantsFailure(
+                    GetConversationParticipantsResponseEvent.Status.ERROR_PERSISTENCE, exception
             );
         }
     }

@@ -198,4 +198,15 @@ public class Buddy {
     public void setPresence(Presence presence) {
         this.presence = presence;
     }
+
+    @Override
+    public String toString() {
+        return "Buddy{" +
+                "buddyId=" + buddyId +
+                ", fullName='" + fullName + '\'' +
+                ", screenName='" + screenName + '\'' +
+                ", password='" + password + '\'' +
+                ", presence=" + presence +
+                '}';
+    }
 }

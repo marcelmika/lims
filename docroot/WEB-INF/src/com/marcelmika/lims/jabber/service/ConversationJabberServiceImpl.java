@@ -26,8 +26,10 @@ package com.marcelmika.lims.jabber.service;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.marcelmika.lims.api.entity.ConversationDetails;
-import com.marcelmika.lims.api.events.conversation.*;
+import com.marcelmika.lims.api.events.conversation.CreateConversationRequestEvent;
+import com.marcelmika.lims.api.events.conversation.CreateConversationResponseEvent;
+import com.marcelmika.lims.api.events.conversation.SendMessageRequestEvent;
+import com.marcelmika.lims.api.events.conversation.SendMessageResponseEvent;
 import com.marcelmika.lims.jabber.JabberException;
 import com.marcelmika.lims.jabber.conversation.manager.single.SingleUserConversationManager;
 import com.marcelmika.lims.jabber.domain.Buddy;
@@ -36,9 +38,6 @@ import com.marcelmika.lims.jabber.domain.Message;
 import com.marcelmika.lims.jabber.domain.SingleUserConversation;
 import com.marcelmika.lims.jabber.session.UserSession;
 import com.marcelmika.lims.jabber.session.store.UserSessionStore;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Ing. Marcel Mika
@@ -102,13 +101,11 @@ public class ConversationJabberServiceImpl implements ConversationJabberService 
 
         // Single user conversation
         if (conversationType == ConversationType.SINGLE_USER) {
-            // Map from conversation details
-            SingleUserConversation singleConversation = SingleUserConversation.fromConversationDetails(
-                    event.getConversation()
-            );
 
-            // Send
-            return createSingleUserConversation(singleConversation, userSession);
+            // There is no need to create a conversation if we are dealing with the single user chat.
+            // Each time the message is set a new chat object is created. Thus we don't need to
+            // explicitly trigger any create conversation action. Consequently, return success.
+            return CreateConversationResponseEvent.createConversationSuccess(event.getConversation());
         }
         // Multi user conversation
         else if (conversationType == ConversationType.MULTI_USER) {
@@ -125,48 +122,6 @@ public class ConversationJabberServiceImpl implements ConversationJabberService 
     }
 
     /**
-     * Get all conversations related to the particular buddy
-     *
-     * @param event request event for method
-     * @return response event for  method
-     */
-    @Override
-    public GetConversationsResponseEvent getConversations(GetConversationsRequestEvent event) {
-        // Check preconditions
-        if (event.getBuddyDetails() == null) {
-            return GetConversationsResponseEvent.getConversationsFailure(
-                    new JabberException("Some of required params is missing")
-            );
-        }
-
-        // Get buddy form details
-        Buddy buddy = Buddy.fromBuddyDetails(event.getBuddyDetails());
-        // We use buddy ID as an identification
-        Long buddyId = buddy.getBuddyId();
-        // Get the session from store
-        UserSession userSession = userSessionStore.getUserSession(buddyId);
-        // No session
-        if (userSession == null) {
-            return GetConversationsResponseEvent.getConversationsFailure(
-                    new JabberException("There is no user session. Message cannot be sent.")
-            );
-        }
-
-        // Create new list
-        List<ConversationDetails> conversations = new ArrayList<ConversationDetails>();
-
-        // Add single user conversations
-        SingleUserConversationManager singleManager = userSession.getSingleUserConversationManager();
-        List<SingleUserConversation> singleConversations = singleManager.getConversations();
-        conversations.addAll(SingleUserConversation.toConversationDetailsList(singleConversations));
-
-        // todo: Add multi user conversations
-
-        // Return list
-        return GetConversationsResponseEvent.getConversationsSuccess(conversations);
-    }
-
-    /**
      * Sends message to conversation
      *
      * @param event request event for method
@@ -177,7 +132,8 @@ public class ConversationJabberServiceImpl implements ConversationJabberService 
         // Check preconditions
         if (event.getBuddyDetails() == null ||
                 event.getMessageDetails() == null ||
-                event.getConversationDetails() == null) {
+                event.getConversationDetails() == null ||
+                event.getConversationDetails().getBuddy() == null) {
             return SendMessageResponseEvent.sendMessageFailure(
                     SendMessageResponseEvent.Status.ERROR_WRONG_PARAMETERS
             );
@@ -231,34 +187,6 @@ public class ConversationJabberServiceImpl implements ConversationJabberService 
     // -------------------------------------------------------------------------------------------
     // Private Methods
     // -------------------------------------------------------------------------------------------
-
-    /**
-     * Creates a single user conversation
-     *
-     * @param conversation SingleUserConversation
-     * @param session      UserSession
-     * @return CreateConversationResponseEvent
-     */
-    private CreateConversationResponseEvent createSingleUserConversation(SingleUserConversation conversation,
-                                                                         UserSession session) {
-        // Create conversation in conversation manager taken from user session
-        SingleUserConversationManager manager = session.getSingleUserConversationManager();
-
-        // Create new conversation via manager
-        try {
-            // Create conversation via manager
-            SingleUserConversation singleUserConversation = manager.createConversation(conversation);
-
-            // Call success
-            return CreateConversationResponseEvent.createConversationSuccess(
-                    singleUserConversation.toConversationDetails()
-            );
-        } catch (JabberException exception) {
-            return CreateConversationResponseEvent.createConversationFailure(
-                    CreateConversationResponseEvent.Status.ERROR_JABBER, exception
-            );
-        }
-    }
 
     /**
      * Sends message to a single user conversation

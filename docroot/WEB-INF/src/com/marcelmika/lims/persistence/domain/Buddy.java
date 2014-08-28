@@ -24,6 +24,7 @@
 
 package com.marcelmika.lims.persistence.domain;
 
+import com.liferay.portal.model.User;
 import com.marcelmika.lims.api.entity.BuddyDetails;
 import com.marcelmika.lims.persistence.generated.model.Participant;
 
@@ -132,6 +133,23 @@ public class Buddy {
     }
 
     /**
+     * Factory method which create buddy form Liferay's user
+     *
+     * @param user User
+     * @return Buddy
+     */
+    public static Buddy fromUser(User user) {
+        // Create new buddy
+        Buddy buddy = new Buddy();
+        // Map data from user
+        buddy.buddyId = user.getUserId();
+        buddy.screenName = user.getScreenName();
+        buddy.fullName = user.getFullName();
+
+        return buddy;
+    }
+
+    /**
      * Maps user to user details
      *
      * @return UserDetails
@@ -195,5 +213,16 @@ public class Buddy {
 
     public void setPresence(Presence presence) {
         this.presence = presence;
+    }
+
+    @Override
+    public String toString() {
+        return "Buddy{" +
+                "buddyId=" + buddyId +
+                ", fullName='" + fullName + '\'' +
+                ", screenName='" + screenName + '\'' +
+                ", password='" + password + '\'' +
+                ", presence=" + presence +
+                '}';
     }
 }
