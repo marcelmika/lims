@@ -86,7 +86,8 @@ public class Environment {
         ALL,
         SITES,
         SOCIAL,
-        SITES_AND_SOCIAL
+        SITES_AND_SOCIAL,
+        USER_GROUPS
     }
 
     /**
@@ -112,6 +113,10 @@ public class Environment {
         // Sites and Social
         else if (value.equals("sites,social")) {
             return BuddyListStrategy.SITES_AND_SOCIAL;
+        }
+        // Groups
+        else if (value.equals("groups")) {
+            return BuddyListStrategy.USER_GROUPS;
         }
         // Unknown value
         else {
@@ -272,8 +277,18 @@ public class Environment {
      *
      * @return String[]
      */
-    public static String[] getBuddyListExcludes() {
+    public static String[] getBuddyListSiteExcludes() {
         return PortletPropertiesValues.BUDDY_LIST_SITE_EXCLUDES;
+    }
+
+    /**
+     * Returns an array of group names which should be excluded from
+     * the buddy list
+     *
+     * @return String[]
+     */
+    public static String[] getBuddyListGroupExcludes() {
+        return PortletPropertiesValues.BUDDY_LIST_GROUP_EXCLUDES;
     }
 
     /**

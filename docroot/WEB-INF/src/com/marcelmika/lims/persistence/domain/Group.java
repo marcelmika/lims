@@ -24,6 +24,7 @@
 
 package com.marcelmika.lims.persistence.domain;
 
+import com.liferay.portal.model.UserGroup;
 import com.marcelmika.lims.api.entity.GroupDetails;
 
 import java.util.ArrayList;
@@ -76,6 +77,21 @@ public class Group {
         Group group = new Group();
         // Map data from object
         group.name = (String) object[firstElement];
+
+        return group;
+    }
+
+    /**
+     * Factory method which create group from the user group
+     *
+     * @param userGroup UserGroup
+     * @return Group
+     */
+    public static Group fromUserGroup(UserGroup userGroup) {
+        // Crate new group
+        Group group = new Group();
+        // Map data from the user group
+        group.name = userGroup.getName();
 
         return group;
     }

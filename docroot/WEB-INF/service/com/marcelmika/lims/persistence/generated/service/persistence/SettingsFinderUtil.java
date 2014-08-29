@@ -48,6 +48,15 @@ public class SettingsFinderUtil {
 			ignoreDeactivatedUser, relationTypes, start, end);
 	}
 
+	public static java.util.List<java.lang.Object[]> findUserGroups(
+		java.lang.Long userId, boolean ignoreDefaultUser,
+		boolean ignoreDeactivatedUser, java.lang.String[] excludedGroups,
+		int start, int end) throws java.lang.Exception {
+		return getFinder()
+				   .findUserGroups(userId, ignoreDefaultUser,
+			ignoreDeactivatedUser, excludedGroups, start, end);
+	}
+
 	public static SettingsFinder getFinder() {
 		if (_finder == null) {
 			_finder = (SettingsFinder)PortletBeanLocatorUtil.locate(com.marcelmika.lims.persistence.generated.service.ClpSerializer.getServletContextName(),

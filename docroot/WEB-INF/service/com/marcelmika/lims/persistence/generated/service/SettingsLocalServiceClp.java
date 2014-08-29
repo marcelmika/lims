@@ -150,6 +150,13 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 		_methodParameterTypes25 = new String[] {
 				"java.lang.Long", "boolean", "boolean", "int[][]", "int", "int"
 			};
+
+		_methodName26 = "getUserGroups";
+
+		_methodParameterTypes26 = new String[] {
+				"java.lang.Long", "boolean", "boolean", "java.lang.String[][]",
+				"int", "int"
+			};
 	}
 
 	@Override
@@ -852,7 +859,7 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 	@Override
 	public java.util.List<java.lang.Object[]> getSitesGroups(
 		java.lang.Long userId, boolean ignoreDefaultUser,
-		boolean ignoreDeactivatedUser, java.lang.String[] excludedSties,
+		boolean ignoreDeactivatedUser, java.lang.String[] excludedSites,
 		int start, int end) throws java.lang.Exception {
 		Object returnObj = null;
 
@@ -866,7 +873,7 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 						
 					ignoreDeactivatedUser,
 						
-					ClpSerializer.translateInput(excludedSties),
+					ClpSerializer.translateInput(excludedSites),
 						
 					start,
 						
@@ -910,6 +917,49 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 					ignoreDeactivatedUser,
 						
 					ClpSerializer.translateInput(relationTypes),
+						
+					start,
+						
+					end
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof java.lang.Exception) {
+				throw (java.lang.Exception)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<java.lang.Object[]>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<java.lang.Object[]> getUserGroups(
+		java.lang.Long userId, boolean ignoreDefaultUser,
+		boolean ignoreDeactivatedUser, java.lang.String[] excludedGroups,
+		int start, int end) throws java.lang.Exception {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName26,
+					_methodParameterTypes26,
+					new Object[] {
+						ClpSerializer.translateInput(userId),
+						
+					ignoreDefaultUser,
+						
+					ignoreDeactivatedUser,
+						
+					ClpSerializer.translateInput(excludedGroups),
 						
 					start,
 						
@@ -986,4 +1036,6 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 	private String[] _methodParameterTypes24;
 	private String _methodName25;
 	private String[] _methodParameterTypes25;
+	private String _methodName26;
+	private String[] _methodParameterTypes26;
 }

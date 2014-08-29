@@ -365,7 +365,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @param userId                of the user whose groups are we looking for
 	* @param ignoreDefaultUser     true if default users should be ignored
 	* @param ignoreDeactivatedUser true if deactivated users should be ignored
-	* @param excludedSties         list of names of sites which should be excluded
+	* @param excludedSites         list of names of sites which should be excluded
 	* @param start                 value of the list
 	* @param end                   value of the list
 	* @return List of objects where each object contains group name and user info
@@ -374,10 +374,10 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	@Override
 	public java.util.List<java.lang.Object[]> getSitesGroups(
 		java.lang.Long userId, boolean ignoreDefaultUser,
-		boolean ignoreDeactivatedUser, java.lang.String[] excludedSties,
+		boolean ignoreDeactivatedUser, java.lang.String[] excludedSites,
 		int start, int end) throws java.lang.Exception {
 		return _settingsLocalService.getSitesGroups(userId, ignoreDefaultUser,
-			ignoreDeactivatedUser, excludedSties, start, end);
+			ignoreDeactivatedUser, excludedSites, start, end);
 	}
 
 	/**
@@ -399,6 +399,27 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 		throws java.lang.Exception {
 		return _settingsLocalService.getSocialGroups(userId, ignoreDefaultUser,
 			ignoreDeactivatedUser, relationTypes, start, end);
+	}
+
+	/**
+	* Returns a list of user's groups
+	*
+	* @param userId                of the user whose groups are we looking for
+	* @param ignoreDefaultUser     true if default users should be ignored
+	* @param ignoreDeactivatedUser true if deactivated users should be ignored
+	* @param excludedGroups         list of names of groups which should be excluded
+	* @param start                 value of the list
+	* @param end                   value of the list
+	* @return List of objects where each object contains group name and user info
+	* @throws Exception
+	*/
+	@Override
+	public java.util.List<java.lang.Object[]> getUserGroups(
+		java.lang.Long userId, boolean ignoreDefaultUser,
+		boolean ignoreDeactivatedUser, java.lang.String[] excludedGroups,
+		int start, int end) throws java.lang.Exception {
+		return _settingsLocalService.getUserGroups(userId, ignoreDefaultUser,
+			ignoreDeactivatedUser, excludedGroups, start, end);
 	}
 
 	/**

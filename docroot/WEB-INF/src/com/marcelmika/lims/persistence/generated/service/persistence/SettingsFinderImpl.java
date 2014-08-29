@@ -25,8 +25,9 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
 
     // Find all users SQL
     private static final String FIND_ALL_USERS = SettingsFinder.class.getName() + ".findAllUsers";
-    private static final String FIND_BY_USERS_GROUPS = SettingsFinder.class.getName() + ".findByUsersGroups";
+    private static final String FIND_BY_SITES_GROUPS = SettingsFinder.class.getName() + ".findBySitesGroups";
     private static final String FIND_BY_SOCIAL_GROUPS = SettingsFinder.class.getName() + ".findBySocialGroups";
+    private static final String FIND_BY_USER_GROUPS = SettingsFinder.class.getName() + ".findByUserGroups";
 
     // Placeholders
     private static final String PLACEHOLDER_DEFAULT_USER = "[$DEFAULT_USER$]";
@@ -112,7 +113,7 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             // Open database session
             session = openSession();
             // Generate SQL
-            String sql = getFindByUsersGroupsSQL(ignoreDefaultUser, ignoreDeactivatedUser, excludedSites);
+            String sql = getFindBySitesGroupsSQL(ignoreDefaultUser, ignoreDeactivatedUser, excludedSites);
 
             // Create query from sql
             SQLQuery query = session.createSQLQuery(sql);
@@ -170,7 +171,7 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             // Open database session
             session = openSession();
             // Generate SQL
-            String sql = getFindSocialGroups(ignoreDefaultUser, ignoreDeactivatedUser, relationTypes);
+            String sql = getFindSocialGroupsSQL(ignoreDefaultUser, ignoreDeactivatedUser, relationTypes);
 
             // Create query from sql
             SQLQuery query = session.createSQLQuery(sql);
@@ -189,6 +190,63 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             queryPos.add(userId);
             if (relationTypes.length > 0) {
                 queryPos.add(relationTypes);
+            }
+            queryPos.add(userId);
+
+            // Return the result
+            return (List<Object[]>) QueryUtil.list(query, getDialect(), start, end);
+
+        } finally {
+            // Session needs to be closed if something goes wrong
+            closeSession(session);
+        }
+    }
+
+    /**
+     * Returns all user groups where the user belongs
+     *
+     * @param userId                of the user whose social relations are we looking for
+     * @param ignoreDefaultUser     true if default users should be ignored
+     * @param ignoreDeactivatedUser true if deactivated users should be ignored
+     * @param excludedGroups        list of names of groups which should be excluded
+     * @param start                 value of the list
+     * @param end                   value of the list
+     * @return List objects where each object contains group name and user info
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked") // Cast List<Object[]> is unchecked
+    public List<Object[]> findUserGroups(Long userId,
+                                         boolean ignoreDefaultUser,
+                                         boolean ignoreDeactivatedUser,
+                                         String[] excludedGroups,
+                                         int start,
+                                         int end) throws Exception {
+
+        Session session = null;
+
+        try {
+            // Open database session
+            session = openSession();
+            // Generate SQL
+            String sql = getFindByUserGroupsSQL(ignoreDefaultUser, ignoreDeactivatedUser, excludedGroups);
+
+            // Create query from sql
+            SQLQuery query = session.createSQLQuery(sql);
+
+            // Now we need to map types to columns
+            query.addScalar("groupName", Type.STRING);
+            query.addScalar("userId", Type.LONG);
+            query.addScalar("screenName", Type.STRING);
+            query.addScalar("firstName", Type.STRING);
+            query.addScalar("middleName", Type.STRING);
+            query.addScalar("lastName", Type.STRING);
+            query.addScalar("presence", Type.STRING);
+
+            // Add parameters to query
+            QueryPos queryPos = QueryPos.getInstance(query);
+            queryPos.add(userId);
+            if (excludedGroups.length > 0) {
+                queryPos.add(excludedGroups);
             }
             queryPos.add(userId);
 
@@ -222,19 +280,19 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
     }
 
     /**
-     * Generates SQL for find by users query
+     * Generates SQL for find by sites groups query
      *
      * @param ignoreDefaultUser     true if default users should be ignored
      * @param ignoreDeactivatedUser true if deactivated users should be ignored
      * @param excludedGroups        names of groups that should be excluded from the query
-     * @return SQL string for find by users groups query
+     * @return SQL string for find by sites groups query
      */
-    private String getFindByUsersGroupsSQL(boolean ignoreDefaultUser,
+    private String getFindBySitesGroupsSQL(boolean ignoreDefaultUser,
                                            boolean ignoreDeactivatedUser,
                                            String[] excludedGroups) {
 
         // Get custom query sql (check /src/custom-sql/default.xml)
-        String sql = CustomSQLUtil.get(FIND_BY_USERS_GROUPS);
+        String sql = CustomSQLUtil.get(FIND_BY_SITES_GROUPS);
 
         // Add ignore default user query if needed
         sql = addIgnoreDefaultUserToSql(sql, ignoreDefaultUser);
@@ -274,9 +332,9 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
      * @param types                 relation types that should be counted in
      * @return SQL string for find by social groups query
      */
-    private String getFindSocialGroups(boolean ignoreDefaultUser,
-                                       boolean ignoreDeactivatedUser,
-                                       int[] types) {
+    private String getFindSocialGroupsSQL(boolean ignoreDefaultUser,
+                                          boolean ignoreDeactivatedUser,
+                                          int[] types) {
 
         // Get custom query sql (check /src/custom-sql/default.xml)
         String sql = CustomSQLUtil.get(FIND_BY_SOCIAL_GROUPS);
@@ -299,6 +357,51 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
         return StringUtil.replace(sql,
                 PLACEHOLDER_SOCIAL_RELATION_TYPES,
                 "SocialRelation.type_ IN (" + sb.toString() + ")");
+    }
+
+    /**
+     * Generates SQL for find by user groups query
+     *
+     * @param ignoreDefaultUser     true if default users should be ignored
+     * @param ignoreDeactivatedUser true if deactivated users should be ignored
+     * @param excludedGroups        names of groups that should be excluded from the query
+     * @return SQL string for find by sites groups query
+     */
+    private String getFindByUserGroupsSQL(boolean ignoreDefaultUser,
+                                          boolean ignoreDeactivatedUser,
+                                          String[] excludedGroups) {
+
+        // Get custom query sql (check /src/custom-sql/default.xml)
+        String sql = CustomSQLUtil.get(FIND_BY_USER_GROUPS);
+
+        // Add ignore user queries if needed
+        sql = addIgnoreDefaultUserToSql(sql, ignoreDefaultUser);
+        sql = addIgnoreDeactivatedUserToSql(sql, ignoreDeactivatedUser);
+
+        // If no excluded groups are set clear placeholders and return custom sql
+        if (excludedGroups.length == 0) {
+        return StringUtil.replace(sql,
+                new String[]{PLACEHOLDER_USERS_GROUPS_JOIN, PLACEHOLDER_USERS_GROUPS_WHERE},
+                new String[]{StringPool.BLANK, StringPool.BLANK});
+        }
+
+        // Otherwise, we need to build a query which will excluded proper sites
+        StringBundler sb = new StringBundler(excludedGroups.length * 2 - 1);
+        for (int i = 0; i < excludedGroups.length; i++) {
+            // Add question mark so we can add parameters
+            sb.append(StringPool.QUESTION);
+            // Add comma if not at the end
+            if ((i + 1) < excludedGroups.length) {
+                sb.append(StringPool.COMMA);
+            }
+        }
+
+        return StringUtil.replace(sql,
+                new String[]{PLACEHOLDER_USERS_GROUPS_JOIN, PLACEHOLDER_USERS_GROUPS_WHERE},
+                new String[]{
+                        "INNER JOIN UserGroup ON UserGroup.userGroupId = Users_UserGroups.userGroupId",
+                        "AND UserGroup.name NOT IN (" + sb.toString() + ")"
+                });
     }
 
     /**

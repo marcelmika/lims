@@ -32,4 +32,9 @@ public interface SettingsFinder {
 		java.lang.Long userId, boolean ignoreDefaultUser,
 		boolean ignoreDeactivatedUser, int[] relationTypes, int start, int end)
 		throws java.lang.Exception;
+
+	public java.util.List<java.lang.Object[]> findUserGroups(
+		java.lang.Long userId, boolean ignoreDefaultUser,
+		boolean ignoreDeactivatedUser, java.lang.String[] excludedGroups,
+		int start, int end) throws java.lang.Exception;
 }

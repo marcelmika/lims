@@ -24,6 +24,8 @@
 
 package com.marcelmika.lims.persistence.group;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.environment.Environment.BuddyListSocialRelation;
 import com.marcelmika.lims.api.environment.Environment.BuddyListStrategy;
@@ -45,6 +47,9 @@ import java.util.Map;
  */
 public class GroupManagerImpl implements GroupManager {
 
+    // Log
+    private static Log log = LogFactoryUtil.getLog(GroupManagerImpl.class);
+
     /**
      * Returns Group Collection of all groups related to the user
      *
@@ -61,8 +66,9 @@ public class GroupManagerImpl implements GroupManager {
         boolean ignoreDefaultUser = Environment.getBuddyListIgnoreDefaultUser();
         // Get the info if the deactivated user should be ignored
         boolean ignoreDeactivatedUser = Environment.getBuddyListIgnoreDeactivatedUser();
-        // Some site may be excluded
-        String[] excludedSites = Environment.getBuddyListExcludes();
+        // Some sites or groups may be excluded
+        String[] excludedSites = Environment.getBuddyListSiteExcludes();
+        String[] excludedGroups = Environment.getBuddyListGroupExcludes();
         // Relation types
         BuddyListSocialRelation[] relationTypes = Environment.getBuddyListAllowedSocialRelationTypes();
 
@@ -84,11 +90,19 @@ public class GroupManagerImpl implements GroupManager {
                     userId, ignoreDefaultUser, ignoreDeactivatedUser, relationTypes, start, end
             );
         }
+        // User Groups
+        else if (strategy == BuddyListStrategy.USER_GROUPS) {
+            return getUserGroups(userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedGroups, start, end);
+        }
         // Socialized and buddies from sites
-        else {
+        else if (strategy == BuddyListStrategy.SITES_AND_SOCIAL) {
             return getSitesAndSocialGroups(
                     userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, relationTypes, start, end
             );
+        }
+        // Unknown
+        else {
+            throw new Exception("Unknown buddy list strategy");
         }
     }
 
@@ -311,6 +325,71 @@ public class GroupManagerImpl implements GroupManager {
         // Merge
         GroupCollection groupCollection = new GroupCollection();
         groupCollection.setGroups(mergedGroups);
+
+        return groupCollection;
+    }
+
+    /**
+     * Returns group collection which contains user groups where the user belongs.
+     * The groups contain all users that are within except for the users given in param
+     *
+     * @param userId                which should be excluded from the list
+     * @param ignoreDefaultUser     boolean set to true if the default user should be excluded
+     * @param ignoreDeactivatedUser boolean set to true if the deactivated user should be excluded
+     * @param excludedGroups        names of groups that should be excluded from the group collection
+     * @param start                 of the list
+     * @param end                   of the list
+     * @return GroupCollection
+     * @throws Exception
+     */
+    private GroupCollection getUserGroups(Long userId,
+                                          boolean ignoreDefaultUser,
+                                          boolean ignoreDeactivatedUser,
+                                          String[] excludedGroups,
+                                          int start,
+                                          int end) throws Exception {
+
+        // Get user groups
+        List<Object[]> groupObjects = SettingsLocalServiceUtil.getUserGroups(
+                userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedGroups, start, end
+        );
+
+        // We are about to build a collection of groups that will contain
+        // users within the groups. However, we only get "flat" object which contains
+        // both group data and user data. Thus we need to create a hash map that will
+        // hold each group under the unique key (groupName). This should improve the
+        // speed of mapping since we can reuse groups that we already mapped.
+        Map<String, Group> groupMap = new HashMap<String, Group>();
+
+        // Build groups and users
+        for (Object[] object : groupObjects) {
+
+            // Deserialize group from object, group starts with 0
+            Group group = Group.fromPlainObject(object, 0);
+
+            // Check if the group is already cached
+            if (groupMap.get(group.getName()) == null) {
+                // Cache it
+                groupMap.put(group.getName(), group);
+            }
+            // Take the cached one
+            else {
+                group = groupMap.get(group.getName());
+            }
+
+            // Deserialize buddy from object, buddy starts at 1
+            Buddy buddy = Buddy.fromPlainObject(object, 1);
+
+            // Add it to group
+            group.addBuddy(buddy);
+        }
+
+        // Create group collection
+        GroupCollection groupCollection = new GroupCollection();
+        // Add groups to collection
+        for (Group group : groupMap.values()) {
+            groupCollection.addGroup(group);
+        }
 
         return groupCollection;
     }

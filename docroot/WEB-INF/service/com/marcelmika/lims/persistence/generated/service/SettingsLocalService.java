@@ -314,7 +314,7 @@ public interface SettingsLocalService extends BaseLocalService,
 	* @param userId                of the user whose groups are we looking for
 	* @param ignoreDefaultUser     true if default users should be ignored
 	* @param ignoreDeactivatedUser true if deactivated users should be ignored
-	* @param excludedSties         list of names of sites which should be excluded
+	* @param excludedSites         list of names of sites which should be excluded
 	* @param start                 value of the list
 	* @param end                   value of the list
 	* @return List of objects where each object contains group name and user info
@@ -323,7 +323,7 @@ public interface SettingsLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<java.lang.Object[]> getSitesGroups(
 		java.lang.Long userId, boolean ignoreDefaultUser,
-		boolean ignoreDeactivatedUser, java.lang.String[] excludedSties,
+		boolean ignoreDeactivatedUser, java.lang.String[] excludedSites,
 		int start, int end) throws java.lang.Exception;
 
 	/**
@@ -343,4 +343,22 @@ public interface SettingsLocalService extends BaseLocalService,
 		java.lang.Long userId, boolean ignoreDefaultUser,
 		boolean ignoreDeactivatedUser, int[] relationTypes, int start, int end)
 		throws java.lang.Exception;
+
+	/**
+	* Returns a list of user's groups
+	*
+	* @param userId                of the user whose groups are we looking for
+	* @param ignoreDefaultUser     true if default users should be ignored
+	* @param ignoreDeactivatedUser true if deactivated users should be ignored
+	* @param excludedGroups         list of names of groups which should be excluded
+	* @param start                 value of the list
+	* @param end                   value of the list
+	* @return List of objects where each object contains group name and user info
+	* @throws Exception
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<java.lang.Object[]> getUserGroups(
+		java.lang.Long userId, boolean ignoreDefaultUser,
+		boolean ignoreDeactivatedUser, java.lang.String[] excludedGroups,
+		int start, int end) throws java.lang.Exception;
 }

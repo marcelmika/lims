@@ -144,7 +144,7 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
      * @param userId                of the user whose groups are we looking for
      * @param ignoreDefaultUser     true if default users should be ignored
      * @param ignoreDeactivatedUser true if deactivated users should be ignored
-     * @param excludedSties         list of names of sites which should be excluded
+     * @param excludedSites         list of names of sites which should be excluded
      * @param start                 value of the list
      * @param end                   value of the list
      * @return List of objects where each object contains group name and user info
@@ -154,12 +154,12 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
     public List<Object[]> getSitesGroups(Long userId,
                                          boolean ignoreDefaultUser,
                                          boolean ignoreDeactivatedUser,
-                                         String[] excludedSties,
+                                         String[] excludedSites,
                                          int start,
                                          int end) throws Exception {
         // Find via settings finder
         return settingsFinder.findSitesGroups(
-                userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedSties, start, end
+                userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, start, end
         );
     }
 
@@ -185,6 +185,31 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
         // Find via settings finder
         return settingsFinder.findSocialGroups(
                 userId, ignoreDefaultUser, ignoreDeactivatedUser, relationTypes, start, end
+        );
+    }
+
+    /**
+     * Returns a list of user's groups
+     *
+     * @param userId                of the user whose groups are we looking for
+     * @param ignoreDefaultUser     true if default users should be ignored
+     * @param ignoreDeactivatedUser true if deactivated users should be ignored
+     * @param excludedGroups         list of names of groups which should be excluded
+     * @param start                 value of the list
+     * @param end                   value of the list
+     * @return List of objects where each object contains group name and user info
+     * @throws Exception
+     */
+    @Override
+    public List<Object[]> getUserGroups(Long userId,
+                                        boolean ignoreDefaultUser,
+                                        boolean ignoreDeactivatedUser,
+                                        String[] excludedGroups,
+                                        int start,
+                                        int end) throws Exception {
+        // Find via settings finder
+        return settingsFinder.findUserGroups(
+                userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedGroups, start, end
         );
     }
 }
