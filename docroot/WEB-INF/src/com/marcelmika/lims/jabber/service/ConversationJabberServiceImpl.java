@@ -31,6 +31,7 @@ import com.marcelmika.lims.api.events.conversation.CreateConversationResponseEve
 import com.marcelmika.lims.api.events.conversation.SendMessageRequestEvent;
 import com.marcelmika.lims.api.events.conversation.SendMessageResponseEvent;
 import com.marcelmika.lims.jabber.JabberException;
+import com.marcelmika.lims.jabber.conversation.manager.ConversationListener;
 import com.marcelmika.lims.jabber.conversation.manager.single.SingleUserConversationManager;
 import com.marcelmika.lims.jabber.domain.Buddy;
 import com.marcelmika.lims.jabber.domain.ConversationType;
@@ -38,6 +39,11 @@ import com.marcelmika.lims.jabber.domain.Message;
 import com.marcelmika.lims.jabber.domain.SingleUserConversation;
 import com.marcelmika.lims.jabber.session.UserSession;
 import com.marcelmika.lims.jabber.session.store.UserSessionStore;
+import com.marcelmika.lims.jabber.session.store.UserSessionStoreListener;
+
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Ing. Marcel Mika
@@ -45,13 +51,19 @@ import com.marcelmika.lims.jabber.session.store.UserSessionStore;
  * Date: 2/22/14
  * Time: 8:08 PM
  */
-public class ConversationJabberServiceImpl implements ConversationJabberService {
+public class ConversationJabberServiceImpl
+        implements ConversationJabberService, UserSessionStoreListener, ConversationListener {
 
     // Log
     private static Log log = LogFactoryUtil.getLog(ConversationJabberServiceImpl.class);
 
     // Dependencies
     private UserSessionStore userSessionStore;
+
+    // Listener
+    private List<ConversationJabberServiceListener> listeners = Collections.synchronizedList(
+            new LinkedList<ConversationJabberServiceListener>()
+    );
 
     /**
      * Constructor
@@ -60,12 +72,19 @@ public class ConversationJabberServiceImpl implements ConversationJabberService 
      */
     public ConversationJabberServiceImpl(final UserSessionStore userSessionStore) {
         this.userSessionStore = userSessionStore;
+        // Add listeners
+        userSessionStore.addUserSessionStoreListener(this);
     }
 
 
     // -------------------------------------------------------------------------------------------
     // Conversation Jabber Service
     // -------------------------------------------------------------------------------------------
+
+    @Override
+    public void addConversationJabberServiceListener(ConversationJabberServiceListener listener) {
+        listeners.add(listener);
+    }
 
     /**
      * Creates new conversation
@@ -185,6 +204,21 @@ public class ConversationJabberServiceImpl implements ConversationJabberService 
 
 
     // -------------------------------------------------------------------------------------------
+    // User Session Store Listener
+    // -------------------------------------------------------------------------------------------
+
+    @Override
+    public void userSessionAdded(UserSession userSession) {
+        userSession.getSingleUserConversationManager().addConversationListener(this);
+    }
+
+    @Override
+    public void userSessionRemoved(Long id) {
+        // Do nothing
+    }
+
+
+    // -------------------------------------------------------------------------------------------
     // Private Methods
     // -------------------------------------------------------------------------------------------
 
@@ -203,14 +237,33 @@ public class ConversationJabberServiceImpl implements ConversationJabberService 
         SingleUserConversationManager manager = session.getSingleUserConversationManager();
 
         try {
+            // Send message
             manager.sendMessage(conversation, message);
-        } catch (JabberException exception) {
+        }
+        // Failure
+        catch (JabberException exception) {
             return SendMessageResponseEvent.sendMessageFailure(
                     SendMessageResponseEvent.Status.ERROR_JABBER, exception);
         }
 
+        // Success
         return SendMessageResponseEvent.sendMessageSuccess(message.toMessageDetails());
     }
 
 
+    // -------------------------------------------------------------------------------------------
+    // Conversation Listener
+    // -------------------------------------------------------------------------------------------
+
+    @Override
+    public void messageReceived(Message message) {
+
+        // Create conversation from message
+        SingleUserConversation conversation = SingleUserConversation.fromMessage(message);
+
+        // Notify listeners
+        for (ConversationJabberServiceListener listener : listeners) {
+            listener.messageReceived(conversation.toConversationDetails(), message.toMessageDetails());
+        }
+    }
 }

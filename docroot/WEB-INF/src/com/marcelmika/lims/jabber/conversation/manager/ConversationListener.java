@@ -22,63 +22,22 @@
  * SOFTWARE.
  */
 
-package com.marcelmika.lims.api.entity;
+package com.marcelmika.lims.jabber.conversation.manager;
 
-import java.util.Date;
+import com.marcelmika.lims.jabber.domain.Message;
 
 /**
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
- * Date: 2/7/14
- * Time: 11:35 PM
+ * Date: 07/09/14
+ * Time: 21:01
  */
-public class MessageDetails {
-
-    private BuddyDetails to;
-    private BuddyDetails from;
-    private String body;
-    private Date createdAt;
-
-
-    public BuddyDetails getTo() {
-        return to;
-    }
-
-    public void setTo(BuddyDetails to) {
-        this.to = to;
-    }
-
-    public BuddyDetails getFrom() {
-        return from;
-    }
-
-    public void setFrom(BuddyDetails from) {
-        this.from = from;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    @Override
-    public String toString() {
-        return "MessageDetails{" +
-                "to=" + to +
-                ", from=" + from +
-                ", body='" + body + '\'' +
-                ", createdAt=" + createdAt +
-                '}';
-    }
+public interface ConversationListener {
+    /**
+     * * Called whenever the user receives a message within any
+     * of the conversations
+     *
+     * @param message received message
+     */
+    public void messageReceived(Message message);
 }

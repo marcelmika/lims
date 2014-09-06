@@ -60,11 +60,13 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
             }
 
             // Call success
-            return LoginBuddyResponseEvent.loginSuccess("User successfully logged in", buddy.toBuddyDetails());
+            return LoginBuddyResponseEvent.loginSuccess(buddy.toBuddyDetails());
 
-        } catch (Exception e) {
+        } catch (Exception exception) {
             // Call failure
-            return LoginBuddyResponseEvent.loginFailure(e.getLocalizedMessage(), buddy.toBuddyDetails());
+            return LoginBuddyResponseEvent.loginFailure(
+                    LoginBuddyResponseEvent.Status.ERROR_PERSISTENCE, exception
+            );
         }
     }
 

@@ -384,6 +384,15 @@ public class Environment {
     }
 
     /**
+     * Returns true if the Jabber Import User mechanism is enabled
+     *
+     * @return boolean
+     */
+    public static boolean isJabberImportUserEnabled() {
+        return PortletPropertiesValues.JABBER_IMPORT_USER_ENABLED;
+    }
+
+    /**
      * Returns true if SASL authentication mechanism is enabled
      *
      * @return boolean

@@ -30,9 +30,12 @@ import com.liferay.portal.kernel.util.Validator;
 import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.jabber.JabberException;
 import com.marcelmika.lims.jabber.connection.sasl.LiferaySaslMechanism;
-import com.marcelmika.lims.portal.properties.PortletPropertiesValues;
+import com.marcelmika.lims.jabber.domain.Buddy;
 import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.packet.Presence;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Manages user's connection to the server
@@ -84,39 +87,17 @@ public class ConnectionManagerImpl implements ConnectionManager, ConnectionListe
     }
 
     /**
-     * Log user in with username and password
+     * Login buddy
      *
-     * @param username String
-     * @param password String
+     * @param buddy Buddy
      * @throws JabberException if login fails
      */
     @Override
-    public void login(String username, String password) throws JabberException {
-        try {
-            // If the SASL is enabled login with username, password and resource
-            if (Environment.isSaslPlainEnabled()) {
-                // Login via SASL
-                connection.login(username, Environment.getSaslPlainPassword(), Environment.getJabberResource());
-            } else {
-                // Login with username and password
-                connection.login(username, password);
-            }
-            // Error occurred
-        } catch (Exception e) {
-            // Get message returned from the Jabber server
-            String message = e.getMessage();
-            // Check if the reason of failure was authorization
-            if (Validator.isNotNull(message) && message.contains("not-authorized")) {
-                // Call Session did not authorize
-                log.debug("Session for user: " + username + " did not authorize. Trying to import a user " +
-                        "(if enabled in config) and reauthorize.");
-                // Try to import user and login again
-//                importUserAndLogin(userId, username, password, connection);
-            } else {
-                // Session Did Not Login
-                throw new JabberException("Cannot log in user: " + username, e);
-            }
-        }
+    public void login(Buddy buddy) throws JabberException {
+        // Check if user import is enabled
+        boolean isImportUserEnabled = Environment.isJabberImportUserEnabled();
+        // Login user
+        login(buddy, isImportUserEnabled);
     }
 
     /**
@@ -166,6 +147,96 @@ public class ConnectionManagerImpl implements ConnectionManager, ConnectionListe
     @Override
     public void setPresence(Presence presence) {
         connection.sendPacket(presence);
+    }
+
+    /**
+     * Login user with username and password
+     *
+     * @param buddy            Buddy
+     * @param shouldImportUser true if the user should be imported to the jabber if login fails
+     * @throws JabberException
+     */
+    private void login(Buddy buddy, boolean shouldImportUser) throws JabberException {
+
+        try {
+            // If the SASL is enabled login with username, password and resource
+            if (Environment.isSaslPlainEnabled()) {
+                // Login via SASL
+                connection.login(
+                        buddy.getScreenName(), Environment.getSaslPlainPassword(), Environment.getJabberResource()
+                );
+            } else {
+                // Login with username and password
+                connection.login(buddy.getScreenName(), buddy.getPassword());
+            }
+        }
+        // Failure
+        catch (Exception e) {
+            // Get message returned from the Jabber server
+            String message = e.getMessage();
+
+            // Import user to server
+            if (shouldImportUser && Validator.isNotNull(message) && message.contains("not-authorized")) {
+                // Log
+                if (log.isDebugEnabled()) {
+                    log.debug(String.format(
+                            "Session for user %s did not authorize. Trying to import a user to Jabber.",
+                            buddy.getScreenName()
+                    ));
+                }
+                // Try to import user
+                importUser(buddy, connection);
+                // ... and login again. The second parameter must be false otherwise we could end up in the
+                // infinite recursion
+                login(buddy, false);
+            }
+            // Failure
+            else {
+                // Session Did Not Login
+                throw new JabberException(String.format("Cannot log in user %s", buddy.getScreenName()), e);
+            }
+        }
+    }
+
+    /**
+     * Imports user to the Jabber server
+     *
+     * @param buddy Buddy
+     * @throws JabberException
+     */
+    private void importUser(Buddy buddy, Connection connection) throws JabberException {
+
+        // Get account manager
+        AccountManager accountManager = connection.getAccountManager();
+        // Check if the server supports account creation
+        if (!accountManager.supportsAccountCreation()) {
+            throw new JabberException("Jabber server does not support account creation");
+        }
+
+        // Map params
+        Map<String, String> attributes = new HashMap<String, String>();
+        attributes.put("name", buddy.getFullName());
+
+        // Create an account
+        if (log.isDebugEnabled()) {
+            log.debug(String.format("Importing user %s to Jabber", buddy.getScreenName()));
+        }
+        try {
+            // Create account
+            accountManager.createAccount(buddy.getScreenName(), buddy.getPassword(), attributes);
+        }
+        // Failure
+        catch (XMPPException e) {
+            String message = e.getMessage();
+            // Conflict
+            if (Validator.isNotNull(message) && message.contains("conflict(409)")) {
+                throw new JabberException(String.format(
+                        "User %s already exists but has a different password", buddy.getScreenName()
+                ));
+            }
+
+            throw new JabberException("New account cannot be created", e);
+        }
     }
 
 

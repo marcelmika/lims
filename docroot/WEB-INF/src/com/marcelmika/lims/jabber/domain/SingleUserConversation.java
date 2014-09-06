@@ -47,6 +47,7 @@ public class SingleUserConversation implements MessageListener {
 
     private String conversationId;
     private ConversationType conversationType;
+    private Buddy buddy;
     private Buddy participant;
     private List<Message> messages = new ArrayList<Message>();
 
@@ -111,6 +112,27 @@ public class SingleUserConversation implements MessageListener {
         if (details.getMessages() != null) {
             conversation.messages = Message.fromMessageDetails(details.getMessages());
         }
+
+        return conversation;
+    }
+
+    public static SingleUserConversation fromMessage(Message message) {
+
+        Buddy from = message.getFrom();
+        Buddy to = message.getTo();
+
+        // Create new conversation
+        SingleUserConversation conversation = new SingleUserConversation();
+        // Todo: order alphabetically
+        String conversationId = String.format("%s_%s", from.getScreenName(), to.getScreenName());
+
+        // Properties
+        conversation.conversationType = ConversationType.SINGLE_USER;
+        conversation.conversationId = conversationId;
+
+        // Relations
+        conversation.buddy = from;
+        conversation.participant = to;
 
         return conversation;
     }
@@ -197,6 +219,14 @@ public class SingleUserConversation implements MessageListener {
 
     public void setParticipant(Buddy participant) {
         this.participant = participant;
+    }
+
+    public Buddy getBuddy() {
+        return buddy;
+    }
+
+    public void setBuddy(Buddy buddy) {
+        this.buddy = buddy;
     }
 
     public List<Message> getMessages() {

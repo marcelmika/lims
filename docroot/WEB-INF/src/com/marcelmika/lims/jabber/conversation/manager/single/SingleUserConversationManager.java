@@ -25,11 +25,10 @@
 package com.marcelmika.lims.jabber.conversation.manager.single;
 
 import com.marcelmika.lims.jabber.JabberException;
+import com.marcelmika.lims.jabber.conversation.manager.ConversationListener;
 import com.marcelmika.lims.jabber.domain.Message;
 import com.marcelmika.lims.jabber.domain.SingleUserConversation;
 import org.jivesoftware.smack.ChatManager;
-
-import java.util.List;
 
 /**
  * @author Ing. Marcel Mika
@@ -38,6 +37,13 @@ import java.util.List;
  * Time: 11:40 PM
  */
 public interface SingleUserConversationManager {
+
+    /**
+     * Register conversation listener
+     *
+     * @param listener ConversationListener
+     */
+    public void addConversationListener(ConversationListener listener);
 
     /**
      * Manage conversations from chat manager

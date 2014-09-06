@@ -86,9 +86,9 @@ public class Buddy {
         return buddy;
     }
 
-    public static Buddy fromSmackMessage(org.jivesoftware.smack.packet.Message smackMessage) {
+    public static Buddy fromSmackUser(String smackUser) {
         Buddy buddy = new Buddy();
-        buddy.screenName = Jid.getName(smackMessage.getFrom());
+        buddy.screenName = Jid.getName(smackUser);
 
         return buddy;
     }

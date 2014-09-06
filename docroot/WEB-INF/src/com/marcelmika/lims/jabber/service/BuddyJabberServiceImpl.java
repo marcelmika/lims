@@ -116,7 +116,9 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
         // No session
         if (userSession == null) {
             return LoginBuddyResponseEvent.loginFailure(
-                    "Cannot find session for buddy.", event.getDetails()
+                    LoginBuddyResponseEvent.Status.ERROR_JABBER,
+                    new JabberException(String.format("Cannot find session for buddy %s",
+                            event.getDetails().getScreenName()))
             );
         }
         // We need connection manager to login
@@ -124,17 +126,15 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
 
         try {
             // Login
-            connectionManager.login(buddy.getScreenName(), buddy.getPassword());
-        } catch (JabberException e) {
+            connectionManager.login(buddy);
+        } catch (JabberException exception) {
             // Failure
-            return LoginBuddyResponseEvent.loginFailure(e.getMessage(), buddy.toBuddyDetails());
+            return LoginBuddyResponseEvent.loginFailure(
+                    LoginBuddyResponseEvent.Status.ERROR_JABBER, exception);
         }
 
         // Success
-        return LoginBuddyResponseEvent.loginSuccess(
-                "User " + buddy.getBuddyId() + " successfully signed in",
-                buddy.toBuddyDetails()
-        );
+        return LoginBuddyResponseEvent.loginSuccess(buddy.toBuddyDetails());
     }
 
     /**

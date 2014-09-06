@@ -26,9 +26,13 @@ package com.marcelmika.lims.core.service;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.marcelmika.lims.api.entity.BuddyDetails;
+import com.marcelmika.lims.api.entity.ConversationDetails;
+import com.marcelmika.lims.api.entity.MessageDetails;
 import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.events.conversation.*;
 import com.marcelmika.lims.jabber.service.ConversationJabberService;
+import com.marcelmika.lims.jabber.service.ConversationJabberServiceListener;
 import com.marcelmika.lims.persistence.service.ConversationPersistenceService;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -40,7 +44,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  * Date: 2/19/14
  * Time: 11:03 PM
  */
-public class ConversationCoreServiceImpl implements ConversationCoreService {
+public class ConversationCoreServiceImpl implements ConversationCoreService, ConversationJabberServiceListener {
 
     // Dependencies
     ConversationJabberService conversationJabberService;
@@ -58,6 +62,9 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
                                        final ConversationPersistenceService conversationPersistenceService) {
         this.conversationJabberService = conversationJabberService;
         this.conversationPersistenceService = conversationPersistenceService;
+
+        // Listeners
+        conversationJabberService.addConversationJabberServiceListener(this);
     }
 
     /**
@@ -233,5 +240,34 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
         return SendMessageResponseEvent.sendMessageSuccess(
                 persistenceResponseEvent.getMessage()
         );
+    }
+
+
+    // -------------------------------------------------------------------------------------------
+    // Conversation Jabber Service Listener
+    // -------------------------------------------------------------------------------------------
+
+    @Override
+    public void messageReceived(ConversationDetails conversation, MessageDetails message) {
+        log.info("## CORE MESSAGE RECEIVED: " + message);
+
+        // Conversation holds the creator
+        BuddyDetails creator = conversation.getBuddy();
+
+        // Create the conversation
+        CreateConversationResponseEvent responseEvent = conversationPersistenceService.createConversation(
+                new CreateConversationRequestEvent(creator, conversation, message)
+        );
+
+        if (!responseEvent.isSuccess()) {
+            // TODO log
+            log.error(responseEvent.getException());
+        }
+
+        SendMessageResponseEvent sendMessageResponse = conversationPersistenceService.sendMessage(
+                new SendMessageRequestEvent(creator, conversation, message)
+        );
+
+        // Send message
     }
 }

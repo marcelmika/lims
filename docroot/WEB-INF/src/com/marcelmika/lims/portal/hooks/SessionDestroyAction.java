@@ -57,6 +57,11 @@ public class SessionDestroyAction extends SessionAction {
 
         // Create buddy from session
         Buddy buddy = Buddy.fromHttpSession(session);
+
+        if (log.isDebugEnabled()) {
+            log.debug(String.format("Session Destroyed for user %s", buddy.getBuddyId()));
+        }
+
         // Logout buddy
         LogoutBuddyResponseEvent responseEvent = coreService.logoutBuddy(
                 new LogoutBuddyRequestEvent(buddy.toBuddyDetails())

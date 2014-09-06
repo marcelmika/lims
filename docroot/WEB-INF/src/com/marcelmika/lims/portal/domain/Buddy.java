@@ -153,6 +153,7 @@ public class Buddy {
 
         buddy.buddyId = user.getUserId();
         buddy.screenName = user.getScreenName();
+        buddy.fullName = user.getFullName();
         buddy.password = password;
 
         return buddy;

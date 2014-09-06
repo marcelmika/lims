@@ -25,6 +25,7 @@
 package com.marcelmika.lims.jabber.connection.manager;
 
 import com.marcelmika.lims.jabber.JabberException;
+import com.marcelmika.lims.jabber.domain.Buddy;
 import org.jivesoftware.smack.ChatManager;
 import org.jivesoftware.smack.Connection;
 import org.jivesoftware.smack.Roster;
@@ -46,13 +47,12 @@ public interface ConnectionManager {
     public void createConnection() throws JabberException;
 
     /**
-     * Log user in with username and password
+     * Log user in
      *
-     * @param username String
-     * @param password String
+     * @param buddy Buddy
      * @throws JabberException if login fails
      */
-    public void login(String username, String password) throws JabberException;
+    public void login(Buddy buddy) throws JabberException;
 
     /**
      * Logout buddy

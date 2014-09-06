@@ -27,6 +27,7 @@ package com.marcelmika.lims.jabber.conversation.manager.single;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.jabber.JabberException;
+import com.marcelmika.lims.jabber.conversation.manager.ConversationListener;
 import com.marcelmika.lims.jabber.domain.Buddy;
 import com.marcelmika.lims.jabber.domain.Message;
 import com.marcelmika.lims.jabber.domain.SingleUserConversation;
@@ -34,6 +35,11 @@ import com.marcelmika.lims.jabber.utils.Jid;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManager;
 import org.jivesoftware.smack.ChatManagerListener;
+import org.jivesoftware.smack.MessageListener;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Ing. Marcel Mika
@@ -41,13 +47,29 @@ import org.jivesoftware.smack.ChatManagerListener;
  * Date: 4/3/14
  * Time: 11:20 PM
  */
-public class SingleUserConversationManagerImpl implements SingleUserConversationManager, ChatManagerListener {
+public class SingleUserConversationManagerImpl
+        implements SingleUserConversationManager, ChatManagerListener, MessageListener {
 
     // Log
     private static Log log = LogFactoryUtil.getLog(SingleUserConversationManagerImpl.class);
 
     // Smack Chat Manager
     private ChatManager chatManager;
+
+    // Conversation Listeners
+    private List<ConversationListener> conversationListeners = Collections.synchronizedList(
+            new ArrayList<ConversationListener>()
+    );
+
+    /**
+     * Register conversation listener
+     *
+     * @param listener ConversationListener
+     */
+    @Override
+    public void addConversationListener(ConversationListener listener) {
+        conversationListeners.add(listener);
+    }
 
     // -------------------------------------------------------------------------------------------
     // Single User Conversation Manager
@@ -77,9 +99,11 @@ public class SingleUserConversationManagerImpl implements SingleUserConversation
                             Message message) throws JabberException {
 
         // Log
-        log.debug(String.format("Conversation %s, to: %s, body %s",
-                        conversation.getConversationId(), conversation.getParticipant(), message.getBody())
-        );
+        if (log.isDebugEnabled()) {
+            log.debug(String.format("Conversation %s, to: %s, body %s",
+                            conversation.getConversationId(), conversation.getParticipant(), message.getBody())
+            );
+        }
 
         // Send a message to the conversation which was already in the system
         try {
@@ -93,8 +117,8 @@ public class SingleUserConversationManagerImpl implements SingleUserConversation
             chat.sendMessage(message.getBody());
         }
         // Failure
-        catch (Exception e) {
-            throw new JabberException(e.getMessage(), e);
+        catch (Exception exception) {
+            throw new JabberException(exception);
         }
     }
 
@@ -113,15 +137,61 @@ public class SingleUserConversationManagerImpl implements SingleUserConversation
     public void chatCreated(Chat chat, boolean createdLocally) {
         // Only if the remote user created the conversation
         if (!createdLocally) {
-            // Create new conversation
-            // TODO: Implement
-            log.debug("Chat creation not implemented yet");
-//            createConversation(chat);
-        } else {
-            // We don't need to care about it here because the chat was already
-            // created in createMessage() method called by the local user.
-            log.debug("Chat created locally with id: " + chat.getThreadID());
+            // Log
+            if (log.isDebugEnabled()) {
+                log.debug(String.format("Chat created remotely with participant: %s", chat.getParticipant()));
+            }
+            // Add listener
+            chat.addMessageListener(this);
+        }
+        // Local
+        else {
+            // We don't need to care about it here because the chat was already created
+            if (log.isDebugEnabled()) {
+                log.debug(String.format("Chat created locally with participant: %s", chat.getParticipant()));
+            }
         }
     }
 
+
+    // -------------------------------------------------------------------------------------------
+    // Message Listener
+    // -------------------------------------------------------------------------------------------
+
+    /**
+     * This is called whenever we receive a message
+     *
+     * @param chat         Chat
+     * @param smackMessage Message
+     */
+    @Override
+    public void processMessage(Chat chat, org.jivesoftware.smack.packet.Message smackMessage) {
+
+        // Parse message
+        Message message = Message.fromSmackMessage(smackMessage);
+
+        // Don't no pass a message that is empty
+        if (message.getBody() != null) {
+            // Notify about incoming message
+            notifyListeners(message);
+
+            // Log
+            if (log.isDebugEnabled()) {
+                log.debug(String.format("Participant: %s, Message received: %s", chat.getParticipant(), message));
+            }
+        }
+    }
+
+
+    /**
+     * Notifies listeners about incoming message
+     *
+     * @param message Message
+     */
+    private void notifyListeners(Message message) {
+        // Notify all
+        for (ConversationListener listener : conversationListeners) {
+            listener.messageReceived(message);
+        }
+    }
 }

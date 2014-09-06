@@ -22,63 +22,30 @@
  * SOFTWARE.
  */
 
-package com.marcelmika.lims.api.entity;
+package com.marcelmika.lims.jabber.session.store;
 
-import java.util.Date;
+import com.marcelmika.lims.jabber.session.UserSession;
 
 /**
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
- * Date: 2/7/14
- * Time: 11:35 PM
+ * Date: 07/09/14
+ * Time: 20:48
  */
-public class MessageDetails {
+public interface UserSessionStoreListener {
 
-    private BuddyDetails to;
-    private BuddyDetails from;
-    private String body;
-    private Date createdAt;
+    /**
+     * Called whenever the user session is added to the user session store
+     *
+     * @param userSession UserSession
+     */
+    public void userSessionAdded(UserSession userSession);
 
+    /**
+     * Called whenever the user session with the particular id is removed from the user session store
+     *
+     * @param id of the user session
+     */
+    public void userSessionRemoved(Long id);
 
-    public BuddyDetails getTo() {
-        return to;
-    }
-
-    public void setTo(BuddyDetails to) {
-        this.to = to;
-    }
-
-    public BuddyDetails getFrom() {
-        return from;
-    }
-
-    public void setFrom(BuddyDetails from) {
-        this.from = from;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    @Override
-    public String toString() {
-        return "MessageDetails{" +
-                "to=" + to +
-                ", from=" + from +
-                ", body='" + body + '\'' +
-                ", createdAt=" + createdAt +
-                '}';
-    }
 }
