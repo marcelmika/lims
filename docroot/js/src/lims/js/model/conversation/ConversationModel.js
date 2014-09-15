@@ -275,10 +275,6 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
             createdAt = message.get('createdAt');
             message.set('createdAt', createdAt + offset);
 
-            console.log('Offset: ' + offset);
-            console.log('Old Created: ' + new Date(createdAt));
-            console.log('New Created: ' + new Date(createdAt + offset));
-
             // Add message to message list
             messageModels.push(message);
         }
