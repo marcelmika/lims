@@ -117,7 +117,7 @@ public class MessageLocalServiceClp implements MessageLocalService {
 		_methodName19 = "addMessage";
 
 		_methodParameterTypes19 = new String[] {
-				"long", "long", "java.lang.String"
+				"long", "long", "java.lang.String", "java.util.Date"
 			};
 
 		_methodName20 = "readMessages";
@@ -676,8 +676,8 @@ public class MessageLocalServiceClp implements MessageLocalService {
 
 	@Override
 	public com.marcelmika.lims.persistence.generated.model.Message addMessage(
-		long cid, long creatorId, java.lang.String body)
-		throws java.lang.Exception {
+		long cid, long creatorId, java.lang.String body,
+		java.util.Date createdAt) throws java.lang.Exception {
 		Object returnObj = null;
 
 		try {
@@ -688,7 +688,9 @@ public class MessageLocalServiceClp implements MessageLocalService {
 						
 					creatorId,
 						
-					ClpSerializer.translateInput(body)
+					ClpSerializer.translateInput(body),
+						
+					ClpSerializer.translateInput(createdAt)
 					});
 		}
 		catch (Throwable t) {

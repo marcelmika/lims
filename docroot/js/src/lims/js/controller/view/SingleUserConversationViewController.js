@@ -201,15 +201,22 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          */
         _onMessageSubmitted: function (event) {
             // Vars
-            var model = this.get('model'),                  // Conversation model
-                message = event.message,                    // Received message
-                buddyDetails = this.get('buddyDetails');    // Currently logged user
+            var model = this.get('model'),                              // Conversation model
+                message = event.message,                                // Received message
+                offset = this.get('properties').getServerTimeOffset(),  // Server time offset
+                now = new Date().getTime(),                             // Current client time
+                createdAt = now - offset,                               // Created at timestamp
+                buddyDetails = this.get('buddyDetails');                // Currently logged user
+
+            console.log('Offset: ' + (offset));
+            console.log('Now: ' + new Date(now));
+            console.log('Created: ' + new Date(createdAt));
 
             // Add new message to the conversation
             model.addMessage(new Y.LIMS.Model.MessageItemModel({
                 from: buddyDetails,
                 body: message,
-                createdAt: new Date().getTime()
+                createdAt: createdAt
             }));
         },
 

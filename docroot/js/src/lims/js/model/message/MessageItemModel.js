@@ -30,12 +30,13 @@
  */
 Y.namespace('LIMS.Model');
 
-Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
+Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [Y.LIMS.Model.ModelExtension], {
 
     // Custom sync layer.
     sync: function (action, options, callback) {
-        // TODO: Take from settings
-        var content, parameters, url = Y.one('#limsPortletURL').get('value');
+
+        // Vars
+        var content, parameters;
 
         switch (action) {
 
@@ -51,7 +52,7 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [], {
                 content = Y.JSON.stringify(this.toJSON());
 
                 // Send request
-                Y.io(url, {
+                Y.io(this.getServerRequestUrl(), {
                     method: "POST",
                     data: {
                         query: "CreateMessage",

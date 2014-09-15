@@ -63,7 +63,6 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
                     },
                     on: {
                         success: function (id, o) {
-                            // TODO: Refactor
                             var i, groupCollection, groups, group, buddies;
                             // Parse groups
                             groupCollection = Y.JSON.parse(o.response);
