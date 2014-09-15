@@ -42,7 +42,14 @@ Y.LIMS.Core.DateFormatter = Y.Base.create('dateFormatter', Y.Base, [], {
             diff = (((new Date()).getTime() - date.getTime()) / 1000),
             day_diff = Math.floor(diff / 86400);
 
-        if (isNaN(day_diff) || day_diff < 0 || day_diff >= 31) {
+        // It is possible that the diff is in the past. This might happen when
+        // there is e.g. latency on the network. If such inconsistency happens return
+        // "just now"
+        if (day_diff < 0) {
+            return "just now";
+        }
+
+        if (isNaN(day_diff) || day_diff >= 31) {
             return "";
         }
 

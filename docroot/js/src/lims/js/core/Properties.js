@@ -71,6 +71,16 @@ Y.LIMS.Core.Properties = Y.Base.create('properties', Y.Base, [], {
         return this.get('fullName');
     },
 
+
+    /**
+     * Returns server time offset compared to client time
+     *
+     * @returns {timestamp}
+     */
+    getServerTimeOffset: function () {
+        return this.get('offset');
+    },
+
     /**
      * Returns true if the whole chat is enabled
      *
@@ -160,6 +170,18 @@ Y.LIMS.Core.Properties = Y.Base.create('properties', Y.Base, [], {
         serverTime: {
             valueFn: function () {
                 return Y.one('#limsCurrentServerTime').get('value');
+            }
+        },
+
+        /**
+         * Holds delta between current server time and client time
+         */
+        offset: {
+            valueFn: function () {
+                // Get server time
+                var currentChatServerTime = this.get('serverTime');
+                // Count offset
+                return new Date().getTime() - currentChatServerTime;
             }
         },
 

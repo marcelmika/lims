@@ -40,11 +40,18 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
     addMessage: function (message) {
 
         // Vars
-        var messageList = this.get('messageList');
+        var messageList = this.get('messageList'),  // List of messages
+            offset = this.get('serverTimeOffset'),  // Server time offset
+            createdAt;
 
         // This will send the message to the server
         message.set('conversationId', this.get('conversationId'));
         message.save(); // Message model has its own sync layer
+
+        // Timestamp needs to be updated because of the possible difference between
+        // server time and client time
+        createdAt = message.get('createdAt');
+        message.set('createdAt', createdAt + offset);
 
         // Add it locally. We are async here. In other words we are not
         // waiting for the response and directly add the message to the list
@@ -102,8 +109,8 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
 
         // Vars
         var parameters = Y.JSON.stringify({
-                conversationId: this.get('conversationId')
-            });
+            conversationId: this.get('conversationId')
+        });
 
         // Send the request
         Y.io(this.getServerRequestUrl(), {
@@ -244,9 +251,13 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
     updateConversation: function (conversation) {
 
         // Vars
-        var messageList = this.get('messageList'),
-            messageModels = [],
-            index;
+        var messageList = this.get('messageList'),        // List of messages
+            offset = this.get('serverTimeOffset'),        // Server time offset
+            createdAt,                                    // Stores message time of creation
+            messageModels = [],                           // Holds message models
+            message,                                      // Deserialized message
+            index;                                        // Used for iteration
+
         // Update from response
         this.setAttrs({
             etag: conversation.etag,
@@ -255,8 +266,17 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
 
         for (index = 0; index < conversation.messages.length; index++) {
             // TODO: Handle messages which wasn't yet sent to server
+
+            // Deserialize message
+            message = new Y.LIMS.Model.MessageItemModel(conversation.messages[index]);
+
+            // Timestamp needs to be updated because of the possible difference between
+            // server time and client time
+            createdAt = message.get('createdAt');
+            message.set('createdAt', createdAt + offset);
+
             // Add message to message list
-            messageModels.push(new Y.LIMS.Model.MessageItemModel(conversation.messages[index]));
+            messageModels.push(message);
         }
 
         messageList.reset(messageModels);
@@ -295,6 +315,10 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
 
         unreadMessagesCount: {
             value: 0 // default value
+        },
+
+        serverTimeOffset: {
+            value: null // to be set
         },
 
         messageList: {

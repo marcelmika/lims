@@ -26,10 +26,7 @@ package com.marcelmika.lims.portal.processor;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.marcelmika.lims.portal.controller.BuddyController;
-import com.marcelmika.lims.portal.controller.ConversationController;
-import com.marcelmika.lims.portal.controller.GroupController;
-import com.marcelmika.lims.portal.controller.SettingsController;
+import com.marcelmika.lims.portal.controller.*;
 import com.marcelmika.lims.portal.http.HttpStatus;
 import com.marcelmika.lims.portal.request.RequestParameterKeys;
 import com.marcelmika.lims.portal.response.ResponseUtil;
@@ -58,6 +55,7 @@ public class PortletProcessorImpl implements PortletProcessor {
     ConversationController conversationController;
     GroupController groupController;
     SettingsController settingsController;
+    ServerController serverController;
 
 
     // Client returns query parameter. Thanks to this we can decide which method should be called.
@@ -74,6 +72,7 @@ public class PortletProcessorImpl implements PortletProcessor {
     private static final String QUERY_UPDATE_BUDDY_PRESENCE = "UpdateBuddyPresence";
     private static final String QUERY_UPDATE_ACTIVE_PANEL = "UpdateActivePanel";
     private static final String QUERY_UPDATE_SETTINGS = "UpdateSettings";
+    private static final String QUERY_GET_SERVER_TIME = "GetServerTime";
 
     /**
      * Constructor
@@ -82,16 +81,19 @@ public class PortletProcessorImpl implements PortletProcessor {
      * @param conversationController ConversationController
      * @param groupController        GroupController
      * @param settingsController     SettingsController
+     * @param serverController       ServerController
      */
     public PortletProcessorImpl(final BuddyController buddyController,
                                 final ConversationController conversationController,
                                 final GroupController groupController,
-                                final SettingsController settingsController) {
+                                final SettingsController settingsController,
+                                final ServerController serverController) {
 
         this.buddyController = buddyController;
         this.conversationController = conversationController;
         this.groupController = groupController;
         this.settingsController = settingsController;
+        this.serverController = serverController;
     }
 
     /**
@@ -171,6 +173,10 @@ public class PortletProcessorImpl implements PortletProcessor {
         // Update settings
         else if (query.equals(QUERY_UPDATE_SETTINGS)) {
             settingsController.updateSettings(request, response);
+        }
+        // Get Server Time
+        else if (query.equals(QUERY_GET_SERVER_TIME)) {
+            serverController.getServerTime(request, response);
         }
     }
 

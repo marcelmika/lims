@@ -36,34 +36,47 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
             settingsModel = this.get('settingsModel'),
             notification = this.get('notification'),
             properties = this.get('properties'),
+            serverTime = this.get('serverTimeModel'),
             rootNode = this.getRootNode();
 
         // Attach events
         this._attachEvents();
 
-        // Group
-        new Y.LIMS.Controller.GroupViewController({
-            container: rootNode.one('.buddy-list'),
-            properties: properties
+        // Load the most fresh server time to count server time offset
+        serverTime.load(function (err) {
+
+            // Update to the optimal offset that we get from the server.
+            // If there is an error properties contain offset read from the
+            // html as a fallback.
+            if (!err) {
+                properties.set('offset', new Date().getTime() - serverTime.get('time'));
+            }
+
+            // Group
+            new Y.LIMS.Controller.GroupViewController({
+                container: rootNode.one('.buddy-list'),
+                properties: properties
+            });
+            // Presence
+            new Y.LIMS.Controller.PresenceViewController({
+                container: rootNode.one('.status-panel'),
+                buddyDetails: buddyDetails
+            });
+            // Settings
+            new Y.LIMS.Controller.SettingsViewController({
+                container: rootNode.one('.chat-settings'),
+                model: settingsModel
+            });
+            // Conversation
+            new Y.LIMS.Controller.ConversationsController({
+                container: rootNode.one('.lims-tabs'),
+                buddyDetails: buddyDetails,
+                settings: settingsModel,
+                notification: notification,
+                properties: properties
+            });
         });
-        // Presence
-        new Y.LIMS.Controller.PresenceViewController({
-            container: rootNode.one('.status-panel'),
-            buddyDetails: buddyDetails
-        });
-        // Settings
-        new Y.LIMS.Controller.SettingsViewController({
-            container: rootNode.one('.chat-settings'),
-            model: settingsModel
-        });
-        // Conversation
-        new Y.LIMS.Controller.ConversationsController({
-            container: rootNode.one('.lims-tabs'),
-            buddyDetails: buddyDetails,
-            settings: settingsModel,
-            notification: notification,
-            properties: properties
-        });
+
     },
 
     /**
@@ -139,6 +152,13 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
                 return new Y.LIMS.Model.SettingsModel({
                     buddy: this.get('buddyDetails')
                 });
+            }
+        },
+
+        // Server time
+        serverTimeModel: {
+            valueFn: function () {
+                return new Y.LIMS.Model.ServerTimeModel();
             }
         },
 

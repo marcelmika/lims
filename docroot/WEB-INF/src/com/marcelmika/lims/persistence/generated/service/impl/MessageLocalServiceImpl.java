@@ -20,6 +20,7 @@ import com.marcelmika.lims.persistence.generated.service.ConversationLocalServic
 import com.marcelmika.lims.persistence.generated.service.base.MessageLocalServiceBaseImpl;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,7 +45,7 @@ public class MessageLocalServiceImpl extends MessageLocalServiceBaseImpl {
 	 * Never reference this interface directly. Always use {@link com.marcelmika.lims.persistence.generated.service.MessageLocalServiceUtil} to access the message local service.
 	 */
 
-    public Message addMessage(long cid, long creatorId, String body) throws Exception {
+    public Message addMessage(long cid, long creatorId, String body, Date createdAt) throws Exception {
         // Fetch possible existing conversation
         Message messageModel = messagePersistence.create(counterLocalService.increment());
 
@@ -52,10 +53,7 @@ public class MessageLocalServiceImpl extends MessageLocalServiceBaseImpl {
         messageModel.setCid(cid);
         messageModel.setCreatorId(creatorId);
         messageModel.setBody(body);
-
-        // Time when the message was created
-        Calendar calendar = Calendar.getInstance();
-        messageModel.setCreatedAt(calendar.getTime());
+        messageModel.setCreatedAt(createdAt);
 
         // Update model
         messageModel = messagePersistence.update(messageModel, false);

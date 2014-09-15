@@ -135,7 +135,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                 conversationModel = new Y.LIMS.Model.ConversationModel({
                     conversationId: conversationId,
                     creator: buddyDetails,
-                    unreadMessagesCount: unreadMessagesCount
+                    unreadMessagesCount: unreadMessagesCount,
+                    serverTimeOffset: properties.getServerTimeOffset()
                 });
                 // Add conversation model to list
                 conversationList.add(conversationModel);
@@ -205,7 +206,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                 conversationId: conversationId,
                 creator: buddyDetails,
                 participants: [buddy],
-                title: buddy.get('fullName')
+                title: buddy.get('fullName'),
+                serverTimeOffset: properties.getServerTimeOffset()
             });
             // Add model to list
             conversationList.add(conversationModel);
