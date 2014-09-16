@@ -29,7 +29,13 @@ Y.namespace('LIMS.Model');
 
 Y.LIMS.Model.ServerTimeModel = Y.Base.create('settingsModel', Y.Model, [Y.LIMS.Model.ModelExtension], {
 
-    // Custom sync layer
+    /**
+     * Custom sync layer
+     *
+     * @param action  [create|read|update|delete]
+     * @param options extra parameters
+     * @param callback
+     */
     sync: function (action, options, callback) {
 
         var response,           // Response from server
@@ -39,6 +45,8 @@ Y.LIMS.Model.ServerTimeModel = Y.Base.create('settingsModel', Y.Model, [Y.LIMS.M
             instance = this;    // Save scope
 
         switch (action) {
+
+            // Read action, called on ServerTimeModel.load() method
             case 'read':
 
                 // Remember the time before the request. Thanks to that we can
@@ -91,14 +99,28 @@ Y.LIMS.Model.ServerTimeModel = Y.Base.create('settingsModel', Y.Model, [Y.LIMS.M
             case 'update':
             case 'delete':
                 break;
+
+            default:
+                if (callback) {
+                    callback('Invalid action');
+                }
+                break;
         }
     }
 
 }, {
+    // Add custom model attributes here. These attributes will contain your
+    // model's data. See the docs for Y.Attribute to learn more about defining
+    // attributes.
     ATTRS: {
 
+        /**
+         * Current server time
+         *
+         * {timestamp}
+         */
         time: {
-            // to be set
+            value: null // to be set
         }
     }
 });

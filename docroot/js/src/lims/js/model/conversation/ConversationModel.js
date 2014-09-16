@@ -46,7 +46,9 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
 
         // This will send the message to the server
         message.set('conversationId', this.get('conversationId'));
-        message.save(); // Message model has its own sync layer
+
+        // Send message
+        message.save();
 
         // Timestamp needs to be updated because of the possible difference between
         // server time and client time
@@ -255,6 +257,7 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
             offset = this.get('serverTimeOffset'),        // Server time offset
             createdAt,                                    // Stores message time of creation
             messageModels = [],                           // Holds message models
+            notAcknowledgedModels,                        // Message models from list that are not yet acknowledged
             message,                                      // Deserialized message
             index;                                        // Used for iteration
 
@@ -264,8 +267,11 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
             unreadMessagesCount: conversation.unreadMessagesCount
         });
 
+        // Keep a copy of messages that haven't been sent to server yet
+        notAcknowledgedModels = messageList.getNotAcknowledged();
+
+        // Parse messages from conversation messages
         for (index = 0; index < conversation.messages.length; index++) {
-            // TODO: Handle messages which wasn't yet sent to server
 
             // Deserialize message
             message = new Y.LIMS.Model.MessageItemModel(conversation.messages[index]);
@@ -279,6 +285,13 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
             messageModels.push(message);
         }
 
+        // Add not yet acknowledged messages at the and.
+        // Note: This is quite old school however the fastest possible way
+        for (index = 0; index < notAcknowledgedModels.length; index++) {
+            messageModels.push(notAcknowledgedModels[index]);
+        }
+
+        // Replay old models with the new ones
         messageList.reset(messageModels);
 
         // Notify about the event

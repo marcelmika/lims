@@ -42,6 +42,14 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
     template: Y.one('#lims-conversation-item-template').get('innerHTML'),
 
     /**
+     * Called on initialization of object
+     */
+    initializer: function () {
+        // Attach events
+        this._attachEvents();
+    },
+
+    /**
      * Renders view
      *
      * @returns {ConversationItemView}
@@ -62,13 +70,17 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
                 portrait: this._renderPortrait(from.get('screenName'))
             })
         );
+
         // Set date node
         this.set('dateNode', container.one('.conversation-item-date'));
 
         return this;
     },
 
-    updateTimestamp: function() {
+    /**
+     * Updates node that holds the creation time of message
+     */
+    updateTimestamp: function () {
         // Vars
         var dateNode = this.get('dateNode'),        // Node that holds date
             formatter = this.get('dateFormatter'),  // Prettify date formatter
@@ -76,6 +88,20 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
 
         // Update time
         dateNode.set('innerHTML', formatter.prettyDate(model.get('createdAt')));
+    },
+
+    /**
+     * Attach listeners to events
+     *
+     * @private
+     */
+    _attachEvents: function () {
+        // Vars
+        var model = this.get('model');
+
+        // Local events
+        model.after('messageSent', this.render, this);
+        model.after('messageError', this.render, this);
     },
 
     /**
@@ -98,30 +124,47 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
 
     // Specify attributes and static properties for your View here.
     ATTRS: {
-        // Override the default container attribute.
+
+        /**
+         * Container that holds the message
+         *
+         * {node}
+         */
         container: {
             valueFn: function () {
+                // Create node from template on initialization
                 return Y.Node.create(this.containerTemplate);
             }
         },
 
-        // Instance of model attached to view
-        model: {
-            value: null // Y.LIMS.Model.MessageItemModel
-        },
-
-        // Node that contains date
+        /**
+         * Node that contains date
+         *
+         * {node}
+         */
         dateNode: {
             value: null
         },
 
-        // Date formatter
+        /**
+         * Instance of model attached to view
+         *
+         * {MessageItemModel}
+         */
+        model: {
+            value: null // default value
+        },
+
+        /**
+         * Instance of date formatter
+         *
+         * {DateFormatter}
+         */
         dateFormatter: {
             valueFn: function () {
                 return new Y.LIMS.Core.DateFormatter();
             }
         }
     }
-
 });
 

@@ -23,33 +23,43 @@
  */
 
 /**
- * Group Model Item
+ * Message Item Model
  *
- * The class extends Y.Model and customizes it to use a localStorage
- * sync provider or load data via ajax. It represent a single group item.
+ * Class represents a model for a single message
  */
 Y.namespace('LIMS.Model');
 
 Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [Y.LIMS.Model.ModelExtension], {
 
-    // Custom sync layer.
+    /**
+     * Custom sync layer
+     *
+     * @param action  [create|read|update|delete]
+     * @param options extra parameters
+     * @param callback
+     */
     sync: function (action, options, callback) {
 
         // Vars
-        var content, parameters;
+        var content,            // Content of the request
+            parameters,         // Request parameters
+            instance = this;    // Save scope
 
         switch (action) {
 
-            // CREATE
+            // Create action, called on MessageItemModel.save() method
             case 'create':
 
                 // Parameters
                 parameters = {
                     conversationId: this.get('conversationId')
                 };
+
+                // Serialize
                 parameters = Y.JSON.stringify(parameters);
-                // Content
                 content = Y.JSON.stringify(this.toJSON());
+
+                instance.set('acknowledged', false);
 
                 // Send request
                 Y.io(this.getServerRequestUrl(), {
@@ -60,29 +70,50 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [Y.LI
                         content: content
                     },
                     on: {
+                        success: function () {
+
+                            // Message was acknowledged. Thanks to that the message can be overwritten by
+                            // a copy of the message received from the server.
+                            instance.set('acknowledged', true);
+                            instance.set('error', false);
+                            // Notify about success
+                            instance.fire("messageSent");
+
+                            if (callback) {
+                                callback(null, instance);
+                            }
+
+                        },
                         failure: function (x, o) {
                             // If the attempt is unauthorized session has expired
                             if (o.status === 401) {
                                 // Notify everybody else
                                 Y.fire('userSessionExpired');
                             }
+
+                            // An error occurred, save this to model
+                            instance.set('acknowledged', false);
+                            instance.set('error', true);
+
+                            // Notify about failure
+                            instance.fire("messageError");
+
+                            if (callback) {
+                                callback("Cannot send message", o.response);
+                            }
                         }
                     }
                 });
                 break;
 
-            // READ
             case 'read':
-                return;
-
-            // UPDATE
-            case 'update': // Message cannot be updated
-            // DELETE
-            case 'delete': // Message cannot be deleted
-                return;
+            case 'update':
+            case 'delete':
+                break;
 
             default:
                 callback('Invalid action');
+                break;
         }
     }
 
@@ -92,13 +123,24 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [Y.LI
         // model's data. See the docs for Y.Attribute to learn more about defining
         // attributes.
 
+        /**
+         * Unique string id of the conversation.
+         *
+         * {string}
+         */
         conversationId: {
             value: ""
         },
 
+        /**
+         * Sender of the message
+         *
+         * {BuddyModelItem}
+         */
         from: {
             /**
              * Setter
+             *
              * @param value String or BuddyModelItem
              * @returns {BuddyModelItem}
              */
@@ -112,12 +154,41 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [Y.LI
             }
         },
 
+        /**
+         * Body of the message
+         *
+         * {string}
+         */
         body: {
             value: "" // default value
         },
 
+        /**
+         * Time of creation
+         *
+         * {timestamp}
+         */
         createdAt: {
             value: null // default value
+        },
+
+        /**
+         * Set to true if the message was acknowledged. In other words the message
+         * was successfully sent to server and server responded with success.
+         *
+         * {boolean}
+         */
+        acknowledged: {
+            value: true // default value
+        },
+
+        /**
+         * If an error during the message delivery occurs this flag is set to true
+         *
+         * {boolean}
+         */
+        error: {
+            value: false // default value
         }
     }
 });

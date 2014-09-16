@@ -33,7 +33,18 @@ Y.namespace('LIMS.Model');
 Y.LIMS.Model.MessageListModel = Y.Base.create('messageListModel', Y.ModelList, [], {
 
     // This tells the list that it will hold instances of the GroupModelItem class.
-    model: Y.LIMS.Model.MessageItemModel
+    model: Y.LIMS.Model.MessageItemModel,
+
+    /**
+     * Returns an array of all message item models in this list that are now acknowledged
+     *
+     * @returns []
+     */
+    getNotAcknowledged: function () {
+        return this.filter(function (model) {
+            return model.get('acknowledged') === false;
+        });
+    }
 
 }, {
 
