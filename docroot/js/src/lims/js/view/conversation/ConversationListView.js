@@ -69,6 +69,16 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     },
 
     /**
+     * Sets focus to the text area
+     */
+    setTextFieldFocus: function () {
+        // Vars
+        var messageTextField = this.get('messageTextField');
+        // Set the focus
+        messageTextField.focus();
+    },
+
+    /**
      * Attaches listener to elements
      *
      * @private

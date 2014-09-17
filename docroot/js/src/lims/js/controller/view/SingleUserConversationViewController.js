@@ -62,6 +62,8 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             model.resetUnreadMessagesCounter();
             // Always scroll to the last message when user opens the window
             listView.scrollToBottom();
+            // Add focus on textarea
+            listView.setTextFieldFocus();
             // Hide badge since it's not needed anymore
             this._hideBadge();
             // Start timer that periodically updates timestamps of messages
