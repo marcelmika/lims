@@ -82,8 +82,6 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
      * This is called whenever the user session expires
      */
     sessionExpired: function () {
-        // Hide the whole portlet
-        this.getRootNode().hide();
         // Fire an event so the other controllers know about the expiration
         Y.fire('userSessionExpired');
     },
@@ -97,6 +95,7 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
         // Panel events
         Y.on('panelShown', this._onPanelShown, this);
         Y.on('panelHidden', this._onPanelHidden, this);
+        Y.on('userSessionExpired', this._onSessionExpired, this);
     },
 
     /**
@@ -125,6 +124,16 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
             // Update settings
             this.get('settingsModel').updateActivePanel(null);
         }
+    },
+
+    /**
+     * Called when the user session expires
+     *
+     * @private
+     */
+    _onSessionExpired: function () {
+        // Hide the whole portlet
+        this.getRootNode().hide();
     }
 
 }, {
