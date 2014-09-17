@@ -79,3 +79,11 @@
         <param name="movie" value="{url}"/>
     </object>
 </script>
+
+<%-- This template HTML will be used as a error notification in panel --%>
+<script type="text/x-template" id="lims-panel-error-template">
+    <div class="panel-error">
+        <div class="warning-icon"></div>
+        <div class="error-message"></div>
+    </div>
+</script>

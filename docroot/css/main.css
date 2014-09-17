@@ -337,6 +337,40 @@
 }
 
 /********************************************************************************
+/ PANEL - ERROR
+/********************************************************************************/
+
+.liferay-ims .panel-error {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.69);
+    top: 25px;
+    z-index: 2;
+    width: 100%;
+}
+
+.liferay-ims .panel-error .error-message {
+    margin: 15px 20px;
+    font-weight: 500;
+    line-height: 13px;
+    color: #ffffff;
+}
+
+.liferay-ims .panel-error .warning-icon {
+    background: transparent url(../images/icon-warning-white.png) no-repeat center center;
+    width: 21px;
+    height: 21px;
+    margin: 18px 7px;
+    float: left;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+    .liferay-ims .panel-error .warning-icon {
+        background-image: url(../images/icon-warning-white@2x.png);
+        background-size: auto 21px;
+    }
+}
+
+/********************************************************************************
 / SEARCH INPUT
 /********************************************************************************/
 

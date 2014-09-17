@@ -389,7 +389,14 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
         // Start periodical update
         this.set('timer', setInterval(function () {
             // Load model
-            conversationList.load();
+            conversationList.load(function (err) {
+                // Broadcast the state of connection
+                if (err) {
+                    Y.fire('connectionError');
+                } else {
+                    Y.fire('connectionOK');
+                }
+            });
         }, timerInterval));
     },
 

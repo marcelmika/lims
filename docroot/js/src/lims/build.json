@@ -6,6 +6,7 @@
             "jsfiles": [
                 "js/bootstrap.js",
                 "js/core/DateFormatter.js",
+                "js/core/i18n.js",
                 "js/core/ViewController.js",
                 "js/core/Notification.js",
                 "js/core/Properties.js"

@@ -135,6 +135,10 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
 
             // Local events
             listView.on('messageSubmitted', this._onMessageSubmitted, this);
+
+            // Remote events
+            Y.on('connectionError', this._onConnectionError, this);
+            Y.on('connectionOK', this._onConnectionOK, this);
         },
 
         /**
@@ -218,6 +222,24 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
                 body: message,
                 createdAt: createdAt
             }));
+        },
+
+        /**
+         * Called whenever an error with connection occurred
+         *
+         * @private
+         */
+        _onConnectionError: function () {
+            this.showError(Y.LIMS.Core.i18n.values.connectionErrorMessage);
+        },
+
+        /**
+         * Called when there are no more connection errors
+         *
+         * @private
+         */
+        _onConnectionOK: function () {
+            this.hideError();
         },
 
         /**
