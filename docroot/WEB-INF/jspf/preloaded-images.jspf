@@ -1,0 +1,68 @@
+<%--
+  ~ The MIT License (MIT)
+  ~
+  ~ Copyright (c) 2014 Marcel Mika, marcelmika.com
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  --%>
+
+
+<%--
+
+This fragment contains all the images that need to be preloaded before thay are actually displayed.
+Some elements are created "on the fly", e.g. warning messages, etc. Imagine the situation when
+you lost a connection with server. You want to display a warning icon but you can't since the icon
+must be loaded from the server first. However, if you add the icon here it will be loaded no matter
+what happens. Furthermore, the preloaded-images class is defined in css. It's taken away from the
+visible are so it's not going to interfee with user attention.
+
+--%>
+
+<% { %>
+
+<div class="preloaded-images">
+    <img src="<%= request.getContextPath() %>/images/icon-resend.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/icon-resend@2x.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/icon-basket.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/icon-basket@2x.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/icon-warning-red.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/icon-warning-red@2x.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/icon-warning-white.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/icon-warning-white@2x.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/preloader-light.gif" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/preloader-light@2x.gif" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/icon-people-selected.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/icon-people-selected@2x.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/icon-settings-selected.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/icon-settings-selected@2x.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/status-online.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/status-online@2x.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/status-busy.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/status-busy@2x.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/status-unavailable.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/status-unavailable@2x.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/status-off.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/status-off@2x.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/minimize-button.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/minimize-button@2x.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/close-button.png" width="1" height="1" alt=""/>
+    <img src="<%= request.getContextPath() %>/images/close-button@2x.png" width="1" height="1" alt=""/>
+</div>
+
+<% } %>

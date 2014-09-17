@@ -42,6 +42,16 @@
     -webkit-box-shadow: none !important;
 }
 
+/* Preloaded images should be taken as far from the visible area as possible */
+.liferay-ims .preloaded-images {
+    position: absolute;
+    overflow: hidden;
+    left: -9999px;
+    top: -9999px;
+    height: 1px;
+    width: 1px;
+}
+
 /********************************************************************************
 / GLOBALS
 /********************************************************************************/

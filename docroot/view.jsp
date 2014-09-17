@@ -73,4 +73,8 @@
                    useNamespace="false"
                    value="${fullName}"/>
     </div>
+
+    <%-- Preloaded Images --%>
+    <%@ include file="/WEB-INF/jspf/preloaded-images.jspf" %>
+
 </c:if>
