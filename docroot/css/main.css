@@ -67,10 +67,13 @@
 .liferay-ims button {
     background: transparent;
     border: none;
+    padding: 0;
+    margin: 0;
+    opacity: 1 !important;
 }
 
 .liferay-ims button:hover {
-    opacity: 0.7;
+    opacity: 0.6 !important;
 }
 
 /********************************************************************************
@@ -554,7 +557,7 @@
     width: 21px;
     height: 21px;
     float: right;
-    padding-right: 2px;
+    padding-right: 15px;
 }
 
 .liferay-ims .conversation .conversation-item-error .resend-button.preloader {
@@ -569,7 +572,6 @@
     width: 16px;
     height: 21px;
     float: right;
-    margin-right: -1px; /* To make it aligned with date node */
     padding-right: 0;
 }
 

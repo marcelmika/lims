@@ -57,7 +57,7 @@
     <div class="panel">
         <div class="panel-window">
             <div class="panel-title">
-                <div class="panel-button minimize"></div>
+                <button class="panel-button minimize"></button>
                 <div class="panel-title-text">
                     <liferay-ui:message key="panel-settings-title"/>
                 </div>
