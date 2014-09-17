@@ -37,9 +37,15 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
     // Specify an optional model to associate with the view.
     model: Y.LIMS.Model.MessageItemModel,
 
-    // The template property holds the contents of the #lims-group-item-template
-    // element, which will be used as the HTML template for each group item.
+    // The template property holds the contents of the #lims-conversation-item-template
+    // element, which will be used as the HTML template for each conversation item.
+    // Check the templates.jspf to see all templates
     template: Y.one('#lims-conversation-item-template').get('innerHTML'),
+
+    // The template property holds the contents of the #lims-conversation-item-error-template
+    // element, which will be used as the HTML template for an error message
+    // Check the templates.jspf to see all templates
+    errorTemplate: Y.one('#lims-conversation-item-error-template').get('innerHTML'),
 
     /**
      * Called on initialization of object
@@ -59,7 +65,8 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
         var container = this.get('container'),      // Container that holds the view
             model = this.get('model'),              // Message model
             from = model.get('from'),               // Creator of the message
-            formatter = this.get('dateFormatter');  // Prettify date formatter
+            formatter = this.get('dateFormatter'),  // Prettify date formatter
+            instance = this;                        // Save instance
 
         // Fill data from model to template and set it to container
         container.set('innerHTML', Y.Lang.sub(this.template, {
@@ -70,6 +77,23 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
                 portrait: this._renderPortrait(from.get('screenName'))
             })
         );
+
+        // Add error node if needed
+        if (model.get('error') === true) {
+            // Create error node from template and add it to the container
+            container.append(Y.Lang.sub(this.errorTemplate));
+
+            // Attach click on delete button event
+            container.one('.delete-button').on('click', function (event) {
+                event.preventDefault();
+                instance._onDeleteButtonClick();
+            });
+            // Attach click on resend button event
+            container.one('.resend-button').on('click', function (event) {
+                event.preventDefault();
+                instance._onResendButtonClick();
+            });
+        }
 
         // Set date node
         this.set('dateNode', container.one('.conversation-item-date'));
@@ -102,6 +126,7 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
         // Local events
         model.after('messageSent', this.render, this);
         model.after('messageError', this.render, this);
+        model.after('destroy', this._onDestroy, this);
     },
 
     /**
@@ -118,6 +143,57 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
         portraitView.render();
 
         return portraitView.get('container').get('outerHTML');
+    },
+
+    /**
+     * Called when the user presses resend button
+     *
+     * @private
+     */
+    _onResendButtonClick: function () {
+        // Vars
+        var model = this.get('model'),
+            resendButtonNode = this.get('container').one('.resend-button'),
+            deleteButtonNode = this.get('container').one('.delete-button');
+
+        // Prevent user to click on preloader more than once
+        if (!resendButtonNode.hasClass('preloader')) {
+            // Add preloader to the resend button
+            resendButtonNode.addClass('preloader');
+            // We don't want the user to delete the message
+            // that is being processed
+            deleteButtonNode.hide();
+
+            // Save the model again
+            model.save();
+        }
+    },
+
+    /**
+     * Called when the user presses delete button
+     *
+     * @private
+     */
+    _onDeleteButtonClick: function () {
+        // Vars
+        var model = this.get('model');
+
+        // Destroy model
+        model.destroy();
+    },
+
+    /**
+     * Called when the model is destroyed
+     *
+     * @private
+     */
+    _onDestroy: function () {
+        // Destroying a view no longer also destroys the view's container node by default.
+        // To destroy a view's container node when destroying the view, pass {remove: true}
+        // to the view's destroy() method.
+        this.destroy({
+            remove: true
+        });
     }
 
 }, {

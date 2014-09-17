@@ -77,7 +77,7 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [Y.LI
                             instance.set('acknowledged', true);
                             instance.set('error', false);
                             // Notify about success
-                            instance.fire("messageSent");
+                            instance.fire('messageSent');
 
                             if (callback) {
                                 callback(null, instance);
@@ -96,7 +96,7 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [Y.LI
                             instance.set('error', true);
 
                             // Notify about failure
-                            instance.fire("messageError");
+                            instance.fire('messageError');
 
                             if (callback) {
                                 callback("Cannot send message", o.response);

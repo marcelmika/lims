@@ -86,6 +86,7 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
 
         // Attach events to model
         model.after('messageAdded', this._onMessageAdded, this);
+        model.after('messageError', this._onMessageError, this);
         model.after('messagesUpdated', this._onMessagesUpdated, this);
     },
 
@@ -115,6 +116,16 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         // Since the list is already rendered there is no need to
         // animate any other addition to the list
         this.set('shouldAnimateList', false);
+    },
+
+    /**
+     * Called when there is an error during message delivery
+     *
+     * @private
+     */
+    _onMessageError: function () {
+        // Scroll to bottom otherwise the error wouldn't be visible
+        this.scrollToBottom();
     },
 
     /**

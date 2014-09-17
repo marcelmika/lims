@@ -44,6 +44,18 @@ Y.LIMS.Model.MessageListModel = Y.Base.create('messageListModel', Y.ModelList, [
         return this.filter(function (model) {
             return model.get('acknowledged') === false;
         });
+    },
+
+    /**
+     * Returns a comparator used in the sort() function.
+     * When a model is added to a list, it's automatically inserted at the correct index
+     * to maintain the sort order of the list.
+     *
+     * @param model
+     * @returns {*}
+     */
+    comparator: function (model) {
+        return model.get('createdAt');
     }
 
 }, {

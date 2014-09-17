@@ -42,13 +42,19 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
         // Vars
         var messageList = this.get('messageList'),  // List of messages
             offset = this.get('serverTimeOffset'),  // Server time offset
-            createdAt;
+            createdAt,                              // Creation date of message
+            instance = this;                        // Save scope
 
-        // This will send the message to the server
+        // Message has a conversation id same as the conversation id stored in this model
         message.set('conversationId', this.get('conversationId'));
 
-        // Send message
-        message.save();
+        // This will send the message to the server
+        message.save(function (err) {
+            // Trigger event if the message wasn't sent
+            if (err) {
+                instance.fire('messageError');
+            }
+        });
 
         // Timestamp needs to be updated because of the possible difference between
         // server time and client time
