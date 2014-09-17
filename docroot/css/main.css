@@ -2,6 +2,17 @@
 / RESET
 /********************************************************************************/
 
+.liferay-ims * {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    background: none repeat scroll 0 0 transparent;
+    font-weight: normal;
+    text-decoration: none;
+    text-indent: 0;
+    text-align: left;
+}
+
 .liferay-ims div,
 .liferay-ims span,
 .liferay-ims p,
@@ -16,8 +27,7 @@
 .liferay-ims li,
 .liferay-ims fieldset,
 .liferay-ims label,
-.liferay-ims textarea
-{
+.liferay-ims textarea {
     margin: 0;
     padding: 0;
     border: 0;
@@ -30,18 +40,6 @@
 
 .liferay-ims ul {
     list-style: none;
-}
-
-/* Reset */
-.liferay-ims * {
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
-    background: none repeat scroll 0 0 transparent;
-    font-weight: normal;
-    text-decoration: none;
-    text-indent: 0;
-    text-align: left;
 }
 
 /********************************************************************************
