@@ -263,8 +263,10 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
      */
     _onMessageTextFieldUpdated: function (event) {
         var textField = this.get('messageTextField'),
-        // TODO: Add html escaping
-            value = textField.get('value').replace(/\n|\r/gim, ''); // Get rid of new line characters
+            value;
+
+        // Get rid of new line characters
+        value = textField.get('value').replace(/\n|\r/gim, '');
 
         // Send message on enter
         if (event.keyCode === 13 && !event.shiftKey && value.length) {
@@ -289,7 +291,6 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
      * @private
      */
     _resizeMessageTextField: function () {
-
         // Vars
         var heightMonitor = this.get('heightMonitor').getDOM(),
             messageTextField = this.get('messageTextField').getDOM(),

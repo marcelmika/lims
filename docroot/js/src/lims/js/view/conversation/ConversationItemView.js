@@ -73,7 +73,7 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
                 createdPrettified: formatter.prettyDate(model.get('createdAt')),
                 created: new Date(model.get('createdAt')),
                 fullName: from.get('fullName'),
-                content: model.get('body'),
+                content: Y.Escape.html(model.get('body')),
                 portrait: this._renderPortrait(from.get('screenName'))
             })
         );
