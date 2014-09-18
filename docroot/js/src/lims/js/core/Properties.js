@@ -31,10 +31,10 @@ Y.namespace('LIMS.Core');
 
 Y.LIMS.Core.Properties = Y.Base.create('properties', Y.Base, [], {
 
-    userId: null,      // This is set main.js, to access it use Y.LIMS.Core.Properties.userId
-    companyId: null,   // This is set main.js, to access it use Y.LIMS.Core.Properties.companyId
-    pathImage: null,   // This is set main.js, to access it use Y.LIMS.Core.Properties.pathImage
-
+    userId: null,      // This is set in main.js, to access it use Y.LIMS.Core.Properties.userId
+    companyId: null,   // This is set in main.js, to access it use Y.LIMS.Core.Properties.companyId
+    pathImage: null,   // This is set in main.js, to access it use Y.LIMS.Core.Properties.pathImage
+    isIE: false,       // This is set in main.js, to access it use Y.LIMS.Core.Properties.isIE
 
     /**
      * Called when the object is created

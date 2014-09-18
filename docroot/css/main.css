@@ -60,6 +60,7 @@
 }
 
 .liferay-ims textarea,
+.liferay-ims pre,
 .liferay-ims, input {
     font-weight: 200;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -533,11 +534,12 @@
 
 .liferay-ims .conversation .panel-input {
     position: relative;
-    height: 40px;
+    height: 34px;
 }
 
 .liferay-ims .conversation .panel-input textarea {
     width: 249px;
+    height: 22px;
     padding: 5px 10px 5px;
     background: #f8f8f8;
     border: 1px solid #dedede;
@@ -564,6 +566,21 @@
 .liferay-ims .conversation span.highlight {
     background: #a5d6ef;
     font-weight: normal;
+}
+
+.liferay-ims .chat-height-monitor {
+    white-space: pre;
+    white-space: pre-wrap;
+    white-space: pre-line;
+    white-space: -o-pre-wrap;
+    white-space: -moz-pre-wrap;
+    word-wrap: break-word;
+    left: -10000em;
+    top: -10000em;
+    padding: 5px 10px 5px;
+    font-size: 12px;
+    line-height: 14px;
+    position: absolute;
 }
 
 /********************************************************************************

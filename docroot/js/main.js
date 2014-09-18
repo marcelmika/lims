@@ -15,6 +15,7 @@ AUI().use('lims-core', "lims-model", "lims-view", "lims-controller", function (A
         A.LIMS.Core.Properties.pathImage = Liferay.ThemeDisplay.getPathImage();
         A.LIMS.Core.Properties.userId = Liferay.ThemeDisplay.getUserId();
         A.LIMS.Core.Properties.companyId = Liferay.ThemeDisplay.getCompanyId();
+        A.LIMS.Core.Properties.isIE = Liferay.Browser.isIe();
 
         // Set i18n values
         A.LIMS.Core.i18n.values = {
