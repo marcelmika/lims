@@ -93,6 +93,17 @@
     </div>
 </script>
 
+<%-- This template HTML will be used to render error under message --%>
+<script type="text/x-template" id="lims-group-list-error-template">
+    <div class="group-list-error">
+        <div class="warning-icon"></div>
+        <div class="error-message"><liferay-ui:message key="panel-group-list-error-text"/></div>
+        <button class="resend-button"
+                title="<liferay-ui:message key="panel-group-list-error-resend-title" />"></button>
+        <div class="clear"></div>
+    </div>
+</script>
+
 <%-- This template HTML will be used to play a sound via swf file --%>
 <script type="text/x-template" id="lims-notification-template">
     <object type="application/x-shockwave-flash"

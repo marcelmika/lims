@@ -34,57 +34,268 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
     // Specify a model to associate with the view.
     model: Y.LIMS.Model.GroupModelList,
 
-    // The initializer runs when the instance is created, and gives
-    // us an opportunity to set up the view.
+    // The template property holds the contents of the #lims-group-list-error-template
+    // element, which will be used as the HTML template for an error message
+    // Check the templates.jspf to see all templates
+    errorTemplate: Y.one('#lims-group-list-error-template').get('innerHTML'),
+
+    /**
+     * The initializer runs when the instance is created, and gives
+     * us an opportunity to set up the view.
+     */
     initializer: function () {
-        // Init model
-        this._initModel();
+        // Attach events
+        this._attachEvents();
     },
 
-    // Init model attached to the view
-    _initModel: function () {
-        var groupModelList;
-        // Init group list
-        groupModelList = this.get('model');
-        // Update the display when a new item is added to the list, or when the
-        // entire list is reset.
-        groupModelList.after('add', this._onGroupAdd, this);
-        groupModelList.after('reset', this._onGroupReset, this);
+    /**
+     * Attaches listeners to events
+     *
+     * @private
+     */
+    _attachEvents: function () {
+        var model = this.get('model');
+
+        // Local events
+        model.after('add', this._onGroupAdd, this);
+        model.after('reset', this._onGroupReset, this);
+        model.after('groupsReadSuccess', this._onGroupsReadSuccess, this);
+        model.after('groupsReadError', this._onGroupsReadError, this);
     },
 
+
+    /**
+     * Called when the groups model is read
+     *
+     * @private
+     */
+    _onGroupsReadSuccess: function () {
+        console.log('success');
+
+        // Vars
+        var activityIndicator = this.get('activityIndicator');
+
+        // If there was any error, hide it
+        this._hideError();
+        // Show the groups
+        this._showGroups();
+
+        // Hide indicator
+        activityIndicator.hide();
+    },
+
+    /**
+     * Called when there groups wasn't loaded due to an error
+     *
+     * @private
+     */
+    _onGroupsReadError: function () {
+        // Vars
+        var activityIndicator = this.get('activityIndicator'), instance = this;
+
+        // Hide indicator
+        activityIndicator.hide();
+        // Hide groups
+        this._hideGroups();
+        // Show error
+        this._showError();
+    },
 
     /**
      * Called whenever the group model is reset
      *
      * @private
      */
-    _onGroupReset: function() {
-        // Empty container
-        this.get('container').set('innerHTML', '');
+    _onGroupReset: function () {
+        // Vars
+        var groupList = this.get('groupList');
+
+        // Empty node
+        groupList.set('innerHTML', '');
     },
 
     // Creates a new GroupView instance and renders it into the list whenever a
     // Group item is added to the list.
     _onGroupAdd: function (e) {
-        var groupView;
+        // Vars
+        var groupList = this.get('groupList'),
+            groupView;
+
         // Create new Group View Item
         groupView = new Y.LIMS.View.GroupViewItem({model: e.model});
         // Render it
         groupView.render();
-        // Append to list
-        this.get('container').append(groupView.get('container'));
+    },
+
+    /**
+     * Shows group list
+     *
+     * @private
+     */
+    _showGroups: function () {
+        // Vars
+        var groupList = this.get('groupList'),
+            animation;
+
+
+        // If the group list is already in the document don't animate it
+        if (!groupList.inDoc()) {
+
+            // Create an instance of animation
+            animation = new Y.Anim({
+                node: groupList,
+                duration: 0.5,
+                from: {opacity: 0},
+                to: {opacity: 1}
+            });
+
+            // Opacity needs to be set to zero otherwise there will
+            // be a weird blink effect
+            groupList.setStyle('opacity', 0);
+            // Append to list
+            groupList.append(groupView.get('container'));
+
+            // Run the effect animation
+            animation.run();
+        }
+    },
+
+    /**
+     * Hides group list
+     *
+     * @private
+     */
+    _hideGroups: function () {
+        // Vars
+        var groupList = this.get('groupList'),
+            animation = new Y.Anim({
+                node: groupList,
+                duration: 0.5,
+                from: {opacity: 1},
+                to: {opacity: 0}
+            });
+
+        // Run!
+        animation.run();
+    },
+
+    /**
+     * Shows the error message
+     *
+     * @private
+     */
+    _showError: function () {
+        // Vars
+        var container = this.get('container'),
+            errorContainer = this.get('errorContainer'),
+            animation;
+
+        // If the error container is already in the document don't add it
+        if (!errorContainer.inDoc()) {
+
+            // Create an instance of animation
+            animation = new Y.Anim({
+                node: errorContainer,
+                duration: 0.5,
+                from: {opacity: 0},
+                to: {opacity: 1}
+            });
+
+            // Opacity needs to be set to zero otherwise there will
+            // be a weird blink effect
+            errorContainer.setStyle('opacity', 0);
+            // Add the error to the container
+            container.append(errorContainer);
+
+            // Run the effect animation
+            animation.run();
+        }
+    },
+
+    /**
+     * Hides the error message
+     *
+     * @private
+     */
+    _hideError: function () {
+        // Vars
+        var errorContainer = this.get('errorContainer'),
+            animation;
+
+        // Run the animation only if the error container is in DOM
+        if (errorContainer.inDoc()) {
+
+            // Create the animation instance
+            animation = new Y.Anim({
+                node: errorContainer,
+                duration: 0.5,
+                from: {opacity: 1},
+                to: {opacity: 0}
+            });
+
+            // Listen to the end of the animation
+            animation.on('end', function () {
+                animation.get('node').remove();
+            });
+
+            // Run!
+            animation.run();
+        }
     }
 
 }, {
-    // Specify attributes and static properties for your View here.
+    // Add custom model attributes here. These attributes will contain your
+    // model's data. See the docs for Y.Attribute to learn more about defining
+    // attributes.
     ATTRS: {
 
+        /**
+         * Group view container node
+         *
+         * {Node}
+         */
         container: {
-            value: null // default value
+            value: null // to be set
         },
 
+        /**
+         * Group list model
+         *
+         * {Y.LIMS.Model.GroupModelList}
+         */
         model: {
-            value: null // default value
+            value: null // to be set
+        },
+
+        /**
+         * Group list node
+         *
+         * {Node}
+         */
+        groupList: {
+            valueFn: function () {
+                return this.get('container').one('.group-list');
+            }
+        },
+
+        /**
+         * Activity indicator node
+         *
+         * {Node}
+         */
+        activityIndicator: {
+            value: null // to be set
+        },
+
+        /**
+         * Node for error container
+         *
+         * {Node}
+         */
+        errorContainer: {
+            valueFn: function () {
+                return Y.Node.create(this.errorTemplate);
+            }
         }
     }
 });

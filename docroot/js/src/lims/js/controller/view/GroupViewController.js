@@ -68,18 +68,12 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
         this._stopTimer();
     },
 
-
     /**
      * Attaches events to DOM elements from container
      *
      * @private
      */
     _attachEvents: function () {
-        // Vars
-        var model = this.get('model');
-
-        // Local events
-        model.after('groupsLoaded', this._groupsLoaded, this);
 
         // Global events
         Y.on('buddySelected', this._onBuddySelected, this);
@@ -93,6 +87,7 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
      * @private
      */
     _startTimer: function () {
+
         // Vars
         var model = this.get('model'),
             timerInterval = this.get('timerInterval'),
@@ -115,49 +110,11 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
      * @private
      */
     _stopTimer: function () {
+
         // Vars
         var timer = this.get('timer');
         // Pause
         clearTimeout(timer);
-    },
-
-    /**
-     * Called whenever the groups model is updated
-     *
-     * @private
-     */
-    _groupsLoaded: function () {
-        // Do the animation of groups
-        this._fadeInGroups();
-        // Hide indicator
-        this.get('activityIndicator').hide();
-    },
-
-    /**
-     * Runs fade in effect on groups
-     *
-     * @private
-     */
-    _fadeInGroups: function () {
-        // Container
-        var container = this.get('groupViewListContainer'),
-            animation = new Y.Anim({
-                node: container,
-                duration: 0.5,
-                from: {
-                    opacity: 0
-                },
-                to: {
-                    opacity: 1
-                }
-            });
-
-        // Opacity needs to be set to zero otherwise there will
-        // be a weird blink effect
-        container.setStyle('opacity', 0);
-
-        // Run the effect animation
-        animation.run();
     },
 
     /**
@@ -193,64 +150,103 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
     // Specify attributes and static properties for your View here.
     ATTRS: {
 
-        // Id of the controller
+        /**
+         * Each controller must have an id
+         *
+         * {string}
+         */
         controllerId: {
             value: "groups"
         },
 
-        // Container Node
+        /**
+         * Controller main container
+         *
+         * {Node}
+         */
         container: {
             value: null // to be set
         },
 
-        // Y.LIMS.Model.GroupModelList
+        /**
+         * Controller model
+         *
+         * {Y.LIMS.Model.GroupModelList}
+         */
         model: {
             valueFn: function () {
                 return new Y.LIMS.Model.GroupModelList();
             }
         },
 
-        // Container for activity indicator
+        /**
+         * Activity indicator spinner node
+         *
+         * {Node}
+         */
         activityIndicator: {
             valueFn: function () {
                 return this.get('container').one(".panel-content .preloader");
             }
         },
 
-        // Container Node for group list
-        groupViewListContainer: {
+        /**
+         * Group list container node
+         *
+         * {Node}
+         */
+        panelContentContainer: {
             valueFn: function () {
-                return this.get('container').one('.panel-content .group-list');
+                return this.get('container').one('.panel-content');
             }
         },
 
-        // Group view which contains all contacts
+        /**
+         * View for the group list
+         *
+         * {Y.LIMS.View.GroupViewList}
+         */
         groupViewList: {
             valueFn: function () {
                 // Vars
-                var container = this.get('groupViewListContainer'),
-                    model = this.get('model');
+                var container = this.get('panelContentContainer'),
+                    model = this.get('model'),
+                    activityIndicator = this.get('activityIndicator');
+
                 // Create view
                 return new Y.LIMS.View.GroupViewList({
                     container: container,
-                    model: model
+                    model: model,
+                    activityIndicator: activityIndicator
                 });
             }
         },
 
-        // Timer used to set async calls to server
+        /**
+         * Timer for poller that loads periodically groups from server
+         *
+         * {timer}
+         */
         timer: {
             value: null // to be set
         },
 
-        // Portlet properties
-        properties: {
-            value: null // to be set
-        },
-
-        // Length of timer period
+        /**
+         * Time interval for the timer
+         *
+         * {integer}
+         */
         timerInterval: {
             value: 10000 // 10 seconds
+        },
+
+        /**
+         * Properties object
+         *
+         * {Y.LIMS.Core.Properties}
+         */
+        properties: {
+            value: null // to be set
         }
     }
 });

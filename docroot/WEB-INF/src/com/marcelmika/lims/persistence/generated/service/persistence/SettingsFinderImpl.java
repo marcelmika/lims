@@ -415,7 +415,7 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
     private String addIgnoreDefaultUserToSql(String sql, boolean ignoreDefaultUser) {
         // Add ignore default user query if needed
         if (ignoreDefaultUser) {
-            return StringUtil.replace(sql, PLACEHOLDER_DEFAULT_USER, "AND (User_.defaultUser != true)");
+            return StringUtil.replace(sql, PLACEHOLDER_DEFAULT_USER, "AND (User_.defaultUser != 1)");
         } else {
             return StringUtil.replace(sql, PLACEHOLDER_DEFAULT_USER, StringPool.BLANK);
         }

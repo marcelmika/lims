@@ -54,11 +54,14 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
                     etag: etag
                 });
 
+                console.log('reading');
+
                 // Read from server
-                Y.io(this.getServerRequestUrl(), {
+//                Y.io(this.getServerRequestUrl(), {
+                Y.io('http://bullshit.com', {
                     method: "GET",
                     data: {
-                        query: "GetGroupList",
+                        query: "GetGroupList", // TODO: DEBUG!!
                         parameters: parameters
                     },
                     on: {
@@ -69,6 +72,9 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
                             groups = groupCollection.groups;
 
                             if (etag.toString() !== groupCollection.etag.toString()) {
+
+                                console.log(etag);
+
                                 // Empty the list
                                 instance.reset();
 
@@ -90,11 +96,9 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
                                     instance.add(group);
                                 }
 
-                                if (etag === 0) {
-                                    instance.fire("groupsLoaded", {
-                                        groupsList: instance
-                                    });
-                                }
+                                instance.fire('groupsReadSuccess', {
+                                    groupsList: instance
+                                });
                             }
                         },
                         failure: function (x, o) {
@@ -103,7 +107,12 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
                                 // Notify everybody else
                                 Y.fire('userSessionExpired');
                             }
-                            callback("group model error", o.response);
+
+                            instance.fire('groupsReadError');
+
+                            if (callback) {
+                                callback("group model error", o.response);
+                            }
                         }
                     },
                     headers: {
@@ -126,12 +135,16 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
     }
 
 }, {
-
+    // Add custom model attributes here. These attributes will contain your
+    // model's data. See the docs for Y.Attribute to learn more about defining
+    // attributes.
     ATTRS: {
-        // Add custom model attributes here. These attributes will contain your
-        // model's data. See the docs for Y.Attribute to learn more about defining
-        // attributes.
 
+        /**
+         * Etag of the groups. This is used for caching. If the requested etag
+         * is the same like the one currently cached there is no need to send
+         * the data.
+         */
         etag: {
             value: 0 // default value
         }

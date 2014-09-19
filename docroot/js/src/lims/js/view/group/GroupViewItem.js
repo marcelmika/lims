@@ -41,28 +41,32 @@ Y.LIMS.View.GroupViewItem = Y.Base.create('groupViewItem', Y.View, [], {
     // element, which will be used as the HTML template for each group item.
     template: Y.one('#lims-group-item-template').get('innerHTML'),
 
+    /**
+     * Renders the view
+     *
+     * @returns {Y.LIMS.View.GroupViewItem}
+     */
     render: function () {
         // Vars
-        var container, group, buddiesView;
-        // Container and model
-        container = this.get('container');
-        group = this.get('model');
+        var container = this.get('container'),
+            model = this.get('model'),
+            buddiesView;
 
         // Render Group:
         // Fill data from model to template and set it to container
         container.set('innerHTML',
             Y.Lang.sub(this.template, {
-                name: group.get('name')
+                name: model.get('name')
             })
         );
 
         // Hide group name if nothing was set
-        if (!group.get('name')) {
+        if (!model.get('name')) {
             container.one('.group-name').hide();
         }
 
         // Render Buddies
-        buddiesView = new Y.LIMS.View.GroupBuddyViewList({model: group.get('buddies')});
+        buddiesView = new Y.LIMS.View.GroupBuddyViewList({model: model.get('buddies')});
         buddiesView.render();
         container.append(buddiesView.get("container"));
 
@@ -74,14 +78,25 @@ Y.LIMS.View.GroupViewItem = Y.Base.create('groupViewItem', Y.View, [], {
     // Specify attributes and static properties for your View here.
     ATTRS: {
         // Override the default container attribute.
+
+        /**
+         * Container node
+         *
+         * {Node}
+         */
         container: {
             valueFn: function () {
                 return Y.Node.create(this.containerTemplate);
             }
         },
-        // Instance of model attached to view
+
+        /**
+         * Model
+         *
+         * {Y.LIMS.Model.GroupModelItem}
+         */
         model: {
-            value: null // default value
+            value: null // to be set
         }
     }
 
