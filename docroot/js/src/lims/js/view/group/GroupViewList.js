@@ -70,7 +70,6 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
      * @private
      */
     _onGroupsReadSuccess: function () {
-        console.log('success');
 
         // Vars
         var activityIndicator = this.get('activityIndicator');
@@ -79,7 +78,6 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         this._hideError();
         // Show the groups
         this._showGroups();
-
         // Hide indicator
         activityIndicator.hide();
     },
@@ -91,7 +89,7 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
      */
     _onGroupsReadError: function () {
         // Vars
-        var activityIndicator = this.get('activityIndicator'), instance = this;
+        var activityIndicator = this.get('activityIndicator');
 
         // Hide indicator
         activityIndicator.hide();
@@ -118,13 +116,13 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
     // Group item is added to the list.
     _onGroupAdd: function (e) {
         // Vars
-        var groupList = this.get('groupList'),
-            groupView;
+        var groupView = new Y.LIMS.View.GroupViewItem({model: e.model}),
+            groupList = this.get('groupList');
 
-        // Create new Group View Item
-        groupView = new Y.LIMS.View.GroupViewItem({model: e.model});
-        // Render it
+        // Render group
         groupView.render();
+        // Add it to group list
+        groupList.append(groupView.get('container'));
     },
 
     /**
@@ -135,11 +133,13 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
     _showGroups: function () {
         // Vars
         var groupList = this.get('groupList'),
+            container = this.get('container'),
             animation;
-
 
         // If the group list is already in the document don't animate it
         if (!groupList.inDoc()) {
+
+            container.append(groupList);
 
             // Create an instance of animation
             animation = new Y.Anim({
@@ -152,8 +152,6 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
             // Opacity needs to be set to zero otherwise there will
             // be a weird blink effect
             groupList.setStyle('opacity', 0);
-            // Append to list
-            groupList.append(groupView.get('container'));
 
             // Run the effect animation
             animation.run();
@@ -168,6 +166,12 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
     _hideGroups: function () {
         // Vars
         var groupList = this.get('groupList'),
+            animation;
+
+        // Run the animation only if the group list is in DOM
+        if (groupList.inDoc()) {
+
+            // Create the animation instance
             animation = new Y.Anim({
                 node: groupList,
                 duration: 0.5,
@@ -175,8 +179,14 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
                 to: {opacity: 0}
             });
 
-        // Run!
-        animation.run();
+            // Listen to the end of the animation
+            animation.on('end', function () {
+                animation.get('node').remove();
+            });
+
+            // Run!
+            animation.run();
+        }
     },
 
     /**
@@ -188,7 +198,8 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         // Vars
         var container = this.get('container'),
             errorContainer = this.get('errorContainer'),
-            animation;
+            animation,
+            instance = this;
 
         // If the error container is already in the document don't add it
         if (!errorContainer.inDoc()) {
@@ -204,12 +215,23 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
             // Opacity needs to be set to zero otherwise there will
             // be a weird blink effect
             errorContainer.setStyle('opacity', 0);
+
+            // Attach click on resend button event
+            errorContainer.one('.resend-button').on('click', function (event) {
+                event.preventDefault();
+                instance._onRefreshButtonClick();
+            });
+
             // Add the error to the container
             container.append(errorContainer);
 
             // Run the effect animation
             animation.run();
         }
+
+        // It is possible that resend button was clicked thus it was transformed to the preloader.
+        // So now remove the preloader class so it can be the resend button again
+        errorContainer.one('.resend-button').removeClass('preloader');
     },
 
     /**
@@ -240,6 +262,26 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
 
             // Run!
             animation.run();
+        }
+    },
+
+    /**
+     * Called when the user click on the refresh button in the error container
+     *
+     * @private
+     */
+    _onRefreshButtonClick: function () {
+        // Vars
+        var model = this.get('model'),
+            refreshButtonNode = this.get('errorContainer').one('.resend-button');
+
+        // Prevent user to click on preloader more than once
+        if (!refreshButtonNode.hasClass('preloader')) {
+            // Add preloader to the resend button
+            refreshButtonNode.addClass('preloader');
+
+            // Save the model again
+            model.load();
         }
     }
 

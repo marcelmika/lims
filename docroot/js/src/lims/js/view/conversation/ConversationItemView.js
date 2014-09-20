@@ -225,7 +225,7 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
         /**
          * Instance of model attached to view
          *
-         * {MessageItemModel}
+         * {Y.LIMS.Model.MessageItemModel}
          */
         model: {
             value: null // default value

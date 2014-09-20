@@ -765,6 +765,7 @@
     margin-top: 45%;
     padding: 10px;
     width: 90%;
+    position: absolute;
 }
 
 .liferay-ims .buddy-list .group-list-error .warning-icon {
@@ -810,7 +811,6 @@
         background-size: auto 21px;
     }
 }
-
 
 /************************************************************************************
 /  STATUS PANEL

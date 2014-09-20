@@ -54,14 +54,11 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
                     etag: etag
                 });
 
-                console.log('reading');
-
                 // Read from server
-//                Y.io(this.getServerRequestUrl(), {
-                Y.io('http://bullshit.com', {
+                Y.io(this.getServerRequestUrl(), {
                     method: "GET",
                     data: {
-                        query: "GetGroupList", // TODO: DEBUG!!
+                        query: "GetGroupList",
                         parameters: parameters
                     },
                     on: {
@@ -72,8 +69,6 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
                             groups = groupCollection.groups;
 
                             if (etag.toString() !== groupCollection.etag.toString()) {
-
-                                console.log(etag);
 
                                 // Empty the list
                                 instance.reset();
