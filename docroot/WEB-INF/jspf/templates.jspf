@@ -93,13 +93,22 @@
     </div>
 </script>
 
-<%-- This template HTML will be used to render error under message --%>
+<%-- This template HTML will be used to render error in group list --%>
 <script type="text/x-template" id="lims-group-list-error-template">
     <div class="group-list-error">
         <div class="warning-icon"></div>
         <div class="error-message"><liferay-ui:message key="panel-group-list-error-text"/></div>
         <button class="resend-button"
                 title="<liferay-ui:message key="panel-group-list-error-resend-title" />"></button>
+        <div class="clear"></div>
+    </div>
+</script>
+
+<%-- This template HTML will be used to render info in group list --%>
+<script type="text/x-template" id="lims-group-list-info-template">
+    <div class="group-list-info">
+        <div class="info-icon"></div>
+        <div class="info-message"><liferay-ui:message key="panel-group-list-info-text"/></div>
         <div class="clear"></div>
     </div>
 </script>

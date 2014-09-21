@@ -762,7 +762,7 @@
 /************************************************************************************/
 
 .liferay-ims .buddy-list .group-list-error {
-    margin-top: 45%;
+    margin-top: 40%;
     padding: 10px;
     width: 90%;
     position: absolute;
@@ -809,6 +809,42 @@
     .liferay-ims .buddy-list .group-list-error .resend-button {
         background-image: url(../images/icon-resend@2x.png);
         background-size: auto 21px;
+    }
+}
+
+
+/************************************************************************************
+/  CONTACTS PANEL - INFO
+/************************************************************************************/
+
+.liferay-ims .buddy-list .group-list-info {
+    margin-top: 40%;
+    padding: 10px;
+    width: 90%;
+    position: absolute;
+}
+
+.liferay-ims .buddy-list .group-list-info .info-icon {
+    background: transparent url(../images/icon-info-blue.png) no-repeat center center;
+    width: 18px;
+    height: 18px;
+    margin: 7px 10px 0 5px;
+    float: left;
+}
+
+.liferay-ims .buddy-list .group-list-info .info-message {
+    color: #7e7e7e;
+    max-width: 190px;
+    float: left;
+    line-height: 13px;
+    font-size: 12px;
+    text-align: justify;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+    .liferay-ims .buddy-list .group-list-info .info-icon {
+        background-image: url(../images/icon-info-blue@2x.png);
+        background-size: auto 18px;
     }
 }
 

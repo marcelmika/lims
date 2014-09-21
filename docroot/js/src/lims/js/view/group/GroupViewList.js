@@ -39,6 +39,11 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
     // Check the templates.jspf to see all templates
     errorTemplate: Y.one('#lims-group-list-error-template').get('innerHTML'),
 
+    // The template property holds the contents of the #lims-group-list-info-template
+    // element, which will be used as the HTML template for an info message
+    // Check the templates.jspf to see all templates
+    infoTemplate: Y.one('#lims-group-list-info-template').get('innerHTML'),
+
     /**
      * The initializer runs when the instance is created, and gives
      * us an opportunity to set up the view.
@@ -46,6 +51,10 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
     initializer: function () {
         // Attach events
         this._attachEvents();
+
+        // Group list needs to be removed from the DOM since we don't know if there
+        // are any groups yet
+        this.get('groupList').remove();
     },
 
     /**
@@ -72,12 +81,21 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
     _onGroupsReadSuccess: function () {
 
         // Vars
-        var activityIndicator = this.get('activityIndicator');
+        var activityIndicator = this.get('activityIndicator'),
+            model = this.get('model');
 
         // If there was any error, hide it
         this._hideError();
-        // Show the groups
-        this._showGroups();
+
+        if (model.isEmpty()) {
+            this._showEmptyInfo();
+            this._hideGroups();
+        } else {
+            // Show the groups
+            this._showGroups();
+            this._hideEmptyInfo();
+        }
+
         // Hide indicator
         activityIndicator.hide();
     },
@@ -95,6 +113,8 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         activityIndicator.hide();
         // Hide groups
         this._hideGroups();
+        // Hide info about empty groups
+        this._hideEmptyInfo();
         // Show error
         this._showError();
     },
@@ -112,8 +132,13 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         groupList.set('innerHTML', '');
     },
 
-    // Creates a new GroupView instance and renders it into the list whenever a
-    // Group item is added to the list.
+    /**
+     * Creates a new GroupView instance and renders it into the list whenever a
+     * Group item is added to the list.
+     *
+     * @param e event
+     * @private
+     */
     _onGroupAdd: function (e) {
         // Vars
         var groupView = new Y.LIMS.View.GroupViewItem({model: e.model}),
@@ -139,8 +164,6 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         // If the group list is already in the document don't animate it
         if (!groupList.inDoc()) {
 
-            container.append(groupList);
-
             // Create an instance of animation
             animation = new Y.Anim({
                 node: groupList,
@@ -152,6 +175,9 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
             // Opacity needs to be set to zero otherwise there will
             // be a weird blink effect
             groupList.setStyle('opacity', 0);
+
+            // Add group list to the container
+            container.append(groupList);
 
             // Run the effect animation
             animation.run();
@@ -185,6 +211,66 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
             });
 
             // Run!
+            animation.run();
+        }
+    },
+
+    /**
+     * Shows the info message
+     *
+     * @private
+     */
+    _showEmptyInfo: function () {
+        // Vars
+        var container = this.get('container'),
+            infoContainer = this.get('infoContainer'),
+            animation;
+
+        // If the info container is already in the document don't add it
+        if (!infoContainer.inDoc()) {
+
+            // Create an instance of animation
+            animation = new Y.Anim({
+                node: infoContainer,
+                duration: 0.5,
+                from: {opacity: 0},
+                to: {opacity: 1}
+            });
+
+            // Opacity needs to be set to zero otherwise there will
+            // be a weird blink effect
+            infoContainer.setStyle('opacity', 0);
+
+            // Add the info to the container
+            container.append(infoContainer);
+
+            // Run the animation
+            animation.run();
+        }
+    },
+
+    _hideEmptyInfo: function () {
+        // Vars
+        var infoContainer = this.get('infoContainer'),
+            animation;
+
+        // Run the animation only if the info container is in DOM
+        if (infoContainer.inDoc()) {
+
+            // Create the animation instance
+            animation = new Y.Anim({
+                node: infoContainer,
+                duration: 0.5,
+                from: {opacity: 1},
+                to: {opacity: 0}
+            });
+
+            // Listen to the end of the animation
+            animation.on('end', function () {
+                animation.get('node').remove();
+            });
+
+            // Run the animation
             animation.run();
         }
     },
@@ -337,6 +423,17 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         errorContainer: {
             valueFn: function () {
                 return Y.Node.create(this.errorTemplate);
+            }
+        },
+
+        /**
+         * Node for info container
+         *
+         * {Node}
+         */
+        infoContainer: {
+            valueFn: function () {
+                return Y.Node.create(this.infoTemplate);
             }
         }
     }
