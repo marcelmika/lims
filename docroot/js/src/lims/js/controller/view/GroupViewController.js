@@ -75,6 +75,14 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
      */
     _attachEvents: function () {
 
+        // Vars
+        var searchButton = this.get('searchButton'),
+            searchPanelView = this.get('searchPanelView');
+
+        // Local events
+        searchButton.on('click', this._onSearchClicked, this);
+        searchPanelView.on('searchClosed', this._onSearchClosed, this);
+
         // Global events
         Y.on('buddySelected', this._onBuddySelected, this);
         Y.on('connectionError', this._onConnectionError, this);
@@ -110,11 +118,112 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
      * @private
      */
     _stopTimer: function () {
-
         // Vars
         var timer = this.get('timer');
         // Pause
         clearTimeout(timer);
+    },
+
+    /**
+     * Shows the search panel
+     *
+     * @private
+     */
+    _showSearchPanel: function () {
+
+        // Vars
+        var panelTitle = this.get('panelTitle'),
+            searchPanelView = this.get('searchPanelView'),
+            searchPanelContainer = searchPanelView.get('container'),
+            animation;
+
+        // Only show the search panel if not in document already
+        if (!searchPanelContainer.inDoc()) {
+
+            // Create an instance of animation
+            animation = new Y.Anim({
+                node: searchPanelContainer,
+                duration: 0.5,
+                from: {opacity: 0},
+                to: {opacity: 1}
+            });
+
+            // Search button will no longer be needed so hide it at the end of the animation
+            animation.on('end', this._hideSearchButton, this);
+
+            // Opacity needs to be set to zero otherwise there will
+            // be a weird blink effect
+            searchPanelContainer.setStyle('opacity', 0);
+
+            // Add search panel to the container
+            panelTitle.insert(searchPanelContainer, 'after');
+
+            // Reset the previous search
+            searchPanelView.reset();
+
+            // Run the animation
+            animation.run();
+        }
+    },
+
+    /**
+     * Hides the search panel
+     *
+     * @private
+     */
+    _hideSearchPanel: function () {
+
+        // Vars
+        var searchPanelView = this.get('searchPanelView'),
+            searchPanelContainer = searchPanelView.get('container'),
+            animation;
+
+        // Only hide the search panel if it's in the document
+        if (searchPanelContainer.inDoc()) {
+
+            // Create an instance of animation
+            animation = new Y.Anim({
+                node: searchPanelContainer,
+                duration: 0.5,
+                from: {opacity: 1},
+                to: {opacity: 0}
+            });
+
+            // Listen to the end of the animation
+            animation.on('end', function () {
+                // Remove the search panel from DOM
+                animation.get('node').remove();
+                // We will need the search button in the panel title again
+                this._showSearchButton();
+            }, this);
+
+            // Run the animation
+            animation.run();
+        }
+    },
+
+    /**
+     * Shows the search button in panel title
+     *
+     * @private
+     */
+    _showSearchButton: function () {
+        // Vars
+        var searchButton = this.get('searchButton');
+        // Show the button
+        searchButton.show();
+    },
+
+    /**
+     * Hides the search button in panel title
+     *
+     * @private
+     */
+    _hideSearchButton: function () {
+        // Vars
+        var searchButton = this.get('searchButton');
+        // Hide the button
+        searchButton.hide();
     },
 
     /**
@@ -125,6 +234,28 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
      */
     _onBuddySelected: function () {
         this.dismissViewController();
+    },
+
+    /**
+     * Called when a search button in panel title is pressed
+     *
+     * @private
+     */
+    _onSearchClicked: function () {
+        // Show the search panel
+        this._showSearchPanel();
+    },
+
+    /**
+     * Called when the search panel is closed
+     *
+     * @private
+     */
+    _onSearchClosed: function () {
+        // Hide the search panel
+        this._hideSearchPanel();
+        // Show the search button in panel title again
+        this._showSearchButton();
     },
 
     /**
@@ -198,6 +329,55 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
         panelContentContainer: {
             valueFn: function () {
                 return this.get('container').one('.panel-content');
+            }
+        },
+
+        /**
+         * Panel title node
+         *
+         * {Node}
+         */
+        panelTitle: {
+            valueFn: function () {
+                return this.get('container').one('.panel-title');
+            }
+        },
+
+        /**
+         * View that takes care of the search panel
+         *
+         * {Y.LIMS.View.GroupSearchView}
+         */
+        searchPanelView: {
+            valueFn: function () {
+                // Vars
+                var model = this.get('searchPanelModel');
+                // Create new instance of the view
+                return new Y.LIMS.View.GroupSearchView({
+                    model: model
+                });
+            }
+        },
+
+        /**
+         * Model related to the search panel
+         *
+         * {Y.LIMS.Model.BuddySearchListModel}
+         */
+        searchPanelModel: {
+            valueFn: function () {
+                return new Y.LIMS.Model.BuddySearchListModel();
+            }
+        },
+
+        /**
+         * Search button in panel title node
+         *
+         * {Node}
+         */
+        searchButton: {
+            valueFn: function () {
+                return this.get('container').one('.panel-title .panel-button.search');
             }
         },
 

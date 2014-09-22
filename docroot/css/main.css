@@ -333,9 +333,7 @@
 }
 
 .liferay-ims .panel-button.search {
-    background: url("../images/search.png") center center no-repeat;
-    /* TODO: Remove after implemented */
-    display: none;
+    background: url(../images/search-button.png) center center no-repeat;
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
@@ -351,8 +349,8 @@
     }
 
     .liferay-ims .panel-button.search {
-        background-image: url(../images/search@2x.png);
-        background-size: auto 14px;
+        background-image: url(../images/search-button@2x.png);
+        background-size: auto 13px;
     }
 }
 
@@ -426,39 +424,110 @@
 / SEARCH INPUT
 /********************************************************************************/
 
-.liferay-ims .search-input {
-    padding: 5px 4px 5px;
+.liferay-ims .panel-search {
+    position: absolute;
+    top: 26px;
+    z-index: 2;
     background: #ffffff;
-    border-bottom: 1px solid #ccc;
+    width: 100%;
 }
 
-.liferay-ims .search-input-field {
+.liferay-ims .panel-search .search-input-field {
     height: 12px;
     border: 1px solid #d4d4d4;
-    width: 189px !important;
-    padding: 5px 5px 5px 23px;
-    background: #d4d4d4 url(../images/search.png) center center no-repeat;
-    background-size: 14px;
+    width: 158px;
+    padding: 5px 27px 5px 27px;
+    background: #f1f1f1 url(../images/search-button.png) 7px center no-repeat;
+    color: #1A1A1A;
+    font-size: 12px;
+    background-size: 13px;
     box-shadow: none;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     -webkit-border-radius: 10px;
     -ms-border-radius: 10px;
     border-radius: 10px;
+    margin: 5px 0 5px 7px;
+}
+
+.liferay-ims .panel-search .search-input-field:hover,
+.liferay-ims .panel-search .search-input-field:focus {
+    background: #ffffff url(../images/search-button.png) 7px center no-repeat;
+    background-size: 13px;
+    border: 1px solid #d4d4d4;
+    outline: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+}
+
+.liferay-ims .panel-search .close-search-button {
+    height: 14px;
+    width: 20px;
+    float: right;
+    margin-top: 10px;
+    margin-right: 5px;
+    background: url(../images/close-button.png) center center no-repeat;
+}
+
+.liferay-ims .panel-search .search-content {
+    height: 254px;
+}
+
+.liferay-ims .panel-search .preloader {
+    width: 20px;
+    height: 20px;
+    background-size: 17px;
+    top: 7px;
+    right: 34px;
+    margin: 0;
+}
+
+.liferay-ims .panel-search .info-container {
+    padding-top: 15px;
+}
+
+.liferay-ims .panel-search .info-container .info-message {
+    line-height: 13px;
+    padding: 5px 15px;
+    font-size: 12px;
+    color: #7e7e7e;
+    margin-left: 22px;
+    margin-right: 10px;
+}
+
+.liferay-ims .panel-search .info-container .info-icon {
+    background: transparent url(../images/icon-info-blue.png) no-repeat center center;
+    width: 18px;
+    height: 18px;
+    margin: 7px 10px 0 9px;
+    float: left;
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
 
-    .liferay-ims .search-input-field {
-        background-image: url(../images/search@2x.png);
+    .liferay-ims .panel-search .close-search-button {
+        background-image: url(../images/search-button@2x.png);
     }
-}
 
-.liferay-ims .search-input-field:focus,
-.liferay-ims .search-input-field:hover {
-    outline: none;
-    border: 1px solid #d4d4d4;
-    background: #e1e1e1 4px center;
+    .liferay-ims .panel-search .close-search-button {
+        background-image: url(../images/close-button@2x.png);
+        background-size: auto 18px;
+    }
+
+    .liferay-ims .panel-search .search-input-field {
+        background-image: url(../images/search-button@2x.png);
+        background-size: auto 13px;
+    }
+
+    .liferay-ims .panel-search .info-container .info-icon {
+        background-image: url(../images/icon-info-blue@2x.png);
+        background-size: auto 18px;
+    }
+
+    .liferay-ims .panel-search .preloader {
+        background-size: auto 17px;
+    }
 }
 
 /********************************************************************************
@@ -811,7 +880,6 @@
         background-size: auto 21px;
     }
 }
-
 
 /************************************************************************************
 /  CONTACTS PANEL - INFO

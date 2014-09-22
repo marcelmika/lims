@@ -55,12 +55,6 @@
                     <liferay-ui:message key="panel-contacts-title"/>
                 </div>
             </div>
-            <div class="panel-search hidden">
-                <aui:input cssClass="search-input"
-                           inputCssClass="search-input-field"
-                           label=""
-                           name="searchGroups"/>
-            </div>
             <div class="panel-content">
                 <div class="preloader"></div>
                 <ul class="group-list"></ul>

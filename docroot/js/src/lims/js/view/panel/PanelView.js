@@ -110,26 +110,6 @@ Y.LIMS.View.PanelView = Y.Base.create('panelView', Y.View, [], {
     },
 
     /**
-     * Shows search panel
-     */
-    showSearch: function () {
-        var searchContainer = this.get('searchContainer');
-        if (searchContainer !== undefined) {
-            searchContainer.removeClass('hidden');
-        }
-    },
-
-    /**
-     * Hides search panel
-     */
-    hideSearch: function () {
-        var searchContainer = this.get('searchContainer');
-        if (searchContainer !== undefined) {
-            searchContainer.addClass('hidden');
-        }
-    },
-
-    /**
      * Shows the error message notification in the panel
      *
      * @param errorMessage
@@ -234,10 +214,6 @@ Y.LIMS.View.PanelView = Y.Base.create('panelView', Y.View, [], {
         // Close button
         else if (target.hasClass('close')) {
             this.close();
-        }
-        // Search button
-        else if (target.hasClass('search')) {
-            this.showSearch();
         }
     }
 

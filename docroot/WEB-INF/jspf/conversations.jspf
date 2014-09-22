@@ -50,6 +50,7 @@
         </c:otherwise>
     </c:choose>
 
+    <%-- Check if badge should be visible --%>
     <c:choose>
         <c:when test="${conversation.unreadMessagesCount > 0}">
             <c:set var="hiddenBadgeClass" value=""/>
@@ -73,13 +74,7 @@
                 <div class="panel-title">
                     <button class="panel-button close"></button>
                     <button class="panel-button minimize"></button>
-                    <button class="panel-button search"></button>
                     <div class="panel-title-text">${conversation.title}</div>
-                </div>
-                <div class="panel-search hidden">
-                    <label>
-                        <input class="search-input-field" name="searchConversation" type="text" value=""/>
-                    </label>
                 </div>
                 <div class="panel-content">
                     <div class="preloader"></div>
