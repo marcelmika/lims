@@ -88,8 +88,6 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
 
         // Global events
         Y.on('buddySelected', this._onBuddySelected, this);
-        Y.on('connectionError', this._onConnectionError, this);
-        Y.on('connectionOK', this._onConnectionOK, this);
     },
 
     /**
@@ -295,24 +293,6 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
     _onSearchClosed: function () {
         // Hide the search panel
         this._hideSearchPanel();
-    },
-
-    /**
-     * Called whenever an error with connection occurred
-     *
-     * @private
-     */
-    _onConnectionError: function () {
-        this.showError(Y.LIMS.Core.i18n.values.connectionErrorMessage);
-    },
-
-    /**
-     * Called when there are no more connection errors
-     *
-     * @private
-     */
-    _onConnectionOK: function () {
-        this.hideError();
     }
 
 }, {
