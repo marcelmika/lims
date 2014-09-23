@@ -36,6 +36,7 @@ public interface PortletPropertiesKeys {
     public static final String BUDDY_LIST_SOURCE = "buddy.list.source";
     public static final String BUDDY_LIST_ALLOWED_SOCIAL_RELATION_TYPES = "buddy.list.allowed.social.relation.types";
     public static final String BUDDY_LIST_MAX_BUDDIES = "buddy.list.max.buddies";
+    public static final String BUDDY_LIST_MAX_SEARCH = "buddy.list.max.search";
     public static final String BUDDY_LIST_SITE_EXCLUDES = "buddy.list.site.excludes";
     public static final String BUDDY_LIST_GROUP_EXCLUDES = "buddy.list.group.excludes";
     public static final String BUDDY_LIST_STRATEGY = "buddy.list.strategy";

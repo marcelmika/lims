@@ -22,58 +22,31 @@
  * SOFTWARE.
  */
 
-package com.marcelmika.lims.core.service;
+package com.marcelmika.lims.persistence.manager;
 
-import com.marcelmika.lims.api.events.buddy.*;
+import com.marcelmika.lims.persistence.domain.Buddy;
+
+import java.util.List;
 
 /**
- * Serves as a port to the business logic related to buddy.
- *
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
- * Date: 2/4/14
- * Time: 11:29 PM
+ * Date: 23/09/14
+ * Time: 10:03
  */
-public interface BuddyCoreService {
+public interface SearchManager {
 
     /**
-     * Login buddy to System
+     * Returns a list of buddies based on the search query. The search will be performed
+     * in first name, middle name, last name, screen name and email.
      *
-     * @param event Request event
-     * @return Response event
+     * @param userId      Long
+     * @param searchQuery String
+     * @param start       of the list
+     * @param end         of the list
+     * @return List of buddies
+     * @throws Exception
      */
-    public LoginBuddyResponseEvent loginBuddy(LoginBuddyRequestEvent event);
-
-    /**
-     * Logout buddy from System
-     *
-     * @param event Request event
-     * @return Response event
-     */
-    public LogoutBuddyResponseEvent logoutBuddy(LogoutBuddyRequestEvent event);
-
-    /**
-     * Completely removes buddy from the System
-     *
-     * @param event Request event
-     * @return Response event
-     */
-    public DeleteBuddyResponseEvent removeBuddy(DeleteBuddyRequestEvent event);
-
-    /**
-     * Update buddy's presence
-     *
-     * @param event Request event
-     * @return Response event
-     */
-    public UpdatePresenceBuddyResponseEvent updatePresence(UpdatePresenceBuddyRequestEvent event);
-
-    /**
-     * Search buddies in the system
-     *
-     * @param event Request event
-     * @return Response event
-     */
-    public SearchBuddiesResponseEvent searchBuddies(SearchBuddiesRequestEvent event);
+    public List<Buddy> searchBuddies(Long userId, String searchQuery, int start, int end) throws Exception;
 
 }

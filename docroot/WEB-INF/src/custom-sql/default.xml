@@ -27,6 +27,39 @@
 		]]>
     </sql>
 
+    <!-- Search all users in the database and joins them with settings table -->
+    <sql id="com.marcelmika.lims.persistence.generated.service.persistence.SettingsFinder.searchAllUsers">
+        <![CDATA[
+			SELECT
+				User_.userId AS userId,
+				User_.screenName AS screenName,
+				User_.firstName AS firstName,
+				User_.middleName AS middleName,
+				User_.lastName AS lastName,
+				Lims_Settings.presence AS presence
+			FROM
+				Lims_Settings
+			INNER JOIN
+				User_ ON (User_.userId = Lims_Settings.userId)
+			WHERE
+				User_.userId != ?
+				[$DEFAULT_USER$]
+				[$DEACTIVATED_USER$]
+				AND
+				(
+					(lower(User_.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.middleName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.lastName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.screenName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$])
+				)
+			ORDER BY
+				User_.firstName ASC,
+				User_.middleName ASC,
+				User_.lastName ASC
+		]]>
+    </sql>
+
     <!-- Finds all users and attaches groups to them -->
     <sql id="com.marcelmika.lims.persistence.generated.service.persistence.SettingsFinder.findBySitesGroups">
         <![CDATA[

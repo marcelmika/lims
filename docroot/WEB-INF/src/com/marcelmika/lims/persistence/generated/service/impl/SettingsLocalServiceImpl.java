@@ -139,6 +139,31 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
     }
 
     /**
+     * Returns all buddies in the system based on the search query
+     *
+     * @param userId                of excluded user
+     * @param searchQuery           search string
+     * @param ignoreDefaultUser     true if default users should be ignored
+     * @param ignoreDeactivatedUser true if deactivated users should be ignored
+     * @param start                 value of the list
+     * @param end                   value of the list
+     * @return List of objects where each object contains user info
+     * @throws Exception
+     */
+    @Override
+    public List<Object[]> searchAllGroups(Long userId,
+                                          String searchQuery,
+                                          boolean ignoreDefaultUser,
+                                          boolean ignoreDeactivatedUser,
+                                          int start,
+                                          int end) throws Exception {
+        // Search via settings finder
+        return settingsFinder.searchAllGroups(
+                userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, start, end
+        );
+    }
+
+    /**
      * Returns all groups where the user participates
      *
      * @param userId                of the user whose groups are we looking for
@@ -194,7 +219,7 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
      * @param userId                of the user whose groups are we looking for
      * @param ignoreDefaultUser     true if default users should be ignored
      * @param ignoreDeactivatedUser true if deactivated users should be ignored
-     * @param excludedGroups         list of names of groups which should be excluded
+     * @param excludedGroups        list of names of groups which should be excluded
      * @param start                 value of the list
      * @param end                   value of the list
      * @return List of objects where each object contains group name and user info

@@ -272,6 +272,15 @@ public class Environment {
     }
 
     /**
+     * Returns maximal number of serach result in buddy list
+     *
+     * @return int
+     */
+    public static int getBuddyListMaxSearch() {
+        return PortletPropertiesValues.BUDDY_LIST_MAX_SEARCH;
+    }
+
+    /**
      * Returns an array of sites names which should be excluded from
      * the buddy list
      *

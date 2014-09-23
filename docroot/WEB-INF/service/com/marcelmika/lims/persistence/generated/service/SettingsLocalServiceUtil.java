@@ -344,6 +344,15 @@ public class SettingsLocalServiceUtil {
 			ignoreDeactivatedUser, start, end);
 	}
 
+	public static java.util.List<java.lang.Object[]> searchAllGroups(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser, int start,
+		int end) throws java.lang.Exception {
+		return getService()
+				   .searchAllGroups(userId, searchQuery, ignoreDefaultUser,
+			ignoreDeactivatedUser, start, end);
+	}
+
 	/**
 	* Returns all groups where the user participates
 	*

@@ -322,6 +322,7 @@
     margin-top: 5px;
     margin-right: 7px;
     opacity: 0.8;
+    outline: none;
 }
 
 .liferay-ims .panel-button.minimize {
@@ -468,6 +469,7 @@
     margin-top: 10px;
     margin-right: 5px;
     background: url(../images/close-button.png) center center no-repeat;
+    outline: none;
 }
 
 .liferay-ims .panel-search .search-content {

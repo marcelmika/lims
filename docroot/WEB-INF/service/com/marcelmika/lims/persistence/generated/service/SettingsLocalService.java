@@ -308,6 +308,12 @@ public interface SettingsLocalService extends BaseLocalService,
 		boolean ignoreDeactivatedUser, int start, int end)
 		throws java.lang.Exception;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<java.lang.Object[]> searchAllGroups(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser, int start,
+		int end) throws java.lang.Exception;
+
 	/**
 	* Returns all groups where the user participates
 	*

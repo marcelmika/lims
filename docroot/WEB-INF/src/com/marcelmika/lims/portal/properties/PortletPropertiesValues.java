@@ -60,6 +60,11 @@ public class PortletPropertiesValues {
             PortletPropertiesKeys.BUDDY_LIST_MAX_BUDDIES
     );
 
+    // Buddy List - Max search count
+    public static final Integer BUDDY_LIST_MAX_SEARCH = getInteger(
+            PortletPropertiesKeys.BUDDY_LIST_MAX_SEARCH
+    );
+
     // Buddy List - Strategy (All by default)
     public static final String BUDDY_LIST_STRATEGY = getString(
             PortletPropertiesKeys.BUDDY_LIST_STRATEGY

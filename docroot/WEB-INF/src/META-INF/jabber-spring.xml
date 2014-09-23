@@ -119,7 +119,13 @@
 
     <!-- Buddy Persistence Service -->
     <bean id="com.marcelmika.lims.persistence.service.BuddyPersistenceService"
-          class="com.marcelmika.lims.persistence.service.BuddyPersistenceServiceImpl"/>
+          class="com.marcelmika.lims.persistence.service.BuddyPersistenceServiceImpl">
+        <constructor-arg index="0" ref="com.marcelmika.lims.persistence.group.SearchManager"/>
+    </bean>
+
+    <!-- Buddy Search Service -->
+    <bean id="com.marcelmika.lims.persistence.group.SearchManager"
+          class="com.marcelmika.lims.persistence.manager.SearchManagerImpl"/>
 
 
     <!-- Conversation Persistence Service -->
@@ -151,7 +157,7 @@
     <!-- Group Persistence Service -->
 
     <bean id="com.marcelmika.lims.persistence.group.GroupManager"
-          class="com.marcelmika.lims.persistence.group.GroupManagerImpl"/>
+          class="com.marcelmika.lims.persistence.manager.GroupManagerImpl"/>
 
     <!-- Group Persistence Manager -->
 

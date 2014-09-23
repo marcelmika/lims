@@ -24,11 +24,17 @@
 
 package com.marcelmika.lims.persistence.service;
 
+import com.marcelmika.lims.api.entity.BuddyDetails;
+import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.events.buddy.*;
 import com.marcelmika.lims.persistence.domain.Buddy;
 import com.marcelmika.lims.persistence.domain.Presence;
 import com.marcelmika.lims.persistence.generated.model.Settings;
 import com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUtil;
+import com.marcelmika.lims.persistence.manager.SearchManager;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Ing. Marcel Mika
@@ -37,6 +43,18 @@ import com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUti
  * Time: 11:56 PM
  */
 public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
+
+    // Dependencies
+    SearchManager searchManager;
+
+    /**
+     * Constructor
+     *
+     * @param searchManager SearchManager
+     */
+    public BuddyPersistenceServiceImpl(final SearchManager searchManager) {
+        this.searchManager = searchManager;
+    }
 
     /**
      * Login buddy to System
@@ -181,6 +199,47 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
             // Failure
             return UpdatePresenceBuddyResponseEvent.updatePresenceFailure(
                     UpdatePresenceBuddyResponseEvent.Status.ERROR_PERSISTENCE, exception
+            );
+        }
+    }
+
+    /**
+     * Search buddies in the system
+     *
+     * @param event Request event
+     * @return Response event
+     */
+    @Override
+    public SearchBuddiesResponseEvent searchBuddies(SearchBuddiesRequestEvent event) {
+        // Map buddy from details
+        Buddy buddy = Buddy.fromBuddyDetails(event.getBuddyDetails());
+
+        // Check params
+        if (buddy.getBuddyId() == null) {
+            return SearchBuddiesResponseEvent.searchFailure(SearchBuddiesResponseEvent.Status.ERROR_WRONG_PARAMETERS);
+        }
+
+        try {
+            // Define boundaries
+            int start = 0;
+            int end = Environment.getBuddyListMaxSearch();
+
+            // Get buddies from manager
+            List<Buddy> buddies = searchManager.searchBuddies(buddy.getBuddyId(), event.getSearchQuery(), start, end);
+
+            // Create buddy details list from the buddy list
+            List<BuddyDetails> buddyDetails = new LinkedList<BuddyDetails>();
+            for (Buddy searchedBuddy : buddies) {
+                buddyDetails.add(searchedBuddy.toBuddyDetails());
+            }
+
+            // Call success
+            return SearchBuddiesResponseEvent.searchSuccess(buddyDetails);
+        }
+        // Failure
+        catch (Exception exception) {
+            return SearchBuddiesResponseEvent.searchFailure(
+                    SearchBuddiesResponseEvent.Status.ERROR_PERSISTENCE, exception
             );
         }
     }

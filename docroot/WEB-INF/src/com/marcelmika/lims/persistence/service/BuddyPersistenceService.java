@@ -75,4 +75,12 @@ public interface BuddyPersistenceService {
      */
     public UpdatePresenceBuddyResponseEvent updatePresence(UpdatePresenceBuddyRequestEvent event);
 
+    /**
+     * Search buddies in the system
+     *
+     * @param event Request event
+     * @return Response event
+     */
+    public SearchBuddiesResponseEvent searchBuddies(SearchBuddiesRequestEvent event);
+
 }

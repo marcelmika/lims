@@ -73,6 +73,7 @@ public class PortletProcessorImpl implements PortletProcessor {
     private static final String QUERY_UPDATE_ACTIVE_PANEL = "UpdateActivePanel";
     private static final String QUERY_UPDATE_SETTINGS = "UpdateSettings";
     private static final String QUERY_GET_SERVER_TIME = "GetServerTime";
+    private static final String QUERY_SEARCH_BUDDIES = "SearchBuddies";
 
     /**
      * Constructor
@@ -177,6 +178,15 @@ public class PortletProcessorImpl implements PortletProcessor {
         // Get Server Time
         else if (query.equals(QUERY_GET_SERVER_TIME)) {
             serverController.getServerTime(request, response);
+        }
+        // Search buddies
+        else if (query.equals(QUERY_SEARCH_BUDDIES)) {
+            buddyController.searchBuddies(request, response);
+        }
+        // No such query was found
+        else {
+            // Write 404 to response
+            ResponseUtil.writeResponse(HttpStatus.NOT_FOUND, response);
         }
     }
 

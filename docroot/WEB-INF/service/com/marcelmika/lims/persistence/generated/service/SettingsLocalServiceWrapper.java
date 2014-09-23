@@ -359,6 +359,15 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 			ignoreDeactivatedUser, start, end);
 	}
 
+	@Override
+	public java.util.List<java.lang.Object[]> searchAllGroups(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser, int start,
+		int end) throws java.lang.Exception {
+		return _settingsLocalService.searchAllGroups(userId, searchQuery,
+			ignoreDefaultUser, ignoreDeactivatedUser, start, end);
+	}
+
 	/**
 	* Returns all groups where the user participates
 	*

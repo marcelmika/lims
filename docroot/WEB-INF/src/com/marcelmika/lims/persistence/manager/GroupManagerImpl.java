@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.marcelmika.lims.persistence.group;
+package com.marcelmika.lims.persistence.manager;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

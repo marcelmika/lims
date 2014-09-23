@@ -22,58 +22,27 @@
  * SOFTWARE.
  */
 
-package com.marcelmika.lims.core.service;
+package com.marcelmika.lims.persistence.manager;
 
-import com.marcelmika.lims.api.events.buddy.*;
+import com.marcelmika.lims.persistence.domain.GroupCollection;
 
 /**
- * Serves as a port to the business logic related to buddy.
- *
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
- * Date: 2/4/14
- * Time: 11:29 PM
+ * Date: 8/4/14
+ * Time: 9:44 AM
  */
-public interface BuddyCoreService {
+public interface GroupManager {
 
     /**
-     * Login buddy to System
+     * Returns Group Collection of all groups related to the user
      *
-     * @param event Request event
-     * @return Response event
+     * @param userId Long
+     * @param start  of the list
+     * @param end    of the list
+     * @return GroupCollection of groups related to the user
+     * @throws Exception
      */
-    public LoginBuddyResponseEvent loginBuddy(LoginBuddyRequestEvent event);
-
-    /**
-     * Logout buddy from System
-     *
-     * @param event Request event
-     * @return Response event
-     */
-    public LogoutBuddyResponseEvent logoutBuddy(LogoutBuddyRequestEvent event);
-
-    /**
-     * Completely removes buddy from the System
-     *
-     * @param event Request event
-     * @return Response event
-     */
-    public DeleteBuddyResponseEvent removeBuddy(DeleteBuddyRequestEvent event);
-
-    /**
-     * Update buddy's presence
-     *
-     * @param event Request event
-     * @return Response event
-     */
-    public UpdatePresenceBuddyResponseEvent updatePresence(UpdatePresenceBuddyRequestEvent event);
-
-    /**
-     * Search buddies in the system
-     *
-     * @param event Request event
-     * @return Response event
-     */
-    public SearchBuddiesResponseEvent searchBuddies(SearchBuddiesRequestEvent event);
+    public GroupCollection getGroups(Long userId, int start, int end) throws Exception;
 
 }

@@ -33,7 +33,9 @@ import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.RosterGroup;
 import org.jivesoftware.smack.RosterListener;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Group manager is responsible for the synchronization of groups and their entries. It keeps
@@ -166,6 +168,7 @@ public class GroupManagerImpl implements GroupManager, RosterListener {
                 Buddy buddy = Buddy.fromRosterEntry(entry);
                 // Map presence
                 Presence presence = Presence.fromSmackPresence(roster.getPresence(entry.getUser()));
+                // TODO: Add company id and buddy id
                 buddy.setPresence(presence);
                 // Add buddy to the group
                 group.addBuddy(buddy);
