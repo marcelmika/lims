@@ -66,11 +66,12 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
 
         // We use buddy ID as a user identification
         Long buddyId = buddy.getBuddyId();
+        Long companyId = buddy.getCompanyId();
 
-        // Buddy Id cannot be null
-        if (buddyId == null) {
+        // buddyId and companyId cannot be null
+        if (buddyId == null || companyId == null) {
             return ConnectBuddyResponseEvent.connectFailure(
-                    "Cannot connect buddy without buddy id", event.getDetails()
+                    "Cannot connect buddy without buddy id or company id", event.getDetails()
             );
         }
 
@@ -87,7 +88,7 @@ public class BuddyJabberServiceImpl implements BuddyJabberService {
 
         // Connection with jabber server was successfully created. Consequently, we should
         // create a session in memory
-        UserSession userSession = UserSession.fromConnectionManager(buddyId, connectionManager);
+        UserSession userSession = UserSession.fromConnectionManager(buddyId, companyId, connectionManager);
         // Add user session to store so it can be queried later
         userSessionStore.addUserSession(userSession);
 

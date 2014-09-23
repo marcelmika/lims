@@ -63,6 +63,7 @@ public class Buddy {
 
     // Properties
     private Long buddyId;
+    private Long companyId;
     private String fullName;
     private String screenName;
     private String password;
@@ -80,6 +81,7 @@ public class Buddy {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         Buddy buddy = new Buddy();
         buddy.buddyId = themeDisplay.getUserId();
+        buddy.companyId = themeDisplay.getCompanyId();
         buddy.screenName = themeDisplay.getUser().getScreenName();
         buddy.fullName = themeDisplay.getUser().getFullName();
 
@@ -101,6 +103,7 @@ public class Buddy {
         Buddy buddy = new Buddy();
         // BuddyID
         buddy.buddyId = themeDisplay.getUserId();
+        buddy.companyId = themeDisplay.getCompanyId();
         // Full name
         if (parameterMap.containsKey(KEY_FULL_NAME)) {
             buddy.fullName = GetterUtil.getString(parameterMap.get(KEY_FULL_NAME));
@@ -129,6 +132,7 @@ public class Buddy {
         Buddy buddy = new Buddy();
 
         buddy.buddyId = user.getUserId();
+        buddy.companyId = user.getCompanyId();
         buddy.screenName = user.getScreenName();
         buddy.password = user.getPassword();
 
@@ -152,6 +156,7 @@ public class Buddy {
         String password = PortalUtil.getUserPassword(request);
 
         buddy.buddyId = user.getUserId();
+        buddy.companyId = user.getCompanyId();
         buddy.screenName = user.getScreenName();
         buddy.fullName = user.getFullName();
         buddy.password = password;
@@ -186,6 +191,7 @@ public class Buddy {
         Buddy buddy = new Buddy();
         // Map data to user details
         buddy.buddyId = buddyDetails.getBuddyId();
+        buddy.companyId = buddyDetails.getCompanyId();
         buddy.fullName = buddyDetails.getFullName();
         buddy.screenName = buddyDetails.getScreenName();
         buddy.password = buddyDetails.getPassword();
@@ -196,6 +202,10 @@ public class Buddy {
                 User user = UserLocalServiceUtil.getUserById(buddyDetails.getBuddyId());
                 if (buddy.screenName == null) {
                     buddy.screenName = user.getScreenName();
+                }
+
+                if (buddy.companyId == null) {
+                    buddy.companyId = user.getCompanyId();
                 }
 
                 if (buddy.fullName == null) {
@@ -248,6 +258,7 @@ public class Buddy {
         BuddyDetails details = new BuddyDetails();
         // Map data from user
         details.setBuddyId(buddyId);
+        details.setCompanyId(companyId);
         details.setFullName(fullName);
         details.setScreenName(screenName);
         details.setPassword(password);
@@ -270,6 +281,14 @@ public class Buddy {
 
     public void setBuddyId(Long buddyId) {
         this.buddyId = buddyId;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     public String getScreenName() {
@@ -318,6 +337,7 @@ public class Buddy {
     public String toString() {
         return "Buddy{" +
                 "buddyId=" + buddyId +
+                ", companyId=" + companyId +
                 ", fullName='" + fullName + '\'' +
                 ", screenName='" + screenName + '\'' +
                 ", password='" + password + '\'' +
