@@ -19,7 +19,9 @@ AUI().use('lims-core', "lims-model", "lims-view", "lims-controller", function (A
 
         // Set i18n values
         A.LIMS.Core.i18n.values = {
-            connectionErrorMessage: Liferay.Language.get('connection-error')
+            connectionErrorMessage: Liferay.Language.get('connection-error'),
+            searchInfoMessage: Liferay.Language.get('panel-search-info-text'),
+            searchNoResultsMessage: Liferay.Language.get('panel-search-no-results-text')
         };
 
         // Start the app!

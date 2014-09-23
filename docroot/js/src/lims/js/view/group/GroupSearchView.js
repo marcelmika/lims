@@ -52,12 +52,55 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
         // Vars
         var searchInput = this.get('searchInput');
 
-        // Add a focus on the search input
+        // Add a focus on the search input and empty the content
         searchInput.set('value', '');
         searchInput.focus();
 
+        // Render the view
+        this.render();
         // No preloader is needed at the beginning
         this._hideActivityIndicator();
+        // Show info message
+        this._showInfoMessage();
+        // Hide errors
+        this._hideErrorMessage(false);
+    },
+
+    /**
+     * Renders view
+     *
+     * @returns {Y.LIMS.View.GroupSearchView}
+     */
+    render: function () {
+        // Vars
+        var listContainer = this.get('listContainer'),
+            model = this.get('model'),
+            buddy,
+            buddyView,
+            index;
+
+        // Empty the list view
+        listContainer.set('innerHTML', '');
+
+        // Create view for model instances
+        for (index = 0; index < model.size(); index++) {
+            // Get buddy from the list
+            buddy = model.item(index);
+            // Build view
+            buddyView = new Y.LIMS.View.GroupBuddyViewItem({model: buddy});
+            // Render view
+            buddyView.render();
+            // Append to container
+            listContainer.append(buddyView.get('container'));
+        }
+
+        if (model.size() === 0) {
+            this._showNoResultsMessage();
+        } else {
+            this._hideNoResultsMessage();
+        }
+
+        return this;
     },
 
     /**
@@ -68,15 +111,47 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
     _attachEvents: function () {
 
         // Vars
-        var closeButton = this.get('closeButton'),
-            searchInput = this.get('searchInput'),
+        var searchInput = this.get('searchInput'),
             model = this.get('model');
 
         // Local events
-        closeButton.on('click', this._onCloseButtonClick, this);
         searchInput.on('keyup', this._onSearchInputUpdate, this);
-        model.on('searchStared', this._onSearchStared, this);
+        model.on('searchStarted', this._onSearchStarted, this);
         model.on('searchSuccess', this._onSearchSuccess, this);
+        model.on('searchError', this._onSearchError, this);
+    },
+
+    /**
+     * Performs search operation
+     *
+     * @private
+     */
+    _search: function () {
+
+        // Vars
+        var timer = this.get('timer'),
+            timerDelayInterval = this.get('timerDelayInterval'),
+            searchInput = this.get('searchInput'),
+            model = this.get('model'),
+            value;
+
+        // Get rid of new line characters
+        value = searchInput.get('value').replace(/\n|\r/gim, '');
+        value = Y.Lang.trim(value);
+
+        // Clear out the timer first. Since we don't want to send a request whenever the user
+        // types another letter we wait until he stops.
+        clearTimeout(timer);
+
+        // Set a new timer
+        this.set('timer', setTimeout(function () {
+            // If there is no content to be searched do nothing
+            if (value !== "") {
+                // Search buddies
+                model.search(value);
+            }
+
+        }, timerDelayInterval));
     },
 
     /**
@@ -113,13 +188,148 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
     },
 
     /**
-     * Called when the close button is pressed
+     * Shows the info message
      *
      * @private
      */
-    _onCloseButtonClick: function () {
-        // Fire an event
-        this.fire('searchClosed');
+    _showInfoMessage: function () {
+        // Vars
+        var infoContainer = this.get('infoContainer'),
+            infoMessage = this.get('infoMessage');
+
+        // Set the message
+        infoMessage.set('innerHTML', Y.LIMS.Core.i18n.values.searchInfoMessage);
+
+        // Show info
+        infoContainer.show();
+    },
+
+    /**
+     * Hides the info message
+     *
+     * @private
+     */
+    _hideInfoMessage: function () {
+        // Vars
+        var infoContainer = this.get('infoContainer');
+        // Hide info
+        infoContainer.hide();
+    },
+
+    /**
+     * Shows no results info message
+     *
+     * @private
+     */
+    _showNoResultsMessage: function () {
+        // Vars
+        var infoContainer = this.get('infoContainer'),
+            infoMessage = this.get('infoMessage');
+
+        // Set the message
+        infoMessage.set('innerHTML', ''); // This needs to be here otherwise the content is not refreshed on retina
+        infoMessage.set('innerHTML', Y.LIMS.Core.i18n.values.searchNoResultsMessage);
+
+        // Show info
+        infoContainer.show();
+    },
+
+    /**
+     * Hides no results info message
+     *
+     * @private
+     */
+    _hideNoResultsMessage: function () {
+        // Vars
+        var infoContainer = this.get('infoContainer');
+        // Hide info
+        infoContainer.hide();
+    },
+
+    /**
+     * Shows error message
+     *
+     * @private
+     */
+    _showErrorMessage: function () {
+        // Vars
+        var errorContainer = this.get('errorContainer'),
+            searchContent = this.get('searchContent'),
+            animation,
+            instance = this;
+
+        // If the error container is already in the document do nothing
+        if (!errorContainer.inDoc()) {
+
+            // Create an instance of animation
+            animation = new Y.Anim({
+                node: errorContainer,
+                duration: 0.2,
+                from: {opacity: 0},
+                to: {opacity: 1}
+            });
+
+            // Opacity needs to be set to zero otherwise there will
+            // be a weird blink effect
+            errorContainer.setStyle('opacity', 0);
+
+            // Attach click on resend button event
+            errorContainer.one('.resend-button').on('click', function (event) {
+                event.preventDefault();
+                instance._onRefreshButtonClick();
+            });
+
+            // Add the error to the container
+            searchContent.append(errorContainer);
+
+            // Run the effect animation
+            animation.run();
+        }
+
+        // It is possible that resend button was clicked thus it was transformed to the preloader.
+        // Remove the preloader class so it can be the resend button again.
+        errorContainer.one('.resend-button').removeClass('preloader');
+    },
+
+    /**
+     * Hides error message
+     *
+     * @private
+     */
+    _hideErrorMessage: function (animated) {
+        // Vars
+        var errorContainer = this.get('errorContainer'),
+            animation;
+
+        // Run the animation only if the error container is in DOM
+        if (errorContainer.inDoc()) {
+
+            // Animated
+            if (animated) {
+                // Create an instance of animation
+                animation = new Y.Anim({
+                    node: errorContainer,
+                    duration: 0.2,
+                    from: {opacity: 1},
+                    to: {opacity: 0}
+                });
+
+                // Listen to the end of the animation
+                animation.on('end', function () {
+                    // Remove the error node from DOM
+                    animation.get('node').remove();
+                });
+
+                // Run!
+                animation.run();
+            }
+            // Static
+            else {
+                // Simply remove the error node from DOM
+                errorContainer.remove();
+            }
+
+        }
     },
 
     /**
@@ -128,27 +338,8 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
      * @private
      */
     _onSearchInputUpdate: function () {
-
-        // Vars
-        var timer = this.get('timer'),
-            timerDelayInterval = this.get('timerDelayInterval'),
-            searchInput = this.get('searchInput'),
-            model = this.get('model'),
-            value;
-
-        // Get rid of new line characters
-        value = searchInput.get('value').replace(/\n|\r/gim, '');
-
-        // Clear out the timer first. Since we don't want to send a request whenever the user
-        // types another letter we wait until he stops.
-        clearTimeout(timer);
-
-        // Set a new timer
-        this.set('timer', setTimeout(function () {
-            // Search buddies
-            model.search(value);
-
-        }, timerDelayInterval));
+        // Start search
+        this._search();
     },
 
     /**
@@ -156,7 +347,7 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
      *
      * @private
      */
-    _onSearchStared: function () {
+    _onSearchStarted: function () {
         // Show the preloader
         this._showActivityIndicator();
     },
@@ -169,6 +360,46 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
     _onSearchSuccess: function () {
         // Hide the preloader
         this._hideActivityIndicator();
+        // Hide info message
+        this._hideNoResultsMessage();
+        // Render incoming data
+        this.render();
+        // Hide error
+        this._hideErrorMessage(true);
+    },
+
+    /**
+     * Called when the search end with failure
+     *
+     * @private
+     */
+    _onSearchError: function () {
+        // Hide the preloader
+        this._hideActivityIndicator();
+        // Render
+        this.render();
+        // Hide info message
+        this._hideNoResultsMessage();
+        // Show error
+        this._showErrorMessage();
+    },
+
+    /**
+     * Called when the user click on the refresh button in the error container
+     *
+     * @private
+     */
+    _onRefreshButtonClick: function () {
+        // Vars
+        var refreshButtonNode = this.get('errorContainer').one('.resend-button');
+
+        // Prevent user to click on preloader more than once
+        if (!refreshButtonNode.hasClass('preloader')) {
+            // Add preloader to the resend button
+            refreshButtonNode.addClass('preloader');
+            // Search
+            this._search();
+        }
     }
 
 }, {
@@ -209,6 +440,17 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
         },
 
         /**
+         * Content of the search results node
+         *
+         * {Node}
+         */
+        searchContent: {
+            valueFn: function () {
+                return this.get('container').one('.search-content');
+            }
+        },
+
+        /**
          * Info container node
          *
          * {Node}
@@ -220,6 +462,39 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
         },
 
         /**
+         * Info message node in info container
+         *
+         * {Node}
+         */
+        infoMessage: {
+            valueFn: function () {
+                return this.get('infoContainer').one('.info-message');
+            }
+        },
+
+        /**
+         * Error container node
+         *
+         * {Node}
+         */
+        errorContainer: {
+            valueFn: function () {
+                return this.get('container').one('.error-container');
+            }
+        },
+
+        /**
+         * List container node
+         *
+         * {Node}
+         */
+        listContainer: {
+            valueFn: function () {
+                return this.get('container').one('.group-buddy-list');
+            }
+        },
+
+        /**
          * Activity indicator node
          *
          * {Node}
@@ -227,17 +502,6 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
         activityIndicator: {
             valueFn: function () {
                 return this.get('container').one('.preloader');
-            }
-        },
-
-        /**
-         * Close button node
-         *
-         * {Node}
-         */
-        closeButton: {
-            valueFn: function () {
-                return this.get('container').one('.close-search-button');
             }
         },
 
@@ -254,23 +518,12 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
          * Delayed key up interval. Model is refreshed after the delay.
          * This is useful because we don't want to overwhelm the server with many
          * request.
+         *
+         * {integer}
          */
         timerDelayInterval: {
-            value: 1000 // 1 second
-        },
-
-        /**
-         * Content of the search results node
-         *
-         * {Node}
-         */
-        searchContent: {
-            valueFn: function () {
-                return this.get('container').one('.search-content');
-            }
+            value: 500 // half a second
         }
-
-
     }
 });
 

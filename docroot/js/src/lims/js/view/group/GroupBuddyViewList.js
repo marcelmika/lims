@@ -37,6 +37,11 @@ Y.LIMS.View.GroupBuddyViewList = Y.Base.create('groupBuddyViewList', Y.View, [],
     // Specify a model to associate with the view.
     model: Y.LIMS.Model.BuddyModelList,
 
+    /**
+     * Renders view
+     *
+     * @returns {Y.LIMS.View.GroupBuddyViewList}
+     */
     render: function () {
         // Vars
         var container, buddies, buddyIndex, buddy, buddyView;
@@ -74,14 +79,22 @@ Y.LIMS.View.GroupBuddyViewList = Y.Base.create('groupBuddyViewList', Y.View, [],
     // Specify attributes and static properties for your View here.
     ATTRS: {
 
+        /**
+         * Main container node
+         *
+         * {Node}
+         */
         container: {
             valueFn: function () {
                 return Y.Node.create(this.containerTemplate);
             }
         },
 
+        /**
+         * Model attached to the view
+         */
         model: {
-            value: null // default value
+            value: null // to be set
         }
     }
 });

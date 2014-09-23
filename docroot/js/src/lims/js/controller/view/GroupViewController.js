@@ -29,6 +29,9 @@ Y.namespace('LIMS.Controller');
 
 Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.LIMS.Core.ViewController, [], {
 
+    // Template for list button
+    listButtonTemplate: '<button class="panel-button list">',
+
     /**
      *  The initializer runs when a Group View Controller instance is created.
      */
@@ -77,11 +80,11 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
 
         // Vars
         var searchButton = this.get('searchButton'),
-            searchPanelView = this.get('searchPanelView');
+            listButton = this.get('listButton');
 
         // Local events
         searchButton.on('click', this._onSearchClicked, this);
-        searchPanelView.on('searchClosed', this._onSearchClosed, this);
+        listButton.on('click', this._onSearchClosed, this);
 
         // Global events
         Y.on('buddySelected', this._onBuddySelected, this);
@@ -134,8 +137,10 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
         // Vars
         var panelTitle = this.get('panelTitle'),
             searchPanelView = this.get('searchPanelView'),
+            searchPanelModel = this.get('searchPanelModel'),
             searchPanelContainer = searchPanelView.get('container'),
-            animation;
+            animation,
+            instance = this;
 
         // Only show the search panel if not in document already
         if (!searchPanelContainer.inDoc()) {
@@ -149,7 +154,10 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
             });
 
             // Search button will no longer be needed so hide it at the end of the animation
-            animation.on('end', this._hideSearchButton, this);
+            animation.on('end', function () {
+                instance._hideSearchButton();
+                instance._showListButton();
+            }, this);
 
             // Opacity needs to be set to zero otherwise there will
             // be a weird blink effect
@@ -159,6 +167,7 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
             panelTitle.insert(searchPanelContainer, 'after');
 
             // Reset the previous search
+            searchPanelModel.reset();
             searchPanelView.reset();
 
             // Run the animation
@@ -176,7 +185,8 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
         // Vars
         var searchPanelView = this.get('searchPanelView'),
             searchPanelContainer = searchPanelView.get('container'),
-            animation;
+            animation,
+            instance = this;
 
         // Only hide the search panel if it's in the document
         if (searchPanelContainer.inDoc()) {
@@ -193,8 +203,9 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
             animation.on('end', function () {
                 // Remove the search panel from DOM
                 animation.get('node').remove();
+                instance._hideListButton();
                 // We will need the search button in the panel title again
-                this._showSearchButton();
+                instance._showSearchButton();
             }, this);
 
             // Run the animation
@@ -227,6 +238,36 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
     },
 
     /**
+     * Shows the list button in panel title
+     *
+     * @private
+     */
+    _showListButton: function () {
+        // Vars
+        var listButton = this.get('listButton'),
+            minimizeButton = this.get('minimizeButton');
+
+        if (!listButton.inDoc()) {
+            minimizeButton.insert(listButton, 'after');
+        }
+
+        // Show the button
+        listButton.show();
+    },
+
+    /**
+     * Hides the list button in panel title
+     *
+     * @private
+     */
+    _hideListButton: function () {
+        // Vars
+        var listButton = this.get('listButton');
+        // Hide the button
+        listButton.hide();
+    },
+
+    /**
      * Buddy selected event. Called whenever the user selects one of the buddies from
      * the group list
      *
@@ -254,8 +295,6 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
     _onSearchClosed: function () {
         // Hide the search panel
         this._hideSearchPanel();
-        // Show the search button in panel title again
-        this._showSearchButton();
     },
 
     /**
@@ -378,6 +417,28 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
         searchButton: {
             valueFn: function () {
                 return this.get('container').one('.panel-title .panel-button.search');
+            }
+        },
+
+        /**
+         * Minimize button in panel title node
+         *
+         * {Node}
+         */
+        minimizeButton: {
+            valueFn: function () {
+                return this.get('container').one('.panel-title .panel-button.minimize');
+            }
+        },
+
+        /**
+         * Search button in panel title node
+         *
+         * {Node}
+         */
+        listButton: {
+            valueFn: function () {
+                return Y.Node.create(this.listButtonTemplate);
             }
         },
 

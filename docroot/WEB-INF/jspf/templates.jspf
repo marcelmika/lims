@@ -47,7 +47,6 @@
             <div class="panel-title">
                 <button class="panel-button close"></button>
                 <button class="panel-button minimize"></button>
-                <button class="panel-button search"></button>
                 <div class="panel-title-text">{conversationTitle}</div>
             </div>
             <div class="panel-content">
@@ -131,15 +130,24 @@
 <script type="text/x-template" id="lims-panel-search-template">
     <div class="panel-search">
         <input class="search-input-field" type="text" value=""/>
-        <button class="close-search-button"></button>
+
         <div class="search-content">
             <div class="info-container">
                 <div class="info-icon"></div>
                 <div class="info-message">
-                    <liferay-ui:message key="panel-panel-search-info-text"/>
+                    <liferay-ui:message key="panel-search-info-text"/>
                 </div>
             </div>
+            <div class="error-container">
+                <div class="warning-icon"></div>
+                <div class="error-message">
+                    <liferay-ui:message key="panel-search-error-text"/>
+                </div>
+                <button class="resend-button"
+                        title="<liferay-ui:message key="panel-search-refresh-title" />"></button>
+            </div>
             <div class="preloader"></div>
+            <ul class="group-buddy-list"></ul>
         </div>
     </div>
 </script>

@@ -41,11 +41,9 @@ Y.LIMS.Model.BuddySearchListModel = Y.Base.create('buddySearchListModel', Y.Mode
      * @param searchQuery
      */
     search: function (searchQuery) {
-        // Vars
-
         // Save the query
         this.set('searchQuery', searchQuery);
-
+        // Load the source
         this.load();
     },
 
@@ -57,12 +55,11 @@ Y.LIMS.Model.BuddySearchListModel = Y.Base.create('buddySearchListModel', Y.Mode
             searchQuery = this.get('searchQuery');
 
         switch (action) {
-            case 'create':
-            case 'update':
+
             case 'read':
 
                 // Notify about the beginning of search
-                this.fire('searchStared');
+                this.fire('searchStarted');
 
                 // Set parameters
                 parameters = Y.JSON.stringify({
@@ -78,40 +75,27 @@ Y.LIMS.Model.BuddySearchListModel = Y.Base.create('buddySearchListModel', Y.Mode
                     },
                     on: {
                         success: function (id, o) {
-                            console.log(o);
-//                            var i, groupCollection, groups, group, buddies;
-//                            // Parse groups
-//                            groupCollection = Y.JSON.parse(o.response);
-//                            groups = groupCollection.groups;
-//
-//                            if (etag.toString() !== groupCollection.etag.toString()) {
-//
-//                                // Empty the list
-//                                instance.reset();
-//
-//                                instance.set('etag', groupCollection.etag);
-//
-//                                // Add groups to list
-//                                for (i = 0; i < groups.length; i++) {
-//                                    // Create new group
-//                                    group = new Y.LIMS.Model.GroupModelItem(groups[i]);
-//
-//                                    // List of buddies
-//                                    buddies = new Y.LIMS.Model.BuddyModelList();
-//                                    buddies.add(groups[i].buddies);
-//
-//                                    // Add buddies to group
-//                                    group.set('buddies', buddies);
-//
-//                                    // Add group to group list
-//                                    instance.add(group);
-//                                }
-//
-//                                instance.fire('groupsReadSuccess', {
-//                                    groupsList: instance
-//                                });
-//                            }
-                            instance.fire('searchSuccess');
+
+                            // Vars
+                            var buddies,
+                                index;
+
+                            // Parse buddies from response
+                            buddies = Y.JSON.parse(o.response);
+
+                            // Empty the list
+                            instance.reset();
+
+                            // Deserialize buddies
+                            for (index = 0; index < buddies.length; index++) {
+                                // Add buddy to the list
+                                instance.add(new Y.LIMS.Model.BuddyModelItem(buddies[index]));
+                            }
+
+                            // Fire success event
+                            instance.fire('searchSuccess', {
+                                searchList: instance
+                            });
                         },
                         failure: function (x, o) {
                             // If the attempt is unauthorized session has expired
@@ -120,8 +104,12 @@ Y.LIMS.Model.BuddySearchListModel = Y.Base.create('buddySearchListModel', Y.Mode
                                 Y.fire('userSessionExpired');
                             }
 
+                            // Empty the list
+                            instance.reset();
+                            // Fire error event
                             instance.fire('searchError');
 
+                            // Callback the error
                             if (callback) {
                                 callback("search error", o.response);
                             }
@@ -131,11 +119,11 @@ Y.LIMS.Model.BuddySearchListModel = Y.Base.create('buddySearchListModel', Y.Mode
                         'Content-Type': 'application/json'
                     }
                 });
-
-
-                this.fire('searchFinished');
-
                 break;
+
+
+            case 'create':
+            case 'update':
             case 'delete':
                 return;
 
@@ -151,6 +139,11 @@ Y.LIMS.Model.BuddySearchListModel = Y.Base.create('buddySearchListModel', Y.Mode
         // model's data. See the docs for Y.Attribute to learn more about defining
         // attributes.
 
+        /**
+         * Search query string
+         *
+         * {string}
+         */
         searchQuery: {
             value: null // to be set
         }

@@ -316,7 +316,7 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         }
 
         // It is possible that resend button was clicked thus it was transformed to the preloader.
-        // So now remove the preloader class so it can be the resend button again
+        // Remove the preloader class so it can be the resend button again.
         errorContainer.one('.resend-button').removeClass('preloader');
     },
 
@@ -343,6 +343,7 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
 
             // Listen to the end of the animation
             animation.on('end', function () {
+                // Remove the error node from DOM
                 animation.get('node').remove();
             });
 

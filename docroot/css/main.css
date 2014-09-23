@@ -107,6 +107,7 @@
     border: none;
     padding: 0;
     margin: 0;
+    outline: none;
     opacity: 1 !important;
 }
 
@@ -316,8 +317,8 @@
 
 .liferay-ims .panel-button {
     cursor: pointer;
-    height: 14px;
     width: 20px;
+    height: 14px;
     float: right;
     margin-top: 5px;
     margin-right: 7px;
@@ -337,6 +338,10 @@
     background: url(../images/search-button.png) center center no-repeat;
 }
 
+.liferay-ims .panel-button.list {
+    background: url(../images/list-button.png) center center no-repeat;
+}
+
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
 
     .liferay-ims .panel-button.minimize {
@@ -352,6 +357,11 @@
     .liferay-ims .panel-button.search {
         background-image: url(../images/search-button@2x.png);
         background-size: auto 13px;
+    }
+
+    .liferay-ims .panel-button.list {
+        background-image: url(../images/list-button@2x.png);
+        background-size: auto 11px;
     }
 }
 
@@ -436,7 +446,7 @@
 .liferay-ims .panel-search .search-input-field {
     height: 12px;
     border: 1px solid #d4d4d4;
-    width: 158px;
+    width: 180px;
     padding: 5px 27px 5px 27px;
     background: #f1f1f1 url(../images/search-button.png) 7px center no-repeat;
     color: #1A1A1A;
@@ -462,18 +472,10 @@
     -moz-box-shadow: none;
 }
 
-.liferay-ims .panel-search .close-search-button {
-    height: 14px;
-    width: 20px;
-    float: right;
-    margin-top: 10px;
-    margin-right: 5px;
-    background: url(../images/close-button.png) center center no-repeat;
-    outline: none;
-}
-
 .liferay-ims .panel-search .search-content {
     height: 254px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .liferay-ims .panel-search .preloader {
@@ -481,7 +483,7 @@
     height: 20px;
     background-size: 17px;
     top: 7px;
-    right: 34px;
+    right: 12px;
     margin: 0;
 }
 
@@ -494,30 +496,65 @@
     padding: 5px 15px;
     font-size: 12px;
     color: #7e7e7e;
-    margin-left: 22px;
-    margin-right: 10px;
+    margin: 4px 10px 0 24px;
 }
 
 .liferay-ims .panel-search .info-container .info-icon {
     background: transparent url(../images/icon-info-blue.png) no-repeat center center;
     width: 18px;
     height: 18px;
-    margin: 7px 10px 0 9px;
+    margin: 6px 2px 0 15px;
     float: left;
+}
+
+.liferay-ims .panel-search .error-container {
+    margin: 0 9px;
+    top: 50px;
+    position: absolute;
+    width: 232px;
+}
+
+.liferay-ims .panel-search .error-container .warning-icon {
+    background: transparent url(../images/icon-warning-red.png) no-repeat center center;
+    width: 14px;
+    height: 16px;
+    margin: 7px 7px 0 0;
+    float: left;
+}
+
+.liferay-ims .panel-search .error-container .error-message {
+    color: #ce1b1b;
+    max-width: 174px;
+    float: left;
+    line-height: 13px;
+    font-size: 11px;
+    text-align: justify;
+}
+
+.liferay-ims .panel-search .error-container .resend-button {
+    background: transparent url(../images/icon-resend.png) no-repeat center center;
+    width: 21px;
+    height: 21px;
+    float: right;
+    padding-right: 4px;
+    margin-top: 4px;
+}
+
+.liferay-ims .panel-search .error-container .resend-button.preloader {
+    position: relative;
+    right: 0;
+    top: 0;
+    background: url(../images/preloader-light.gif) center center no-repeat;
+    height: 21px;
+    width: 21px;
+    background-size: 21px;
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
 
-    .liferay-ims .panel-search .close-search-button {
-        background-image: url(../images/search-button@2x.png);
-    }
-
-    .liferay-ims .panel-search .close-search-button {
-        background-image: url(../images/close-button@2x.png);
-        background-size: auto 18px;
-    }
-
-    .liferay-ims .panel-search .search-input-field {
+    .liferay-ims .panel-search .search-input-field,
+    .liferay-ims .panel-search .search-input-field:hover,
+    .liferay-ims .panel-search .search-input-field:focus {
         background-image: url(../images/search-button@2x.png);
         background-size: auto 13px;
     }
@@ -529,6 +566,16 @@
 
     .liferay-ims .panel-search .preloader {
         background-size: auto 17px;
+    }
+
+    .liferay-ims .panel-search .error-container .warning-icon {
+        background-image: url(../images/icon-warning-red@2x.png);
+        background-size: auto 16px;
+    }
+
+    .liferay-ims .panel-search .error-container .resend-button {
+        background-image: url(../images/icon-resend@2x.png);
+        background-size: auto 21px;
     }
 }
 
@@ -747,7 +794,7 @@
     }
 }
 
-.liferay-ims .buddy-list .panel-content .group-buddy-item .group-buddy-item-name {
+.liferay-ims .buddy-list .group-buddy-item .group-buddy-item-name {
     margin-top: 6px;
     max-width: 145px;
     overflow: hidden;
@@ -769,7 +816,7 @@
     float: left;
 }
 
-.liferay-ims .buddy-list .panel-content .group-buddy-item-portrait .portrait {
+.liferay-ims .buddy-list .group-buddy-item-portrait .portrait {
     display: block;
     float: left;
     height: 36px;
@@ -782,15 +829,15 @@
     -moz-border-radius: 18px;
 }
 
-.liferay-ims .buddy-list .panel-content .group-buddy-item-divider {
+.liferay-ims .buddy-list .group-buddy-item-divider {
     clear: both;
 }
 
-.liferay-ims .buddy-list .panel-content .group-buddy-item:hover {
+.liferay-ims .buddy-list .group-buddy-item:hover {
     background: #f8f8f8;
 }
 
-.liferay-ims .buddy-list .panel-content .group-list .group-item .group-name {
+.liferay-ims .buddy-list .group-list .group-item .group-name {
     height: 25px;
     background: #f8f8f8;
     margin: -6px 0 0 0;
@@ -814,7 +861,7 @@
     line-height: 27px;
 }
 
-.liferay-ims .buddy-list .panel-content .group-buddy-item {
+.liferay-ims .buddy-list .group-buddy-item {
     padding: 7px;
     cursor: pointer;
     height: 35px;
@@ -826,6 +873,12 @@
     float: right;
     margin-right: 4px;
     margin-top: 13px;
+}
+
+.liferay-ims .buddy-list .panel-search .group-buddy-item-presence {
+    float: right;
+    margin-right: 4px;
+    margin-top: -16px;
 }
 
 /************************************************************************************
