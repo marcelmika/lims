@@ -474,7 +474,7 @@
 
 .liferay-ims .panel-search .search-content {
     height: 254px;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 
