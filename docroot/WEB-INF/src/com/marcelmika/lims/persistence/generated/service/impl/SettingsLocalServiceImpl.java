@@ -237,4 +237,33 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
                 userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedGroups, start, end
         );
     }
+
+    /**
+     * Returns all buddies in sites where the user participates based on the search query
+     *
+     * @param userId                of excluded user
+     * @param searchQuery           search query string
+     * @param ignoreDefaultUser     true if default users should be ignored
+     * @param ignoreDeactivatedUser true if deactivated users should be ignored
+     * @param excludedSites         list of names of sites which should be excluded
+     * @param start                 value of the list
+     * @param end                   value of the list
+     * @return List of objects where each object contains user info
+     * @throws Exception
+     */
+    @Override
+    public List<Object[]> searchSitesBuddies(Long userId,
+                                             String searchQuery,
+                                             boolean ignoreDefaultUser,
+                                             boolean ignoreDeactivatedUser,
+                                             String[] excludedSites,
+                                             int start,
+                                             int end) throws Exception {
+
+        // Search via settings finder
+        return settingsFinder.searchSitesBuddies(
+                userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, start, end
+        );
+
+    }
 }

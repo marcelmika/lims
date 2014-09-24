@@ -31,6 +31,7 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
 
     // Search users SQL
     private static final String SEARCH_ALL_USERS = SettingsFinder.class.getName() + ".searchAllUsers";
+    private static final String SEARCH_BY_SITES_GROUPS = SettingsFinder.class.getName() + ".searchBySitesGroups";
 
     // Placeholders
     private static final String PLACEHOLDER_DEFAULT_USER = "[$DEFAULT_USER$]";
@@ -325,6 +326,74 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
     }
 
     /**
+     * Finds all users based on the search query except the one given in the parameter and their settings.
+     *
+     * @param userId                of excluded user
+     * @param searchQuery           search string
+     * @param ignoreDefaultUser     true if default users should be ignored
+     * @param ignoreDeactivatedUser true if deactivated users should be ignored
+     * @param start                 value of the list
+     * @param end                   value of the list
+     * @return List of objects where each object contains user info
+     */
+    @Override
+    @SuppressWarnings("unchecked") // Cast List<Object[]> is unchecked
+    public List<Object[]> searchSitesBuddies(Long userId,
+                                             String searchQuery,
+                                             boolean ignoreDefaultUser,
+                                             boolean ignoreDeactivatedUser,
+                                             String[] excludedSites,
+                                             int start,
+                                             int end) throws Exception {
+        Session session = null;
+
+        try {
+            // Open database session
+            session = openSession();
+            // Generate SQL
+            String sql = getSearchSitesBuddiesSQL(
+                    searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites
+            );
+
+            // Create query from sql
+            SQLQuery query = session.createSQLQuery(sql);
+
+            // Now we need to map types to columns
+            query.addScalar("userId", Type.LONG);
+            query.addScalar("screenName", Type.STRING);
+            query.addScalar("firstName", Type.STRING);
+            query.addScalar("middleName", Type.STRING);
+            query.addScalar("lastName", Type.STRING);
+            query.addScalar("presence", Type.STRING);
+
+            // Add parameters to query
+            QueryPos queryPos = QueryPos.getInstance(query);
+            queryPos.add(userId);
+            if (excludedSites.length > 0) {
+                queryPos.add(excludedSites);
+            }
+            queryPos.add(userId);
+
+            // Create the like statement for search query
+            String likeStatement = "%" + searchQuery + "%";
+
+            // There are 5 possible columns we are about to search
+            // (first name, middle name, last name, screen name, email address)
+            for (int i = 0; i < 5; i++) {
+                queryPos.add(likeStatement);
+                queryPos.add(searchQuery);
+            }
+
+            // Return the result
+            return (List<Object[]>) QueryUtil.list(query, getDialect(), start, end);
+
+        } finally {
+            // Session needs to be closed if something goes wrong
+            closeSession(session);
+        }
+    }
+
+    /**
      * Generates SQL for find all users query
      *
      * @param ignoreDefaultUser     determines if the default user should be ignored
@@ -366,38 +435,53 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
         // Add ignored users queries if needed
         sql = addIgnoreDefaultUserToSql(sql, ignoreDefaultUser);
         sql = addIgnoreDeactivatedUserToSql(sql, ignoreDeactivatedUser);
-
-        sql = CustomSQLUtil.replaceKeywords(
-                sql, "lower(User_.firstName)", StringPool.LIKE, false,
-                new String[]{searchQuery});
-        sql = CustomSQLUtil.replaceKeywords(
-                sql, "lower(User_.middleName)", StringPool.LIKE, false,
-                new String[]{searchQuery});
-        sql = CustomSQLUtil.replaceKeywords(
-                sql, "lower(User_.lastName)", StringPool.LIKE, false,
-                new String[]{searchQuery});
-        sql = CustomSQLUtil.replaceKeywords(
-                sql, "lower(User_.screenName)", StringPool.LIKE, false,
-                new String[]{searchQuery});
-        sql = CustomSQLUtil.replaceKeywords(
-                sql, "lower(User_.emailAddress)", StringPool.LIKE, true,
-                new String[]{searchQuery});
-
+        sql = addSearchParametersToSql(sql, searchQuery);
 
         return sql;
     }
+
+    /**
+     * Generates SQL for search sites buddies query
+     *
+     * @param searchQuery           search keyword
+     * @param ignoreDefaultUser     determines if the default user should be ignored
+     * @param ignoreDeactivatedUser true if deactivated users should be ignored
+     * @param excludedSites         name of sites that should be excluded from the query
+     * @return SQL string for search sites query
+     */
+    private String getSearchSitesBuddiesSQL(String searchQuery,
+                                            boolean ignoreDefaultUser,
+                                            boolean ignoreDeactivatedUser,
+                                            String[] excludedSites) {
+
+        // Get custom sql (check /src/custom-sql/default.xml)
+        String sql = CustomSQLUtil.get(SEARCH_BY_SITES_GROUPS);
+
+        // Replace and_or_null operator, false means that this is a conjunction
+        // https://www.liferay.com/community/wiki/-/wiki/Main/Custom+queries+in+Liferay
+        sql = CustomSQLUtil.replaceAndOperator(sql, false);
+
+        // Add ignored users queries if needed
+        sql = addIgnoreDefaultUserToSql(sql, ignoreDefaultUser);
+        sql = addIgnoreDeactivatedUserToSql(sql, ignoreDeactivatedUser);
+        sql = addSearchParametersToSql(sql, searchQuery);
+        sql = addExcludedSitesSQL(sql, excludedSites);
+
+        return sql;
+    }
+
 
     /**
      * Generates SQL for find by sites groups query
      *
      * @param ignoreDefaultUser     true if default users should be ignored
      * @param ignoreDeactivatedUser true if deactivated users should be ignored
-     * @param excludedGroups        names of groups that should be excluded from the query
+     * @param excludedSites         names of groups that should be excluded from the query
      * @return SQL string for find by sites groups query
      */
     private String getFindBySitesGroupsSQL(boolean ignoreDefaultUser,
                                            boolean ignoreDeactivatedUser,
-                                           String[] excludedGroups) {
+                                           String[] excludedSites) {
 
         // Get custom query sql (check /src/custom-sql/default.xml)
         String sql = CustomSQLUtil.get(FIND_BY_SITES_GROUPS);
@@ -405,31 +489,9 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
         // Add ignore default user query if needed
         sql = addIgnoreDefaultUserToSql(sql, ignoreDefaultUser);
         sql = addIgnoreDeactivatedUserToSql(sql, ignoreDeactivatedUser);
+        sql = addExcludedSitesSQL(sql, excludedSites);
 
-        // If no excluded groups are set clear placeholders and return custom sql
-        if (excludedGroups.length == 0) {
-            return StringUtil.replace(sql,
-                    new String[]{PLACEHOLDER_USERS_GROUPS_JOIN, PLACEHOLDER_USERS_GROUPS_WHERE},
-                    new String[]{StringPool.BLANK, StringPool.BLANK});
-        }
-
-        // Otherwise, we need to build a query which will excluded proper sites
-        StringBundler sb = new StringBundler(excludedGroups.length * 2 - 1);
-        for (int i = 0; i < excludedGroups.length; i++) {
-            // Add question mark so we can add parameters
-            sb.append(StringPool.QUESTION);
-            // Add comma if not at the end
-            if ((i + 1) < excludedGroups.length) {
-                sb.append(StringPool.COMMA);
-            }
-        }
-
-        return StringUtil.replace(sql,
-                new String[]{PLACEHOLDER_USERS_GROUPS_JOIN, PLACEHOLDER_USERS_GROUPS_WHERE},
-                new String[]{
-                        "INNER JOIN Group_ ON Group_.groupId = Users_Groups.groupId",
-                        "AND Group_.name NOT IN (" + sb.toString() + ")"
-                });
+        return sql;
     }
 
     /**
@@ -545,4 +607,69 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             return StringUtil.replace(sql, PLACEHOLDER_DEACTIVATED_USER, StringPool.BLANK);
         }
     }
+
+    /**
+     * Takes sql string from parameter and replaces excluded sites placeholder with excludedSites
+     * as array taken from the parameter
+     *
+     * @param sql           String
+     * @param excludedSites String[]
+     * @return updated sql string
+     */
+    private String addExcludedSitesSQL(String sql, String[] excludedSites) {
+        // If no excluded groups are set clear placeholders and return custom sql
+        if (excludedSites.length == 0) {
+            return StringUtil.replace(sql,
+                    new String[]{PLACEHOLDER_USERS_GROUPS_JOIN, PLACEHOLDER_USERS_GROUPS_WHERE},
+                    new String[]{StringPool.BLANK, StringPool.BLANK});
+        }
+
+        // Otherwise, we need to build a query which will excluded proper sites
+        StringBundler sb = new StringBundler(excludedSites.length * 2 - 1);
+        for (int i = 0; i < excludedSites.length; i++) {
+            // Add question mark so we can add parameters
+            sb.append(StringPool.QUESTION);
+            // Add comma if not at the end
+            if ((i + 1) < excludedSites.length) {
+                sb.append(StringPool.COMMA);
+            }
+        }
+
+        return StringUtil.replace(sql,
+                new String[]{PLACEHOLDER_USERS_GROUPS_JOIN, PLACEHOLDER_USERS_GROUPS_WHERE},
+                new String[]{
+                        "INNER JOIN Group_ ON Group_.groupId = Users_Groups.groupId",
+                        "AND Group_.name NOT IN (" + sb.toString() + ")"
+                });
+    }
+
+    /**
+     * Takes sql string from parameter and replaces placeholders with search query
+     *
+     * @param sql         String
+     * @param searchQuery String
+     * @return updates sql string
+     */
+    private String addSearchParametersToSql(String sql, String searchQuery) {
+
+        // Replace
+        sql = CustomSQLUtil.replaceKeywords(
+                sql, "lower(User_.firstName)", StringPool.LIKE, false,
+                new String[]{searchQuery});
+        sql = CustomSQLUtil.replaceKeywords(
+                sql, "lower(User_.middleName)", StringPool.LIKE, false,
+                new String[]{searchQuery});
+        sql = CustomSQLUtil.replaceKeywords(
+                sql, "lower(User_.lastName)", StringPool.LIKE, false,
+                new String[]{searchQuery});
+        sql = CustomSQLUtil.replaceKeywords(
+                sql, "lower(User_.screenName)", StringPool.LIKE, false,
+                new String[]{searchQuery});
+        sql = CustomSQLUtil.replaceKeywords(
+                sql, "lower(User_.emailAddress)", StringPool.LIKE, true,
+                new String[]{searchQuery});
+
+        return sql;
+    }
+
 }

@@ -308,6 +308,18 @@ public interface SettingsLocalService extends BaseLocalService,
 		boolean ignoreDeactivatedUser, int start, int end)
 		throws java.lang.Exception;
 
+	/**
+	* Returns all buddies in the system based on the search query
+	*
+	* @param userId                of excluded user
+	* @param searchQuery           search string
+	* @param ignoreDefaultUser     true if default users should be ignored
+	* @param ignoreDeactivatedUser true if deactivated users should be ignored
+	* @param start                 value of the list
+	* @param end                   value of the list
+	* @return List of objects where each object contains user info
+	* @throws Exception
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public java.util.List<java.lang.Object[]> searchAllGroups(
 		java.lang.Long userId, java.lang.String searchQuery,
@@ -356,7 +368,7 @@ public interface SettingsLocalService extends BaseLocalService,
 	* @param userId                of the user whose groups are we looking for
 	* @param ignoreDefaultUser     true if default users should be ignored
 	* @param ignoreDeactivatedUser true if deactivated users should be ignored
-	* @param excludedGroups         list of names of groups which should be excluded
+	* @param excludedGroups        list of names of groups which should be excluded
 	* @param start                 value of the list
 	* @param end                   value of the list
 	* @return List of objects where each object contains group name and user info
@@ -367,4 +379,24 @@ public interface SettingsLocalService extends BaseLocalService,
 		java.lang.Long userId, boolean ignoreDefaultUser,
 		boolean ignoreDeactivatedUser, java.lang.String[] excludedGroups,
 		int start, int end) throws java.lang.Exception;
+
+	/**
+	* Returns all buddies in sites where the user participates based on the search query
+	*
+	* @param userId                of excluded user
+	* @param searchQuery           search query string
+	* @param ignoreDefaultUser     true if default users should be ignored
+	* @param ignoreDeactivatedUser true if deactivated users should be ignored
+	* @param excludedSites         list of names of sites which should be excluded
+	* @param start                 value of the list
+	* @param end                   value of the list
+	* @return List of objects where each object contains user info
+	* @throws Exception
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<java.lang.Object[]> searchSitesBuddies(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser,
+		java.lang.String[] excludedSites, int start, int end)
+		throws java.lang.Exception;
 }

@@ -164,6 +164,13 @@ public class SettingsLocalServiceClpInvoker {
 				"java.lang.Long", "boolean", "boolean", "java.lang.String[][]",
 				"int", "int"
 			};
+
+		_methodName65 = "searchSitesBuddies";
+
+		_methodParameterTypes65 = new String[] {
+				"java.lang.Long", "java.lang.String", "boolean", "boolean",
+				"java.lang.String[][]", "int", "int"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -341,6 +348,17 @@ public class SettingsLocalServiceClpInvoker {
 				((Integer)arguments[5]).intValue());
 		}
 
+		if (_methodName65.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes65, parameterTypes)) {
+			return SettingsLocalServiceUtil.searchSitesBuddies((java.lang.Long)arguments[0],
+				(java.lang.String)arguments[1],
+				((Boolean)arguments[2]).booleanValue(),
+				((Boolean)arguments[3]).booleanValue(),
+				(java.lang.String[])arguments[4],
+				((Integer)arguments[5]).intValue(),
+				((Integer)arguments[6]).intValue());
+		}
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -398,4 +416,6 @@ public class SettingsLocalServiceClpInvoker {
 	private String[] _methodParameterTypes63;
 	private String _methodName64;
 	private String[] _methodParameterTypes64;
+	private String _methodName65;
+	private String[] _methodParameterTypes65;
 }

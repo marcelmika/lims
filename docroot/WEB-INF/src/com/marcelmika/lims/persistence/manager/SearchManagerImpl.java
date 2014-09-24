@@ -75,6 +75,12 @@ public class SearchManagerImpl implements SearchManager {
                     userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, start, end
             );
         }
+        // Buddies from sites
+        else if (strategy == Environment.BuddyListStrategy.SITES) {
+            return searchSitesBuddies(
+                    userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, start, end
+            );
+        }
         // Unknown
         else {
             throw new Exception("Unknown buddy list strategy");
@@ -118,4 +124,42 @@ public class SearchManagerImpl implements SearchManager {
         return buddies;
     }
 
+    /**
+     * Returns a list of buddies. The list is made of all buddies based on the search query in the sites
+     * where the user participates
+     *
+     * @param userId                which should be excluded from the list
+     * @param searchQuery           search query string
+     * @param ignoreDefaultUser     boolean set to true if the default user should be excluded
+     * @param ignoreDeactivatedUser boolean set to true if the deactivated user should be excluded
+     * @param excludedSites         names of sites (groups) that should be excluded from the group collection
+     * @param start                 of the list
+     * @param end                   of the list
+     * @return GroupCollection
+     * @throws Exception
+     */
+    private List<Buddy> searchSitesBuddies(Long userId,
+                                           String searchQuery,
+                                           boolean ignoreDefaultUser,
+                                           boolean ignoreDeactivatedUser,
+                                           String[] excludedSites,
+                                           int start,
+                                           int end) throws Exception {
+
+        // Get from persistence
+        List<Object[]> users = SettingsLocalServiceUtil.searchSitesBuddies(
+                userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, start, end
+        );
+
+        // Deserialize user info in plain objects to buddy
+        List<Buddy> buddies = new LinkedList<Buddy>();
+        for (Object[] userObject : users) {
+            // Deserialize
+            Buddy buddy = Buddy.fromPlainObject(userObject, 0);
+            // Add to list
+            buddies.add(buddy);
+        }
+
+        return buddies;
+    }
 }

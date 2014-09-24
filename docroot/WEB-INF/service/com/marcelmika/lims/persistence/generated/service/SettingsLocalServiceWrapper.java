@@ -359,6 +359,18 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 			ignoreDeactivatedUser, start, end);
 	}
 
+	/**
+	* Returns all buddies in the system based on the search query
+	*
+	* @param userId                of excluded user
+	* @param searchQuery           search string
+	* @param ignoreDefaultUser     true if default users should be ignored
+	* @param ignoreDeactivatedUser true if deactivated users should be ignored
+	* @param start                 value of the list
+	* @param end                   value of the list
+	* @return List of objects where each object contains user info
+	* @throws Exception
+	*/
 	@Override
 	public java.util.List<java.lang.Object[]> searchAllGroups(
 		java.lang.Long userId, java.lang.String searchQuery,
@@ -416,7 +428,7 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 	* @param userId                of the user whose groups are we looking for
 	* @param ignoreDefaultUser     true if default users should be ignored
 	* @param ignoreDeactivatedUser true if deactivated users should be ignored
-	* @param excludedGroups         list of names of groups which should be excluded
+	* @param excludedGroups        list of names of groups which should be excluded
 	* @param start                 value of the list
 	* @param end                   value of the list
 	* @return List of objects where each object contains group name and user info
@@ -429,6 +441,29 @@ public class SettingsLocalServiceWrapper implements SettingsLocalService,
 		int start, int end) throws java.lang.Exception {
 		return _settingsLocalService.getUserGroups(userId, ignoreDefaultUser,
 			ignoreDeactivatedUser, excludedGroups, start, end);
+	}
+
+	/**
+	* Returns all buddies in sites where the user participates based on the search query
+	*
+	* @param userId                of excluded user
+	* @param searchQuery           search query string
+	* @param ignoreDefaultUser     true if default users should be ignored
+	* @param ignoreDeactivatedUser true if deactivated users should be ignored
+	* @param excludedSites         list of names of sites which should be excluded
+	* @param start                 value of the list
+	* @param end                   value of the list
+	* @return List of objects where each object contains user info
+	* @throws Exception
+	*/
+	@Override
+	public java.util.List<java.lang.Object[]> searchSitesBuddies(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser,
+		java.lang.String[] excludedSites, int start, int end)
+		throws java.lang.Exception {
+		return _settingsLocalService.searchSitesBuddies(userId, searchQuery,
+			ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, start, end);
 	}
 
 	/**
