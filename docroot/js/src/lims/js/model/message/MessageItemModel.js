@@ -50,6 +50,9 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [Y.LI
             // Create action, called on MessageItemModel.save() method
             case 'create':
 
+                // Notify about a beginning of the process
+                instance.fire('messageBegin');
+
                 // Parameters
                 parameters = {
                     conversationId: this.get('conversationId')

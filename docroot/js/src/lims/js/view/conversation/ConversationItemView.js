@@ -61,6 +61,7 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
      * @returns {ConversationItemView}
      */
     render: function () {
+
         // Vars
         var container = this.get('container'),      // Container that holds the view
             model = this.get('model'),              // Message model
@@ -77,6 +78,11 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
                 portrait: this._renderPortrait(from.get('screenName'))
             })
         );
+
+        // If the message is already acknowledged don't dim it
+        if (model.get('acknowledged') === true) {
+            this._brightMessageText(false);
+        }
 
         // Add error node if needed
         if (model.get('error') === true) {
@@ -124,8 +130,9 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
         var model = this.get('model');
 
         // Local events
-        model.after('messageSent', this.render, this);
-        model.after('messageError', this.render, this);
+        model.after('messageBegin', this._onMessageBegin, this);
+        model.after('messageSent', this._onMessageSent, this);
+        model.after('messageError', this._onMessageError, this);
         model.after('destroy', this._onDestroy, this);
     },
 
@@ -143,6 +150,76 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
         portraitView.render();
 
         return portraitView.get('container').get('outerHTML');
+    },
+
+    /**
+     * Performs dim effect on the message text node
+     *
+     * @private
+     */
+    _dimMessageText: function () {
+        // Vars
+        var messageText = this.get('container').one('.conversation-item-text');
+        // Dim the node
+        messageText.setStyle('opacity', 0.5);
+    },
+
+    /**
+     * Performs bright animated effect on the message text node
+     *
+     * @private
+     */
+    _brightMessageText: function (animated) {
+
+        // Vars
+        var messageText = this.get('container').one('.conversation-item-text'),
+            animation;
+
+        // Animate
+        if (animated) {
+            // Animate the message
+            animation = new Y.Anim({
+                node: messageText,
+                duration: 0.5,
+                from: {opacity: 0.5},
+                to: {opacity: 1}
+            });
+            // Run the animation
+            animation.run();
+        }
+        // Don't animate
+        else {
+            messageText.setStyle('opacity', 1);
+        }
+    },
+
+    /**
+     * Called when the message sending begins
+     *
+     * @private
+     */
+    _onMessageBegin: function () {
+        this._dimMessageText();
+    },
+
+    /**
+     * Called when the message is successfully sent
+     *
+     * @private
+     */
+    _onMessageSent: function () {
+        this.render();
+        this._brightMessageText(true);
+    },
+
+    /**
+     * Called when the message cannot be sent
+     *
+     * @private
+     */
+    _onMessageError: function () {
+        this.render();
+        this._brightMessageText(true);
     },
 
     /**
