@@ -100,7 +100,7 @@
 		]]>
     </sql>
 
-    <!-- Finds all users and attaches groups to them -->
+    <!-- Search all users and attaches groups to them -->
     <sql id="com.marcelmika.lims.persistence.generated.service.persistence.SettingsFinder.searchBySitesGroups">
         <![CDATA[
 			SELECT DISTINCT
@@ -208,6 +208,43 @@
 				(SocialRelation.userId1 = ?)
 				AND [$SOCIAL_RELATION_TYPES$]
 				AND (User_.userId != ?)
+				[$DEFAULT_USER$]
+				[$DEACTIVATED_USER$]
+			ORDER BY
+				User_.firstName ASC,
+				User_.middleName ASC,
+				User_.lastName ASC
+		]]>
+    </sql>
+
+    <!-- Search all users and attaches social relation types to them -->
+    <sql id="com.marcelmika.lims.persistence.generated.service.persistence.SettingsFinder.searchBySocialGroups">
+        <![CDATA[
+			SELECT DISTINCT
+				User_.userId AS userId,
+				User_.screenName AS screenName,
+				User_.firstName AS firstName,
+				User_.middleName AS middleName,
+				User_.lastName AS lastName,
+				Lims_Settings.presence AS presence
+			FROM
+				Lims_Settings
+			INNER JOIN
+				User_ ON (User_.userId = Lims_Settings.userId)
+			INNER JOIN
+				SocialRelation ON (SocialRelation.userId2 = User_.userId)
+			WHERE
+				(SocialRelation.userId1 = ?)
+				AND [$SOCIAL_RELATION_TYPES$]
+				AND (User_.userId != ?)
+				AND
+				(
+					(lower(User_.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.middleName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.lastName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.screenName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$])
+				)
 				[$DEFAULT_USER$]
 				[$DEACTIVATED_USER$]
 			ORDER BY

@@ -32,6 +32,7 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
     // Search users SQL
     private static final String SEARCH_ALL_USERS = SettingsFinder.class.getName() + ".searchAllUsers";
     private static final String SEARCH_BY_SITES_GROUPS = SettingsFinder.class.getName() + ".searchBySitesGroups";
+    private static final String SEARCH_BY_SOCIAL_GROUPS = SettingsFinder.class.getName() + ".searchBySocialGroups";
 
     // Placeholders
     private static final String PLACEHOLDER_DEFAULT_USER = "[$DEFAULT_USER$]";
@@ -276,12 +277,80 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
      */
     @Override
     @SuppressWarnings("unchecked") // Cast List<Object[]> is unchecked
-    public List<Object[]> searchAllGroups(Long userId,
-                                          String searchQuery,
-                                          boolean ignoreDefaultUser,
-                                          boolean ignoreDeactivatedUser,
-                                          int start,
-                                          int end) throws Exception {
+    public List<Object[]> searchSitesBuddies(Long userId,
+                                             String searchQuery,
+                                             boolean ignoreDefaultUser,
+                                             boolean ignoreDeactivatedUser,
+                                             String[] excludedSites,
+                                             int start,
+                                             int end) throws Exception {
+        Session session = null;
+
+        try {
+            // Open database session
+            session = openSession();
+            // Generate SQL
+            String sql = getSearchSitesBuddiesSQL(
+                    searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites
+            );
+
+            // Create query from sql
+            SQLQuery query = session.createSQLQuery(sql);
+
+            // Now we need to map types to columns
+            query.addScalar("userId", Type.LONG);
+            query.addScalar("screenName", Type.STRING);
+            query.addScalar("firstName", Type.STRING);
+            query.addScalar("middleName", Type.STRING);
+            query.addScalar("lastName", Type.STRING);
+            query.addScalar("presence", Type.STRING);
+
+            // Add parameters to query
+            QueryPos queryPos = QueryPos.getInstance(query);
+            queryPos.add(userId);
+            if (excludedSites.length > 0) {
+                queryPos.add(excludedSites);
+            }
+            queryPos.add(userId);
+
+            // Create the like statement for search query
+            String likeStatement = "%" + searchQuery + "%";
+
+            // There are 5 possible columns we are about to search
+            // (first name, middle name, last name, screen name, email address)
+            for (int i = 0; i < 5; i++) {
+                queryPos.add(likeStatement);
+                queryPos.add(searchQuery);
+            }
+
+            // Return the result
+            return (List<Object[]>) QueryUtil.list(query, getDialect(), start, end);
+
+        } finally {
+            // Session needs to be closed if something goes wrong
+            closeSession(session);
+        }
+    }
+
+    /**
+     * Finds all users based on the search query except the one given in the parameter and their settings.
+     *
+     * @param userId                of excluded user
+     * @param searchQuery           search string
+     * @param ignoreDefaultUser     true if default users should be ignored
+     * @param ignoreDeactivatedUser true if deactivated users should be ignored
+     * @param start                 value of the list
+     * @param end                   value of the list
+     * @return List of objects where each object contains user info
+     */
+    @Override
+    @SuppressWarnings("unchecked") // Cast List<Object[]> is unchecked
+    public List<Object[]> searchAllBuddies(Long userId,
+                                           String searchQuery,
+                                           boolean ignoreDefaultUser,
+                                           boolean ignoreDeactivatedUser,
+                                           int start,
+                                           int end) throws Exception {
 
         Session session = null;
 
@@ -326,33 +395,36 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
     }
 
     /**
-     * Finds all users based on the search query except the one given in the parameter and their settings.
+     * Returns all user's social relations based on the search query
      *
-     * @param userId                of excluded user
-     * @param searchQuery           search string
+     * @param userId                of the user whose social relations are we looking for
+     * @param searchQuery           search query string
      * @param ignoreDefaultUser     true if default users should be ignored
      * @param ignoreDeactivatedUser true if deactivated users should be ignored
+     * @param relationTypes         an array of relation type codes that we are looking for
      * @param start                 value of the list
      * @param end                   value of the list
      * @return List of objects where each object contains user info
+     * @throws Exception
      */
     @Override
     @SuppressWarnings("unchecked") // Cast List<Object[]> is unchecked
-    public List<Object[]> searchSitesBuddies(Long userId,
-                                             String searchQuery,
-                                             boolean ignoreDefaultUser,
-                                             boolean ignoreDeactivatedUser,
-                                             String[] excludedSites,
-                                             int start,
-                                             int end) throws Exception {
+    public List<Object[]> searchSocialBuddies(Long userId,
+                                              String searchQuery,
+                                              boolean ignoreDefaultUser,
+                                              boolean ignoreDeactivatedUser,
+                                              int[] relationTypes,
+                                              int start,
+                                              int end) throws Exception {
+
         Session session = null;
 
         try {
             // Open database session
             session = openSession();
             // Generate SQL
-            String sql = getSearchSitesBuddiesSQL(
-                    searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites
+            String sql = getSearchSocialBuddiesSQL(
+                    searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, relationTypes
             );
 
             // Create query from sql
@@ -369,8 +441,8 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             // Add parameters to query
             QueryPos queryPos = QueryPos.getInstance(query);
             queryPos.add(userId);
-            if (excludedSites.length > 0) {
-                queryPos.add(excludedSites);
+            if (relationTypes.length > 0) {
+                queryPos.add(relationTypes);
             }
             queryPos.add(userId);
 
@@ -465,7 +537,37 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
         sql = addIgnoreDefaultUserToSql(sql, ignoreDefaultUser);
         sql = addIgnoreDeactivatedUserToSql(sql, ignoreDeactivatedUser);
         sql = addSearchParametersToSql(sql, searchQuery);
-        sql = addExcludedSitesSQL(sql, excludedSites);
+        sql = addExcludedSitesToSQL(sql, excludedSites);
+
+        return sql;
+    }
+
+    /**
+     * Generates SQL for find by social buddies query
+     *
+     * @param searchQuery           search keyword
+     * @param ignoreDefaultUser     true if default users should be ignored
+     * @param ignoreDeactivatedUser true if deactivated users should be ignored
+     * @param types                 relation types that should be counted in
+     * @return SQL string for find by sites groups query
+     */
+    private String getSearchSocialBuddiesSQL(String searchQuery,
+                                             boolean ignoreDefaultUser,
+                                             boolean ignoreDeactivatedUser,
+                                             int[] types) {
+
+        // Get custom sql (check /src/custom-sql/default.xml)
+        String sql = CustomSQLUtil.get(SEARCH_BY_SOCIAL_GROUPS);
+
+        // Replace and_or_null operator, false means that this is a conjunction
+        // https://www.liferay.com/community/wiki/-/wiki/Main/Custom+queries+in+Liferay
+        sql = CustomSQLUtil.replaceAndOperator(sql, false);
+
+        // Add ignored users queries if needed
+        sql = addIgnoreDefaultUserToSql(sql, ignoreDefaultUser);
+        sql = addIgnoreDeactivatedUserToSql(sql, ignoreDeactivatedUser);
+        sql = addSearchParametersToSql(sql, searchQuery);
+        sql = addSocialRelationTypesToSQL(sql, types);
 
         return sql;
     }
@@ -489,7 +591,7 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
         // Add ignore default user query if needed
         sql = addIgnoreDefaultUserToSql(sql, ignoreDefaultUser);
         sql = addIgnoreDeactivatedUserToSql(sql, ignoreDeactivatedUser);
-        sql = addExcludedSitesSQL(sql, excludedSites);
+        sql = addExcludedSitesToSQL(sql, excludedSites);
 
         return sql;
     }
@@ -512,21 +614,9 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
         // Add ignore user queries if needed
         sql = addIgnoreDefaultUserToSql(sql, ignoreDefaultUser);
         sql = addIgnoreDeactivatedUserToSql(sql, ignoreDeactivatedUser);
+        sql = addSocialRelationTypesToSQL(sql, types);
 
-        // We need to build a query which will add all relation types
-        StringBundler sb = new StringBundler(types.length * 2 - 1);
-        for (int i = 0; i < types.length; i++) {
-            // Add question mark so we can add parameters
-            sb.append(StringPool.QUESTION);
-            // Add comma if not at the end
-            if ((i + 1) < types.length) {
-                sb.append(StringPool.COMMA);
-            }
-        }
-
-        return StringUtil.replace(sql,
-                PLACEHOLDER_SOCIAL_RELATION_TYPES,
-                "SocialRelation.type_ IN (" + sb.toString() + ")");
+        return sql;
     }
 
     /**
@@ -616,7 +706,7 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
      * @param excludedSites String[]
      * @return updated sql string
      */
-    private String addExcludedSitesSQL(String sql, String[] excludedSites) {
+    private String addExcludedSitesToSQL(String sql, String[] excludedSites) {
         // If no excluded groups are set clear placeholders and return custom sql
         if (excludedSites.length == 0) {
             return StringUtil.replace(sql,
@@ -641,6 +731,32 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
                         "INNER JOIN Group_ ON Group_.groupId = Users_Groups.groupId",
                         "AND Group_.name NOT IN (" + sb.toString() + ")"
                 });
+    }
+
+    /**
+     * Takes sql string from parameter and replaces relation types placeholder with types taken
+     * from the parameter
+     *
+     * @param sql   String
+     * @param types int[]
+     * @return updated sql string
+     */
+    private String addSocialRelationTypesToSQL(String sql, int[] types) {
+
+        // We need to build a query which will add all relation types
+        StringBundler sb = new StringBundler(types.length * 2 - 1);
+        for (int i = 0; i < types.length; i++) {
+            // Add question mark so we can add parameters
+            sb.append(StringPool.QUESTION);
+            // Add comma if not at the end
+            if ((i + 1) < types.length) {
+                sb.append(StringPool.COMMA);
+            }
+        }
+
+        return StringUtil.replace(sql,
+                PLACEHOLDER_SOCIAL_RELATION_TYPES,
+                "SocialRelation.type_ IN (" + sb.toString() + ")");
     }
 
     /**

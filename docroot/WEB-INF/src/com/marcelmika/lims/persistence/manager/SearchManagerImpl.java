@@ -27,6 +27,7 @@ package com.marcelmika.lims.persistence.manager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.environment.Environment;
+import com.marcelmika.lims.api.environment.Environment.BuddyListSocialRelation;
 import com.marcelmika.lims.persistence.domain.Buddy;
 import com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUtil;
 
@@ -81,6 +82,12 @@ public class SearchManagerImpl implements SearchManager {
                     userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, start, end
             );
         }
+        // Buddies by social relations
+        else if (strategy == Environment.BuddyListStrategy.SOCIAL) {
+            return searchSocialBuddies(
+                    userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, relationTypes, start, end
+            );
+        }
         // Unknown
         else {
             throw new Exception("Unknown buddy list strategy");
@@ -108,20 +115,12 @@ public class SearchManagerImpl implements SearchManager {
                                          int end) throws Exception {
 
         // Get from persistence
-        List<Object[]> users = SettingsLocalServiceUtil.searchAllGroups(
+        List<Object[]> users = SettingsLocalServiceUtil.searchAllBuddies(
                 userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, start, end
         );
 
-        // Deserialize user info in plain object to buddy
-        List<Buddy> buddies = new LinkedList<Buddy>();
-        for (Object[] userObject : users) {
-            // Deserialize
-            Buddy buddy = Buddy.fromPlainObject(userObject, 0);
-            // Add to list
-            buddies.add(buddy);
-        }
-
-        return buddies;
+        // Return deserialized result
+        return deserializeBuddyListFromUserObjects(users);
     }
 
     /**
@@ -135,7 +134,7 @@ public class SearchManagerImpl implements SearchManager {
      * @param excludedSites         names of sites (groups) that should be excluded from the group collection
      * @param start                 of the list
      * @param end                   of the list
-     * @return GroupCollection
+     * @return List of buddies
      * @throws Exception
      */
     private List<Buddy> searchSitesBuddies(Long userId,
@@ -151,9 +150,58 @@ public class SearchManagerImpl implements SearchManager {
                 userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, start, end
         );
 
+        // Return deserialized result
+        return deserializeBuddyListFromUserObjects(users);
+    }
+
+    /**
+     * Returns a list of buddies. This list is made of all buddies based on the search query with whom the user
+     * has a social relationships given in the parameter.
+     *
+     * @param userId                which should be excluded from the list
+     * @param searchQuery           search query string
+     * @param ignoreDefaultUser     boolean set to true if the default user should be excluded
+     * @param ignoreDeactivatedUser boolean set to true if the deactivated user should be excluded
+     * @param relationTypes         an array of relation types enums
+     * @param start                 of the list
+     * @param end                   of the list
+     * @return List of buddies
+     * @throws Exception
+     */
+    private List<Buddy> searchSocialBuddies(Long userId,
+                                            String searchQuery,
+                                            boolean ignoreDefaultUser,
+                                            boolean ignoreDeactivatedUser,
+                                            BuddyListSocialRelation[] relationTypes,
+                                            int start,
+                                            int end) throws Exception {
+
+        // Get int codes from relation types since the persistence consumes an int array only.
+        int[] relationCodes = new int[relationTypes.length];
+        for (int i = 0; i < relationTypes.length; i++) {
+            relationCodes[i] = relationTypes[i].getCode();
+        }
+
+        // Get from persistence
+        List<Object[]> users = SettingsLocalServiceUtil.searchSocialBuddies(
+                userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, relationCodes, start, end
+        );
+
+        // Return deserialized result
+        return deserializeBuddyListFromUserObjects(users);
+    }
+
+    /**
+     * Deserialize user objects to the list of buddies
+     *
+     * @param userObjects a list of user data stored in an object array
+     * @return List of buddies
+     */
+    private List<Buddy> deserializeBuddyListFromUserObjects(List<Object[]> userObjects) {
+
         // Deserialize user info in plain objects to buddy
         List<Buddy> buddies = new LinkedList<Buddy>();
-        for (Object[] userObject : users) {
+        for (Object[] userObject : userObjects) {
             // Deserialize
             Buddy buddy = Buddy.fromPlainObject(userObject, 0);
             // Add to list

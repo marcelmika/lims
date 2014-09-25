@@ -57,15 +57,6 @@ public class SettingsFinderUtil {
 			ignoreDeactivatedUser, excludedGroups, start, end);
 	}
 
-	public static java.util.List<java.lang.Object[]> searchAllGroups(
-		java.lang.Long userId, java.lang.String searchQuery,
-		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser, int start,
-		int end) throws java.lang.Exception {
-		return getFinder()
-				   .searchAllGroups(userId, searchQuery, ignoreDefaultUser,
-			ignoreDeactivatedUser, start, end);
-	}
-
 	public static java.util.List<java.lang.Object[]> searchSitesBuddies(
 		java.lang.Long userId, java.lang.String searchQuery,
 		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser,
@@ -74,6 +65,24 @@ public class SettingsFinderUtil {
 		return getFinder()
 				   .searchSitesBuddies(userId, searchQuery, ignoreDefaultUser,
 			ignoreDeactivatedUser, excludedSites, start, end);
+	}
+
+	public static java.util.List<java.lang.Object[]> searchAllBuddies(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser, int start,
+		int end) throws java.lang.Exception {
+		return getFinder()
+				   .searchAllBuddies(userId, searchQuery, ignoreDefaultUser,
+			ignoreDeactivatedUser, start, end);
+	}
+
+	public static java.util.List<java.lang.Object[]> searchSocialBuddies(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser,
+		int[] relationTypes, int start, int end) throws java.lang.Exception {
+		return getFinder()
+				   .searchSocialBuddies(userId, searchQuery, ignoreDefaultUser,
+			ignoreDeactivatedUser, relationTypes, start, end);
 	}
 
 	public static SettingsFinder getFinder() {

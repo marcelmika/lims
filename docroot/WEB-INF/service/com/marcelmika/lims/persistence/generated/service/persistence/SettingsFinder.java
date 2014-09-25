@@ -38,14 +38,19 @@ public interface SettingsFinder {
 		boolean ignoreDeactivatedUser, java.lang.String[] excludedGroups,
 		int start, int end) throws java.lang.Exception;
 
-	public java.util.List<java.lang.Object[]> searchAllGroups(
-		java.lang.Long userId, java.lang.String searchQuery,
-		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser, int start,
-		int end) throws java.lang.Exception;
-
 	public java.util.List<java.lang.Object[]> searchSitesBuddies(
 		java.lang.Long userId, java.lang.String searchQuery,
 		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser,
 		java.lang.String[] excludedSites, int start, int end)
 		throws java.lang.Exception;
+
+	public java.util.List<java.lang.Object[]> searchAllBuddies(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser, int start,
+		int end) throws java.lang.Exception;
+
+	public java.util.List<java.lang.Object[]> searchSocialBuddies(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser,
+		int[] relationTypes, int start, int end) throws java.lang.Exception;
 }

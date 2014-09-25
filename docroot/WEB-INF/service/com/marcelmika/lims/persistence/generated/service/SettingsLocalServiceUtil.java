@@ -345,27 +345,6 @@ public class SettingsLocalServiceUtil {
 	}
 
 	/**
-	* Returns all buddies in the system based on the search query
-	*
-	* @param userId                of excluded user
-	* @param searchQuery           search string
-	* @param ignoreDefaultUser     true if default users should be ignored
-	* @param ignoreDeactivatedUser true if deactivated users should be ignored
-	* @param start                 value of the list
-	* @param end                   value of the list
-	* @return List of objects where each object contains user info
-	* @throws Exception
-	*/
-	public static java.util.List<java.lang.Object[]> searchAllGroups(
-		java.lang.Long userId, java.lang.String searchQuery,
-		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser, int start,
-		int end) throws java.lang.Exception {
-		return getService()
-				   .searchAllGroups(userId, searchQuery, ignoreDefaultUser,
-			ignoreDeactivatedUser, start, end);
-	}
-
-	/**
 	* Returns all groups where the user participates
 	*
 	* @param userId                of the user whose groups are we looking for
@@ -449,6 +428,49 @@ public class SettingsLocalServiceUtil {
 		return getService()
 				   .searchSitesBuddies(userId, searchQuery, ignoreDefaultUser,
 			ignoreDeactivatedUser, excludedSites, start, end);
+	}
+
+	/**
+	* Returns all buddies in the system based on the search query
+	*
+	* @param userId                of excluded user
+	* @param searchQuery           search string
+	* @param ignoreDefaultUser     true if default users should be ignored
+	* @param ignoreDeactivatedUser true if deactivated users should be ignored
+	* @param start                 value of the list
+	* @param end                   value of the list
+	* @return List of objects where each object contains user info
+	* @throws Exception
+	*/
+	public static java.util.List<java.lang.Object[]> searchAllBuddies(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser, int start,
+		int end) throws java.lang.Exception {
+		return getService()
+				   .searchAllBuddies(userId, searchQuery, ignoreDefaultUser,
+			ignoreDeactivatedUser, start, end);
+	}
+
+	/**
+	* Returns all user's social relations based on the search query
+	*
+	* @param userId                of the user whose social relations are we looking for
+	* @param searchQuery           search query string
+	* @param ignoreDefaultUser     true if default users should be ignored
+	* @param ignoreDeactivatedUser true if deactivated users should be ignored
+	* @param relationTypes         an array of relation type codes that we are looking for
+	* @param start                 value of the list
+	* @param end                   value of the list
+	* @return List of objects where each object contains user info
+	* @throws Exception
+	*/
+	public static java.util.List<java.lang.Object[]> searchSocialBuddies(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser,
+		int[] relationTypes, int start, int end) throws java.lang.Exception {
+		return getService()
+				   .searchSocialBuddies(userId, searchQuery, ignoreDefaultUser,
+			ignoreDeactivatedUser, relationTypes, start, end);
 	}
 
 	public static void clearService() {
