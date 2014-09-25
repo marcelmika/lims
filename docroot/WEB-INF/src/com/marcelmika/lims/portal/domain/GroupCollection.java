@@ -26,6 +26,8 @@ package com.marcelmika.lims.portal.domain;
 
 import com.marcelmika.lims.api.entity.GroupCollectionDetails;
 import com.marcelmika.lims.api.entity.GroupDetails;
+import com.marcelmika.lims.api.environment.Environment;
+import com.marcelmika.lims.api.environment.Environment.BuddyListStrategy;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,6 +44,7 @@ public class GroupCollection {
 
     private List<Group> groups = Collections.synchronizedList(new ArrayList<Group>());
     private Date lastModified;
+    private BuddyListStrategy listStrategy;
     private int etag;
 
     // -------------------------------------------------------------------------------------------
@@ -58,9 +61,12 @@ public class GroupCollection {
         GroupCollection groupCollection = new GroupCollection();
         // Map data to group details
         groupCollection.lastModified = details.getLastModified();
+        groupCollection.listStrategy = Environment.getBuddyListStrategy();
 
         if (details.getLastModified() != null) {
-            groupCollection.etag = details.getLastModified().hashCode();
+            // Etag is made of the last modification date and the list strategy type. Thus if the group collection
+            // changes its modification date or its type the client will be forced to download updated version
+            groupCollection.etag = details.getLastModified().hashCode() + groupCollection.listStrategy.hashCode();
         }
 
         // Relations
@@ -92,6 +98,14 @@ public class GroupCollection {
 
     public Date getLastModified() {
         return lastModified;
+    }
+
+    public BuddyListStrategy getListStrategy() {
+        return listStrategy;
+    }
+
+    public void setListStrategy(BuddyListStrategy listStrategy) {
+        this.listStrategy = listStrategy;
     }
 
     public void setLastModified(Date lastModified) {
