@@ -191,7 +191,6 @@ public class BuddyPersistenceServiceImpl implements BuddyPersistenceService {
         try {
             // Save to settings
             SettingsLocalServiceUtil.changePresence(event.getBuddyId(), presence.getDescription());
-
             // Success
             return UpdatePresenceBuddyResponseEvent.updatePresenceSuccess();
 

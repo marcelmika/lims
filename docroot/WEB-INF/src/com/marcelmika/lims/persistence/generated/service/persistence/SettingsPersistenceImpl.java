@@ -1145,6 +1145,7 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 		settingsImpl.setSid(settings.getSid());
 		settingsImpl.setUserId(settings.getUserId());
 		settingsImpl.setPresence(settings.getPresence());
+		settingsImpl.setPresenceUpdatedAt(settings.getPresenceUpdatedAt());
 		settingsImpl.setMute(settings.isMute());
 		settingsImpl.setChatEnabled(settings.isChatEnabled());
 

@@ -141,7 +141,7 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
          * the data.
          */
         etag: {
-            value: 0 // default value
+            value: -1 // default value
         }
     }
 });

@@ -128,18 +128,30 @@ public class GroupManagerImpl implements GroupManager {
         // Create group which will contain all users
         Group group = new Group();
 
+        // Because all group requests are cached we need to determine what was the latest modified
+        // date. If the user modifies his presence we need to change the etag so the client will load
+        // it from server.
+        Date lastModifiedDate = new Date(0);
+
         // Since we get an Object[] from persistence we need to map it to the persistence Buddy object
         for (Object[] userObject : users) {
             // Deserialize
             Buddy buddy = Buddy.fromPlainObject(userObject, 0);
             // Add to group
             group.addBuddy(buddy);
+
+            // If the presence was updated later then the last one overwrite the counter
+            if (buddy.getPresenceUpdatedAt().after(lastModifiedDate)) {
+                lastModifiedDate = buddy.getPresenceUpdatedAt();
+            }
         }
 
         // Create group collection which will hold the only group that holds all users
         GroupCollection groupCollection = new GroupCollection();
         // Add group to collection
         groupCollection.addGroup(group);
+        // Add last modified date
+        groupCollection.setLastModified(lastModifiedDate);
 
         return groupCollection;
     }
@@ -176,6 +188,11 @@ public class GroupManagerImpl implements GroupManager {
         // speed of mapping since we can reuse groups that we already mapped.
         Map<String, Group> groupMap = new HashMap<String, Group>();
 
+        // Because all group requests are cached we need to determine what was the latest modified
+        // date. If the user modifies his presence we need to change the etag so the client will load
+        // it from server.
+        Date lastModifiedDate = new Date(0);
+
         // Build groups and users
         for (Object[] object : groupObjects) {
 
@@ -197,6 +214,11 @@ public class GroupManagerImpl implements GroupManager {
 
             // Add it to group
             group.addBuddy(buddy);
+
+            // If the presence was updated later then the last one overwrite the counter
+            if (buddy.getPresenceUpdatedAt().after(lastModifiedDate)) {
+                lastModifiedDate = buddy.getPresenceUpdatedAt();
+            }
         }
 
         // Create group collection
@@ -205,6 +227,8 @@ public class GroupManagerImpl implements GroupManager {
         for (Group group : groupMap.values()) {
             groupCollection.addGroup(group);
         }
+        // Add last modified date
+        groupCollection.setLastModified(lastModifiedDate);
 
         return groupCollection;
     }
@@ -247,6 +271,11 @@ public class GroupManagerImpl implements GroupManager {
         // speed of mapping since we can reuse groups that we already mapped.
         Map<String, Group> groupMap = new HashMap<String, Group>();
 
+        // Because all group requests are cached we need to determine what was the latest modified
+        // date. If the user modifies his presence we need to change the etag so the client will load
+        // it from server.
+        Date lastModifiedDate = new Date(0);
+
         // Build groups and users
         for (Object[] object : groupObjects) {
             // Relation type is first element
@@ -271,8 +300,12 @@ public class GroupManagerImpl implements GroupManager {
 
             // Add it to group
             group.addBuddy(buddy);
-        }
 
+            // If the presence was updated later then the last one overwrite the counter
+            if (buddy.getPresenceUpdatedAt().after(lastModifiedDate)) {
+                lastModifiedDate = buddy.getPresenceUpdatedAt();
+            }
+        }
 
         // Create group collection
         GroupCollection groupCollection = new GroupCollection();
@@ -280,6 +313,9 @@ public class GroupManagerImpl implements GroupManager {
         for (Group group : groupMap.values()) {
             groupCollection.addGroup(group);
         }
+
+        // Add last modified date
+        groupCollection.setLastModified(lastModifiedDate);
 
         return groupCollection;
     }
@@ -323,6 +359,13 @@ public class GroupManagerImpl implements GroupManager {
         GroupCollection groupCollection = new GroupCollection();
         groupCollection.setGroups(mergedGroups);
 
+        // Decide which group is "newer"
+        if (sitesGroupCollection.getLastModified().after(socialGroupCollection.getLastModified())) {
+            groupCollection.setLastModified(sitesGroupCollection.getLastModified());
+        } else {
+            groupCollection.setLastModified(socialGroupCollection.getLastModified());
+        }
+
         return groupCollection;
     }
 
@@ -358,6 +401,11 @@ public class GroupManagerImpl implements GroupManager {
         // speed of mapping since we can reuse groups that we already mapped.
         Map<String, Group> groupMap = new HashMap<String, Group>();
 
+        // Because all group requests are cached we need to determine what was the latest modified
+        // date. If the user modifies his presence we need to change the etag so the client will load
+        // it from server.
+        Date lastModifiedDate = new Date(0);
+
         // Build groups and users
         for (Object[] object : groupObjects) {
 
@@ -379,6 +427,11 @@ public class GroupManagerImpl implements GroupManager {
 
             // Add it to group
             group.addBuddy(buddy);
+
+            // If the presence was updated later then the last one overwrite the counter
+            if (buddy.getPresenceUpdatedAt().after(lastModifiedDate)) {
+                lastModifiedDate = buddy.getPresenceUpdatedAt();
+            }
         }
 
         // Create group collection
@@ -387,6 +440,8 @@ public class GroupManagerImpl implements GroupManager {
         for (Group group : groupMap.values()) {
             groupCollection.addGroup(group);
         }
+        // Add last modified date
+        groupCollection.setLastModified(lastModifiedDate);
 
         return groupCollection;
     }

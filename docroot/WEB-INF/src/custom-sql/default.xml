@@ -11,7 +11,8 @@
 				User_.firstName AS firstName,
 				User_.middleName AS middleName,
 				User_.lastName AS lastName,
-				Lims_Settings.presence AS presence
+				Lims_Settings.presence AS presence,
+				Lims_Settings.presenceUpdatedAt AS presenceUpdatedAt
 			FROM
 				Lims_Settings
 			INNER JOIN
@@ -36,7 +37,8 @@
 				User_.firstName AS firstName,
 				User_.middleName AS middleName,
 				User_.lastName AS lastName,
-				Lims_Settings.presence AS presence
+				Lims_Settings.presence AS presence,
+				Lims_Settings.presenceUpdatedAt AS presenceUpdatedAt
 			FROM
 				Lims_Settings
 			INNER JOIN
@@ -70,7 +72,8 @@
 				User_.firstName AS firstName,
 				User_.middleName AS middleName,
 				User_.lastName AS lastName,
-				Lims_Settings.presence AS presence
+				Lims_Settings.presence AS presence,
+				Lims_Settings.presenceUpdatedAt AS presenceUpdatedAt
 			FROM
 				Lims_Settings
 			INNER JOIN
@@ -109,7 +112,8 @@
 				User_.firstName AS firstName,
 				User_.middleName AS middleName,
 				User_.lastName AS lastName,
-				Lims_Settings.presence AS presence
+				Lims_Settings.presence AS presence,
+				Lims_Settings.presenceUpdatedAt AS presenceUpdatedAt
 			FROM
 				Lims_Settings
 			INNER JOIN
@@ -157,7 +161,8 @@
 				User_.firstName AS firstName,
 				User_.middleName AS middleName,
 				User_.lastName AS lastName,
-				Lims_Settings.presence AS presence
+				Lims_Settings.presence AS presence,
+				Lims_Settings.presenceUpdatedAt AS presenceUpdatedAt
 			FROM
 				Lims_Settings
 			INNER JOIN
@@ -186,7 +191,8 @@
 				User_.firstName AS firstName,
 				User_.middleName AS middleName,
 				User_.lastName AS lastName,
-				Lims_Settings.presence AS presence
+				Lims_Settings.presence AS presence,
+				Lims_Settings.presenceUpdatedAt AS presenceUpdatedAt
 			FROM
 				Lims_Settings
 			INNER JOIN
@@ -224,7 +230,8 @@
 				User_.firstName AS firstName,
 				User_.middleName AS middleName,
 				User_.lastName AS lastName,
-				Lims_Settings.presence AS presence
+				Lims_Settings.presence AS presence,
+				Lims_Settings.presenceUpdatedAt AS presenceUpdatedAt
 			FROM
 				Lims_Settings
 			INNER JOIN
@@ -263,7 +270,8 @@
 				User_.firstName AS firstName,
 				User_.middleName AS middleName,
 				User_.lastName AS lastName,
-				Lims_Settings.presence AS presence
+				Lims_Settings.presence AS presence,
+				Lims_Settings.presenceUpdatedAt AS presenceUpdatedAt
 			FROM
 				Lims_Settings
 			INNER JOIN

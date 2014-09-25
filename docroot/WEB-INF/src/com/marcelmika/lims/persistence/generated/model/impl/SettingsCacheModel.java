@@ -35,7 +35,7 @@ import java.io.ObjectOutput;
 public class SettingsCacheModel implements CacheModel<Settings>, Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("{sid=");
 		sb.append(sid);
@@ -43,6 +43,8 @@ public class SettingsCacheModel implements CacheModel<Settings>, Externalizable 
 		sb.append(userId);
 		sb.append(", presence=");
 		sb.append(presence);
+		sb.append(", presenceUpdatedAt=");
+		sb.append(presenceUpdatedAt);
 		sb.append(", mute=");
 		sb.append(mute);
 		sb.append(", chatEnabled=");
@@ -66,6 +68,7 @@ public class SettingsCacheModel implements CacheModel<Settings>, Externalizable 
 			settingsImpl.setPresence(presence);
 		}
 
+		settingsImpl.setPresenceUpdatedAt(presenceUpdatedAt);
 		settingsImpl.setMute(mute);
 		settingsImpl.setChatEnabled(chatEnabled);
 
@@ -79,6 +82,7 @@ public class SettingsCacheModel implements CacheModel<Settings>, Externalizable 
 		sid = objectInput.readLong();
 		userId = objectInput.readLong();
 		presence = objectInput.readUTF();
+		presenceUpdatedAt = objectInput.readLong();
 		mute = objectInput.readBoolean();
 		chatEnabled = objectInput.readBoolean();
 	}
@@ -96,6 +100,7 @@ public class SettingsCacheModel implements CacheModel<Settings>, Externalizable 
 			objectOutput.writeUTF(presence);
 		}
 
+		objectOutput.writeLong(presenceUpdatedAt);
 		objectOutput.writeBoolean(mute);
 		objectOutput.writeBoolean(chatEnabled);
 	}
@@ -103,6 +108,7 @@ public class SettingsCacheModel implements CacheModel<Settings>, Externalizable 
 	public long sid;
 	public long userId;
 	public String presence;
+	public long presenceUpdatedAt;
 	public boolean mute;
 	public boolean chatEnabled;
 }

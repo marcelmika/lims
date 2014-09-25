@@ -51,6 +51,7 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 		attributes.put("sid", getSid());
 		attributes.put("userId", getUserId());
 		attributes.put("presence", getPresence());
+		attributes.put("presenceUpdatedAt", getPresenceUpdatedAt());
 		attributes.put("mute", getMute());
 		attributes.put("chatEnabled", getChatEnabled());
 
@@ -75,6 +76,12 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 
 		if (presence != null) {
 			setPresence(presence);
+		}
+
+		Long presenceUpdatedAt = (Long)attributes.get("presenceUpdatedAt");
+
+		if (presenceUpdatedAt != null) {
+			setPresenceUpdatedAt(presenceUpdatedAt);
 		}
 
 		Boolean mute = (Boolean)attributes.get("mute");
@@ -190,6 +197,26 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	@Override
 	public void setPresence(java.lang.String presence) {
 		_settings.setPresence(presence);
+	}
+
+	/**
+	* Returns the presence updated at of this settings.
+	*
+	* @return the presence updated at of this settings
+	*/
+	@Override
+	public long getPresenceUpdatedAt() {
+		return _settings.getPresenceUpdatedAt();
+	}
+
+	/**
+	* Sets the presence updated at of this settings.
+	*
+	* @param presenceUpdatedAt the presence updated at of this settings
+	*/
+	@Override
+	public void setPresenceUpdatedAt(long presenceUpdatedAt) {
+		_settings.setPresenceUpdatedAt(presenceUpdatedAt);
 	}
 
 	/**

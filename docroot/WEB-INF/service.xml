@@ -24,6 +24,7 @@
         <column name='sid' type='long' primary='true'/>
         <column name='userId' type='long'/>
         <column name='presence' type='String'/>
+        <column name="presenceUpdatedAt" type="long" />
         <column name='mute' type='boolean'/>
         <column name='chatEnabled' type='boolean'/>
         <finder name='UserId' return-type='Settings'>

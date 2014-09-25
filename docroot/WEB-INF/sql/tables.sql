@@ -31,6 +31,7 @@ create table Lims_Settings (
 	sid LONG not null primary key,
 	userId LONG,
 	presence VARCHAR(75) null,
+	presenceUpdatedAt LONG,
 	mute BOOLEAN,
 	chatEnabled BOOLEAN
 );

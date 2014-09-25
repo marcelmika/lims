@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.marcelmika.lims.persistence.generated.model.Settings;
 import com.marcelmika.lims.persistence.generated.service.base.SettingsLocalServiceBaseImpl;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,6 +37,7 @@ import java.util.List;
  * @see com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUtil
  */
 public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
+
     /*
      * NOTE FOR DEVELOPERS:
 	 *
@@ -91,7 +94,13 @@ public class SettingsLocalServiceImpl extends SettingsLocalServiceBaseImpl {
         Settings settings = getSettingsByUser(userId);
         // Change presence
         if (settings != null) {
+            // Update presence
             settings.setPresence(presence);
+            // Save the time of change
+            Calendar calendar = Calendar.getInstance();
+            Date now = calendar.getTime();
+            settings.setPresenceUpdatedAt(now.getTime());
+
             settingsPersistence.update(settings, true);
         }
     }

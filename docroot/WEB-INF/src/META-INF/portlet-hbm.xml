@@ -51,6 +51,7 @@
 		</id>
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="presence" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="presenceUpdatedAt" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="mute" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="chatEnabled" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>

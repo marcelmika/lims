@@ -76,6 +76,7 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		attributes.put("sid", getSid());
 		attributes.put("userId", getUserId());
 		attributes.put("presence", getPresence());
+		attributes.put("presenceUpdatedAt", getPresenceUpdatedAt());
 		attributes.put("mute", getMute());
 		attributes.put("chatEnabled", getChatEnabled());
 
@@ -100,6 +101,12 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 
 		if (presence != null) {
 			setPresence(presence);
+		}
+
+		Long presenceUpdatedAt = (Long)attributes.get("presenceUpdatedAt");
+
+		if (presenceUpdatedAt != null) {
+			setPresenceUpdatedAt(presenceUpdatedAt);
 		}
 
 		Boolean mute = (Boolean)attributes.get("mute");
@@ -187,6 +194,30 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 				Method method = clazz.getMethod("setPresence", String.class);
 
 				method.invoke(_settingsRemoteModel, presence);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public long getPresenceUpdatedAt() {
+		return _presenceUpdatedAt;
+	}
+
+	@Override
+	public void setPresenceUpdatedAt(long presenceUpdatedAt) {
+		_presenceUpdatedAt = presenceUpdatedAt;
+
+		if (_settingsRemoteModel != null) {
+			try {
+				Class<?> clazz = _settingsRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setPresenceUpdatedAt",
+						long.class);
+
+				method.invoke(_settingsRemoteModel, presenceUpdatedAt);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -322,6 +353,7 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		clone.setSid(getSid());
 		clone.setUserId(getUserId());
 		clone.setPresence(getPresence());
+		clone.setPresenceUpdatedAt(getPresenceUpdatedAt());
 		clone.setMute(getMute());
 		clone.setChatEnabled(getChatEnabled());
 
@@ -372,7 +404,7 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("{sid=");
 		sb.append(getSid());
@@ -380,6 +412,8 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		sb.append(getUserId());
 		sb.append(", presence=");
 		sb.append(getPresence());
+		sb.append(", presenceUpdatedAt=");
+		sb.append(getPresenceUpdatedAt());
 		sb.append(", mute=");
 		sb.append(getMute());
 		sb.append(", chatEnabled=");
@@ -391,7 +425,7 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(22);
 
 		sb.append("<model><model-name>");
 		sb.append("com.marcelmika.lims.persistence.generated.model.Settings");
@@ -408,6 +442,10 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		sb.append(
 			"<column><column-name>presence</column-name><column-value><![CDATA[");
 		sb.append(getPresence());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>presenceUpdatedAt</column-name><column-value><![CDATA[");
+		sb.append(getPresenceUpdatedAt());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>mute</column-name><column-value><![CDATA[");
@@ -427,6 +465,7 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 	private long _userId;
 	private String _userUuid;
 	private String _presence;
+	private long _presenceUpdatedAt;
 	private boolean _mute;
 	private boolean _chatEnabled;
 	private BaseModel<?> _settingsRemoteModel;

@@ -63,10 +63,11 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 			{ "sid", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "presence", Types.VARCHAR },
+			{ "presenceUpdatedAt", Types.BIGINT },
 			{ "mute", Types.BOOLEAN },
 			{ "chatEnabled", Types.BOOLEAN }
 		};
-	public static final String TABLE_SQL_CREATE = "create table Lims_Settings (sid LONG not null primary key,userId LONG,presence VARCHAR(75) null,mute BOOLEAN,chatEnabled BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table Lims_Settings (sid LONG not null primary key,userId LONG,presence VARCHAR(75) null,presenceUpdatedAt LONG,mute BOOLEAN,chatEnabled BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table Lims_Settings";
 	public static final String ORDER_BY_JPQL = " ORDER BY settings.sid ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY Lims_Settings.sid ASC";
@@ -128,6 +129,7 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		attributes.put("sid", getSid());
 		attributes.put("userId", getUserId());
 		attributes.put("presence", getPresence());
+		attributes.put("presenceUpdatedAt", getPresenceUpdatedAt());
 		attributes.put("mute", getMute());
 		attributes.put("chatEnabled", getChatEnabled());
 
@@ -152,6 +154,12 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 
 		if (presence != null) {
 			setPresence(presence);
+		}
+
+		Long presenceUpdatedAt = (Long)attributes.get("presenceUpdatedAt");
+
+		if (presenceUpdatedAt != null) {
+			setPresenceUpdatedAt(presenceUpdatedAt);
 		}
 
 		Boolean mute = (Boolean)attributes.get("mute");
@@ -235,6 +243,16 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 	}
 
 	@Override
+	public long getPresenceUpdatedAt() {
+		return _presenceUpdatedAt;
+	}
+
+	@Override
+	public void setPresenceUpdatedAt(long presenceUpdatedAt) {
+		_presenceUpdatedAt = presenceUpdatedAt;
+	}
+
+	@Override
 	public boolean getMute() {
 		return _mute;
 	}
@@ -298,6 +316,7 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		settingsImpl.setSid(getSid());
 		settingsImpl.setUserId(getUserId());
 		settingsImpl.setPresence(getPresence());
+		settingsImpl.setPresenceUpdatedAt(getPresenceUpdatedAt());
 		settingsImpl.setMute(getMute());
 		settingsImpl.setChatEnabled(getChatEnabled());
 
@@ -377,6 +396,8 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 			settingsCacheModel.presence = null;
 		}
 
+		settingsCacheModel.presenceUpdatedAt = getPresenceUpdatedAt();
+
 		settingsCacheModel.mute = getMute();
 
 		settingsCacheModel.chatEnabled = getChatEnabled();
@@ -386,7 +407,7 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("{sid=");
 		sb.append(getSid());
@@ -394,6 +415,8 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		sb.append(getUserId());
 		sb.append(", presence=");
 		sb.append(getPresence());
+		sb.append(", presenceUpdatedAt=");
+		sb.append(getPresenceUpdatedAt());
 		sb.append(", mute=");
 		sb.append(getMute());
 		sb.append(", chatEnabled=");
@@ -405,7 +428,7 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(22);
 
 		sb.append("<model><model-name>");
 		sb.append("com.marcelmika.lims.persistence.generated.model.Settings");
@@ -422,6 +445,10 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		sb.append(
 			"<column><column-name>presence</column-name><column-value><![CDATA[");
 		sb.append(getPresence());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>presenceUpdatedAt</column-name><column-value><![CDATA[");
+		sb.append(getPresenceUpdatedAt());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>mute</column-name><column-value><![CDATA[");
@@ -448,6 +475,7 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 	private boolean _setOriginalUserId;
 	private String _presence;
 	private String _originalPresence;
+	private long _presenceUpdatedAt;
 	private boolean _mute;
 	private boolean _chatEnabled;
 	private long _columnBitmask;

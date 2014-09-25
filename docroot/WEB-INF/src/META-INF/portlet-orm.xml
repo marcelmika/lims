@@ -62,6 +62,7 @@
 			<id name="sid" />
 			<basic name="userId" />
 			<basic name="presence" />
+			<basic name="presenceUpdatedAt" />
 			<basic name="mute" />
 			<basic name="chatEnabled" />
 			<transient name="modelAttributes" />

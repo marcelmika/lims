@@ -29,6 +29,7 @@ import com.marcelmika.lims.api.entity.BuddyDetails;
 import com.marcelmika.lims.persistence.generated.model.Participant;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,6 +45,7 @@ public class Buddy {
     private String screenName;
     private String password;
     private Presence presence;
+    private Date presenceUpdatedAt;
 
     // -------------------------------------------------------------------------------------------
     // Factory Methods
@@ -124,10 +126,13 @@ public class Buddy {
                 object[firstElement++],
                 object[firstElement++]);
 
-        String presence = String.format("%s", object[firstElement]);
+        String presence = String.format("%s", object[firstElement++]);
         if (presence != null) {
             buddy.presence = Presence.fromDescription(presence);
         }
+
+        Long presenceUpdatedAtTimestamp = (Long) object[firstElement];
+        buddy.presenceUpdatedAt = new Date(presenceUpdatedAtTimestamp);
 
         return buddy;
     }
@@ -213,6 +218,14 @@ public class Buddy {
 
     public void setPresence(Presence presence) {
         this.presence = presence;
+    }
+
+    public Date getPresenceUpdatedAt() {
+        return presenceUpdatedAt;
+    }
+
+    public void setPresenceUpdatedAt(Date presenceUpdatedAt) {
+        this.presenceUpdatedAt = presenceUpdatedAt;
     }
 
     @Override
