@@ -418,4 +418,25 @@ public interface SettingsLocalService extends BaseLocalService,
 		java.lang.Long userId, java.lang.String searchQuery,
 		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser,
 		int[] relationTypes, int start, int end) throws java.lang.Exception;
+
+	/**
+	* Returns a list of buddies. This list is made of all buddies based on the search query that are
+	* in the same user group as the user.
+	*
+	* @param userId                which should be excluded from the list
+	* @param searchQuery           search query string
+	* @param ignoreDefaultUser     boolean set to true if the default user should be excluded
+	* @param ignoreDeactivatedUser boolean set to true if the deactivated user should be excluded
+	* @param excludedGroups        names of groups that should be excluded from the list of buddies
+	* @param start                 of the list
+	* @param end                   of the list
+	* @return a list of buddies
+	* @throws Exception
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<java.lang.Object[]> searchUserGroupsBuddies(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser,
+		java.lang.String[] excludedGroups, int start, int end)
+		throws java.lang.Exception;
 }

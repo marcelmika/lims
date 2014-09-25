@@ -147,46 +147,6 @@
 		]]>
     </sql>
 
-    <!-- Finds all users and attaches groups to them -->
-    <sql id="com.marcelmika.lims.persistence.generated.service.persistence.SettingsFinder.findByUserGroups">
-        <![CDATA[
-			SELECT DISTINCT
-			    UserGroup.name AS groupName,
-				User_.userId AS userId,
-				User_.screenName AS screenName,
-				User_.firstName AS firstName,
-				User_.middleName AS middleName,
-				User_.lastName AS lastName,
-				Lims_Settings.presence AS presence
-			FROM
-				Lims_Settings
-			INNER JOIN
-				User_ ON (User_.userId = Lims_Settings.userId)
-			INNER JOIN
-				Users_UserGroups ON (Users_UserGroups.userId = User_.userId)
-			INNER JOIN
-			    UserGroup ON (Users_UserGroups.userGroupId = UserGroup.userGroupId)
-			WHERE
-				(Users_UserGroups.userGroupId IN
-					(
-						SELECT
-							Users_UserGroups.userGroupId
-						FROM
-							Users_UserGroups [$USERS_GROUPS_JOIN$]
-						WHERE
-							(Users_UserGroups.userId = ?) [$USERS_GROUPS_WHERE$]
-					)
-				)
-				AND	(User_.userId != ?)
-				[$DEFAULT_USER$]
-				[$DEACTIVATED_USER$]
-			ORDER BY
-				User_.firstName ASC,
-				User_.middleName ASC,
-				User_.lastName ASC
-		]]>
-    </sql>
-
     <!-- Finds all users and attaches social relation types to them -->
     <sql id="com.marcelmika.lims.persistence.generated.service.persistence.SettingsFinder.findBySocialGroups">
         <![CDATA[
@@ -253,5 +213,93 @@
 				User_.lastName ASC
 		]]>
     </sql>
+
+    <!-- Finds all users and attaches groups to them -->
+    <sql id="com.marcelmika.lims.persistence.generated.service.persistence.SettingsFinder.findByUserGroups">
+        <![CDATA[
+			SELECT DISTINCT
+			    UserGroup.name AS groupName,
+				User_.userId AS userId,
+				User_.screenName AS screenName,
+				User_.firstName AS firstName,
+				User_.middleName AS middleName,
+				User_.lastName AS lastName,
+				Lims_Settings.presence AS presence
+			FROM
+				Lims_Settings
+			INNER JOIN
+				User_ ON (User_.userId = Lims_Settings.userId)
+			INNER JOIN
+				Users_UserGroups ON (Users_UserGroups.userId = User_.userId)
+			INNER JOIN
+			    UserGroup ON (Users_UserGroups.userGroupId = UserGroup.userGroupId)
+			WHERE
+				(Users_UserGroups.userGroupId IN
+					(
+						SELECT
+							Users_UserGroups.userGroupId
+						FROM
+							Users_UserGroups [$USERS_GROUPS_JOIN$]
+						WHERE
+							(Users_UserGroups.userId = ?) [$USERS_GROUPS_WHERE$]
+					)
+				)
+				AND	(User_.userId != ?)
+				[$DEFAULT_USER$]
+				[$DEACTIVATED_USER$]
+			ORDER BY
+				User_.firstName ASC,
+				User_.middleName ASC,
+				User_.lastName ASC
+		]]>
+    </sql>
+
+    <!-- Finds all users and attaches groups to them -->
+    <sql id="com.marcelmika.lims.persistence.generated.service.persistence.SettingsFinder.searchByUserGroups">
+        <![CDATA[
+			SELECT DISTINCT
+				User_.userId AS userId,
+				User_.screenName AS screenName,
+				User_.firstName AS firstName,
+				User_.middleName AS middleName,
+				User_.lastName AS lastName,
+				Lims_Settings.presence AS presence
+			FROM
+				Lims_Settings
+			INNER JOIN
+				User_ ON (User_.userId = Lims_Settings.userId)
+			INNER JOIN
+				Users_UserGroups ON (Users_UserGroups.userId = User_.userId)
+			INNER JOIN
+			    UserGroup ON (Users_UserGroups.userGroupId = UserGroup.userGroupId)
+			WHERE
+				(Users_UserGroups.userGroupId IN
+					(
+						SELECT
+							Users_UserGroups.userGroupId
+						FROM
+							Users_UserGroups [$USERS_GROUPS_JOIN$]
+						WHERE
+							(Users_UserGroups.userId = ?) [$USERS_GROUPS_WHERE$]
+					)
+				)
+				AND	(User_.userId != ?)
+				AND
+				(
+					(lower(User_.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.middleName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.lastName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.screenName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$])
+				)
+				[$DEFAULT_USER$]
+				[$DEACTIVATED_USER$]
+			ORDER BY
+				User_.firstName ASC,
+				User_.middleName ASC,
+				User_.lastName ASC
+		]]>
+    </sql>
+
 
 </custom-sql>

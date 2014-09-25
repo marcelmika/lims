@@ -178,6 +178,13 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 				"java.lang.Long", "java.lang.String", "boolean", "boolean",
 				"int[][]", "int", "int"
 			};
+
+		_methodName30 = "searchUserGroupsBuddies";
+
+		_methodParameterTypes30 = new String[] {
+				"java.lang.Long", "java.lang.String", "boolean", "boolean",
+				"java.lang.String[][]", "int", "int"
+			};
 	}
 
 	@Override
@@ -1140,6 +1147,52 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 		return (java.util.List<java.lang.Object[]>)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
+	public java.util.List<java.lang.Object[]> searchUserGroupsBuddies(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser,
+		java.lang.String[] excludedGroups, int start, int end)
+		throws java.lang.Exception {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName30,
+					_methodParameterTypes30,
+					new Object[] {
+						ClpSerializer.translateInput(userId),
+						
+					ClpSerializer.translateInput(searchQuery),
+						
+					ignoreDefaultUser,
+						
+					ignoreDeactivatedUser,
+						
+					ClpSerializer.translateInput(excludedGroups),
+						
+					start,
+						
+					end
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof java.lang.Exception) {
+				throw (java.lang.Exception)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<java.lang.Object[]>)ClpSerializer.translateOutput(returnObj);
+	}
+
 	private InvokableLocalService _invokableLocalService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
@@ -1199,4 +1252,6 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 	private String[] _methodParameterTypes28;
 	private String _methodName29;
 	private String[] _methodParameterTypes29;
+	private String _methodName30;
+	private String[] _methodParameterTypes30;
 }

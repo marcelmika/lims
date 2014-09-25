@@ -88,6 +88,12 @@ public class SearchManagerImpl implements SearchManager {
                     userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, relationTypes, start, end
             );
         }
+        // Buddies by user groups
+        else if (strategy == Environment.BuddyListStrategy.USER_GROUPS) {
+            return searchUserGroupsBuddies(
+                    userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, excludedGroups, start, end
+            );
+        }
         // Unknown
         else {
             throw new Exception("Unknown buddy list strategy");
@@ -185,6 +191,37 @@ public class SearchManagerImpl implements SearchManager {
         // Get from persistence
         List<Object[]> users = SettingsLocalServiceUtil.searchSocialBuddies(
                 userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, relationCodes, start, end
+        );
+
+        // Return deserialized result
+        return deserializeBuddyListFromUserObjects(users);
+    }
+
+    /**
+     * Returns a list of buddies. This list is made of all buddies based on the search query that are
+     * in the same user group as the user.
+     *
+     * @param userId                which should be excluded from the list
+     * @param searchQuery           search query string
+     * @param ignoreDefaultUser     boolean set to true if the default user should be excluded
+     * @param ignoreDeactivatedUser boolean set to true if the deactivated user should be excluded
+     * @param excludedGroups        names of groups that should be excluded from the list of buddies
+     * @param start                 of the list
+     * @param end                   of the list
+     * @return a list of buddies
+     * @throws Exception
+     */
+    private List<Buddy> searchUserGroupsBuddies(Long userId,
+                                                String searchQuery,
+                                                boolean ignoreDefaultUser,
+                                                boolean ignoreDeactivatedUser,
+                                                String[] excludedGroups,
+                                                int start,
+                                                int end) throws Exception {
+
+        // Get user groups
+        List<Object[]> users = SettingsLocalServiceUtil.searchUserGroupsBuddies(
+                userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, excludedGroups, start, end
         );
 
         // Return deserialized result
