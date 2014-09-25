@@ -225,4 +225,19 @@ public class Buddy {
                 ", presence=" + presence +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Buddy buddy = (Buddy) o;
+
+        return !(buddyId != null ? !buddyId.equals(buddy.buddyId) : buddy.buddyId != null);
+    }
+
+    @Override
+    public int hashCode() {
+        return buddyId != null ? buddyId.hashCode() : 0;
+    }
 }

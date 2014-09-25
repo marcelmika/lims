@@ -28,11 +28,14 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.environment.Environment.BuddyListSocialRelation;
+import com.marcelmika.lims.api.environment.Environment.BuddyListStrategy;
 import com.marcelmika.lims.persistence.domain.Buddy;
 import com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUtil;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Ing. Marcel Mika
@@ -71,25 +74,31 @@ public class SearchManagerImpl implements SearchManager {
         Environment.BuddyListSocialRelation[] relationTypes = Environment.getBuddyListAllowedSocialRelationTypes();
 
         // All buddies
-        if (strategy == Environment.BuddyListStrategy.ALL) {
+        if (strategy == BuddyListStrategy.ALL) {
             return searchAllBuddies(
                     userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, start, end
             );
         }
         // Buddies from sites
-        else if (strategy == Environment.BuddyListStrategy.SITES) {
+        else if (strategy == BuddyListStrategy.SITES) {
             return searchSitesBuddies(
                     userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, start, end
             );
         }
         // Buddies by social relations
-        else if (strategy == Environment.BuddyListStrategy.SOCIAL) {
+        else if (strategy == BuddyListStrategy.SOCIAL) {
             return searchSocialBuddies(
                     userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, relationTypes, start, end
             );
         }
+        // Buddies by social relations together with sites
+        else if (strategy == BuddyListStrategy.SITES_AND_SOCIAL) {
+            return searchSitesAndSocialBuddies(
+                    userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, relationTypes, start, end
+            );
+        }
         // Buddies by user groups
-        else if (strategy == Environment.BuddyListStrategy.USER_GROUPS) {
+        else if (strategy == BuddyListStrategy.USER_GROUPS) {
             return searchUserGroupsBuddies(
                     userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, excludedGroups, start, end
             );
@@ -195,6 +204,48 @@ public class SearchManagerImpl implements SearchManager {
 
         // Return deserialized result
         return deserializeBuddyListFromUserObjects(users);
+    }
+
+    /**
+     * Returns a list of buddies. This list is made of all buddies based on the search query that are
+     * in the same site and have a social relation given in parameter
+     *
+     * @param userId                which should be excluded from the list
+     * @param searchQuery           search query string
+     * @param ignoreDefaultUser     boolean set to true if the default user should be excluded
+     * @param ignoreDeactivatedUser boolean set to true if the deactivated user should be excluded
+     * @param excludedSites         names of sites (groups) that should be excluded from the group collection
+     * @param relationTypes         an array of relation types enums
+     * @param start                 of the list
+     * @param end                   of the list
+     * @return a list of buddies
+     * @throws Exception
+     */
+    private List<Buddy> searchSitesAndSocialBuddies(Long userId,
+                                                    String searchQuery,
+                                                    boolean ignoreDefaultUser,
+                                                    boolean ignoreDeactivatedUser,
+                                                    String[] excludedSites,
+                                                    BuddyListSocialRelation[] relationTypes,
+                                                    int start,
+                                                    int end) throws Exception {
+
+        // Get site buddies
+        List<Buddy> siteBuddies = searchSitesBuddies(
+                userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, start, end
+        );
+
+        // Get social buddies
+        List<Buddy> socialBuddies = searchSocialBuddies(
+                userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, relationTypes, start, end
+        );
+
+        // Add it to set since we want to get rid of duplicates
+        Set<Buddy> mergedBuddies = new HashSet<Buddy>();
+        mergedBuddies.addAll(siteBuddies);
+        mergedBuddies.addAll(socialBuddies);
+
+        return new LinkedList<Buddy>(mergedBuddies);
     }
 
     /**

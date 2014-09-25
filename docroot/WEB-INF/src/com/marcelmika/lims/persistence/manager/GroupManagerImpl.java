@@ -34,10 +34,7 @@ import com.marcelmika.lims.persistence.domain.Group;
 import com.marcelmika.lims.persistence.domain.GroupCollection;
 import com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Ing. Marcel Mika
@@ -90,15 +87,15 @@ public class GroupManagerImpl implements GroupManager {
                     userId, ignoreDefaultUser, ignoreDeactivatedUser, relationTypes, start, end
             );
         }
-        // User Groups
-        else if (strategy == BuddyListStrategy.USER_GROUPS) {
-            return getUserGroups(userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedGroups, start, end);
-        }
         // Socialized and buddies from sites
         else if (strategy == BuddyListStrategy.SITES_AND_SOCIAL) {
             return getSitesAndSocialGroups(
                     userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, relationTypes, start, end
             );
+        }
+        // User Groups
+        else if (strategy == BuddyListStrategy.USER_GROUPS) {
+            return getUserGroups(userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedGroups, start, end);
         }
         // Unknown
         else {
@@ -318,7 +315,7 @@ public class GroupManagerImpl implements GroupManager {
         );
 
         // Merge site and social groups
-        List<Group> mergedGroups = new ArrayList<Group>();
+        List<Group> mergedGroups = new LinkedList<Group>();
         mergedGroups.addAll(sitesGroupCollection.getGroups());
         mergedGroups.addAll(socialGroupCollection.getGroups());
 
