@@ -314,14 +314,17 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             }
             queryPos.add(userId);
 
+            // Search query needs to be lowered
+            String lowerCaseSearchQuery = searchQuery.toLowerCase();
+
             // Create the like statement for search query
-            String likeStatement = "%" + searchQuery + "%";
+            String likeStatement = "%" + lowerCaseSearchQuery + "%";
 
             // There are 5 possible columns we are about to search
             // (first name, middle name, last name, screen name, email address)
             for (int i = 0; i < 5; i++) {
                 queryPos.add(likeStatement);
-                queryPos.add(searchQuery);
+                queryPos.add(lowerCaseSearchQuery);
             }
 
             // Return the result
@@ -376,14 +379,17 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             QueryPos queryPos = QueryPos.getInstance(query);
             queryPos.add(userId);
 
+            // Search query needs to be lowered
+            String lowerCaseSearchQuery = searchQuery.toLowerCase();
+
             // Create the like statement for search query
-            String likeStatement = "%" + searchQuery + "%";
+            String likeStatement = "%" + lowerCaseSearchQuery + "%";
 
             // There are 5 possible columns we are about to search
             // (first name, middle name, last name, screen name, email address)
             for (int i = 0; i < 5; i++) {
                 queryPos.add(likeStatement);
-                queryPos.add(searchQuery);
+                queryPos.add(lowerCaseSearchQuery);
             }
 
             // Return the result
@@ -447,14 +453,17 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             }
             queryPos.add(userId);
 
+            // Search query needs to be lowered
+            String lowerCaseSearchQuery = searchQuery.toLowerCase();
+
             // Create the like statement for search query
-            String likeStatement = "%" + searchQuery + "%";
+            String likeStatement = "%" + lowerCaseSearchQuery + "%";
 
             // There are 5 possible columns we are about to search
             // (first name, middle name, last name, screen name, email address)
             for (int i = 0; i < 5; i++) {
                 queryPos.add(likeStatement);
-                queryPos.add(searchQuery);
+                queryPos.add(lowerCaseSearchQuery);
             }
 
             // Return the result
@@ -519,14 +528,17 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             }
             queryPos.add(userId);
 
+            // Search query needs to be lowered
+            String lowerCaseSearchQuery = searchQuery.toLowerCase();
+
             // Create the like statement for search query
-            String likeStatement = "%" + searchQuery + "%";
+            String likeStatement = "%" + lowerCaseSearchQuery + "%";
 
             // There are 5 possible columns we are about to search
             // (first name, middle name, last name, screen name, email address)
             for (int i = 0; i < 5; i++) {
                 queryPos.add(likeStatement);
-                queryPos.add(searchQuery);
+                queryPos.add(lowerCaseSearchQuery);
             }
 
             // Return the result
@@ -885,22 +897,25 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
      */
     private String addSearchParametersToSql(String sql, String searchQuery) {
 
+        // Search query needs to be in a lower case since we are lower the columns as well
+        String lowerCaseSearchQuery = searchQuery.toLowerCase();
+
         // Replace
         sql = CustomSQLUtil.replaceKeywords(
                 sql, "lower(User_.firstName)", StringPool.LIKE, false,
-                new String[]{searchQuery});
+                new String[]{lowerCaseSearchQuery});
         sql = CustomSQLUtil.replaceKeywords(
                 sql, "lower(User_.middleName)", StringPool.LIKE, false,
-                new String[]{searchQuery});
+                new String[]{lowerCaseSearchQuery});
         sql = CustomSQLUtil.replaceKeywords(
                 sql, "lower(User_.lastName)", StringPool.LIKE, false,
-                new String[]{searchQuery});
+                new String[]{lowerCaseSearchQuery});
         sql = CustomSQLUtil.replaceKeywords(
                 sql, "lower(User_.screenName)", StringPool.LIKE, false,
-                new String[]{searchQuery});
+                new String[]{lowerCaseSearchQuery});
         sql = CustomSQLUtil.replaceKeywords(
                 sql, "lower(User_.emailAddress)", StringPool.LIKE, true,
-                new String[]{searchQuery});
+                new String[]{lowerCaseSearchQuery});
 
         return sql;
     }
