@@ -687,7 +687,7 @@
     font-weight: normal;
 }
 
-.liferay-ims .chat-height-monitor {
+.liferay-ims .conversation .chat-height-monitor {
     white-space: pre;
     white-space: pre-wrap;
     white-space: pre-line;
@@ -700,6 +700,62 @@
     font-size: 12px;
     line-height: 14px;
     position: absolute;
+}
+
+
+/************************************************************************************
+/  CONVERSATION - ERROR
+/************************************************************************************/
+
+.liferay-ims .conversation .conversation-error {
+    margin-top: 40%;
+    padding: 10px;
+    width: 90%;
+    position: absolute;
+}
+
+.liferay-ims .conversation .conversation-error .warning-icon {
+    background: transparent url(../images/icon-warning-red.png) no-repeat center center;
+    width: 14px;
+    height: 16px;
+    margin: 7px 7px 0 0;
+    float: left;
+}
+
+.liferay-ims .conversation .conversation-error .error-message {
+    color: #ce1b1b;
+    max-width: 170px;
+    float: left;
+    line-height: 13px;
+    font-size: 11px;
+    text-align: justify;
+}
+
+.liferay-ims .conversation .conversation-error .resend-button {
+    background: transparent url(../images/icon-resend.png) no-repeat center center;
+    width: 21px;
+    height: 21px;
+    float: right;
+    margin-top: 5px;
+}
+
+.liferay-ims .conversation .conversation-error .resend-button.preloader {
+    position: relative;
+    margin: 0;
+    background: transparent url(../images/preloader-light.gif) center center no-repeat;
+    background-size: 21px;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+    .liferay-ims .conversation .conversation-error .warning-icon {
+        background-image: url(../images/icon-warning-red@2x.png);
+        background-size: auto 16px;
+    }
+
+    .liferay-ims .conversation .conversation-error .resend-button {
+        background-image: url(../images/icon-resend@2x.png);
+        background-size: auto 21px;
+    }
 }
 
 /********************************************************************************

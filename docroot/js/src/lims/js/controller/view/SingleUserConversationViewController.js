@@ -30,6 +30,10 @@ Y.namespace('LIMS.Controller');
 Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUserConversationController',
     Y.LIMS.Core.ViewController, [], {
 
+        // The template property holds the contents of the #lims-conversation-error-template
+        // element, which will be used as the HTML template for conversation error
+        // Check the templates.jspf to see all templates
+        errorTemplate: Y.one('#lims-conversation-error-template').get('innerHTML'),
 
         /**
          *  The initializer runs when a Single User Conversation View Controller instance is created.
@@ -189,8 +193,6 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          * @private
          */
         _onConversationCreateBegin: function () {
-            // Show preloader
-            this._showActivityIndicator();
             // Hide the panel input. We don't want users to post any messages now
             this._hidePanelInput();
         },
@@ -205,8 +207,6 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             var model = this.get('model');
             // Load the conversation
             model.load();
-
-//            console.log('conversation success');
         },
 
         /**
@@ -216,8 +216,9 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          */
         _onConversationCreateError: function () {
             // Hide preloader
+            this._hideActivityIndicator();
             // Show error message
-//            console.log('conversation error');
+            this._showErrorMessage();
         },
 
         /**
@@ -228,6 +229,8 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         _onConversationReadSuccess: function () {
             // Show the panel input so the user can post messages
             this._showPanelInput();
+            // Hide error message if there was any
+            this._hideErrorMessage();
         },
 
         /**
@@ -282,6 +285,26 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         },
 
         /**
+         * Called when the conversation creation fails and the user click on
+         * the try again button
+         *
+         * @private
+         */
+        _onTryAgainButtonClick: function () {
+            // Vars
+            var model = this.get('model'),
+                tryAgainButtonNode = this.get('errorContainer').one('.resend-button');
+
+            // Prevent user to click on preloader more than once
+            if (!tryAgainButtonNode.hasClass('preloader')) {
+                // Add preloader to the resend button
+                tryAgainButtonNode.addClass('preloader');
+                // Try to create the conversation again
+                model.save();
+            }
+        },
+
+        /**
          * Called whenever an error with connection occurred
          *
          * @private
@@ -316,21 +339,6 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         },
 
         /**
-         * Hides badge
-         *
-         * @private
-         */
-        _hideBadge: function () {
-            // Vars
-            var badge = this.get('badge');
-
-            // Hide badge
-            if (badge) {
-                badge.hide();
-            }
-        },
-
-        /**
          * Shows badge
          *
          * @private
@@ -342,6 +350,21 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             // Show badge
             if (badge) {
                 badge.show();
+            }
+        },
+
+        /**
+         * Hides badge
+         *
+         * @private
+         */
+        _hideBadge: function () {
+            // Vars
+            var badge = this.get('badge');
+
+            // Hide badge
+            if (badge) {
+                badge.hide();
             }
         },
 
@@ -395,6 +418,83 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             // the show() or hide() method since this will remove it from the visible
             // are and brake the panel size. Thus we only manipulate the opacity
             panelInput.setStyle('opacity', 0);
+        },
+
+        /**
+         * Shows error message
+         *
+         * @private
+         */
+        _showErrorMessage: function () {
+            // Vars
+            var errorContainer = this.get('errorContainer'),
+                panelContent = this.get('panelContent'),
+                animation,
+                instance = this;
+
+            // If the error container is already in the document do nothing
+            if (!errorContainer.inDoc()) {
+
+                // Create an instance of animation
+                animation = new Y.Anim({
+                    node: errorContainer,
+                    duration: 0.3,
+                    from: {opacity: 0},
+                    to: {opacity: 1}
+                });
+
+                // Opacity needs to be set to zero otherwise there wil
+                // be a weird blink effect
+                errorContainer.setStyle('opacity', 0);
+
+                // Attach click on resend button event
+                errorContainer.one('.resend-button').on('click', function (event) {
+                    event.preventDefault();
+                    instance._onTryAgainButtonClick();
+                });
+
+                // Add error to the container
+                panelContent.append(errorContainer);
+
+                // Run the effect animation
+                animation.run();
+            }
+
+            // It is possible that resend button was clicked thus it was transformed to the preloader.
+            // Remove the preloader class so it can be the resend button again.
+            errorContainer.one('.resend-button').removeClass('preloader');
+        },
+
+        /**
+         * Hides error message
+         *
+         * @private
+         */
+        _hideErrorMessage: function () {
+            // Vars
+            var errorContainer = this.get('errorContainer'),
+                animation;
+
+            // Run the animation only if the error container is in DOM
+            if (errorContainer.inDoc()) {
+
+                // Create an instance of animation
+                animation = new Y.Anim({
+                    node: errorContainer,
+                    duration: 0.3,
+                    from: {opacity: 1},
+                    to: {opacity: 0}
+                });
+
+                // Listen to the end of the animation
+                animation.on('end', function () {
+                    // Remove the error node from DOM
+                    animation.get('node').remove();
+                });
+
+                // Run the animation
+                animation.run();
+            }
         }
 
     }, {
@@ -465,6 +565,17 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             },
 
             /**
+             * Panel content node that holds nodes like activity indicator, list view, error message, etc.
+             *
+             * {Node}
+             */
+            panelContent: {
+                valueFn: function () {
+                    return this.get('container').one('.panel-content');
+                }
+            },
+
+            /**
              * Panel input node that holds message text field
              *
              * {Node}
@@ -483,6 +594,17 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             activityIndicator: {
                 valueFn: function () {
                     return this.get('container').one('.preloader');
+                }
+            },
+
+            /**
+             * Error container node
+             *
+             * {Node}
+             */
+            errorContainer: {
+                valueFn: function () {
+                    return Y.Node.create(this.errorTemplate);
                 }
             },
 
