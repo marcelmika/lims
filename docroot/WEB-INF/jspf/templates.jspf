@@ -109,13 +109,10 @@
 
 <%-- This template HTML will be used to play a sound via swf file --%>
 <script type="text/x-template" id="lims-notification-template">
-    <object type="application/x-shockwave-flash"
-            data="{url}"
-            width="1"
-            height="1"
-            id="lims-notification">
-        <param name="movie" value="{url}"/>
-    </object>
+    <audio class="lims-notification">
+        <source src="{mp3}" type="audio/mpeg">
+        <source src="{wav}" type="audio/wav">
+    </audio>
 </script>
 
 <%-- This template HTML will be used as a error notification in panel --%>

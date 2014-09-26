@@ -43,20 +43,14 @@ Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
      */
     notify: function (messageCount, silent) {
         // Vars
-        var container = this.get('container'),
-            settings = this.get('settings');
+        var settings = this.get('settings');
 
         // Store new count
         this._increaseMessageCount(messageCount);
 
         // If sound is enabled
         if (!settings.isMute() && !silent) {
-            // Fill data from model to template and set it to container.
-            // This will play the sound since alert.swf contains correct sound
-            container.set('innerHTML', Y.Lang.sub(this.soundTemplate, {
-                    url: '/lims-portlet/swf/alert.swf'
-                })
-            );
+            this._playSound();
         }
 
         // Update title
@@ -75,6 +69,19 @@ Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
         this._decreaseMessageCount(messageCount);
         // Update title
         this._updatePageTitleMessage();
+    },
+
+    /**
+     * Plays notification sound
+     *
+     * @private
+     */
+    _playSound: function () {
+        // Vars
+        var soundPlayer = this.get('soundPlayer');
+
+        // Play
+        soundPlayer.getDOM().play();
     },
 
     /**
@@ -149,25 +156,68 @@ Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
     // Specify attributes and static properties for your View here.
     ATTRS: {
 
-        // Container Node
+        /**
+         * Main container node
+         *
+         * {Node}
+         */
         container: {
             value: null // to be set
         },
 
-        // Settings
+        /**
+         * Instance of settings
+         *
+         * {Y.LIMS.Model.SettingsModel}
+         */
         settings: {
             value: null // to be set
         },
 
-        // Portlet properties
+        /**
+         * Portlet properties
+         *
+         * {Y.LIMS.Core.Properties}
+         */
         properties: {
             value: null // to be set
         },
 
+        /**
+         * Node with sound player
+         *
+         * {Node}
+         */
+        soundPlayer: {
+            valueFn: function () {
+                // Vars
+                var container = this.get('container');
+
+                // Fill data from model to template and set it to container.
+                container.set('innerHTML', Y.Lang.sub(this.soundTemplate, {
+                        mp3: '/lims-portlet/audio/notification.mp3',
+                        wav: '/lims-portlet/audio/notification.wav'
+                    })
+                );
+
+                return container.one('.lims-notification');
+            }
+        },
+
+        /**
+         * Count of unread messages
+         *
+         * {integer}
+         */
         unreadMessagesCount: {
             value: 0
         },
 
+        /**
+         * Cached page title
+         *
+         * {string}
+         */
         defaultPageTitle: {
             valueFn: function () {
                 return Y.config.doc.title;
