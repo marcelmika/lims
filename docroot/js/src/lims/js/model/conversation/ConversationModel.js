@@ -163,6 +163,10 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
             // This is called whenever the conversation is created i.e whenever
             // the user clicks on any of the buddies in the group
             case 'create':
+
+                // Fire begin event
+                instance.fire('createBegin');
+
                 // Simply take the conversation object, serialize it to json
                 // and send.
                 content = Y.JSON.stringify(this.toJSON());
@@ -178,6 +182,10 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
                         success: function (id, o) {
                             // Deserialize response
                             response = Y.JSON.parse(o.response);
+
+                            // Fire success event
+                            instance.fire('createSuccess');
+
                             // Call success
                             callback(null, instance);
                         },
@@ -187,6 +195,10 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
                                 // Notify everybody else
                                 Y.fire('userSessionExpired');
                             }
+
+                            // Fire failure event
+                            instance.fire('createError');
+
                             // Call failure
                             callback("Cannot create new conversation", o);
                         }
@@ -197,6 +209,10 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
             // Called whenever the load() method is called. Sends a request
             // to server which loads a list of messages related to the conversation.
             case 'read':
+
+                // Fire begin event
+                instance.fire('readBegin');
+
                 // Construct parameters
                 parameters = Y.JSON.stringify({
                     conversationId: this.get('conversationId'),
@@ -227,6 +243,10 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
                             response = Y.JSON.parse(o.response);
                             // Update message list
                             instance.updateConversation(response);
+
+                            // Fire success event
+                            instance.fire('readSuccess');
+
                             // Call success
                             callback(null, instance);
                         },
@@ -236,6 +256,10 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
                                 // Notify everybody else
                                 Y.fire('userSessionExpired');
                             }
+
+                            // Fire failure event
+                            instance.fire('readError');
+
                             // Call failure
                             callback("Cannot read conversation", o);
                         }

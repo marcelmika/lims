@@ -101,7 +101,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
                 updatedUnreadMessageCount,                  // Unread message count of updated model
                 newMessagesCount,                           // Number of newly received messages
                 notification = this.get('notification'),    // Notification handler
-                instance = this;                            // This
+                instance = this;                            // Saved instance
 
             // There is no need to update conversation which hasn't been changed
             if (conversationModel.get('etag') !== model.get('etag')) {
@@ -133,10 +133,15 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          */
         _attachEvents: function () {
             // Vars
-            var listView = this.get('listView');
+            var listView = this.get('listView'),
+                model = this.get('model');
 
             // Local events
             listView.on('messageSubmitted', this._onMessageSubmitted, this);
+            model.on('createBegin', this._onConversationCreateBegin, this);
+            model.on('createSuccess', this._onConversationCreateSuccess, this);
+            model.on('createError', this._onConversationCreateError, this);
+            model.on('readSuccess', this._onConversationReadSuccess, this);
 
             // Remote events
             Y.on('connectionError', this._onConnectionError, this);
@@ -179,6 +184,53 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         },
 
         /**
+         * Called when the conversation is being created
+         *
+         * @private
+         */
+        _onConversationCreateBegin: function () {
+            // Show preloader
+            this._showActivityIndicator();
+            // Hide the panel input. We don't want users to post any messages now
+            this._hidePanelInput();
+        },
+
+        /**
+         * Called when the conversation was successfully created
+         *
+         * @private
+         */
+        _onConversationCreateSuccess: function () {
+            // Vars
+            var model = this.get('model');
+            // Load the conversation
+            model.load();
+
+//            console.log('conversation success');
+        },
+
+        /**
+         * Called when the creation of conversation failed
+         *
+         * @private
+         */
+        _onConversationCreateError: function () {
+            // Hide preloader
+            // Show error message
+//            console.log('conversation error');
+        },
+
+        /**
+         * Called when the conversation is successfully read
+         *
+         * @private
+         */
+        _onConversationReadSuccess: function () {
+            // Show the panel input so the user can post messages
+            this._showPanelInput();
+        },
+
+        /**
          * Called whenever the conversation model is updated
          *
          * @private
@@ -197,6 +249,9 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
 
             // Update badge count
             this._updateBadge(unreadMessagesCount);
+
+            // Show the panel input so the users can post messages
+            this._showPanelInput();
         },
 
         /**
@@ -288,29 +343,100 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             if (badge) {
                 badge.show();
             }
+        },
+
+        /**
+         * Shows activity indicator
+         *
+         * @private
+         */
+        _showActivityIndicator: function () {
+            // Vars
+            var activityIndicator = this.get('activityIndicator');
+
+            // Show preloader
+            activityIndicator.show();
+        },
+
+        /**
+         * Hides activity indicator
+         *
+         * @private
+         */
+        _hideActivityIndicator: function () {
+            // Vars
+            var activityIndicator = this.get('activityIndicator');
+
+            // Hide preloader
+            activityIndicator.hide();
+        },
+
+        /**
+         * Shows panel input
+         *
+         * @private
+         */
+        _showPanelInput: function () {
+            var panelInput = this.get('panelInput');
+            // Set the opacity only. We don't want to show/hide the panel by calling
+            // the show() or hide() method since this will remove it from the visible
+            // are and brake the panel size. Thus we only manipulate the opacity
+            panelInput.setStyle('opacity', 1);
+        },
+
+        /**
+         * Hides panel input
+         *
+         * @private
+         */
+        _hidePanelInput: function () {
+            var panelInput = this.get('panelInput');
+            // Set the opacity only. We don't want to show/hide the panel by calling
+            // the show() or hide() method since this will remove it from the visible
+            // are and brake the panel size. Thus we only manipulate the opacity
+            panelInput.setStyle('opacity', 0);
         }
 
     }, {
 
-        // Specify attributes and static properties for your View here.
+        // Add custom model attributes here. These attributes will contain your
+        // model's data. See the docs for Y.Attribute to learn more about defining
+        // attributes.
+
         ATTRS: {
 
-            // Id of the controller
+            /**
+             * Id of the controller. Each view controller must have one.
+             *
+             * {string}
+             */
             controllerId: {
                 value: null // To be set
             },
 
-            // Container Node
+            /**
+             * Container node
+             *
+             * {Node}
+             */
             container: {
                 value: null // To be set
             },
 
-            // Model attached to controller
+            /**
+             * Model attached to controller
+             *
+             * {Y.LIMS.Model.ConversationModel}
+             */
             model: {
-                value: null // Y.LIMS.Model.ConversationModel
+                value: null // to be set
             },
 
-            // Badge Node
+            /**
+             * Badge that shows number of unread messages node
+             *
+             * {Node}
+             */
             badge: {
                 valueFn: function () {
                     // Vars
@@ -320,7 +446,11 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
                 }
             },
 
-            // List view that holds all messages
+            /**
+             * List view node that holds all message views
+             *
+             * {Node}
+             */
             listView: {
                 valueFn: function () {
                     // Vars
@@ -334,31 +464,79 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
                 }
             },
 
-            notification: {
-                value: null // to be set
+            /**
+             * Panel input node that holds message text field
+             *
+             * {Node}
+             */
+            panelInput: {
+                valueFn: function () {
+                    return this.get('container').one('.panel-input');
+                }
             },
 
-            // Currently logged user
-            buddyDetails: {
-                value: null
+            /**
+             * Activity indicator node
+             *
+             * {Node}
+             */
+            activityIndicator: {
+                valueFn: function () {
+                    return this.get('container').one('.preloader');
+                }
             },
 
-            // Timer used to set async calls to server
+            /**
+             * Timer that is used to refresh date nodes periodically
+             *
+             * {timer}
+             */
             timer: {
                 value: null // to be set
             },
 
-            // Length of timer period
+            /**
+             * Length of the timer period that is used to refresh date nodes periodically
+             *
+             * {integer}
+             */
             timerInterval: {
                 value: 60000 // one minute
             },
 
-            // Portlet properties
+            /**
+             * An instance of notification object which is responsible for
+             * notifying user about incoming messages
+             *
+             * {Y.LIMS.Core.Notification}
+             */
+            notification: {
+                value: null // to be set
+            },
+
+            /**
+             * An instance of buddy details related to the currently logged user
+             *
+             * {Y.LIMS.Model.BuddyModelItem}
+             */
+            buddyDetails: {
+                value: null
+            },
+
+            /**
+             * An instance of the portlet properties object
+             *
+             * {Y.LIMS.Core.Properties}
+             */
             properties: {
                 value: null // to be set
             },
 
-            // Holds user related settings
+            /**
+             * An instance of settings related to the currently logged user
+             *
+             * {Y.LIMS.Model.SettingsModel}
+             */
             settings: {
                 value: null // to be set
             }
