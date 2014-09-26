@@ -704,17 +704,17 @@
 
 
 /************************************************************************************
-/  CONVERSATION - ERROR
+/  ERROR NOTIFICATION
 /************************************************************************************/
 
-.liferay-ims .conversation .conversation-error {
+.liferay-ims .error-notification {
     margin-top: 40%;
     padding: 10px;
     width: 90%;
     position: absolute;
 }
 
-.liferay-ims .conversation .conversation-error .warning-icon {
+.liferay-ims .error-notification .warning-icon {
     background: transparent url(../images/icon-warning-red.png) no-repeat center center;
     width: 14px;
     height: 16px;
@@ -722,7 +722,7 @@
     float: left;
 }
 
-.liferay-ims .conversation .conversation-error .error-message {
+.liferay-ims .error-notification .error-message {
     color: #ce1b1b;
     max-width: 170px;
     float: left;
@@ -731,7 +731,7 @@
     text-align: justify;
 }
 
-.liferay-ims .conversation .conversation-error .resend-button {
+.liferay-ims .error-notification .resend-button {
     background: transparent url(../images/icon-resend.png) no-repeat center center;
     width: 21px;
     height: 21px;
@@ -739,7 +739,7 @@
     margin-top: 5px;
 }
 
-.liferay-ims .conversation .conversation-error .resend-button.preloader {
+.liferay-ims .error-notification .resend-button.preloader {
     position: relative;
     margin: 0;
     background: transparent url(../images/preloader-light.gif) center center no-repeat;
@@ -747,12 +747,12 @@
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
-    .liferay-ims .conversation .conversation-error .warning-icon {
+    .liferay-ims .error-notification .warning-icon {
         background-image: url(../images/icon-warning-red@2x.png);
         background-size: auto 16px;
     }
 
-    .liferay-ims .conversation .conversation-error .resend-button {
+    .liferay-ims .error-notification .resend-button {
         background-image: url(../images/icon-resend@2x.png);
         background-size: auto 21px;
     }

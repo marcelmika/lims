@@ -61,13 +61,13 @@
     </div>
 </script>
 
-<%-- This template HTML will be used to render error in group list --%>
-<script type="text/x-template" id="lims-conversation-error-template">
-    <div class="conversation-error">
+<%-- This template HTML will be used to render error notification --%>
+<script type="text/x-template" id="lims-error-notification-template">
+    <div class="error-notification">
         <div class="warning-icon"></div>
-        <div class="error-message"><liferay-ui:message key="panel-conversation-error-text"/></div>
+        <div class="error-message">{errorMessage}</div>
         <button class="resend-button"
-                title="<liferay-ui:message key="panel-conversation-error-resend-title" />"></button>
+                title="<liferay-ui:message key="panel-error-notification-resend-title" />"></button>
         <div class="clear"></div>
     </div>
 </script>
