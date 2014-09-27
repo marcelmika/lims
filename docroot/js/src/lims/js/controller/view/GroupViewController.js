@@ -53,6 +53,8 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
      */
     onPanelDidAppear: function () {
         this._startTimer();
+        // Subscribe to key up event
+        this._subscribeKeyUp();
     },
 
     /**
@@ -60,6 +62,8 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
      */
     onPanelDidDisappear: function () {
         this._stopTimer();
+        // Detach the key up event
+        this._detachKeyUp();
     },
 
     /**
@@ -88,6 +92,32 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
 
         // Global events
         Y.on('buddySelected', this._onBuddySelected, this);
+    },
+
+    /**
+     * Subscribes to the global key up event
+     *
+     * @private
+     */
+    _subscribeKeyUp: function () {
+        if (Y.one('doc')) {
+            // Save the subscription to the key up event
+            this.set('keyUpSubscription', Y.one('doc').on('keyup', this._onKeyPress, this));
+        }
+    },
+
+    /**
+     * Detaches the subscription to the global key up event
+     *
+     * @private
+     */
+    _detachKeyUp: function () {
+        // Vars
+        var keyUpSubscription = this.get('keyUpSubscription');
+
+        if (keyUpSubscription) {
+            keyUpSubscription.detach();
+        }
     },
 
     /**
@@ -293,6 +323,20 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
     _onSearchClosed: function () {
         // Hide the search panel
         this._hideSearchPanel();
+    },
+
+    /**
+     * Called whenever the user presses any kay in the browser
+     *
+     * @param event
+     * @private
+     */
+    _onKeyPress: function (event) {
+        // User pressed ESC key
+        if (event.keyCode === 27) {
+            // Hide the search panel
+            this._hideSearchPanel();
+        }
     }
 
 }, {
@@ -467,6 +511,10 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
          * {Y.LIMS.Core.Properties}
          */
         properties: {
+            value: null // to be set
+        },
+
+        keyUpSubscription: {
             value: null // to be set
         }
     }
