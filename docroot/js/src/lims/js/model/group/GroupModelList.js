@@ -91,6 +91,7 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
                                     instance.add(group);
                                 }
 
+                                // Fire success event
                                 instance.fire('groupsReadSuccess', {
                                     groupsList: instance
                                 });
@@ -103,6 +104,11 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
                                 Y.fire('userSessionExpired');
                             }
 
+                            // Clear etag otherwise when we load the data again it
+                            // might still be cached
+                            instance.set('etag', -1);
+
+                            // Fire error event
                             instance.fire('groupsReadError');
 
                             if (callback) {
