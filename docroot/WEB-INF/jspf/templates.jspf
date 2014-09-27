@@ -74,15 +74,6 @@
     <div class="clear"></div>
 </script>
 
-<%-- This template HTML will be used to render info in group list --%>
-<script type="text/x-template" id="lims-group-list-info-template">
-    <div class="group-list-info">
-        <div class="info-icon"></div>
-        <div class="info-message"><liferay-ui:message key="panel-group-list-info-text"/></div>
-        <div class="clear"></div>
-    </div>
-</script>
-
 <%-- This template HTML will be used to play a sound via swf file --%>
 <script type="text/x-template" id="lims-notification-template">
     <audio class="lims-notification">
@@ -95,6 +86,7 @@
 <script type="text/x-template" id="lims-panel-search-template">
     <div class="panel-search">
         <input class="search-input-field" type="text" value=""/>
+
         <div class="search-content">
             <div class="info-container">
                 <div class="info-icon"></div>
@@ -108,6 +100,15 @@
     </div>
 </script>
 
+
+<%-- This template HTML will be used to render info notification (the blue one) --%>
+<script type="text/x-template" id="lims-info-notification-template">
+    <div class="info-notification">
+        <div class="info-icon"></div>
+        <div class="info-message">{infoMessage}</div>
+        <div class="clear"></div>
+    </div>
+</script>
 
 <%-- This template HTML will be used to render error notification (the red one) --%>
 <script type="text/x-template" id="lims-error-notification-template">

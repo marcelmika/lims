@@ -23,6 +23,7 @@ AUI().use('lims-core', "lims-model", "lims-view", "lims-controller", function (A
             searchInfoMessage: Liferay.Language.get('panel-search-info-text'),
             searchNoResultsMessage: Liferay.Language.get('panel-search-no-results-text'),
             searchErrorMessage: Liferay.Language.get('panel-search-error-text'),
+            groupListEmptyInfoMessage: Liferay.Language.get('panel-group-list-empty-info-text'),
             groupListErrorMessage: Liferay.Language.get('panel-group-list-error-text'),
             conversationCreateErrorMessage: Liferay.Language.get('panel-conversation-create-error-text'),
             conversationReadErrorMessage: Liferay.Language.get('panel-conversation-read-error-text')

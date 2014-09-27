@@ -34,11 +34,6 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
     // Specify a model to associate with the view.
     model: Y.LIMS.Model.GroupModelList,
 
-    // The template property holds the contents of the #lims-group-list-info-template
-    // element, which will be used as the HTML template for an info message
-    // Check the templates.jspf to see all templates
-    infoTemplate: Y.one('#lims-group-list-info-template').get('innerHTML'),
-
     /**
      * The initializer runs when the instance is created, and gives
      * us an opportunity to set up the view.
@@ -80,18 +75,23 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         // Vars
         var activityIndicator = this.get('activityIndicator'),
             errorView = this.get('errorView'),
+            infoView = this.get('infoView'),
             model = this.get('model');
 
         // If there was any error, hide it
         errorView.hideErrorMessage(true);
 
+        // No groups found
         if (model.isEmpty()) {
-            this._showEmptyInfo();
+            // Hide info message
+            infoView.showInfoMessage(true);
+            // Hide groups
             this._hideGroups();
         } else {
-            // Show the groups
+            // Show groups
             this._showGroups();
-            this._hideEmptyInfo();
+            // Hide info message
+            infoView.hideInfoMessage(true);
         }
 
         // Hide indicator
@@ -106,6 +106,7 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
     _onGroupsReadError: function () {
         // Vars
         var activityIndicator = this.get('activityIndicator'),
+            infoView = this.get('infoView'),
             errorView = this.get('errorView');
 
         // Hide indicator
@@ -113,7 +114,7 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         // Hide groups
         this._hideGroups();
         // Hide info about empty groups
-        this._hideEmptyInfo();
+        infoView.hideInfoMessage(true);
         // Show error
         errorView.showErrorMessage(true);
     },
@@ -224,66 +225,6 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
             // Run!
             animation.run();
         }
-    },
-
-    /**
-     * Shows the info message
-     *
-     * @private
-     */
-    _showEmptyInfo: function () {
-        // Vars
-        var container = this.get('container'),
-            infoContainer = this.get('infoContainer'),
-            animation;
-
-        // If the info container is already in the document don't add it
-        if (!infoContainer.inDoc()) {
-
-            // Create an instance of animation
-            animation = new Y.Anim({
-                node: infoContainer,
-                duration: 0.5,
-                from: {opacity: 0},
-                to: {opacity: 1}
-            });
-
-            // Opacity needs to be set to zero otherwise there will
-            // be a weird blink effect
-            infoContainer.setStyle('opacity', 0);
-
-            // Add the info to the container
-            container.append(infoContainer);
-
-            // Run the animation
-            animation.run();
-        }
-    },
-
-    _hideEmptyInfo: function () {
-        // Vars
-        var infoContainer = this.get('infoContainer'),
-            animation;
-
-        // Run the animation only if the info container is in DOM
-        if (infoContainer.inDoc()) {
-
-            // Create the animation instance
-            animation = new Y.Anim({
-                node: infoContainer,
-                duration: 0.5,
-                from: {opacity: 1},
-                to: {opacity: 0}
-            });
-
-            // Listen to the end of the animation
-            animation.on('end', function () {
-                animation.get('node').remove();
-            });
-
-            // Run the animation
-            animation.run();
-        }
     }
 
 }, {
@@ -348,13 +289,19 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         },
 
         /**
-         * Node for info container
+         * Info view with info message
          *
-         * {Node}
+         * {Y.LIMS.View.InfoNotificationView}
          */
-        infoContainer: {
+        infoView: {
             valueFn: function () {
-                return Y.Node.create(this.infoTemplate);
+                // Vars
+                var container = this.get('container');
+                // Create view
+                return new Y.LIMS.View.InfoNotificationView({
+                    container: container,
+                    infoMessage: Y.LIMS.Core.i18n.values.groupListEmptyInfoMessage
+                });
             }
         }
     }
