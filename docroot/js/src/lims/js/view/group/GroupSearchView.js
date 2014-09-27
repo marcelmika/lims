@@ -50,7 +50,8 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
     reset: function () {
 
         // Vars
-        var searchInput = this.get('searchInput');
+        var searchInput = this.get('searchInput'),
+            errorView = this.get('errorView');
 
         // Add a focus on the search input and empty the content
         searchInput.set('value', '');
@@ -63,7 +64,7 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
         // Show info message
         this._showInfoMessage();
         // Hide errors
-        this._hideErrorMessage(false);
+        errorView.hideErrorMessage(false);
     },
 
     /**
@@ -112,13 +113,15 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
 
         // Vars
         var searchInput = this.get('searchInput'),
-            model = this.get('model');
+            model = this.get('model'),
+            errorView = this.get('errorView');
 
         // Local events
         searchInput.on('keyup', this._onSearchInputUpdate, this);
         model.on('searchStarted', this._onSearchStarted, this);
         model.on('searchSuccess', this._onSearchSuccess, this);
         model.on('searchError', this._onSearchError, this);
+        errorView.on('resendButtonClick', this._onResendButtonClick, this);
     },
 
     /**
@@ -247,92 +250,6 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
     },
 
     /**
-     * Shows error message
-     *
-     * @private
-     */
-    _showErrorMessage: function () {
-        // Vars
-        var errorContainer = this.get('errorContainer'),
-            searchContent = this.get('searchContent'),
-            animation,
-            instance = this;
-
-        // If the error container is already in the document do nothing
-        if (!errorContainer.inDoc()) {
-
-            // Create an instance of animation
-            animation = new Y.Anim({
-                node: errorContainer,
-                duration: 0.2,
-                from: {opacity: 0},
-                to: {opacity: 1}
-            });
-
-            // Opacity needs to be set to zero otherwise there will
-            // be a weird blink effect
-            errorContainer.setStyle('opacity', 0);
-
-            // Attach click on resend button event
-            errorContainer.one('.resend-button').on('click', function (event) {
-                event.preventDefault();
-                instance._onRefreshButtonClick();
-            });
-
-            // Add the error to the container
-            searchContent.append(errorContainer);
-
-            // Run the effect animation
-            animation.run();
-        }
-
-        // It is possible that resend button was clicked thus it was transformed to the preloader.
-        // Remove the preloader class so it can be the resend button again.
-        errorContainer.one('.resend-button').removeClass('preloader');
-    },
-
-    /**
-     * Hides error message
-     *
-     * @private
-     */
-    _hideErrorMessage: function (animated) {
-        // Vars
-        var errorContainer = this.get('errorContainer'),
-            animation;
-
-        // Run the animation only if the error container is in DOM
-        if (errorContainer.inDoc()) {
-
-            // Animated
-            if (animated) {
-                // Create an instance of animation
-                animation = new Y.Anim({
-                    node: errorContainer,
-                    duration: 0.2,
-                    from: {opacity: 1},
-                    to: {opacity: 0}
-                });
-
-                // Listen to the end of the animation
-                animation.on('end', function () {
-                    // Remove the error node from DOM
-                    animation.get('node').remove();
-                });
-
-                // Run!
-                animation.run();
-            }
-            // Static
-            else {
-                // Simply remove the error node from DOM
-                errorContainer.remove();
-            }
-
-        }
-    },
-
-    /**
      * Called when the search input field is updated
      *
      * @private
@@ -358,6 +275,9 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
      * @private
      */
     _onSearchSuccess: function () {
+        // Vars
+        var errorView = this.get('errorView');
+
         // Hide the preloader
         this._hideActivityIndicator();
         // Hide info message
@@ -365,7 +285,7 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
         // Render incoming data
         this.render();
         // Hide error
-        this._hideErrorMessage(true);
+        errorView.hideErrorMessage(true);
     },
 
     /**
@@ -374,6 +294,9 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
      * @private
      */
     _onSearchError: function () {
+        // Vars
+        var errorView = this.get('errorView');
+
         // Hide the preloader
         this._hideActivityIndicator();
         // Render
@@ -381,25 +304,17 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
         // Hide info message
         this._hideNoResultsMessage();
         // Show error
-        this._showErrorMessage();
+        errorView.showErrorMessage(true);
     },
 
     /**
-     * Called when the user click on the refresh button in the error container
+     * Called when the user click on the refresh button in the error view
      *
      * @private
      */
-    _onRefreshButtonClick: function () {
-        // Vars
-        var refreshButtonNode = this.get('errorContainer').one('.resend-button');
-
-        // Prevent user to click on preloader more than once
-        if (!refreshButtonNode.hasClass('preloader')) {
-            // Add preloader to the resend button
-            refreshButtonNode.addClass('preloader');
-            // Search
-            this._search();
-        }
+    _onResendButtonClick: function () {
+        // Perform the search again
+        this._search();
     }
 
 }, {
@@ -473,13 +388,19 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
         },
 
         /**
-         * Error container node
+         * Error view with error message and resend button
          *
-         * {Node}
+         * {Y.LIMS.View.ErrorMessageView}
          */
-        errorContainer: {
+        errorView: {
             valueFn: function () {
-                return this.get('container').one('.error-container');
+                // Vars
+                var container = this.get('searchContent');
+                // Create view
+                return new Y.LIMS.View.ErrorMessageView({
+                    container: container,
+                    errorMessage: Y.LIMS.Core.i18n.values.searchErrorMessage
+                });
             }
         },
 

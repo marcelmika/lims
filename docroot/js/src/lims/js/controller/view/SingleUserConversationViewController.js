@@ -219,7 +219,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             var createErrorView = this.get('conversationCreateErrorView');
 
             // Show error message
-            createErrorView.showErrorMessage();
+            createErrorView.showErrorMessage(true);
             // Hide preloader
             this._hideActivityIndicator();
         },
@@ -248,8 +248,8 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
                 readErrorView = this.get('conversationReadErrorView');
 
             // Hide error messages if there were any
-            createErrorView.hideErrorMessage();
-            readErrorView.hideErrorMessage();
+            createErrorView.hideErrorMessage(true);
+            readErrorView.hideErrorMessage(true);
             // Show the panel input so the user can post messages
             this._showPanelInput();
         },
@@ -266,9 +266,9 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             // Hide preloader
             this._hideActivityIndicator();
             // Hide create error message if there is any
-            createErrorView.hideErrorMessage();
+            createErrorView.hideErrorMessage(true);
             // Show read error message
-            readErrorView.showErrorMessage();
+            readErrorView.showErrorMessage(true);
             // Hide the panel input. We don't want users to post any messages now
             this._hidePanelInput();
         },

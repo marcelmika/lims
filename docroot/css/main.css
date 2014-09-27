@@ -487,6 +487,11 @@
     margin: 0;
 }
 
+.liferay-ims .panel-search .error-notification {
+    /* Move the error notification view a bit up since there is a search input that takes the place */
+    margin-top: 10%;
+}
+
 .liferay-ims .panel-search .info-container {
     padding-top: 15px;
 }
@@ -507,49 +512,6 @@
     float: left;
 }
 
-.liferay-ims .panel-search .error-container {
-    margin: 0 9px;
-    top: 50px;
-    position: absolute;
-    width: 232px;
-}
-
-.liferay-ims .panel-search .error-container .warning-icon {
-    background: transparent url(../images/icon-warning-red.png) no-repeat center center;
-    width: 14px;
-    height: 16px;
-    margin: 7px 7px 0 0;
-    float: left;
-}
-
-.liferay-ims .panel-search .error-container .error-message {
-    color: #ce1b1b;
-    max-width: 174px;
-    float: left;
-    line-height: 13px;
-    font-size: 11px;
-    text-align: justify;
-}
-
-.liferay-ims .panel-search .error-container .resend-button {
-    background: transparent url(../images/icon-resend.png) no-repeat center center;
-    width: 21px;
-    height: 21px;
-    float: right;
-    padding-right: 4px;
-    margin-top: 4px;
-}
-
-.liferay-ims .panel-search .error-container .resend-button.preloader {
-    position: relative;
-    right: 0;
-    top: 0;
-    background: url(../images/preloader-light.gif) center center no-repeat;
-    height: 21px;
-    width: 21px;
-    background-size: 21px;
-}
-
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
 
     .liferay-ims .panel-search .search-input-field,
@@ -566,16 +528,6 @@
 
     .liferay-ims .panel-search .preloader {
         background-size: auto 17px;
-    }
-
-    .liferay-ims .panel-search .error-container .warning-icon {
-        background-image: url(../images/icon-warning-red@2x.png);
-        background-size: auto 16px;
-    }
-
-    .liferay-ims .panel-search .error-container .resend-button {
-        background-image: url(../images/icon-resend@2x.png);
-        background-size: auto 21px;
     }
 }
 
@@ -702,7 +654,6 @@
     position: absolute;
 }
 
-
 /************************************************************************************
 /  ERROR NOTIFICATION
 /************************************************************************************/
@@ -739,11 +690,14 @@
     margin-top: 5px;
 }
 
-.liferay-ims .error-notification .resend-button.preloader {
+.liferay-ims .error-notification .resend-button.activated {
     position: relative;
-    margin: 0;
+    margin: 5px 0 0;
+    text-align: center;
     background: transparent url(../images/preloader-light.gif) center center no-repeat;
     background-size: 21px;
+    width: 21px;
+    height: 21px;
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
@@ -754,6 +708,11 @@
 
     .liferay-ims .error-notification .resend-button {
         background-image: url(../images/icon-resend@2x.png);
+        background-size: auto 21px;
+    }
+
+    .liferay-ims .error-notification .resend-button.activated {
+        background-image: url(../images/preloader-light@2x.gif);
         background-size: auto 21px;
     }
 }

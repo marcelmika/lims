@@ -39,9 +39,9 @@ Y.LIMS.View.ErrorMessageView = Y.Base.create('errorMessageView', Y.View, [], {
     /**
      * Shows create error message
      *
-     * @private
+     * @param animated true if the event should be animated
      */
-    showErrorMessage: function () {
+    showErrorMessage: function (animated) {
         // Vars
         var errorContainer = this.get('errorContainer'),
             resendButton = this.get('resendButton'),
@@ -52,49 +52,57 @@ Y.LIMS.View.ErrorMessageView = Y.Base.create('errorMessageView', Y.View, [], {
         // If the error container is already in the document do nothing
         if (!errorContainer.inDoc()) {
 
-            // Create an instance of animation
-            animation = new Y.Anim({
-                node: errorContainer,
-                duration: 0.3,
-                from: {opacity: 0},
-                to: {opacity: 1}
-            });
-
-            // Opacity needs to be set to zero otherwise there wil
-            // be a weird blink effect
-            errorContainer.setStyle('opacity', 0);
-
             // Attach click on resend button event
             errorContainer.one('.resend-button').on('click', function (event) {
                 event.preventDefault();
 
-                // Prevent user to click on preloader more than once
-                if (!resendButton.hasClass('preloader')) {
-                    // Add preloader to the resend button
-                    resendButton.addClass('preloader');
+                // Prevent user to click on already activated button more than once
+                if (!resendButton.hasClass('activated')) {
+                    // Add activated class to the resend button
+                    resendButton.addClass('activated');
                     // Fire click event
                     instance.fire('resendButtonClick');
                 }
             });
 
-            // Add error to the container
-            container.append(errorContainer);
+            // Remove event should be animated
+            if (animated) {
+                // Create an instance of animation
+                animation = new Y.Anim({
+                    node: errorContainer,
+                    duration: 0.3,
+                    from: {opacity: 0},
+                    to: {opacity: 1}
+                });
 
-            // Run the effect animation
-            animation.run();
+                // Opacity needs to be set to zero otherwise there wil
+                // be a weird blink effect
+                errorContainer.setStyle('opacity', 0);
+
+                // Add error to the container
+                container.append(errorContainer);
+
+                // Run the effect animation
+                animation.run();
+            }
+            // Don't animate the remove event
+            else {
+                // Simply add it to the container
+                container.append(errorContainer);
+            }
         }
 
-        // It is possible that resend button was clicked thus it was transformed to the preloader.
-        // Remove the preloader class so it can be the resend button again.
-        errorContainer.one('.resend-button').removeClass('preloader');
+        // It is possible that resend button was clicked thus it was transformed to the activated state.
+        // Remove the activated class so it can be the resend button again.
+        errorContainer.one('.resend-button').removeClass('activated');
     },
 
     /**
      * Hides create error message
      *
-     * @private
+     * @param animated true if the event should be animated
      */
-    hideErrorMessage: function () {
+    hideErrorMessage: function (animated) {
         // Vars
         var errorContainer = this.get('errorContainer'),
             animation;
@@ -102,22 +110,31 @@ Y.LIMS.View.ErrorMessageView = Y.Base.create('errorMessageView', Y.View, [], {
         // Run the animation only if the error container is in DOM
         if (errorContainer.inDoc()) {
 
-            // Create an instance of animation
-            animation = new Y.Anim({
-                node: errorContainer,
-                duration: 0.3,
-                from: {opacity: 1},
-                to: {opacity: 0}
-            });
+            // Animate the event
+            if (animated) {
 
-            // Listen to the end of the animation
-            animation.on('end', function () {
-                // Remove the error node from DOM
-                animation.get('node').remove();
-            });
+                // Create an instance of animation
+                animation = new Y.Anim({
+                    node: errorContainer,
+                    duration: 0.3,
+                    from: {opacity: 1},
+                    to: {opacity: 0}
+                });
 
-            // Run the animation
-            animation.run();
+                // Listen to the end of the animation
+                animation.on('end', function () {
+                    // Remove the error node from DOM
+                    animation.get('node').remove();
+                });
+
+                // Run the animation
+                animation.run();
+            }
+            // Event shouldn't be animated
+            else {
+                // Simply remove the container from DOM
+                errorContainer.remove();
+            }
         }
     }
 

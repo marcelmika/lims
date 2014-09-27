@@ -61,17 +61,6 @@
     </div>
 </script>
 
-<%-- This template HTML will be used to render error notification --%>
-<script type="text/x-template" id="lims-error-notification-template">
-    <div class="error-notification">
-        <div class="warning-icon"></div>
-        <div class="error-message">{errorMessage}</div>
-        <button class="resend-button"
-                title="<liferay-ui:message key="panel-error-notification-resend-title" />"></button>
-        <div class="clear"></div>
-    </div>
-</script>
-
 <%-- This template HTML will be used to render each conversation item (i.e. message). --%>
 <script type="text/x-template" id="lims-conversation-item-template">
     <div class="conversation-item-portrait">{portrait}</div>
@@ -83,19 +72,6 @@
         <div class="clear"></div>
     </div>
     <div class="clear"></div>
-</script>
-
-<%-- This template HTML will be used to render error under message --%>
-<script type="text/x-template" id="lims-conversation-item-error-template">
-    <div class="conversation-item-error">
-        <div class="warning-icon"></div>
-        <div class="error-message"><liferay-ui:message key="panel-conversation-message-error-text"/></div>
-        <button class="delete-button"
-                title="<liferay-ui:message key="panel-conversation-message-error-delete-title" />"></button>
-        <button class="resend-button"
-                title="<liferay-ui:message key="panel-conversation-message-error-resend-title" />"></button>
-        <div class="clear"></div>
-    </div>
 </script>
 
 <%-- This template HTML will be used to render info in group list --%>
@@ -115,19 +91,10 @@
     </audio>
 </script>
 
-<%-- This template HTML will be used as a error notification in panel --%>
-<script type="text/x-template" id="lims-panel-error-template">
-    <div class="panel-error">
-        <div class="warning-icon"></div>
-        <div class="error-message"></div>
-    </div>
-</script>
-
 <%-- This template HTML will be used as a panel search template --%>
 <script type="text/x-template" id="lims-panel-search-template">
     <div class="panel-search">
         <input class="search-input-field" type="text" value=""/>
-
         <div class="search-content">
             <div class="info-container">
                 <div class="info-icon"></div>
@@ -135,16 +102,41 @@
                     <liferay-ui:message key="panel-search-info-text"/>
                 </div>
             </div>
-            <div class="error-container">
-                <div class="warning-icon"></div>
-                <div class="error-message">
-                    <liferay-ui:message key="panel-search-error-text"/>
-                </div>
-                <button class="resend-button"
-                        title="<liferay-ui:message key="panel-search-refresh-title" />"></button>
-            </div>
             <div class="preloader"></div>
             <ul class="group-buddy-list"></ul>
         </div>
+    </div>
+</script>
+
+
+<%-- This template HTML will be used to render error notification (the red one) --%>
+<script type="text/x-template" id="lims-error-notification-template">
+    <div class="error-notification">
+        <div class="warning-icon"></div>
+        <div class="error-message">{errorMessage}</div>
+        <button class="resend-button"
+                title="<liferay-ui:message key="panel-error-notification-resend-title" />"></button>
+        <div class="clear"></div>
+    </div>
+</script>
+
+<%-- This template HTML will be used as a error notification in panel (the black one) --%>
+<script type="text/x-template" id="lims-panel-error-template">
+    <div class="panel-error">
+        <div class="warning-icon"></div>
+        <div class="error-message"></div>
+    </div>
+</script>
+
+<%-- This template HTML will be used to render error under message (the red one with delete button) --%>
+<script type="text/x-template" id="lims-conversation-item-error-template">
+    <div class="conversation-item-error">
+        <div class="warning-icon"></div>
+        <div class="error-message"><liferay-ui:message key="panel-conversation-message-error-text"/></div>
+        <button class="delete-button"
+                title="<liferay-ui:message key="panel-conversation-message-error-delete-title" />"></button>
+        <button class="resend-button"
+                title="<liferay-ui:message key="panel-conversation-message-error-resend-title" />"></button>
+        <div class="clear"></div>
     </div>
 </script>

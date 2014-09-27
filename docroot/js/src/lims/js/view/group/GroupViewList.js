@@ -83,7 +83,7 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
             model = this.get('model');
 
         // If there was any error, hide it
-        errorView.hideErrorMessage();
+        errorView.hideErrorMessage(true);
 
         if (model.isEmpty()) {
             this._showEmptyInfo();
@@ -115,7 +115,7 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         // Hide info about empty groups
         this._hideEmptyInfo();
         // Show error
-        errorView.showErrorMessage();
+        errorView.showErrorMessage(true);
     },
 
     /**
