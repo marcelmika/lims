@@ -66,8 +66,8 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
         var container = this.get('container'),      // Container that holds the view
             model = this.get('model'),              // Message model
             from = model.get('from'),               // Creator of the message
-            formatter = this.get('dateFormatter'),  // Prettify date formatter
-            instance = this;                        // Save instance
+            formatter = this.get('dateFormatter');  // Prettify date formatter
+
 
         // Fill data from model to template and set it to container
         container.set('innerHTML', Y.Lang.sub(this.template, {
@@ -79,15 +79,38 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
             })
         );
 
+        // Set date node
+        this.set('dateNode', container.one('.conversation-item-date'));
+
+        // Add subviews to the view
+        this._addSubviews();
+
+        return this;
+    },
+
+    /**
+     * Adds additional subviews like error message to the already rendered view
+     *
+     * @private
+     */
+    _addSubviews: function () {
+
+        // Vars
+        var container = this.get('container'),      // Container that holds the view
+            model = this.get('model'),              // Message model,
+            errorContainer = this.get('errorContainer'),
+            instance = this;
+
         // If the message is already acknowledged don't dim it
         if (model.get('acknowledged') === true) {
             this._brightMessageText(false);
         }
 
-        // Add error node if needed
+        // Add error container node if needed
         if (model.get('error') === true) {
+            errorContainer = Y.Node.create(Y.Lang.sub(this.errorTemplate));
             // Create error node from template and add it to the container
-            container.append(Y.Lang.sub(this.errorTemplate));
+            container.append(errorContainer);
 
             // Attach click on delete button event
             container.one('.delete-button').on('click', function (event) {
@@ -99,12 +122,16 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
                 event.preventDefault();
                 instance._onResendButtonClick();
             });
+
+            this.set('errorContainer', errorContainer);
         }
 
-        // Set date node
-        this.set('dateNode', container.one('.conversation-item-date'));
-
-        return this;
+        // It is possible that addSubviews was called many times, thus if there
+        // is no error anymore and error container is still in DOM we
+        // need to remove it
+        if (model.get('error') === false && errorContainer !== null) {
+            errorContainer.remove();
+        }
     },
 
     /**
@@ -180,8 +207,8 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
             // Animate the message
             animation = new Y.Anim({
                 node: messageText,
-                duration: 0.5,
-                from: {opacity: 0.5},
+                duration: 0.1,
+                from: {opacity: 0.6},
                 to: {opacity: 1}
             });
             // Run the animation
@@ -208,7 +235,7 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
      * @private
      */
     _onMessageSent: function () {
-        this.render();
+        this._addSubviews();
         this._brightMessageText(true);
     },
 
@@ -218,8 +245,8 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
      * @private
      */
     _onMessageError: function () {
-        this.render();
-        this._brightMessageText(true);
+        this._addSubviews();
+        this._dimMessageText();
     },
 
     /**
@@ -281,7 +308,7 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
         /**
          * Container that holds the message
          *
-         * {node}
+         * {Node}
          */
         container: {
             valueFn: function () {
@@ -293,7 +320,7 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
         /**
          * Node that contains date
          *
-         * {node}
+         * {Node}
          */
         dateNode: {
             value: null
@@ -317,6 +344,15 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
             valueFn: function () {
                 return new Y.LIMS.Core.DateFormatter();
             }
+        },
+
+        /**
+         * Error container node
+         *
+         * {Node}
+         */
+        errorContainer: {
+            value: null // will be set if needed
         }
     }
 });
