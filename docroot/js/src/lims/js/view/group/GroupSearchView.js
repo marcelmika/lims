@@ -390,14 +390,14 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
         /**
          * Error view with error message and resend button
          *
-         * {Y.LIMS.View.ErrorMessageView}
+         * {Y.LIMS.View.ErrorNotificationView}
          */
         errorView: {
             valueFn: function () {
                 // Vars
                 var container = this.get('searchContent');
                 // Create view
-                return new Y.LIMS.View.ErrorMessageView({
+                return new Y.LIMS.View.ErrorNotificationView({
                     container: container,
                     errorMessage: Y.LIMS.Core.i18n.values.searchErrorMessage
                 });

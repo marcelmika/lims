@@ -556,14 +556,14 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             /**
              * Conversation create error view
              *
-             * {Y.LIMS.View.ErrorMessageView}
+             * {Y.LIMS.View.ErrorNotificationView}
              */
             conversationCreateErrorView: {
                 valueFn: function () {
                     // Vars
                     var container = this.get('panelContent');
                     // Create view
-                    return new Y.LIMS.View.ErrorMessageView({
+                    return new Y.LIMS.View.ErrorNotificationView({
                         container: container,
                         errorMessage: Y.LIMS.Core.i18n.values.conversationCreateErrorMessage
                     });
@@ -573,14 +573,14 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             /**
              * Conversation read error view
              *
-             * {Y.LIMS.View.ErrorMessageView}
+             * {Y.LIMS.View.ErrorNotificationView}
              */
             conversationReadErrorView: {
                 valueFn: function () {
                     // Vars
                     var container = this.get('panelContent');
                     // Create view
-                    return new Y.LIMS.View.ErrorMessageView({
+                    return new Y.LIMS.View.ErrorNotificationView({
                         container: container,
                         errorMessage: Y.LIMS.Core.i18n.values.conversationReadErrorMessage
                     });

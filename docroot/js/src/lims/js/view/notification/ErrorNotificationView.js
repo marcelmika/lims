@@ -23,13 +23,13 @@
  */
 
 /**
- * Presence View
+ * Error notification view
  *
- * The class extends Y.View. It represents the view for buddy presence
+ * The class extends Y.View. It represents a view that holds error message and a resend button
  */
 Y.namespace('LIMS.View');
 
-Y.LIMS.View.ErrorMessageView = Y.Base.create('errorMessageView', Y.View, [], {
+Y.LIMS.View.ErrorNotificationView = Y.Base.create('errorNotificationView', Y.View, [], {
 
     // The template property holds the contents of the #lims-error-notification-template
     // element, which will be used as the HTML template for error notifications
@@ -75,14 +75,14 @@ Y.LIMS.View.ErrorMessageView = Y.Base.create('errorMessageView', Y.View, [], {
                     to: {opacity: 1}
                 });
 
-                // Opacity needs to be set to zero otherwise there wil
+                // Opacity needs to be set to zero otherwise there will
                 // be a weird blink effect
                 errorContainer.setStyle('opacity', 0);
 
                 // Add error to the container
                 container.append(errorContainer);
 
-                // Run the effect animation
+                // Run the animation
                 animation.run();
             }
             // Don't animate the remove event
@@ -107,7 +107,7 @@ Y.LIMS.View.ErrorMessageView = Y.Base.create('errorMessageView', Y.View, [], {
         var errorContainer = this.get('errorContainer'),
             animation;
 
-        // Run the animation only if the error container is in DOM
+        // Hide the error message only if the error container is in DOM
         if (errorContainer.inDoc()) {
 
             // Animate the event
@@ -130,7 +130,7 @@ Y.LIMS.View.ErrorMessageView = Y.Base.create('errorMessageView', Y.View, [], {
                 // Run the animation
                 animation.run();
             }
-            // Event shouldn't be animated
+            // Don't animate the event
             else {
                 // Simply remove the container from DOM
                 errorContainer.remove();

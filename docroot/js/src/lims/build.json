@@ -52,7 +52,7 @@
                 "js/view/ViewExtension.js",
                 "js/view/conversation/ConversationItemView.js",
                 "js/view/conversation/ConversationListView.js",
-                "js/view/error/ErrorMessageView.js",
+                "js/view/notification/ErrorNotificationView.js",
                 "js/view/group/GroupBuddyViewItem.js",
                 "js/view/group/GroupBuddyViewList.js",
                 "js/view/group/GroupSearchView.js",
