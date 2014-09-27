@@ -193,8 +193,10 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          * @private
          */
         _onConversationCreateBegin: function () {
+            // Vars
+            var listView = this.get('listView');
             // Hide the panel input. We don't want users to post any messages now
-            this._hidePanelInput();
+            listView.hideView();
         },
 
         /**
@@ -245,13 +247,14 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         _onConversationReadSuccess: function () {
             // Vars
             var createErrorView = this.get('conversationCreateErrorView'),
-                readErrorView = this.get('conversationReadErrorView');
+                readErrorView = this.get('conversationReadErrorView'),
+                listView = this.get('listView');
 
             // Hide error messages if there were any
             createErrorView.hideErrorMessage(true);
             readErrorView.hideErrorMessage(true);
             // Show the panel input so the user can post messages
-            this._showPanelInput();
+            listView.showView();
         },
 
         /**
@@ -261,7 +264,8 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         _onConversationReadError: function () {
             // Vars
             var createErrorView = this.get('conversationCreateErrorView'),
-                readErrorView = this.get('conversationReadErrorView');
+                readErrorView = this.get('conversationReadErrorView'),
+                listView = this.get('listView');
 
             // Hide preloader
             this._hideActivityIndicator();
@@ -270,7 +274,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             // Show read error message
             readErrorView.showErrorMessage(true);
             // Hide the panel input. We don't want users to post any messages now
-            this._hidePanelInput();
+            listView.hideView();
         },
 
         /**
@@ -293,7 +297,8 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          */
         _onConversationUpdated: function () {
             // Vars
-            var unreadMessagesCount = this.get('model').get('unreadMessagesCount');
+            var unreadMessagesCount = this.get('model').get('unreadMessagesCount'),
+                listView = this.get('listView');
 
             // No unread messages
             if (unreadMessagesCount === 0) {
@@ -307,7 +312,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             this._updateBadge(unreadMessagesCount);
 
             // Show the panel input so the users can post messages
-            this._showPanelInput();
+            listView.showView();
         },
 
         /**
@@ -425,32 +430,6 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
 
             // Hide preloader
             activityIndicator.hide();
-        },
-
-        /**
-         * Shows panel input
-         *
-         * @private
-         */
-        _showPanelInput: function () {
-            var panelInput = this.get('panelInput');
-            // Set the opacity only. We don't want to show/hide the panel by calling
-            // the show() or hide() method since this will remove it from the visible
-            // are and brake the panel size. Thus we only manipulate the opacity
-            panelInput.setStyle('opacity', 1);
-        },
-
-        /**
-         * Hides panel input
-         *
-         * @private
-         */
-        _hidePanelInput: function () {
-            var panelInput = this.get('panelInput');
-            // Set the opacity only. We don't want to show/hide the panel by calling
-            // the show() or hide() method since this will remove it from the visible
-            // are and brake the panel size. Thus we only manipulate the opacity
-            panelInput.setStyle('opacity', 0);
         }
 
     }, {
@@ -528,17 +507,6 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             panelContent: {
                 valueFn: function () {
                     return this.get('container').one('.panel-content');
-                }
-            },
-
-            /**
-             * Panel input node that holds message text field
-             *
-             * {Node}
-             */
-            panelInput: {
-                valueFn: function () {
-                    return this.get('container').one('.panel-input');
                 }
             },
 

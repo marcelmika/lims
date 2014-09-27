@@ -87,6 +87,32 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     },
 
     /**
+     * Shows view
+     */
+    showView: function () {
+        var panelInput = this.get('panelInput');
+        // Set the opacity only. We don't want to show/hide the panel by calling
+        // the show() or hide() method since this will remove it from the visible
+        // are and brake the panel size. Thus we only manipulate the opacity
+        panelInput.setStyle('opacity', 1);
+        // Show list view again
+        this._showListView(true);
+    },
+
+    /**
+     * Hides view
+     */
+    hideView: function () {
+        var panelInput = this.get('panelInput');
+        // Set the opacity only. We don't want to show/hide the panel by calling
+        // the show() or hide() method since this will remove it from the visible
+        // are and brake the panel size. Thus we only manipulate the opacity
+        panelInput.setStyle('opacity', 0);
+        // Hide list view too
+        this._hideListView();
+    },
+
+    /**
      * Attaches listener to elements
      *
      * @private
@@ -441,6 +467,17 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         messageTextField: {
             valueFn: function () {
                 return this.get('container').one('.panel-input textarea');
+            }
+        },
+
+        /**
+         * Panel input node that holds message text field
+         *
+         * {Node}
+         */
+        panelInput: {
+            valueFn: function () {
+                return this.get('container').one('.panel-input');
             }
         },
 
