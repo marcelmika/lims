@@ -95,6 +95,9 @@ Y.LIMS.View.ErrorNotificationView = Y.Base.create('errorNotificationView', Y.Vie
         // It is possible that resend button was clicked thus it was transformed to the activated state.
         // Remove the activated class so it can be the resend button again.
         errorContainer.one('.resend-button').removeClass('activated');
+
+        // Set layout based on the content
+        this.layoutSubviews();
     },
 
     /**
@@ -136,11 +139,31 @@ Y.LIMS.View.ErrorNotificationView = Y.Base.create('errorNotificationView', Y.Vie
                 errorContainer.remove();
             }
         }
+    },
+
+    /**
+     * Counts and sets layout of subviews
+     */
+    layoutSubviews: function () {
+        // Vars
+        var errorContainer = this.get('errorContainer'),
+            errorMessageContainer = this.get('errorMessageContainer'),
+            marginTop;
+
+        // Reset margin
+        errorMessageContainer.setStyle('margin-top', 0);
+        // Count centered vertical position
+        marginTop = errorContainer.get('clientHeight') / 2 - errorMessageContainer.get('clientHeight');
+        // Set new margin
+        errorMessageContainer.setStyle('margin-top', marginTop);
     }
 
 }, {
 
-    // Specify attributes and static properties for your View here.
+    // Add custom model attributes here. These attributes will contain your
+    // model's data. See the docs for Y.Attribute to learn more about defining
+    // attributes.
+
     ATTRS: {
 
         /**
@@ -149,6 +172,15 @@ Y.LIMS.View.ErrorNotificationView = Y.Base.create('errorNotificationView', Y.Vie
          * {Node}
          */
         container: {
+            value: null // to be set
+        },
+
+        /**
+         * Error message
+         *
+         * {string}
+         */
+        errorMessage: {
             value: null // to be set
         },
 
@@ -169,6 +201,17 @@ Y.LIMS.View.ErrorNotificationView = Y.Base.create('errorNotificationView', Y.Vie
         },
 
         /**
+         * Error message container that holds error message
+         *
+         * {Node}
+         */
+        errorMessageContainer: {
+            valueFn: function () {
+                return this.get('errorContainer').one('.error-message');
+            }
+        },
+
+        /**
          * Resend button node
          *
          * {Node}
@@ -177,15 +220,6 @@ Y.LIMS.View.ErrorNotificationView = Y.Base.create('errorNotificationView', Y.Vie
             valueFn: function () {
                 return this.get('errorContainer').one('.resend-button');
             }
-        },
-
-        /**
-         * Error message
-         *
-         * {string}
-         */
-        errorMessage: {
-            value: null // to be set
         }
     }
 });
