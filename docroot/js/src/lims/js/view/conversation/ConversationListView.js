@@ -96,7 +96,7 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         // are and brake the panel size. Thus we only manipulate the opacity
         panelInput.setStyle('opacity', 1);
         // Show list view again
-        this._showListView(true);
+        this._showListView();
     },
 
     /**
