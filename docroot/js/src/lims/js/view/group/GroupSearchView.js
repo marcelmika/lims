@@ -99,6 +99,7 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
             this._showNoResultsMessage();
         } else {
             this._hideNoResultsMessage();
+            this._hideInfoMessage();
         }
 
         return this;
