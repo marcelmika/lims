@@ -75,6 +75,9 @@ Y.LIMS.View.InfoNotificationView = Y.Base.create('infoNotificationView', Y.View,
                 // Simply add it to the container
                 container.append(infoContainer);
             }
+
+            // Set layout based on the content
+            this.layoutSubviews();
         }
     },
 
@@ -117,12 +120,31 @@ Y.LIMS.View.InfoNotificationView = Y.Base.create('infoNotificationView', Y.View,
                 infoContainer.remove();
             }
         }
-    }
+    },
 
+    /**
+     * Counts and sets layout of subviews
+     */
+    layoutSubviews: function () {
+        // Vars
+        var infoContainer = this.get('infoContainer'),
+            infoMessageContainer = this.get('infoMessageContainer'),
+            marginTop;
+
+        // Reset margin
+        infoMessageContainer.setStyle('margin-top', 0);
+        // Count centered vertical position
+        marginTop = infoContainer.get('clientHeight') / 2 - infoMessageContainer.get('clientHeight');
+        // Set new margin
+        infoMessageContainer.setStyle('margin-top', marginTop);
+    }
 
 }, {
 
-    // Specify attributes and static properties for your View here.
+    // Add custom model attributes here. These attributes will contain your
+    // model's data. See the docs for Y.Attribute to learn more about defining
+    // attributes.
+
     ATTRS: {
 
         /**
@@ -156,6 +178,17 @@ Y.LIMS.View.InfoNotificationView = Y.Base.create('infoNotificationView', Y.View,
                 return Y.Node.create(Y.Lang.sub(this.infoTemplate, {
                     infoMessage: infoMessage
                 }));
+            }
+        },
+
+        /**
+         * Info message container that holds info message
+         *
+         * {Node}
+         */
+        infoMessageContainer: {
+            valueFn: function () {
+                return this.get('infoContainer').one('.info-message');
             }
         }
     }

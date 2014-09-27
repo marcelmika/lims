@@ -88,12 +88,6 @@
         <input class="search-input-field" type="text" value=""/>
 
         <div class="search-content">
-            <div class="info-container">
-                <div class="info-icon"></div>
-                <div class="info-message">
-                    <liferay-ui:message key="panel-search-info-text"/>
-                </div>
-            </div>
             <div class="preloader"></div>
             <ul class="group-buddy-list"></ul>
         </div>

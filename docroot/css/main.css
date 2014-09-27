@@ -487,29 +487,10 @@
     margin: 0;
 }
 
-.liferay-ims .panel-search .error-notification {
-    /* Move the error notification view a bit up since there is a search input that takes the place */
+.liferay-ims .panel-search .error-notification,
+.liferay-ims .panel-search .info-notification {
+    /* Move the notification views a bit up since there is a search input that takes the place */
     margin-top: 10%;
-}
-
-.liferay-ims .panel-search .info-container {
-    padding-top: 15px;
-}
-
-.liferay-ims .panel-search .info-container .info-message {
-    line-height: 13px;
-    padding: 5px 15px;
-    font-size: 12px;
-    color: #7e7e7e;
-    margin: 4px 10px 0 24px;
-}
-
-.liferay-ims .panel-search .info-container .info-icon {
-    background: transparent url(../images/icon-info-blue.png) no-repeat center center;
-    width: 18px;
-    height: 18px;
-    margin: 6px 2px 0 15px;
-    float: left;
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
@@ -519,11 +500,6 @@
     .liferay-ims .panel-search .search-input-field:focus {
         background-image: url(../images/search-button@2x.png);
         background-size: auto 13px;
-    }
-
-    .liferay-ims .panel-search .info-container .info-icon {
-        background-image: url(../images/icon-info-blue@2x.png);
-        background-size: auto 18px;
     }
 
     .liferay-ims .panel-search .preloader {
@@ -1167,7 +1143,7 @@
     max-width: 170px;
     float: left;
     line-height: 13px;
-    font-size: 11px;
+    font-size: 12px;
     text-align: justify;
 }
 
@@ -1221,13 +1197,14 @@
     background: transparent url(../images/icon-info-blue.png) no-repeat center center;
     width: 18px;
     height: 18px;
-    margin: 7px 10px 0 5px;
+    margin: 0 10px 0 5px;
     float: left;
 }
 
 .liferay-ims .info-notification .info-message {
     color: #7e7e7e;
     max-width: 190px;
+    min-height: 18px;
     float: left;
     line-height: 13px;
     font-size: 12px;

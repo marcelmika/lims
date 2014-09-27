@@ -197,14 +197,11 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
      */
     _showInfoMessage: function () {
         // Vars
-        var infoContainer = this.get('infoContainer'),
-            infoMessage = this.get('infoMessage');
-
-        // Set the message
-        infoMessage.set('innerHTML', Y.LIMS.Core.i18n.values.searchInfoMessage);
-
-        // Show info
-        infoContainer.show();
+        var infoView = this.get('infoView'),
+            infoNoResultsView = this.get('infoNoResultsView');
+        // Show info view
+        infoView.showInfoMessage(false);
+        infoNoResultsView.hideInfoMessage(false);
     },
 
     /**
@@ -214,9 +211,9 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
      */
     _hideInfoMessage: function () {
         // Vars
-        var infoContainer = this.get('infoContainer');
-        // Hide info
-        infoContainer.hide();
+        var infoView = this.get('infoView');
+        // Hide info view
+        infoView.hideInfoMessage(false);
     },
 
     /**
@@ -226,15 +223,11 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
      */
     _showNoResultsMessage: function () {
         // Vars
-        var infoContainer = this.get('infoContainer'),
-            infoMessage = this.get('infoMessage');
-
-        // Set the message
-        infoMessage.set('innerHTML', ''); // This needs to be here otherwise the content is not refreshed on retina
-        infoMessage.set('innerHTML', Y.LIMS.Core.i18n.values.searchNoResultsMessage);
-
-        // Show info
-        infoContainer.show();
+        var infoNoResultsView = this.get('infoNoResultsView'),
+            infoView = this.get('infoView');
+        // Show info view
+        infoNoResultsView.showInfoMessage(false);
+        infoView.hideInfoMessage(false);
     },
 
     /**
@@ -244,9 +237,9 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
      */
     _hideNoResultsMessage: function () {
         // Vars
-        var infoContainer = this.get('infoContainer');
+        var infoNoResultsView = this.get('infoNoResultsView');
         // Hide info
-        infoContainer.hide();
+        infoNoResultsView.hideInfoMessage(false);
     },
 
     /**
@@ -366,28 +359,6 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
         },
 
         /**
-         * Info container node
-         *
-         * {Node}
-         */
-        infoContainer: {
-            valueFn: function () {
-                return this.get('container').one('.info-container');
-            }
-        },
-
-        /**
-         * Info message node in info container
-         *
-         * {Node}
-         */
-        infoMessage: {
-            valueFn: function () {
-                return this.get('infoContainer').one('.info-message');
-            }
-        },
-
-        /**
          * Error view with error message and resend button
          *
          * {Y.LIMS.View.ErrorNotificationView}
@@ -400,6 +371,40 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
                 return new Y.LIMS.View.ErrorNotificationView({
                     container: container,
                     errorMessage: Y.LIMS.Core.i18n.values.searchErrorMessage
+                });
+            }
+        },
+
+        /**
+         * Info view with info message
+         *
+         * {Y.LIMS.View.InfoNotificationView}
+         */
+        infoView: {
+            valueFn: function () {
+                // Vars
+                var container = this.get('searchContent');
+                // Create view
+                return new Y.LIMS.View.InfoNotificationView({
+                    container: container,
+                    infoMessage: Y.LIMS.Core.i18n.values.searchInfoMessage
+                });
+            }
+        },
+
+        /**
+         * Info view with an info message about no results
+         *
+         * {Y.LIMS.View.InfoNotificationView}
+         */
+        infoNoResultsView: {
+            valueFn: function () {
+                // Vars
+                var container = this.get('searchContent');
+                // Create view
+                return new Y.LIMS.View.InfoNotificationView({
+                    container: container,
+                    infoMessage: Y.LIMS.Core.i18n.values.searchNoResultsMessage
                 });
             }
         },
