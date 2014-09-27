@@ -34,11 +34,6 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
     // Specify a model to associate with the view.
     model: Y.LIMS.Model.GroupModelList,
 
-    // The template property holds the contents of the #lims-group-list-error-template
-    // element, which will be used as the HTML template for an error message
-    // Check the templates.jspf to see all templates
-    errorTemplate: Y.one('#lims-group-list-error-template').get('innerHTML'),
-
     // The template property holds the contents of the #lims-group-list-info-template
     // element, which will be used as the HTML template for an info message
     // Check the templates.jspf to see all templates
@@ -63,13 +58,15 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
      * @private
      */
     _attachEvents: function () {
-        var model = this.get('model');
+        var model = this.get('model'),
+            errorView = this.get('errorView');
 
         // Local events
         model.after('add', this._onGroupAdd, this);
         model.after('reset', this._onGroupReset, this);
         model.after('groupsReadSuccess', this._onGroupsReadSuccess, this);
         model.after('groupsReadError', this._onGroupsReadError, this);
+        errorView.on('resendButtonClick', this._onResendButtonClick, this);
     },
 
 
@@ -82,10 +79,11 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
 
         // Vars
         var activityIndicator = this.get('activityIndicator'),
+            errorView = this.get('errorView'),
             model = this.get('model');
 
         // If there was any error, hide it
-        this._hideError();
+        errorView.hideErrorMessage();
 
         if (model.isEmpty()) {
             this._showEmptyInfo();
@@ -107,7 +105,8 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
      */
     _onGroupsReadError: function () {
         // Vars
-        var activityIndicator = this.get('activityIndicator');
+        var activityIndicator = this.get('activityIndicator'),
+            errorView = this.get('errorView');
 
         // Hide indicator
         activityIndicator.hide();
@@ -116,7 +115,7 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         // Hide info about empty groups
         this._hideEmptyInfo();
         // Show error
-        this._showError();
+        errorView.showErrorMessage();
     },
 
     /**
@@ -148,6 +147,18 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         groupView.render();
         // Add it to group list
         groupList.append(groupView.get('container'));
+    },
+
+    /**
+     * Called when the user click on the resend button within the error message view
+     *
+     * @private
+     */
+    _onResendButtonClick: function () {
+        // Vars
+        var model = this.get('model');
+        // Try to load the model data again
+        model.load();
     },
 
     /**
@@ -273,103 +284,6 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
             // Run the animation
             animation.run();
         }
-    },
-
-    /**
-     * Shows the error message
-     *
-     * @private
-     */
-    _showError: function () {
-        // Vars
-        var container = this.get('container'),
-            errorContainer = this.get('errorContainer'),
-            animation,
-            instance = this;
-
-        // If the error container is already in the document don't add it
-        if (!errorContainer.inDoc()) {
-
-            // Create an instance of animation
-            animation = new Y.Anim({
-                node: errorContainer,
-                duration: 0.5,
-                from: {opacity: 0},
-                to: {opacity: 1}
-            });
-
-            // Opacity needs to be set to zero otherwise there will
-            // be a weird blink effect
-            errorContainer.setStyle('opacity', 0);
-
-            // Attach click on resend button event
-            errorContainer.one('.resend-button').on('click', function (event) {
-                event.preventDefault();
-                instance._onRefreshButtonClick();
-            });
-
-            // Add the error to the container
-            container.append(errorContainer);
-
-            // Run the effect animation
-            animation.run();
-        }
-
-        // It is possible that resend button was clicked thus it was transformed to the preloader.
-        // Remove the preloader class so it can be the resend button again.
-        errorContainer.one('.resend-button').removeClass('preloader');
-    },
-
-    /**
-     * Hides the error message
-     *
-     * @private
-     */
-    _hideError: function () {
-        // Vars
-        var errorContainer = this.get('errorContainer'),
-            animation;
-
-        // Run the animation only if the error container is in DOM
-        if (errorContainer.inDoc()) {
-
-            // Create the animation instance
-            animation = new Y.Anim({
-                node: errorContainer,
-                duration: 0.5,
-                from: {opacity: 1},
-                to: {opacity: 0}
-            });
-
-            // Listen to the end of the animation
-            animation.on('end', function () {
-                // Remove the error node from DOM
-                animation.get('node').remove();
-            });
-
-            // Run!
-            animation.run();
-        }
-    },
-
-    /**
-     * Called when the user click on the refresh button in the error container
-     *
-     * @private
-     */
-    _onRefreshButtonClick: function () {
-        // Vars
-        var model = this.get('model'),
-            refreshButtonNode = this.get('errorContainer').one('.resend-button');
-
-        // Prevent user to click on preloader more than once
-        if (!refreshButtonNode.hasClass('preloader')) {
-            // Add preloader to the resend button
-            refreshButtonNode.addClass('preloader');
-
-            // Save the model again
-            model.load();
-        }
     }
 
 }, {
@@ -417,13 +331,19 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         },
 
         /**
-         * Node for error container
+         * Error view with error message and resend button
          *
-         * {Node}
+         * {Y.LIMS.View.ErrorMessageView}
          */
-        errorContainer: {
+        errorView: {
             valueFn: function () {
-                return Y.Node.create(this.errorTemplate);
+                // Vars
+                var container = this.get('container');
+                // Create view
+                return new Y.LIMS.View.ErrorMessageView({
+                    container: container,
+                    errorMessage: Y.LIMS.Core.i18n.values.groupListErrorMessage
+                });
             }
         },
 
