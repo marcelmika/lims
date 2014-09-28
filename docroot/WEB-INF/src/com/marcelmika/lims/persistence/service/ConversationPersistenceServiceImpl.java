@@ -337,7 +337,7 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
 
             // Notify participants about newly created messages. This will basically update message counters,
             // open conversation to users, etc.
-            ParticipantLocalServiceUtil.updateParticipants(conversationModel.getCid());
+            ParticipantLocalServiceUtil.updateParticipants(conversationModel.getCid(), buddy.getBuddyId());
 
             // Map message from message model
             Message successMessage = Message.fromMessageModel(messageModel);

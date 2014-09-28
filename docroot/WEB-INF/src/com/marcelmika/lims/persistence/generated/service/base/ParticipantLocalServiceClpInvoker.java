@@ -122,7 +122,9 @@ public class ParticipantLocalServiceClpInvoker {
 
 		_methodName57 = "updateParticipants";
 
-		_methodParameterTypes57 = new String[] { "java.lang.Long" };
+		_methodParameterTypes57 = new String[] {
+				"java.lang.Long", "java.lang.Long"
+			};
 
 		_methodName58 = "closeConversation";
 
@@ -260,7 +262,8 @@ public class ParticipantLocalServiceClpInvoker {
 
 		if (_methodName57.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes57, parameterTypes)) {
-			ParticipantLocalServiceUtil.updateParticipants((java.lang.Long)arguments[0]);
+			ParticipantLocalServiceUtil.updateParticipants((java.lang.Long)arguments[0],
+				(java.lang.Long)arguments[1]);
 
 			return null;
 		}

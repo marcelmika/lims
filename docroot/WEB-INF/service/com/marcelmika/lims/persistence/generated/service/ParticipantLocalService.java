@@ -268,7 +268,7 @@ public interface ParticipantLocalService extends BaseLocalService,
 	* @throws SystemException
 	* @throws com.liferay.portal.kernel.exception.PortalException
 	*/
-	public void updateParticipants(java.lang.Long cid)
+	public void updateParticipants(java.lang.Long cid, java.lang.Long senderId)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
 

@@ -16,6 +16,8 @@ package com.marcelmika.lims.persistence.generated.service.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.persistence.generated.NoSuchConversationException;
 import com.marcelmika.lims.persistence.generated.NoSuchParticipantException;
 import com.marcelmika.lims.persistence.generated.model.Conversation;
@@ -42,6 +44,10 @@ import java.util.List;
  * @see com.marcelmika.lims.persistence.generated.service.ParticipantLocalServiceUtil
  */
 public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl {
+
+    // Log
+    private static Log log = LogFactoryUtil.getLog(ParticipantLocalServiceImpl.class);
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -87,16 +93,23 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
      * @throws SystemException
      * @throws com.liferay.portal.kernel.exception.PortalException
      */
-    public void updateParticipants(Long cid) throws SystemException, PortalException {
+    public void updateParticipants(Long cid, Long senderId) throws SystemException, PortalException {
         // Fetch all participants by the conversation id
         List<Participant> participantList = participantPersistence.findByCid(cid);
         Conversation conversation = ConversationLocalServiceUtil.getConversation(cid);
 
         for (Participant participant : participantList) {
-            Panel panel = PanelLocalServiceUtil.getPanelByUser(participant.getParticipantId());
+
+            // We don't want to increase a count of unread messages to the user who
+            // actually sent the message
+            if (participant.getParticipantId() == senderId) {
+                continue;
+            }
+
             // Update message count only if user's currently opened panel is different then the one with conversation.
             // We don't want to increment unread message count for the conversation which is currently presented to
             // the user
+            Panel panel = PanelLocalServiceUtil.getPanelByUser(participant.getParticipantId());
             if (!conversation.getConversationId().equals(panel.getActivePanelId())) {
                 int unreadMessageCount = participant.getUnreadMessagesCount();
                 participant.setUnreadMessagesCount(++unreadMessageCount);
