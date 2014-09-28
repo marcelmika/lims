@@ -52,16 +52,12 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         onPanelDidAppear: function () {
             // Vars
             var model = this.get('model'),
-                unreadMessages = model.get('unreadMessagesCount'),
                 listView = this.get('listView'),
-                notification = this.get('notification'),
                 instance = this;
 
             // Reset counter of unread messages
             model.resetUnreadMessagesCounter(function (err) {
                 if (!err) {
-                    // Messages are read so suppress the count
-                    notification.suppress(unreadMessages);
                     // Reset badge
                     instance._updateBadge(0);
                 }
