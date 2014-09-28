@@ -297,6 +297,10 @@
     overflow: hidden;
 }
 
+.liferay-ims .lims-bar div ul li .panel-trigger .unread.dimmed {
+    background-color: #b3b3b3;
+}
+
 /********************************************************************************
 / PANEL - WINDOW
 /********************************************************************************/

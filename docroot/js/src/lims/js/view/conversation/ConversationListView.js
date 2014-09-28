@@ -124,14 +124,68 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
 
         // Attach events to text field
         if (messageTextField) {
-            messageTextField.on('keyup', this._onMessageTextFieldUpdated, this);
-            messageTextField.on('focus', this._onMessageTextFieldUpdated, this);
+            messageTextField.on('keyup', this._onMessageTextFieldKeyUp, this);
+            messageTextField.on('focus', this._onMessageTextFieldFocus, this);
+            messageTextField.on('blur', this._onMessageTextFieldBlur, this);
         }
 
         // Attach events to model
         model.after('messageAdded', this._onMessageAdded, this);
         model.after('messageError', this._onMessageError, this);
         model.after('messagesUpdated', this._onMessagesUpdated, this);
+    },
+
+    /**
+     * Called when the message text field gains focus
+     *
+     * @param event
+     * @private
+     */
+    _onMessageTextFieldFocus: function (event) {
+        // Vars
+        var hasMessageTextFieldFocus = this.get('hasMessageTextFieldFocus');
+
+        // We don't want to fire it more than once. Thus there is no
+        // need to call a body of the if statement again
+        if (hasMessageTextFieldFocus === false) {
+            // Set the focus flag
+            this.set('hasMessageTextFieldFocus', true);
+            // Fire an event
+            this.fire('messageTextFieldFocus');
+        }
+
+        // Message text field was also updated
+        this._onMessageTextFieldUpdated(event);
+    },
+
+    /**
+     * Called when the message text field loses its focus
+     *
+     * @private
+     */
+    _onMessageTextFieldBlur: function () {
+        // Vars
+        var hasMessageTextFieldFocus = this.get('hasMessageTextFieldFocus');
+
+        // We don't want to fire it more than once. Thus there is  no
+        // need to call a body of the if statement again
+        if (hasMessageTextFieldFocus === true) {
+            // Set the focus flag
+            this.set('hasMessageTextFieldFocus', false);
+            // Fire an event
+            this.fire('messageTextFieldBlur');
+        }
+    },
+
+    /**
+     * Called when the users presses any key while there is a focus on message text field
+     *
+     * @param event
+     * @private
+     */
+    _onMessageTextFieldKeyUp: function (event) {
+        // Message text field was also updated
+        this._onMessageTextFieldUpdated(event);
     },
 
     /**
@@ -468,6 +522,15 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
             valueFn: function () {
                 return this.get('container').one('.panel-input textarea');
             }
+        },
+
+        /**
+         * True if the message text field has focus, false if it's blurred
+         *
+         * {boolean}
+         */
+        hasMessageTextFieldFocus: {
+            value: false // default value
         },
 
         /**

@@ -113,10 +113,11 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
      * Resets counter of unread messages. This should happen when the user opens conversation.
      * Since it's opened all messages have been read. Thus we can reset the counter.
      */
-    resetUnreadMessagesCounter: function () {
+    resetUnreadMessagesCounter: function (callback) {
 
         // Vars
-        var parameters = Y.JSON.stringify({
+        var instance = this,
+            parameters = Y.JSON.stringify({
             conversationId: this.get('conversationId')
         });
 
@@ -128,14 +129,24 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
                 parameters: parameters
             },
             on: {
-                // There isn't much we can do. If the request ends with success
-                // the user is not going to see badge anymore (of course if there will be any
-                // new messages it will appear again).
+                success: function () {
+
+                    // Update unread messages count
+                    instance.set('unreadMessagesCount', 0);
+
+                    if (callback) {
+                        callback(null, instance);
+                    }
+                },
                 failure: function (x, o) {
                     // If the attempt is unauthorized session has expired
                     if (o.status === 401) {
                         // Notify everybody else
                         Y.fire('userSessionExpired');
+                    }
+
+                    if (callback) {
+                        callback('cannot reset unread messages', instance);
                     }
                 }
             }

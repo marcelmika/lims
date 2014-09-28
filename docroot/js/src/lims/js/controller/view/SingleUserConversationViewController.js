@@ -52,13 +52,20 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         onPanelDidAppear: function () {
             // Vars
             var model = this.get('model'),
+                unreadMessages = model.get('unreadMessagesCount'),
                 listView = this.get('listView'),
-                notification = this.get('notification');
+                notification = this.get('notification'),
+                instance = this;
 
-            // Messages are read so suppress the count
-            notification.suppress(model.get('unreadMessagesCount'));
             // Reset counter of unread messages
-            model.resetUnreadMessagesCounter();
+            model.resetUnreadMessagesCounter(function (err) {
+                if (!err) {
+                    // Messages are read so suppress the count
+                    notification.suppress(unreadMessages);
+                    // Reset badge
+                    instance._updateBadge(0);
+                }
+            });
             // Always scroll to the last message when user opens the window
             listView.scrollToBottom();
             // Add focus on textarea
@@ -67,12 +74,20 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             this._hideBadge();
             // Start timer that periodically updates timestamps of messages
             this._startTimer();
+            // Make the badge less noticeable
+            this._dimBadge();
         },
 
         /**
          * Panel Did Disappear is called when the panel disappeared from the screen
          */
         onPanelDidDisappear: function () {
+
+            // Make the badge noticeable again
+            this._brightBadge();
+
+            // No need to updated message timestamps since they will be updated whenever
+            // the panel appears again
             this._pauseTimer();
         },
 
@@ -100,6 +115,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
                 updatedUnreadMessageCount,                  // Unread message count of updated model
                 newMessagesCount,                           // Number of newly received messages
                 notification = this.get('notification'),    // Notification handler
+                listView = this.get('listView'),            // List view
                 instance = this;                            // Saved instance
 
             // There is no need to update conversation which hasn't been changed
@@ -111,12 +127,25 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
                     if (!err) {
                         // New message count
                         updatedUnreadMessageCount = conversation.get('unreadMessagesCount');
+
                         // If the unread message count has been increased notify user
                         if (updatedUnreadMessageCount > currentUnreadMessagesCount) {
-                            // Actual count of newly received messages
-                            newMessagesCount = updatedUnreadMessageCount - currentUnreadMessagesCount;
-                            // Notify about new message
-                            notification.notify(newMessagesCount);
+
+                            // If the message text field has focus, there is no need to notify the
+                            // user about newly incoming messages since we assume that the user is
+                            // currently chatting so he sees all the messages
+                            if (listView.get('hasMessageTextFieldFocus')) {
+                                conversationModel.resetUnreadMessagesCounter();
+                            }
+                            // Message text field does not have a focus thus we notify the user
+                            else {
+                                // Actual count of newly received messages
+                                newMessagesCount = updatedUnreadMessageCount - currentUnreadMessagesCount;
+                                // Notify about new message
+                                notification.notify(newMessagesCount);
+                                // Update badge count
+                                instance._updateBadge(updatedUnreadMessageCount);
+                            }
                         }
                         // Callback
                         instance._onConversationUpdated();
@@ -139,6 +168,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
 
             // Local events
             listView.on('messageSubmitted', this._onMessageSubmitted, this);
+            listView.on('messageTextFieldFocus', this._onMessageTextFieldFocus, this);
             model.on('createBegin', this._onConversationCreateBegin, this);
             model.on('createSuccess', this._onConversationCreateSuccess, this);
             model.on('createError', this._onConversationCreateError, this);
@@ -297,19 +327,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          */
         _onConversationUpdated: function () {
             // Vars
-            var unreadMessagesCount = this.get('model').get('unreadMessagesCount'),
-                listView = this.get('listView');
-
-            // No unread messages
-            if (unreadMessagesCount === 0) {
-                this._hideBadge();
-            } else {
-                // Show badge
-                this._showBadge();
-            }
-
-            // Update badge count
-            this._updateBadge(unreadMessagesCount);
+            var listView = this.get('listView');
 
             // Show the panel input so the users can post messages
             listView.showView();
@@ -343,6 +361,34 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         },
 
         /**
+         * Called when the message text field gains focus
+         *
+         * @private
+         */
+        _onMessageTextFieldFocus: function () {
+            // Vars
+            var model = this.get('model'),
+                unreadMessages = model.get('unreadMessagesCount'),
+                notification = this.get('notification'),
+                instance = this;
+
+            // If the users sets focus to the text field
+            // and there are still some unread messages
+            // reset the counter since we assume that he
+            // reads all unread messages
+            if (model.get('unreadMessagesCount') > 0) {
+                model.resetUnreadMessagesCounter(function (err) {
+                    if (!err) {
+                        // Messages are read so suppress the count
+                        notification.suppress(unreadMessages);
+                        // Reset badge
+                        instance._updateBadge(0);
+                    }
+                });
+            }
+        },
+
+        /**
          * Called whenever an error with connection occurred
          *
          * @private
@@ -369,6 +415,14 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         _updateBadge: function (value) {
             // Vars
             var badge = this.get('badge');
+
+            // No unread messages
+            if (value === 0) {
+                this._hideBadge();
+            } else {
+                // Show badge
+                this._showBadge();
+            }
 
             // Update value
             if (badge) {
@@ -404,6 +458,30 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             if (badge) {
                 badge.hide();
             }
+        },
+
+        /**
+         * Makes the badge brighter
+         *
+         * @private
+         */
+        _brightBadge: function () {
+            // Vars
+            var badge = this.get('badge');
+
+            badge.removeClass('dimmed');
+        },
+
+        /**
+         * Makes the badge less noticeable
+         *
+         * @private
+         */
+        _dimBadge: function () {
+            // Vars
+            var badge = this.get('badge');
+
+            badge.addClass('dimmed');
         },
 
         /**

@@ -23,7 +23,6 @@ import com.marcelmika.lims.persistence.generated.NoSuchParticipantException;
 import com.marcelmika.lims.persistence.generated.model.Conversation;
 import com.marcelmika.lims.persistence.generated.model.Panel;
 import com.marcelmika.lims.persistence.generated.model.Participant;
-import com.marcelmika.lims.persistence.generated.service.ConversationLocalServiceUtil;
 import com.marcelmika.lims.persistence.generated.service.PanelLocalServiceUtil;
 import com.marcelmika.lims.persistence.generated.service.base.ParticipantLocalServiceBaseImpl;
 
@@ -31,10 +30,10 @@ import java.util.List;
 
 /**
  * The implementation of the participant local service.
- *
+ * <p/>
  * <p>
  * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the {@link com.marcelmika.lims.persistence.generated.service.ParticipantLocalService} interface.
- *
+ * <p/>
  * <p>
  * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
  * </p>
@@ -49,7 +48,7 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
     private static Log log = LogFactoryUtil.getLog(ParticipantLocalServiceImpl.class);
 
 	/*
-	 * NOTE FOR DEVELOPERS:
+     * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this interface directly. Always use {@link com.marcelmika.lims.persistence.generated.service.ParticipantLocalServiceUtil} to access the participant local service.
 	 */
@@ -96,11 +95,10 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
     public void updateParticipants(Long cid, Long senderId) throws SystemException, PortalException {
         // Fetch all participants by the conversation id
         List<Participant> participantList = participantPersistence.findByCid(cid);
-        Conversation conversation = ConversationLocalServiceUtil.getConversation(cid);
 
         for (Participant participant : participantList) {
 
-            // We don't want to increase a count of unread messages to the user who
+            // We don't want to increase a count of unread messages of the user who
             // actually sent the message
             if (participant.getParticipantId() == senderId) {
                 continue;
@@ -109,11 +107,8 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
             // Update message count only if user's currently opened panel is different then the one with conversation.
             // We don't want to increment unread message count for the conversation which is currently presented to
             // the user
-            Panel panel = PanelLocalServiceUtil.getPanelByUser(participant.getParticipantId());
-            if (!conversation.getConversationId().equals(panel.getActivePanelId())) {
-                int unreadMessageCount = participant.getUnreadMessagesCount();
-                participant.setUnreadMessagesCount(++unreadMessageCount);
-            }
+            int unreadMessageCount = participant.getUnreadMessagesCount();
+            participant.setUnreadMessagesCount(++unreadMessageCount);
             // Open the conversation. In other words if the user closed the conversation open it again for him.
             // By opening we doesn't mean opening the panel. The panel may be minimized but the conversation is still
             // opened.
