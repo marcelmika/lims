@@ -32,7 +32,15 @@ AUI().use('lims-core', "lims-model", "lims-view", "lims-controller", function (A
             socialRelationCoworker: Liferay.Language.get('social-relation-coworker'),
             socialRelationFriend: Liferay.Language.get('social-relation-friend'),
             socialRelationRomanticPartner: Liferay.Language.get('social-relation-romantic-partner'),
-            socialRelationSibling: Liferay.Language.get('social-relation-sibling')
+            socialRelationSibling: Liferay.Language.get('social-relation-sibling'),
+            timeRangeJustNow: Liferay.Language.get('time-range-just-now'),
+            timeRangeMinuteAgo: Liferay.Language.get('time-range-minute-ago'),
+            timeRangeMinutesAgo: Liferay.Language.get('time-range-minutes-ago'),
+            timeRangeHourAgo: Liferay.Language.get('time-range-hour-ago'),
+            timeRangeHoursAgo: Liferay.Language.get('time-range-hours-ago'),
+            timeRangeYesterday: Liferay.Language.get('time-range-yesterday'),
+            timeRangeDaysAgo: Liferay.Language.get('time-range-days-ago'),
+            timeRangeWeeksAgo: Liferay.Language.get('time-range-weeks-ago')
         };
 
         // Start the app!

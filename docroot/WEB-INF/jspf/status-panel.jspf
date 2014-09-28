@@ -65,7 +65,7 @@
 <li class="status-panel ${selectedClass}">
     <div class="panel-trigger">
         <div class="trigger-name">
-            <div class="status-indicator ${status}" title="${status}"></div>
+            <div class="status-indicator ${status}"></div>
         </div>
     </div>
     <div class="panel">
