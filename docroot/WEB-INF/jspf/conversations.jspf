@@ -40,6 +40,16 @@
         </c:otherwise>
     </c:choose>
 
+    <%-- Check if badge should be dimme --%>
+    <c:choose>
+        <c:when test="${settings.activePanelId == conversation.conversationId}">
+            <c:set var="dimmedClass" value="dimmed"/>
+        </c:when>
+        <c:otherwise>
+            <c:set var="dimmedClass" value=""/>
+        </c:otherwise>
+    </c:choose>
+
     <%-- Check if portlet should be visible --%>
     <c:choose>
         <c:when test="${settings.chatEnabled}">
@@ -67,7 +77,7 @@
         <div class="panel-trigger">
             <span class="trigger-name">${conversation.title}</span>
 
-            <div class="unread ${hiddenBadgeClass}">${conversation.unreadMessagesCount}</div>
+            <div class="unread ${hiddenBadgeClass} ${dimmedClass}">${conversation.unreadMessagesCount}</div>
         </div>
         <div class="panel">
             <div class="panel-window">
