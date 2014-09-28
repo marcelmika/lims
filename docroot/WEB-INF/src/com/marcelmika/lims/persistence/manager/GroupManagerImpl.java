@@ -150,6 +150,8 @@ public class GroupManagerImpl implements GroupManager {
         GroupCollection groupCollection = new GroupCollection();
         // Add group to collection
         groupCollection.addGroup(group);
+        // Set list strategy
+        groupCollection.setListStrategy(BuddyListStrategy.ALL);
         // Add last modified date
         groupCollection.setLastModified(lastModifiedDate);
 
@@ -229,6 +231,8 @@ public class GroupManagerImpl implements GroupManager {
         }
         // Add last modified date
         groupCollection.setLastModified(lastModifiedDate);
+        // Set list strategy
+        groupCollection.setListStrategy(BuddyListStrategy.SITES);
 
         return groupCollection;
     }
@@ -292,6 +296,7 @@ public class GroupManagerImpl implements GroupManager {
             if (groupMap.get(groupName) == null) {
                 group = new Group();
                 group.setName(groupName);
+                group.setSocialRelation(relationType);
                 groupMap.put(groupName, group);
             }
 
@@ -316,6 +321,8 @@ public class GroupManagerImpl implements GroupManager {
 
         // Add last modified date
         groupCollection.setLastModified(lastModifiedDate);
+        // Set list strategy
+        groupCollection.setListStrategy(BuddyListStrategy.SOCIAL);
 
         return groupCollection;
     }
@@ -365,6 +372,9 @@ public class GroupManagerImpl implements GroupManager {
         } else {
             groupCollection.setLastModified(socialGroupCollection.getLastModified());
         }
+
+        // Set list strategy
+        groupCollection.setListStrategy(BuddyListStrategy.SITES_AND_SOCIAL);
 
         return groupCollection;
     }
@@ -442,6 +452,8 @@ public class GroupManagerImpl implements GroupManager {
         }
         // Add last modified date
         groupCollection.setLastModified(lastModifiedDate);
+        // Set list strategy
+        groupCollection.setListStrategy(BuddyListStrategy.USER_GROUPS);
 
         return groupCollection;
     }

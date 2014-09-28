@@ -26,7 +26,13 @@ AUI().use('lims-core', "lims-model", "lims-view", "lims-controller", function (A
             groupListEmptyInfoMessage: Liferay.Language.get('panel-group-list-empty-info-text'),
             groupListErrorMessage: Liferay.Language.get('panel-group-list-error-text'),
             conversationCreateErrorMessage: Liferay.Language.get('panel-conversation-create-error-text'),
-            conversationReadErrorMessage: Liferay.Language.get('panel-conversation-read-error-text')
+            conversationReadErrorMessage: Liferay.Language.get('panel-conversation-read-error-text'),
+            socialRelationUnknown: Liferay.Language.get('social-relation-unknown'),
+            socialRelationConnection: Liferay.Language.get('social-relation-connection'),
+            socialRelationCoworker: Liferay.Language.get('social-relation-coworker'),
+            socialRelationFriend: Liferay.Language.get('social-relation-friend'),
+            socialRelationRomanticPartner: Liferay.Language.get('social-relation-romantic-partner'),
+            socialRelationSibling: Liferay.Language.get('social-relation-sibling')
         };
 
         // Start the app!

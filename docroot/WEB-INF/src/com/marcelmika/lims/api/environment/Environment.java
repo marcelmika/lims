@@ -134,7 +134,7 @@ public class Environment {
      * Enum for buddy list social relation
      */
     public enum BuddyListSocialRelation {
-        // TODO: i18n
+
         TYPE_BI_UNKNOWN(0, "Unknown relation"),
         TYPE_BI_CONNECTION(12, "Connections"),
         TYPE_BI_COWORKER(1, "Coworkers"),

@@ -24,6 +24,8 @@
 
 package com.marcelmika.lims.api.entity;
 
+import com.marcelmika.lims.api.environment.Environment.BuddyListSocialRelation;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +41,7 @@ public class GroupDetails {
     private String name;
     private List<BuddyDetails> buddies = new ArrayList<BuddyDetails>();
     private Date lastModified;
+    private BuddyListSocialRelation socialRelation;
 
     public List<BuddyDetails> getBuddies() {
         return buddies;
@@ -62,5 +65,13 @@ public class GroupDetails {
 
     public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
+    }
+
+    public BuddyListSocialRelation getSocialRelation() {
+        return socialRelation;
+    }
+
+    public void setSocialRelation(BuddyListSocialRelation socialRelation) {
+        this.socialRelation = socialRelation;
     }
 }

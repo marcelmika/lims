@@ -26,7 +26,6 @@ package com.marcelmika.lims.portal.domain;
 
 import com.marcelmika.lims.api.entity.GroupCollectionDetails;
 import com.marcelmika.lims.api.entity.GroupDetails;
-import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.environment.Environment.BuddyListStrategy;
 
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ public class GroupCollection {
         GroupCollection groupCollection = new GroupCollection();
         // Map data to group details
         groupCollection.lastModified = details.getLastModified();
-        groupCollection.listStrategy = Environment.getBuddyListStrategy();
+        groupCollection.listStrategy = details.getListStrategy();
 
         if (details.getLastModified() != null) {
             // Etag is made of the last modification date and the list strategy type. Thus if the group collection

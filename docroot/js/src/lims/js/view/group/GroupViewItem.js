@@ -50,13 +50,26 @@ Y.LIMS.View.GroupViewItem = Y.Base.create('groupViewItem', Y.View, [], {
         // Vars
         var container = this.get('container'),
             model = this.get('model'),
-            buddiesView;
+            socialRelation = model.get('socialRelation'),
+            buddiesView,
+            name;
+
+        // If the group contains social relation we need to localize
+        // the social relation name.
+        if (socialRelation) {
+            name = socialRelation.getLocalizedName();
+        }
+        // If not, use the name from model
+        else {
+            name = model.get('name');
+        }
+
 
         // Render Group:
         // Fill data from model to template and set it to container
         container.set('innerHTML',
             Y.Lang.sub(this.template, {
-                name: model.get('name')
+                name: name
             })
         );
 

@@ -33,6 +33,7 @@
                 "js/model/message/MessageListModel.js",
                 "js/model/group/GroupModelItem.js",
                 "js/model/group/GroupModelList.js",
+                "js/model/group/GroupSocialRelationType.js",
                 "js/model/settings/SettingsModel.js",
                 "js/model/server/ServerTimeModel.js"
             ],

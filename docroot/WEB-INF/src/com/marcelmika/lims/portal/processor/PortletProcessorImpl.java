@@ -33,6 +33,7 @@ import com.marcelmika.lims.portal.response.ResponseUtil;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
+import java.util.Random;
 
 /**
  * Portlet processor contains business logic which decides what controller
@@ -134,14 +135,24 @@ public class PortletProcessorImpl implements PortletProcessor {
                                  ResourceResponse response,
                                  String query) {
 
+        Random random = new Random();
+        int num = 10;
 
         // Create Single User Conversation
         if (query.equals(QUERY_CREATE_SINGLE_USER_CONVERSATION)) {
-            conversationController.createSingleUserConversation(request, response);
+            if (num > 3) {
+                conversationController.createSingleUserConversation(request, response);
+            } else {
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+            }
         }
         // Read Single User Conversation
         else if (query.equals(QUERY_READ_SINGLE_USER_CONVERSATION)) {
-            conversationController.readSingleUserConversation(request, response);
+            if (num > 3) {
+                conversationController.readSingleUserConversation(request, response);
+            } else {
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+            }
         }
         // Close Single User Conversation
         else if (query.equals(QUERY_CLOSE_SINGLE_USER_CONVERSATION)) {
@@ -157,11 +168,19 @@ public class PortletProcessorImpl implements PortletProcessor {
         }
         // Get Group List
         else if (query.equals(QUERY_GET_GROUP_LIST)) {
-            groupController.getGroupList(request, response);
+            if (num > 5) {
+                groupController.getGroupList(request, response);
+            } else {
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+            }
         }
         // Send message
         else if (query.equals(QUERY_CREATE_MESSAGE)) {
-            conversationController.createMessage(request, response);
+            if (num > 2) {
+                conversationController.createMessage(request, response);
+            } else {
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+            }
         }
         // Update buddy presence
         else if (query.equals(QUERY_UPDATE_BUDDY_PRESENCE)) {
@@ -181,7 +200,11 @@ public class PortletProcessorImpl implements PortletProcessor {
         }
         // Search buddies
         else if (query.equals(QUERY_SEARCH_BUDDIES)) {
-            buddyController.searchBuddies(request, response);
+            if (num > 5) {
+                buddyController.searchBuddies(request, response);
+            } else {
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+            }
         }
         // No such query was found
         else {
