@@ -101,6 +101,11 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
             errorContainer = this.get('errorContainer'),
             instance = this;
 
+        // If there is a error container from past, remove it
+        if (errorContainer) {
+            errorContainer.remove();
+        }
+
         // If the message is already acknowledged don't dim it
         if (model.get('acknowledged') === true) {
             this._brightMessageText(false);
