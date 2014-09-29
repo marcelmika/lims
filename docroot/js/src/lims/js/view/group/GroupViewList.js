@@ -58,7 +58,7 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
 
         // Local events
         model.after('add', this._onGroupAdd, this);
-        model.after('reset', this._onGroupReset, this);
+        model.on('groupReset', this._onGroupReset, this);
         model.after('groupsReadSuccess', this._onGroupsReadSuccess, this);
         model.after('groupsReadError', this._onGroupsReadError, this);
         errorView.on('resendButtonClick', this._onResendButtonClick, this);

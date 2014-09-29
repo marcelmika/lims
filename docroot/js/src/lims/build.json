@@ -5,11 +5,13 @@
         "lims-core": {
             "jsfiles": [
                 "js/bootstrap.js",
-                "js/core/DateFormatter.js",
-                "js/core/i18n.js",
-                "js/core/ViewController.js",
-                "js/core/Notification.js",
-                "js/core/Properties.js"
+                "js/core/date/DateFormatter.js",
+                "js/core/localization/i18n.js",
+                "js/core/controller/ViewController.js",
+                "js/core/notification/Notification.js",
+                "js/core/properties/Properties.js",
+                "js/core/poller/Poller.js",
+                "js/core/poller/PollerEntry.js"
             ],
             "config": {
                 "requires": [

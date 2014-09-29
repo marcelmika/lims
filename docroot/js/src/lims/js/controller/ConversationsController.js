@@ -47,9 +47,9 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
         // Attach events
         this._attachEvents();
 
-        // Start timer only if the chat is enabled
+        // Start polling only if the chat is enabled
         if (properties.isChatEnabled()) {
-            this._startTimer();
+            this._startPolling();
         }
     },
 
@@ -350,8 +350,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
      * @private
      */
     _onSessionExpired: function () {
-        // Disable the timer
-        this._stopTimer();
+        // Stop poller
+        this._stopPolling();
     },
 
     /**
@@ -360,8 +360,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
      * @private
      */
     _onChatEnabled: function () {
-        // Re-enable the timer
-        this._startTimer();
+        // Re-enable polling
+        this._startPolling();
     },
 
     /**
@@ -370,101 +370,130 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
      * @private
      */
     _onChatDisabled: function () {
-        // Disable the timer
-        this._stopTimer();
+        // Disable the poller
+        this._stopPolling();
     },
 
     /**
-     * Starts timer which periodically refreshes group list
+     * Starts poller which periodically refreshes the conversation list
      *
      * @private
      */
-    _startTimer: function () {
+    _startPolling: function () {
         // Vars
         var conversationList = this.get('conversationList'),
-            timerInterval = this.get('timerInterval');
+            poller = this.get('poller');
 
-        // Update all timestamps
-        conversationList.load();
-        // Start periodical update
-        this.set('timer', setInterval(function () {
-            // Load model
-            conversationList.load(function (err) {
-                // Broadcast the state of connection
-                if (err) {
-                    Y.fire('connectionError');
-                } else {
-                    Y.fire('connectionOK');
-                }
-            });
-        }, timerInterval));
+        // Register model to the poller
+        poller.register('conversationController:model', new Y.LIMS.Core.PollerEntry({
+            model: conversationList,        // Model that will be periodically refreshed
+            interval: 7000,                 // 7 seconds period
+            connectionMonitor: true         // Fires connection success/error event
+        }));
     },
 
     /**
-     * Pauses timer which periodically refreshes group list
+     * Stops poller which periodically refreshes the conversation list
      *
      * @private
      */
-    _stopTimer: function () {
+    _stopPolling: function () {
         // Vars
-        var timer = this.get('timer');
+        var poller = this.get('poller');
         // Pause
-        clearTimeout(timer);
+        poller.unregister('conversationController:model');
     }
 
 }, {
-    // Specify attributes and static properties for your View here.
+
+    // Add custom model attributes here. These attributes will contain your
+    // model's data. See the docs for Y.Attribute to learn more about defining
+    // attributes.
+
     ATTRS: {
 
-        // Map holds all currently opened conversation controllers
+        /**
+         * Main container node
+         *
+         * {Node}
+         */
+        container: {
+            value: null // to be set
+        },
+
+        /**
+         * Map that holds all currently opened conversation controllers
+         *
+         * {object}
+         */
         conversationMap: {
             value: {} // default value
         },
 
+        /**
+         * An instance of currently logged user details
+         *
+         * {Y.LIMS.Model.BuddyModelItem}
+         */
+        buddyDetails: {
+            value: null
+        },
+
+        /**
+         * Properties object that holds the global portlet properties
+         *
+         * {Y.LIMS.Core.Properties}
+         */
+        properties: {
+            value: null // to be set
+        },
+
+        /**
+         * Settings of the currently logged user
+         *
+         * {Y.LIMS.Model.SettingsModel}
+         */
+        settings: {
+            value: null // to be set
+        },
+
+        /**
+         * Conversation list model
+         *
+         * {Y.LIMS.Model.ConversationListModel}
+         */
         conversationList: {
             valueFn: function () {
                 return new Y.LIMS.Model.ConversationListModel();
             }
         },
 
-        // Currently logged user
-        buddyDetails: {
-            value: null
-        },
-
-        // Main container node
-        container: {
-            value: null // to be set
-        },
-
-        // Notification
+        /**
+         * Notification object responsible for the incoming message notification
+         *
+         * {Y.LIMS.Core.Notification}
+         */
         notification: {
             value: null // to be set
         },
 
-        // List of already rendered conversation nodes
+        /**
+         * List of already rendered conversation nodes
+         *
+         * {array}
+         */
         conversationNodes: {
             valueFn: function () {
                 return this.get('container').all('.conversation');
             }
         },
 
-        // Timer used to set async calls to server
-        timer: {
-            value: null // to be set
-        },
-
-        // Length of timer period
-        timerInterval: {
-            value: 7000 // 7 seconds
-        },
-
-        // Portlet properties
-        properties: {
-            value: null // to be set
-        },
-
-        settings: {
+        /**
+         * An instance of poller that periodically refreshes models that are subscribed
+         *
+         * {Y.LIMS.Core.Poller}
+         */
+        poller: {
             value: null // to be set
         }
     }

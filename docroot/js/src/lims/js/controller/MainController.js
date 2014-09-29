@@ -24,19 +24,25 @@
 
 /**
  * Main Controller
+ *
+ * This controller creates instances of all controllers in the app and injects objects that are necessary for them.
+ * It also holds instances of objects that are needed across the app.
  */
 Y.namespace('LIMS.Controller');
 
 Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LIMS.Controller.ControllerExtension], {
 
-    // The initializer runs when a MainController instance is created, and gives
-    // us an opportunity to set up all sub controller
+    /**
+     * The initializer runs when a MainController instance is created, and gives
+     * us an opportunity to set up all sub controllers
+     */
     initializer: function () {
         var buddyDetails = this.get('buddyDetails'),
             settingsModel = this.get('settingsModel'),
             notification = this.get('notification'),
             properties = this.get('properties'),
             serverTime = this.get('serverTimeModel'),
+            poller = this.get('poller'),
             rootNode = this.getRootNode();
 
         // Attach events
@@ -55,7 +61,8 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
             // Group
             new Y.LIMS.Controller.GroupViewController({
                 container: rootNode.one('.buddy-list'),
-                properties: properties
+                properties: properties,
+                poller: poller
             });
             // Presence
             new Y.LIMS.Controller.PresenceViewController({
@@ -73,7 +80,8 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
                 buddyDetails: buddyDetails,
                 settings: settingsModel,
                 notification: notification,
-                properties: properties
+                properties: properties,
+                poller: poller
             });
         });
     },
@@ -138,11 +146,17 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
 
 }, {
 
+    // Add custom model attributes here. These attributes will contain your
+    // model's data. See the docs for Y.Attribute to learn more about defining
+    // attributes.
+
     ATTRS: {
 
-        // Add custom model attributes here. These attributes will contain your
-        // model's data. See the docs for Y.Attribute to learn more about defining
-        // attributes.
+        /**
+         * Buddy details related of the currently logged user
+         *
+         * {Y.LIMS.Model.BuddyModelItem}
+         */
         buddyDetails: {
             valueFn: function () {
                 // We need settings to determine user
@@ -156,7 +170,11 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
             }
         },
 
-        // Settings related to the logged user
+        /**
+         * Settings of the currently logged user
+         *
+         * {Y.LIMS.Model.SettingsModel}
+         */
         settingsModel: {
             valueFn: function () {
                 return new Y.LIMS.Model.SettingsModel({
@@ -165,14 +183,22 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
             }
         },
 
-        // Server time
+        /**
+         * Current server time
+         *
+         * {Y.LIMS.Model.ServerTimeModel}
+         */
         serverTimeModel: {
             valueFn: function () {
                 return new Y.LIMS.Model.ServerTimeModel();
             }
         },
 
-        // Notification
+        /**
+         * Notification object responsible for the incoming message notification
+         *
+         * {Y.LIMS.Core.Notification}
+         */
         notification: {
             valueFn: function () {
                 return new Y.LIMS.Core.Notification({
@@ -183,13 +209,33 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
             }
         },
 
+        /**
+         * An instance of poller that periodically refreshes models that are subscribed
+         *
+         * {Y.LIMS.Core.Poller}
+         */
+        poller: {
+            valueFn: function () {
+                return new Y.LIMS.Core.Poller();
+            }
+        },
+
+        /**
+         * Properties object that holds the global portlet properties
+         *
+         * {Y.LIMS.Core.Properties}
+         */
         properties: {
             valueFn: function () {
                 return new Y.LIMS.Core.Properties();
             }
         },
 
-        // Current active panel
+        /**
+         * ID of the current active panel
+         *
+         * {string}
+         */
         activePanelId: {
             value: null // default value
         }

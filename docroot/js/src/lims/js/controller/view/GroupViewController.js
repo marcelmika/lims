@@ -52,7 +52,8 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
      * Panel Did Appear is called when the panel did appear on the screen
      */
     onPanelDidAppear: function () {
-        this._startTimer();
+        // Start poller
+        this._startPolling();
         // Subscribe to key up event
         this._subscribeKeyUp();
     },
@@ -61,18 +62,19 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
      * Panel Did Disappear is called when the panel disappeared from the screen
      */
     onPanelDidDisappear: function () {
-        this._stopTimer();
+        // Stop poller
+        this._stopPolling();
         // Detach the key up event
         this._detachKeyUp();
     },
 
     /**
      * Session Expired is called whenever the user session has expired. Provide all necessary cleaning like
-     * invalidation of timers, etc. At the end of the method the controller will be automatically hidden from
+     * invalidation of timer, etc. At the end of the method the controller will be automatically hidden from
      * the screen.
      */
     onSessionExpired: function () {
-        this._stopTimer();
+        this._stopPolling();
     },
 
     /**
@@ -121,38 +123,38 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
     },
 
     /**
-     * Starts timer which periodically refreshes group list
+     * Starts poller that periodically refreshes the group list
      *
      * @private
      */
-    _startTimer: function () {
+    _startPolling: function () {
 
         // Vars
         var model = this.get('model'),
-            timerInterval = this.get('timerInterval'),
+            poller = this.get('poller'),
             properties = this.get('properties');
 
         // Start only if the chat is enabled
         if (properties.isChatEnabled()) {
-            // Load model
-            model.load();
-            // Start periodical update
-            this.set('timer', setInterval(function () {
-                model.load();
-            }, timerInterval));
+
+            // Register model to the poller
+            poller.register('groupViewController:model', new Y.LIMS.Core.PollerEntry({
+                model: model,       // Model that will be periodically refreshed
+                interval: 10000     // 10 seconds period
+            }));
         }
     },
 
     /**
-     * Pauses timer which periodically refreshes group list
+     * Stops poller that periodically refreshes the group list
      *
      * @private
      */
-    _stopTimer: function () {
+    _stopPolling: function () {
         // Vars
-        var timer = this.get('timer');
+        var poller = this.get('poller');
         // Pause
-        clearTimeout(timer);
+        poller.unregister('groupViewController:model');
     },
 
     /**
@@ -488,24 +490,6 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
         },
 
         /**
-         * Timer for poller that loads periodically groups from server
-         *
-         * {timer}
-         */
-        timer: {
-            value: null // to be set
-        },
-
-        /**
-         * Time interval for the timer
-         *
-         * {integer}
-         */
-        timerInterval: {
-            value: 10000 // 10 seconds
-        },
-
-        /**
          * Properties object
          *
          * {Y.LIMS.Core.Properties}
@@ -514,7 +498,21 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
             value: null // to be set
         },
 
+        /**
+         * Cached global key up subscription
+         *
+         * {event}
+         */
         keyUpSubscription: {
+            value: null // to be set
+        },
+
+        /**
+         * An instance of poller that periodically refreshes models that are subscribed
+         *
+         * {Y.LIMS.Core.Poller}
+         */
+        poller: {
             value: null // to be set
         }
     }

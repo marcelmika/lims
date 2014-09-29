@@ -38,6 +38,7 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
 
     // Custom sync layer.
     sync: function (action, options, callback) {
+
         // Vars
         var parameters,
             etag = this.get('etag'),
@@ -63,6 +64,7 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
                     },
                     on: {
                         success: function (id, o) {
+
                             var i, groupCollection, groups, group, buddies;
                             // Parse groups
                             groupCollection = Y.JSON.parse(o.response);
@@ -71,7 +73,7 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
                             if (etag.toString() !== groupCollection.etag.toString()) {
 
                                 // Empty the list
-                                instance.reset();
+                                instance.fire('groupReset');
 
                                 instance.set('etag', groupCollection.etag);
 
@@ -95,6 +97,10 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
                                 instance.fire('groupsReadSuccess', {
                                     groupsList: instance
                                 });
+                            }
+
+                            if (callback) {
+                                callback(null, instance);
                             }
                         },
                         failure: function (x, o) {
