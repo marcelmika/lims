@@ -41,7 +41,7 @@ Y.LIMS.Model.MessageListModel = Y.Base.create('messageListModel', Y.ModelList, [
      * @returns []
      */
     getNotAcknowledged: function () {
-        return this.filter(function (model) {
+        return Y.Array.filter(this.toArray(), function (model) {
             return model.get('acknowledged') === false;
         });
     },
