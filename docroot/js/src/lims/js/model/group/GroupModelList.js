@@ -62,6 +62,7 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
                         query: "GetGroupList",
                         parameters: parameters
                     },
+                    timeout: 30000, // 30 seconds
                     on: {
                         success: function (id, o) {
 
