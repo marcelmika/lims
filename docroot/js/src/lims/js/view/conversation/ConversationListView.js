@@ -90,11 +90,8 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
      * Shows view
      */
     showView: function () {
-        var panelInput = this.get('panelInput');
-        // Set the opacity only. We don't want to show/hide the panel by calling
-        // the show() or hide() method since this will remove it from the visible
-        // are and brake the panel size. Thus we only manipulate the opacity
-        panelInput.setStyle('opacity', 1);
+        // Show panel view
+        this._showPanelInput();
         // Show list view again
         this._showListView();
     },
@@ -103,11 +100,8 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
      * Hides view
      */
     hideView: function () {
-        var panelInput = this.get('panelInput');
-        // Set the opacity only. We don't want to show/hide the panel by calling
-        // the show() or hide() method since this will remove it from the visible
-        // are and brake the panel size. Thus we only manipulate the opacity
-        panelInput.setStyle('opacity', 0);
+        // Hide panel input
+        this._hidePanelInput();
         // Hide list view too
         this._hideListView();
     },
@@ -333,6 +327,51 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         var panelContentList = this.get('panelContentList');
         // Hide list view
         panelContentList.hide();
+    },
+
+    /**
+     * Shows panel input
+     *
+     * @private
+     */
+    _showPanelInput: function () {
+        // Vars
+        var panelInput = this.get('panelInput'),
+            animation;
+
+        // Show panel only if it's hidden
+        if (panelInput.getStyle('opacity') < 1) {
+
+            // Create animation instance
+            animation = new Y.Anim({
+                node: panelInput,
+                duration: 0.2,
+                from: {
+                    opacity: 0
+                },
+                to: {
+                    opacity: 1
+                }
+            });
+
+            // Run animation
+            animation.run();
+        }
+    },
+
+    /**
+     * Hides input panel
+     *
+     * @private
+     */
+    _hidePanelInput: function () {
+        // Vars
+        var panelInput = this.get('panelInput');
+
+        // Set the opacity only. We don't want to show/hide the panel by calling
+        // the show() or hide() method since this will remove it from the visible
+        // are and brake the panel size. Thus we only manipulate the opacity
+        panelInput.setStyle('opacity', 0);
     },
 
     /**

@@ -279,7 +279,7 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
         // Render incoming data
         this.render();
         // Hide error
-        errorView.hideErrorMessage(true);
+        errorView.hideErrorMessage(false);
     },
 
     /**

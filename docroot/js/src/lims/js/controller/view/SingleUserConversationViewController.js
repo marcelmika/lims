@@ -42,8 +42,14 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
          * Panel Did Load is called when the panel is attached to the controller
          */
         onPanelDidLoad: function () {
+            // Vars
+            var listView = this.get('listView');
+
             // Events
             this._attachEvents();
+
+            // Hide the panel input. We don't want users to post any messages until the message feed is ready
+            listView.hideView();
         },
 
         /**
@@ -277,8 +283,8 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
                 listView = this.get('listView');
 
             // Hide error messages if there were any
-            createErrorView.hideErrorMessage(true);
-            readErrorView.hideErrorMessage(true);
+            createErrorView.hideErrorMessage(false);
+            readErrorView.hideErrorMessage(false);
             // Show the panel input so the user can post messages
             listView.showView();
         },

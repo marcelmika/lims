@@ -584,6 +584,7 @@
 }
 
 .liferay-ims .conversation .panel-input {
+    opacity: 0; /* panel input is hidden until the message feed is loaded */
     position: relative;
     height: 34px;
 }
