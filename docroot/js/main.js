@@ -40,7 +40,8 @@ AUI().use('lims-core', "lims-model", "lims-view", "lims-controller", function (A
             timeRangeHoursAgo: Liferay.Language.get('time-range-hours-ago'),
             timeRangeYesterday: Liferay.Language.get('time-range-yesterday'),
             timeRangeDaysAgo: Liferay.Language.get('time-range-days-ago'),
-            timeRangeWeeksAgo: Liferay.Language.get('time-range-weeks-ago')
+            timeRangeWeeksAgo: Liferay.Language.get('time-range-weeks-ago'),
+            dateFormat: Liferay.Language.get('date-format')
         };
 
         // Start the app!

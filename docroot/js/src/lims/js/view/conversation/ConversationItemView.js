@@ -72,7 +72,7 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
         // Fill data from model to template and set it to container
         container.set('innerHTML', Y.Lang.sub(this.template, {
                 createdPrettified: formatter.prettyDate(model.get('createdAt')),
-                created: new Date(model.get('createdAt')),
+                created: formatter.formatDate(new Date(model.get('createdAt'))),
                 fullName: from.get('fullName'),
                 content: Y.Escape.html(model.get('body')),
                 portrait: this._renderPortrait(from.get('screenName'))

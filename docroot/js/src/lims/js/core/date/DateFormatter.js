@@ -57,7 +57,7 @@ Y.LIMS.Core.DateFormatter = Y.Base.create('dateFormatter', Y.Base, [], {
         }
 
         // Unknown value or value above possible ranges
-        if (isNaN(dayDiff) || dayDiff >= 31) {
+        if (isNaN(dayDiff)) {
             return "";
         }
 
@@ -73,13 +73,13 @@ Y.LIMS.Core.DateFormatter = Y.Base.create('dateFormatter', Y.Base, [], {
         else if (dayDiff < 7) {
             return this._lastThanWeek(dayDiff);
         }
-        // More than a week
-        else if (dayDiff < 31) {
-            return this._moreThanWeek(dayDiff);
+        // More than a week less than a month
+        else if (dayDiff <= 31) {
+            return this._lessThanMonth(dayDiff);
         }
-        // Unknown value
+        // More than a month
         else {
-            return '';
+            return this.formatDate(date);
         }
     },
 
@@ -157,19 +157,39 @@ Y.LIMS.Core.DateFormatter = Y.Base.create('dateFormatter', Y.Base, [], {
 
     /**
      * Returns a textual representation of a time range
-     * which is in the more than a week range
+     * which is in the more than a week range but less than month
      *
      * @param days
      * @returns {string}
      * @private
      */
-    _moreThanWeek: function (days) {
+    _lessThanMonth: function (days) {
         // Vars
         var ranges = this.get('localizedRanges');
 
         // Substitute number of days in a range
         return Y.Lang.sub(ranges.weeksAgo, {
             x: Math.ceil(days / 7)
+        });
+    },
+
+    /**
+     * Formats date to a string value
+     *
+     * @param date to be formatted
+     * @returns {string} formatted date
+     * @private
+     */
+    formatDate: function (date) {
+        // Vars
+        var dateFormat = this.get('dateFormat');
+
+        return Y.Lang.sub(dateFormat, {
+            day: date.getDate(),        // don't use getDay(), getDate() show the proper day actually
+            month: date.getMonth() + 1, // yep, +1 I'm not kidding
+            year: date.getFullYear(),   // don't use getYear(), it's deprecated
+            hours: date.getHours(),
+            minutes: (date.getMinutes() < 10 ? "0" : "") + date.getMinutes().toString()  // Add leading zero if needed
         });
     }
 
@@ -199,6 +219,17 @@ Y.LIMS.Core.DateFormatter = Y.Base.create('dateFormatter', Y.Base, [], {
                     daysAgo: Y.LIMS.Core.i18n.values.timeRangeDaysAgo,
                     weeksAgo: Y.LIMS.Core.i18n.values.timeRangeWeeksAgo
                 };
+            }
+        },
+
+        /**
+         * Format of the date
+         *
+         * {string}
+         */
+        dateFormat: {
+            valueFn: function () {
+                return Y.LIMS.Core.i18n.values.dateFormat;
             }
         }
     }
