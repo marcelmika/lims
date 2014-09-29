@@ -26,6 +26,7 @@ import com.marcelmika.lims.persistence.generated.model.Participant;
 import com.marcelmika.lims.persistence.generated.service.PanelLocalServiceUtil;
 import com.marcelmika.lims.persistence.generated.service.base.ParticipantLocalServiceBaseImpl;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -75,8 +76,13 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
             participantModel.setUnreadMessagesCount(0);
         }
 
-        // Open conversation for participant
-        participantModel.setIsOpened(true);
+        // Only if the conversation isn't opened for the participant already
+        if (!participantModel.getIsOpened()) {
+            // Set the time when the conversation was opened
+            participantModel.setOpenedAt(Calendar.getInstance().getTimeInMillis());
+            // Open conversation for participant
+            participantModel.setIsOpened(true);
+        }
 
         // Save
         participantPersistence.update(participantModel, false);
@@ -109,10 +115,17 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
             // the user
             int unreadMessageCount = participant.getUnreadMessagesCount();
             participant.setUnreadMessagesCount(++unreadMessageCount);
-            // Open the conversation. In other words if the user closed the conversation open it again for him.
-            // By opening we doesn't mean opening the panel. The panel may be minimized but the conversation is still
-            // opened.
-            participant.setIsOpened(true);
+
+            // Only if the conversation isn't opened for the participant already
+            if (!participant.getIsOpened()) {
+                // Open the conversation. In other words if the user closed the conversation open it again for him.
+                // By opening we doesn't mean opening the panel. The panel may be minimized but the conversation is still
+                // opened.
+                participant.setIsOpened(true);
+                // Set the time when the conversation was opened
+                participant.setOpenedAt(Calendar.getInstance().getTimeInMillis());
+            }
+
             // Save the participant
             participantPersistence.update(participant, false);
         }

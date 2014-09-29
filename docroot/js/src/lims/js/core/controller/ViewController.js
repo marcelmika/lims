@@ -234,7 +234,9 @@ Y.LIMS.Core.ViewController = Y.Base.create('viewController', Y.View, [], {
         if (panel === this.get('panel')) {
             this.onPanelDidUnload();
             // Fire event
-            this.fire('panelDidUnload', this);
+            this.fire('panelDidUnload', {
+                controllerId: this.get('controllerId')
+            });
         }
     },
 

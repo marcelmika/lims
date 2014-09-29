@@ -52,6 +52,7 @@
 			<basic name="participantId" />
 			<basic name="unreadMessagesCount" />
 			<basic name="isOpened" />
+			<basic name="openedAt" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

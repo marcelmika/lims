@@ -35,7 +35,7 @@ public class ParticipantCacheModel implements CacheModel<Participant>,
 	Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("{pid=");
 		sb.append(pid);
@@ -47,6 +47,8 @@ public class ParticipantCacheModel implements CacheModel<Participant>,
 		sb.append(unreadMessagesCount);
 		sb.append(", isOpened=");
 		sb.append(isOpened);
+		sb.append(", openedAt=");
+		sb.append(openedAt);
 		sb.append("}");
 
 		return sb.toString();
@@ -61,6 +63,7 @@ public class ParticipantCacheModel implements CacheModel<Participant>,
 		participantImpl.setParticipantId(participantId);
 		participantImpl.setUnreadMessagesCount(unreadMessagesCount);
 		participantImpl.setIsOpened(isOpened);
+		participantImpl.setOpenedAt(openedAt);
 
 		participantImpl.resetOriginalValues();
 
@@ -74,6 +77,7 @@ public class ParticipantCacheModel implements CacheModel<Participant>,
 		participantId = objectInput.readLong();
 		unreadMessagesCount = objectInput.readInt();
 		isOpened = objectInput.readBoolean();
+		openedAt = objectInput.readLong();
 	}
 
 	@Override
@@ -84,6 +88,7 @@ public class ParticipantCacheModel implements CacheModel<Participant>,
 		objectOutput.writeLong(participantId);
 		objectOutput.writeInt(unreadMessagesCount);
 		objectOutput.writeBoolean(isOpened);
+		objectOutput.writeLong(openedAt);
 	}
 
 	public long pid;
@@ -91,4 +96,5 @@ public class ParticipantCacheModel implements CacheModel<Participant>,
 	public long participantId;
 	public int unreadMessagesCount;
 	public boolean isOpened;
+	public long openedAt;
 }

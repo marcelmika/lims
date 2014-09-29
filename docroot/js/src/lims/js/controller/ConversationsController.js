@@ -155,8 +155,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                 });
 
                 // Remove controller from map if it's unloaded from the screen
-                controller.on('panelDidUnload', function () {
-                    delete map[conversationId];
+                controller.on('panelDidUnload', function (event) {
+                    delete map[event.controllerId];
                 });
 
                 // Add to map
@@ -240,8 +240,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             conversationModel.save();
 
             // Remove controller from map if it's unloaded from the screen
-            controller.on('panelDidUnload', function () {
-                delete map[conversationId];
+            controller.on('panelDidUnload', function (event) {
+                delete map[event.controllerId];
             });
 
             // Add controller to map
@@ -268,7 +268,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
             container = this.get('container'),                      // Container of all conversations
             notification = this.get('notification'),                // Notification handler
             settings = this.get('settings'),                        // Settings of logged user
-            properties = this.get('properties'),                // Portlet properties
+            properties = this.get('properties'),                    // Portlet properties
             conversationId;                                         // Id of the conversation passed to controller
 
         // For each conversation check if new controller should be created if some
@@ -323,8 +323,8 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                 });
 
                 // Remove controller from map if it's unloaded from the screen
-                controller.on('panelDidUnload', function () {
-                    delete map[conversationId];
+                controller.on('panelDidUnload', function (event) {
+                    delete map[event.controllerId];
                 });
 
                 // Add controller to map

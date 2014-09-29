@@ -34,6 +34,7 @@ public class ParticipantSoap implements Serializable {
 		soapModel.setParticipantId(model.getParticipantId());
 		soapModel.setUnreadMessagesCount(model.getUnreadMessagesCount());
 		soapModel.setIsOpened(model.getIsOpened());
+		soapModel.setOpenedAt(model.getOpenedAt());
 
 		return soapModel;
 	}
@@ -130,9 +131,18 @@ public class ParticipantSoap implements Serializable {
 		_isOpened = isOpened;
 	}
 
+	public long getOpenedAt() {
+		return _openedAt;
+	}
+
+	public void setOpenedAt(long openedAt) {
+		_openedAt = openedAt;
+	}
+
 	private long _pid;
 	private long _cid;
 	private long _participantId;
 	private int _unreadMessagesCount;
 	private boolean _isOpened;
+	private long _openedAt;
 }

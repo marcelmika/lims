@@ -31,6 +31,7 @@
 		<field name="participantId" type="long" />
 		<field name="unreadMessagesCount" type="int" />
 		<field name="isOpened" type="boolean" />
+		<field name="openedAt" type="long" />
 	</model>
 	<model name="com.marcelmika.lims.persistence.generated.model.Settings">
 		<field name="sid" type="long" />

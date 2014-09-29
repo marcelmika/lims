@@ -95,7 +95,8 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 			ParticipantModelImpl.FINDER_CACHE_ENABLED, ParticipantImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCid",
 			new String[] { Long.class.getName() },
-			ParticipantModelImpl.CID_COLUMN_BITMASK);
+			ParticipantModelImpl.CID_COLUMN_BITMASK |
+			ParticipantModelImpl.OPENEDAT_COLUMN_BITMASK);
 	public static final FinderPath FINDER_PATH_COUNT_BY_CID = new FinderPath(ParticipantModelImpl.ENTITY_CACHE_ENABLED,
 			ParticipantModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCid",
@@ -825,7 +826,8 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 			"findByParticipantIdIsOpened",
 			new String[] { Long.class.getName(), Boolean.class.getName() },
 			ParticipantModelImpl.PARTICIPANTID_COLUMN_BITMASK |
-			ParticipantModelImpl.ISOPENED_COLUMN_BITMASK);
+			ParticipantModelImpl.ISOPENED_COLUMN_BITMASK |
+			ParticipantModelImpl.OPENEDAT_COLUMN_BITMASK);
 	public static final FinderPath FINDER_PATH_COUNT_BY_PARTICIPANTIDISOPENED = new FinderPath(ParticipantModelImpl.ENTITY_CACHE_ENABLED,
 			ParticipantModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -1699,6 +1701,7 @@ public class ParticipantPersistenceImpl extends BasePersistenceImpl<Participant>
 		participantImpl.setParticipantId(participant.getParticipantId());
 		participantImpl.setUnreadMessagesCount(participant.getUnreadMessagesCount());
 		participantImpl.setIsOpened(participant.isIsOpened());
+		participantImpl.setOpenedAt(participant.getOpenedAt());
 
 		return participantImpl;
 	}

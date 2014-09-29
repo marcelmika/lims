@@ -61,12 +61,13 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 			{ "cid", Types.BIGINT },
 			{ "participantId", Types.BIGINT },
 			{ "unreadMessagesCount", Types.INTEGER },
-			{ "isOpened", Types.BOOLEAN }
+			{ "isOpened", Types.BOOLEAN },
+			{ "openedAt", Types.BIGINT }
 		};
-	public static final String TABLE_SQL_CREATE = "create table Lims_Participant (pid LONG not null primary key,cid LONG,participantId LONG,unreadMessagesCount INTEGER,isOpened BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table Lims_Participant (pid LONG not null primary key,cid LONG,participantId LONG,unreadMessagesCount INTEGER,isOpened BOOLEAN,openedAt LONG)";
 	public static final String TABLE_SQL_DROP = "drop table Lims_Participant";
-	public static final String ORDER_BY_JPQL = " ORDER BY participant.pid ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY Lims_Participant.pid ASC";
+	public static final String ORDER_BY_JPQL = " ORDER BY participant.openedAt ASC";
+	public static final String ORDER_BY_SQL = " ORDER BY Lims_Participant.openedAt ASC";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
@@ -82,7 +83,7 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 	public static long CID_COLUMN_BITMASK = 1L;
 	public static long ISOPENED_COLUMN_BITMASK = 2L;
 	public static long PARTICIPANTID_COLUMN_BITMASK = 4L;
-	public static long PID_COLUMN_BITMASK = 8L;
+	public static long OPENEDAT_COLUMN_BITMASK = 8L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
 				"lock.expiration.time.com.marcelmika.lims.persistence.generated.model.Participant"));
 
@@ -128,6 +129,7 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 		attributes.put("participantId", getParticipantId());
 		attributes.put("unreadMessagesCount", getUnreadMessagesCount());
 		attributes.put("isOpened", getIsOpened());
+		attributes.put("openedAt", getOpenedAt());
 
 		return attributes;
 	}
@@ -163,6 +165,12 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 
 		if (isOpened != null) {
 			setIsOpened(isOpened);
+		}
+
+		Long openedAt = (Long)attributes.get("openedAt");
+
+		if (openedAt != null) {
+			setOpenedAt(openedAt);
 		}
 	}
 
@@ -257,6 +265,18 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 		return _originalIsOpened;
 	}
 
+	@Override
+	public long getOpenedAt() {
+		return _openedAt;
+	}
+
+	@Override
+	public void setOpenedAt(long openedAt) {
+		_columnBitmask = -1L;
+
+		_openedAt = openedAt;
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -293,6 +313,7 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 		participantImpl.setParticipantId(getParticipantId());
 		participantImpl.setUnreadMessagesCount(getUnreadMessagesCount());
 		participantImpl.setIsOpened(getIsOpened());
+		participantImpl.setOpenedAt(getOpenedAt());
 
 		participantImpl.resetOriginalValues();
 
@@ -301,17 +322,23 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 
 	@Override
 	public int compareTo(Participant participant) {
-		long primaryKey = participant.getPrimaryKey();
+		int value = 0;
 
-		if (getPrimaryKey() < primaryKey) {
-			return -1;
+		if (getOpenedAt() < participant.getOpenedAt()) {
+			value = -1;
 		}
-		else if (getPrimaryKey() > primaryKey) {
-			return 1;
+		else if (getOpenedAt() > participant.getOpenedAt()) {
+			value = 1;
 		}
 		else {
-			return 0;
+			value = 0;
 		}
+
+		if (value != 0) {
+			return value;
+		}
+
+		return 0;
 	}
 
 	@Override
@@ -374,12 +401,14 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 
 		participantCacheModel.isOpened = getIsOpened();
 
+		participantCacheModel.openedAt = getOpenedAt();
+
 		return participantCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("{pid=");
 		sb.append(getPid());
@@ -391,6 +420,8 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 		sb.append(getUnreadMessagesCount());
 		sb.append(", isOpened=");
 		sb.append(getIsOpened());
+		sb.append(", openedAt=");
+		sb.append(getOpenedAt());
 		sb.append("}");
 
 		return sb.toString();
@@ -398,7 +429,7 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(22);
 
 		sb.append("<model><model-name>");
 		sb.append("com.marcelmika.lims.persistence.generated.model.Participant");
@@ -424,6 +455,10 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 			"<column><column-name>isOpened</column-name><column-value><![CDATA[");
 		sb.append(getIsOpened());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>openedAt</column-name><column-value><![CDATA[");
+		sb.append(getOpenedAt());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -445,6 +480,7 @@ public class ParticipantModelImpl extends BaseModelImpl<Participant>
 	private boolean _isOpened;
 	private boolean _originalIsOpened;
 	private boolean _setOriginalIsOpened;
+	private long _openedAt;
 	private long _columnBitmask;
 	private Participant _escapedModel;
 }
