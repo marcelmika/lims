@@ -292,6 +292,12 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
      * @private
      */
     _onDestroy: function () {
+        // Vars
+        var container = this.get('container');
+
+        // Remove container from DOM
+        container.remove();
+
         // Destroying a view no longer also destroys the view's container node by default.
         // To destroy a view's container node when destroying the view, pass {remove: true}
         // to the view's destroy() method.
