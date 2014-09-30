@@ -386,6 +386,8 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
 
         // Get rid of new line characters
         value = textField.get('value').replace(/\n|\r/gim, '');
+        // Get rid of empty spaces
+        value = Y.Lang.trim(value);
 
         // Send message on enter
         if (event.keyCode === 13 && !event.shiftKey && value.length) {
