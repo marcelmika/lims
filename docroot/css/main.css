@@ -176,6 +176,22 @@
 / CHAT CONTAINER
 /********************************************************************************/
 
+.liferay-ims .unsupported-browser {
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    bottom: 0;
+    position: fixed;
+    right: 5em;
+    padding: 3px 10px;
+    z-index: 999;
+}
+
+.liferay-ims .unsupported-browser a {
+    color: #444;
+    text-decoration: none;
+}
+
 .liferay-ims .lims-bar {
     background: #fafafa;
     border: 1px solid #ddd;

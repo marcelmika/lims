@@ -1,7 +1,7 @@
 AUI().use('lims-core', "lims-model", "lims-view", "lims-controller", function (A) {
 
     // If there is no chat bar do nothing
-    if (!A.one('#lims-container')) {
+    if (!A.one('#lims-container .lims-bar')) {
         return;
     }
 

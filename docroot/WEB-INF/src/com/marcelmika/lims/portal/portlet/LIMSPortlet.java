@@ -70,6 +70,7 @@ public class LIMSPortlet extends MVCPortlet {
     private static final String VIEW_JSP_PATH = "/view.jsp"; // Path to the view.jsp
 
     // Variables
+    private static final String VARIABLE_IS_SUPPORTED_BROWSER = "isSupportedBrowser";
     private static final String VARIABLE_SETTINGS = "settings";
     private static final String VARIABLE_CONVERSATIONS = "conversations";
     private static final String VARIABLE_IS_ENABLED = "isEnabled";
@@ -96,18 +97,47 @@ public class LIMSPortlet extends MVCPortlet {
     public void doView(RenderRequest renderRequest,
                        RenderResponse renderResponse) throws PortletException, IOException {
 
-        // Settings pane
-        renderSettings(renderRequest);
-        // Conversations pane
-        renderConversations(renderRequest);
-        // Additional parameters
-        renderAdditions(renderRequest);
+        // Check the availability of browser
+        boolean isSupportedBrowser = BrowserDetector.isSupportedBrowser(renderRequest);
+
+        // Render portlet only if the browser is supported
+        if (isSupportedBrowser) {
+            // Settings pane
+            renderSettings(renderRequest);
+            // Conversations pane
+            renderConversations(renderRequest);
+        }
 
         // Set correct content type
         renderResponse.setContentType(renderRequest.getResponseContentType());
+        // Additional parameters
+        renderAdditions(renderRequest);
 
         // Set response to view.jsp
         include(VIEW_JSP_PATH, renderRequest, renderResponse);
+    }
+
+    /**
+     * This method is called whenever the server gets an AJAX request from client. All asynchronous requests
+     * should go over this method.
+     *
+     * @param request  Asynchronous request from client
+     * @param response Response from server
+     * @throws PortletException
+     * @throws IOException
+     */
+    @Override
+    public void serveResource(ResourceRequest request, ResourceResponse response) throws PortletException, IOException {
+        // Do not continue if the user is not signed in
+        if (!isCorrectAttempt(request)) {
+            // Return unauthorized response code
+            response.setProperty(ResourceResponse.HTTP_STATUS_CODE, HttpStatus.UNAUTHORIZED.toString());
+            return;
+        }
+        // Response content type is JSON
+        response.setContentType(ContentTypes.APPLICATION_JSON);
+        // This is an entry point to the whole app. Processor will do all the necessary work and fill the response.
+        processor.processRequest(request, response);
     }
 
     /**
@@ -179,37 +209,15 @@ public class LIMSPortlet extends MVCPortlet {
      * @param renderRequest RenderRequest
      */
     private void renderAdditions(RenderRequest renderRequest) {
-        // Check if lims is enabled and pass it to jsp as a parameter
-        renderRequest.setAttribute(VARIABLE_IS_ENABLED, isCorrectAttempt(renderRequest));
-
         // Get buddy from request
         Buddy buddy = Buddy.fromRenderRequest(renderRequest);
+        // Check if lims is enabled and pass it to jsp as a parameter
+        renderRequest.setAttribute(VARIABLE_IS_ENABLED, isCorrectAttempt(renderRequest));
+        // Check if the browser is supported
+        renderRequest.setAttribute(VARIABLE_IS_SUPPORTED_BROWSER, BrowserDetector.isSupportedBrowser(renderRequest));
         // Screen name cannot be accessed via javascript so we need to render it manually
         renderRequest.setAttribute(VARIABLE_SCREEN_NAME, buddy.getScreenName());
         renderRequest.setAttribute(VARIABLE_FULL_NAME, buddy.getFullName());
-    }
-
-    /**
-     * This method is called whenever the server gets an AJAX request from client. All asynchronous requests
-     * should go over this method.
-     *
-     * @param request  Asynchronous request from client
-     * @param response Response from server
-     * @throws PortletException
-     * @throws IOException
-     */
-    @Override
-    public void serveResource(ResourceRequest request, ResourceResponse response) throws PortletException, IOException {
-        // Do not continue if the user is not signed in
-        if (!isCorrectAttempt(request)) {
-            // Return unauthorized response code
-            response.setProperty(ResourceResponse.HTTP_STATUS_CODE, HttpStatus.UNAUTHORIZED.toString());
-            return;
-        }
-        // Response content type is JSON
-        response.setContentType(ContentTypes.APPLICATION_JSON);
-        // This is an entry point to the whole app. Processor will do all the necessary work and fill the response.
-        processor.processRequest(request, response);
     }
 
     /**

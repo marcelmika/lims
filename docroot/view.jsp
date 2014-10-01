@@ -1,5 +1,6 @@
 <%-- Variables --%>
 <%--@elvariable id="isEnabled" type="boolean"--%>
+<%--@elvariable id="isSupportedBrowser" type="boolean"--%>
 <%--@elvariable id="screenName" type="String"--%>
 <%--@elvariable id="fullName" type="String"--%>
 
@@ -23,55 +24,72 @@
 
     <%-- LIMS bar --%>
     <div id="lims-container">
-        <div class="lims-bar">
-            <div class="lims-sound"></div>
-            <div class="lims-tabs-container">
-                <ul class="lims-tabs">
-                    <%@ include file="/WEB-INF/jspf/status-panel.jspf" %>
-                    <%@ include file="/WEB-INF/jspf/settings-panel.jspf" %>
-                    <%@ include file="/WEB-INF/jspf/group-list-panel.jspf" %>
-                    <%@ include file="/WEB-INF/jspf/conversations.jspf" %>
-                </ul>
+
+            <%-- Render portlet content only if the browser is supported --%>
+        <c:if test="${isSupportedBrowser}">
+
+            <div class="lims-bar">
+                <div class="lims-sound"></div>
+                <div class="lims-tabs-container">
+                    <ul class="lims-tabs">
+                        <%@ include file="/WEB-INF/jspf/status-panel.jspf" %>
+                        <%@ include file="/WEB-INF/jspf/settings-panel.jspf" %>
+                        <%@ include file="/WEB-INF/jspf/group-list-panel.jspf" %>
+                        <%@ include file="/WEB-INF/jspf/conversations.jspf" %>
+                    </ul>
+                </div>
             </div>
-        </div>
 
             <%-- Javascript Templates --%>
-        <%@ include file="/WEB-INF/jspf/templates.jspf" %>
+            <%@ include file="/WEB-INF/jspf/templates.jspf" %>
 
             <%-- Portlet Enabled Flag --%>
-        <aui:input type="hidden"
-                   id="limsPortletEnabled"
-                   name="limsPortletEnabled"
-                   useNamespace="false"
-                   value="${settings.chatEnabled}"/>
+            <aui:input type="hidden"
+                       id="limsPortletEnabled"
+                       name="limsPortletEnabled"
+                       useNamespace="false"
+                       value="${settings.chatEnabled}"/>
 
             <%-- Portlet URL --%>
-        <aui:input type="hidden"
-                   id="limsPortletURL"
-                   name="limsPortletURL"
-                   useNamespace="false"
-                   value="<%= renderResponse.encodeURL(limsPortletURL.toString()) %>"/>
+            <aui:input type="hidden"
+                       id="limsPortletURL"
+                       name="limsPortletURL"
+                       useNamespace="false"
+                       value="<%= renderResponse.encodeURL(limsPortletURL.toString()) %>"/>
 
             <%-- Server Time --%>
-        <aui:input type="hidden"
-                   id="limsCurrentServerTime"
-                   name="limsCurrentServerTime"
-                   useNamespace="false"
-                   value="<%= System.currentTimeMillis() %>"/>
+            <aui:input type="hidden"
+                       id="limsCurrentServerTime"
+                       name="limsCurrentServerTime"
+                       useNamespace="false"
+                       value="<%= System.currentTimeMillis() %>"/>
 
             <%-- Logged user screen name --%>
-        <aui:input type="hidden"
-                   id="limsCurrentUserScreenName"
-                   name="limsCurrentUserScreenName"
-                   useNamespace="false"
-                   value="${screenName}"/>
+            <aui:input type="hidden"
+                       id="limsCurrentUserScreenName"
+                       name="limsCurrentUserScreenName"
+                       useNamespace="false"
+                       value="${screenName}"/>
 
             <%-- Logged user full name --%>
-        <aui:input type="hidden"
-                   id="limsCurrentUserFullName"
-                   name="limsCurrentUserFullName"
-                   useNamespace="false"
-                   value="${fullName}"/>
+            <aui:input type="hidden"
+                       id="limsCurrentUserFullName"
+                       name="limsCurrentUserFullName"
+                       useNamespace="false"
+                       value="${fullName}"/>
+
+        </c:if>
+
+            <%-- Browser is not supported--%>
+        <c:if test="${!isSupportedBrowser}">
+            <div class="unsupported-browser">
+                <a href="http://marcelmika.com/lims/unsupported" target="_blank">
+                    <liferay-ui:message key="unsupported-browser-message"/>
+                </a>
+            </div>
+        </c:if>
+
+
     </div>
 
     <%-- Preloaded Images --%>
