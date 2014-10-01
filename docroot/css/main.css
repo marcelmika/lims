@@ -349,6 +349,11 @@
     margin-right: 7px;
     opacity: 0.8;
     outline: none;
+    filter: none;
+}
+
+.liferay-ims .panel-button:hover {
+    filter: none;
 }
 
 .liferay-ims .panel-button.minimize {
