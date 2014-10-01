@@ -1,6 +1,7 @@
 <%-- Variables --%>
 <%--@elvariable id="isEnabled" type="boolean"--%>
 <%--@elvariable id="isSupportedBrowser" type="boolean"--%>
+<%--@elvariable id="needsIESupport" type="boolean"--%>
 <%--@elvariable id="screenName" type="String"--%>
 <%--@elvariable id="fullName" type="String"--%>
 
@@ -16,6 +17,14 @@
 <liferay-theme:defineObjects/>
 <portlet:defineObjects/>
 
+<c:choose>
+    <c:when test="${needsIESupport}">
+        <c:set var="ieSupportClass" value="ie-support"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="ieSupportClass" value=""/>
+    </c:otherwise>
+</c:choose>
 
 <c:if test="${isEnabled}">
 
@@ -23,7 +32,7 @@
     <portlet:resourceURL var="limsPortletURL" id="view.jsp" escapeXml="false"/>
 
     <%-- LIMS bar --%>
-    <div id="lims-container">
+    <div id="lims-container" class="${ieSupportClass}">
 
             <%-- Render portlet content only if the browser is supported --%>
         <c:if test="${isSupportedBrowser}">

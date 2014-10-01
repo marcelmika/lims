@@ -331,6 +331,11 @@
     position: relative;
 }
 
+.liferay-ims .ie-support .panel-window {
+    border-right: 2px solid #dddad8;
+    border-bottom: 1px solid #dddad8;
+}
+
 /********************************************************************************
 / PANEL - BUTTONS
 /********************************************************************************/

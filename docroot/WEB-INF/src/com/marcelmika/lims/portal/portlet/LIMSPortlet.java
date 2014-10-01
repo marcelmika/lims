@@ -71,6 +71,7 @@ public class LIMSPortlet extends MVCPortlet {
 
     // Variables
     private static final String VARIABLE_IS_SUPPORTED_BROWSER = "isSupportedBrowser";
+    private static final String VARIABLE_NEEDS_IE_SUPPORT = "needsIESupport";
     private static final String VARIABLE_SETTINGS = "settings";
     private static final String VARIABLE_CONVERSATIONS = "conversations";
     private static final String VARIABLE_IS_ENABLED = "isEnabled";
@@ -215,6 +216,8 @@ public class LIMSPortlet extends MVCPortlet {
         renderRequest.setAttribute(VARIABLE_IS_ENABLED, isCorrectAttempt(renderRequest));
         // Check if the browser is supported
         renderRequest.setAttribute(VARIABLE_IS_SUPPORTED_BROWSER, BrowserDetector.isSupportedBrowser(renderRequest));
+        // Check if the browser needs support
+        renderRequest.setAttribute(VARIABLE_NEEDS_IE_SUPPORT, BrowserDetector.needsInternetExplorerSupport(renderRequest));
         // Screen name cannot be accessed via javascript so we need to render it manually
         renderRequest.setAttribute(VARIABLE_SCREEN_NAME, buddy.getScreenName());
         renderRequest.setAttribute(VARIABLE_FULL_NAME, buddy.getFullName());

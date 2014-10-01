@@ -56,7 +56,7 @@ public class BrowserDetector {
         // Cast to http servlet request
         HttpServletRequest httpServletRequest = PortalUtil.getHttpServletRequest(request);
 
-        return validateInternetExplorer(httpServletRequest);
+        return isSupportedBrowser(httpServletRequest);
     }
 
     /**
@@ -68,6 +68,24 @@ public class BrowserDetector {
     public static boolean isSupportedBrowser(HttpServletRequest request) {
         // Check the availability of all browsers
         return validateInternetExplorer(request);
+    }
+
+    /**
+     * Returns true if the browser that sent the request needs support for older
+     * internet explorer browsers.
+     *
+     * @param request RenderRequest
+     * @return true if the browser needs internet explorer support
+     */
+    public static boolean needsInternetExplorerSupport(RenderRequest request) {
+        // Cast to http servlet request
+        HttpServletRequest httpServletRequest = PortalUtil.getHttpServletRequest(request);
+
+        // Check the availability of Internet Explorer
+        boolean isIE = BrowserSnifferUtil.isIe(httpServletRequest);
+        float majorVersion = BrowserSnifferUtil.getMajorVersion(httpServletRequest);
+
+        return isIE && majorVersion <= 8;
     }
 
     /**
