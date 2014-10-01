@@ -41,7 +41,7 @@ import javax.servlet.http.HttpServletRequest;
 public class BrowserDetector {
 
     // Minimal supported version of Internet Explorer
-    private static final float MIN_SUPPORTED_VERSION_IE = 9;
+    private static final float MIN_SUPPORTED_VERSION_IE = 8;
 
     // Log
     private static Log log = LogFactoryUtil.getLog(BrowserDetector.class);

@@ -67,7 +67,7 @@ Y.LIMS.Model.ServerTimeModel = Y.Base.create('settingsModel', Y.Model, [Y.LIMS.M
                             networkDelayOffset = timeAfterResponse - timeBeforeRequest;
 
                             // Deserialize response
-                            response = Y.JSON.parse(o.response);
+                            response = Y.JSON.parse(o.responseText);
 
                             // Update attributes
                             instance.setAttrs(response);
@@ -87,7 +87,7 @@ Y.LIMS.Model.ServerTimeModel = Y.Base.create('settingsModel', Y.Model, [Y.LIMS.M
                             }
 
                             if (callback) {
-                                callback("Cannot read server time", o.response);
+                                callback("Cannot read server time", o.responseText);
                             }
                         }
                     }

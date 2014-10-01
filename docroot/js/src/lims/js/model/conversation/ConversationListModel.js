@@ -123,7 +123,7 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
                     on: {
                         success: function (id, o) {
                             // Deserialize response
-                            response = Y.JSON.parse(o.response);
+                            response = Y.JSON.parse(o.responseText);
                             // Update conversation list
                             instance.updateConversationList(response);
                             // Call success

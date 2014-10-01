@@ -81,7 +81,7 @@ Y.LIMS.Model.BuddySearchListModel = Y.Base.create('buddySearchListModel', Y.Mode
                                 index;
 
                             // Parse buddies from response
-                            buddies = Y.JSON.parse(o.response);
+                            buddies = Y.JSON.parse(o.responseText);
 
                             // Empty the list
                             instance.reset();
@@ -111,12 +111,9 @@ Y.LIMS.Model.BuddySearchListModel = Y.Base.create('buddySearchListModel', Y.Mode
 
                             // Callback the error
                             if (callback) {
-                                callback("search error", o.response);
+                                callback("search error", o.responseText);
                             }
                         }
-                    },
-                    headers: {
-                        'Content-Type': 'application/json'
                     }
                 });
                 break;

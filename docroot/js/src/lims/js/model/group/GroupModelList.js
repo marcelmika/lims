@@ -68,7 +68,7 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
 
                             var i, groupCollection, groups, group, buddies;
                             // Parse groups
-                            groupCollection = Y.JSON.parse(o.response);
+                            groupCollection = Y.JSON.parse(o.responseText);
                             groups = groupCollection.groups;
 
                             if (etag.toString() !== groupCollection.etag.toString()) {
@@ -119,12 +119,9 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
                             instance.fire('groupsReadError');
 
                             if (callback) {
-                                callback("group model error", o.response);
+                                callback("group model error", o.responseText);
                             }
                         }
-                    },
-                    headers: {
-                        'Content-Type': 'application/json'
                     }
                 });
 

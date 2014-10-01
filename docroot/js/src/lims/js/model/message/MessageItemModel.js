@@ -102,7 +102,7 @@ Y.LIMS.Model.MessageItemModel = Y.Base.create('messageItemModel', Y.Model, [Y.LI
                             instance.fire('messageError');
 
                             if (callback) {
-                                callback("Cannot send message", o.response);
+                                callback("Cannot send message", o.responseText);
                             }
                         }
                     }

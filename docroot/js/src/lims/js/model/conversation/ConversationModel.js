@@ -192,7 +192,7 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
                     on: {
                         success: function (id, o) {
                             // Deserialize response
-                            response = Y.JSON.parse(o.response);
+                            response = Y.JSON.parse(o.responseText);
 
                             // Fire success event
                             instance.fire('createSuccess');
@@ -251,7 +251,7 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
                                 return;
                             }
                             // Deserialize response
-                            response = Y.JSON.parse(o.response);
+                            response = Y.JSON.parse(o.responseText);
                             // Update message list
                             instance.updateConversation(response);
 

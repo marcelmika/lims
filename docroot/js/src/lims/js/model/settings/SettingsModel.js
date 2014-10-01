@@ -68,7 +68,7 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [Y.LIMS.Mod
             on: {
                 success: function (id, o) {
                     if (callback) {
-                        callback(null, o.response);
+                        callback(null, o.responseText);
                     }
                 },
                 failure: function (x, o) {
@@ -79,7 +79,7 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [Y.LIMS.Mod
                     }
 
                     if (callback) {
-                        callback("Cannot update active panel", o.response);
+                        callback("Cannot update active panel", o.responseText);
                     }
                 }
             }
@@ -107,7 +107,7 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [Y.LIMS.Mod
                     },
                     on: {
                         success: function (id, o) {
-                            callback(null, o.response);
+                            callback(null, o.responseText);
                         },
                         failure: function (x, o) {
                             // If the attempt is unauthorized session has expired
@@ -115,7 +115,7 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [Y.LIMS.Mod
                                 // Notify everybody else
                                 Y.fire('userSessionExpired');
                             }
-                            callback("Cannot update settings", o.response);
+                            callback("Cannot update settings", o.responseText);
                         }
                     }
                 });
