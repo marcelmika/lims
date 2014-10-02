@@ -514,6 +514,7 @@
 .liferay-ims .panel-search .preloader {
     width: 20px;
     height: 20px;
+    background-image: url(../images/preloader-tiny.gif);
     background-size: 17px;
     top: 7px;
     right: 12px;
@@ -536,6 +537,7 @@
     }
 
     .liferay-ims .panel-search .preloader {
+        background-image: url(../images/preloader-tiny@2x.gif);
         background-size: auto 17px;
     }
 }
@@ -700,7 +702,7 @@
 .liferay-ims .conversation .conversation-item-error .resend-button.preloader {
     position: relative;
     margin: 0;
-    background: transparent url(../images/preloader-light.gif) center center no-repeat;
+    background: transparent url(../images/preloader-button.gif) center center no-repeat;
     background-size: 21px;
 }
 
@@ -713,6 +715,12 @@
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+
+    .liferay-ims .conversation .conversation-item-error .resend-button.preloader {
+        background: transparent url(../images/preloader-button@2x.gif) center center no-repeat;
+        background-size: 21px;
+    }
+
     .liferay-ims .conversation .conversation-item-error .warning-icon {
         background-image: url(../images/icon-warning-red@2x.png);
         background-size: auto 16px;
@@ -1197,7 +1205,7 @@
 .liferay-ims .error-notification .resend-button.activated {
     position: relative;
     text-align: center;
-    background: transparent url(../images/preloader-light.gif) center center no-repeat;
+    background: transparent url(../images/preloader-button.gif) center center no-repeat;
     background-size: 21px;
     width: 21px;
     height: 21px;
@@ -1215,7 +1223,7 @@
     }
 
     .liferay-ims .error-notification .resend-button.activated {
-        background-image: url(../images/preloader-light@2x.gif);
+        background-image: url(../images/preloader-button@2x.gif);
         background-size: auto 21px;
     }
 }
