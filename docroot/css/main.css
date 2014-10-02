@@ -780,11 +780,11 @@
     height: 36px;
     width: 36px;
     margin: 0 6px 2px 0;
+    float: left;
 }
 
 .liferay-ims .buddy-list .group-buddy-item-portrait .portrait {
     display: block;
-    float: left;
     height: 36px;
     width: 36px;
     background: #fff;
