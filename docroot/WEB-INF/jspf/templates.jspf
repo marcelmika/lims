@@ -74,12 +74,23 @@
     <div class="clear"></div>
 </script>
 
-<%-- This template HTML will be used to play a sound via swf file --%>
-<script type="text/x-template" id="lims-notification-template">
-    <audio class="lims-notification">
+<%-- This template HTML will be used to play a sound via audio tag --%>
+<script type="text/x-template" id="lims-notification-audio-template">
+    <audio class="lims-notification-audio">
         <source src="{mp3}" type="audio/mpeg">
         <source src="{wav}" type="audio/wav">
     </audio>
+</script>
+
+<%-- This template HTML will be used to play a sound via embed tag --%>
+<script type="text/x-template" id="lims-notification-embed-template">
+    <object class="lims-notification-embed">
+        <param name="autostart" value="true">
+        <param name="src" value="{wav}">
+        <param name="autoplay" value="true">
+        <param name="controller" value="true">
+        <embed src="{wav}" controller="false" autoplay="true" autostart="true" type="audio/wav"></embed>
+    </object>
 </script>
 
 <%-- This template HTML will be used as a panel search template --%>
