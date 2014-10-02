@@ -64,8 +64,10 @@
             </div>
             <ul class="lfr-component settings">
                 <li>
-                    <label for="playSound" class="switch">
-                        <input ${playSoundChecked} id="playSound" type="checkbox"/>
+                    <label for="limsPlaySoundCheckbox" class="switch">
+                        <input ${playSoundChecked} id="limsPlaySoundCheckbox"
+                                                   class="play-sound-checkbox"
+                                                   type="checkbox"/>
                         <span></span>
                     </label>
                     <liferay-ui:message key="panel-settings-play-sound-label"/>

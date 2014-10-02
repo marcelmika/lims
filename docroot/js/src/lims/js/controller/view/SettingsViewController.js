@@ -27,90 +27,135 @@
  */
 Y.namespace('LIMS.Controller');
 
-Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController', Y.LIMS.Core.ViewController, [], {
+Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController',
+    Y.LIMS.Core.ViewController, [Y.LIMS.Controller.ControllerExtension], {
 
-    /**
-     *  The initializer runs when a Group View Controller instance is created.
-     */
-    initializer: function () {
-        // This needs to be called in each view controller
-        this.setup(this.get('container'), this.get('controllerId'));
-    },
-
-    /**
-     * Panel Did Load is called when the panel is attached to the controller
-     */
-    onPanelDidLoad: function () {
-        // Reads current settings from rendered settings view
-        this._bindSettings();
-        // Events
-        this._attachEvents();
-    },
-
-    /**
-     * Attaches events to DOM elements from container
-     *
-     * @private
-     */
-    _attachEvents: function () {
-        // Vars
-        var soundCheckbox = this.get('soundCheckbox');
-
-        // Local events
-        soundCheckbox.on('click', this._onSoundCheckboxUpdated, this);
-    },
-
-    /**
-     * Reads settings from rendered dom
-     *
-     * @private
-     */
-    _bindSettings: function () {
-        // Vars
-        var model = this.get('model'),
-            isMute = this.get('soundCheckbox').get('checked') ? false : true;
-
-        // Set to model
-        model.set('isMute', isMute);
-    },
-
-    /**
-     * Sound checkbox changed
-     *
-     * @private
-     */
-    _onSoundCheckboxUpdated: function () {
-        var model = this.get('model'),
-            isMute = this.get('soundCheckbox').get('checked') ? false : true;
-        // Update model
-        model.set('isMute', isMute).save();
-    }
-
-}, {
-
-    // Specify attributes and static properties for your View here.
-    ATTRS: {
-
-        // Id of the controller
-        controllerId: {
-            value: "settings"
+        /**
+         *  The initializer runs when a Group View Controller instance is created.
+         */
+        initializer: function () {
+            // This needs to be called in each view controller
+            this.setup(this.get('container'), this.get('controllerId'));
+            // Check if the checkboxes need to support IE
+            this._supportCheckboxes();
         },
 
-        // Container Node
-        container: {
-            value: null // to be set
+        /**
+         * Panel Did Load is called when the panel is attached to the controller
+         */
+        onPanelDidLoad: function () {
+            // Reads current settings from rendered settings view
+            this._bindSettings();
+            // Events
+            this._attachEvents();
         },
 
-        // Y.LIMS.Model.SettingsModel
-        model: {
-            value: null // to be set
+        /**
+         * Attaches events to DOM elements from container
+         *
+         * @private
+         */
+        _attachEvents: function () {
+            // Vars
+            var soundCheckbox = this.get('soundCheckbox');
+
+            // Local events
+            soundCheckbox.on('click', this._onSoundCheckboxUpdated, this);
         },
 
-        // Sound checkbox node
-        soundCheckbox: {
-            valueFn: function () {
-                return this.get('container').one("#playSound");
+        /**
+         * Takes all checkboxes and checks if they are supported
+         *
+         * @private
+         */
+        _supportCheckboxes: function () {
+            // Vars
+            var checkboxes = this.get('checkboxes');
+
+            // Remove switch classes from checkboxes if the portlet
+            // is in the IE support mode
+            if (this.hasIESupport()) {
+                checkboxes.each(function (checkbox) {
+                    checkbox.ancestor().removeClass('switch');
+                });
+            }
+        },
+
+        /**
+         * Reads settings from rendered dom
+         *
+         * @private
+         */
+        _bindSettings: function () {
+            // Vars
+            var model = this.get('model'),
+                isMute = this.get('soundCheckbox').get('checked') ? false : true;
+
+            // Set to model
+            model.set('isMute', isMute);
+        },
+
+        /**
+         * Sound checkbox changed
+         *
+         * @private
+         */
+        _onSoundCheckboxUpdated: function () {
+            var model = this.get('model'),
+                isMute = this.get('soundCheckbox').get('checked') ? false : true;
+            // Update model
+            model.set('isMute', isMute).save();
+        }
+
+    }, {
+
+        // Specify attributes and static properties for your View here.
+        ATTRS: {
+
+            // Id of the controller
+            /**
+             * Id of the controller
+             *
+             * {string}
+             */
+            controllerId: {
+                value: "settings"
+            },
+
+            /**
+             * Container attached to controller
+             *
+             * {Node}
+             */
+            container: {
+                value: null // to be set
+            },
+
+            /**
+             * Model attached to controller
+             *
+             * {Y.LIMS.Model.SettingsModel}
+             */
+            model: {
+                value: null // to be set
+            },
+
+            checkboxes: {
+                getter: function () {
+                    return this.get('container').all('input[type=checkbox]');
+                }
+            },
+
+
+            /**
+             * Sound check box node
+             *
+             * {Node}
+             */
+            soundCheckbox: {
+                valueFn: function () {
+                    return this.get('container').one(".play-sound-checkbox");
+                }
             }
         }
-    }
-});
+    });

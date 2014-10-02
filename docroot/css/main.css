@@ -1064,10 +1064,13 @@
 
 /* Switch */
 
-.liferay-ims .switch {
+.liferay-ims label {
     display: inline-block;
     position: relative;
     cursor: pointer;
+}
+
+.liferay-ims label.switch {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;

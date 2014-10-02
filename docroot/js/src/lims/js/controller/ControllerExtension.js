@@ -33,6 +33,8 @@ Y.LIMS.Controller.ControllerExtension = function () {
 
 Y.LIMS.Controller.ControllerExtension.prototype = {
 
+    // Root node of the lims portlet
+    rootNode: '#lims-container',
 
     /**
      * Returns root container node
@@ -40,6 +42,15 @@ Y.LIMS.Controller.ControllerExtension.prototype = {
      * @returns {Node}
      */
     getRootNode: function () {
-        return Y.one('#lims-container');
+        return Y.one(this.rootNode);
+    },
+
+    /**
+     * Returns true if the portlet is in the IE support
+     *
+     * @returns {boolean}
+     */
+    hasIESupport: function () {
+        return Y.one(this.rootNode).hasClass('ie-support');
     }
 };
