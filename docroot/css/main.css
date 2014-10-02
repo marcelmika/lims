@@ -478,10 +478,9 @@
 }
 
 .liferay-ims .panel-search .search-input-field {
-    height: 12px;
     border: 1px solid #d4d4d4;
     width: 180px;
-    padding: 5px 27px 5px 27px;
+    padding: 2px 27px 2px 27px;
     background: #f1f1f1 url(../images/search-button.png) 7px center no-repeat;
     color: #1A1A1A;
     font-size: 12px;
