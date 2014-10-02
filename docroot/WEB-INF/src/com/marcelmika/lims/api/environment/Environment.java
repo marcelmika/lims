@@ -428,4 +428,12 @@ public class Environment {
         return PortletPropertiesValues.JABBER_SASL_PLAIN_PASSWORD;
     }
 
+    /**
+     * Returns true if the error mode is enabled
+     *
+     * @return boolean
+     */
+    public static Boolean isErrorModeEnabled() {
+        return PortletPropertiesValues.ERROR_MODE_ENABLED;
+    }
 }

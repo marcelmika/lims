@@ -140,6 +140,11 @@ public class PortletPropertiesValues {
             PortletPropertiesKeys.JABBER_SASL_PLAIN_PASSWORD
     );
 
+    // Error Mode
+    public static final Boolean ERROR_MODE_ENABLED = getBoolean(
+            PortletPropertiesKeys.ERROR_MODE_ENABLED
+    );
+
     /**
      * Returns string value from properties related to the key
      *
