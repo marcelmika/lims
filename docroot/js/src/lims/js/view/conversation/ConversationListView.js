@@ -340,7 +340,12 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
             animation;
 
         // Show panel only if it's hidden
-        if (panelInput.getStyle('opacity') < 1) {
+        if (panelInput.hasClass('covered')) {
+
+            // Remove the covered class
+            panelInput.removeClass('covered');
+            // Set the opacity to 0, just to be sure that it wasn't higher
+            panelInput.setStyle('opacity', 0);
 
             // Create animation instance
             animation = new Y.Anim({
@@ -372,6 +377,9 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         // the show() or hide() method since this will remove it from the visible
         // are and brake the panel size. Thus we only manipulate the opacity
         panelInput.setStyle('opacity', 0);
+
+        // Add the covered class for browsers that don't support opacity
+        panelInput.addClass('covered');
     },
 
     /**

@@ -90,7 +90,7 @@
                     <div class="preloader"></div>
                     <ul></ul>
                 </div>
-                <div class="panel-input">
+                <div class="panel-input covered">
                     <textarea
                             placeholder="<liferay-ui:message key="panel-conversation-message-placeholder" />"></textarea>
                 </div>
