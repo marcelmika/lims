@@ -88,7 +88,7 @@
         <param name="autostart" value="true">
         <param name="src" value="{wav}">
         <param name="autoplay" value="true">
-        <param name="controller" value="true">
+        <param name="controller" value="false">
         <embed src="{wav}" controller="false" autoplay="true" autostart="true" type="audio/wav"></embed>
     </object>
 </script>

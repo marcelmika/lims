@@ -215,6 +215,8 @@
 
 .liferay-ims .lims-sound {
     position: absolute;
+    top: -10000px;
+    bottom: -10000px;
 }
 
 .liferay-ims .lims-bar .panel {
