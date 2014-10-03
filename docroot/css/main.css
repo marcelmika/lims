@@ -535,7 +535,7 @@
 .liferay-ims .panel-search .error-notification,
 .liferay-ims .panel-search .info-notification {
     /* Move the notification views a bit up since there is a search input that takes the place */
-    margin-top: 10%;
+    top: 20%;
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
@@ -1185,7 +1185,7 @@
 /************************************************************************************/
 
 .liferay-ims .error-notification {
-    margin-top: 40%;
+    top: 40%;
     padding: 10px;
     width: 90%;
     position: absolute;
@@ -1247,7 +1247,7 @@
 /************************************************************************************/
 
 .liferay-ims .info-notification {
-    margin-top: 40%;
+    top: 40%;
     padding: 10px;
     width: 90%;
     position: absolute;
