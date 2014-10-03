@@ -96,7 +96,9 @@
 <%-- This template HTML will be used as a panel search template --%>
 <script type="text/x-template" id="lims-panel-search-template">
     <div class="panel-search">
-        <input class="search-input-field" type="text" value=""/>
+        <label class="search-input-field-label" for="lims-search-input-field">
+            <input id="lims-search-input-field" class="search-input-field" type="text" value=""/>
+        </label>
 
         <div class="search-content">
             <div class="preloader"></div>

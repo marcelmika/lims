@@ -479,9 +479,19 @@
     width: 100%;
 }
 
+.liferay-ims .panel-search .search-input-field-label {
+    padding: 0;
+    border: none;
+    height: 26px;
+    background: none;
+    margin: 5px 0 5px 7px;
+}
+
 .liferay-ims .panel-search .search-input-field {
     border: 1px solid #d4d4d4;
     width: 180px;
+    min-height: 21px;
+    max-height: 26px;
     padding: 2px 27px 2px 27px;
     background: #f1f1f1 url(../images/search-button.png) 7px center no-repeat;
     color: #1A1A1A;
@@ -493,7 +503,6 @@
     -webkit-border-radius: 10px;
     -ms-border-radius: 10px;
     border-radius: 10px;
-    margin: 5px 0 5px 7px;
 }
 
 .liferay-ims .panel-search .search-input-field:hover,
