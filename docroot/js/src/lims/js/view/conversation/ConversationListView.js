@@ -337,6 +337,7 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
     _showPanelInput: function () {
         // Vars
         var panelInput = this.get('panelInput'),
+            messageTextField = this.get('messageTextField'),
             animation;
 
         // Show panel only if it's hidden
@@ -346,6 +347,10 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
             panelInput.removeClass('covered');
             // Set the opacity to 0, just to be sure that it wasn't higher
             panelInput.setStyle('opacity', 0);
+            // Remove the readonly property if it was set before
+            messageTextField.removeAttribute('readonly');
+            // Add a focus to the text field
+            messageTextField.focus();
 
             // Create animation instance
             animation = new Y.Anim({
@@ -371,7 +376,8 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
      */
     _hidePanelInput: function () {
         // Vars
-        var panelInput = this.get('panelInput');
+        var panelInput = this.get('panelInput'),
+            messageTextField = this.get('messageTextField');
 
         // Set the opacity only. We don't want to show/hide the panel by calling
         // the show() or hide() method since this will remove it from the visible
@@ -380,6 +386,14 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
 
         // Add the covered class for browsers that don't support opacity
         panelInput.addClass('covered');
+
+        // Make the text field readonly since it's possible to continue writing even though
+        // the message field is hidden.
+        messageTextField.setAttribute('readonly', 'readonly');
+        // This needs to be here, otherwise the message text field will keep the focus on some browsers
+        // even though it's hidden. User thus would be able to write messages but nothing
+        // would be visible to him.
+        messageTextField.blur();
     },
 
     /**
