@@ -81,6 +81,7 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
 
         // Set date node
         this.set('dateNode', container.one('.conversation-item-date'));
+        this.set('messageTextNode', container.one('.conversation-item-text'));
 
         // Add subviews to the view
         this._addSubviews();
@@ -191,9 +192,10 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
      */
     _dimMessageText: function () {
         // Vars
-        var messageText = this.get('container').one('.conversation-item-text');
+        var messageTextNode = this.get('messageTextNode');
+
         // Dim the node
-        messageText.setStyle('opacity', 0.5);
+        messageTextNode.setStyle('opacity', 0.5);
     },
 
     /**
@@ -204,14 +206,14 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
     _brightMessageText: function (animated) {
 
         // Vars
-        var messageText = this.get('container').one('.conversation-item-text'),
+        var messageTextNode = this.get('messageTextNode'),
             animation;
 
         // Animate
         if (animated) {
             // Animate the message
             animation = new Y.Anim({
-                node: messageText,
+                node: messageTextNode,
                 duration: 0.1,
                 from: {opacity: 0.6},
                 to: {opacity: 1}
@@ -221,7 +223,7 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
         }
         // Don't animate
         else {
-            messageText.setStyle('opacity', 1);
+            messageTextNode.setStyle('opacity', 1);
         }
     },
 
@@ -334,7 +336,16 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
          * {Node}
          */
         dateNode: {
-            value: null
+            value: null // to be set
+        },
+
+        /**
+         * Return message text note from container
+         *
+         * {Node}
+         */
+        messageTextNode: {
+            value: null // to be set
         },
 
         /**
