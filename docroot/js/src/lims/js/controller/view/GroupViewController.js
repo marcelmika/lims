@@ -304,7 +304,10 @@ Y.LIMS.Controller.GroupViewController = Y.Base.create('groupViewController', Y.L
      * @private
      */
     _onBuddySelected: function () {
+        // Hide the controller
         this.dismissViewController();
+        // If the buddy was selected from search panel, hide it
+        this._hideSearchPanel();
     },
 
     /**
