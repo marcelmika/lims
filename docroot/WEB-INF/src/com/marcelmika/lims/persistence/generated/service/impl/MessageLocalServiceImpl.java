@@ -66,8 +66,15 @@ public class MessageLocalServiceImpl extends MessageLocalServiceBaseImpl {
 
     public List<Message> readMessages(long cid, int start, int end) throws SystemException {
 
+        // Get the total count of messages
         int count = messagePersistence.countByCid(cid);
-
-        return messagePersistence.findByCid(cid, count - end, count);
+        // Count the beginning
+        int begin = count - end;
+        // Beginning cannot be less than zero
+        if (begin < 0) {
+            begin = 0;
+        }
+        // Find messages related to the conversation
+        return messagePersistence.findByCid(cid, begin, count);
     }
 }
