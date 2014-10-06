@@ -109,11 +109,9 @@ public class GroupController {
             // ... and compare it with group collection etag
             // Cached
             if (parameters.getEtag().equals(groupCollection.getEtag())) {
-                // Serialize
-                String serialized = JSONFactoryUtil.looseSerialize(groupCollection);
                 // Etags equal which means that nothing has changed.
                 // Write only the group collection without groups and buddies (no extra traffic needed)
-                ResponseUtil.writeResponse(serialized, HttpStatus.OK, response);
+                ResponseUtil.writeResponse(HttpStatus.NOT_MODIFIED, response);
             }
             // Not cached
             else {

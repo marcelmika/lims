@@ -66,12 +66,19 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
                     on: {
                         success: function (id, o) {
 
+                            // If nothing has change the server return 304 (not modified)
+                            // As a result we don't need to refresh anything
+                            if (o.status === 304) {
+                                callback(null);
+                                return;
+                            }
+
                             var i, groupCollection, groups, group, buddies;
                             // Parse groups
                             groupCollection = Y.JSON.parse(o.responseText);
                             groups = groupCollection.groups;
 
-                            if (etag.toString() !== groupCollection.etag.toString()) {
+                            if (groupCollection.etag && etag.toString() !== groupCollection.etag.toString()) {
 
                                 // Empty the list
                                 instance.fire('groupReset');
@@ -101,7 +108,7 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
                             }
 
                             if (callback) {
-                                callback(null, instance);
+                                callback(null);
                             }
                         },
                         failure: function (x, o) {
