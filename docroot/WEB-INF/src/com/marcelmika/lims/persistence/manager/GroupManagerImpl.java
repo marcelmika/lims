@@ -148,8 +148,10 @@ public class GroupManagerImpl implements GroupManager {
 
         // Create group collection which will hold the only group that holds all users
         GroupCollection groupCollection = new GroupCollection();
-        // Add group to collection
-        groupCollection.addGroup(group);
+        // Add group to collection only if there are any buddies
+        if (group.getBuddies().size() > 0) {
+            groupCollection.addGroup(group);
+        }
         // Set list strategy
         groupCollection.setListStrategy(BuddyListStrategy.ALL);
         // Add last modified date
