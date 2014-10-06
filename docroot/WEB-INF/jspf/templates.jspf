@@ -148,3 +148,32 @@
         <div class="clear"></div>
     </div>
 </script>
+
+<%-- This template HTML will be used to render localization messages --%>
+<script type="text/x-template" id="lims-i18n">
+    {
+    "connectionErrorMessage":"<liferay-ui:message key="connection-error"/>",
+    "searchInfoMessage":"<liferay-ui:message key="panel-search-info-text"/>",
+    "searchNoResultsMessage":"<liferay-ui:message key="panel-search-no-results-text"/>",
+    "searchErrorMessage":"<liferay-ui:message key="panel-search-error-text"/>",
+    "groupListEmptyInfoMessage":"<liferay-ui:message key="panel-group-list-empty-info-text"/>",
+    "groupListErrorMessage":"<liferay-ui:message key="panel-group-list-error-text"/>",
+    "conversationCreateErrorMessage":"<liferay-ui:message key="panel-conversation-create-error-text"/>",
+    "conversationReadErrorMessage":"<liferay-ui:message key="panel-conversation-read-error-text"/>",
+    "socialRelationUnknown":"<liferay-ui:message key="social-relation-unknown"/>",
+    "socialRelationConnection":"<liferay-ui:message key="social-relation-connection"/>",
+    "socialRelationCoworker":"<liferay-ui:message key="social-relation-coworker"/>",
+    "socialRelationFriend":"<liferay-ui:message key="social-relation-friend"/>",
+    "socialRelationRomanticPartner":"<liferay-ui:message key="social-relation-romantic-partner"/>",
+    "socialRelationSibling":"<liferay-ui:message key="social-relation-sibling"/>",
+    "timeRangeJustNow":"<liferay-ui:message key="time-range-just-now"/>",
+    "timeRangeMinuteAgo":"<liferay-ui:message key="time-range-minute-ago"/>",
+    "timeRangeMinutesAgo":"<liferay-ui:message key="time-range-minutes-ago"/>",
+    "timeRangeHourAgo":"<liferay-ui:message key="time-range-hour-ago"/>",
+    "timeRangeHoursAgo":"<liferay-ui:message key="time-range-hours-ago"/>",
+    "timeRangeYesterday":"<liferay-ui:message key="time-range-yesterday"/>",
+    "timeRangeDaysAgo":"<liferay-ui:message key="time-range-days-ago"/>",
+    "timeRangeWeeksAgo":"<liferay-ui:message key="time-range-weeks-ago"/>",
+    "dateFormat":"<liferay-ui:message key="date-format"/>"
+    }
+</script>

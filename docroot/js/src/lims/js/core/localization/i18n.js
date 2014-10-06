@@ -35,4 +35,5 @@ Y.LIMS.Core.i18n = Y.Base.create('i18n', Y.Base, [], {
      * Holds the values object which contains all translations for the current language
      */
     values: null // This is set in main.js
+    
 });

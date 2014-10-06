@@ -17,32 +17,8 @@ AUI().use('lims-core', "lims-model", "lims-view", "lims-controller", function (A
         A.LIMS.Core.Properties.companyId = Liferay.ThemeDisplay.getCompanyId();
         A.LIMS.Core.Properties.isIE = Liferay.Browser.isIe();
 
-        // Set i18n values
-        A.LIMS.Core.i18n.values = {
-            connectionErrorMessage: Liferay.Language.get('connection-error'),
-            searchInfoMessage: Liferay.Language.get('panel-search-info-text'),
-            searchNoResultsMessage: Liferay.Language.get('panel-search-no-results-text'),
-            searchErrorMessage: Liferay.Language.get('panel-search-error-text'),
-            groupListEmptyInfoMessage: Liferay.Language.get('panel-group-list-empty-info-text'),
-            groupListErrorMessage: Liferay.Language.get('panel-group-list-error-text'),
-            conversationCreateErrorMessage: Liferay.Language.get('panel-conversation-create-error-text'),
-            conversationReadErrorMessage: Liferay.Language.get('panel-conversation-read-error-text'),
-            socialRelationUnknown: Liferay.Language.get('social-relation-unknown'),
-            socialRelationConnection: Liferay.Language.get('social-relation-connection'),
-            socialRelationCoworker: Liferay.Language.get('social-relation-coworker'),
-            socialRelationFriend: Liferay.Language.get('social-relation-friend'),
-            socialRelationRomanticPartner: Liferay.Language.get('social-relation-romantic-partner'),
-            socialRelationSibling: Liferay.Language.get('social-relation-sibling'),
-            timeRangeJustNow: Liferay.Language.get('time-range-just-now'),
-            timeRangeMinuteAgo: Liferay.Language.get('time-range-minute-ago'),
-            timeRangeMinutesAgo: Liferay.Language.get('time-range-minutes-ago'),
-            timeRangeHourAgo: Liferay.Language.get('time-range-hour-ago'),
-            timeRangeHoursAgo: Liferay.Language.get('time-range-hours-ago'),
-            timeRangeYesterday: Liferay.Language.get('time-range-yesterday'),
-            timeRangeDaysAgo: Liferay.Language.get('time-range-days-ago'),
-            timeRangeWeeksAgo: Liferay.Language.get('time-range-weeks-ago'),
-            dateFormat: Liferay.Language.get('date-format')
-        };
+        // Parse localization values from template
+        A.LIMS.Core.i18n.values = A.JSON.parse(A.one('#lims-i18n').get('innerHTML'));
 
         // Start the app!
         mainController = new A.LIMS.Controller.MainController({
