@@ -24,13 +24,15 @@ create table Lims_Participant (
 	cid LONG,
 	participantId LONG,
 	unreadMessagesCount INTEGER,
-	isOpened BOOLEAN
+	isOpened BOOLEAN,
+	openedAt LONG
 );
 
 create table Lims_Settings (
 	sid LONG not null primary key,
 	userId LONG,
 	presence VARCHAR(75) null,
+	presenceUpdatedAt LONG,
 	mute BOOLEAN,
 	chatEnabled BOOLEAN
 );

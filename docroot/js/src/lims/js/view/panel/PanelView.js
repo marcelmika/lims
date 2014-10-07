@@ -31,6 +31,11 @@ Y.namespace('LIMS.View');
 
 Y.LIMS.View.PanelView = Y.Base.create('panelView', Y.View, [], {
 
+    // The template property holds the contents of the #lims-conversation-item-error-template
+    // element, which will be used as the HTML template for an error message
+    // Check the templates.jspf to see all templates
+    errorTemplate: Y.one('#lims-panel-error-template').get('innerHTML'),
+
     /**
      * Constructor
      *
@@ -105,22 +110,70 @@ Y.LIMS.View.PanelView = Y.Base.create('panelView', Y.View, [], {
     },
 
     /**
-     * Shows search panel
+     * Shows the error message notification in the panel
+     *
+     * @param errorMessage
      */
-    showSearch: function() {
-        var searchContainer = this.get('searchContainer');
-        if(searchContainer !== undefined) {
-            searchContainer.removeClass('hidden');
+    showError: function (errorMessage) {
+        // Vars
+        var panelTitle = this.get('panelTitle'),                        // Title of the panel node
+            errorContainer = this.get('errorContainer'),                // Container with error
+            errorMessageNode = errorContainer.one('.error-message'),    // Error message node
+            animation;                                                  // Animation that will make it nicer
+
+
+        // Set the error message
+        errorMessageNode.set('innerHTML', errorMessage);
+
+        // If the error container is already in the document don't animate it
+        if (!errorContainer.inDoc()) {
+
+            // Create an instance of animation
+            animation = new Y.Anim({
+                node: errorContainer,
+                duration: 0.5,
+                from: {opacity: 0},
+                to: {opacity: 1}
+            });
+
+            // Opacity needs to be set to zero otherwise there will
+            // be a weird blink effect
+            errorContainer.setStyle('opacity', 0);
+            // Add it after title
+            panelTitle.insert(errorContainer, 'after');
+
+            // Run the effect animation
+            animation.run();
         }
     },
 
     /**
-     * Hides search panel
+     * Hides the error message notification
      */
-    hideSearch: function() {
-        var searchContainer = this.get('searchContainer');
-        if(searchContainer !== undefined) {
-            searchContainer.addClass('hidden');
+    hideError: function () {
+        // Vars
+        var errorContainer = this.get('errorContainer'),
+            animation;
+
+        // Run the animation only if the error container is in DOM
+        if (errorContainer.inDoc()) {
+
+            // Create the animation instance
+            animation = new Y.Anim({
+                node: errorContainer,
+                duration: 0.5,
+                from: {opacity: 1},
+                to: {opacity: 0}
+            });
+
+            // Listen to the end of the animation
+            animation.on('end', function () {
+                // Remove container from DOM at the end of the animation
+                animation.get('node').remove();
+            });
+
+            // Run!
+            animation.run();
         }
     },
 
@@ -162,10 +215,6 @@ Y.LIMS.View.PanelView = Y.Base.create('panelView', Y.View, [], {
         else if (target.hasClass('close')) {
             this.close();
         }
-        // Search button
-        else if (target.hasClass('search')) {
-            this.showSearch();
-        }
     }
 
 }, {
@@ -188,6 +237,13 @@ Y.LIMS.View.PanelView = Y.Base.create('panelView', Y.View, [], {
             value: false // default value
         },
 
+        // Panel title
+        panelTitle: {
+            valueFn: function () {
+                return this.get('container').one('.panel-title');
+            }
+        },
+
         // Tab bar item which shows/hides panel
         trigger: {
             valueFn: function () {
@@ -204,8 +260,15 @@ Y.LIMS.View.PanelView = Y.Base.create('panelView', Y.View, [], {
 
         // Search container
         searchContainer: {
-            valueFn: function() {
+            valueFn: function () {
                 return this.get('container').one('.panel-search');
+            }
+        },
+
+        // Error container
+        errorContainer: {
+            valueFn: function () {
+                return  Y.Node.create(this.errorTemplate);
             }
         }
     }

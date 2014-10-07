@@ -285,9 +285,9 @@ public class MessageLocalServiceWrapper implements MessageLocalService,
 
 	@Override
 	public com.marcelmika.lims.persistence.generated.model.Message addMessage(
-		long cid, long creatorId, java.lang.String body)
-		throws java.lang.Exception {
-		return _messageLocalService.addMessage(cid, creatorId, body);
+		long cid, long creatorId, java.lang.String body,
+		java.util.Date createdAt) throws java.lang.Exception {
+		return _messageLocalService.addMessage(cid, creatorId, body, createdAt);
 	}
 
 	@Override

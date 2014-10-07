@@ -71,8 +71,8 @@ public class GroupController {
      */
     public void getGroupList(ResourceRequest request, ResourceResponse response) {
 
+        Buddy buddy;                        // Authorized user
         GetGroupListParameters parameters;  // Parameters for the request
-        Buddy buddy;                        // Currently logged user
 
         // Deserialize
         try {
@@ -89,7 +89,7 @@ public class GroupController {
             // Bad request
             ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
             // Log
-            log.error(exception);
+            log.debug(exception);
             // End here
             return;
         }
@@ -111,17 +111,15 @@ public class GroupController {
             if (parameters.getEtag().equals(groupCollection.getEtag())) {
                 // Etags equal which means that nothing has changed.
                 // Write only the group collection without groups and buddies (no extra traffic needed)
-                ResponseUtil.writeResponse(JSONFactoryUtil.looseSerialize(groupCollection), HttpStatus.OK, response);
+                ResponseUtil.writeResponse(HttpStatus.NOT_MODIFIED, response);
             }
             // Not cached
             else {
+                // Serialize
+                String serialized = JSONFactoryUtil.looseSerialize(groupCollection, "groups", "groups.buddies");
                 // Etags are different which means that groups were modified
                 // Send the whole package to the client
-                ResponseUtil.writeResponse(
-                        JSONFactoryUtil.looseSerialize(groupCollection, "groups", "groups.buddies"),
-                        HttpStatus.OK,
-                        response
-                );
+                ResponseUtil.writeResponse(serialized, HttpStatus.OK, response);
             }
         }
         // Failure

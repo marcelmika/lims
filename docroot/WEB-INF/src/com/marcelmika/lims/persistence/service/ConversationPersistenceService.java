@@ -51,6 +51,14 @@ public interface ConversationPersistenceService {
     public ReadSingleUserConversationResponseEvent readConversation(ReadSingleUserConversationRequestEvent event);
 
     /**
+     * Returns a list of participants related to the conversation
+     *
+     * @param event request event for method
+     * @return response event for method
+     */
+    public GetConversationParticipantsResponseEvent getParticipants(GetConversationParticipantsRequestEvent event);
+
+    /**
      * Closes existing conversation. User remains in the conversation though.
      *
      * @param event request event for method

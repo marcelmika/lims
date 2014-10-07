@@ -31,7 +31,7 @@ import com.marcelmika.lims.api.events.group.GetGroupsRequestEvent;
 import com.marcelmika.lims.api.events.group.GetGroupsResponseEvent;
 import com.marcelmika.lims.persistence.domain.Buddy;
 import com.marcelmika.lims.persistence.domain.GroupCollection;
-import com.marcelmika.lims.persistence.group.GroupManager;
+import com.marcelmika.lims.persistence.manager.GroupManager;
 
 /**
  * @author Ing. Marcel Mika

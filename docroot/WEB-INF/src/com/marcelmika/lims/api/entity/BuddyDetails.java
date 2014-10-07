@@ -33,6 +33,7 @@ package com.marcelmika.lims.api.entity;
 public class BuddyDetails {
 
     private Long buddyId;
+    private Long companyId;
     private String fullName;
     private String screenName;
     private String password;
@@ -45,6 +46,14 @@ public class BuddyDetails {
 
     public void setBuddyId(Long buddyId) {
         this.buddyId = buddyId;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     public String getFullName() {
@@ -91,6 +100,7 @@ public class BuddyDetails {
     public String toString() {
         return "BuddyDetails{" +
                 "buddyId=" + buddyId +
+                ", companyId=" + companyId +
                 ", fullName='" + fullName + '\'' +
                 ", screenName='" + screenName + '\'' +
                 ", password='" + password + '\'' +

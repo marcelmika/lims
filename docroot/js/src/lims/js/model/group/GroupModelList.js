@@ -38,6 +38,7 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
 
     // Custom sync layer.
     sync: function (action, options, callback) {
+
         // Vars
         var parameters,
             etag = this.get('etag'),
@@ -61,17 +62,26 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
                         query: "GetGroupList",
                         parameters: parameters
                     },
+                    timeout: 30000, // 30 seconds
                     on: {
                         success: function (id, o) {
-                            // TODO: Refactor
+
+                            // If nothing has change the server return 304 (not modified)
+                            // As a result we don't need to refresh anything
+                            if (o.status === 304) {
+                                callback(null);
+                                return;
+                            }
+
                             var i, groupCollection, groups, group, buddies;
                             // Parse groups
-                            groupCollection = Y.JSON.parse(o.response);
+                            groupCollection = Y.JSON.parse(o.responseText);
                             groups = groupCollection.groups;
 
-                            if (etag.toString() !== groupCollection.etag.toString()) {
+                            if (groupCollection.etag && etag.toString() !== groupCollection.etag.toString()) {
+
                                 // Empty the list
-                                instance.reset();
+                                instance.fire('groupReset');
 
                                 instance.set('etag', groupCollection.etag);
 
@@ -91,11 +101,14 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
                                     instance.add(group);
                                 }
 
-                                if (etag === 0) {
-                                    instance.fire("groupsLoaded", {
-                                        groupsList: instance
-                                    });
-                                }
+                                // Fire success event
+                                instance.fire('groupsReadSuccess', {
+                                    groupsList: instance
+                                });
+                            }
+
+                            if (callback) {
+                                callback(null);
                             }
                         },
                         failure: function (x, o) {
@@ -104,11 +117,18 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
                                 // Notify everybody else
                                 Y.fire('userSessionExpired');
                             }
-                            callback("group model error", o.response);
+
+                            // Clear etag otherwise when we load the data again it
+                            // might still be cached
+                            instance.set('etag', -1);
+
+                            // Fire error event
+                            instance.fire('groupsReadError');
+
+                            if (callback) {
+                                callback("group model error", o.responseText);
+                            }
                         }
-                    },
-                    headers: {
-                        'Content-Type': 'application/json'
                     }
                 });
 
@@ -127,14 +147,18 @@ Y.LIMS.Model.GroupModelList = Y.Base.create('groupModelList', Y.ModelList, [Y.LI
     }
 
 }, {
-
+    // Add custom model attributes here. These attributes will contain your
+    // model's data. See the docs for Y.Attribute to learn more about defining
+    // attributes.
     ATTRS: {
-        // Add custom model attributes here. These attributes will contain your
-        // model's data. See the docs for Y.Attribute to learn more about defining
-        // attributes.
 
+        /**
+         * Etag of the groups. This is used for caching. If the requested etag
+         * is the same like the one currently cached there is no need to send
+         * the data.
+         */
         etag: {
-            value: 0 // default value
+            value: -1 // default value
         }
     }
 });

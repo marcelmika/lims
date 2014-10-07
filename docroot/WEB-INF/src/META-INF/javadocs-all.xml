@@ -9120,7 +9120,7 @@ All custom service methods should be put in this class. Whenever methods are add
 	</javadoc>
 	<javadoc>
 		<name>GroupManager</name>
-		<type>com.marcelmika.lims.persistence.group.GroupManager</type>
+		<type>com.marcelmika.lims.persistence.manager.GroupManager</type>
 		<author><![CDATA[Ing. Marcel Mika]]></author>
 		<method>
 			<name>getGroups</name>
@@ -9156,7 +9156,7 @@ All custom service methods should be put in this class. Whenever methods are add
 	</javadoc>
 	<javadoc>
 		<name>GroupManagerImpl</name>
-		<type>com.marcelmika.lims.persistence.group.GroupManagerImpl</type>
+		<type>com.marcelmika.lims.persistence.manager.GroupManagerImpl</type>
 		<author><![CDATA[Ing. Marcel Mika]]></author>
 		<method>
 			<name>getGroups</name>
@@ -9725,7 +9725,7 @@ All custom service methods should be put in this class. Whenever methods are add
 			<comment><![CDATA[Constructor]]></comment>
 			<param>
 				<name>groupManager</name>
-				<type>com.marcelmika.lims.persistence.group.GroupManager</type>
+				<type>com.marcelmika.lims.persistence.manager.GroupManager</type>
 				<required>true</required>
 				<comment><![CDATA[GroupManager]]></comment>
 			</param>

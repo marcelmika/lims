@@ -24,6 +24,10 @@
 
 package com.marcelmika.lims.jabber.group.manager;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.marcelmika.lims.jabber.domain.Buddy;
 import com.marcelmika.lims.jabber.domain.Group;
 import com.marcelmika.lims.jabber.domain.GroupCollection;
@@ -33,7 +37,9 @@ import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.RosterGroup;
 import org.jivesoftware.smack.RosterListener;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Group manager is responsible for the synchronization of groups and their entries. It keeps
@@ -51,9 +57,14 @@ public class GroupManagerImpl implements GroupManager, RosterListener {
     // Represents a user's roster, which is the collection of users a person
     // receives presence updates for.
     private Roster roster;
+    // We need the company id otherwise we cannot find users in liferay
+    private Long companyId;
     // Flag that describes if the groups were modified. Default is true because the groups are always
     // modified at the beginning
     private boolean wasModified = true;
+
+    // Log
+    private static Log log = LogFactoryUtil.getLog(GroupManagerImpl.class);
 
     // -------------------------------------------------------------------------------------------
     // Override: GroupManager
@@ -72,6 +83,15 @@ public class GroupManagerImpl implements GroupManager, RosterListener {
         roster.addRosterListener(this);
     }
 
+    /**
+     * Sets company id to the group manager
+     *
+     * @param companyId Long
+     */
+    @Override
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
 
     /**
      * Get buddy's collection of groups.
@@ -164,6 +184,18 @@ public class GroupManagerImpl implements GroupManager, RosterListener {
             for (RosterEntry entry : rosterGroup.getEntries()) {
                 // Map buddy
                 Buddy buddy = Buddy.fromRosterEntry(entry);
+
+                // Important: This is a leaking of the business logic. However there is no better place where
+                // such call can be added. Thus we simply ignore this fact.
+                try {
+                    User user = UserLocalServiceUtil.getUserByScreenName(companyId, buddy.getScreenName());
+                    // Map the user
+                    buddy = Buddy.fromPortalUser(user);
+                } catch (Exception e) {
+                    // No such user was found, thus simply ignore this fact and don't add it to the list
+                    continue;
+                }
+
                 // Map presence
                 Presence presence = Presence.fromSmackPresence(roster.getPresence(entry.getUser()));
                 buddy.setPresence(presence);

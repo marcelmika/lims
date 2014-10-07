@@ -133,6 +133,20 @@ public interface ParticipantModel extends BaseModel<Participant> {
 	 */
 	public void setIsOpened(boolean isOpened);
 
+	/**
+	 * Returns the opened at of this participant.
+	 *
+	 * @return the opened at of this participant
+	 */
+	public long getOpenedAt();
+
+	/**
+	 * Sets the opened at of this participant.
+	 *
+	 * @param openedAt the opened at of this participant
+	 */
+	public void setOpenedAt(long openedAt);
+
 	@Override
 	public boolean isNew();
 

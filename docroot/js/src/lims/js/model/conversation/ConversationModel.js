@@ -40,11 +40,26 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
     addMessage: function (message) {
 
         // Vars
-        var messageList = this.get('messageList');
+        var messageList = this.get('messageList'),  // List of messages
+            offset = this.get('serverTimeOffset'),  // Server time offset
+            createdAt,                              // Creation date of message
+            instance = this;                        // Save scope
+
+        // Message has a conversation id same as the conversation id stored in this model
+        message.set('conversationId', this.get('conversationId'));
 
         // This will send the message to the server
-        message.set('conversationId', this.get('conversationId'));
-        message.save(); // Message model has its own sync layer
+        message.save(function (err) {
+            // Trigger event if the message wasn't sent
+            if (err) {
+                instance.fire('messageError');
+            }
+        });
+
+        // Timestamp needs to be updated because of the possible difference between
+        // server time and client time
+        createdAt = message.get('createdAt');
+        message.set('createdAt', createdAt + offset);
 
         // Add it locally. We are async here. In other words we are not
         // waiting for the response and directly add the message to the list
@@ -98,12 +113,13 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
      * Resets counter of unread messages. This should happen when the user opens conversation.
      * Since it's opened all messages have been read. Thus we can reset the counter.
      */
-    resetUnreadMessagesCounter: function () {
+    resetUnreadMessagesCounter: function (callback) {
 
         // Vars
-        var parameters = Y.JSON.stringify({
-                conversationId: this.get('conversationId')
-            });
+        var instance = this,
+            parameters = Y.JSON.stringify({
+            conversationId: this.get('conversationId')
+        });
 
         // Send the request
         Y.io(this.getServerRequestUrl(), {
@@ -113,14 +129,24 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
                 parameters: parameters
             },
             on: {
-                // There isn't much we can do. If the request ends with success
-                // the user is not going to see badge anymore (of course if there will be any
-                // new messages it will appear again).
+                success: function () {
+
+                    // Update unread messages count
+                    instance.set('unreadMessagesCount', 0);
+
+                    if (callback) {
+                        callback(null, instance);
+                    }
+                },
                 failure: function (x, o) {
                     // If the attempt is unauthorized session has expired
                     if (o.status === 401) {
                         // Notify everybody else
                         Y.fire('userSessionExpired');
+                    }
+
+                    if (callback) {
+                        callback('cannot reset unread messages', instance);
                     }
                 }
             }
@@ -148,6 +174,10 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
             // This is called whenever the conversation is created i.e whenever
             // the user clicks on any of the buddies in the group
             case 'create':
+
+                // Fire begin event
+                instance.fire('createBegin');
+
                 // Simply take the conversation object, serialize it to json
                 // and send.
                 content = Y.JSON.stringify(this.toJSON());
@@ -162,7 +192,11 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
                     on: {
                         success: function (id, o) {
                             // Deserialize response
-                            response = Y.JSON.parse(o.response);
+                            response = Y.JSON.parse(o.responseText);
+
+                            // Fire success event
+                            instance.fire('createSuccess');
+
                             // Call success
                             callback(null, instance);
                         },
@@ -172,6 +206,10 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
                                 // Notify everybody else
                                 Y.fire('userSessionExpired');
                             }
+
+                            // Fire failure event
+                            instance.fire('createError');
+
                             // Call failure
                             callback("Cannot create new conversation", o);
                         }
@@ -182,6 +220,10 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
             // Called whenever the load() method is called. Sends a request
             // to server which loads a list of messages related to the conversation.
             case 'read':
+
+                // Fire begin event
+                instance.fire('readBegin');
+
                 // Construct parameters
                 parameters = Y.JSON.stringify({
                     conversationId: this.get('conversationId'),
@@ -209,9 +251,13 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
                                 return;
                             }
                             // Deserialize response
-                            response = Y.JSON.parse(o.response);
+                            response = Y.JSON.parse(o.responseText);
                             // Update message list
                             instance.updateConversation(response);
+
+                            // Fire success event
+                            instance.fire('readSuccess');
+
                             // Call success
                             callback(null, instance);
                         },
@@ -221,6 +267,10 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
                                 // Notify everybody else
                                 Y.fire('userSessionExpired');
                             }
+
+                            // Fire failure event
+                            instance.fire('readError');
+
                             // Call failure
                             callback("Cannot read conversation", o);
                         }
@@ -244,21 +294,45 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
     updateConversation: function (conversation) {
 
         // Vars
-        var messageList = this.get('messageList'),
-            messageModels = [],
-            index;
+        var messageList = this.get('messageList'),        // List of messages
+            offset = this.get('serverTimeOffset'),        // Server time offset
+            createdAt,                                    // Stores message time of creation
+            messageModels = [],                           // Holds message models
+            notAcknowledgedModels,                        // Message models from list that are not yet acknowledged
+            message,                                      // Deserialized message
+            index;                                        // Used for iteration
+
         // Update from response
         this.setAttrs({
             etag: conversation.etag,
             unreadMessagesCount: conversation.unreadMessagesCount
         });
 
+        // Keep a copy of messages that haven't been sent to server yet
+        notAcknowledgedModels = messageList.getNotAcknowledged();
+
+        // Parse messages from conversation messages
         for (index = 0; index < conversation.messages.length; index++) {
-            // TODO: Handle messages which wasn't yet sent to server
+
+            // Deserialize message
+            message = new Y.LIMS.Model.MessageItemModel(conversation.messages[index]);
+
+            // Timestamp needs to be updated because of the possible difference between
+            // server time and client time
+            createdAt = message.get('createdAt');
+            message.set('createdAt', createdAt + offset);
+
             // Add message to message list
-            messageModels.push(new Y.LIMS.Model.MessageItemModel(conversation.messages[index]));
+            messageModels.push(message);
         }
 
+        // Add not yet acknowledged messages at the and.
+        // Note: This is quite old school however the fastest possible way
+        for (index = 0; index < notAcknowledgedModels.length; index++) {
+            messageModels.push(notAcknowledgedModels[index]);
+        }
+
+        // Replay old models with the new ones
         messageList.reset(messageModels);
 
         // Notify about the event
@@ -295,6 +369,10 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
 
         unreadMessagesCount: {
             value: 0 // default value
+        },
+
+        serverTimeOffset: {
+            value: null // to be set
         },
 
         messageList: {

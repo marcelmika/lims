@@ -1,0 +1,89 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 Marcel Mika, marcelmika.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+/**
+ * Poller holds all instances of poller entries
+ */
+Y.namespace('LIMS.Core');
+
+Y.LIMS.Core.Poller = Y.Base.create('poller', Y.Base, [], {
+
+
+    /**
+     * Register poller entry to the poller and start polling
+     *
+     * @param entryId
+     * @param pollerEntry Y.LIMS.Core.PollerEntry
+     */
+    register: function (entryId, pollerEntry) {
+        // Vars
+        var entries = this.get('entries');
+
+        // Stop the previous entry if there was any
+        if (entries.hasOwnProperty(entryId)) {
+            entries[entryId].stopPolling();
+        }
+
+        // Add the new one
+        entries[entryId] = pollerEntry;
+
+        // Start the polling
+        pollerEntry.startPolling();
+    },
+
+    /**
+     * Unregister poller entry of the poller and stop polling
+     *
+     * @param entryId
+     */
+    unregister: function (entryId) {
+        // Vars
+        var entries = this.get('entries');
+
+        if (entries.hasOwnProperty(entryId)) {
+            // Stop polling
+            entries[entryId].stopPolling();
+            // Remove from the entries array
+            delete entries[entryId];
+        }
+    }
+
+}, {
+
+    // Add custom model attributes here. These attributes will contain your
+    // model's data. See the docs for Y.Attribute to learn more about defining
+    // attributes.
+
+    ATTRS: {
+
+        /**
+         * Object that holds poller entries
+         */
+        entries: {
+            value: {}
+        }
+    }
+
+});
+

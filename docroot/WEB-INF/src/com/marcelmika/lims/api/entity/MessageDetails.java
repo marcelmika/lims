@@ -34,10 +34,19 @@ import java.util.Date;
  */
 public class MessageDetails {
 
+    private BuddyDetails to;
     private BuddyDetails from;
     private String body;
     private Date createdAt;
 
+
+    public BuddyDetails getTo() {
+        return to;
+    }
+
+    public void setTo(BuddyDetails to) {
+        this.to = to;
+    }
 
     public BuddyDetails getFrom() {
         return from;
@@ -66,7 +75,8 @@ public class MessageDetails {
     @Override
     public String toString() {
         return "MessageDetails{" +
-                "from=" + from +
+                "to=" + to +
+                ", from=" + from +
                 ", body='" + body + '\'' +
                 ", createdAt=" + createdAt +
                 '}';

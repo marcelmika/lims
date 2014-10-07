@@ -24,6 +24,8 @@
 
 package com.marcelmika.lims.api.entity;
 
+import com.marcelmika.lims.api.environment.Environment.BuddyListStrategy;
+
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class GroupCollectionDetails {
 
     private List<GroupDetails> groups;
     private Date lastModified;
-
+    private BuddyListStrategy listStrategy;
 
     public List<GroupDetails> getGroups() {
         return groups;
@@ -56,4 +58,13 @@ public class GroupCollectionDetails {
     public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
     }
+
+    public BuddyListStrategy getListStrategy() {
+        return listStrategy;
+    }
+
+    public void setListStrategy(BuddyListStrategy listStrategy) {
+        this.listStrategy = listStrategy;
+    }
+
 }

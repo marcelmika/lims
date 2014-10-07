@@ -64,8 +64,8 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
     /**
      * Login buddy to System
      *
-     * @param event Request event for login method
-     * @return Response event for login method
+     * @param event Request event
+     * @return Response event
      */
     @Override
     public LoginBuddyResponseEvent loginBuddy(LoginBuddyRequestEvent event) {
@@ -83,7 +83,8 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
             // [1.1] Return error on failure
             if (!connectResponseEvent.isSuccess()) {
                 return LoginBuddyResponseEvent.loginFailure(
-                        connectResponseEvent.getResult(), connectResponseEvent.getDetails()
+                        LoginBuddyResponseEvent.Status.ERROR_JABBER,
+                        connectResponseEvent.getException()
                 );
             }
 
@@ -117,8 +118,8 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
     /**
      * Logout buddy from System
      *
-     * @param event Request event for logout method
-     * @return Response event for logout method
+     * @param event Request event
+     * @return Response event
      */
     @Override
     public LogoutBuddyResponseEvent logoutBuddy(LogoutBuddyRequestEvent event) {
@@ -133,8 +134,8 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
     /**
      * Completely removes buddy from the System
      *
-     * @param event Request event for logout method
-     * @return Response event for logout method
+     * @param event Request event
+     * @return Response event
      */
     @Override
     public DeleteBuddyResponseEvent removeBuddy(DeleteBuddyRequestEvent event) {
@@ -162,5 +163,16 @@ public class BuddyCoreServiceImpl implements BuddyCoreService {
         }
 
         return responseEvent;
+    }
+
+    /**
+     * Search buddies in the system
+     *
+     * @param event Request event
+     * @return Response event
+     */
+    @Override
+    public SearchBuddiesResponseEvent searchBuddies(SearchBuddiesRequestEvent event) {
+        return buddyPersistenceService.searchBuddies(event);
     }
 }

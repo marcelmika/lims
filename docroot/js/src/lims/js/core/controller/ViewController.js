@@ -163,6 +163,27 @@ Y.LIMS.Core.ViewController = Y.Base.create('viewController', Y.View, [], {
     },
 
     /**
+     * Shows error message
+     *
+     * @param errorMessage
+     */
+    showError: function (errorMessage) {
+        // Vars
+        var panel = this.get('panel');
+
+        // Show the error
+        panel.showError(errorMessage);
+    },
+
+    hideError: function () {
+        // Vars
+        var panel = this.get('panel');
+
+        // Hide the error
+        panel.hideError();
+    },
+
+    /**
      * Panel shown event handler. Closes own panel if some other panel was shown.
      * Thanks to that only one panel can be open at one time.
      *
@@ -213,7 +234,9 @@ Y.LIMS.Core.ViewController = Y.Base.create('viewController', Y.View, [], {
         if (panel === this.get('panel')) {
             this.onPanelDidUnload();
             // Fire event
-            this.fire('panelDidUnload', this);
+            this.fire('panelDidUnload', {
+                controllerId: this.get('controllerId')
+            });
         }
     },
 

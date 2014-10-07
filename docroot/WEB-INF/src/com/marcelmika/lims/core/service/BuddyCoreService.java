@@ -39,33 +39,41 @@ public interface BuddyCoreService {
     /**
      * Login buddy to System
      *
-     * @param event Request event for login method
-     * @return Response event for login method
+     * @param event Request event
+     * @return Response event
      */
     public LoginBuddyResponseEvent loginBuddy(LoginBuddyRequestEvent event);
 
     /**
      * Logout buddy from System
      *
-     * @param event Request event for logout method
-     * @return Response event for logout method
+     * @param event Request event
+     * @return Response event
      */
     public LogoutBuddyResponseEvent logoutBuddy(LogoutBuddyRequestEvent event);
 
     /**
      * Completely removes buddy from the System
      *
-     * @param event Request event for logout method
-     * @return Response event for logout method
+     * @param event Request event
+     * @return Response event
      */
     public DeleteBuddyResponseEvent removeBuddy(DeleteBuddyRequestEvent event);
 
     /**
      * Update buddy's presence
      *
-     * @param event Request event for logout method
-     * @return Response event for logout method
+     * @param event Request event
+     * @return Response event
      */
     public UpdatePresenceBuddyResponseEvent updatePresence(UpdatePresenceBuddyRequestEvent event);
+
+    /**
+     * Search buddies in the system
+     *
+     * @param event Request event
+     * @return Response event
+     */
+    public SearchBuddiesResponseEvent searchBuddies(SearchBuddiesRequestEvent event);
 
 }

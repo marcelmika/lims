@@ -57,7 +57,8 @@ public class Message {
         message.body = smackMessage.getBody();
         message.createdAt = getMessageTimestamp(smackMessage);
         // Map relations
-        message.from = Buddy.fromSmackMessage(smackMessage);
+        message.from = Buddy.fromSmackUser(smackMessage.getFrom());
+        message.to = Buddy.fromSmackUser(smackMessage.getTo());
 
         return message;
     }
@@ -138,6 +139,10 @@ public class Message {
             details.setFrom(from.toBuddyDetails());
         }
 
+        if (to != null) {
+            details.setTo(to.toBuddyDetails());
+        }
+
         return details;
     }
 
@@ -176,5 +181,15 @@ public class Message {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "to=" + to +
+                ", from=" + from +
+                ", createdAt=" + createdAt +
+                ", body='" + body + '\'' +
+                '}';
     }
 }

@@ -26,20 +26,19 @@ package com.marcelmika.lims.portal.processor;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.marcelmika.lims.portal.controller.BuddyController;
-import com.marcelmika.lims.portal.controller.ConversationController;
-import com.marcelmika.lims.portal.controller.GroupController;
-import com.marcelmika.lims.portal.controller.SettingsController;
+import com.marcelmika.lims.api.environment.Environment;
+import com.marcelmika.lims.portal.controller.*;
 import com.marcelmika.lims.portal.http.HttpStatus;
 import com.marcelmika.lims.portal.request.RequestParameterKeys;
 import com.marcelmika.lims.portal.response.ResponseUtil;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
+import java.util.Random;
 
 /**
  * Portlet processor contains business logic which decides what controller
- * should be called based on the query received in request parameter.
+ * should be called based on the query received in the request parameter.
  * This is an important part of the system. Every time you introduce new controller
  * or add a method to the existing one you need to add mapping to the processRequest() method.
  *
@@ -58,7 +57,10 @@ public class PortletProcessorImpl implements PortletProcessor {
     ConversationController conversationController;
     GroupController groupController;
     SettingsController settingsController;
+    ServerController serverController;
 
+    // Private properties
+    private Random random = new Random();
 
     // Client returns query parameter. Thanks to this we can decide which method should be called.
     // If we were RESTFul we would be using resources at different urls. However, since liferay gives us
@@ -74,6 +76,8 @@ public class PortletProcessorImpl implements PortletProcessor {
     private static final String QUERY_UPDATE_BUDDY_PRESENCE = "UpdateBuddyPresence";
     private static final String QUERY_UPDATE_ACTIVE_PANEL = "UpdateActivePanel";
     private static final String QUERY_UPDATE_SETTINGS = "UpdateSettings";
+    private static final String QUERY_GET_SERVER_TIME = "GetServerTime";
+    private static final String QUERY_SEARCH_BUDDIES = "SearchBuddies";
 
     /**
      * Constructor
@@ -82,16 +86,19 @@ public class PortletProcessorImpl implements PortletProcessor {
      * @param conversationController ConversationController
      * @param groupController        GroupController
      * @param settingsController     SettingsController
+     * @param serverController       ServerController
      */
     public PortletProcessorImpl(final BuddyController buddyController,
                                 final ConversationController conversationController,
                                 final GroupController groupController,
-                                final SettingsController settingsController) {
+                                final SettingsController settingsController,
+                                final ServerController serverController) {
 
         this.buddyController = buddyController;
         this.conversationController = conversationController;
         this.groupController = groupController;
         this.settingsController = settingsController;
+        this.serverController = serverController;
     }
 
     /**
@@ -106,6 +113,12 @@ public class PortletProcessorImpl implements PortletProcessor {
         // Log request
         if (log.isDebugEnabled()) {
             logRequest(request);
+        }
+
+        // If the error mode is on and a random error was added to the response
+        // don't continue in the request processing
+        if (processErrorMode(request, response)) {
+            return;
         }
 
         // Get query type from parameter
@@ -130,7 +143,6 @@ public class PortletProcessorImpl implements PortletProcessor {
     private void dispatchRequest(ResourceRequest request,
                                  ResourceResponse response,
                                  String query) {
-
 
         // Create Single User Conversation
         if (query.equals(QUERY_CREATE_SINGLE_USER_CONVERSATION)) {
@@ -172,6 +184,72 @@ public class PortletProcessorImpl implements PortletProcessor {
         else if (query.equals(QUERY_UPDATE_SETTINGS)) {
             settingsController.updateSettings(request, response);
         }
+        // Get Server Time
+        else if (query.equals(QUERY_GET_SERVER_TIME)) {
+            serverController.getServerTime(request, response);
+        }
+        // Search buddies
+        else if (query.equals(QUERY_SEARCH_BUDDIES)) {
+            buddyController.searchBuddies(request, response);
+        }
+        // No such query was found
+        else {
+            // Write 404 to response
+            ResponseUtil.writeResponse(HttpStatus.NOT_FOUND, response);
+        }
+    }
+
+    /**
+     * If the error mode is on randomly adds an error to the response.
+     * Returns true if the error was added to the response
+     *
+     * @param request  ResourceRequest
+     * @param response ResourceResponse
+     * @return true if an error was added to the response
+     */
+    private boolean processErrorMode(ResourceRequest request, ResourceResponse response) {
+
+        // Process error only if the error mode is enabled
+        if (Environment.isErrorModeEnabled()) {
+
+            // Generates random number between 0 and 10
+            int number = random.nextInt(10) + 1;
+
+            // Get query type from parameter
+            String query = request.getParameter(RequestParameterKeys.KEY_QUERY);
+
+            if (query.equals(QUERY_CREATE_SINGLE_USER_CONVERSATION) && number > 5) {
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                return true;
+            }
+
+            if (query.equals(QUERY_READ_SINGLE_USER_CONVERSATION) && number > 5) {
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                return true;
+            }
+
+            if (query.equals(QUERY_READ_OPENED_CONVERSATIONS) && number > 9) {
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                return true;
+            }
+
+            if (query.equals(QUERY_GET_GROUP_LIST) && number > 8) {
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                return true;
+            }
+
+            if (query.equals(QUERY_CREATE_MESSAGE) && number > 6) {
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                return true;
+            }
+
+            if (query.equals(QUERY_SEARCH_BUDDIES) && number > 5) {
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -117,7 +117,7 @@ public class MessageLocalServiceClpInvoker {
 		_methodName56 = "addMessage";
 
 		_methodParameterTypes56 = new String[] {
-				"long", "long", "java.lang.String"
+				"long", "long", "java.lang.String", "java.util.Date"
 			};
 
 		_methodName57 = "readMessages";
@@ -229,7 +229,8 @@ public class MessageLocalServiceClpInvoker {
 		if (_methodName56.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes56, parameterTypes)) {
 			return MessageLocalServiceUtil.addMessage(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue(), (java.lang.String)arguments[2]);
+				((Long)arguments[1]).longValue(),
+				(java.lang.String)arguments[2], (java.util.Date)arguments[3]);
 		}
 
 		if (_methodName57.equals(name) &&

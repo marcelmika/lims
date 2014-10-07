@@ -310,10 +310,10 @@ public class ParticipantLocalServiceWrapper implements ParticipantLocalService,
 	* @throws com.liferay.portal.kernel.exception.PortalException
 	*/
 	@Override
-	public void updateParticipants(java.lang.Long cid)
+	public void updateParticipants(java.lang.Long cid, java.lang.Long senderId)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		_participantLocalService.updateParticipants(cid);
+		_participantLocalService.updateParticipants(cid, senderId);
 	}
 
 	/**

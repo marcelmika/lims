@@ -31,11 +31,13 @@
 		<field name="participantId" type="long" />
 		<field name="unreadMessagesCount" type="int" />
 		<field name="isOpened" type="boolean" />
+		<field name="openedAt" type="long" />
 	</model>
 	<model name="com.marcelmika.lims.persistence.generated.model.Settings">
 		<field name="sid" type="long" />
 		<field name="userId" type="long" />
 		<field name="presence" type="String" />
+		<field name="presenceUpdatedAt" type="long" />
 		<field name="mute" type="boolean" />
 		<field name="chatEnabled" type="boolean" />
 	</model>

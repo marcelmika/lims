@@ -22,26 +22,30 @@
  * SOFTWARE.
  */
 
-package com.marcelmika.lims.persistence.group;
+package com.marcelmika.lims.jabber.session.store;
 
-import com.marcelmika.lims.persistence.domain.GroupCollection;
+import com.marcelmika.lims.jabber.session.UserSession;
 
 /**
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
- * Date: 8/4/14
- * Time: 9:44 AM
+ * Date: 07/09/14
+ * Time: 20:48
  */
-public interface GroupManager {
+public interface UserSessionStoreListener {
 
     /**
-     * Returns Group Collection of all groups related to the user
+     * Called whenever the user session is added to the user session store
      *
-     * @param userId Long
-     * @param start  of the list
-     * @param end    of the list
-     * @return GroupCollection of groups related to the user
+     * @param userSession UserSession
      */
-    public GroupCollection getGroups(Long userId, int start, int end) throws Exception;
+    public void userSessionAdded(UserSession userSession);
+
+    /**
+     * Called whenever the user session with the particular id is removed from the user session store
+     *
+     * @param id of the user session
+     */
+    public void userSessionRemoved(Long id);
 
 }

@@ -5,10 +5,13 @@
         "lims-core": {
             "jsfiles": [
                 "js/bootstrap.js",
-                "js/core/DateFormatter.js",
-                "js/core/ViewController.js",
-                "js/core/Notification.js",
-                "js/core/Properties.js"
+                "js/core/date/DateFormatter.js",
+                "js/core/localization/i18n.js",
+                "js/core/controller/ViewController.js",
+                "js/core/notification/Notification.js",
+                "js/core/properties/Properties.js",
+                "js/core/poller/Poller.js",
+                "js/core/poller/PollerEntry.js"
             ],
             "config": {
                 "requires": [
@@ -25,13 +28,16 @@
                 "js/model/ModelExtension.js",
                 "js/model/buddy/BuddyModelItem.js",
                 "js/model/buddy/BuddyModelList.js",
+                "js/model/buddy/BuddySearchListModel.js",
                 "js/model/conversation/ConversationModel.js",
                 "js/model/conversation/ConversationListModel.js",
                 "js/model/message/MessageItemModel.js",
                 "js/model/message/MessageListModel.js",
                 "js/model/group/GroupModelItem.js",
                 "js/model/group/GroupModelList.js",
-                "js/model/settings/SettingsModel.js"
+                "js/model/group/GroupSocialRelationType.js",
+                "js/model/settings/SettingsModel.js",
+                "js/model/server/ServerTimeModel.js"
             ],
             "config": {
                 "requires": [
@@ -49,8 +55,11 @@
                 "js/view/ViewExtension.js",
                 "js/view/conversation/ConversationItemView.js",
                 "js/view/conversation/ConversationListView.js",
+                "js/view/notification/ErrorNotificationView.js",
+                "js/view/notification/InfoNotificationView.js",
                 "js/view/group/GroupBuddyViewItem.js",
                 "js/view/group/GroupBuddyViewList.js",
+                "js/view/group/GroupSearchView.js",
                 "js/view/group/GroupViewItem.js",
                 "js/view/group/GroupViewList.js",
                 "js/view/portrait/PortraitView.js",

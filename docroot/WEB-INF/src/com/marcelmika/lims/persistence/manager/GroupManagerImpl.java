@@ -22,8 +22,10 @@
  * SOFTWARE.
  */
 
-package com.marcelmika.lims.persistence.group;
+package com.marcelmika.lims.persistence.manager;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.environment.Environment.BuddyListSocialRelation;
 import com.marcelmika.lims.api.environment.Environment.BuddyListStrategy;
@@ -32,10 +34,7 @@ import com.marcelmika.lims.persistence.domain.Group;
 import com.marcelmika.lims.persistence.domain.GroupCollection;
 import com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Ing. Marcel Mika
@@ -44,6 +43,9 @@ import java.util.Map;
  * Time: 9:45 AM
  */
 public class GroupManagerImpl implements GroupManager {
+
+    // Log
+    private static Log log = LogFactoryUtil.getLog(GroupManagerImpl.class);
 
     /**
      * Returns Group Collection of all groups related to the user
@@ -61,8 +63,9 @@ public class GroupManagerImpl implements GroupManager {
         boolean ignoreDefaultUser = Environment.getBuddyListIgnoreDefaultUser();
         // Get the info if the deactivated user should be ignored
         boolean ignoreDeactivatedUser = Environment.getBuddyListIgnoreDeactivatedUser();
-        // Some site may be excluded
-        String[] excludedSites = Environment.getBuddyListExcludes();
+        // Some sites or groups may be excluded
+        String[] excludedSites = Environment.getBuddyListSiteExcludes();
+        String[] excludedGroups = Environment.getBuddyListGroupExcludes();
         // Relation types
         BuddyListSocialRelation[] relationTypes = Environment.getBuddyListAllowedSocialRelationTypes();
 
@@ -85,10 +88,18 @@ public class GroupManagerImpl implements GroupManager {
             );
         }
         // Socialized and buddies from sites
-        else {
+        else if (strategy == BuddyListStrategy.SITES_AND_SOCIAL) {
             return getSitesAndSocialGroups(
                     userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, relationTypes, start, end
             );
+        }
+        // User Groups
+        else if (strategy == BuddyListStrategy.USER_GROUPS) {
+            return getUserGroups(userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedGroups, start, end);
+        }
+        // Unknown
+        else {
+            throw new Exception("Unknown buddy list strategy");
         }
     }
 
@@ -117,18 +128,34 @@ public class GroupManagerImpl implements GroupManager {
         // Create group which will contain all users
         Group group = new Group();
 
+        // Because all group requests are cached we need to determine what was the latest modified
+        // date. If the user modifies his presence we need to change the etag so the client will load
+        // it from server.
+        Date lastModifiedDate = new Date(0);
+
         // Since we get an Object[] from persistence we need to map it to the persistence Buddy object
         for (Object[] userObject : users) {
             // Deserialize
             Buddy buddy = Buddy.fromPlainObject(userObject, 0);
             // Add to group
             group.addBuddy(buddy);
+
+            // If the presence was updated later then the last one overwrite the counter
+            if (buddy.getPresenceUpdatedAt().after(lastModifiedDate)) {
+                lastModifiedDate = buddy.getPresenceUpdatedAt();
+            }
         }
 
         // Create group collection which will hold the only group that holds all users
         GroupCollection groupCollection = new GroupCollection();
-        // Add group to collection
-        groupCollection.addGroup(group);
+        // Add group to collection only if there are any buddies
+        if (group.getBuddies().size() > 0) {
+            groupCollection.addGroup(group);
+        }
+        // Set list strategy
+        groupCollection.setListStrategy(BuddyListStrategy.ALL);
+        // Add last modified date
+        groupCollection.setLastModified(lastModifiedDate);
 
         return groupCollection;
     }
@@ -165,6 +192,11 @@ public class GroupManagerImpl implements GroupManager {
         // speed of mapping since we can reuse groups that we already mapped.
         Map<String, Group> groupMap = new HashMap<String, Group>();
 
+        // Because all group requests are cached we need to determine what was the latest modified
+        // date. If the user modifies his presence we need to change the etag so the client will load
+        // it from server.
+        Date lastModifiedDate = new Date(0);
+
         // Build groups and users
         for (Object[] object : groupObjects) {
 
@@ -186,6 +218,11 @@ public class GroupManagerImpl implements GroupManager {
 
             // Add it to group
             group.addBuddy(buddy);
+
+            // If the presence was updated later then the last one overwrite the counter
+            if (buddy.getPresenceUpdatedAt().after(lastModifiedDate)) {
+                lastModifiedDate = buddy.getPresenceUpdatedAt();
+            }
         }
 
         // Create group collection
@@ -194,6 +231,10 @@ public class GroupManagerImpl implements GroupManager {
         for (Group group : groupMap.values()) {
             groupCollection.addGroup(group);
         }
+        // Add last modified date
+        groupCollection.setLastModified(lastModifiedDate);
+        // Set list strategy
+        groupCollection.setListStrategy(BuddyListStrategy.SITES);
 
         return groupCollection;
     }
@@ -236,6 +277,11 @@ public class GroupManagerImpl implements GroupManager {
         // speed of mapping since we can reuse groups that we already mapped.
         Map<String, Group> groupMap = new HashMap<String, Group>();
 
+        // Because all group requests are cached we need to determine what was the latest modified
+        // date. If the user modifies his presence we need to change the etag so the client will load
+        // it from server.
+        Date lastModifiedDate = new Date(0);
+
         // Build groups and users
         for (Object[] object : groupObjects) {
             // Relation type is first element
@@ -252,6 +298,7 @@ public class GroupManagerImpl implements GroupManager {
             if (groupMap.get(groupName) == null) {
                 group = new Group();
                 group.setName(groupName);
+                group.setSocialRelation(relationType);
                 groupMap.put(groupName, group);
             }
 
@@ -260,8 +307,12 @@ public class GroupManagerImpl implements GroupManager {
 
             // Add it to group
             group.addBuddy(buddy);
-        }
 
+            // If the presence was updated later then the last one overwrite the counter
+            if (buddy.getPresenceUpdatedAt().after(lastModifiedDate)) {
+                lastModifiedDate = buddy.getPresenceUpdatedAt();
+            }
+        }
 
         // Create group collection
         GroupCollection groupCollection = new GroupCollection();
@@ -269,6 +320,11 @@ public class GroupManagerImpl implements GroupManager {
         for (Group group : groupMap.values()) {
             groupCollection.addGroup(group);
         }
+
+        // Add last modified date
+        groupCollection.setLastModified(lastModifiedDate);
+        // Set list strategy
+        groupCollection.setListStrategy(BuddyListStrategy.SOCIAL);
 
         return groupCollection;
     }
@@ -304,13 +360,102 @@ public class GroupManagerImpl implements GroupManager {
         );
 
         // Merge site and social groups
-        List<Group> mergedGroups = new ArrayList<Group>();
+        List<Group> mergedGroups = new LinkedList<Group>();
         mergedGroups.addAll(sitesGroupCollection.getGroups());
         mergedGroups.addAll(socialGroupCollection.getGroups());
 
         // Merge
         GroupCollection groupCollection = new GroupCollection();
         groupCollection.setGroups(mergedGroups);
+
+        // Decide which group is "newer"
+        if (sitesGroupCollection.getLastModified().after(socialGroupCollection.getLastModified())) {
+            groupCollection.setLastModified(sitesGroupCollection.getLastModified());
+        } else {
+            groupCollection.setLastModified(socialGroupCollection.getLastModified());
+        }
+
+        // Set list strategy
+        groupCollection.setListStrategy(BuddyListStrategy.SITES_AND_SOCIAL);
+
+        return groupCollection;
+    }
+
+    /**
+     * Returns group collection which contains user groups where the user belongs.
+     * The groups contain all users that are within except for the users given in param
+     *
+     * @param userId                which should be excluded from the list
+     * @param ignoreDefaultUser     boolean set to true if the default user should be excluded
+     * @param ignoreDeactivatedUser boolean set to true if the deactivated user should be excluded
+     * @param excludedGroups        names of groups that should be excluded from the group collection
+     * @param start                 of the list
+     * @param end                   of the list
+     * @return GroupCollection
+     * @throws Exception
+     */
+    private GroupCollection getUserGroups(Long userId,
+                                          boolean ignoreDefaultUser,
+                                          boolean ignoreDeactivatedUser,
+                                          String[] excludedGroups,
+                                          int start,
+                                          int end) throws Exception {
+
+        // Get user groups
+        List<Object[]> groupObjects = SettingsLocalServiceUtil.getUserGroups(
+                userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedGroups, start, end
+        );
+
+        // We are about to build a collection of groups that will contain
+        // users within the groups. However, we only get "flat" object which contains
+        // both group data and user data. Thus we need to create a hash map that will
+        // hold each group under the unique key (groupName). This should improve the
+        // speed of mapping since we can reuse groups that we already mapped.
+        Map<String, Group> groupMap = new HashMap<String, Group>();
+
+        // Because all group requests are cached we need to determine what was the latest modified
+        // date. If the user modifies his presence we need to change the etag so the client will load
+        // it from server.
+        Date lastModifiedDate = new Date(0);
+
+        // Build groups and users
+        for (Object[] object : groupObjects) {
+
+            // Deserialize group from object, group starts with 0
+            Group group = Group.fromPlainObject(object, 0);
+
+            // Check if the group is already cached
+            if (groupMap.get(group.getName()) == null) {
+                // Cache it
+                groupMap.put(group.getName(), group);
+            }
+            // Take the cached one
+            else {
+                group = groupMap.get(group.getName());
+            }
+
+            // Deserialize buddy from object, buddy starts at 1
+            Buddy buddy = Buddy.fromPlainObject(object, 1);
+
+            // Add it to group
+            group.addBuddy(buddy);
+
+            // If the presence was updated later then the last one overwrite the counter
+            if (buddy.getPresenceUpdatedAt().after(lastModifiedDate)) {
+                lastModifiedDate = buddy.getPresenceUpdatedAt();
+            }
+        }
+
+        // Create group collection
+        GroupCollection groupCollection = new GroupCollection();
+        // Add groups to collection
+        for (Group group : groupMap.values()) {
+            groupCollection.addGroup(group);
+        }
+        // Add last modified date
+        groupCollection.setLastModified(lastModifiedDate);
+        // Set list strategy
+        groupCollection.setListStrategy(BuddyListStrategy.USER_GROUPS);
 
         return groupCollection;
     }

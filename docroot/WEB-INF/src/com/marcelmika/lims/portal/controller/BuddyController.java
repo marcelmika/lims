@@ -27,6 +27,8 @@ package com.marcelmika.lims.portal.controller;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.marcelmika.lims.api.events.buddy.SearchBuddiesRequestEvent;
+import com.marcelmika.lims.api.events.buddy.SearchBuddiesResponseEvent;
 import com.marcelmika.lims.api.events.buddy.UpdatePresenceBuddyRequestEvent;
 import com.marcelmika.lims.api.events.buddy.UpdatePresenceBuddyResponseEvent;
 import com.marcelmika.lims.api.events.settings.DisableChatRequestEvent;
@@ -37,10 +39,12 @@ import com.marcelmika.lims.portal.domain.Buddy;
 import com.marcelmika.lims.portal.domain.Presence;
 import com.marcelmika.lims.portal.http.HttpStatus;
 import com.marcelmika.lims.portal.request.RequestParameterKeys;
+import com.marcelmika.lims.portal.request.parameters.SearchBuddiesParameters;
 import com.marcelmika.lims.portal.response.ResponseUtil;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
+import java.util.List;
 
 /**
  * @author Ing. Marcel Mika
@@ -74,31 +78,31 @@ public class BuddyController {
     /**
      * Update buddy's status
      *
-     * @param request  Request
-     * @param response Response
+     * @param request  ResourceRequest
+     * @param response ResourceResponse
      */
     public void updateBuddyPresence(ResourceRequest request, ResourceResponse response) {
 
-        Presence presence;      // Buddy object which holds presence
-        Buddy buddy;            // Currently logged user
+        Buddy buddy;            // Authorized user
+        Presence presence;      // Buddy's presence
 
         // Deserialize
         try {
+            // Create buddy from request
+            buddy = Buddy.fromResourceRequest(request);
+
             // Presence
             Buddy deserializedBuddy = JSONFactoryUtil.looseDeserialize(
                     request.getParameter(RequestParameterKeys.KEY_CONTENT), Buddy.class
             );
             presence = deserializedBuddy.getPresence();
-
-            // Create buddy from request
-            buddy = Buddy.fromResourceRequest(request);
         }
         // Failure
         catch (Exception exception) {
             // Bad request
             ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
             // Log
-            log.error(exception);
+            log.debug(exception);
             // End here
             return;
         }
@@ -133,6 +137,70 @@ public class BuddyController {
                 ResponseUtil.writeResponse(HttpStatus.UNAUTHORIZED, response);
             }
             // Everything else is a server fault
+            else {
+                ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                // Log
+                log.error(responseEvent.getException());
+            }
+        }
+    }
+
+    /**
+     * Returns a list of buddies based on the search query
+     *
+     * @param request  ResourceRequest
+     * @param response ResourceResponse
+     */
+    public void searchBuddies(ResourceRequest request, ResourceResponse response) {
+
+        Buddy buddy;                            // Authorized user
+        SearchBuddiesParameters parameters;     // Request parameters
+
+        // Deserialize
+        try {
+            // Create buddy from request
+            buddy = Buddy.fromResourceRequest(request);
+
+            // Parameters
+            parameters = JSONFactoryUtil.looseDeserialize(
+                    request.getParameter(RequestParameterKeys.KEY_PARAMETERS), SearchBuddiesParameters.class
+            );
+        }
+        // Failure
+        catch (Exception exception) {
+            // Bad request
+            ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
+            // Log
+            log.debug(exception);
+            // End here
+            return;
+        }
+
+        // Search event
+        SearchBuddiesResponseEvent responseEvent = buddyCoreService.searchBuddies(new SearchBuddiesRequestEvent(
+                buddy.toBuddyDetails(), parameters.getSearchQuery()
+        ));
+
+        // Success
+        if (responseEvent.isSuccess()) {
+
+            // Map buddy details to buddy
+            List<Buddy> buddyList = Buddy.fromBuddyDetailsList(responseEvent.getSearchResults());
+
+            // Serialize
+            String serialized = JSONFactoryUtil.looseSerialize(buddyList);
+
+            // Write success to response
+            ResponseUtil.writeResponse(serialized, HttpStatus.OK, response);
+        }
+        // Failure
+        else {
+            SearchBuddiesResponseEvent.Status status = responseEvent.getStatus();
+            // Bad request
+            if (status == SearchBuddiesResponseEvent.Status.ERROR_WRONG_PARAMETERS) {
+                ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
+            }
+            // Everything else is server fault
             else {
                 ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
                 // Log

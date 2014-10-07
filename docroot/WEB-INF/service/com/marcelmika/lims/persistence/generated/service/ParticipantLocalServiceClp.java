@@ -123,7 +123,9 @@ public class ParticipantLocalServiceClp implements ParticipantLocalService {
 
 		_methodName20 = "updateParticipants";
 
-		_methodParameterTypes20 = new String[] { "java.lang.Long" };
+		_methodParameterTypes20 = new String[] {
+				"java.lang.Long", "java.lang.Long"
+			};
 
 		_methodName21 = "closeConversation";
 
@@ -736,13 +738,17 @@ public class ParticipantLocalServiceClp implements ParticipantLocalService {
 	}
 
 	@Override
-	public void updateParticipants(java.lang.Long cid)
+	public void updateParticipants(java.lang.Long cid, java.lang.Long senderId)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName20,
 				_methodParameterTypes20,
-				new Object[] { ClpSerializer.translateInput(cid) });
+				new Object[] {
+					ClpSerializer.translateInput(cid),
+					
+				ClpSerializer.translateInput(senderId)
+				});
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);

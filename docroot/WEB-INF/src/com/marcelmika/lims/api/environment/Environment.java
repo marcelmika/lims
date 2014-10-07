@@ -86,7 +86,8 @@ public class Environment {
         ALL,
         SITES,
         SOCIAL,
-        SITES_AND_SOCIAL
+        SITES_AND_SOCIAL,
+        USER_GROUPS
     }
 
     /**
@@ -113,6 +114,10 @@ public class Environment {
         else if (value.equals("sites,social")) {
             return BuddyListStrategy.SITES_AND_SOCIAL;
         }
+        // Groups
+        else if (value.equals("groups")) {
+            return BuddyListStrategy.USER_GROUPS;
+        }
         // Unknown value
         else {
             log.error(String.format(
@@ -129,7 +134,7 @@ public class Environment {
      * Enum for buddy list social relation
      */
     public enum BuddyListSocialRelation {
-        // TODO: i18n
+
         TYPE_BI_UNKNOWN(0, "Unknown relation"),
         TYPE_BI_CONNECTION(12, "Connections"),
         TYPE_BI_COWORKER(1, "Coworkers"),
@@ -267,13 +272,32 @@ public class Environment {
     }
 
     /**
+     * Returns maximal number of serach result in buddy list
+     *
+     * @return int
+     */
+    public static int getBuddyListMaxSearch() {
+        return PortletPropertiesValues.BUDDY_LIST_MAX_SEARCH;
+    }
+
+    /**
      * Returns an array of sites names which should be excluded from
      * the buddy list
      *
      * @return String[]
      */
-    public static String[] getBuddyListExcludes() {
+    public static String[] getBuddyListSiteExcludes() {
         return PortletPropertiesValues.BUDDY_LIST_SITE_EXCLUDES;
+    }
+
+    /**
+     * Returns an array of group names which should be excluded from
+     * the buddy list
+     *
+     * @return String[]
+     */
+    public static String[] getBuddyListGroupExcludes() {
+        return PortletPropertiesValues.BUDDY_LIST_GROUP_EXCLUDES;
     }
 
     /**
@@ -311,9 +335,7 @@ public class Environment {
      * @return boolean
      */
     public static boolean isJabberEnabled() {
-        // TODO: Uncomment after implemented in next release
-        return false;
-//        return PortletPropertiesValues.JABBER_ENABLED;
+        return PortletPropertiesValues.JABBER_ENABLED;
     }
 
     /**
@@ -371,6 +393,15 @@ public class Environment {
     }
 
     /**
+     * Returns true if the Jabber Import User mechanism is enabled
+     *
+     * @return boolean
+     */
+    public static boolean isJabberImportUserEnabled() {
+        return PortletPropertiesValues.JABBER_IMPORT_USER_ENABLED;
+    }
+
+    /**
      * Returns true if SASL authentication mechanism is enabled
      *
      * @return boolean
@@ -397,4 +428,12 @@ public class Environment {
         return PortletPropertiesValues.JABBER_SASL_PLAIN_PASSWORD;
     }
 
+    /**
+     * Returns true if the error mode is enabled
+     *
+     * @return boolean
+     */
+    public static Boolean isErrorModeEnabled() {
+        return PortletPropertiesValues.ERROR_MODE_ENABLED;
+    }
 }

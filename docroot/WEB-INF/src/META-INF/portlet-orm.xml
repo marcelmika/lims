@@ -52,6 +52,7 @@
 			<basic name="participantId" />
 			<basic name="unreadMessagesCount" />
 			<basic name="isOpened" />
+			<basic name="openedAt" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
@@ -62,6 +63,7 @@
 			<id name="sid" />
 			<basic name="userId" />
 			<basic name="presence" />
+			<basic name="presenceUpdatedAt" />
 			<basic name="mute" />
 			<basic name="chatEnabled" />
 			<transient name="modelAttributes" />

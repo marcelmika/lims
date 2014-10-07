@@ -150,6 +150,41 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 		_methodParameterTypes25 = new String[] {
 				"java.lang.Long", "boolean", "boolean", "int[][]", "int", "int"
 			};
+
+		_methodName26 = "getUserGroups";
+
+		_methodParameterTypes26 = new String[] {
+				"java.lang.Long", "boolean", "boolean", "java.lang.String[][]",
+				"int", "int"
+			};
+
+		_methodName27 = "searchSitesBuddies";
+
+		_methodParameterTypes27 = new String[] {
+				"java.lang.Long", "java.lang.String", "boolean", "boolean",
+				"java.lang.String[][]", "int", "int"
+			};
+
+		_methodName28 = "searchAllBuddies";
+
+		_methodParameterTypes28 = new String[] {
+				"java.lang.Long", "java.lang.String", "boolean", "boolean",
+				"int", "int"
+			};
+
+		_methodName29 = "searchSocialBuddies";
+
+		_methodParameterTypes29 = new String[] {
+				"java.lang.Long", "java.lang.String", "boolean", "boolean",
+				"int[][]", "int", "int"
+			};
+
+		_methodName30 = "searchUserGroupsBuddies";
+
+		_methodParameterTypes30 = new String[] {
+				"java.lang.Long", "java.lang.String", "boolean", "boolean",
+				"java.lang.String[][]", "int", "int"
+			};
 	}
 
 	@Override
@@ -852,7 +887,7 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 	@Override
 	public java.util.List<java.lang.Object[]> getSitesGroups(
 		java.lang.Long userId, boolean ignoreDefaultUser,
-		boolean ignoreDeactivatedUser, java.lang.String[] excludedSties,
+		boolean ignoreDeactivatedUser, java.lang.String[] excludedSites,
 		int start, int end) throws java.lang.Exception {
 		Object returnObj = null;
 
@@ -866,7 +901,7 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 						
 					ignoreDeactivatedUser,
 						
-					ClpSerializer.translateInput(excludedSties),
+					ClpSerializer.translateInput(excludedSites),
 						
 					start,
 						
@@ -910,6 +945,229 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 					ignoreDeactivatedUser,
 						
 					ClpSerializer.translateInput(relationTypes),
+						
+					start,
+						
+					end
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof java.lang.Exception) {
+				throw (java.lang.Exception)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<java.lang.Object[]>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<java.lang.Object[]> getUserGroups(
+		java.lang.Long userId, boolean ignoreDefaultUser,
+		boolean ignoreDeactivatedUser, java.lang.String[] excludedGroups,
+		int start, int end) throws java.lang.Exception {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName26,
+					_methodParameterTypes26,
+					new Object[] {
+						ClpSerializer.translateInput(userId),
+						
+					ignoreDefaultUser,
+						
+					ignoreDeactivatedUser,
+						
+					ClpSerializer.translateInput(excludedGroups),
+						
+					start,
+						
+					end
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof java.lang.Exception) {
+				throw (java.lang.Exception)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<java.lang.Object[]>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<java.lang.Object[]> searchSitesBuddies(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser,
+		java.lang.String[] excludedSites, int start, int end)
+		throws java.lang.Exception {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName27,
+					_methodParameterTypes27,
+					new Object[] {
+						ClpSerializer.translateInput(userId),
+						
+					ClpSerializer.translateInput(searchQuery),
+						
+					ignoreDefaultUser,
+						
+					ignoreDeactivatedUser,
+						
+					ClpSerializer.translateInput(excludedSites),
+						
+					start,
+						
+					end
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof java.lang.Exception) {
+				throw (java.lang.Exception)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<java.lang.Object[]>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<java.lang.Object[]> searchAllBuddies(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser, int start,
+		int end) throws java.lang.Exception {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName28,
+					_methodParameterTypes28,
+					new Object[] {
+						ClpSerializer.translateInput(userId),
+						
+					ClpSerializer.translateInput(searchQuery),
+						
+					ignoreDefaultUser,
+						
+					ignoreDeactivatedUser,
+						
+					start,
+						
+					end
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof java.lang.Exception) {
+				throw (java.lang.Exception)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<java.lang.Object[]>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<java.lang.Object[]> searchSocialBuddies(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser,
+		int[] relationTypes, int start, int end) throws java.lang.Exception {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName29,
+					_methodParameterTypes29,
+					new Object[] {
+						ClpSerializer.translateInput(userId),
+						
+					ClpSerializer.translateInput(searchQuery),
+						
+					ignoreDefaultUser,
+						
+					ignoreDeactivatedUser,
+						
+					ClpSerializer.translateInput(relationTypes),
+						
+					start,
+						
+					end
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof java.lang.Exception) {
+				throw (java.lang.Exception)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<java.lang.Object[]>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<java.lang.Object[]> searchUserGroupsBuddies(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser,
+		java.lang.String[] excludedGroups, int start, int end)
+		throws java.lang.Exception {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName30,
+					_methodParameterTypes30,
+					new Object[] {
+						ClpSerializer.translateInput(userId),
+						
+					ClpSerializer.translateInput(searchQuery),
+						
+					ignoreDefaultUser,
+						
+					ignoreDeactivatedUser,
+						
+					ClpSerializer.translateInput(excludedGroups),
 						
 					start,
 						
@@ -986,4 +1244,14 @@ public class SettingsLocalServiceClp implements SettingsLocalService {
 	private String[] _methodParameterTypes24;
 	private String _methodName25;
 	private String[] _methodParameterTypes25;
+	private String _methodName26;
+	private String[] _methodParameterTypes26;
+	private String _methodName27;
+	private String[] _methodParameterTypes27;
+	private String _methodName28;
+	private String[] _methodParameterTypes28;
+	private String _methodName29;
+	private String[] _methodParameterTypes29;
+	private String _methodName30;
+	private String[] _methodParameterTypes30;
 }

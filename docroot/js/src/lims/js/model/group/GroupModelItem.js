@@ -53,6 +53,7 @@ Y.LIMS.Model.GroupModelItem = Y.Base.create('groupModelItem', Y.Model, [], {
 
 }, {
     ATTRS: {
+
         // Add custom model attributes here. These attributes will contain your
         // model's data. See the docs for Y.Attribute to learn more about defining
         // attributes.
@@ -63,6 +64,35 @@ Y.LIMS.Model.GroupModelItem = Y.Base.create('groupModelItem', Y.Model, [], {
 
         buddies: {
             value: [] // default value
+        },
+
+        /**
+         * Social relation type
+         *
+         * {Y.LIMS.Model.GroupSocialRelationType}
+         */
+        socialRelation: {
+            /**
+             * Setter
+             *
+             * @param object
+             * @returns {Y.LIMS.Model.GroupSocialRelationType}
+             */
+            setter: function (object) {
+                // No social relation was set
+                if (!object) {
+                    return null;
+                }
+
+                // Create a model instance from value object
+                if (object.name !== "groupSocialRelationType") {
+                    return new Y.LIMS.Model.GroupSocialRelationType({
+                        socialRelationType: object
+                    });
+                }
+                // Value is already an instance of Y.LIMS.Model.GroupSocialRelationType
+                return object;
+            }
         }
     }
 });

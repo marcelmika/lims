@@ -47,6 +47,7 @@ public class SingleUserConversation implements MessageListener {
 
     private String conversationId;
     private ConversationType conversationType;
+    private Buddy buddy;
     private Buddy participant;
     private List<Message> messages = new ArrayList<Message>();
 
@@ -87,15 +88,51 @@ public class SingleUserConversation implements MessageListener {
             conversation.conversationType = ConversationType.fromConversationTypeDetails(details.getConversationType());
         }
 
-        if (details.getParticipants() != null && details.getParticipants().size() > 0) {
-            // Get first participant (in general there shouldn't ever by more than 1 participants in a
-            // single user conversation
-            conversation.participant = Buddy.fromBuddyDetails(details.getParticipants().get(0));
+        if (details.getParticipants() != null) {
+            // The size of the participant list for a single user chat cannot be bigger than 2.
+            // However, we should fail gracefully here. So we just take the first participant in the list
+            // which isn't the owner of conversation and show a log message that should warn us.
+            if (details.getParticipants().size() > 2) {
+                log.error("The size of participants list for a single user conversation is bigger than 2." +
+                        "This shouldn't normally happen.");
+            }
+
+            // Get from by listing the participants
+            for (BuddyDetails participant : details.getParticipants()) {
+                // The creator of the conversation is not the participant
+                if (participant.getBuddyId().equals(details.getBuddy().getBuddyId())) {
+                    continue;
+                }
+                // Take first participant
+                conversation.participant = Buddy.fromBuddyDetails(participant);
+                break;
+            }
         }
 
         if (details.getMessages() != null) {
             conversation.messages = Message.fromMessageDetails(details.getMessages());
         }
+
+        return conversation;
+    }
+
+    public static SingleUserConversation fromMessage(Message message) {
+
+        Buddy from = message.getFrom();
+        Buddy to = message.getTo();
+
+        // Create new conversation
+        SingleUserConversation conversation = new SingleUserConversation();
+        // Todo: order alphabetically
+        String conversationId = String.format("%s_%s", from.getScreenName(), to.getScreenName());
+
+        // Properties
+        conversation.conversationType = ConversationType.SINGLE_USER;
+        conversation.conversationId = conversationId;
+
+        // Relations
+        conversation.buddy = from;
+        conversation.participant = to;
 
         return conversation;
     }
@@ -150,7 +187,7 @@ public class SingleUserConversation implements MessageListener {
         // Create new message from smack message
         Message message = Message.fromSmackMessage(smackMessage);
 
-        log.info(String.format("From: %s, Body: %s", message.getFrom().getScreenName(), message.getBody()));
+        log.debug(String.format("From: %s, Body: %s", message.getFrom().getScreenName(), message.getBody()));
 
         messages.add(message);
     }
@@ -182,6 +219,14 @@ public class SingleUserConversation implements MessageListener {
 
     public void setParticipant(Buddy participant) {
         this.participant = participant;
+    }
+
+    public Buddy getBuddy() {
+        return buddy;
+    }
+
+    public void setBuddy(Buddy buddy) {
+        this.buddy = buddy;
     }
 
     public List<Message> getMessages() {

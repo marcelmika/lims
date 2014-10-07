@@ -27,12 +27,21 @@ package com.marcelmika.lims.jabber.session.store;
 import com.marcelmika.lims.jabber.session.UserSession;
 
 /**
+ * User Session Store holds all user sessions
+ *
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
  * Date: 4/3/14
  * Time: 11:41 PM
  */
 public interface UserSessionStore {
+
+    /**
+     * Registers user session lister
+     *
+     * @param listener UserSessionStoreListener
+     */
+    public void addUserSessionStoreListener(UserSessionStoreListener listener);
 
     /**
      * Returns stored user session
@@ -63,5 +72,4 @@ public interface UserSessionStore {
      * @return true if the store contains user session
      */
     public boolean containsUserSession(Long id);
-
 }

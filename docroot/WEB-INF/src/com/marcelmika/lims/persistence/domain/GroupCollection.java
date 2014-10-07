@@ -26,12 +26,9 @@ package com.marcelmika.lims.persistence.domain;
 
 import com.marcelmika.lims.api.entity.GroupCollectionDetails;
 import com.marcelmika.lims.api.entity.GroupDetails;
+import com.marcelmika.lims.api.environment.Environment.BuddyListStrategy;
 
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 
 /**
@@ -42,8 +39,9 @@ import java.util.ArrayList;
  */
 public class GroupCollection {
 
-    private Date lastModified = Calendar.getInstance().getTime();
     private List<Group> groups = Collections.synchronizedList(new ArrayList<Group>());
+    private Date lastModified = Calendar.getInstance().getTime();
+    private BuddyListStrategy listStrategy;
 
     /**
      * Maps a list of groups to a list of group details
@@ -62,6 +60,8 @@ public class GroupCollection {
 
         // Modification date
         details.setLastModified(lastModified);
+        // List strategy
+        details.setListStrategy(listStrategy);
 
         return details;
     }
@@ -89,5 +89,13 @@ public class GroupCollection {
 
     public void setGroups(List<Group> groups) {
         this.groups = groups;
+    }
+
+    public BuddyListStrategy getListStrategy() {
+        return listStrategy;
+    }
+
+    public void setListStrategy(BuddyListStrategy listStrategy) {
+        this.listStrategy = listStrategy;
     }
 }

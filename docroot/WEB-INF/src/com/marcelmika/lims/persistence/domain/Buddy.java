@@ -24,10 +24,12 @@
 
 package com.marcelmika.lims.persistence.domain;
 
+import com.liferay.portal.model.User;
 import com.marcelmika.lims.api.entity.BuddyDetails;
 import com.marcelmika.lims.persistence.generated.model.Participant;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,6 +45,7 @@ public class Buddy {
     private String screenName;
     private String password;
     private Presence presence;
+    private Date presenceUpdatedAt;
 
     // -------------------------------------------------------------------------------------------
     // Factory Methods
@@ -123,10 +126,30 @@ public class Buddy {
                 object[firstElement++],
                 object[firstElement++]);
 
-        String presence = String.format("%s", object[firstElement]);
+        String presence = String.format("%s", object[firstElement++]);
         if (presence != null) {
             buddy.presence = Presence.fromDescription(presence);
         }
+
+        Long presenceUpdatedAtTimestamp = (Long) object[firstElement];
+        buddy.presenceUpdatedAt = new Date(presenceUpdatedAtTimestamp);
+
+        return buddy;
+    }
+
+    /**
+     * Factory method which create buddy form Liferay's user
+     *
+     * @param user User
+     * @return Buddy
+     */
+    public static Buddy fromUser(User user) {
+        // Create new buddy
+        Buddy buddy = new Buddy();
+        // Map data from user
+        buddy.buddyId = user.getUserId();
+        buddy.screenName = user.getScreenName();
+        buddy.fullName = user.getFullName();
 
         return buddy;
     }
@@ -195,5 +218,39 @@ public class Buddy {
 
     public void setPresence(Presence presence) {
         this.presence = presence;
+    }
+
+    public Date getPresenceUpdatedAt() {
+        return presenceUpdatedAt;
+    }
+
+    public void setPresenceUpdatedAt(Date presenceUpdatedAt) {
+        this.presenceUpdatedAt = presenceUpdatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "Buddy{" +
+                "buddyId=" + buddyId +
+                ", fullName='" + fullName + '\'' +
+                ", screenName='" + screenName + '\'' +
+                ", password='" + password + '\'' +
+                ", presence=" + presence +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Buddy buddy = (Buddy) o;
+
+        return !(buddyId != null ? !buddyId.equals(buddy.buddyId) : buddy.buddyId != null);
+    }
+
+    @Override
+    public int hashCode() {
+        return buddyId != null ? buddyId.hashCode() : 0;
     }
 }

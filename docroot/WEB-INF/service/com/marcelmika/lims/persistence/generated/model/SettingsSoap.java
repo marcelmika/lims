@@ -32,6 +32,7 @@ public class SettingsSoap implements Serializable {
 		soapModel.setSid(model.getSid());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setPresence(model.getPresence());
+		soapModel.setPresenceUpdatedAt(model.getPresenceUpdatedAt());
 		soapModel.setMute(model.getMute());
 		soapModel.setChatEnabled(model.getChatEnabled());
 
@@ -110,6 +111,14 @@ public class SettingsSoap implements Serializable {
 		_presence = presence;
 	}
 
+	public long getPresenceUpdatedAt() {
+		return _presenceUpdatedAt;
+	}
+
+	public void setPresenceUpdatedAt(long presenceUpdatedAt) {
+		_presenceUpdatedAt = presenceUpdatedAt;
+	}
+
 	public boolean getMute() {
 		return _mute;
 	}
@@ -137,6 +146,7 @@ public class SettingsSoap implements Serializable {
 	private long _sid;
 	private long _userId;
 	private String _presence;
+	private long _presenceUpdatedAt;
 	private boolean _mute;
 	private boolean _chatEnabled;
 }

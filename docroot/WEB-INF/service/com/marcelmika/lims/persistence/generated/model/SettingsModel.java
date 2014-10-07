@@ -117,6 +117,20 @@ public interface SettingsModel extends BaseModel<Settings> {
 	public void setPresence(String presence);
 
 	/**
+	 * Returns the presence updated at of this settings.
+	 *
+	 * @return the presence updated at of this settings
+	 */
+	public long getPresenceUpdatedAt();
+
+	/**
+	 * Sets the presence updated at of this settings.
+	 *
+	 * @param presenceUpdatedAt the presence updated at of this settings
+	 */
+	public void setPresenceUpdatedAt(long presenceUpdatedAt);
+
+	/**
 	 * Returns the mute of this settings.
 	 *
 	 * @return the mute of this settings

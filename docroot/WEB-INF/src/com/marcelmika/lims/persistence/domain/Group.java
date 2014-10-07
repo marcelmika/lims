@@ -24,7 +24,9 @@
 
 package com.marcelmika.lims.persistence.domain;
 
+import com.liferay.portal.model.UserGroup;
 import com.marcelmika.lims.api.entity.GroupDetails;
+import com.marcelmika.lims.api.environment.Environment.BuddyListSocialRelation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,7 @@ public class Group {
 
     private String name;
     private List<Buddy> buddies = new ArrayList<Buddy>();
+    private BuddyListSocialRelation socialRelation;
 
     // -------------------------------------------------------------------------------------------
     // Factory Methods
@@ -55,6 +58,7 @@ public class Group {
         Group group = new Group();
         // Map data to group details
         group.name = groupDetails.getName();
+        group.socialRelation = groupDetails.getSocialRelation();
 
         // Relations
         if (groupDetails.getBuddies() != null) {
@@ -81,6 +85,21 @@ public class Group {
     }
 
     /**
+     * Factory method which create group from the user group
+     *
+     * @param userGroup UserGroup
+     * @return Group
+     */
+    public static Group fromUserGroup(UserGroup userGroup) {
+        // Crate new group
+        Group group = new Group();
+        // Map data from the user group
+        group.name = userGroup.getName();
+
+        return group;
+    }
+
+    /**
      * Maps group to group details
      *
      * @return GroupDetails
@@ -90,6 +109,7 @@ public class Group {
         GroupDetails details = new GroupDetails();
         // Map data from group
         details.setName(name);
+        details.setSocialRelation(socialRelation);
 
         // Relations
         if (buddies != null) {
@@ -119,6 +139,14 @@ public class Group {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public BuddyListSocialRelation getSocialRelation() {
+        return socialRelation;
+    }
+
+    public void setSocialRelation(BuddyListSocialRelation socialRelation) {
+        this.socialRelation = socialRelation;
     }
 
     /**

@@ -24,7 +24,10 @@
 
 package com.marcelmika.lims.jabber.service;
 
-import com.marcelmika.lims.api.events.conversation.*;
+import com.marcelmika.lims.api.events.conversation.CreateConversationRequestEvent;
+import com.marcelmika.lims.api.events.conversation.CreateConversationResponseEvent;
+import com.marcelmika.lims.api.events.conversation.SendMessageRequestEvent;
+import com.marcelmika.lims.api.events.conversation.SendMessageResponseEvent;
 
 /**
  * @author Ing. Marcel Mika
@@ -35,20 +38,19 @@ import com.marcelmika.lims.api.events.conversation.*;
 public interface ConversationJabberService {
 
     /**
+     * Register conversation jabber service listener
+     *
+     * @param listener ConversationJabberServiceListener
+     */
+    public void addConversationJabberServiceListener(ConversationJabberServiceListener listener);
+
+    /**
      * Creates new conversation
      *
      * @param event request event for method
      * @return response event for  method
      */
     public CreateConversationResponseEvent createConversation(CreateConversationRequestEvent event);
-
-    /**
-     * Get all conversations related to the particular user
-     *
-     * @param event request event for method
-     * @return response event for  method
-     */
-    public GetConversationsResponseEvent getConversations(GetConversationsRequestEvent event);
 
     /**
      * Sends message to conversation

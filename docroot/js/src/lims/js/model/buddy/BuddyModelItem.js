@@ -59,7 +59,7 @@ Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [Y.LIMS.M
             on: {
                 success: function (id, o) {
                     if (callback) {
-                        callback(null, o.response);
+                        callback(null, o.responseText);
                     }
                 },
                 failure: function (x, o) {
@@ -69,7 +69,7 @@ Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [Y.LIMS.M
                         Y.fire('userSessionExpired');
                     }
                     if (callback) {
-                        callback("Cannot update buddy presence", o.response);
+                        callback("Cannot update buddy presence", o.responseText);
                     }
                 }
             }

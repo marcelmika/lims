@@ -26,8 +26,7 @@ package com.marcelmika.lims.jabber.session.store;
 
 import com.marcelmika.lims.jabber.session.UserSession;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Ing. Marcel Mika
@@ -40,6 +39,21 @@ public class UserSessionStoreImpl implements UserSessionStore {
     // Map of Connection Managers
     private Map<Long, UserSession> connectionManagerMap = new HashMap<Long, UserSession>();
 
+    // User session listeners
+    private List<UserSessionStoreListener> userSessionStoreListeners = Collections.synchronizedList(
+            new ArrayList<UserSessionStoreListener>()
+    );
+
+
+    /**
+     * Registers user session lister
+     *
+     * @param listener UserSessionStoreListener
+     */
+    @Override
+    public void addUserSessionStoreListener(UserSessionStoreListener listener) {
+        userSessionStoreListeners.add(listener);
+    }
 
     /**
      * Returns stored user session
@@ -59,7 +73,12 @@ public class UserSessionStoreImpl implements UserSessionStore {
      */
     @Override
     public void removeUserSession(Long id) {
+        // Remove session from the store
         connectionManagerMap.remove(id);
+        // Callback
+        for (UserSessionStoreListener listener : userSessionStoreListeners) {
+            listener.userSessionRemoved(id);
+        }
     }
 
     /**
@@ -69,7 +88,12 @@ public class UserSessionStoreImpl implements UserSessionStore {
      */
     @Override
     public void addUserSession(UserSession userSession) {
+        // Add user session to map
         connectionManagerMap.put(userSession.getSessionId(), userSession);
+        // Callback
+        for (UserSessionStoreListener listener : userSessionStoreListeners) {
+            listener.userSessionAdded(userSession);
+        }
     }
 
     /**

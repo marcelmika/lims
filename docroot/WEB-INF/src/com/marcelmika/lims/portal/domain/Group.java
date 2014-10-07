@@ -25,6 +25,7 @@
 package com.marcelmika.lims.portal.domain;
 
 import com.marcelmika.lims.api.entity.GroupDetails;
+import com.marcelmika.lims.api.environment.Environment.BuddyListSocialRelation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +38,9 @@ import java.util.List;
  */
 public class Group {
 
-
-    public static final String KEY_BUDDIES = "buddies";
-
     private String name;
     private List<Buddy> buddies = new ArrayList<Buddy>();
+    private BuddyListSocialRelation socialRelation;
 
     /**
      * Create new group and maps data from group details
@@ -54,6 +53,7 @@ public class Group {
         Group group = new Group();
         // Map data to group details
         group.name = details.getName();
+        group.socialRelation = details.getSocialRelation();
 
         // Relations
         if (details.getBuddies() != null) {
@@ -73,7 +73,7 @@ public class Group {
         List<Group> groups = new ArrayList<Group>();
 
         // Map all group details to group
-        for(GroupDetails details : groupDetails) {
+        for (GroupDetails details : groupDetails) {
             groups.add(Group.fromGroupDetails(details));
         }
 
@@ -91,10 +91,11 @@ public class Group {
         GroupDetails details = new GroupDetails();
         // Map data from group
         details.setName(name);
+        details.setSocialRelation(socialRelation);
 
         // Relations
         if (buddies != null) {
-            for(Buddy buddy : buddies) {
+            for (Buddy buddy : buddies) {
                 details.addBuddyDetails(buddy.toBuddyDetails());
             }
         }
@@ -117,6 +118,14 @@ public class Group {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public BuddyListSocialRelation getSocialRelation() {
+        return socialRelation;
+    }
+
+    public void setSocialRelation(BuddyListSocialRelation socialRelation) {
+        this.socialRelation = socialRelation;
     }
 
     /**

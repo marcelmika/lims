@@ -24,10 +24,7 @@
 
 package com.marcelmika.lims.jabber.domain;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.util.PortalUtil;
+import com.liferay.portal.model.User;
 import com.marcelmika.lims.api.entity.BuddyDetails;
 import com.marcelmika.lims.jabber.utils.Jid;
 import org.jivesoftware.smack.Chat;
@@ -45,6 +42,7 @@ import java.util.List;
 public class Buddy {
 
     private Long buddyId;
+    private Long companyId;
     private String fullName;
     private String screenName;
     private String password;
@@ -77,18 +75,42 @@ public class Buddy {
      * @return Buddy
      */
     public static Buddy fromChat(Chat chat) {
-        // CREATE NEW BUDDY
+        // Create new buddy
         Buddy buddy = new Buddy();
         // Map properties
-        // TODO: Take name from roster
         buddy.fullName = chat.getParticipant();
         buddy.screenName = Jid.getBareAddress(chat.getParticipant());
+
         return buddy;
     }
 
-    public static Buddy fromSmackMessage(org.jivesoftware.smack.packet.Message smackMessage) {
+    /**
+     * Factory method create a buddy from smack user
+     *
+     * @param smackUser username
+     * @return Buddy
+     */
+    public static Buddy fromSmackUser(String smackUser) {
         Buddy buddy = new Buddy();
-        buddy.screenName = Jid.getName(smackMessage.getFrom());
+        buddy.screenName = Jid.getName(smackUser);
+
+        return buddy;
+    }
+
+    /**
+     * Factory method which creates new Buddy object from portal User
+     *
+     * @param user User
+     * @return Buddy
+     */
+    public static Buddy fromPortalUser(User user) {
+        // Create new empty buddy
+        Buddy buddy = new Buddy();
+
+        buddy.buddyId = user.getUserId();
+        buddy.companyId = user.getCompanyId();
+        buddy.screenName = user.getScreenName();
+        buddy.password = user.getPassword();
 
         return buddy;
     }
@@ -121,10 +143,11 @@ public class Buddy {
         // Create new buddy
         Buddy buddy = new Buddy();
         // Map data to user details
-        buddy.setBuddyId(buddyDetails.getBuddyId());
-        buddy.setFullName(buddyDetails.getFullName());
-        buddy.setScreenName(buddyDetails.getScreenName());
-        buddy.setPassword(buddyDetails.getPassword());
+        buddy.buddyId = buddyDetails.getBuddyId();
+        buddy.companyId = buddyDetails.getCompanyId();
+        buddy.fullName = buddyDetails.getFullName();
+        buddy.screenName = buddyDetails.getScreenName();
+        buddy.password = buddyDetails.getPassword();
 
         if (buddyDetails.getPresenceDetails() != null) {
             buddy.presence = Presence.fromPresenceDetails(buddyDetails.getPresenceDetails());
@@ -143,6 +166,7 @@ public class Buddy {
         BuddyDetails details = new BuddyDetails();
         // Map data from user
         details.setBuddyId(buddyId);
+        details.setCompanyId(companyId);
         details.setFullName(fullName);
         details.setScreenName(screenName);
         details.setPassword(password);
@@ -165,6 +189,14 @@ public class Buddy {
 
     public void setBuddyId(Long buddyId) {
         this.buddyId = buddyId;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     public String getFullName() {
@@ -197,5 +229,17 @@ public class Buddy {
 
     public void setPresence(Presence presence) {
         this.presence = presence;
+    }
+
+    @Override
+    public String toString() {
+        return "Buddy{" +
+                "buddyId=" + buddyId +
+                ", companyId=" + companyId +
+                ", fullName='" + fullName + '\'' +
+                ", screenName='" + screenName + '\'' +
+                ", password='" + password + '\'' +
+                ", presence=" + presence +
+                '}';
     }
 }

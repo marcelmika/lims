@@ -48,6 +48,53 @@ public class SettingsFinderUtil {
 			ignoreDeactivatedUser, relationTypes, start, end);
 	}
 
+	public static java.util.List<java.lang.Object[]> findUserGroups(
+		java.lang.Long userId, boolean ignoreDefaultUser,
+		boolean ignoreDeactivatedUser, java.lang.String[] excludedGroups,
+		int start, int end) throws java.lang.Exception {
+		return getFinder()
+				   .findUserGroups(userId, ignoreDefaultUser,
+			ignoreDeactivatedUser, excludedGroups, start, end);
+	}
+
+	public static java.util.List<java.lang.Object[]> searchSitesBuddies(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser,
+		java.lang.String[] excludedSites, int start, int end)
+		throws java.lang.Exception {
+		return getFinder()
+				   .searchSitesBuddies(userId, searchQuery, ignoreDefaultUser,
+			ignoreDeactivatedUser, excludedSites, start, end);
+	}
+
+	public static java.util.List<java.lang.Object[]> searchAllBuddies(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser, int start,
+		int end) throws java.lang.Exception {
+		return getFinder()
+				   .searchAllBuddies(userId, searchQuery, ignoreDefaultUser,
+			ignoreDeactivatedUser, start, end);
+	}
+
+	public static java.util.List<java.lang.Object[]> searchSocialBuddies(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser,
+		int[] relationTypes, int start, int end) throws java.lang.Exception {
+		return getFinder()
+				   .searchSocialBuddies(userId, searchQuery, ignoreDefaultUser,
+			ignoreDeactivatedUser, relationTypes, start, end);
+	}
+
+	public static java.util.List<java.lang.Object[]> searchUserGroupsBuddies(
+		java.lang.Long userId, java.lang.String searchQuery,
+		boolean ignoreDefaultUser, boolean ignoreDeactivatedUser,
+		java.lang.String[] excludedGroups, int start, int end)
+		throws java.lang.Exception {
+		return getFinder()
+				   .searchUserGroupsBuddies(userId, searchQuery,
+			ignoreDefaultUser, ignoreDeactivatedUser, excludedGroups, start, end);
+	}
+
 	public static SettingsFinder getFinder() {
 		if (_finder == null) {
 			_finder = (SettingsFinder)PortletBeanLocatorUtil.locate(com.marcelmika.lims.persistence.generated.service.ClpSerializer.getServletContextName(),

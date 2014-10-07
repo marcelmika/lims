@@ -1,3 +1,27 @@
+<%--
+  ~ The MIT License (MIT)
+  ~
+  ~ Copyright (c) 2014 Marcel Mika, marcelmika.com
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  --%>
+
 <%-- This template HTML will be used to render each group item. --%>
 <script type="text/x-template" id="lims-group-item-template">
     <div class="group-name">{name}</div>
@@ -21,15 +45,9 @@
     <div class="panel">
         <div class="panel-window">
             <div class="panel-title">
-                <div class="panel-button close"></div>
-                <div class="panel-button minimize"></div>
-                <div class="panel-button search"></div>
+                <button class="panel-button close"></button>
+                <button class="panel-button minimize"></button>
                 <div class="panel-title-text">{conversationTitle}</div>
-            </div>
-            <div class="panel-search hidden">
-                <label>
-                    <input class="search-input-field" name="searchConversation" type="text" value=""/>
-                </label>
             </div>
             <div class="panel-content">
                 <div class="preloader"></div>
@@ -42,7 +60,6 @@
         </div>
     </div>
 </script>
-
 
 <%-- This template HTML will be used to render each conversation item (i.e. message). --%>
 <script type="text/x-template" id="lims-conversation-item-template">
@@ -57,13 +74,106 @@
     <div class="clear"></div>
 </script>
 
-<%-- This template HTML will be used to play a sound via swf file --%>
-<script type="text/x-template" id="lims-notification-template">
-    <object type="application/x-shockwave-flash"
-            data="{url}"
-            width="1"
-            height="1"
-            id="lims-notification">
-        <param name="movie" value="{url}"/>
+<%-- This template HTML will be used to play a sound via audio tag --%>
+<script type="text/x-template" id="lims-notification-audio-template">
+    <audio class="lims-notification-audio">
+        <source src="{mp3}" type="audio/mpeg">
+        <source src="{wav}" type="audio/wav">
+    </audio>
+</script>
+
+<%-- This template HTML will be used to play a sound via embed tag --%>
+<script type="text/x-template" id="lims-notification-embed-template">
+    <object class="lims-notification-embed">
+        <param name="autostart" value="true">
+        <param name="src" value="{wav}">
+        <param name="autoplay" value="true">
+        <param name="controller" value="false">
+        <embed src="{wav}" controller="false" autoplay="true" autostart="true" type="audio/wav"></embed>
     </object>
+</script>
+
+<%-- This template HTML will be used as a panel search template --%>
+<script type="text/x-template" id="lims-panel-search-template">
+    <div class="panel-search">
+        <label class="search-input-field-label" for="lims-search-input-field">
+            <input id="lims-search-input-field" class="search-input-field" type="text" value=""/>
+        </label>
+
+        <div class="search-content">
+            <div class="preloader"></div>
+            <ul class="group-buddy-list"></ul>
+        </div>
+    </div>
+</script>
+
+
+<%-- This template HTML will be used to render info notification (the blue one) --%>
+<script type="text/x-template" id="lims-info-notification-template">
+    <div class="info-notification">
+        <div class="info-icon"></div>
+        <div class="info-message">{infoMessage}</div>
+        <div class="clear"></div>
+    </div>
+</script>
+
+<%-- This template HTML will be used to render error notification (the red one) --%>
+<script type="text/x-template" id="lims-error-notification-template">
+    <div class="error-notification">
+        <div class="warning-icon"></div>
+        <div class="error-message">{errorMessage}</div>
+        <button class="resend-button"
+                title="<liferay-ui:message key="panel-error-notification-resend-title" />"></button>
+        <div class="clear"></div>
+    </div>
+</script>
+
+<%-- This template HTML will be used as a error notification in panel (the black one) --%>
+<script type="text/x-template" id="lims-panel-error-template">
+    <div class="panel-error">
+        <div class="warning-icon"></div>
+        <div class="error-message"></div>
+    </div>
+</script>
+
+<%-- This template HTML will be used to render error under message (the red one with delete button) --%>
+<script type="text/x-template" id="lims-conversation-item-error-template">
+    <div class="conversation-item-error">
+        <div class="warning-icon"></div>
+        <div class="error-message"><liferay-ui:message key="panel-conversation-message-error-text"/></div>
+        <button class="delete-button"
+                title="<liferay-ui:message key="panel-conversation-message-error-delete-title" />"></button>
+        <button class="resend-button"
+                title="<liferay-ui:message key="panel-conversation-message-error-resend-title" />"></button>
+        <div class="clear"></div>
+    </div>
+</script>
+
+<%-- This template HTML will be used to render localization messages --%>
+<script type="text/x-template" id="lims-i18n">
+    {
+    "connectionErrorMessage":"<liferay-ui:message key="connection-error"/>",
+    "searchInfoMessage":"<liferay-ui:message key="panel-search-info-text"/>",
+    "searchNoResultsMessage":"<liferay-ui:message key="panel-search-no-results-text"/>",
+    "searchErrorMessage":"<liferay-ui:message key="panel-search-error-text"/>",
+    "groupListEmptyInfoMessage":"<liferay-ui:message key="panel-group-list-empty-info-text"/>",
+    "groupListErrorMessage":"<liferay-ui:message key="panel-group-list-error-text"/>",
+    "conversationCreateErrorMessage":"<liferay-ui:message key="panel-conversation-create-error-text"/>",
+    "conversationReadErrorMessage":"<liferay-ui:message key="panel-conversation-read-error-text"/>",
+    "socialRelationUnknown":"<liferay-ui:message key="social-relation-unknown"/>",
+    "socialRelationConnection":"<liferay-ui:message key="social-relation-connection"/>",
+    "socialRelationCoworker":"<liferay-ui:message key="social-relation-coworker"/>",
+    "socialRelationFriend":"<liferay-ui:message key="social-relation-friend"/>",
+    "socialRelationRomanticPartner":"<liferay-ui:message key="social-relation-romantic-partner"/>",
+    "socialRelationSibling":"<liferay-ui:message key="social-relation-sibling"/>",
+    "timeRangeJustNow":"<liferay-ui:message key="time-range-just-now"/>",
+    "timeRangeMinuteAgo":"<liferay-ui:message key="time-range-minute-ago"/>",
+    "timeRangeMinutesAgo":"<liferay-ui:message key="time-range-minutes-ago"/>",
+    "timeRangeHourAgo":"<liferay-ui:message key="time-range-hour-ago"/>",
+    "timeRangeHoursAgo":"<liferay-ui:message key="time-range-hours-ago"/>",
+    "timeRangeYesterday":"<liferay-ui:message key="time-range-yesterday"/>",
+    "timeRangeDaysAgo":"<liferay-ui:message key="time-range-days-ago"/>",
+    "timeRangeWeeksAgo":"<liferay-ui:message key="time-range-weeks-ago"/>",
+    "dateFormat":"<liferay-ui:message key="date-format"/>"
+    }
 </script>

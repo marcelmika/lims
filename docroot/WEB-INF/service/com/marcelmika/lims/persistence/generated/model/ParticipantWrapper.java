@@ -54,6 +54,7 @@ public class ParticipantWrapper implements Participant,
 		attributes.put("participantId", getParticipantId());
 		attributes.put("unreadMessagesCount", getUnreadMessagesCount());
 		attributes.put("isOpened", getIsOpened());
+		attributes.put("openedAt", getOpenedAt());
 
 		return attributes;
 	}
@@ -89,6 +90,12 @@ public class ParticipantWrapper implements Participant,
 
 		if (isOpened != null) {
 			setIsOpened(isOpened);
+		}
+
+		Long openedAt = (Long)attributes.get("openedAt");
+
+		if (openedAt != null) {
+			setOpenedAt(openedAt);
 		}
 	}
 
@@ -220,6 +227,26 @@ public class ParticipantWrapper implements Participant,
 	@Override
 	public void setIsOpened(boolean isOpened) {
 		_participant.setIsOpened(isOpened);
+	}
+
+	/**
+	* Returns the opened at of this participant.
+	*
+	* @return the opened at of this participant
+	*/
+	@Override
+	public long getOpenedAt() {
+		return _participant.getOpenedAt();
+	}
+
+	/**
+	* Sets the opened at of this participant.
+	*
+	* @param openedAt the opened at of this participant
+	*/
+	@Override
+	public void setOpenedAt(long openedAt) {
+		_participant.setOpenedAt(openedAt);
 	}
 
 	@Override

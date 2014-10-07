@@ -36,11 +36,18 @@ import org.jivesoftware.smack.Roster;
 public interface GroupManager {
 
     /**
-     * Manage groups from roster
+     * Sets roster to group manager.
      *
      * @param roster Roster
      */
     public void setRoster(Roster roster);
+
+    /**
+     * Sets company id to the group manager
+     *
+     * @param companyId Long
+     */
+    public void setCompanyId(Long companyId);
 
     /**
      * Get buddy's collection of groups.

@@ -60,17 +60,20 @@ public class UserSession {
      * Factory method which creates user session form connection manager
      *
      * @param sessionId         id of the session
+     * @param companyId         companyId related to the session,
      * @param connectionManager used to create session manager
      * @return UserSession object
      */
-    public static UserSession fromConnectionManager(Long sessionId, ConnectionManager connectionManager) {
+    public static UserSession fromConnectionManager(Long sessionId,
+                                                    Long companyId,
+                                                    ConnectionManager connectionManager) {
         // Create new user session
         UserSession userSession = new UserSession(sessionId);
 
         // Connection manager
         userSession.connectionManager = connectionManager;
         // Group manager
-        userSession.groupManager = createGroupManager(connectionManager);
+        userSession.groupManager = createGroupManager(companyId, connectionManager);
         // Single User Conversation manager
         userSession.singleUserConversationManager = createSingleUserConversationManager(connectionManager);
         // Multi User Conversation manager
@@ -85,9 +88,12 @@ public class UserSession {
      * @param connectionManager used to create group manager
      * @return Group manager
      */
-    private static GroupManager createGroupManager(ConnectionManager connectionManager) {
+    private static GroupManager createGroupManager(Long companyId, ConnectionManager connectionManager) {
+        // Build group manager
         GroupManager groupManager = GroupManagerFactory.buildManager();
         groupManager.setRoster(connectionManager.getRoster());
+        groupManager.setCompanyId(companyId);
+
         return groupManager;
     }
 
@@ -99,8 +105,11 @@ public class UserSession {
      */
     private static SingleUserConversationManager createSingleUserConversationManager(
             ConnectionManager connectionManager) {
+
+        // Build SUC manager
         SingleUserConversationManager singleManager = SingleUserConversationManagerFactory.buildManager();
         singleManager.setChatManager(connectionManager.getChatManager());
+
         return singleManager;
     }
 
@@ -113,6 +122,7 @@ public class UserSession {
     private static MultiUserConversationManager createMultiUserConversationManager(
             ConnectionManager connectionManager) {
 
+        // Build MUC manager
         MultiUserConversationManager multiManager = MultiUserConversationManagerFactory.buildManager();
         multiManager.setConnection(connectionManager.getConnection());
 

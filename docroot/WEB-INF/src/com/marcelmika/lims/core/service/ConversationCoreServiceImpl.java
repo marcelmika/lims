@@ -24,9 +24,15 @@
 
 package com.marcelmika.lims.core.service;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.marcelmika.lims.api.entity.BuddyDetails;
+import com.marcelmika.lims.api.entity.ConversationDetails;
+import com.marcelmika.lims.api.entity.MessageDetails;
 import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.events.conversation.*;
 import com.marcelmika.lims.jabber.service.ConversationJabberService;
+import com.marcelmika.lims.jabber.service.ConversationJabberServiceListener;
 import com.marcelmika.lims.persistence.service.ConversationPersistenceService;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -38,11 +44,14 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  * Date: 2/19/14
  * Time: 11:03 PM
  */
-public class ConversationCoreServiceImpl implements ConversationCoreService {
+public class ConversationCoreServiceImpl implements ConversationCoreService, ConversationJabberServiceListener {
 
     // Dependencies
     ConversationJabberService conversationJabberService;
     ConversationPersistenceService conversationPersistenceService;
+
+    // Log
+    private static Log log = LogFactoryUtil.getLog(ConversationCoreServiceImpl.class);
 
     /**
      * Constructor
@@ -53,6 +62,9 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
                                        final ConversationPersistenceService conversationPersistenceService) {
         this.conversationJabberService = conversationJabberService;
         this.conversationPersistenceService = conversationPersistenceService;
+
+        // Listeners
+        conversationJabberService.addConversationJabberServiceListener(this);
     }
 
     /**
@@ -86,11 +98,15 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      */
     @Override
     public CreateConversationResponseEvent createConversation(CreateConversationRequestEvent event) {
+
         // Create conversation locally
-        CreateConversationResponseEvent responseEvent = conversationPersistenceService.createConversation(event);
+        CreateConversationResponseEvent persistenceResponseEvent = conversationPersistenceService.createConversation(
+                event
+        );
+
         // Check for error
-        if (!responseEvent.isSuccess()) {
-            return responseEvent;
+        if (!persistenceResponseEvent.isSuccess()) {
+            return persistenceResponseEvent;
         }
 
         // If enabled create in jabber too
@@ -98,7 +114,7 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
             conversationJabberService.createConversation(event);
         }
 
-        return responseEvent;
+        return persistenceResponseEvent;
     }
 
     /**
@@ -178,11 +194,80 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
      */
     @Override
     public SendMessageResponseEvent sendMessage(SendMessageRequestEvent event) {
-// TODO: Implement
-//        return conversationJabberService.createMessage(event);
 
-        return conversationPersistenceService.sendMessage(event);
+        // Add participants to the conversation. We are not receiving a list of participants from
+        // the request thus we need to retrieve a list from persistence first
+        GetConversationParticipantsResponseEvent participantListEvent = conversationPersistenceService.getParticipants(
+                new GetConversationParticipantsRequestEvent(event.getConversationDetails())
+        );
+        // Failure
+        if (!participantListEvent.isSuccess()) {
+            return SendMessageResponseEvent.sendMessageFailure(
+                    SendMessageResponseEvent.Status.ERROR_PERSISTENCE, participantListEvent.getException()
+            );
+        }
+
+        // Send message locally
+        SendMessageResponseEvent persistenceResponseEvent = conversationPersistenceService.sendMessage(
+                new SendMessageRequestEvent(
+                        event.getBuddyDetails(),
+                        participantListEvent.getConversation(),
+                        event.getMessageDetails())
+        );
+        // Failure
+        if (!persistenceResponseEvent.isSuccess()) {
+            return persistenceResponseEvent;
+        }
+
+        // Send message to Jabber
+        if (Environment.isJabberEnabled()) {
+            // Send message via jabber service
+            SendMessageResponseEvent jabberResponseEvent = conversationJabberService.sendMessage(
+                    new SendMessageRequestEvent(
+                            event.getBuddyDetails(),
+                            participantListEvent.getConversation(),
+                            event.getMessageDetails())
+            );
+            // Failure
+            if (!jabberResponseEvent.isSuccess()) {
+                return SendMessageResponseEvent.sendMessageFailure(
+                        SendMessageResponseEvent.Status.ERROR_JABBER, jabberResponseEvent.getException()
+                );
+            }
+        }
+
+        // Return persistence event
+        return SendMessageResponseEvent.sendMessageSuccess(
+                persistenceResponseEvent.getMessage()
+        );
     }
 
 
+    // -------------------------------------------------------------------------------------------
+    // Conversation Jabber Service Listener
+    // -------------------------------------------------------------------------------------------
+
+    @Override
+    public void messageReceived(ConversationDetails conversation, MessageDetails message) {
+        log.info("## CORE MESSAGE RECEIVED: " + message);
+
+        // Conversation holds the creator
+        BuddyDetails creator = conversation.getBuddy();
+
+        // Create the conversation
+        CreateConversationResponseEvent responseEvent = conversationPersistenceService.createConversation(
+                new CreateConversationRequestEvent(creator, conversation, message)
+        );
+
+        if (!responseEvent.isSuccess()) {
+            // TODO log
+            log.error(responseEvent.getException());
+        }
+
+        SendMessageResponseEvent sendMessageResponse = conversationPersistenceService.sendMessage(
+                new SendMessageRequestEvent(creator, conversation, message)
+        );
+
+        // Send message
+    }
 }

@@ -31,10 +31,10 @@ Y.namespace('LIMS.Core');
 
 Y.LIMS.Core.Properties = Y.Base.create('properties', Y.Base, [], {
 
-    userId: null,      // This is set main.js, to access it use Y.LIMS.Core.Properties.userId
-    companyId: null,   // This is set main.js, to access it use Y.LIMS.Core.Properties.companyId
-    pathImage: null,   // This is set main.js, to access it use Y.LIMS.Core.Properties.pathImage
-
+    userId: null,      // This is set in main.js, to access it use Y.LIMS.Core.Properties.userId
+    companyId: null,   // This is set in main.js, to access it use Y.LIMS.Core.Properties.companyId
+    pathImage: null,   // This is set in main.js, to access it use Y.LIMS.Core.Properties.pathImage
+    isIE: false,       // This is set in main.js, to access it use Y.LIMS.Core.Properties.isIE
 
     /**
      * Called when the object is created
@@ -69,6 +69,16 @@ Y.LIMS.Core.Properties = Y.Base.create('properties', Y.Base, [], {
      */
     getCurrentUserFullName: function () {
         return this.get('fullName');
+    },
+
+
+    /**
+     * Returns server time offset compared to client time
+     *
+     * @returns {timestamp}
+     */
+    getServerTimeOffset: function () {
+        return this.get('offset');
     },
 
     /**
@@ -160,6 +170,18 @@ Y.LIMS.Core.Properties = Y.Base.create('properties', Y.Base, [], {
         serverTime: {
             valueFn: function () {
                 return Y.one('#limsCurrentServerTime').get('value');
+            }
+        },
+
+        /**
+         * Holds delta between current server time and client time
+         */
+        offset: {
+            valueFn: function () {
+                // Get server time
+                var currentChatServerTime = this.get('serverTime');
+                // Count offset
+                return new Date().getTime() - currentChatServerTime;
             }
         },
 

@@ -119,10 +119,11 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
                     data: {
                         query: "ReadOpenedConversations"
                     },
+                    timeout: 30000, // 30 seconds
                     on: {
                         success: function (id, o) {
                             // Deserialize response
-                            response = Y.JSON.parse(o.response);
+                            response = Y.JSON.parse(o.responseText);
                             // Update conversation list
                             instance.updateConversationList(response);
                             // Call success
@@ -135,7 +136,7 @@ Y.LIMS.Model.ConversationListModel = Y.Base.create('conversationListModel', Y.Mo
                                 Y.fire('userSessionExpired');
                             }
                             // Call failure
-                            callback("Cannot create new conversation", o);
+                            callback("Cannot read conversations", o);
                         }
                     }
                 });

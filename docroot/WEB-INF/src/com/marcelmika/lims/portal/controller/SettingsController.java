@@ -72,7 +72,7 @@ public class SettingsController {
      */
     public void updateSettings(ResourceRequest request, ResourceResponse response) {
 
-        Buddy buddy;        // Currently logged user
+        Buddy buddy;        // Authorized user
         Settings settings;  // Settings that should be updated
 
         // Deserialize
@@ -127,7 +127,7 @@ public class SettingsController {
      */
     public void updateActivePanel(ResourceRequest request, ResourceResponse response) {
 
-        Buddy buddy;        // Currently logged user
+        Buddy buddy;        // Authorized user
         Settings settings;  // Active panel is a part of settings
 
         // Deserialize
@@ -144,7 +144,7 @@ public class SettingsController {
             // Bad request
             ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
             // Log
-            log.error(exception);
+            log.debug(exception);
             // End here
             return;
         }

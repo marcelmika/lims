@@ -24,45 +24,65 @@
 
 /**
  * Main Controller
+ *
+ * This controller creates instances of all controllers in the app and injects objects that are necessary for them.
+ * It also holds instances of objects that are needed across the app.
  */
 Y.namespace('LIMS.Controller');
 
 Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LIMS.Controller.ControllerExtension], {
 
-    // The initializer runs when a MainController instance is created, and gives
-    // us an opportunity to set up all sub controller
+    /**
+     * The initializer runs when a MainController instance is created, and gives
+     * us an opportunity to set up all sub controllers
+     */
     initializer: function () {
         var buddyDetails = this.get('buddyDetails'),
             settingsModel = this.get('settingsModel'),
             notification = this.get('notification'),
             properties = this.get('properties'),
+            serverTime = this.get('serverTimeModel'),
+            poller = this.get('poller'),
             rootNode = this.getRootNode();
 
         // Attach events
         this._attachEvents();
 
-        // Group
-        new Y.LIMS.Controller.GroupViewController({
-            container: rootNode.one('.buddy-list'),
-            properties: properties
-        });
-        // Presence
-        new Y.LIMS.Controller.PresenceViewController({
-            container: rootNode.one('.status-panel'),
-            buddyDetails: buddyDetails
-        });
-        // Settings
-        new Y.LIMS.Controller.SettingsViewController({
-            container: rootNode.one('.chat-settings'),
-            model: settingsModel
-        });
-        // Conversation
-        new Y.LIMS.Controller.ConversationsController({
-            container: rootNode.one('.lims-tabs'),
-            buddyDetails: buddyDetails,
-            settings: settingsModel,
-            notification: notification,
-            properties: properties
+        // Load the most fresh server time to count server time offset
+        serverTime.load(function (err) {
+
+            // Update to the optimal offset that we get from the server.
+            // If there is an error properties contain offset read from the
+            // html as a fallback.
+            if (!err) {
+                properties.set('offset', new Date().getTime() - serverTime.get('time'));
+            }
+
+            // Group
+            new Y.LIMS.Controller.GroupViewController({
+                container: rootNode.one('.buddy-list'),
+                properties: properties,
+                poller: poller
+            });
+            // Presence
+            new Y.LIMS.Controller.PresenceViewController({
+                container: rootNode.one('.status-panel'),
+                buddyDetails: buddyDetails
+            });
+            // Settings
+            new Y.LIMS.Controller.SettingsViewController({
+                container: rootNode.one('.chat-settings'),
+                model: settingsModel
+            });
+            // Conversation
+            new Y.LIMS.Controller.ConversationsController({
+                container: rootNode.one('.lims-tabs'),
+                buddyDetails: buddyDetails,
+                settings: settingsModel,
+                notification: notification,
+                properties: properties,
+                poller: poller
+            });
         });
     },
 
@@ -83,6 +103,7 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
         // Panel events
         Y.on('panelShown', this._onPanelShown, this);
         Y.on('panelHidden', this._onPanelHidden, this);
+        Y.on('userSessionExpired', this._onSessionExpired, this);
     },
 
     /**
@@ -111,15 +132,31 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
             // Update settings
             this.get('settingsModel').updateActivePanel(null);
         }
+    },
+
+    /**
+     * Called when the user session expires
+     *
+     * @private
+     */
+    _onSessionExpired: function () {
+        // Hide the whole portlet
+        this.getRootNode().hide();
     }
 
 }, {
 
+    // Add custom model attributes here. These attributes will contain your
+    // model's data. See the docs for Y.Attribute to learn more about defining
+    // attributes.
+
     ATTRS: {
 
-        // Add custom model attributes here. These attributes will contain your
-        // model's data. See the docs for Y.Attribute to learn more about defining
-        // attributes.
+        /**
+         * Buddy details related of the currently logged user
+         *
+         * {Y.LIMS.Model.BuddyModelItem}
+         */
         buddyDetails: {
             valueFn: function () {
                 // We need settings to determine user
@@ -133,7 +170,11 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
             }
         },
 
-        // Settings related to the logged user
+        /**
+         * Settings of the currently logged user
+         *
+         * {Y.LIMS.Model.SettingsModel}
+         */
         settingsModel: {
             valueFn: function () {
                 return new Y.LIMS.Model.SettingsModel({
@@ -142,7 +183,22 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
             }
         },
 
-        // Notification
+        /**
+         * Current server time
+         *
+         * {Y.LIMS.Model.ServerTimeModel}
+         */
+        serverTimeModel: {
+            valueFn: function () {
+                return new Y.LIMS.Model.ServerTimeModel();
+            }
+        },
+
+        /**
+         * Notification object responsible for the incoming message notification
+         *
+         * {Y.LIMS.Core.Notification}
+         */
         notification: {
             valueFn: function () {
                 return new Y.LIMS.Core.Notification({
@@ -153,13 +209,33 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
             }
         },
 
+        /**
+         * An instance of poller that periodically refreshes models that are subscribed
+         *
+         * {Y.LIMS.Core.Poller}
+         */
+        poller: {
+            valueFn: function () {
+                return new Y.LIMS.Core.Poller();
+            }
+        },
+
+        /**
+         * Properties object that holds the global portlet properties
+         *
+         * {Y.LIMS.Core.Properties}
+         */
         properties: {
             valueFn: function () {
                 return new Y.LIMS.Core.Properties();
             }
         },
 
-        // Current active panel
+        /**
+         * ID of the current active panel
+         *
+         * {string}
+         */
         activePanelId: {
             value: null // default value
         }

@@ -12,9 +12,8 @@ Visit [official website](http://marcelmika.com/lims/) for more info or
 
 ## Authors
 
-This portlet was developed by [Marcel Mika](http://marcelmika.com) as a master thesis project at
-[Czech Technical University, Prague](http://fit.cvut.cz). 
-
+This portlet was developed by [Marcel Mika](http://marcelmika.com) as a master thesis project. It was developed with
+a huge contribution of [Czech Technical University, Prague](http://fit.cvut.cz) as a part of the IS - University Portal. 
 
 
 ## License

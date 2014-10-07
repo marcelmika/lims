@@ -23,16 +23,19 @@
  */
 
 /**
- * Date Formatter
- *
- * Contains function that handle formatting of date
+ * Notification
  */
 Y.namespace('LIMS.Core');
 
 Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
 
-    // This customizes the HTML used for this view's container node.
-    soundTemplate: Y.one('#lims-notification-template').get('innerHTML'),
+    // Templates
+    audioSoundTemplate: Y.one('#lims-notification-audio-template').get('innerHTML'),
+    embedSoundTemplate: Y.one('#lims-notification-embed-template').get('innerHTML'),
+
+    // Locations of the sound files
+    mp3SoundFile: '/lims-portlet/audio/notification.mp3',
+    wavSoundFile: '/lims-portlet/audio/notification.wav',
 
     /**
      * Notifies user about new messages by showing this in the title of the page.
@@ -43,20 +46,14 @@ Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
      */
     notify: function (messageCount, silent) {
         // Vars
-        var container = this.get('container'),
-            settings = this.get('settings');
+        var settings = this.get('settings');
 
         // Store new count
         this._increaseMessageCount(messageCount);
 
         // If sound is enabled
         if (!settings.isMute() && !silent) {
-            // Fill data from model to template and set it to container.
-            // This will play the sound since alert.swf contains correct sound
-            container.set('innerHTML', Y.Lang.sub(this.soundTemplate, {
-                    url: '/lims-portlet/swf/alert.swf'
-                })
-            );
+            this._playSound();
         }
 
         // Update title
@@ -75,6 +72,58 @@ Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
         this._decreaseMessageCount(messageCount);
         // Update title
         this._updatePageTitleMessage();
+    },
+
+    /**
+     * Plays notification sound
+     *
+     * @private
+     */
+    _playSound: function () {
+        // Vars
+        var container = this.get('container'),
+            audioSoundPlayer = this.get('audioSoundPlayer'),
+            embedSoundPlayer = this.get('embedSoundPlayer');
+
+        // Play via HTML5 audio tag
+        if (this._canPlayAudio()) {
+            // Add to doc it it's not there yet
+            if (!audioSoundPlayer.inDoc()) {
+                container.append(audioSoundPlayer);
+            }
+            // Play
+            audioSoundPlayer.getDOM().play();
+        }
+        // Play via embed player
+        else {
+            if (embedSoundPlayer.inDoc()) {
+                embedSoundPlayer.remove();
+            }
+            container.set('innerHTML', embedSoundPlayer.get('innerHTML'));
+        }
+    },
+
+    /**
+     * Returns true if the browser is capable of playing the sound notification
+     * via HTML5 audio tag
+     *
+     * @returns {boolean}
+     * @see http://diveintohtml5.info/everything.html
+     * @private
+     */
+    _canPlayAudio: function () {
+        // Cars
+        var audio = document.createElement('audio'),
+            canPlay,
+            canPlayWAV,
+            canPlayMP3;
+
+        canPlay = !!audio.canPlayType;
+        canPlayWAV = canPlay && !!audio.canPlayType('audio/wav; codecs="1"').replace(/no/, '');
+        canPlayMP3 = canPlay && !!audio.canPlayType('audio/mpeg;').replace(/no/, '');
+
+        // Check if browser can play either WAV or MP3
+        return (canPlay && (canPlayWAV || canPlayMP3));
     },
 
     /**
@@ -149,25 +198,74 @@ Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
     // Specify attributes and static properties for your View here.
     ATTRS: {
 
-        // Container Node
+        /**
+         * Main container node
+         *
+         * {Node}
+         */
         container: {
             value: null // to be set
         },
 
-        // Settings
+        /**
+         * Instance of settings
+         *
+         * {Y.LIMS.Model.SettingsModel}
+         */
         settings: {
             value: null // to be set
         },
 
-        // Portlet properties
+        /**
+         * Portlet properties
+         *
+         * {Y.LIMS.Core.Properties}
+         */
         properties: {
             value: null // to be set
         },
 
+        /**
+         * Node with an audio HTML5 tag that should play the notification sound
+         *
+         * {Node}
+         */
+        audioSoundPlayer: {
+            valueFn: function () {
+                return Y.Node.create(Y.Lang.sub(this.audioSoundTemplate, {
+                    wav: this.wavSoundFile,
+                    mp3: this.mp3SoundFile
+                }));
+            }
+        },
+
+        /**
+         * Node with en embed tag that should play the notification sound
+         *
+         * {Node}
+         */
+        embedSoundPlayer: {
+            valueFn: function () {
+                return Y.Node.create(Y.Lang.sub(this.embedSoundTemplate, {
+                    wav: this.wavSoundFile
+                }));
+            }
+        },
+
+        /**
+         * Count of unread messages
+         *
+         * {integer}
+         */
         unreadMessagesCount: {
             value: 0
         },
 
+        /**
+         * Cached page title
+         *
+         * {string}
+         */
         defaultPageTitle: {
             valueFn: function () {
                 return Y.config.doc.title;

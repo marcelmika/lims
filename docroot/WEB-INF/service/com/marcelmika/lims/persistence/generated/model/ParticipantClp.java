@@ -78,6 +78,7 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 		attributes.put("participantId", getParticipantId());
 		attributes.put("unreadMessagesCount", getUnreadMessagesCount());
 		attributes.put("isOpened", getIsOpened());
+		attributes.put("openedAt", getOpenedAt());
 
 		return attributes;
 	}
@@ -113,6 +114,12 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 
 		if (isOpened != null) {
 			setIsOpened(isOpened);
+		}
+
+		Long openedAt = (Long)attributes.get("openedAt");
+
+		if (openedAt != null) {
+			setOpenedAt(openedAt);
 		}
 	}
 
@@ -237,6 +244,29 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 		}
 	}
 
+	@Override
+	public long getOpenedAt() {
+		return _openedAt;
+	}
+
+	@Override
+	public void setOpenedAt(long openedAt) {
+		_openedAt = openedAt;
+
+		if (_participantRemoteModel != null) {
+			try {
+				Class<?> clazz = _participantRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setOpenedAt", long.class);
+
+				method.invoke(_participantRemoteModel, openedAt);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
 	public BaseModel<?> getParticipantRemoteModel() {
 		return _participantRemoteModel;
 	}
@@ -311,23 +341,30 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 		clone.setParticipantId(getParticipantId());
 		clone.setUnreadMessagesCount(getUnreadMessagesCount());
 		clone.setIsOpened(getIsOpened());
+		clone.setOpenedAt(getOpenedAt());
 
 		return clone;
 	}
 
 	@Override
 	public int compareTo(Participant participant) {
-		long primaryKey = participant.getPrimaryKey();
+		int value = 0;
 
-		if (getPrimaryKey() < primaryKey) {
-			return -1;
+		if (getOpenedAt() < participant.getOpenedAt()) {
+			value = -1;
 		}
-		else if (getPrimaryKey() > primaryKey) {
-			return 1;
+		else if (getOpenedAt() > participant.getOpenedAt()) {
+			value = 1;
 		}
 		else {
-			return 0;
+			value = 0;
 		}
+
+		if (value != 0) {
+			return value;
+		}
+
+		return 0;
 	}
 
 	@Override
@@ -359,7 +396,7 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("{pid=");
 		sb.append(getPid());
@@ -371,6 +408,8 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 		sb.append(getUnreadMessagesCount());
 		sb.append(", isOpened=");
 		sb.append(getIsOpened());
+		sb.append(", openedAt=");
+		sb.append(getOpenedAt());
 		sb.append("}");
 
 		return sb.toString();
@@ -378,7 +417,7 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(22);
 
 		sb.append("<model><model-name>");
 		sb.append("com.marcelmika.lims.persistence.generated.model.Participant");
@@ -404,6 +443,10 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 			"<column><column-name>isOpened</column-name><column-value><![CDATA[");
 		sb.append(getIsOpened());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>openedAt</column-name><column-value><![CDATA[");
+		sb.append(getOpenedAt());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -415,5 +458,6 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 	private long _participantId;
 	private int _unreadMessagesCount;
 	private boolean _isOpened;
+	private long _openedAt;
 	private BaseModel<?> _participantRemoteModel;
 }

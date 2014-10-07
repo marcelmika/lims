@@ -296,10 +296,11 @@ public class ParticipantLocalServiceUtil {
 	* @throws SystemException
 	* @throws com.liferay.portal.kernel.exception.PortalException
 	*/
-	public static void updateParticipants(java.lang.Long cid)
+	public static void updateParticipants(java.lang.Long cid,
+		java.lang.Long senderId)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		getService().updateParticipants(cid);
+		getService().updateParticipants(cid, senderId);
 	}
 
 	/**
