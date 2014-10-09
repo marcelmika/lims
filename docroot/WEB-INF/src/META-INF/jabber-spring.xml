@@ -33,6 +33,9 @@
           class="com.marcelmika.lims.portal.controller.ServerController">
     </bean>
 
+    <bean id="com.marcelmika.lims.portal.controller.PropertiesController"
+          class="com.marcelmika.lims.portal.controller.PropertiesController"/>
+
     <!-- Portlet Processor -->
 
     <bean id="com.marcelmika.lims.portal.processor.PortletProcessor"
@@ -42,6 +45,7 @@
         <constructor-arg index="2" ref="com.marcelmika.lims.portal.controller.GroupController"/>
         <constructor-arg index="3" ref="com.marcelmika.lims.portal.controller.SettingsController"/>
         <constructor-arg index="4" ref="com.marcelmika.lims.portal.controller.ServerController"/>
+        <constructor-arg index="5" ref="com.marcelmika.lims.portal.controller.PropertiesController"/>
     </bean>
 
     <bean id="com.marcelmika.lims.portal.processor.PortletProcessorUtil"

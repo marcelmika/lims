@@ -91,7 +91,9 @@ public class ConversationController {
             // Bad request
             ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
             // Log
-            log.debug(exception);
+            if (log.isDebugEnabled()) {
+                log.debug(exception);
+            }
             // End here
             return;
         }

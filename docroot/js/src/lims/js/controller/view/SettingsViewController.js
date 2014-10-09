@@ -140,6 +140,27 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
                 value: null // to be set
             },
 
+            /**
+             * Holds a view related to the admin properties
+             *
+             * {Y.LIMS.View.PropertiesView}
+             */
+            adminProperties: {
+                valueFn: function () {
+                    // Vars
+                    var container = this.get('container').one('.admin-area');
+
+                    return new Y.LIMS.View.PropertiesView({
+                        container: container
+                    });
+                }
+            },
+
+            /**
+             * Holds all checkboxes
+             *
+             * []
+             */
             checkboxes: {
                 getter: function () {
                     return this.get('container').all('input[type=checkbox]');

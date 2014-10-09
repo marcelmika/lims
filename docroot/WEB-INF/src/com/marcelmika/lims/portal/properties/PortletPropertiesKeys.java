@@ -32,6 +32,9 @@ package com.marcelmika.lims.portal.properties;
  */
 public interface PortletPropertiesKeys {
 
+    // Properties source
+    public static final String PROPERTIES_SOURCE = "properties.source";
+
     // Buddy list
     public static final String BUDDY_LIST_SOURCE = "buddy.list.source";
     public static final String BUDDY_LIST_ALLOWED_SOCIAL_RELATION_TYPES = "buddy.list.allowed.social.relation.types";

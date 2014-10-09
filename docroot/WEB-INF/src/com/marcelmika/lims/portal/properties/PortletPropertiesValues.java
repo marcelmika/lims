@@ -35,6 +35,11 @@ import com.liferay.util.portlet.PortletProps;
  */
 public class PortletPropertiesValues {
 
+    // Properties source
+    public static final String PROPERTIES_SOURCE = getString(
+            PortletPropertiesKeys.PROPERTIES_SOURCE
+    );
+
     // Buddy List - Source
     public static final String BUDDY_LIST_SOURCE = getString(
             PortletPropertiesKeys.BUDDY_LIST_SOURCE

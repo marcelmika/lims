@@ -26,8 +26,10 @@ package com.marcelmika.lims.api.environment;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.marcelmika.lims.portal.properties.PortletPropertiesKeys;
 import com.marcelmika.lims.portal.properties.PortletPropertiesValues;
 
+import javax.portlet.PortletPreferences;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,11 +44,93 @@ public class Environment {
     // Log
     private static Log log = LogFactoryUtil.getLog(Environment.class);
 
+    // Set to true if the environment was already set up
+    private static boolean isSetup = false;
+
+    // Environment properties
+    private static BuddyListStrategy buddyListStrategy;
+
+
+    /**
+     * Sets up all portlet preferences. It doesn't matter how many times the method is called.
+     * The setup will be called just once.
+     *
+     * @param preferences PortletPreferences
+     */
+    public static void setup(PortletPreferences preferences) {
+
+        // Preferences cannot be null
+        if (preferences == null) {
+            log.error("Cannot load preferences");
+            return;
+        }
+
+        // Setup just once, there is no need to set it on every call of the setup method
+        if (!isSetup) {
+            log.info("Settings the environment");
+
+            setBuddyListStrategy(preferences);
+
+            // Setup can be done just once at the beginning
+            isSetup = true;
+        }
+    }
+
+    /**
+     * Enum for properties source
+     */
+    public enum PropertiesSource {
+
+        /**
+         * Properties are loaded from the PortletPreferences
+         */
+        PREFERENCES,
+        /**
+         * Properties are loaded from the portal.properties file
+         */
+        PROPERTIES
+    }
+
+    /**
+     * Returns source of properties
+     *
+     * @return PropertiesSource
+     */
+    public static PropertiesSource getPropertiesSource() {
+        String value = PortletPropertiesValues.PROPERTIES_SOURCE;
+
+        // Preferences
+        if (value.equals("preferences")) {
+            return PropertiesSource.PREFERENCES;
+        }
+        // Properties
+        else if (value.equals("properties")) {
+            return PropertiesSource.PROPERTIES;
+        }
+        // Unknown value
+        else {
+            log.error(String.format(
+                    "Unknown properties source %s. Valid values are \"preferences\" or \"properties\". Since no valid " +
+                            "property was provided \"preferences\" was chosen as a default. The value can be " +
+                            "set in portlet-ext.properties file related to the LIMS portlet.", value
+            ));
+            // Fallback to default
+            return PropertiesSource.PREFERENCES;
+        }
+    }
+
     /**
      * Enum for source of buddy list
      */
     public enum BuddyListSource {
+
+        /**
+         * Buddies are loaded from the Liferay database
+         */
         LIFERAY,
+        /**
+         * Buddies are loaded from the Jabber server
+         */
         JABBER
     }
 
@@ -74,7 +158,7 @@ public class Environment {
                             "set in portlet-ext.properties file related to the LIMS portlet.", value
             ));
 
-            // Fallback to liferay option
+            // Fallback to default
             return BuddyListSource.LIFERAY;
         }
     }
@@ -83,11 +167,27 @@ public class Environment {
      * Enum for buddy list strategy
      */
     public enum BuddyListStrategy {
-        ALL,
-        SITES,
-        SOCIAL,
-        SITES_AND_SOCIAL,
-        USER_GROUPS
+        ALL("all"),
+        SITES("sites"),
+        SOCIAL("social"),
+        SITES_AND_SOCIAL("sites,social"),
+        USER_GROUPS("groups");
+
+        // String description of relation type
+        private String description;
+
+        /**
+         * Private constructor
+         *
+         * @param description string description of the list strategy
+         */
+        private BuddyListStrategy(String description) {
+            this.description = description;
+        }
+
+        public String getDescription() {
+            return description;
+        }
     }
 
     /**
@@ -96,27 +196,52 @@ public class Environment {
      * @return BuddyListStrategy
      */
     public static BuddyListStrategy getBuddyListStrategy() {
-        String value = PortletPropertiesValues.BUDDY_LIST_STRATEGY;
+        return buddyListStrategy;
+    }
+
+    /**
+     * Sets the buddy list strategy
+     *
+     * @param preferences PortletPreferences
+     */
+    public static void setBuddyListStrategy(PortletPreferences preferences) {
+        // Get the property source
+        PropertiesSource source = getPropertiesSource();
+
+        String value;
+        // Preferences
+        if (source == PropertiesSource.PREFERENCES) {
+            // Take the value from preference. Value from properties is a default.
+            value = preferences.getValue(
+                    PortletPropertiesKeys.BUDDY_LIST_STRATEGY,
+                    PortletPropertiesValues.BUDDY_LIST_STRATEGY
+            );
+        }
+        // Properties
+        else {
+            // Take the value from properties
+            value = PortletPropertiesValues.BUDDY_LIST_STRATEGY;
+        }
 
         // All buddies in list
-        if (value.equals("all")) {
-            return BuddyListStrategy.ALL;
+        if (value.equals(BuddyListStrategy.ALL.getDescription())) {
+            buddyListStrategy = BuddyListStrategy.ALL;
         }
         // Sites
-        else if (value.equals("sites")) {
-            return BuddyListStrategy.SITES;
+        else if (value.equals(BuddyListStrategy.SITES.getDescription())) {
+            buddyListStrategy = BuddyListStrategy.SITES;
         }
         // Social
-        else if (value.equals("social")) {
-            return BuddyListStrategy.SOCIAL;
+        else if (value.equals(BuddyListStrategy.SOCIAL.getDescription())) {
+            buddyListStrategy = BuddyListStrategy.SOCIAL;
         }
         // Sites and Social
-        else if (value.equals("sites,social")) {
-            return BuddyListStrategy.SITES_AND_SOCIAL;
+        else if (value.equals(BuddyListStrategy.SITES_AND_SOCIAL.getDescription())) {
+            buddyListStrategy = BuddyListStrategy.SITES_AND_SOCIAL;
         }
         // Groups
-        else if (value.equals("groups")) {
-            return BuddyListStrategy.USER_GROUPS;
+        else if (value.equals(BuddyListStrategy.USER_GROUPS.getDescription())) {
+            buddyListStrategy = BuddyListStrategy.USER_GROUPS;
         }
         // Unknown value
         else {
@@ -126,7 +251,7 @@ public class Environment {
                             "can be set in portlet-ext.properties file related to the LIMS portlet.", value
             ));
 
-            return BuddyListStrategy.ALL;
+            buddyListStrategy = BuddyListStrategy.ALL;
         }
     }
 
@@ -150,8 +275,8 @@ public class Environment {
         /**
          * Private constructor
          *
-         * @param code        that uniquely represent relation type
-         * @param description string localized description of relation
+         * @param code        that uniquely represents relation type
+         * @param description string description of relation
          */
         private BuddyListSocialRelation(final int code, final String description) {
             this.code = code;

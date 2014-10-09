@@ -22,6 +22,9 @@
   ~ SOFTWARE.
   --%>
 
+<%-- Variables --%>
+<%--@elvariable id="isAdmin" type="boolean"--%>
+
 <% { %>
 
 <c:choose>
@@ -73,6 +76,16 @@
                     <liferay-ui:message key="panel-settings-play-sound-label"/>
                 </li>
             </ul>
+
+            <%-- ADMIN AREA --%>
+            <c:if test="${isAdmin}">
+                <div class="admin-area">
+                    <div class="settings-title">Admin area</div>
+                    <ul class="lfr-component settings">
+                        <%@ include file="/WEB-INF/jspf/settings/buddy-list-strategy.jspf" %>
+                    </ul>
+                </div>
+            </c:if>
         </div>
     </div>
 </li>

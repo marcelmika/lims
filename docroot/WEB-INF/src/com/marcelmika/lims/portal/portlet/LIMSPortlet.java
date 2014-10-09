@@ -28,8 +28,10 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.util.bridges.mvc.MVCPortlet;
+import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.events.conversation.GetOpenedConversationsRequestEvent;
 import com.marcelmika.lims.api.events.conversation.GetOpenedConversationsResponseEvent;
 import com.marcelmika.lims.api.events.settings.ReadSettingsRequestEvent;
@@ -40,6 +42,7 @@ import com.marcelmika.lims.core.service.SettingsCoreService;
 import com.marcelmika.lims.core.service.SettingsCoreServiceUtil;
 import com.marcelmika.lims.portal.domain.Buddy;
 import com.marcelmika.lims.portal.domain.Conversation;
+import com.marcelmika.lims.portal.domain.Properties;
 import com.marcelmika.lims.portal.domain.Settings;
 import com.marcelmika.lims.portal.http.HttpStatus;
 import com.marcelmika.lims.portal.processor.PortletProcessor;
@@ -70,6 +73,8 @@ public class LIMSPortlet extends MVCPortlet {
     private static final String VIEW_JSP_PATH = "/view.jsp"; // Path to the view.jsp
 
     // Variables
+    private static final String VARIABLE_IS_ADMIN = "isAdmin";
+    private static final String VARIABLE_PROPERTIES = "properties";
     private static final String VARIABLE_IS_SUPPORTED_BROWSER = "isSupportedBrowser";
     private static final String VARIABLE_NEEDS_IE_SUPPORT = "needsIESupport";
     private static final String VARIABLE_SETTINGS = "settings";
@@ -98,6 +103,9 @@ public class LIMSPortlet extends MVCPortlet {
     public void doView(RenderRequest renderRequest,
                        RenderResponse renderResponse) throws PortletException, IOException {
 
+        // Environment needs to be set up at the beginning of the request
+        Environment.setup(renderRequest.getPreferences());
+
         // Check the availability of browser
         boolean isSupportedBrowser = BrowserDetector.isSupportedBrowser(renderRequest);
 
@@ -116,6 +124,10 @@ public class LIMSPortlet extends MVCPortlet {
 
         // Set response to view.jsp
         include(VIEW_JSP_PATH, renderRequest, renderResponse);
+
+        // TODO: DEBUG
+        log.info("IS ADMIN: " + PermissionDetector.isAdmin(renderRequest));
+        log.info("BUDDY LIST STRATEGY: " + Environment.getBuddyListStrategy());
     }
 
     /**
@@ -135,8 +147,13 @@ public class LIMSPortlet extends MVCPortlet {
             response.setProperty(ResourceResponse.HTTP_STATUS_CODE, HttpStatus.UNAUTHORIZED.toString());
             return;
         }
+
+        // Environment needs to be set up at the beginning of the request
+        Environment.setup(request.getPreferences());
+
         // Response content type is JSON
         response.setContentType(ContentTypes.APPLICATION_JSON);
+
         // This is an entry point to the whole app. Processor will do all the necessary work and fill the response.
         processor.processRequest(request, response);
     }
@@ -212,6 +229,10 @@ public class LIMSPortlet extends MVCPortlet {
     private void renderAdditions(RenderRequest renderRequest) {
         // Get buddy from request
         Buddy buddy = Buddy.fromRenderRequest(renderRequest);
+        // Check if the user is admin
+        renderRequest.setAttribute(VARIABLE_IS_ADMIN, PermissionDetector.isAdmin(renderRequest));
+        // Render properties
+        renderRequest.setAttribute(VARIABLE_PROPERTIES, Properties.fromEnvironment());
         // Check if lims is enabled and pass it to jsp as a parameter
         renderRequest.setAttribute(VARIABLE_IS_ENABLED, isCorrectAttempt(renderRequest));
         // Check if the browser is supported
@@ -226,13 +247,15 @@ public class LIMSPortlet extends MVCPortlet {
     /**
      * Checks if the server request attempt is correct. In other words checks if the user is signed in.
      *
-     * @param request Request
+     * @param request PortletRequest
      * @return true if the request attempt is correct
      */
     private boolean isCorrectAttempt(PortletRequest request) {
         // Check if the user is signed in
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
+        // Returns true if the user is signed in
         return themeDisplay.isSignedIn();
     }
+
 }
