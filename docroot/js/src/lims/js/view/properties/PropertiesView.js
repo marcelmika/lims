@@ -41,17 +41,40 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
     },
 
     /**
+     * Opens or closes properties view
+     */
+    toggleView: function () {
+        // Vars
+        var openAnimation = this.get('openAnimation');
+
+        // Run the animation
+        openAnimation.run();
+    },
+
+    /**
      * Attach event to elements
      * @private
      */
     _attachEvents: function () {
         // Vars
-        var buddyListStrategy = this.get('buddyListStrategy'),
+        var openButton = this.get('openButton'),
+            buddyListStrategy = this.get('buddyListStrategy'),
             buddyListSocialRelations = this.get('buddyListSocialRelations');
 
         // Local events
+        openButton.on('click', this._onOpenButtonClick, this);
         buddyListStrategy.on('choiceClick', this._onBuddyListStrategySelected, this);
         buddyListSocialRelations.on('choiceClick', this._onBuddyListSocialRelationsSelected, this);
+    },
+
+    /**
+     * Called when the open button is clicked
+     *
+     * @private
+     */
+    _onOpenButtonClick: function () {
+        // Open properties view
+        this.toggleView();
     },
 
     /**
@@ -142,6 +165,116 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
             value: null // to be set
         },
 
+        /**
+         * Settings container
+         *
+         * {Node}
+         */
+        settingsContainer: {
+            valueFn: function () {
+                return this.get('container').one('.settings');
+            }
+        },
+
+        /**
+         * Container node with the open/close button
+         *
+         * {Node}
+         */
+        openButton: {
+            valueFn: function () {
+                return this.get('container').one('.open-button');
+            }
+        },
+
+        /**
+         * Returns animation that will open or close the whole view
+         *
+         * {Y.Anim}
+         */
+        openAnimation: {
+            valueFn: function () {
+                // Vars
+                var openButtonAnimation = this.get('openButtonAnimation'),
+                    settingsContainer = this.get('settingsContainer'),
+                    openButton = this.get('openButton'),
+                    animation;
+
+                // Create the opening animation
+                animation = new Y.Anim({
+                    node: settingsContainer,
+                    duration: 0.8,
+                    from: {
+                        width: 250,
+                        height: 0,
+                        opacity: 0
+                    },
+                    to: {
+                        width: 420,
+                        height: 300,
+                        opacity: 1
+                    },
+                    easing: 'backOut'
+                });
+
+
+                // On animation start
+                animation.before('start', function () {
+                    // Hide the open button, we don't want the user to interact now
+                    openButton.setStyle('opacity', 0);
+                    openButton.hide();
+
+                }, this);
+
+                // On animation end
+                animation.after('end', function () {
+
+                    // Settings container doesn't need the closed class anymore
+                    settingsContainer.removeClass('closed');
+
+                    // If we are closing set text to open
+                    // If we are opening set text to close
+                    if (animation.get('reverse')) {
+                        // Update open button text
+                        openButton.set('innerHTML', 'Open'); // TODO: i18n
+                    } else {
+                        // Update open button text
+                        openButton.set('innerHTML', 'Close'); // TODO: i18n
+                    }
+
+                    // Show the button
+                    openButton.show();
+                    // And run the animation
+                    openButtonAnimation.run();
+
+                    // Toggle the animation direction
+                    animation.set('reverse', !animation.get('reverse'));
+
+                }, this);
+
+                return animation;
+            }
+        },
+
+        /**
+         * Return open button animation
+         *
+         * {Y.Anim}
+         */
+        openButtonAnimation: {
+            valueFn: function () {
+                // Vars
+                var openButton = this.get('openButton');
+
+                // Create button animation
+                return new Y.Anim({
+                    node: openButton,
+                    duration: 0.5,
+                    from: {opacity: 0},
+                    to: {opacity: 1}
+                });
+            }
+        },
 
         /**
          * Container node for buddy list strategy

@@ -1201,13 +1201,11 @@
     clear: both;
     float: none;
     padding: 10px;
-    min-width: 381px;
 }
 
 .liferay-ims .chat-settings .settings input[type="text"] {
     width: 300px;
 }
-
 
 .liferay-ims .chat-settings .buddy-list-max-buddies {
     margin-top: 10px;
@@ -1232,6 +1230,26 @@
 / SETTINGS PANEL - ADMIN AREA
 /********************************************************************************/
 
+.liferay-ims .chat-settings .admin-area .settings {
+    width: 420px;
+    height: 300px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.liferay-ims .chat-settings .admin-area .settings.closed {
+    width: 250px;
+    height: 0;
+}
+
+.liferay-ims .chat-settings .admin-area .open-button {
+    float: right;
+    margin-right: 10px;
+    text-decoration: underline;
+    text-transform: capitalize;
+    cursor: pointer;
+}
+
 .liferay-ims .chat-settings .admin-area li {
     padding: 0 10px 5px;
 }
@@ -1245,7 +1263,7 @@
 }
 
 /********************************************************************************
-/ SETTINGS PANEL - SWTICH
+/ SETTINGS PANEL - SWITCH
 /********************************************************************************/
 
 .liferay-ims label.switch {

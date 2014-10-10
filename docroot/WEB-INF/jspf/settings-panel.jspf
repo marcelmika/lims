@@ -80,8 +80,11 @@
             <%-- ADMIN AREA --%>
             <c:if test="${isAdmin}">
                 <div class="admin-area">
-                    <div class="settings-title">Admin area</div>
-                    <ul class="lfr-component settings">
+                    <div class="settings-title">
+                        <span>Admin area</span>
+                        <span class="open-button">Open</span>
+                    </div>
+                    <ul class="lfr-component settings closed">
                         <%@ include file="/WEB-INF/jspf/settings/buddy-list-strategy.jspf" %>
                         <%@ include file="/WEB-INF/jspf/settings/buddy-list-social-relation.jspf" %>
                         <%@ include file="/WEB-INF/jspf/settings/buddy-list-ignore-default-user.jspf" %>
