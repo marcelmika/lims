@@ -25,6 +25,8 @@
 package com.marcelmika.lims.portal.domain;
 
 import com.marcelmika.lims.api.environment.Environment;
+import com.marcelmika.lims.api.environment.Environment.BuddyListStrategy;
+import com.marcelmika.lims.api.environment.Environment.BuddyListSocialRelation;
 
 /**
  * @author Ing. Marcel Mika
@@ -34,7 +36,8 @@ import com.marcelmika.lims.api.environment.Environment;
  */
 public class Properties {
 
-    private Environment.BuddyListStrategy buddyListStrategy;
+    private BuddyListStrategy buddyListStrategy;
+    private BuddyListSocialRelation[] buddyListSocialRelations;
 
 
     /**
@@ -48,15 +51,24 @@ public class Properties {
 
         // Map properties
         properties.buddyListStrategy = Environment.getBuddyListStrategy();
+        properties.buddyListSocialRelations = Environment.getBuddyListSocialRelations();
 
         return properties;
     }
 
-    public Environment.BuddyListStrategy getBuddyListStrategy() {
+    public BuddyListStrategy getBuddyListStrategy() {
         return buddyListStrategy;
     }
 
-    public void setBuddyListStrategy(Environment.BuddyListStrategy buddyListStrategy) {
+    public void setBuddyListStrategy(BuddyListStrategy buddyListStrategy) {
         this.buddyListStrategy = buddyListStrategy;
+    }
+
+    public BuddyListSocialRelation[] getBuddyListSocialRelations() {
+        return buddyListSocialRelations;
+    }
+
+    public void setBuddyListSocialRelations(BuddyListSocialRelation[] buddyListSocialRelations) {
+        this.buddyListSocialRelations = buddyListSocialRelations;
     }
 }

@@ -25,7 +25,7 @@
 /**
  * Choice Element View
  *
- * Represents a view that holds button with choice
+ * Represents a view that holds buttons with choice
  */
 Y.namespace('LIMS.View');
 
@@ -50,7 +50,7 @@ Y.LIMS.View.ChoiceElementView = Y.Base.create('choiceElementView', Y.View, [], {
         buttonGroup.setStyle('opacity', 1);
 
         // Remove disabled class
-        buttonGroup.all('.button').removeClass('disabled');
+        buttonGroup.removeClass('disabled');
     },
 
     /**
@@ -64,13 +64,14 @@ Y.LIMS.View.ChoiceElementView = Y.Base.create('choiceElementView', Y.View, [], {
         buttonGroup.setStyle('opacity', 0.5);
 
         // Add disabled class to buttons
-        buttonGroup.all('.button').addClass('disabled');
+        buttonGroup.addClass('disabled');
     },
 
     /**
-     * Select particular choice
+     * Select particular choice. Returns true if the choice was selected
      *
      * @param choice
+     * @return {boolean}
      */
     selectChoice: function (choice) {
         // Vars
@@ -87,19 +88,19 @@ Y.LIMS.View.ChoiceElementView = Y.Base.create('choiceElementView', Y.View, [], {
             });
 
             // Activate the choice
-            this._activateChoice(choice);
+            return this._activateChoice(choice);
         }
         // Inclusive
         else {
             // Already active
             if (this._isActiveChoice(choice)) {
                 // Deactivate
-                this._deactivateChoice(choice);
+                return this._deactivateChoice(choice);
             }
             // Not active yet
             else {
                 // Activate
-                this._activateChoice(choice);
+                return this._activateChoice(choice);
             }
         }
     },
@@ -120,12 +121,13 @@ Y.LIMS.View.ChoiceElementView = Y.Base.create('choiceElementView', Y.View, [], {
     },
 
     /**
-     * Deselects particular choice
+     * Deselects particular choice. Returns true if the choice was deselected.
      *
      * @param choice {string}
+     * @return {boolean}
      */
     deselectChoice: function (choice) {
-        this._deactivateChoice(choice);
+        return this._deactivateChoice(choice);
     },
 
     /**
@@ -158,6 +160,14 @@ Y.LIMS.View.ChoiceElementView = Y.Base.create('choiceElementView', Y.View, [], {
 
             // Add active class so the button will be active
             choiceNode.addClass('active');
+
+            // Return success
+            return true;
+        }
+        // No choice node was found
+        else {
+            // Return failure
+            return false;
         }
     },
 
@@ -170,20 +180,36 @@ Y.LIMS.View.ChoiceElementView = Y.Base.create('choiceElementView', Y.View, [], {
     _deactivateChoice: function (choice) {
         // Vars
         var selectedChoices = this.get('selectedChoices'),
+            isExclusive = this.get('isExclusive'),
             choiceNode = this._getChoiceNode(choice),
             index;
 
-        if (choiceNode) {
+        // No such choice node means failure
+        if (!choiceNode) {
+            return false;
+        }
+
+        // Choice might be exclusive, thus there is no need to validate the count
+        // However, if it's not exclusive we need to validate the min threshold
+        if (isExclusive || this._checkMinThreshold()) {
 
             // Remove deactivated choice from the selected choices list
             for (index = selectedChoices.length; index >= 0; index--) {
                 if (selectedChoices[index] === choice) {
-                    selectedChoices.splice(index - 1, 1);
+                    selectedChoices.splice(index, 1);
                 }
             }
 
             // Remove active class thus the button will no longer be active
             choiceNode.removeClass('active');
+
+            // Return success
+            return true;
+        }
+        // No choice node was found or choice cannot be performed
+        else {
+            // Return failure
+            return false;
         }
     },
 
@@ -198,11 +224,27 @@ Y.LIMS.View.ChoiceElementView = Y.Base.create('choiceElementView', Y.View, [], {
         // Vars
         var choiceNode = this._getChoiceNode(choice);
 
-        if (choiceNode) {
-            return choice.hasClass('active');
-        } else {
+        // If there is no such choice node it cannot be active
+        if (!choiceNode) {
             return false;
         }
+
+        // Active choice has active class
+        return choiceNode.hasClass('active');
+    },
+
+    /**
+     * Returns true if any choice can be either selected or deselected.
+     * Minimal count of selected choices can be set in minChoices attribute.
+     *
+     * @private
+     */
+    _checkMinThreshold: function () {
+        // Vars
+        var selectedChoices = this.get('selectedChoices'),
+            minChoices = this.get('minChoices');
+
+        return selectedChoices.length > minChoices;
     },
 
 
@@ -216,21 +258,23 @@ Y.LIMS.View.ChoiceElementView = Y.Base.create('choiceElementView', Y.View, [], {
 
         // Vars
         var choiceNode = event.currentTarget,                           // Choice a is a target in event
-            selectedChoices = this.get('selectedChoices').slice(0),     // Get a copy of selected choices
+            preSelectedChoices = this.get('selectedChoices').slice(0),  // Get a copy of selected choices
             choice = choiceNode.getAttribute('data-choice'),            // Get choice from choice node
-            isDisabled = choiceNode.hasClass('disabled');               // Check if node is disabled
+            isDisabled = this.get('buttonGroup').hasClass('disabled');  // Check if node is disabled
 
         // Don't do anything if the choice is disabled
         if (!isDisabled) {
 
             // Select the choice
-            this.selectChoice(choice);
+            if (this.selectChoice(choice)) {
 
-            // Fire event
-            this.fire('choiceClick', {
-                choice: choice,
-                selectedChoices: selectedChoices    // Previously selected choices
-            });
+                // Fire event
+                this.fire('choiceClick', {
+                    choice: choice,
+                    preSelectedChoices: preSelectedChoices,             // Previously selected choices
+                    postSelectedChoices: this.get('selectedChoices')    // Currently selected choices
+                });
+            }
         }
     },
 
@@ -308,6 +352,13 @@ Y.LIMS.View.ChoiceElementView = Y.Base.create('choiceElementView', Y.View, [], {
          */
         isExclusive: {
             value: true // Selection is exclusive by default
+        },
+
+        /**
+         * Number of minimal choices selected at once
+         */
+        minChoices: {
+            value: 1 // at least one choice must be selected by default
         }
 
     }

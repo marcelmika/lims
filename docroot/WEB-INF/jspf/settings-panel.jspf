@@ -83,6 +83,7 @@
                     <div class="settings-title">Admin area</div>
                     <ul class="lfr-component settings">
                         <%@ include file="/WEB-INF/jspf/settings/buddy-list-strategy.jspf" %>
+                        <%@ include file="/WEB-INF/jspf/settings/buddy-list-social-relation.jspf" %>
                     </ul>
                 </div>
             </c:if>

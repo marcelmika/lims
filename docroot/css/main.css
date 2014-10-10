@@ -198,6 +198,10 @@
     line-height: 22px;
 }
 
+.liferay-ims .button-group.disabled {
+    opacity: 0.5;
+}
+
 .liferay-ims .button-group .button {
     border-radius: 0;
 }
@@ -262,15 +266,21 @@
     border: none;
 }
 
-.liferay-ims .button-primary:hover,
 .liferay-ims .button-primary.active,
-.liferay-ims .button-primary.disabled.active:hover {
+.liferay-ims .button-primary.active:hover,
+.liferay-ims .button-group.disabled .button-primary.active:hover {
     color: white;
     background-color: #74B3EB;
     border-color: #629CCE;
 }
 
-.liferay-ims .button-primary.disabled:hover {
+.liferay-ims .button-primary:hover {
+    color: #333333;
+    background-color: rgba(178, 217, 241, 0.62);
+    border-color:rgba(178, 217, 241, 0.62);
+}
+
+.liferay-ims .button-group.disabled .button-primary:hover {
     color: #333333;
     background-color: #ffffff;
     border-color: #cccccc;
@@ -1250,7 +1260,7 @@
     clear: both;
     float: none;
     padding: 10px;
-    min-width: 281px;
+    min-width: 381px;
 }
 
 .liferay-ims .chat-settings .settings-title {

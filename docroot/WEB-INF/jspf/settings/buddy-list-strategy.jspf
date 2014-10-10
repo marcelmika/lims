@@ -43,7 +43,7 @@
 <c:set var="sitesAndSocialActiveClass" value=""/>
 <c:set var="userGroupsActiveClass" value=""/>
 
-<%-- Get active button --%>
+<%-- Decide what should be active --%>
 <c:choose>
     <c:when test="${properties.buddyListStrategy == ALL}">
         <c:set var="allActiveClass" value="active"/>
@@ -68,19 +68,19 @@
         Buddy list strategy
     </div>
     <div class="button-group">
-        <label data-choice="ALL" class="button button-primary ${allActiveClass}">
+        <label data-choice="${ALL}" class="button button-primary ${allActiveClass}">
             <span>All</span>
         </label>
-        <label data-choice="SITES" class="button button-primary ${sitesActiveClass}">
+        <label data-choice="${SITES}" class="button button-primary ${sitesActiveClass}">
             <span>Sites</span>
         </label>
-        <label data-choice="SOCIAL" class="button button-primary ${socialActiveClass}">
+        <label data-choice="${SOCIAL}" class="button button-primary ${socialActiveClass}">
             <span>Social</span>
         </label>
-        <label data-choice="SITES_AND_SOCIAL" class="button button-primary ${sitesAndSocialActiveClass}">
+        <label data-choice="${SITES_AND_SOCIAL}" class="button button-primary ${sitesAndSocialActiveClass}">
             <span>Sites, Social</span>
         </label>
-        <label data-choice="USER_GROUPS" class="button button-primary ${userGroupsActiveClass}">
+        <label data-choice="${USER_GROUPS}" class="button button-primary ${userGroupsActiveClass}">
             <span>Groups</span>
         </label>
 

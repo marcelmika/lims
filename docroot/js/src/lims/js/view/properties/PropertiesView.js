@@ -46,10 +46,12 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
      */
     _attachEvents: function () {
         // Vars
-        var buddyListStrategy = this.get('buddyListStrategy');
+        var buddyListStrategy = this.get('buddyListStrategy'),
+            buddyListSocialRelations = this.get('buddyListSocialRelations');
 
         // Local events
         buddyListStrategy.on('choiceClick', this._onBuddyListStrategySelected, this);
+        buddyListSocialRelations.on('choiceClick', this._onBuddyListSocialRelationsSelected, this);
     },
 
     /**
@@ -60,35 +62,69 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
      */
     _onBuddyListStrategySelected: function (event) {
         // Vars
-        var choice = event.choice,                          // Choice id is passed in event
-            view = this.get('buddyListStrategy'),           // Get the buddy list strategy view
-            selectedChoices = event.selectedChoices,        // Remember already selected choices
-            model;                                          // Properties model
+        var choice = event.choice,                                           // Choice id is passed in event
+            buddyListStrategy = this.get('buddyListStrategy'),               // Get the buddy list strategy view
+            buddyListSocialRelations = this.get('buddyListSocialRelations'), // Social relations view
+            preSelectedChoices = event.preSelectedChoices,                   // Choices before selection
+            model;                                                           // Properties model
 
         // Prepare the model
         model = new Y.LIMS.Model.PropertiesModel({
             buddyListStrategy: choice
         });
 
-        // TODO: Show preloader
         // Disable view
-        view.disable();
+        buddyListStrategy.disable();
 
         // Save the model
         model.save(function (err) {
             if (err) {
                 // Return everything to the previous state
-                view.selectChoices(selectedChoices);
-                // TODO: Hide preloader
-                // TODO: Show error
-                console.log('ERROR: ' + err);
+                buddyListStrategy.selectChoices(preSelectedChoices);
             } else {
-                // TODO: Hide preloader
-                console.log('SUCCESS');
+                // If the list strategy has something to do with social relations
+                // enable the social relations view
+                if (choice === 'SOCIAL' || choice === 'SITES_AND_SOCIAL') {
+                    buddyListSocialRelations.enable();
+                } else {
+                    buddyListSocialRelations.disable();
+                }
             }
 
             // Re-enable the view so the user can interact with it again
-            view.enable();
+            buddyListStrategy.enable();
+        });
+    },
+
+    /**
+     * Called when user selects one of the buddy list social relations
+     *
+     * @param event
+     * @private
+     */
+    _onBuddyListSocialRelationsSelected: function (event) {
+        // Vars
+        var buddyListSocialRelations = this.get('buddyListSocialRelations'),
+            preSelectedChoices = event.preSelectedChoices,
+            postSelectedChoices = event.postSelectedChoices,
+            model;
+
+        // Prepare the model
+        model = new Y.LIMS.Model.PropertiesModel({
+            buddyListSocialRelations: postSelectedChoices
+        });
+
+        // Disable view
+        buddyListSocialRelations.disable();
+
+        // Save the model
+        model.save(function (err) {
+            if (err) {
+                // Return everything to the previous state
+                buddyListSocialRelations.selectChoices(preSelectedChoices);
+            }
+            // Re-enable the view so the user can interact with it again
+            buddyListSocialRelations.enable();
         });
     }
 
@@ -119,6 +155,23 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
 
                 return new Y.LIMS.View.ChoiceElementView({
                     container: container
+                });
+            }
+        },
+
+        /**
+         * Container node for buddy list social relations
+         *
+         * {Node}
+         */
+        buddyListSocialRelations: {
+            valueFn: function () {
+                // Vars
+                var container = this.get('container').one('.buddy-list-social-relations');
+
+                return new Y.LIMS.View.ChoiceElementView({
+                    container: container,
+                    isExclusive: false
                 });
             }
         }

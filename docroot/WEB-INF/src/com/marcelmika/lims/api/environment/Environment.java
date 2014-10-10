@@ -49,6 +49,7 @@ public class Environment {
 
     // Environment properties
     private static BuddyListStrategy buddyListStrategy;
+    private static BuddyListSocialRelation[] buddyListSocialRelations;
 
 
     /**
@@ -61,15 +62,23 @@ public class Environment {
 
         // Preferences cannot be null
         if (preferences == null) {
-            log.error("Cannot load preferences");
+            // Log
+            if (log.isErrorEnabled()) {
+                log.error("Cannot load preferences");
+            }
+            // End here
             return;
         }
 
         // Setup just once, there is no need to set it on every call of the setup method
         if (!isSetup) {
-            log.info("Settings the environment");
+            // Log
+            if (log.isDebugEnabled()) {
+                log.info("Settings the environment");
+            }
 
             setBuddyListStrategy(preferences);
+            setBuddyListSocialRelations(preferences);
 
             // Setup can be done just once at the beginning
             isSetup = true;
@@ -330,9 +339,48 @@ public class Environment {
      *
      * @return BuddyListSocialRelation[]
      */
-    public static BuddyListSocialRelation[] getBuddyListAllowedSocialRelationTypes() {
-        // Relations types are stored in int values
-        int[] relationsTypeCodes = PortletPropertiesValues.BUDDY_LIST_ALLOWED_SOCIAL_RELATION_TYPES;
+    public static BuddyListSocialRelation[] getBuddyListSocialRelations() {
+        return buddyListSocialRelations;
+    }
+
+    /**
+     * Sets the buddy list allowed social relations
+     *
+     * @param preferences PortletPreferences
+     */
+    public static void setBuddyListSocialRelations(PortletPreferences preferences) {
+        // Get the properties source
+        PropertiesSource source = getPropertiesSource();
+
+        int[] relationsTypeCodes;
+        // Preferences
+        if (source == PropertiesSource.PREFERENCES) {
+
+            // Take the value from preferences
+            String[] values = preferences.getValues(PortletPropertiesKeys.BUDDY_LIST_ALLOWED_SOCIAL_RELATION_TYPES, null);
+
+            // There is already some values set in preferences
+            if (values != null) {
+                // However, the values are stored as string values so we first need to parse them.
+                // Create new array of integers with the same size as the values gotten from preferences.
+                relationsTypeCodes = new int[values.length];
+
+                // Iterate over relation codes
+                for (int i = 0; i < relationsTypeCodes.length; i++) {
+                    // And parse each code from string to integer
+                    relationsTypeCodes[i] = Integer.parseInt(values[i]);
+                }
+            }
+            // Nothing was set in preferences so take it from properties
+            else {
+                relationsTypeCodes = PortletPropertiesValues.BUDDY_LIST_ALLOWED_SOCIAL_RELATION_TYPES;
+            }
+
+        }
+        // Properties
+        else {
+            relationsTypeCodes = PortletPropertiesValues.BUDDY_LIST_ALLOWED_SOCIAL_RELATION_TYPES;
+        }
 
         // Create a set which will contain enums that represent relation types
         Set<BuddyListSocialRelation> relationTypeSet = new HashSet<BuddyListSocialRelation>();
@@ -367,7 +415,6 @@ public class Environment {
             }
         }
 
-
         // Nothing was mapped at the end.
         // This means that no relation was selected or the relation code was wrong.
         if (relationTypeSet.size() == 0) {
@@ -376,15 +423,14 @@ public class Environment {
                     "selected or it was wrong. Since the property is required \"12 - " +
                     "Connections\" was selected as default. The value can be set in portlet-ext.properties file " +
                     "related to the LIMS portlet.");
+
             // Connection type is default
-            return new BuddyListSocialRelation[]{BuddyListSocialRelation.TYPE_BI_CONNECTION};
+            buddyListSocialRelations = new BuddyListSocialRelation[]{BuddyListSocialRelation.TYPE_BI_CONNECTION};
         }
 
 
         // Map set to array
-        return relationTypeSet.toArray(
-                new BuddyListSocialRelation[relationTypeSet.size()]
-        );
+        buddyListSocialRelations = relationTypeSet.toArray(new BuddyListSocialRelation[relationTypeSet.size()]);
     }
 
     /**
@@ -397,7 +443,7 @@ public class Environment {
     }
 
     /**
-     * Returns maximal number of serach result in buddy list
+     * Returns maximal number of search result in buddy list
      *
      * @return int
      */

@@ -124,10 +124,6 @@ public class LIMSPortlet extends MVCPortlet {
 
         // Set response to view.jsp
         include(VIEW_JSP_PATH, renderRequest, renderResponse);
-
-        // TODO: DEBUG
-        log.info("IS ADMIN: " + PermissionDetector.isAdmin(renderRequest));
-        log.info("BUDDY LIST STRATEGY: " + Environment.getBuddyListStrategy());
     }
 
     /**

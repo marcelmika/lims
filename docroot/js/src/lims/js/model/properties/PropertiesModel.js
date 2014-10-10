@@ -106,6 +106,15 @@ Y.LIMS.Model.PropertiesModel = Y.Base.create('propertiesModel', Y.Model, [Y.LIMS
          */
         buddyListStrategy: {
             value: null // to be set
+        },
+
+        /**
+         * Buddy list social relations
+         *
+         * []
+         */
+        buddyListSocialRelations: {
+            value: null // to be set
         }
     }
 });

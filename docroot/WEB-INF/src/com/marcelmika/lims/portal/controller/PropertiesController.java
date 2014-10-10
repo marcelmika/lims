@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.environment.Environment;
+import com.marcelmika.lims.api.environment.Environment.BuddyListSocialRelation;
 import com.marcelmika.lims.portal.domain.Properties;
 import com.marcelmika.lims.portal.http.HttpStatus;
 import com.marcelmika.lims.portal.portlet.PermissionDetector;
@@ -118,19 +119,72 @@ public class PropertiesController {
 
         // Buddy list strategy
         if (properties.getBuddyListStrategy() != null) {
-
-            // Set the value in portlet preferences
-            preferences.setValue(
-                    PortletPropertiesKeys.BUDDY_LIST_STRATEGY,
-                    properties.getBuddyListStrategy().getDescription()
-            );
-
-            // Persist
-            preferences.store();
-
-            // Save in environment
-            Environment.setBuddyListStrategy(preferences);
+            updateBuddyListStrategy(preferences, properties);
         }
+
+        // Buddy list social relations
+        if (properties.getBuddyListSocialRelations() != null) {
+            updateBuddyListSocialRelations(preferences, properties);
+        }
+    }
+
+    /**
+     * Updates buddy list strategy preferences
+     *
+     * @param preferences PortletPreferences
+     * @param properties  Properties
+     * @throws Exception
+     */
+    private void updateBuddyListStrategy(PortletPreferences preferences, Properties properties) throws Exception {
+
+        // Reset previous preferences
+        preferences.reset(PortletPropertiesKeys.BUDDY_LIST_STRATEGY);
+
+        // Set the value in portlet preferences
+        preferences.setValue(
+                PortletPropertiesKeys.BUDDY_LIST_STRATEGY,
+                properties.getBuddyListStrategy().getDescription()
+        );
+
+        // Persist
+        preferences.store();
+
+        // Save in environment
+        Environment.setBuddyListStrategy(preferences);
+    }
+
+    /**
+     * Updates buddy list social relations preferences
+     *
+     * @param preferences PortletPreferences
+     * @param properties  Properties
+     * @throws Exception
+     */
+    private void updateBuddyListSocialRelations(PortletPreferences preferences, Properties properties) throws Exception {
+
+        // Social relations needs to be mapped to the string alternatives so they can
+        // be moved to the preferences
+        BuddyListSocialRelation[] relations = properties.getBuddyListSocialRelations();
+        String[] relationStrings = new String[relations.length];
+
+        for (int i = 0; i < relationStrings.length; i++) {
+            relationStrings[i] = String.valueOf(relations[i].getCode());
+        }
+
+        // Reset previous preferences
+        preferences.reset(PortletPropertiesKeys.BUDDY_LIST_ALLOWED_SOCIAL_RELATION_TYPES);
+
+        // Set the value in portlet preferences
+        preferences.setValues(
+                PortletPropertiesKeys.BUDDY_LIST_ALLOWED_SOCIAL_RELATION_TYPES,
+                relationStrings
+        );
+
+        // Persist
+        preferences.store();
+
+        // Save in environment
+        Environment.setBuddyListSocialRelations(preferences);
     }
 }
 

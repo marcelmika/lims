@@ -71,7 +71,7 @@ public class SearchManagerImpl implements SearchManager {
         String[] excludedSites = Environment.getBuddyListSiteExcludes();
         String[] excludedGroups = Environment.getBuddyListGroupExcludes();
         // Relation types
-        Environment.BuddyListSocialRelation[] relationTypes = Environment.getBuddyListAllowedSocialRelationTypes();
+        Environment.BuddyListSocialRelation[] relationTypes = Environment.getBuddyListSocialRelations();
 
         // All buddies
         if (strategy == BuddyListStrategy.ALL) {
