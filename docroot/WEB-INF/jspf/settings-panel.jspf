@@ -84,6 +84,13 @@
                     <ul class="lfr-component settings">
                         <%@ include file="/WEB-INF/jspf/settings/buddy-list-strategy.jspf" %>
                         <%@ include file="/WEB-INF/jspf/settings/buddy-list-social-relation.jspf" %>
+                        <%@ include file="/WEB-INF/jspf/settings/buddy-list-ignore-default-user.jspf" %>
+                        <%@ include file="/WEB-INF/jspf/settings/buddy-list-ignore-deactivated-user.jspf" %>
+                        <%@ include file="/WEB-INF/jspf/settings/buddy-list-max-buddies.jspf" %>
+                        <%@ include file="/WEB-INF/jspf/settings/buddy-list-max-search.jspf" %>
+                        <%@ include file="/WEB-INF/jspf/settings/conversation-list-max-messages.jspf" %>
+                        <%@ include file="/WEB-INF/jspf/settings/buddy-list-site-excludes.jspf" %>
+                        <%@ include file="/WEB-INF/jspf/settings/buddy-list-group-excludes.jspf" %>
                     </ul>
                 </div>
             </c:if>

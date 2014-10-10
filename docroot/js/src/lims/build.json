@@ -57,6 +57,8 @@
                 "js/view/conversation/ConversationItemView.js",
                 "js/view/conversation/ConversationListView.js",
                 "js/view/elements/ChoiceElementView.js",
+                "js/view/elements/SwitchElementView.js",
+                "js/view/elements/SliderElementView.js",
                 "js/view/notification/ErrorNotificationView.js",
                 "js/view/notification/InfoNotificationView.js",
                 "js/view/group/GroupBuddyViewItem.js",
@@ -73,7 +75,8 @@
                 "requires": [
                     "view",
                     "node",
-                    "anim"
+                    "anim",
+                    "slider"
                 ]
             }
         },

@@ -111,6 +111,12 @@
     opacity: 1 !important;
 }
 
+.liferay-ims label {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+
 .liferay-ims button:hover {
     opacity: 0.6 !important;
 }
@@ -196,6 +202,7 @@
     display: inline-block;
     vertical-align: middle;
     line-height: 22px;
+    padding-bottom: 5px;
 }
 
 .liferay-ims .button-group.disabled {
@@ -236,36 +243,6 @@
     border-color: #cccccc;
 }
 
-.liferay-ims .button-success {
-    color: white;
-    background-color: #5cb85c;
-    border-color: #4cae4c;
-}
-
-.liferay-ims .button-info {
-    color: white;
-    background-color: #5bc0de;
-    border-color: #46b8da;
-}
-
-.liferay-ims .button-warning {
-    color: white;
-    background-color: #f0ad4e;
-    border-color: #eea236;
-}
-
-.liferay-ims .button-danger {
-    color: white;
-    background-color: #d9534f;
-    border-color: #d43f3a;
-}
-
-.liferay-ims .button-link {
-    color: #428bca;
-    background: none;
-    border: none;
-}
-
 .liferay-ims .button-primary.active,
 .liferay-ims .button-primary.active:hover,
 .liferay-ims .button-group.disabled .button-primary.active:hover {
@@ -277,7 +254,7 @@
 .liferay-ims .button-primary:hover {
     color: #333333;
     background-color: rgba(178, 217, 241, 0.62);
-    border-color:rgba(178, 217, 241, 0.62);
+    border-color: rgba(178, 217, 241, 0.62);
 }
 
 .liferay-ims .button-group.disabled .button-primary:hover {
@@ -293,69 +270,21 @@
     border-color: #adadad;
 }
 
-.liferay-ims .button-success:hover,
-.liferay-ims .button-success.active {
-    color: white;
-    background-color: #47a447;
-    border-color: #398439;
+/********************************************************************************
+/ SLIDER
+/********************************************************************************/
+
+.yui3-skin-sam .liferay-ims .yui3-slider-x .yui3-slider-thumb {
+    width: 22px;
 }
 
-.liferay-ims .button-info:hover,
-.liferay-ims .button-info.active {
-    color: white;
-    background-color: #39b3d7;
-    border-color: #269abc;
+.yui3-skin-sam .liferay-ims .yui3-slider-x .yui3-slider-thumb-shadow {
+    left: -2px;
+    top: -46px;
 }
 
-.liferay-ims .button-warning:hover,
-.liferay-ims .button-warning.active {
-    color: white;
-    background-color: #ed9c28;
-    border-color: #d58512;
-}
-
-.liferay-ims .button-danger:hover,
-.liferay-ims .button-danger.active {
-    color: white;
-    background-color: #d2322d;
-    border-color: #ac2925;
-}
-
-.liferay-ims .button-link:hover,
-.liferay-ims .button-link.active {
-    text-decoration: underline;
-    color: #2a6496;
-    background: none;
-    border: none;
-}
-
-.liferay-ims .button-list {
-    display: block;
-    clear: both;
-    background: none;
-    border: none;
-    color: black;
-    box-shadow: none !important;
-}
-
-.liferay-ims .button-list:before {
-    display: inline-block;
-    width: 13px;
-    height: 13px;
-    border-radius: 7px;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
-    margin: 2px 3px 0 0;
-    veretical-align: text-top;
-    content: " ";
-}
-
-.liferay-ims .button-list.active {
-    box-shadow: none;
-}
-
-.liferay-ims .button-list.active:before {
-    background: #009922;
+.yui3-skin-sam .liferay-ims .yui3-slider-x .yui3-slider-thumb-image {
+    top: -8px;
 }
 
 /********************************************************************************
@@ -1256,11 +1185,32 @@
     float: none;
 }
 
+.liferay-ims .chat-settings .slider {
+    height: 30px;
+}
+
+.liferay-ims .chat-settings .value {
+    float: left;
+    margin: -4px 8px 11px 9px;
+    font-size: 14px;
+    font-weight: bold;
+    min-width: 30px;
+}
+
 .liferay-ims .chat-settings .settings li {
     clear: both;
     float: none;
     padding: 10px;
     min-width: 381px;
+}
+
+.liferay-ims .chat-settings .settings input[type="text"] {
+    width: 300px;
+}
+
+
+.liferay-ims .chat-settings .buddy-list-max-buddies {
+    margin-top: 10px;
 }
 
 .liferay-ims .chat-settings .settings-title {
@@ -1278,13 +1228,25 @@
     text-overflow: ellipsis;
 }
 
-/* Switch */
+/********************************************************************************
+/ SETTINGS PANEL - ADMIN AREA
+/********************************************************************************/
 
-.liferay-ims label {
-    display: inline-block;
-    position: relative;
-    cursor: pointer;
+.liferay-ims .chat-settings .admin-area li {
+    padding: 0 10px 5px;
 }
+
+.liferay-ims .chat-settings .admin-area .buddy-list-strategy {
+    padding-top: 8px;
+}
+
+.liferay-ims .chat-settings .admin-area .buddy-list-ignore-default-user {
+    padding-top: 8px;
+}
+
+/********************************************************************************
+/ SETTINGS PANEL - SWTICH
+/********************************************************************************/
 
 .liferay-ims label.switch {
     -webkit-user-select: none;

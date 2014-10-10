@@ -174,6 +174,69 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
                     isExclusive: false
                 });
             }
+        },
+
+        /**
+         * Container node for buddy list max buddies
+         *
+         * {Node}
+         */
+        buddyListMaxBuddies: {
+            valueFn: function () {
+                // Vars
+                var container = this.get('container').one('.buddy-list-max-buddies .slider'),
+                    valueContainer = this.get('container').one('.buddy-list-max-buddies .value');
+
+                return new Y.LIMS.View.SliderElementView({
+                    container: container,
+                    valueContainer: valueContainer,
+                    min: 10,
+                    max: 500,
+                    value: 200 // TODO: Parse
+                });
+            }
+        },
+
+        /**
+         * Container node for buddy list max search
+         *
+         * {Node}
+         */
+        buddyListMaxSearch: {
+            valueFn: function () {
+                // Vars
+                var container = this.get('container').one('.buddy-list-max-search .slider'),
+                    valueContainer = this.get('container').one('.buddy-list-max-search .value');
+
+                return new Y.LIMS.View.SliderElementView({
+                    container: container,
+                    valueContainer: valueContainer,
+                    min: 5,
+                    max: 50,
+                    value: 10 // TODO: Parse
+                });
+            }
+        },
+
+        /**
+         * Container node for conversation list max messages
+         *
+         * {Node}
+         */
+        conversationListMaxMessages: {
+            valueFn: function () {
+                // Vars
+                var container = this.get('container').one('.conversation-list-max-messages .slider'),
+                    valueContainer = this.get('container').one('.conversation-list-max-messages .value');
+
+                return new Y.LIMS.View.SliderElementView({
+                    container: container,
+                    valueContainer: valueContainer,
+                    min: 10,
+                    max: 500,
+                    value: 100 // TODO: Parse
+                });
+            }
         }
     }
 });
