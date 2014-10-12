@@ -277,9 +277,9 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
         },
 
         /**
-         * Container node for buddy list strategy
+         * View for buddy list strategy
          *
-         * {Node}
+         * {Y.LIMS.View.ChoiceElementView}
          */
         buddyListStrategy: {
             valueFn: function () {
@@ -293,9 +293,9 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
         },
 
         /**
-         * Container node for buddy list social relations
+         * View for buddy list social relations
          *
-         * {Node}
+         * {Y.LIMS.View.ChoiceElementView}
          */
         buddyListSocialRelations: {
             valueFn: function () {
@@ -310,9 +310,9 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
         },
 
         /**
-         * Container node for buddy list max buddies
+         * View for buddy list max buddies
          *
-         * {Node}
+         * {Y.LIMS.View.SliderElementView}
          */
         buddyListMaxBuddies: {
             valueFn: function () {
@@ -331,9 +331,9 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
         },
 
         /**
-         * Container node for buddy list max search
+         * View for buddy list max search
          *
-         * {Node}
+         * {Y.LIMS.View.SliderElementView}
          */
         buddyListMaxSearch: {
             valueFn: function () {
@@ -352,9 +352,9 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
         },
 
         /**
-         * Container node for conversation list max messages
+         * View for conversation list max messages
          *
-         * {Node}
+         * {Y.LIMS.View.SliderElementView}
          */
         conversationListMaxMessages: {
             valueFn: function () {
@@ -368,6 +368,38 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
                     min: 10,
                     max: 500,
                     value: 100 // TODO: Parse
+                });
+            }
+        },
+
+        /**
+         * View for excluded sites
+         *
+         * {Y.LIMS.Model.View.TokenInputElementView}
+         */
+        buddyListSitesExcludes: {
+            valueFn: function () {
+                // Vars
+                var container = this.get('container').one('.buddy-list-site-excludes');
+
+                return new Y.LIMS.View.TokenInputElementView({
+                    container: container
+                });
+            }
+        },
+
+        /**
+         * View for excluded groups
+         *
+         * {Y.LIMS.Model.View.TokenInputElementView}
+         */
+        buddyListGroupExcludes: {
+            valueFn: function () {
+                // Vars
+                var container = this.get('container').one('.buddy-list-group-excludes');
+
+                return new Y.LIMS.View.TokenInputElementView({
+                    container: container
                 });
             }
         }

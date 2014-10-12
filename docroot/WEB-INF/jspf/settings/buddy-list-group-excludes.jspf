@@ -27,10 +27,10 @@
 <%--@elvariable id="properties" type="com.marcelmika.lims.portal.domain.Properties"--%>
 
 <%-- Render --%>
-<li class="buddy-list-group-excludes">
+<li class="buddy-list-group-excludes token-input">
 
     <div class="settings-category-title">
         Excluded groups
     </div>
-    <input type="text" placeholder="Comma delimited group names..."/>
+    <input type="text" value=""/>
 </li>

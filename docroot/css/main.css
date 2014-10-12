@@ -287,6 +287,155 @@
     top: -8px;
 }
 
+
+/************************************************************************************
+/  TOKEN INPUT
+/************************************************************************************/
+
+.liferay-ims .token-input li {
+    padding-bottom: 0px;
+}
+
+.liferay-ims .token-input .yui3-tokeninput,
+.liferay-ims .token-input .yui3-tokeninput-content,
+.liferay-ims .token-input .yui3-tokeninput-item,
+.liferay-ims .token-input .yui3-tokeninput-list {
+    display: inline-block;
+    padding: 0;
+    vertical-align: bottom;
+    zoom: 1;
+    *display: inline;
+}
+
+.liferay-ims .token-input .yui3-tokeninput {
+    width: 360px;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-content {
+    /*min-height: 35px;*/
+}
+
+.liferay-ims .token-input .yui3-tokeninput-content,
+.liferay-ims .token-input .yui3-tokeninput-list {
+    width: 100%;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-input {
+    position: relative;
+    top: 4px;
+    border: 0;
+    outline: 0;
+    padding: 0;
+    width: 5ex;
+    *vertical-align: top;
+    -webkit-appearance: none;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-input:focus {
+    -webkit-appearance: none;
+    appearance: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+
+.liferay-ims .token-input .yui3-tokeninput-item {
+    margin: 1px 2px;
+    padding-bottom: 0;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-list {
+    cursor: text;
+    list-style: none;
+    margin: 0;
+    overflow: hidden;
+    padding: 1px 0;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-token {
+    cursor: pointer;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-hidden,
+.liferay-ims .token-input .yui3-tokeninput-host {
+    display: none;
+}
+
+.liferay-ims .token-input .yui3-tokeninput {
+    outline: 0;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-list {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.liferay-ims .token-input .yui3-tokeninput-content {
+    background: #fff;
+    border: 1px solid #ddd;
+    color: #000;
+    padding: 0;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-fauxinput {
+    -moz-box-shadow: inset 0 1px 2px -1px #717171;
+    -webkit-box-shadow: inset 0 1px 2px -1px #717171;
+    border-bottom-color: #dadada;
+    border-top-color: #717171;
+    box-shadow: inset 0 1px 2px -1px #717171;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-token {
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    background-color: #74B3EB;
+    border: 1px solid #629CCE;
+    color: white;
+    border-radius: 8px;
+    padding: 0 10px 1px;
+    position: relative;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-hasremove {
+    padding-right: 21px !important;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-hover {
+    background-color: #64a3eb;
+    border-color: #4991ce;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-focus {
+    background-color: #4595eb;
+    border-color: #337ece;
+    color: #fff;
+    outline: 0;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-remove {
+    color: #fff;
+    line-height: 1;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    font-size: 18px;
+    font-weight: lighter;
+    text-decoration: none;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-windows .yui3-tokeninput-remove {
+    margin-top: 2px;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-remove:hover {
+    color: #333;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-focus .yui3-tokeninput-remove {
+    color: #fff;
+}
+
+
 /********************************************************************************
 / CHAT CONTAINER
 /********************************************************************************/
@@ -1251,16 +1400,26 @@
 }
 
 .liferay-ims .chat-settings .admin-area li {
-    padding: 0 10px 5px;
-}
-
-.liferay-ims .chat-settings .admin-area .buddy-list-strategy {
-    padding-top: 8px;
+    padding: 0 10px;
 }
 
 .liferay-ims .chat-settings .admin-area .buddy-list-ignore-default-user {
-    padding-top: 8px;
+    padding-top: 14px;
 }
+
+.liferay-ims .chat-settings .admin-area .buddy-list-max-buddies {
+    margin-top: 17px;
+}
+
+.liferay-ims .chat-settings .admin-area .settings-category-title {
+    margin-top: 10px;
+}
+
+
+.liferay-ims .chat-settings .admin-area .buddy-list-group-excludes {
+    margin-bottom: 20px;
+}
+
 
 /********************************************************************************
 / SETTINGS PANEL - SWITCH
@@ -1462,4 +1621,3 @@
         background-size: auto 18px;
     }
 }
-
