@@ -24,6 +24,8 @@
 
 package com.marcelmika.lims.persistence.service;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.entity.BuddyDetails;
 import com.marcelmika.lims.api.entity.SettingsDetails;
 import com.marcelmika.lims.api.events.settings.*;
@@ -39,6 +41,9 @@ import com.marcelmika.lims.persistence.generated.service.SettingsLocalServiceUti
  * Time: 8:29 PM
  */
 public class SettingsPersistenceServiceImpl implements SettingsPersistenceService {
+
+    // Log
+    private static Log log = LogFactoryUtil.getLog(SettingsPersistenceServiceImpl.class);
 
     /**
      * Reads buddy's settings
@@ -123,8 +128,9 @@ public class SettingsPersistenceServiceImpl implements SettingsPersistenceServic
                     event.getBuddyId()
             );
             // Set new values
+            // TODO: should contain check for null values
             settings.setMute(details.isMute());
-
+            settings.setAdminAreaOpened(details.isAdminAreaOpened());
             // Save
             SettingsLocalServiceUtil.saveSettings(settings);
 

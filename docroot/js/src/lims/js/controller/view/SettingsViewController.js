@@ -57,10 +57,13 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
          */
         _attachEvents: function () {
             // Vars
-            var soundCheckbox = this.get('soundCheckbox');
+            var soundCheckbox = this.get('soundCheckbox'),
+                adminProperties = this.get('adminProperties');
 
             // Local events
             soundCheckbox.on('click', this._onSoundCheckboxUpdated, this);
+            adminProperties.on('propertiesOpened', this._onAdminPropertiesOpened, this);
+            adminProperties.on('propertiesClosed', this._onAdminPropertiesClosed, this);
         },
 
         /**
@@ -74,6 +77,7 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
 
             // Remove switch classes from checkboxes if the portlet
             // is in the IE support mode
+            // TODO: move to checkbox element view
             if (this.hasIESupport()) {
                 checkboxes.each(function (checkbox) {
                     checkbox.ancestor().removeClass('switch');
@@ -89,10 +93,12 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
         _bindSettings: function () {
             // Vars
             var model = this.get('model'),
+                adminProperties = this.get('adminProperties'),
                 isMute = this.get('soundCheckbox').get('checked') ? false : true;
 
             // Set to model
             model.set('isMute', isMute);
+            model.set('isAdminAreaOpened', adminProperties.isOpened());
         },
 
         /**
@@ -105,6 +111,40 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
                 isMute = this.get('soundCheckbox').get('checked') ? false : true;
             // Update model
             model.set('isMute', isMute).save();
+        },
+
+        /**
+         * Called when the admin properties view is opened
+         *
+         * @private
+         */
+        _onAdminPropertiesOpened: function () {
+            // Vars
+            var model = this.get('model');
+
+            // Set the model value
+            model.set('isAdminAreaOpened', true);
+            // And save it
+            model.save();
+
+            console.log('opened');
+        },
+
+        /**
+         * Called when the admin properties view is closed
+         *
+         * @private
+         */
+        _onAdminPropertiesClosed: function () {
+            // Vars
+            var model = this.get('model');
+
+            // Set the model value
+            model.set('isAdminAreaOpened', false);
+            // And save it
+            model.save();
+
+            console.log('closed');
         }
 
     }, {

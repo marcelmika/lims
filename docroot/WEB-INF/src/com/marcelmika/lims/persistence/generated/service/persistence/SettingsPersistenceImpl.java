@@ -1148,6 +1148,7 @@ public class SettingsPersistenceImpl extends BasePersistenceImpl<Settings>
 		settingsImpl.setPresenceUpdatedAt(settings.getPresenceUpdatedAt());
 		settingsImpl.setMute(settings.isMute());
 		settingsImpl.setChatEnabled(settings.isChatEnabled());
+		settingsImpl.setAdminAreaOpened(settings.isAdminAreaOpened());
 
 		return settingsImpl;
 	}

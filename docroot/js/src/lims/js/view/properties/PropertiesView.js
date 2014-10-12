@@ -52,6 +52,15 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
     },
 
     /**
+     * Returns true if the properties view is opened
+     *
+     * {boolean}
+     */
+    isOpened: function () {
+        return this.get('settingsContainer').hasClass('opened');
+    },
+
+    /**
      * Attach event to elements
      * @private
      */
@@ -217,6 +226,11 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
                     easing: 'backOut'
                 });
 
+                // Check if the animation should be reversed
+                if (settingsContainer.hasClass('opened')) {
+                    // Reverse the animation
+                    animation.set('reverse', true);
+                }
 
                 // On animation start
                 animation.before('start', function () {
@@ -229,17 +243,24 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
                 // On animation end
                 animation.after('end', function () {
 
-                    // Settings container doesn't need the closed class anymore
-                    settingsContainer.removeClass('closed');
-
                     // If we are closing set text to open
                     // If we are opening set text to close
                     if (animation.get('reverse')) {
                         // Update open button text
                         openButton.set('innerHTML', 'Open'); // TODO: i18n
+                        // Settings container doesn't need the closed class anymore
+                        settingsContainer.removeClass('opened');
+                        settingsContainer.addClass('closed');
+                        // Fire the event
+                        this.fire('propertiesClosed');
                     } else {
                         // Update open button text
                         openButton.set('innerHTML', 'Close'); // TODO: i18n
+                        // Settings container doesn't need the closed class anymore
+                        settingsContainer.removeClass('closed');
+                        settingsContainer.addClass('opened');
+                        // Fire the event
+                        this.fire('propertiesOpened');
                     }
 
                     // Show the button

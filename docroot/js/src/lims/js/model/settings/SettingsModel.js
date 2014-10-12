@@ -94,6 +94,9 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [Y.LIMS.Mod
         // Serialize
         content = Y.JSON.stringify(this.toJSON());
 
+
+        console.log(content);
+
         switch (action) {
             case 'create':
             case 'update': // There is no difference between create and update
@@ -136,15 +139,39 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [Y.LIMS.Mod
         // model's data. See the docs for Y.Attribute to learn more about defining
         // attributes.
 
+        /**
+         * Buddy object related to the settings
+         *
+         * {Y.LIMS.Model.BuddyModelItem}
+         */
         buddy: {
             value: null
         },
 
+        /**
+         * ID of the active panel
+         *
+         * {string}
+         */
         activePanelId: {
             value: null // default value
         },
 
+        /**
+         * True if the chat sounds are switched off
+         *
+         * {boolean}
+         */
         isMute: {
+            value: false // default value
+        },
+
+        /**
+         * True if the admin area is opened
+         *
+         * {boolean}
+         */
+        isAdminAreaOpened: {
             value: false // default value
         }
     }
