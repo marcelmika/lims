@@ -70,6 +70,7 @@
                 "js/view/portrait/PortraitView.js",
                 "js/view/presence/PresenceView.js",
                 "js/view/properties/PropertiesView.js",
+                "js/view/properties/SettingsView.js",
                 "js/view/panel/PanelView.js"
             ],
             "config": {

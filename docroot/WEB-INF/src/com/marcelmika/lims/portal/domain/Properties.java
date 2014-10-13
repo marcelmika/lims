@@ -38,11 +38,11 @@ public class Properties {
 
     private BuddyListStrategy buddyListStrategy;
     private BuddyListSocialRelation[] buddyListSocialRelations;
-    private boolean buddyListIgnoreDefaultUser;
-    private boolean buddyListIgnoreDeactivatedUser;
-    private int buddyListMaxBuddies;
-    private int buddyListMaxSearch;
-    private int conversationListMaxMessages;
+    private Boolean buddyListIgnoreDefaultUser;
+    private Boolean buddyListIgnoreDeactivatedUser;
+    private Integer buddyListMaxBuddies;
+    private Integer buddyListMaxSearch;
+    private Integer conversationListMaxMessages;
 
     /**
      * Factory method that creates an instance of properties from the environment properties
@@ -81,43 +81,43 @@ public class Properties {
         this.buddyListSocialRelations = buddyListSocialRelations;
     }
 
-    public boolean isBuddyListIgnoreDefaultUser() {
+    public Boolean getBuddyListIgnoreDefaultUser() {
         return buddyListIgnoreDefaultUser;
     }
 
-    public void setBuddyListIgnoreDefaultUser(boolean buddyListIgnoreDefaultUser) {
+    public void setBuddyListIgnoreDefaultUser(Boolean buddyListIgnoreDefaultUser) {
         this.buddyListIgnoreDefaultUser = buddyListIgnoreDefaultUser;
     }
 
-    public boolean isBuddyListIgnoreDeactivatedUser() {
+    public Boolean getBuddyListIgnoreDeactivatedUser() {
         return buddyListIgnoreDeactivatedUser;
     }
 
-    public void setBuddyListIgnoreDeactivatedUser(boolean buddyListIgnoreDeactivatedUser) {
+    public void setBuddyListIgnoreDeactivatedUser(Boolean buddyListIgnoreDeactivatedUser) {
         this.buddyListIgnoreDeactivatedUser = buddyListIgnoreDeactivatedUser;
     }
 
-    public int getBuddyListMaxBuddies() {
+    public Integer getBuddyListMaxBuddies() {
         return buddyListMaxBuddies;
     }
 
-    public void setBuddyListMaxBuddies(int buddyListMaxBuddies) {
+    public void setBuddyListMaxBuddies(Integer buddyListMaxBuddies) {
         this.buddyListMaxBuddies = buddyListMaxBuddies;
     }
 
-    public int getBuddyListMaxSearch() {
+    public Integer getBuddyListMaxSearch() {
         return buddyListMaxSearch;
     }
 
-    public void setBuddyListMaxSearch(int buddyListMaxSearch) {
+    public void setBuddyListMaxSearch(Integer buddyListMaxSearch) {
         this.buddyListMaxSearch = buddyListMaxSearch;
     }
 
-    public int getConversationListMaxMessages() {
+    public Integer getConversationListMaxMessages() {
         return conversationListMaxMessages;
     }
 
-    public void setConversationListMaxMessages(int conversationListMaxMessages) {
+    public void setConversationListMaxMessages(Integer conversationListMaxMessages) {
         this.conversationListMaxMessages = conversationListMaxMessages;
     }
 }

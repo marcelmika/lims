@@ -35,14 +35,6 @@
         <c:set var="selectedClass" value=""/>
     </c:otherwise>
 </c:choose>
-<c:choose>
-    <c:when test="${settings.mute == false}">
-        <c:set var="playSoundChecked" value="checked"/>
-    </c:when>
-    <c:otherwise>
-        <c:set var="playSoundChecked" value=""/>
-    </c:otherwise>
-</c:choose>
 
 <c:choose>
     <c:when test="${settings.chatEnabled}">
@@ -76,17 +68,12 @@
                     <liferay-ui:message key="panel-settings-title"/>
                 </div>
             </div>
-            <ul class="lfr-component settings">
-                <li>
-                    <label for="limsPlaySoundCheckbox" class="switch">
-                        <input ${playSoundChecked} id="limsPlaySoundCheckbox"
-                                                   class="play-sound-checkbox"
-                                                   type="checkbox"/>
-                        <span></span>
-                    </label>
-                    <liferay-ui:message key="panel-settings-play-sound-label"/>
-                </li>
-            </ul>
+            <%-- USER SETTINGS --%>
+            <div class="user-settings">
+                <ul class="lfr-component settings">
+                    <%@ include file="/WEB-INF/jspf/settings/play-sound.jspf" %>
+                </ul>
+            </div>
 
             <%-- ADMIN AREA --%>
             <c:if test="${isAdmin}">

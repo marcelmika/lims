@@ -50,6 +50,8 @@ public class Environment {
     // Environment properties
     private static BuddyListStrategy buddyListStrategy;
     private static BuddyListSocialRelation[] buddyListSocialRelations;
+    private static Boolean buddyListIgnoreDefaultUser;
+    private static Boolean buddyListIgnoreDeactivatedUser;
 
 
     /**
@@ -74,11 +76,14 @@ public class Environment {
         if (!isSetup) {
             // Log
             if (log.isDebugEnabled()) {
-                log.info("Settings the environment");
+                log.debug("Settings the environment");
             }
 
+            // Set the whole environment
             setBuddyListStrategy(preferences);
             setBuddyListSocialRelations(preferences);
+            setBuddyListIgnoreDefaultUser(preferences);
+            setBuddyListIgnoreDeactivatedUser(preferences);
 
             // Setup can be done just once at the beginning
             isSetup = true;
@@ -478,7 +483,34 @@ public class Environment {
      * @return boolean
      */
     public static boolean getBuddyListIgnoreDefaultUser() {
-        return PortletPropertiesValues.BUDDY_LIST_IGNORE_DEFAULT_USER;
+        return buddyListIgnoreDefaultUser;
+    }
+
+    /**
+     * Sets the buddy list ignore default user property
+     *
+     * @param preferences PortletPreferences
+     */
+    public static void setBuddyListIgnoreDefaultUser(PortletPreferences preferences) {
+        // Get the properties source
+        PropertiesSource source = getPropertiesSource();
+
+        boolean ignoreDefaultUser;
+
+        // Preferences
+        if (source == PropertiesSource.PREFERENCES) {
+            // Take the value from preferences
+            ignoreDefaultUser = Boolean.parseBoolean(preferences.getValue(
+                    PortletPropertiesKeys.BUDDY_LIST_IGNORE_DEFAULT_USER,
+                    String.valueOf(PortletPropertiesValues.BUDDY_LIST_IGNORE_DEFAULT_USER)
+            ));
+        }
+        // Properties
+        else {
+            ignoreDefaultUser = PortletPropertiesValues.BUDDY_LIST_IGNORE_DEFAULT_USER;
+        }
+
+        buddyListIgnoreDefaultUser = ignoreDefaultUser;
     }
 
     /**
@@ -488,7 +520,34 @@ public class Environment {
      * @return boolean
      */
     public static boolean getBuddyListIgnoreDeactivatedUser() {
-        return PortletPropertiesValues.BUDDY_LIST_IGNORE_DEACTIVATED_USER;
+        return buddyListIgnoreDeactivatedUser;
+    }
+
+    /**
+     * Sets the buddy list ignore deactivated user property
+     *
+     * @param preferences PortletPreferences
+     */
+    public static void setBuddyListIgnoreDeactivatedUser(PortletPreferences preferences) {
+        // Get the properties source
+        PropertiesSource source = getPropertiesSource();
+
+        boolean ignoreDeactivatedUser;
+
+        // Preferences
+        if (source == PropertiesSource.PREFERENCES) {
+            // Take the value from preferences
+            ignoreDeactivatedUser = Boolean.parseBoolean(preferences.getValue(
+                    PortletPropertiesKeys.BUDDY_LIST_IGNORE_DEACTIVATED_USER,
+                    String.valueOf(PortletPropertiesValues.BUDDY_LIST_IGNORE_DEACTIVATED_USER)
+            ));
+        }
+        // Properties
+        else {
+            ignoreDeactivatedUser = PortletPropertiesValues.BUDDY_LIST_IGNORE_DEACTIVATED_USER;
+        }
+
+        buddyListIgnoreDeactivatedUser = ignoreDeactivatedUser;
     }
 
     /**

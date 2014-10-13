@@ -128,7 +128,6 @@ public class SettingsPersistenceServiceImpl implements SettingsPersistenceServic
                     event.getBuddyId()
             );
             // Set new values
-            // TODO: should contain check for null values
             settings.setMute(details.isMute());
             settings.setAdminAreaOpened(details.isAdminAreaOpened());
             // Save

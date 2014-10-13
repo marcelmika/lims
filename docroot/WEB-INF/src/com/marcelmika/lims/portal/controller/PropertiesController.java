@@ -126,6 +126,16 @@ public class PropertiesController {
         if (properties.getBuddyListSocialRelations() != null) {
             updateBuddyListSocialRelations(preferences, properties);
         }
+
+        // Buddy list ignore default user
+        if (properties.getBuddyListIgnoreDefaultUser() != null) {
+            updateBuddyListDefaultUser(preferences, properties);
+        }
+
+        // Buddy list ignore deactivated user
+        if (properties.getBuddyListIgnoreDeactivatedUser() != null) {
+            updateBuddyListDeactivatedUser(preferences, properties);
+        }
     }
 
     /**
@@ -186,5 +196,48 @@ public class PropertiesController {
         // Save in environment
         Environment.setBuddyListSocialRelations(preferences);
     }
+
+    /**
+     * Updates the buddy list default user property
+     *
+     * @param preferences PortletPreferences
+     * @param properties  Properties
+     * @throws Exception
+     */
+    private void updateBuddyListDefaultUser(PortletPreferences preferences, Properties properties) throws Exception {
+
+        // Set the value in portlet preferences
+        preferences.setValue(
+                PortletPropertiesKeys.BUDDY_LIST_IGNORE_DEFAULT_USER,
+                String.valueOf(properties.getBuddyListIgnoreDefaultUser())
+        );
+        // Persist
+        preferences.store();
+
+        // Save in Environment
+        Environment.setBuddyListIgnoreDefaultUser(preferences);
+    }
+
+    /**
+     * Updates the buddy list deactivated user property
+     *
+     * @param preferences PortletPreferences
+     * @param properties  Properties
+     * @throws Exception
+     */
+    private void updateBuddyListDeactivatedUser(PortletPreferences preferences, Properties properties) throws Exception {
+
+        // Set the value in portlet preferences
+        preferences.setValue(
+                PortletPropertiesKeys.BUDDY_LIST_IGNORE_DEACTIVATED_USER,
+                String.valueOf(properties.getBuddyListIgnoreDeactivatedUser())
+        );
+        // Persist
+        preferences.store();
+
+        // Save in Environment
+        Environment.setBuddyListIgnoreDeactivatedUser(preferences);
+    }
+
 }
 

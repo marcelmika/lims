@@ -36,18 +36,16 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
         initializer: function () {
             // This needs to be called in each view controller
             this.setup(this.get('container'), this.get('controllerId'));
-            // Check if the checkboxes need to support IE
-            this._supportCheckboxes();
         },
 
         /**
          * Panel Did Load is called when the panel is attached to the controller
          */
         onPanelDidLoad: function () {
-            // Reads current settings from rendered settings view
-            this._bindSettings();
-            // Events
+            // Attach Events
             this._attachEvents();
+            // Bind settings
+            this._bindSettings();
         },
 
         /**
@@ -57,60 +55,29 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
          */
         _attachEvents: function () {
             // Vars
-            var soundCheckbox = this.get('soundCheckbox'),
-                adminProperties = this.get('adminProperties');
+            var adminProperties = this.get('adminProperties');
 
             // Local events
-            soundCheckbox.on('click', this._onSoundCheckboxUpdated, this);
-            adminProperties.on('propertiesOpened', this._onAdminPropertiesOpened, this);
-            adminProperties.on('propertiesClosed', this._onAdminPropertiesClosed, this);
-        },
-
-        /**
-         * Takes all checkboxes and checks if they are supported
-         *
-         * @private
-         */
-        _supportCheckboxes: function () {
-            // Vars
-            var checkboxes = this.get('checkboxes');
-
-            // Remove switch classes from checkboxes if the portlet
-            // is in the IE support mode
-            // TODO: move to checkbox element view
-            if (this.hasIESupport()) {
-                checkboxes.each(function (checkbox) {
-                    checkbox.ancestor().removeClass('switch');
-                });
+            if (adminProperties) {
+                adminProperties.on('propertiesOpened', this._onAdminPropertiesOpened, this);
+                adminProperties.on('propertiesClosed', this._onAdminPropertiesClosed, this);
             }
         },
 
         /**
-         * Reads settings from rendered dom
+         * Binds settings from rendered HTML
          *
          * @private
          */
         _bindSettings: function () {
             // Vars
             var model = this.get('model'),
-                adminProperties = this.get('adminProperties'),
-                isMute = this.get('soundCheckbox').get('checked') ? false : true;
+                adminProperties = this.get('adminProperties');
 
-            // Set to model
-            model.set('isMute', isMute);
-            model.set('isAdminAreaOpened', adminProperties.isOpened());
-        },
-
-        /**
-         * Sound checkbox changed
-         *
-         * @private
-         */
-        _onSoundCheckboxUpdated: function () {
-            var model = this.get('model'),
-                isMute = this.get('soundCheckbox').get('checked') ? false : true;
-            // Update model
-            model.set('isMute', isMute).save();
+            // Set settings
+            if (adminProperties) {
+                model.set('isAdminAreaOpened', adminProperties.isOpened());
+            }
         },
 
         /**
@@ -126,8 +93,6 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
             model.set('isAdminAreaOpened', true);
             // And save it
             model.save();
-
-            console.log('opened');
         },
 
         /**
@@ -143,16 +108,16 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
             model.set('isAdminAreaOpened', false);
             // And save it
             model.save();
-
-            console.log('closed');
         }
 
     }, {
 
-        // Specify attributes and static properties for your View here.
+        // Add custom model attributes here. These attributes will contain your
+        // model's data. See the docs for Y.Attribute to learn more about defining
+        // attributes.
+
         ATTRS: {
 
-            // Id of the controller
             /**
              * Id of the controller
              *
@@ -181,14 +146,19 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
             },
 
             /**
-             * Holds a view related to the admin properties
+             * Holds a view related to the admin properties. If the user
+             * is not an admin null is returned.
              *
-             * {Y.LIMS.View.PropertiesView}
+             * {Y.LIMS.View.PropertiesView|null}
              */
             adminProperties: {
                 valueFn: function () {
                     // Vars
                     var container = this.get('container').one('.admin-area');
+
+                    if (!container) {
+                        return null;
+                    }
 
                     return new Y.LIMS.View.PropertiesView({
                         container: container
@@ -197,25 +167,20 @@ Y.LIMS.Controller.SettingsViewController = Y.Base.create('settingsViewController
             },
 
             /**
-             * Holds all checkboxes
+             * Holds a view related to the user settings
              *
-             * []
+             * {Y.LIMS.View.SettingsView}
              */
-            checkboxes: {
-                getter: function () {
-                    return this.get('container').all('input[type=checkbox]');
-                }
-            },
-
-
-            /**
-             * Sound check box node
-             *
-             * {Node}
-             */
-            soundCheckbox: {
+            userSettings: {
                 valueFn: function () {
-                    return this.get('container').one(".play-sound-checkbox");
+                    // Vars
+                    var container = this.get('container').one('.user-settings'),
+                        model = this.get('model');
+
+                    return new Y.LIMS.View.SettingsView({
+                        container: container,
+                        model: model
+                    });
                 }
             }
         }
