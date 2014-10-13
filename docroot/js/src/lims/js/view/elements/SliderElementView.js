@@ -54,6 +54,58 @@ Y.LIMS.View.SliderElementView = Y.Base.create('sliderElementView', Y.View, [], {
     },
 
     /**
+     * Returns current value of the slider
+     *
+     * @return {Number}
+     */
+    getValue: function () {
+        return this.get('value');
+    },
+
+    /**
+     * Sets the slider value
+     *
+     * @param value {Number}
+     */
+    setValue: function (value) {
+        // Vars
+        var slider = this.get('slider');
+
+        // Remember the value
+        this.set('value', value);
+        // Update slider
+        slider.set('value', value);
+    },
+
+    /**
+     * Enables view
+     */
+    enable: function () {
+        // Vars
+        var slider = this.get('slider'),
+            container = this.get('container');
+
+        // Enable the slider
+        slider.enable();
+        // Set the opacity to max
+        container.setStyle('opacity', 1);
+    },
+
+    /**
+     * Disables view
+     */
+    disable: function () {
+        // Vars
+        var slider = this.get('slider'),
+            container = this.get('container');
+
+        // Disable the slider
+        slider.disable();
+        // Dim the slider
+        container.setStyle('opacity', 0.5);
+    },
+
+    /**
      * Attach events to elements
      *
      * @private
@@ -63,7 +115,7 @@ Y.LIMS.View.SliderElementView = Y.Base.create('sliderElementView', Y.View, [], {
         var slider = this.get('slider');
 
         // Local events
-        slider.after("valueChange", this._onSliderValueChange, this);
+        slider.after('valueChange', this._onSliderValueChange, this);
     },
 
     /**
@@ -74,10 +126,39 @@ Y.LIMS.View.SliderElementView = Y.Base.create('sliderElementView', Y.View, [], {
      */
     _onSliderValueChange: function (event) {
         // Vars
-        var valueContainer = this.get('valueContainer');
+        var valueContainer = this.get('valueContainer'),
+            timer = this.get('timer'),
+            timerDelayInterval = this.get('timerDelayInterval'),
+            value = this.get('value'),
+            instance = this;
 
-        console.log(event);
 
+        // There is no need to do anything since the values are the same
+        if (value === event.newVal) {
+            return;
+        }
+
+        // Clear out the timer first. Since we don't want to send many requests to
+        // the server whenever the value changes we just simply wait for a short interval
+        clearTimeout(timer);
+
+        // Set a new timer
+        this.set('timer', setTimeout(function () {
+
+            // Remember the previous value
+            instance.set('preValue', value);
+            // Set the new one
+            instance.set('value', event.newVal);
+
+            // Fire the event
+            instance.fire('sliderUpdate', {
+                preValue: instance.get('preValue'),
+                value: instance.get('value')
+            }, instance);
+
+        }, timerDelayInterval));
+
+        // Update the visible value
         valueContainer.set('innerHTML', event.newVal);
     }
 
@@ -120,7 +201,7 @@ Y.LIMS.View.SliderElementView = Y.Base.create('sliderElementView', Y.View, [], {
                     min: min,
                     max: max,
                     value: value,
-                    length: '200px',
+                    length: '313px',
                     thumbUrl: '/lims-portlet/images/slider-thumb@2x.png'
                 });
             }
@@ -147,10 +228,59 @@ Y.LIMS.View.SliderElementView = Y.Base.create('sliderElementView', Y.View, [], {
         /**
          * Starting value
          *
-         * {integer}
+         * {Number}
          */
         value: {
-            value: 5 // default
+            value: 5, // default
+
+            /**
+             * Setter
+             *
+             * @param value
+             */
+            setter: function (value) {
+                return parseInt(value, 10);
+            }
+        },
+
+        /**
+         * Previously chosen value
+         *
+         * {Number}
+         */
+        preValue: {
+            valueFn: function () {
+                return this.get('value'); // Starting value is a default
+            },
+
+            /**
+             * Setter
+             *
+             * @param value
+             */
+            setter: function (value) {
+                return parseInt(value, 10);
+            }
+        },
+
+        /**
+         * Timer used for the delayed event fire
+         *
+         * {timer}
+         */
+        timer: {
+            value: null // to be set
+        },
+
+        /**
+         * Delayed interval. Slider updated event is fired after the delay.
+         * This is useful because we don't want to overwhelm the server with many
+         * request.
+         *
+         * {integer}
+         */
+        timerDelayInterval: {
+            value: 500 // half a second
         }
     }
 

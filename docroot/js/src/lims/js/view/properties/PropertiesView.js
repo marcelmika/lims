@@ -70,7 +70,10 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
             buddyListStrategy = this.get('buddyListStrategy'),
             buddyListSocialRelations = this.get('buddyListSocialRelations'),
             buddyListIgnoreDefaultUser = this.get('buddyListIgnoreDefaultUser'),
-            buddyListIgnoreDeactivatedUser = this.get('buddyListIgnoreDeactivatedUser');
+            buddyListIgnoreDeactivatedUser = this.get('buddyListIgnoreDeactivatedUser'),
+            buddyListMaxBuddies = this.get('buddyListMaxBuddies'),
+            buddyListMaxSearch = this.get('buddyListMaxSearch'),
+            conversationListMaxMessages = this.get('conversationListMaxMessages');
 
         // Local events
         openButton.on('click', this._onOpenButtonClick, this);
@@ -78,6 +81,9 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
         buddyListSocialRelations.on('choiceClick', this._onBuddyListSocialRelationsSelected, this);
         buddyListIgnoreDefaultUser.on('switchClick', this._onBuddyListIgnoreDefaultUserClick, this);
         buddyListIgnoreDeactivatedUser.on('switchClick', this._onBuddyListIgnoreDeactivatedUserClick, this);
+        buddyListMaxBuddies.on('sliderUpdate', this._onBuddyListMaxBuddiesUpdate, this);
+        buddyListMaxSearch.on('sliderUpdate', this._onBuddyListMaxSearchUpdate, this);
+        conversationListMaxMessages.on('sliderUpdate', this._onConversationListMaxMessagesUpdate, this);
     },
 
     /**
@@ -220,8 +226,104 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
             // Re-enable the view so the user can interact with it again
             switchView.enable();
         });
-    }
+    },
 
+    /**
+     * Called when the user updates buddy list max buddies property
+     *
+     * @param event
+     * @private
+     */
+    _onBuddyListMaxBuddiesUpdate: function (event) {
+        // Vars
+        var buddyListMaxBuddies = this.get('buddyListMaxBuddies'),
+            preValue = event.preValue,          // Previously selected value
+            value = event.value,                // Current value
+            model;
+
+        // Prepare the model
+        model = new Y.LIMS.Model.PropertiesModel({
+            buddyListMaxBuddies: value
+        });
+
+        // Disable view
+        buddyListMaxBuddies.disable();
+
+        // Save the model
+        model.save(function (err) {
+            if (err) {
+                // Return everything to the previous state
+                buddyListMaxBuddies.setValue(preValue);
+            }
+            // Re-enable the view so the user can interact with it again
+            buddyListMaxBuddies.enable();
+        });
+    },
+
+    /**
+     * Called when the user updates buddy list max search property
+     *
+     * @param event
+     * @private
+     */
+    _onBuddyListMaxSearchUpdate: function (event) {
+        // Vars
+        var buddyListMaxSearch = this.get('buddyListMaxSearch'),
+            preValue = event.preValue,      // Previously selected value
+            value = event.value,            // Current value
+            model;
+
+        // Prepare the model
+        model = new Y.LIMS.Model.PropertiesModel({
+            buddyListMaxSearch: value
+        });
+
+        // Disable view
+        buddyListMaxSearch.disable();
+
+        // Save the model
+        model.save(function (err) {
+            if (err) {
+                // Return everything to the previous state
+                buddyListMaxSearch.setValue(preValue);
+            }
+            // Re-enable the view so the user can interact with it again
+            buddyListMaxSearch.enable();
+        });
+    },
+
+
+    /**
+     * Called when the user updates conversation list max messages property
+     *
+     * @param event
+     * @private
+     */
+    _onConversationListMaxMessagesUpdate: function (event) {
+        // Vars
+        var conversationListMaxMessages = this.get('conversationListMaxMessages'),
+            preValue = event.preValue,      // Previously selected value
+            value = event.value,      // Current value
+            model;
+
+        // Prepare the model
+        model = new Y.LIMS.Model.PropertiesModel({
+            conversationListMaxMessages: value
+        });
+
+        // Disable view
+        conversationListMaxMessages.disable();
+
+        // Save the model
+        model.save(function (err) {
+            if (err) {
+                // Return everything to the previous state
+                conversationListMaxMessages.setValue(preValue);
+            }
+            // Re-enable the view so the user can interact with it again
+            conversationListMaxMessages.enable();
+        });
+    }
 
 }, {
 
@@ -440,7 +542,7 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
                     valueContainer: valueContainer,
                     min: 10,
                     max: 500,
-                    value: 200 // TODO: Parse
+                    value: valueContainer.get('innerHTML')
                 });
             }
         },
@@ -461,7 +563,7 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
                     valueContainer: valueContainer,
                     min: 5,
                     max: 50,
-                    value: 10 // TODO: Parse
+                    value: valueContainer.get('innerHTML')
                 });
             }
         },
@@ -482,7 +584,7 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
                     valueContainer: valueContainer,
                     min: 10,
                     max: 500,
-                    value: 100 // TODO: Parse
+                    value: valueContainer.get('innerHTML')
                 });
             }
         },

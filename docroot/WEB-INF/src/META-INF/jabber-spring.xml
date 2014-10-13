@@ -34,7 +34,13 @@
     </bean>
 
     <bean id="com.marcelmika.lims.portal.controller.PropertiesController"
-          class="com.marcelmika.lims.portal.controller.PropertiesController"/>
+          class="com.marcelmika.lims.portal.controller.PropertiesController">
+        <constructor-arg index="0" ref="com.marcelmika.lims.portal.properties.Preferences"/>
+    </bean>
+
+    <!-- Preferences -->
+    <bean id="com.marcelmika.lims.portal.properties.Preferences"
+          class="com.marcelmika.lims.portal.properties.Preferences"/>
 
     <!-- Portlet Processor -->
 

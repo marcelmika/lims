@@ -52,6 +52,9 @@ public class Environment {
     private static BuddyListSocialRelation[] buddyListSocialRelations;
     private static Boolean buddyListIgnoreDefaultUser;
     private static Boolean buddyListIgnoreDeactivatedUser;
+    private static Integer buddyListMaxBuddies;
+    private static Integer buddyListMaxSearch;
+    private static Integer conversationListMaxMessages;
 
 
     /**
@@ -84,6 +87,9 @@ public class Environment {
             setBuddyListSocialRelations(preferences);
             setBuddyListIgnoreDefaultUser(preferences);
             setBuddyListIgnoreDeactivatedUser(preferences);
+            setBuddyListMaxBuddies(preferences);
+            setBuddyListMaxSearch(preferences);
+            setConversationListMaxMessages(preferences);
 
             // Setup can be done just once at the beginning
             isSetup = true;
@@ -444,7 +450,30 @@ public class Environment {
      * @return int
      */
     public static int getBuddyListMaxBuddies() {
-        return PortletPropertiesValues.BUDDY_LIST_MAX_BUDDIES;
+        return buddyListMaxBuddies;
+    }
+
+    /**
+     * Sets the buddy list max buddies property
+     *
+     * @param preferences PortletPreferences
+     */
+    public static void setBuddyListMaxBuddies(PortletPreferences preferences) {
+        // Get the properties source
+        PropertiesSource source = getPropertiesSource();
+
+        // Preferences
+        if (source == PropertiesSource.PREFERENCES) {
+            // Take the value from preferences
+            buddyListMaxBuddies = Integer.parseInt(preferences.getValue(
+                    PortletPropertiesKeys.BUDDY_LIST_MAX_BUDDIES,
+                    String.valueOf(PortletPropertiesValues.BUDDY_LIST_MAX_BUDDIES)
+            ));
+        }
+        // Properties
+        else {
+            buddyListMaxBuddies = PortletPropertiesValues.BUDDY_LIST_MAX_BUDDIES;
+        }
     }
 
     /**
@@ -453,7 +482,30 @@ public class Environment {
      * @return int
      */
     public static int getBuddyListMaxSearch() {
-        return PortletPropertiesValues.BUDDY_LIST_MAX_SEARCH;
+        return buddyListMaxSearch;
+    }
+
+    /**
+     * Sets the buddy list max search property
+     *
+     * @param preferences PortletPreferences
+     */
+    public static void setBuddyListMaxSearch(PortletPreferences preferences) {
+        // Get the properties source
+        PropertiesSource source = getPropertiesSource();
+
+        // Preferences
+        if (source == PropertiesSource.PREFERENCES) {
+            // Take the value from preferences
+            buddyListMaxSearch = Integer.parseInt(preferences.getValue(
+                    PortletPropertiesKeys.BUDDY_LIST_MAX_SEARCH,
+                    String.valueOf(PortletPropertiesValues.BUDDY_LIST_MAX_SEARCH)
+            ));
+        }
+        // Properties
+        else {
+            buddyListMaxSearch = PortletPropertiesValues.BUDDY_LIST_MAX_SEARCH;
+        }
     }
 
     /**
@@ -495,22 +547,18 @@ public class Environment {
         // Get the properties source
         PropertiesSource source = getPropertiesSource();
 
-        boolean ignoreDefaultUser;
-
         // Preferences
         if (source == PropertiesSource.PREFERENCES) {
             // Take the value from preferences
-            ignoreDefaultUser = Boolean.parseBoolean(preferences.getValue(
+            buddyListIgnoreDefaultUser = Boolean.parseBoolean(preferences.getValue(
                     PortletPropertiesKeys.BUDDY_LIST_IGNORE_DEFAULT_USER,
                     String.valueOf(PortletPropertiesValues.BUDDY_LIST_IGNORE_DEFAULT_USER)
             ));
         }
         // Properties
         else {
-            ignoreDefaultUser = PortletPropertiesValues.BUDDY_LIST_IGNORE_DEFAULT_USER;
+            buddyListIgnoreDefaultUser = PortletPropertiesValues.BUDDY_LIST_IGNORE_DEFAULT_USER;
         }
-
-        buddyListIgnoreDefaultUser = ignoreDefaultUser;
     }
 
     /**
@@ -532,22 +580,18 @@ public class Environment {
         // Get the properties source
         PropertiesSource source = getPropertiesSource();
 
-        boolean ignoreDeactivatedUser;
-
         // Preferences
         if (source == PropertiesSource.PREFERENCES) {
             // Take the value from preferences
-            ignoreDeactivatedUser = Boolean.parseBoolean(preferences.getValue(
+            buddyListIgnoreDeactivatedUser = Boolean.parseBoolean(preferences.getValue(
                     PortletPropertiesKeys.BUDDY_LIST_IGNORE_DEACTIVATED_USER,
                     String.valueOf(PortletPropertiesValues.BUDDY_LIST_IGNORE_DEACTIVATED_USER)
             ));
         }
         // Properties
         else {
-            ignoreDeactivatedUser = PortletPropertiesValues.BUDDY_LIST_IGNORE_DEACTIVATED_USER;
+            buddyListIgnoreDeactivatedUser = PortletPropertiesValues.BUDDY_LIST_IGNORE_DEACTIVATED_USER;
         }
-
-        buddyListIgnoreDeactivatedUser = ignoreDeactivatedUser;
     }
 
     /**
@@ -556,7 +600,30 @@ public class Environment {
      * @return int
      */
     public static int getConversationListMaxMessages() {
-        return PortletPropertiesValues.CONVERSATION_LIST_MAX_MESSAGES;
+        return conversationListMaxMessages;
+    }
+
+    /**
+     * Sets the conversation list max messages property
+     *
+     * @param preferences PortletPreferences
+     */
+    public static void setConversationListMaxMessages(PortletPreferences preferences) {
+        // Get the properties source
+        PropertiesSource source = getPropertiesSource();
+
+        // Preferences
+        if (source == PropertiesSource.PREFERENCES) {
+            // Take the value from preferences
+            conversationListMaxMessages = Integer.parseInt(preferences.getValue(
+                    PortletPropertiesKeys.CONVERSATION_LIST_MAX_MESSAGES,
+                    String.valueOf(PortletPropertiesValues.CONVERSATION_LIST_MAX_MESSAGES)
+            ));
+        }
+        // Properties
+        else {
+            conversationListMaxMessages = PortletPropertiesValues.CONVERSATION_LIST_MAX_MESSAGES;
+        }
     }
 
     /**
