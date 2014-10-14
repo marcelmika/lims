@@ -28,10 +28,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.util.bridges.mvc.MVCPortlet;
-import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.events.conversation.GetOpenedConversationsRequestEvent;
 import com.marcelmika.lims.api.events.conversation.GetOpenedConversationsResponseEvent;
 import com.marcelmika.lims.api.events.settings.ReadSettingsRequestEvent;
@@ -47,6 +45,8 @@ import com.marcelmika.lims.portal.domain.Settings;
 import com.marcelmika.lims.portal.http.HttpStatus;
 import com.marcelmika.lims.portal.processor.PortletProcessor;
 import com.marcelmika.lims.portal.processor.PortletProcessorUtil;
+import com.marcelmika.lims.portal.properties.PropertiesManager;
+import com.marcelmika.lims.portal.properties.PropertiesManagerUtil;
 
 import javax.portlet.*;
 import java.io.IOException;
@@ -68,6 +68,9 @@ public class LIMSPortlet extends MVCPortlet {
     // Service Dependencies
     SettingsCoreService settingsCoreService = SettingsCoreServiceUtil.getSettingsCoreService();
     ConversationCoreService conversationCoreService = ConversationCoreServiceUtil.getConversationCoreService();
+
+    // Properties Dependencies
+    PropertiesManager propertiesManager = PropertiesManagerUtil.getPropertiesManager();
 
     // Constants
     private static final String VIEW_JSP_PATH = "/view.jsp"; // Path to the view.jsp
@@ -104,7 +107,7 @@ public class LIMSPortlet extends MVCPortlet {
                        RenderResponse renderResponse) throws PortletException, IOException {
 
         // Environment needs to be set up at the beginning of the request
-        Environment.setup(renderRequest.getPreferences());
+        propertiesManager.setup(renderRequest.getPreferences());
 
         // Check the availability of browser
         boolean isSupportedBrowser = BrowserDetector.isSupportedBrowser(renderRequest);
@@ -145,7 +148,7 @@ public class LIMSPortlet extends MVCPortlet {
         }
 
         // Environment needs to be set up at the beginning of the request
-        Environment.setup(request.getPreferences());
+        propertiesManager.setup(request.getPreferences());
 
         // Response content type is JSON
         response.setContentType(ContentTypes.APPLICATION_JSON);

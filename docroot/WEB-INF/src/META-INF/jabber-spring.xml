@@ -35,12 +35,18 @@
 
     <bean id="com.marcelmika.lims.portal.controller.PropertiesController"
           class="com.marcelmika.lims.portal.controller.PropertiesController">
-        <constructor-arg index="0" ref="com.marcelmika.lims.portal.properties.PreferencesManager"/>
+        <constructor-arg index="0" ref="com.marcelmika.lims.portal.properties.PropertiesManager"/>
     </bean>
 
-    <!-- Preferences -->
-    <bean id="com.marcelmika.lims.portal.properties.PreferencesManager"
-          class="com.marcelmika.lims.portal.properties.PreferencesManager"/>
+    <!-- Properties -->
+
+    <bean id="com.marcelmika.lims.portal.properties.PropertiesManager"
+          class="com.marcelmika.lims.portal.properties.PropertiesManagerImpl"/>
+
+    <bean id="com.marcelmika.lims.portal.properties.PropertiesManagerUtil"
+          class="com.marcelmika.lims.portal.properties.PropertiesManagerUtil">
+        <property name="propertiesManager" ref="com.marcelmika.lims.portal.properties.PropertiesManager"/>
+    </bean>
 
     <!-- Portlet Processor -->
 

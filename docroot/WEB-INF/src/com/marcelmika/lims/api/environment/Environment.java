@@ -24,16 +24,9 @@
 
 package com.marcelmika.lims.api.environment;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.marcelmika.lims.portal.properties.PortletPropertiesKeys;
-import com.marcelmika.lims.portal.properties.PortletPropertiesValues;
-
-import javax.portlet.PortletPreferences;
-import java.util.HashSet;
-import java.util.Set;
-
 /**
+ * Environment contains all settings and properties related to the portlet
+ *
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
  * Date: 8/3/14
@@ -41,13 +34,9 @@ import java.util.Set;
  */
 public class Environment {
 
-    // Log
-    private static Log log = LogFactoryUtil.getLog(Environment.class);
-
-    // Set to true if the environment was already set up
-    private static boolean isSetup = false;
-
     // Environment properties
+    private static PropertiesSource propertiesSource;
+    private static BuddyListSource buddyListSource;
     private static BuddyListStrategy buddyListStrategy;
     private static BuddyListSocialRelation[] buddyListSocialRelations;
     private static Boolean buddyListIgnoreDefaultUser;
@@ -57,48 +46,18 @@ public class Environment {
     private static Integer conversationListMaxMessages;
     private static String[] buddyListSiteExcludes;
     private static String[] buddyListGroupExcludes;
-
-
-    /**
-     * Sets up all portlet preferences. It doesn't matter how many times the method is called.
-     * The setup will be called just once.
-     *
-     * @param preferences PortletPreferences
-     */
-    public static void setup(PortletPreferences preferences) {
-
-        // Preferences cannot be null
-        if (preferences == null) {
-            // Log
-            if (log.isErrorEnabled()) {
-                log.error("Cannot load preferences");
-            }
-            // End here
-            return;
-        }
-
-        // Setup just once, there is no need to set it on every call of the setup method
-        if (!isSetup) {
-            // Log
-            if (log.isDebugEnabled()) {
-                log.debug("Settings the environment");
-            }
-
-            // Set the whole environment
-            setBuddyListStrategy(preferences);
-            setBuddyListSocialRelations(preferences);
-            setBuddyListIgnoreDefaultUser(preferences);
-            setBuddyListIgnoreDeactivatedUser(preferences);
-            setBuddyListMaxBuddies(preferences);
-            setBuddyListMaxSearch(preferences);
-            setConversationListMaxMessages(preferences);
-            setBuddyListSiteExcludes(preferences);
-            setBuddyListGroupExcludes(preferences);
-
-            // Setup can be done just once at the beginning
-            isSetup = true;
-        }
-    }
+    private static Boolean jabberEnabled;
+    private static String jabberHost;
+    private static Integer jabberPort;
+    private static String jabberServiceName;
+    private static String jabberResource;
+    private static Boolean jabberSock5ProxyEnabled;
+    private static Integer jabberSock5ProxyPort;
+    private static Boolean jabberImportUserEnabled;
+    private static Boolean saslPlainEnabled;
+    private static String saslPlainAuthId;
+    private static String saslPlainPassword;
+    private static Boolean errorModeEnabled;
 
     /**
      * Enum for properties source
@@ -121,26 +80,16 @@ public class Environment {
      * @return PropertiesSource
      */
     public static PropertiesSource getPropertiesSource() {
-        String value = PortletPropertiesValues.PROPERTIES_SOURCE;
+        return propertiesSource;
+    }
 
-        // Preferences
-        if (value.equals("preferences")) {
-            return PropertiesSource.PREFERENCES;
-        }
-        // Properties
-        else if (value.equals("properties")) {
-            return PropertiesSource.PROPERTIES;
-        }
-        // Unknown value
-        else {
-            log.error(String.format(
-                    "Unknown properties source %s. Valid values are \"preferences\" or \"properties\". Since no valid " +
-                            "property was provided \"preferences\" was chosen as a default. The value can be " +
-                            "set in portlet-ext.properties file related to the LIMS portlet.", value
-            ));
-            // Fallback to default
-            return PropertiesSource.PREFERENCES;
-        }
+    /**
+     * Set properties source
+     *
+     * @param propertiesSource PropertiesSource
+     */
+    public static void setPropertiesSource(PropertiesSource propertiesSource) {
+        Environment.propertiesSource = propertiesSource;
     }
 
     /**
@@ -164,38 +113,47 @@ public class Environment {
      * @return BuddyListSource
      */
     public static BuddyListSource getBuddyListSource() {
-        String value = PortletPropertiesValues.BUDDY_LIST_SOURCE;
+        return buddyListSource;
+    }
 
-        // Liferay
-        if (value.equals("liferay")) {
-            return BuddyListSource.LIFERAY;
-        }
-        // Jabber
-        else if (value.equals("jabber")) {
-            return BuddyListSource.JABBER;
-        }
-        // Unknown value
-        else {
-            log.error(String.format(
-                    "Unknown buddy list source: %s. Valid values are \"liferay\" or \"jabber\". Since no valid " +
-                            "property was provided \"liferay\" was chosen as a default. The value can be " +
-                            "set in portlet-ext.properties file related to the LIMS portlet.", value
-            ));
-
-            // Fallback to default
-            return BuddyListSource.LIFERAY;
-        }
+    /**
+     * Sets buddy list source
+     *
+     * @param buddyListSource BuddyListSource
+     */
+    public static void setBuddyListSource(BuddyListSource buddyListSource) {
+        Environment.buddyListSource = buddyListSource;
     }
 
     /**
      * Enum for buddy list strategy
      */
     public enum BuddyListStrategy {
+        /**
+         * All buddies in the system
+         */
         ALL("all"),
+
+        /**
+         * Buddies related to the sites where the users participates
+         */
         SITES("sites"),
+
+        /**
+         * Buddies listed based on the social relations
+         */
         SOCIAL("social"),
+
+        /**
+         * Merge of the sites and social list strategies
+         */
         SITES_AND_SOCIAL("sites,social"),
+
+        /**
+         * Buddies shown based on the user groups where the user belongs
+         */
         USER_GROUPS("groups");
+
 
         // String description of relation type
         private String description;
@@ -224,59 +182,12 @@ public class Environment {
     }
 
     /**
-     * Sets the buddy list strategy
+     * Sets the buddy list strategy property
      *
-     * @param preferences PortletPreferences
+     * @param buddyListStrategy BuddyListStrategy
      */
-    public static void setBuddyListStrategy(PortletPreferences preferences) {
-        // Get the property source
-        PropertiesSource source = getPropertiesSource();
-
-        String value;
-        // Preferences
-        if (source == PropertiesSource.PREFERENCES) {
-            // Take the value from preference. Value from properties is a default.
-            value = preferences.getValue(
-                    PortletPropertiesKeys.BUDDY_LIST_STRATEGY,
-                    PortletPropertiesValues.BUDDY_LIST_STRATEGY
-            );
-        }
-        // Properties
-        else {
-            // Take the value from properties
-            value = PortletPropertiesValues.BUDDY_LIST_STRATEGY;
-        }
-
-        // All buddies in list
-        if (value.equals(BuddyListStrategy.ALL.getDescription())) {
-            buddyListStrategy = BuddyListStrategy.ALL;
-        }
-        // Sites
-        else if (value.equals(BuddyListStrategy.SITES.getDescription())) {
-            buddyListStrategy = BuddyListStrategy.SITES;
-        }
-        // Social
-        else if (value.equals(BuddyListStrategy.SOCIAL.getDescription())) {
-            buddyListStrategy = BuddyListStrategy.SOCIAL;
-        }
-        // Sites and Social
-        else if (value.equals(BuddyListStrategy.SITES_AND_SOCIAL.getDescription())) {
-            buddyListStrategy = BuddyListStrategy.SITES_AND_SOCIAL;
-        }
-        // Groups
-        else if (value.equals(BuddyListStrategy.USER_GROUPS.getDescription())) {
-            buddyListStrategy = BuddyListStrategy.USER_GROUPS;
-        }
-        // Unknown value
-        else {
-            log.error(String.format(
-                    "Unknown buddy list strategy: %s. Valid values are \"all\", \"sites\", \"social\", \"sites," +
-                            "social\". Since no valid property provided \"all\" was chosen as a default. The value " +
-                            "can be set in portlet-ext.properties file related to the LIMS portlet.", value
-            ));
-
-            buddyListStrategy = BuddyListStrategy.ALL;
-        }
+    public static void setBuddyListStrategy(BuddyListStrategy buddyListStrategy) {
+        Environment.buddyListStrategy = buddyListStrategy;
     }
 
     /**
@@ -284,12 +195,36 @@ public class Environment {
      */
     public enum BuddyListSocialRelation {
 
+        /**
+         * Unknown type of relation
+         */
         TYPE_BI_UNKNOWN(0, "Unknown relation"),
+
+        /**
+         * Bi-directional connection
+         */
         TYPE_BI_CONNECTION(12, "Connections"),
+
+        /**
+         * Coworker relation
+         */
         TYPE_BI_COWORKER(1, "Coworkers"),
+
+        /**
+         * Friend relation
+         */
         TYPE_BI_FRIEND(2, "Friends"),
+
+        /**
+         * Romantic partner relations
+         */
         TYPE_BI_ROMANTIC_PARTNER(3, "Romantic Partners"),
+
+        /**
+         * Sibling relation
+         */
         TYPE_BI_SIBLING(4, "Siblings");
+
 
         // Integer code which uniquely describes relation
         private int code;
@@ -361,91 +296,10 @@ public class Environment {
     /**
      * Sets the buddy list allowed social relations
      *
-     * @param preferences PortletPreferences
+     * @param relations BuddyListSocialRelation[]
      */
-    public static void setBuddyListSocialRelations(PortletPreferences preferences) {
-        // Get the properties source
-        PropertiesSource source = getPropertiesSource();
-
-        int[] relationsTypeCodes;
-        // Preferences
-        if (source == PropertiesSource.PREFERENCES) {
-
-            // Take the value from preferences
-            String[] values = preferences.getValues(PortletPropertiesKeys.BUDDY_LIST_ALLOWED_SOCIAL_RELATION_TYPES, null);
-
-            // There is already some values set in preferences
-            if (values != null) {
-                // However, the values are stored as string values so we first need to parse them.
-                // Create new array of integers with the same size as the values gotten from preferences.
-                relationsTypeCodes = new int[values.length];
-
-                // Iterate over relation codes
-                for (int i = 0; i < relationsTypeCodes.length; i++) {
-                    // And parse each code from string to integer
-                    relationsTypeCodes[i] = Integer.parseInt(values[i]);
-                }
-            }
-            // Nothing was set in preferences so take it from properties
-            else {
-                relationsTypeCodes = PortletPropertiesValues.BUDDY_LIST_ALLOWED_SOCIAL_RELATION_TYPES;
-            }
-
-        }
-        // Properties
-        else {
-            relationsTypeCodes = PortletPropertiesValues.BUDDY_LIST_ALLOWED_SOCIAL_RELATION_TYPES;
-        }
-
-        // Create a set which will contain enums that represent relation types
-        Set<BuddyListSocialRelation> relationTypeSet = new HashSet<BuddyListSocialRelation>();
-
-        // Map integer values to relation types
-        for (int value : relationsTypeCodes) {
-            // Connection
-            if (value == BuddyListSocialRelation.TYPE_BI_CONNECTION.getCode()) {
-                relationTypeSet.add(BuddyListSocialRelation.TYPE_BI_CONNECTION);
-            }
-            // Coworker
-            else if (value == BuddyListSocialRelation.TYPE_BI_COWORKER.getCode()) {
-                relationTypeSet.add(BuddyListSocialRelation.TYPE_BI_COWORKER);
-            }
-            // Friend
-            else if (value == BuddyListSocialRelation.TYPE_BI_FRIEND.getCode()) {
-                relationTypeSet.add(BuddyListSocialRelation.TYPE_BI_FRIEND);
-            }
-            // Romantic partner
-            else if (value == BuddyListSocialRelation.TYPE_BI_ROMANTIC_PARTNER.getCode()) {
-                relationTypeSet.add(BuddyListSocialRelation.TYPE_BI_ROMANTIC_PARTNER);
-            }
-            // Sibling
-            else if (value == BuddyListSocialRelation.TYPE_BI_SIBLING.getCode()) {
-                relationTypeSet.add(BuddyListSocialRelation.TYPE_BI_SIBLING);
-            }
-            // Unknown value
-            else {
-                log.error(String.format("Unknown buddy list social relation type: %d. Valid values are \"12\", \"1\"," +
-                        " \"2\", \"3\", \"4\". The value can be set in portlet-ext.properties file related to the " +
-                        "LIMS portlet.", value));
-            }
-        }
-
-        // Nothing was mapped at the end.
-        // This means that no relation was selected or the relation code was wrong.
-        if (relationTypeSet.size() == 0) {
-            // Log error
-            log.error("No buddy list social relation were mapped. This means that either no social relation was " +
-                    "selected or it was wrong. Since the property is required \"12 - " +
-                    "Connections\" was selected as default. The value can be set in portlet-ext.properties file " +
-                    "related to the LIMS portlet.");
-
-            // Connection type is default
-            buddyListSocialRelations = new BuddyListSocialRelation[]{BuddyListSocialRelation.TYPE_BI_CONNECTION};
-        }
-
-
-        // Map set to array
-        buddyListSocialRelations = relationTypeSet.toArray(new BuddyListSocialRelation[relationTypeSet.size()]);
+    public static void setBuddyListSocialRelations(BuddyListSocialRelation[] relations) {
+        Environment.buddyListSocialRelations = relations;
     }
 
     /**
@@ -460,24 +314,10 @@ public class Environment {
     /**
      * Sets the buddy list max buddies property
      *
-     * @param preferences PortletPreferences
+     * @param buddyListMaxBuddies Integer
      */
-    public static void setBuddyListMaxBuddies(PortletPreferences preferences) {
-        // Get the properties source
-        PropertiesSource source = getPropertiesSource();
-
-        // Preferences
-        if (source == PropertiesSource.PREFERENCES) {
-            // Take the value from preferences
-            buddyListMaxBuddies = Integer.parseInt(preferences.getValue(
-                    PortletPropertiesKeys.BUDDY_LIST_MAX_BUDDIES,
-                    String.valueOf(PortletPropertiesValues.BUDDY_LIST_MAX_BUDDIES)
-            ));
-        }
-        // Properties
-        else {
-            buddyListMaxBuddies = PortletPropertiesValues.BUDDY_LIST_MAX_BUDDIES;
-        }
+    public static void setBuddyListMaxBuddies(Integer buddyListMaxBuddies) {
+        Environment.buddyListMaxBuddies = buddyListMaxBuddies;
     }
 
     /**
@@ -492,24 +332,10 @@ public class Environment {
     /**
      * Sets the buddy list max search property
      *
-     * @param preferences PortletPreferences
+     * @param buddyListMaxSearch Integer
      */
-    public static void setBuddyListMaxSearch(PortletPreferences preferences) {
-        // Get the properties source
-        PropertiesSource source = getPropertiesSource();
-
-        // Preferences
-        if (source == PropertiesSource.PREFERENCES) {
-            // Take the value from preferences
-            buddyListMaxSearch = Integer.parseInt(preferences.getValue(
-                    PortletPropertiesKeys.BUDDY_LIST_MAX_SEARCH,
-                    String.valueOf(PortletPropertiesValues.BUDDY_LIST_MAX_SEARCH)
-            ));
-        }
-        // Properties
-        else {
-            buddyListMaxSearch = PortletPropertiesValues.BUDDY_LIST_MAX_SEARCH;
-        }
+    public static void setBuddyListMaxSearch(Integer buddyListMaxSearch) {
+        Environment.buddyListMaxSearch = buddyListMaxSearch;
     }
 
     /**
@@ -525,24 +351,10 @@ public class Environment {
     /**
      * Sets the buddy list site excludes property
      *
-     * @param preferences PortletPreferences
+     * @param buddyListSiteExcludes String[]
      */
-    public static void setBuddyListSiteExcludes(PortletPreferences preferences) {
-        // Get the properties source
-        PropertiesSource source = getPropertiesSource();
-
-        // Preferences
-        if (source == PropertiesSource.PREFERENCES) {
-            // Take the value from preferences
-            buddyListSiteExcludes = preferences.getValues(
-                    PortletPropertiesKeys.BUDDY_LIST_SITE_EXCLUDES,
-                    PortletPropertiesValues.BUDDY_LIST_SITE_EXCLUDES
-            );
-        }
-        // Properties
-        else {
-            buddyListSiteExcludes = PortletPropertiesValues.BUDDY_LIST_SITE_EXCLUDES;
-        }
+    public static void setBuddyListSiteExcludes(String[] buddyListSiteExcludes) {
+        Environment.buddyListSiteExcludes = buddyListSiteExcludes;
     }
 
     /**
@@ -558,24 +370,10 @@ public class Environment {
     /**
      * Sets the buddy list group excludes property
      *
-     * @param preferences PortletPreferences
+     * @param buddyListGroupExcludes String[]
      */
-    public static void setBuddyListGroupExcludes(PortletPreferences preferences) {
-        // Get the properties source
-        PropertiesSource source = getPropertiesSource();
-
-        // Preferences
-        if (source == PropertiesSource.PREFERENCES) {
-            // Take the value from preferences
-            buddyListGroupExcludes = preferences.getValues(
-                    PortletPropertiesKeys.BUDDY_LIST_GROUP_EXCLUDES,
-                    PortletPropertiesValues.BUDDY_LIST_GROUP_EXCLUDES
-            );
-        }
-        // Properties
-        else {
-            buddyListGroupExcludes = PortletPropertiesValues.BUDDY_LIST_GROUP_EXCLUDES;
-        }
+    public static void setBuddyListGroupExcludes(String[] buddyListGroupExcludes) {
+        Environment.buddyListGroupExcludes = buddyListGroupExcludes;
     }
 
     /**
@@ -591,24 +389,10 @@ public class Environment {
     /**
      * Sets the buddy list ignore default user property
      *
-     * @param preferences PortletPreferences
+     * @param buddyListIgnoreDefaultUser Boolean
      */
-    public static void setBuddyListIgnoreDefaultUser(PortletPreferences preferences) {
-        // Get the properties source
-        PropertiesSource source = getPropertiesSource();
-
-        // Preferences
-        if (source == PropertiesSource.PREFERENCES) {
-            // Take the value from preferences
-            buddyListIgnoreDefaultUser = Boolean.parseBoolean(preferences.getValue(
-                    PortletPropertiesKeys.BUDDY_LIST_IGNORE_DEFAULT_USER,
-                    String.valueOf(PortletPropertiesValues.BUDDY_LIST_IGNORE_DEFAULT_USER)
-            ));
-        }
-        // Properties
-        else {
-            buddyListIgnoreDefaultUser = PortletPropertiesValues.BUDDY_LIST_IGNORE_DEFAULT_USER;
-        }
+    public static void setBuddyListIgnoreDefaultUser(Boolean buddyListIgnoreDefaultUser) {
+        Environment.buddyListIgnoreDefaultUser = buddyListIgnoreDefaultUser;
     }
 
     /**
@@ -624,24 +408,10 @@ public class Environment {
     /**
      * Sets the buddy list ignore deactivated user property
      *
-     * @param preferences PortletPreferences
+     * @param buddyListIgnoreDeactivatedUser Boolean
      */
-    public static void setBuddyListIgnoreDeactivatedUser(PortletPreferences preferences) {
-        // Get the properties source
-        PropertiesSource source = getPropertiesSource();
-
-        // Preferences
-        if (source == PropertiesSource.PREFERENCES) {
-            // Take the value from preferences
-            buddyListIgnoreDeactivatedUser = Boolean.parseBoolean(preferences.getValue(
-                    PortletPropertiesKeys.BUDDY_LIST_IGNORE_DEACTIVATED_USER,
-                    String.valueOf(PortletPropertiesValues.BUDDY_LIST_IGNORE_DEACTIVATED_USER)
-            ));
-        }
-        // Properties
-        else {
-            buddyListIgnoreDeactivatedUser = PortletPropertiesValues.BUDDY_LIST_IGNORE_DEACTIVATED_USER;
-        }
+    public static void setBuddyListIgnoreDeactivatedUser(Boolean buddyListIgnoreDeactivatedUser) {
+        Environment.buddyListIgnoreDeactivatedUser = buddyListIgnoreDeactivatedUser;
     }
 
     /**
@@ -656,24 +426,10 @@ public class Environment {
     /**
      * Sets the conversation list max messages property
      *
-     * @param preferences PortletPreferences
+     * @param conversationListMaxMessages Integer
      */
-    public static void setConversationListMaxMessages(PortletPreferences preferences) {
-        // Get the properties source
-        PropertiesSource source = getPropertiesSource();
-
-        // Preferences
-        if (source == PropertiesSource.PREFERENCES) {
-            // Take the value from preferences
-            conversationListMaxMessages = Integer.parseInt(preferences.getValue(
-                    PortletPropertiesKeys.CONVERSATION_LIST_MAX_MESSAGES,
-                    String.valueOf(PortletPropertiesValues.CONVERSATION_LIST_MAX_MESSAGES)
-            ));
-        }
-        // Properties
-        else {
-            conversationListMaxMessages = PortletPropertiesValues.CONVERSATION_LIST_MAX_MESSAGES;
-        }
+    public static void setConversationListMaxMessages(Integer conversationListMaxMessages) {
+        Environment.conversationListMaxMessages = conversationListMaxMessages;
     }
 
     /**
@@ -682,7 +438,16 @@ public class Environment {
      * @return boolean
      */
     public static boolean isJabberEnabled() {
-        return PortletPropertiesValues.JABBER_ENABLED;
+        return jabberEnabled;
+    }
+
+    /**
+     * Sets jabber enabled property
+     *
+     * @param jabberEnabled Boolean
+     */
+    public static void setJabberEnabled(Boolean jabberEnabled) {
+        Environment.jabberEnabled = jabberEnabled;
     }
 
     /**
@@ -691,7 +456,16 @@ public class Environment {
      * @return String jabber host
      */
     public static String getJabberHost() {
-        return PortletPropertiesValues.JABBER_HOST;
+        return jabberHost;
+    }
+
+    /**
+     * Sets jabber host property
+     *
+     * @param jabberHost String
+     */
+    public static void setJabberHost(String jabberHost) {
+        Environment.jabberHost = jabberHost;
     }
 
     /**
@@ -700,7 +474,16 @@ public class Environment {
      * @return int jabber port
      */
     public static int getJabberPort() {
-        return PortletPropertiesValues.JABBER_PORT;
+        return jabberPort;
+    }
+
+    /**
+     * Sets jabber port property
+     *
+     * @param jabberPort Integer
+     */
+    public static void setJabberPort(Integer jabberPort) {
+        Environment.jabberPort = jabberPort;
     }
 
     /**
@@ -709,7 +492,16 @@ public class Environment {
      * @return String jabber service name
      */
     public static String getJabberServiceName() {
-        return PortletPropertiesValues.JABBER_SERVICE_NAME;
+        return jabberServiceName;
+    }
+
+    /**
+     * Sets jabber service name property
+     *
+     * @param jabberServiceName String
+     */
+    public static void setJabberServiceName(String jabberServiceName) {
+        Environment.jabberServiceName = jabberServiceName;
     }
 
     /**
@@ -718,7 +510,16 @@ public class Environment {
      * @return String jabber resource
      */
     public static String getJabberResource() {
-        return PortletPropertiesValues.JABBER_RESOURCE;
+        return jabberResource;
+    }
+
+    /**
+     * Sets jabber resource property
+     *
+     * @param jabberResource String
+     */
+    public static void setJabberResource(String jabberResource) {
+        Environment.jabberResource = jabberResource;
     }
 
     /**
@@ -727,7 +528,16 @@ public class Environment {
      * @return boolean
      */
     public static boolean isJabberSock5ProxyEnabled() {
-        return PortletPropertiesValues.JABBER_SOCK5_PROXY_ENABLED;
+        return jabberSock5ProxyEnabled;
+    }
+
+    /**
+     * Sets jabber SOCK5 proxy enabled property
+     *
+     * @param jabberSock5ProxyEnabled Integer
+     */
+    public static void setJabberSock5ProxyEnabled(Boolean jabberSock5ProxyEnabled) {
+        Environment.jabberSock5ProxyEnabled = jabberSock5ProxyEnabled;
     }
 
     /**
@@ -736,7 +546,16 @@ public class Environment {
      * @return int jabber SOCK5 port
      */
     public static int getJabberSock5ProxyPort() {
-        return PortletPropertiesValues.JABBER_SOCK5_PROXY_PORT;
+        return jabberSock5ProxyPort;
+    }
+
+    /**
+     * Sets jabber SOCK5 proxy port property
+     *
+     * @param jabberSock5ProxyPort Integer
+     */
+    public static void setJabberSock5ProxyPort(Integer jabberSock5ProxyPort) {
+        Environment.jabberSock5ProxyPort = jabberSock5ProxyPort;
     }
 
     /**
@@ -745,7 +564,16 @@ public class Environment {
      * @return boolean
      */
     public static boolean isJabberImportUserEnabled() {
-        return PortletPropertiesValues.JABBER_IMPORT_USER_ENABLED;
+        return jabberImportUserEnabled;
+    }
+
+    /**
+     * Sets jabber import user enabled property
+     *
+     * @param jabberImportUserEnabled Boolean
+     */
+    public static void setJabberImportUserEnabled(Boolean jabberImportUserEnabled) {
+        Environment.jabberImportUserEnabled = jabberImportUserEnabled;
     }
 
     /**
@@ -754,7 +582,16 @@ public class Environment {
      * @return boolean
      */
     public static boolean isSaslPlainEnabled() {
-        return PortletPropertiesValues.JABBER_SASL_PLAIN_ENABLED;
+        return saslPlainEnabled;
+    }
+
+    /**
+     * Sets SASL plain enabled property
+     *
+     * @param saslPlainEnabled Boolean
+     */
+    public static void setSaslPlainEnabled(Boolean saslPlainEnabled) {
+        Environment.saslPlainEnabled = saslPlainEnabled;
     }
 
     /**
@@ -763,16 +600,34 @@ public class Environment {
      * @return String auth ID
      */
     public static String getSaslPlainAuthId() {
-        return PortletPropertiesValues.JABBER_SASL_PLAIN_AUTHID;
+        return saslPlainAuthId;
     }
 
     /**
-     * Returns password for SASL authentication
+     * Sets SASL plain auth id property
+     *
+     * @param saslPlainAuthId String
+     */
+    public static void setSaslPlainAuthId(String saslPlainAuthId) {
+        Environment.saslPlainAuthId = saslPlainAuthId;
+    }
+
+    /**
+     * Returns password for SASL authentication property
      *
      * @return String password
      */
     public static String getSaslPlainPassword() {
-        return PortletPropertiesValues.JABBER_SASL_PLAIN_PASSWORD;
+        return saslPlainPassword;
+    }
+
+    /**
+     * Sets SASL plain password property
+     *
+     * @param saslPlainPassword String
+     */
+    public static void setSaslPlainPassword(String saslPlainPassword) {
+        Environment.saslPlainPassword = saslPlainPassword;
     }
 
     /**
@@ -781,6 +636,15 @@ public class Environment {
      * @return boolean
      */
     public static Boolean isErrorModeEnabled() {
-        return PortletPropertiesValues.ERROR_MODE_ENABLED;
+        return errorModeEnabled;
+    }
+
+    /**
+     * Sets error mode enabled property
+     *
+     * @param errorModeEnabled Boolean
+     */
+    public static void setErrorModeEnabled(Boolean errorModeEnabled) {
+        Environment.errorModeEnabled = errorModeEnabled;
     }
 }
