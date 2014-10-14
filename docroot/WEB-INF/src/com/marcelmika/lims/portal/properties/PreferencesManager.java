@@ -37,7 +37,7 @@ import javax.portlet.PortletPreferences;
  * Date: 13/10/14
  * Time: 15:25
  */
-public class Preferences {
+public class PreferencesManager {
 
     /**
      * Updates portlet preferences based on the properties. If the property is null, nothing is updated
@@ -81,6 +81,16 @@ public class Preferences {
         // Conversation list max messages
         if (properties.getConversationListMaxMessages() != null) {
             updateConversationListMaxMessages(preferences, properties);
+        }
+
+        // Buddy list site excludes
+        if (properties.getBuddyListSiteExcludes() != null) {
+            updateBuddyListSiteExcludes(preferences, properties);
+        }
+
+        // Buddy list group excludes
+        if (properties.getBuddyListGroupExcludes() != null) {
+            updateBuddyListGroupExcludes(preferences, properties);
         }
     }
 
@@ -251,5 +261,47 @@ public class Preferences {
         Environment.setConversationListMaxMessages(preferences);
     }
 
+    /**
+     * Updates buddy list site excludes property
+     *
+     * @param preferences PortletPreferences
+     * @param properties  Properties
+     * @throws Exception
+     */
+    private void updateBuddyListSiteExcludes(PortletPreferences preferences, Properties properties) throws Exception {
 
+        // Set the value in portlet preferences
+        preferences.setValues(
+                PortletPropertiesKeys.BUDDY_LIST_SITE_EXCLUDES,
+                properties.getBuddyListSiteExcludes()
+        );
+
+        // Persist
+        preferences.store();
+
+        // Save in Environment
+        Environment.setBuddyListSiteExcludes(preferences);
+    }
+
+    /**
+     * Updates buddy list group excludes property
+     *
+     * @param preferences PortletPreferences
+     * @param properties  Properties
+     * @throws Exception
+     */
+    private void updateBuddyListGroupExcludes(PortletPreferences preferences, Properties properties) throws Exception {
+
+        // Set the value in portlet preferences
+        preferences.setValues(
+                PortletPropertiesKeys.BUDDY_LIST_GROUP_EXCLUDES,
+                properties.getBuddyListGroupExcludes()
+        );
+
+        // Persist
+        preferences.store();
+
+        // Save in Environment
+        Environment.setBuddyListGroupExcludes(preferences);
+    }
 }

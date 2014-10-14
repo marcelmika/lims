@@ -32,5 +32,5 @@
     <div class="settings-category-title">
         Excluded groups
     </div>
-    <input type="text" value=""/>
+    <input type="text" value="${properties.buddyListGroupExcludesFlatten}"/>
 </li>

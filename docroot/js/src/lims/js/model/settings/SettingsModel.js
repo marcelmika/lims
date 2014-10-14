@@ -94,9 +94,6 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [Y.LIMS.Mod
         // Serialize
         content = Y.JSON.stringify(this.toJSON());
 
-
-        console.log(content);
-
         switch (action) {
             case 'create':
             case 'update': // There is no difference between create and update

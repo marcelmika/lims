@@ -24,6 +24,7 @@
 
 package com.marcelmika.lims.portal.domain;
 
+import com.liferay.compat.portal.kernel.util.StringUtil;
 import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.environment.Environment.BuddyListStrategy;
 import com.marcelmika.lims.api.environment.Environment.BuddyListSocialRelation;
@@ -43,6 +44,8 @@ public class Properties {
     private Integer buddyListMaxBuddies;
     private Integer buddyListMaxSearch;
     private Integer conversationListMaxMessages;
+    private String[] buddyListSiteExcludes;
+    private String[] buddyListGroupExcludes;
 
     /**
      * Factory method that creates an instance of properties from the environment properties
@@ -61,6 +64,8 @@ public class Properties {
         properties.buddyListMaxBuddies = Environment.getBuddyListMaxBuddies();
         properties.buddyListMaxSearch = Environment.getBuddyListMaxSearch();
         properties.conversationListMaxMessages = Environment.getConversationListMaxMessages();
+        properties.buddyListSiteExcludes = Environment.getBuddyListSiteExcludes();
+        properties.buddyListGroupExcludes = Environment.getBuddyListGroupExcludes();
 
         return properties;
     }
@@ -119,5 +124,29 @@ public class Properties {
 
     public void setConversationListMaxMessages(Integer conversationListMaxMessages) {
         this.conversationListMaxMessages = conversationListMaxMessages;
+    }
+
+    public String[] getBuddyListSiteExcludes() {
+        return buddyListSiteExcludes;
+    }
+
+    public String getBuddyListSiteExcludesFlatten() {
+        return StringUtil.merge(buddyListSiteExcludes, ",");
+    }
+
+    public void setBuddyListSiteExcludes(String[] buddyListSiteExcludes) {
+        this.buddyListSiteExcludes = buddyListSiteExcludes;
+    }
+
+    public String[] getBuddyListGroupExcludes() {
+        return buddyListGroupExcludes;
+    }
+
+    public String getBuddyListGroupExcludesFlatten() {
+        return StringUtil.merge(buddyListGroupExcludes, ",");
+    }
+
+    public void setBuddyListGroupExcludes(String[] buddyListGroupExcludes) {
+        this.buddyListGroupExcludes = buddyListGroupExcludes;
     }
 }

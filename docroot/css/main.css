@@ -287,7 +287,6 @@
     top: -8px;
 }
 
-
 /************************************************************************************
 /  TOKEN INPUT
 /************************************************************************************/
@@ -324,11 +323,16 @@
     position: relative;
     top: 4px;
     border: 0;
+    background: none;
     outline: 0;
     padding: 0;
     width: 5ex;
     *vertical-align: top;
     -webkit-appearance: none;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-input:disabled {
+    background: none;
 }
 
 .liferay-ims .token-input .yui3-tokeninput-input:focus {
@@ -338,7 +342,6 @@
     -moz-box-shadow: none;
     box-shadow: none;
 }
-
 
 .liferay-ims .token-input .yui3-tokeninput-item {
     margin: 1px 2px;
@@ -396,6 +399,10 @@
     position: relative;
 }
 
+.liferay-ims .token-input.disabled .yui3-tokeninput-token {
+    opacity: 0.5;
+}
+
 .liferay-ims .token-input .yui3-tokeninput-hasremove {
     padding-right: 21px !important;
 }
@@ -403,6 +410,11 @@
 .liferay-ims .token-input .yui3-tokeninput-hover {
     background-color: #64a3eb;
     border-color: #4991ce;
+}
+
+.liferay-ims .token-input.disabled .yui3-tokeninput-hover {
+    background-color: #74B3EB;
+    border: 1px solid #629CCE;
 }
 
 .liferay-ims .token-input .yui3-tokeninput-focus {
@@ -431,10 +443,13 @@
     color: #333;
 }
 
+.liferay-ims .token-input.disabled .yui3-tokeninput-remove:hover {
+    color: #ffffff;
+}
+
 .liferay-ims .token-input .yui3-tokeninput-focus .yui3-tokeninput-remove {
     color: #fff;
 }
-
 
 /********************************************************************************
 / CHAT CONTAINER
@@ -1352,7 +1367,7 @@
     padding: 10px;
 }
 
-.liferay-ims .chat-settings .settings input[type="text"] {
+.liferay-ims .chat-settings .settings > input[type="text"] {
     width: 300px;
 }
 
@@ -1415,11 +1430,9 @@
     margin-top: 10px;
 }
 
-
 .liferay-ims .chat-settings .admin-area .buddy-list-group-excludes {
     margin-bottom: 20px;
 }
-
 
 /********************************************************************************
 / SETTINGS PANEL - SWITCH

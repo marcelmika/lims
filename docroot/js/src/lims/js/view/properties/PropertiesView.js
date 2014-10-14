@@ -73,7 +73,9 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
             buddyListIgnoreDeactivatedUser = this.get('buddyListIgnoreDeactivatedUser'),
             buddyListMaxBuddies = this.get('buddyListMaxBuddies'),
             buddyListMaxSearch = this.get('buddyListMaxSearch'),
-            conversationListMaxMessages = this.get('conversationListMaxMessages');
+            conversationListMaxMessages = this.get('conversationListMaxMessages'),
+            buddyListSiteExcludes = this.get('buddyListSiteExcludes'),
+            buddyListGroupExcludes = this.get('buddyListGroupExcludes');
 
         // Local events
         openButton.on('click', this._onOpenButtonClick, this);
@@ -84,6 +86,8 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
         buddyListMaxBuddies.on('sliderUpdate', this._onBuddyListMaxBuddiesUpdate, this);
         buddyListMaxSearch.on('sliderUpdate', this._onBuddyListMaxSearchUpdate, this);
         conversationListMaxMessages.on('sliderUpdate', this._onConversationListMaxMessagesUpdate, this);
+        buddyListSiteExcludes.on('inputUpdate', this._onBuddyListSiteExcludesUpdate, this);
+        buddyListGroupExcludes.on('inputUpdate', this._onBuddyListGroupExcludesUpdate, this);
     },
 
     /**
@@ -238,12 +242,12 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
         // Vars
         var buddyListMaxBuddies = this.get('buddyListMaxBuddies'),
             preValue = event.preValue,          // Previously selected value
-            value = event.value,                // Current value
+            postValue = event.postValue,        // Current value
             model;
 
         // Prepare the model
         model = new Y.LIMS.Model.PropertiesModel({
-            buddyListMaxBuddies: value
+            buddyListMaxBuddies: postValue
         });
 
         // Disable view
@@ -270,12 +274,12 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
         // Vars
         var buddyListMaxSearch = this.get('buddyListMaxSearch'),
             preValue = event.preValue,      // Previously selected value
-            value = event.value,            // Current value
+            postValue = event.postValue,    // Current value
             model;
 
         // Prepare the model
         model = new Y.LIMS.Model.PropertiesModel({
-            buddyListMaxSearch: value
+            buddyListMaxSearch: postValue
         });
 
         // Disable view
@@ -303,12 +307,12 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
         // Vars
         var conversationListMaxMessages = this.get('conversationListMaxMessages'),
             preValue = event.preValue,      // Previously selected value
-            value = event.value,      // Current value
+            postValue = event.postValue,    // Current value
             model;
 
         // Prepare the model
         model = new Y.LIMS.Model.PropertiesModel({
-            conversationListMaxMessages: value
+            conversationListMaxMessages: postValue
         });
 
         // Disable view
@@ -323,7 +327,72 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
             // Re-enable the view so the user can interact with it again
             conversationListMaxMessages.enable();
         });
+    },
+
+    /**
+     * Called when the user updates buddy list sites excludes property
+     *
+     * @param event
+     * @private
+     */
+    _onBuddyListSiteExcludesUpdate: function (event) {
+        // Vars
+        var buddyListSiteExcludes = this.get('buddyListSiteExcludes'),
+            preValue = event.preValue,      // Previously selected value
+            postValue = event.postValue,    // Currently selected value
+            model;
+
+        // Prepare the model
+        model = new Y.LIMS.Model.PropertiesModel({
+            buddyListSiteExcludes: postValue
+        });
+
+        // Disable view
+        buddyListSiteExcludes.disable();
+
+        // Save the model
+        model.save(function (err) {
+            if(err) {
+                // Return everything to the previous state
+                buddyListSiteExcludes.setValues(preValue);
+            }
+            // Re-enable the view so the user can interact with it again
+            buddyListSiteExcludes.enable();
+        });
+    },
+
+    /**
+     * Called when the user updates buddy list group excludes property
+     *
+     * @param event
+     * @private
+     */
+    _onBuddyListGroupExcludesUpdate: function (event) {
+        // Vars
+        var buddyListGroupExcludes = this.get('buddyListGroupExcludes'),
+            preValue = event.preValue,      // Previously selected value
+            postValue = event.postValue,    // Currently selected value
+            model;
+
+        // Prepare the model
+        model = new Y.LIMS.Model.PropertiesModel({
+            buddyListGroupExcludes: postValue
+        });
+
+        // Disable view
+        buddyListGroupExcludes.disable();
+
+        // Save the model
+        model.save(function (err) {
+            if(err) {
+                // Return everything to the previous state
+                buddyListGroupExcludes.setValues(preValue);
+            }
+            // Re-enable the view so the user can interact with it again
+            buddyListGroupExcludes.enable();
+        });
     }
+
 
 }, {
 
@@ -594,7 +663,7 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
          *
          * {Y.LIMS.View.TokenInputElementView}
          */
-        buddyListSitesExcludes: {
+        buddyListSiteExcludes: {
             valueFn: function () {
                 // Vars
                 var container = this.get('container').one('.buddy-list-site-excludes');

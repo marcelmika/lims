@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.portal.domain.Properties;
 import com.marcelmika.lims.portal.http.HttpStatus;
 import com.marcelmika.lims.portal.portlet.PermissionDetector;
-import com.marcelmika.lims.portal.properties.Preferences;
+import com.marcelmika.lims.portal.properties.PreferencesManager;
 import com.marcelmika.lims.portal.request.RequestParameterKeys;
 import com.marcelmika.lims.portal.response.ResponseUtil;
 
@@ -49,15 +49,15 @@ public class PropertiesController {
     private static Log log = LogFactoryUtil.getLog(PropertiesController.class);
 
     // Dependencies
-    Preferences preferences;
+    PreferencesManager preferencesManager;
 
     /**
      * Constructor
      *
-     * @param preferences Preferences
+     * @param preferencesManager Preferences
      */
-    public PropertiesController(final Preferences preferences) {
-        this.preferences = preferences;
+    public PropertiesController(final PreferencesManager preferencesManager) {
+        this.preferencesManager = preferencesManager;
     }
 
     /**
@@ -103,7 +103,7 @@ public class PropertiesController {
 
         // Update preferences
         try {
-            preferences.updatePortletPreferences(request.getPreferences(), properties);
+            preferencesManager.updatePortletPreferences(request.getPreferences(), properties);
         }
         // Failure
         catch (Exception exception) {

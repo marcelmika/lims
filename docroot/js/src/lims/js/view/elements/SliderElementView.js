@@ -133,7 +133,7 @@ Y.LIMS.View.SliderElementView = Y.Base.create('sliderElementView', Y.View, [], {
             instance = this;
 
 
-        // There is no need to do anything since the values are the same
+        // There is no need to do anything since nothing has changed
         if (value === event.newVal) {
             return;
         }
@@ -153,7 +153,7 @@ Y.LIMS.View.SliderElementView = Y.Base.create('sliderElementView', Y.View, [], {
             // Fire the event
             instance.fire('sliderUpdate', {
                 preValue: instance.get('preValue'),
-                value: instance.get('value')
+                postValue: instance.get('value')
             }, instance);
 
         }, timerDelayInterval));
@@ -226,7 +226,7 @@ Y.LIMS.View.SliderElementView = Y.Base.create('sliderElementView', Y.View, [], {
         },
 
         /**
-         * Starting value
+         * Current value
          *
          * {Number}
          */

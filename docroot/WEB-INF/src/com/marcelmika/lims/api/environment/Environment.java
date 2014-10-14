@@ -55,6 +55,8 @@ public class Environment {
     private static Integer buddyListMaxBuddies;
     private static Integer buddyListMaxSearch;
     private static Integer conversationListMaxMessages;
+    private static String[] buddyListSiteExcludes;
+    private static String[] buddyListGroupExcludes;
 
 
     /**
@@ -90,6 +92,8 @@ public class Environment {
             setBuddyListMaxBuddies(preferences);
             setBuddyListMaxSearch(preferences);
             setConversationListMaxMessages(preferences);
+            setBuddyListSiteExcludes(preferences);
+            setBuddyListGroupExcludes(preferences);
 
             // Setup can be done just once at the beginning
             isSetup = true;
@@ -515,7 +519,30 @@ public class Environment {
      * @return String[]
      */
     public static String[] getBuddyListSiteExcludes() {
-        return PortletPropertiesValues.BUDDY_LIST_SITE_EXCLUDES;
+        return buddyListSiteExcludes;
+    }
+
+    /**
+     * Sets the buddy list site excludes property
+     *
+     * @param preferences PortletPreferences
+     */
+    public static void setBuddyListSiteExcludes(PortletPreferences preferences) {
+        // Get the properties source
+        PropertiesSource source = getPropertiesSource();
+
+        // Preferences
+        if (source == PropertiesSource.PREFERENCES) {
+            // Take the value from preferences
+            buddyListSiteExcludes = preferences.getValues(
+                    PortletPropertiesKeys.BUDDY_LIST_SITE_EXCLUDES,
+                    PortletPropertiesValues.BUDDY_LIST_SITE_EXCLUDES
+            );
+        }
+        // Properties
+        else {
+            buddyListSiteExcludes = PortletPropertiesValues.BUDDY_LIST_SITE_EXCLUDES;
+        }
     }
 
     /**
@@ -525,7 +552,30 @@ public class Environment {
      * @return String[]
      */
     public static String[] getBuddyListGroupExcludes() {
-        return PortletPropertiesValues.BUDDY_LIST_GROUP_EXCLUDES;
+        return buddyListGroupExcludes;
+    }
+
+    /**
+     * Sets the buddy list group excludes property
+     *
+     * @param preferences PortletPreferences
+     */
+    public static void setBuddyListGroupExcludes(PortletPreferences preferences) {
+        // Get the properties source
+        PropertiesSource source = getPropertiesSource();
+
+        // Preferences
+        if (source == PropertiesSource.PREFERENCES) {
+            // Take the value from preferences
+            buddyListGroupExcludes = preferences.getValues(
+                    PortletPropertiesKeys.BUDDY_LIST_GROUP_EXCLUDES,
+                    PortletPropertiesValues.BUDDY_LIST_GROUP_EXCLUDES
+            );
+        }
+        // Properties
+        else {
+            buddyListGroupExcludes = PortletPropertiesValues.BUDDY_LIST_GROUP_EXCLUDES;
+        }
     }
 
     /**

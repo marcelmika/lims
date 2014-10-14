@@ -38,20 +38,56 @@ Y.LIMS.View.TokenInputElementView = Y.Base.create('tokenInputElementView', Y.Vie
     initializer: function () {
         // Attach events
         this._attachEvents();
-
-        this.bind();
     },
 
-    bind: function () {
+    /**
+     * Sets the token input values
+     *
+     * @param values
+     */
+    setValues: function (values) {
         // Vars
         var inputNode = this.get('inputNode');
 
-        // Tokenize
-        inputNode.plug(Y.Plugin.TokenInput, {
-            removeButton: true
-        });
+        // Set tokens to token input
+        inputNode.tokenInput.set('tokens', values);
     },
 
+    /**
+     * Enables view
+     */
+    enable: function () {
+        // Vars
+        var container = this.get('container'),
+            tokenInputNode = this.get('tokenInputNode');
+
+        // Enable input
+        container.removeClass('disabled');
+        container.all('input').set('disabled', null);
+
+        // Set focus to the next token. Since if we called the disable()
+        // function token input looses it's focus. So if we enable it
+        // we need to re-enable the focus again.
+        tokenInputNode.focus();
+
+        // Set the flag
+        this.set('isDisabled', false);
+    },
+
+    /**
+     * Disables view
+     */
+    disable: function () {
+        // Vars
+        var container = this.get('container');
+
+        // Disable input
+        container.addClass('disabled');
+        container.all('input').set('disabled', 'disabled');
+
+        // Set the flag
+        this.set('isDisabled', true);
+    },
 
     /**
      * Attach events to elements
@@ -59,9 +95,39 @@ Y.LIMS.View.TokenInputElementView = Y.Base.create('tokenInputElementView', Y.Vie
      * @private
      */
     _attachEvents: function () {
+        // Vars
+        var inputNode = this.get('inputNode');
 
+        // Local events
+        inputNode.tokenInput.on('tokensChange', this._onTokensChange, this);
+    },
+
+    /**
+     * Called when tokens are changed
+     *
+     * @param event
+     * @private
+     */
+    _onTokensChange: function (event) {
+        // Vars
+        var preValue = this.get('preValue');
+
+        // There is no need to do anything since nothing has changed
+        if (preValue === event.newVal) {
+            return;
+        }
+
+        // Set the previous value
+        this.set('preValue', event.prevVal);
+        // Set the current value
+        this.set('value', event.newVal);
+
+        // Fire an event
+        this.fire('inputUpdate', {
+            preValue: this.get('preValue'),
+            postValue: event.newVal
+        }, this);
     }
-
 
 }, {
 
@@ -93,6 +159,44 @@ Y.LIMS.View.TokenInputElementView = Y.Base.create('tokenInputElementView', Y.Vie
 
                 return inputNode;
             }
+        },
+
+        /**
+         * Input node used for tokens
+         *
+         * {Node}
+         */
+        tokenInputNode: {
+            valueFn: function () {
+                return this.get('inputNode').tokenInput.get('inputNode');
+            }
+        },
+
+        /**
+         * Current value
+         *
+         * []
+         */
+        value: {
+            value: [] // to be set
+        },
+
+        /**
+         * Previously set value
+         *
+         * []
+         */
+        preValue: {
+            value: [] // to be set
+        },
+
+        /**
+         * True if the token input is disabled
+         *
+         * {boolean}
+         */
+        isDisabled: {
+            value: false // default value
         }
     }
 });
