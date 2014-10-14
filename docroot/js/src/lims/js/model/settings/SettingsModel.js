@@ -106,8 +106,8 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [Y.LIMS.Mod
                         content: content
                     },
                     on: {
-                        success: function (id, o) {
-                            callback(null, o.responseText);
+                        success: function () {
+                            callback(null);
                         },
                         failure: function (x, o) {
                             // If the attempt is unauthorized session has expired
@@ -115,7 +115,7 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [Y.LIMS.Mod
                                 // Notify everybody else
                                 Y.fire('userSessionExpired');
                             }
-                            callback("Cannot update settings", o.responseText);
+                            callback("Cannot update settings");
                         }
                     }
                 });

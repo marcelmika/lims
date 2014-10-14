@@ -70,8 +70,8 @@ Y.LIMS.View.ChoiceElementView = Y.Base.create('choiceElementView', Y.View, [], {
     /**
      * Select particular choice. Returns true if the choice was selected
      *
-     * @param choice
-     * @return {boolean}
+     * @param choice {string}
+     * @return {boolean} true if the choice was selected
      */
     selectChoice: function (choice) {
         // Vars
@@ -147,6 +147,7 @@ Y.LIMS.View.ChoiceElementView = Y.Base.create('choiceElementView', Y.View, [], {
      * Activates the choice
      *
      * @param choice {string}
+     * @return {boolean} true if the choices was activated
      * @private
      */
     _activateChoice: function (choice) {
@@ -175,6 +176,7 @@ Y.LIMS.View.ChoiceElementView = Y.Base.create('choiceElementView', Y.View, [], {
      * Deactivates the choice
      *
      * @param choice {string}
+     * @return {boolean} true if the choice was deactivated
      * @private
      */
     _deactivateChoice: function (choice) {

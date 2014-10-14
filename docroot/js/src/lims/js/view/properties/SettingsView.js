@@ -79,8 +79,18 @@ Y.LIMS.View.SettingsView = Y.Base.create('settingsView', Y.View, [], {
         // Update model
         model.set('isMute', !soundSwitch.isOn());
 
+        // Disable view
+        soundSwitch.disable();
+
         // Save model
-        model.save();
+        model.save(function (err) {
+            if (err) {
+                // Return everything to the previous state
+                soundSwitch.toggle();
+            }
+            // Re-enable the view so the user can interact with it again
+            soundSwitch.enable();
+        });
     }
 
 }, {
