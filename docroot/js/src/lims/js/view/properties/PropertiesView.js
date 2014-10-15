@@ -370,7 +370,7 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
 
         // Save the model
         model.save(function (err) {
-            if(err) {
+            if (err) {
                 // Return everything to the previous state
                 buddyListSiteExcludes.setValues(preValue);
             }
@@ -406,7 +406,7 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
 
         // Save the model
         model.save(function (err) {
-            if(err) {
+            if (err) {
                 // Return everything to the previous state
                 buddyListGroupExcludes.setValues(preValue);
             }
@@ -456,6 +456,17 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
         },
 
         /**
+         * Help button node
+         *
+         * {Node}
+         */
+        helpButton: {
+            valueFn: function () {
+                return this.get('container').one('.help');
+            }
+        },
+
+        /**
          * Returns animation that will open or close the whole view
          *
          * {Y.Anim}
@@ -466,6 +477,7 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
                 var openButtonAnimation = this.get('openButtonAnimation'),
                     settingsContainer = this.get('settingsContainer'),
                     openButton = this.get('openButton'),
+                    helpButton = this.get('helpButton'),
                     animation;
 
                 // Create the opening animation
@@ -495,15 +507,16 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
                 animation.before('start', function () {
                     // Hide the open button, we don't want the user to interact now
                     openButton.setStyle('opacity', 0);
+                    // Hide buttons
                     openButton.hide();
+                    helpButton.hide();
 
                 }, this);
 
                 // On animation end
                 animation.after('end', function () {
 
-                    // If we are closing set text to open
-                    // If we are opening set text to close
+                    // Closing
                     if (animation.get('reverse')) {
                         // Update open button text
                         openButton.set('innerHTML', Y.LIMS.Core.i18n.values.adminAreaOpen);
@@ -512,12 +525,16 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
                         settingsContainer.addClass('closed');
                         // Fire the event
                         this.fire('propertiesClosed');
-                    } else {
+                    }
+                    // Opening
+                    else {
                         // Update open button text
                         openButton.set('innerHTML', Y.LIMS.Core.i18n.values.adminAreaClose);
                         // Settings container doesn't need the closed class anymore
                         settingsContainer.removeClass('closed');
                         settingsContainer.addClass('opened');
+                        // Hide help button
+                        helpButton.show();
                         // Fire the event
                         this.fire('propertiesOpened');
                     }

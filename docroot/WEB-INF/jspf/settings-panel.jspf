@@ -52,10 +52,12 @@
 <c:choose>
     <c:when test="${settings.adminAreaOpened}">
         <c:set var="adminAreaClass" value="opened"/>
+        <c:set var="helpButtonHiddenClass" value=""/>
         <c:set var="openButtonText"><liferay-ui:message key="panel-settings-admin-area-close"/></c:set>
     </c:when>
     <c:otherwise>
         <c:set var="adminAreaClass" value="closed"/>
+        <c:set var="helpButtonHiddenClass" value="aui-helper-hidden hide"/>
         <c:set var="openButtonText"><liferay-ui:message key="panel-settings-admin-area-open"/></c:set>
     </c:otherwise>
 </c:choose>
@@ -86,7 +88,7 @@
                     <div class="settings-title">
                         <span><liferay-ui:message key="panel-settings-admin-area-title"/></span>
                         <span class="open-button">${openButtonText}</span>
-                        <a class="help" href="${properties.urlHelp}" target="_blank"
+                        <a class="help ${helpButtonHiddenClass}" href="${properties.urlHelp}" target="_blank"
                            title="<liferay-ui:message key="panel-settings-admin-area-help"/>"></a>
                     </div>
 
