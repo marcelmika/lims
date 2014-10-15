@@ -26,11 +26,23 @@
 <%-- Variables --%>
 <%--@elvariable id="properties" type="com.marcelmika.lims.portal.domain.Properties"--%>
 
+<%-- Constants --%>
+<c:set var="SITES" value="<%= BuddyListStrategy.SITES %>"/>
+<c:set var="SITES_AND_SOCIAL" value="<%= BuddyListStrategy.SITES_AND_SOCIAL %>"/>
+
+<%-- Defaults --%>
+<c:set var="disabledClass" value="disabled"/>
+
+<%-- Decide what should be active --%>
+<c:if test="${(properties.buddyListStrategy eq SITES) or (properties.buddyListStrategy eq SITES_AND_SOCIAL)}">
+    <c:set var="disabledClass" value=""/>
+</c:if>
+
 <%-- Render --%>
-<li class="buddy-list-site-excludes token-input">
+<li class="buddy-list-site-excludes token-input ${disabledClass}">
 
     <div class="settings-category-title">
         <span>Excluded sites</span>
     </div>
-    <input type="text" placeholder="" value="${properties.buddyListSiteExcludesFlatten}" />
+    <input type="text" placeholder="" value="${properties.buddyListSiteExcludesFlatten}"/>
 </li>

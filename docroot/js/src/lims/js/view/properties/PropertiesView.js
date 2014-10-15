@@ -111,6 +111,8 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
         var choice = event.choice,                                           // Choice id is passed in event
             buddyListStrategy = this.get('buddyListStrategy'),               // Get the buddy list strategy view
             buddyListSocialRelations = this.get('buddyListSocialRelations'), // Social relations view
+            buddyListSiteExcludes = this.get('buddyListSiteExcludes'),       // Excluded sites view
+            buddyListGroupExcludes = this.get('buddyListGroupExcludes'),     // Excluded groups view
             preSelectedChoices = event.preSelectedChoices,                   // Choices before selection
             model;                                                           // Properties model
 
@@ -134,6 +136,22 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
                     buddyListSocialRelations.enable();
                 } else {
                     buddyListSocialRelations.disable();
+                }
+
+                // If the list strategy has something to do with sites
+                // enable the excluded sites view
+                if (choice === 'SITES' || choice === 'SITES_AND_SOCIAL') {
+                    buddyListSiteExcludes.enable();
+                } else {
+                    buddyListSiteExcludes.disable();
+                }
+
+                // If the list strategy has something to do with groups
+                // enable the excluded groups view
+                if (choice === 'USER_GROUPS') {
+                    buddyListGroupExcludes.enable();
+                } else {
+                    buddyListGroupExcludes.disable();
                 }
             }
 
@@ -358,6 +376,10 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
             }
             // Re-enable the view so the user can interact with it again
             buddyListSiteExcludes.enable();
+            // Since if we called the disable()
+            // function token input looses it's focus. So if we enable it
+            // we need to re-enable the focus again.
+            buddyListSiteExcludes.focus();
         });
     },
 
@@ -390,6 +412,10 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
             }
             // Re-enable the view so the user can interact with it again
             buddyListGroupExcludes.enable();
+            // Since if we called the disable()
+            // function token input looses it's focus. So if we enable it
+            // we need to re-enable the focus again.
+            buddyListGroupExcludes.focus();
         });
     }
 

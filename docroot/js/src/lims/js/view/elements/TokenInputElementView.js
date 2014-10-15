@@ -38,6 +38,8 @@ Y.LIMS.View.TokenInputElementView = Y.Base.create('tokenInputElementView', Y.Vie
     initializer: function () {
         // Attach events
         this._attachEvents();
+        // Bind
+        this._bind();
     },
 
     /**
@@ -58,17 +60,11 @@ Y.LIMS.View.TokenInputElementView = Y.Base.create('tokenInputElementView', Y.Vie
      */
     enable: function () {
         // Vars
-        var container = this.get('container'),
-            tokenInputNode = this.get('tokenInputNode');
+        var container = this.get('container');
 
         // Enable input
         container.removeClass('disabled');
         container.all('input').set('disabled', null);
-
-        // Set focus to the next token. Since if we called the disable()
-        // function token input looses it's focus. So if we enable it
-        // we need to re-enable the focus again.
-        tokenInputNode.focus();
 
         // Set the flag
         this.set('isDisabled', false);
@@ -90,6 +86,28 @@ Y.LIMS.View.TokenInputElementView = Y.Base.create('tokenInputElementView', Y.Vie
     },
 
     /**
+     * Sets focus to token input
+     */
+    focus: function () {
+        // Vars
+        var tokenInputNode = this.get('tokenInputNode');
+
+        // Set focus to the next token
+        tokenInputNode.focus();
+    },
+
+    /**
+     * Takes the focus away from token input
+     */
+    blur: function () {
+        // Vars
+        var tokenInputNode = this.get('tokenInputNode');
+
+        // Take th focus away
+        tokenInputNode.blur();
+    },
+
+    /**
      * Attach events to elements
      *
      * @private
@@ -100,6 +118,22 @@ Y.LIMS.View.TokenInputElementView = Y.Base.create('tokenInputElementView', Y.Vie
 
         // Local events
         inputNode.tokenInput.on('tokensChange', this._onTokensChange, this);
+    },
+
+    /**
+     * Binds values from rendered HTML
+     *
+     * @private
+     */
+    _bind: function () {
+        // Vars
+        var container = this.get('container');
+
+        // If the rendered token input container already has
+        // a disabled class, disable the whole view
+        if (container.hasClass('disabled')) {
+            this.disable();
+        }
     },
 
     /**
