@@ -42,7 +42,7 @@
 <li class="buddy-list-site-excludes token-input ${disabledClass}">
 
     <div class="settings-category-title">
-        <span>Excluded sites</span>
+        <span><liferay-ui:message key="panel-settings-admin-area-excluded-sites-title"/></span>
     </div>
     <input type="text" placeholder="" value="${properties.buddyListSiteExcludesFlatten}"/>
 </li>

@@ -30,7 +30,7 @@
 <li class="buddy-list-max-buddies">
 
     <div class="settings-category-title">
-        <span>Max number of buddies on a list</span>
+        <span><liferay-ui:message key="panel-settings-admin-area-buddy-list-max-buddies-title"/></span>
     </div>
     <div class="value">${properties.buddyListMaxBuddies}</div>
     <div class="slider"></div>

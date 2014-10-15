@@ -74,23 +74,33 @@
 <%-- Rendered --%>
 <li class="buddy-list-social-relations">
     <div class="settings-category-title">
-        <span>Buddy list social relations</span>
+        <span><liferay-ui:message key="panel-settings-admin-area-buddy-list-social-relation-title"/></span>
     </div>
     <div class="button-group ${disabledClass}">
         <label data-choice="${TYPE_BI_CONNECTION}" class="button button-primary ${connectionActiveClass}">
-            <span>Connection</span>
+            <span>
+                <liferay-ui:message key="panel-settings-admin-area-buddy-list-social-relation-connection"/>
+            </span>
         </label>
         <label data-choice="${TYPE_BI_COWORKER}" class="button button-primary ${coworkerActiveClass}">
-            <span>Coworker</span>
+            <span>
+                <liferay-ui:message key="panel-settings-admin-area-buddy-list-social-relation-coworker"/>
+            </span>
         </label>
         <label data-choice="${TYPE_BI_FRIEND}" class="button button-primary ${friendActiveClass}">
-            <span>Friend</span>
+            <span>
+                <liferay-ui:message key="panel-settings-admin-area-buddy-list-social-relation-friend"/>
+            </span>
         </label>
         <label data-choice="${TYPE_BI_ROMANTIC_PARTNER}" class="button button-primary ${romanticPartnerActiveClass}">
-            <span>Romantic Partner</span>
+            <span>
+                <liferay-ui:message key="panel-settings-admin-area-buddy-list-social-relation-romantic-partner"/>
+            </span>
         </label>
         <label data-choice="${TYPE_BI_SIBLING}" class="button button-primary ${siblingActiveClass}">
-            <span>Sibling</span>
+            <span>
+                <liferay-ui:message key="panel-settings-admin-area-buddy-list-social-relation-sibling"/>
+            </span>
         </label>
 
         <div class="clear"></div>

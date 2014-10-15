@@ -40,5 +40,7 @@
         <input ${checked} type="checkbox"/>
         <span></span>
     </label>
-    <span>Ignore default user</span>
+    <span>
+        <liferay-ui:message key="panel-settings-admin-area-buddy-list-ignore-default-user-title"/>
+    </span>
 </li>

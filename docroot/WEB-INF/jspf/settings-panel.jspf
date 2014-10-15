@@ -48,11 +48,11 @@
 <c:choose>
     <c:when test="${settings.adminAreaOpened}">
         <c:set var="adminAreaClass" value="opened"/>
-        <c:set var="openButtonText" value="Close"/>
+        <c:set var="openButtonText"><liferay-ui:message key="panel-settings-admin-area-close"/></c:set>
     </c:when>
     <c:otherwise>
         <c:set var="adminAreaClass" value="closed"/>
-        <c:set var="openButtonText" value="Open"/>
+        <c:set var="openButtonText"><liferay-ui:message key="panel-settings-admin-area-open"/></c:set>
     </c:otherwise>
 </c:choose>
 
@@ -68,6 +68,7 @@
                     <liferay-ui:message key="panel-settings-title"/>
                 </div>
             </div>
+
             <%-- USER SETTINGS --%>
             <div class="user-settings">
                 <ul class="lfr-component settings">
@@ -79,10 +80,13 @@
             <c:if test="${isAdmin}">
                 <div class="admin-area">
                     <div class="settings-title">
-                        <span>Admin area</span>
+                        <span><liferay-ui:message key="panel-settings-admin-area-title"/></span>
                         <span class="open-button">${openButtonText}</span>
                     </div>
-                    <a class="help" href="${properties.urlHelp}" target="_blank" title="Help"></a>
+
+                    <a class="help" href="${properties.urlHelp}" target="_blank"
+                       title="<liferay-ui:message key="panel-settings-admin-area-help"/>"></a>
+
                     <ul class="lfr-component settings ${adminAreaClass}">
                         <%@ include file="/WEB-INF/jspf/settings/buddy-list-strategy.jspf" %>
                         <%@ include file="/WEB-INF/jspf/settings/buddy-list-social-relation.jspf" %>

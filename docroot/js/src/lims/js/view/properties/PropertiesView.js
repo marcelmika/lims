@@ -506,7 +506,7 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
                     // If we are opening set text to close
                     if (animation.get('reverse')) {
                         // Update open button text
-                        openButton.set('innerHTML', 'Open'); // TODO: i18n
+                        openButton.set('innerHTML', Y.LIMS.Core.i18n.values.adminAreaOpen);
                         // Settings container doesn't need the closed class anymore
                         settingsContainer.removeClass('opened');
                         settingsContainer.addClass('closed');
@@ -514,7 +514,7 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
                         this.fire('propertiesClosed');
                     } else {
                         // Update open button text
-                        openButton.set('innerHTML', 'Close'); // TODO: i18n
+                        openButton.set('innerHTML', Y.LIMS.Core.i18n.values.adminAreaClose);
                         // Settings container doesn't need the closed class anymore
                         settingsContainer.removeClass('closed');
                         settingsContainer.addClass('opened');

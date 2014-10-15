@@ -30,7 +30,7 @@
 <li class="buddy-list-max-search">
 
     <div class="settings-category-title">
-        <span>Max number of search results</span>
+        <span><liferay-ui:message key="panel-settings-admin-area-buddy-list-max-search-title"/></span>
     </div>
     <div class="value">${properties.buddyListMaxSearch}</div>
     <div class="slider"></div>

@@ -65,23 +65,23 @@
 <%-- Rendered --%>
 <li class="buddy-list-strategy">
     <div class="settings-category-title">
-        <span>Buddy list strategy</span>
+        <span><liferay-ui:message key="panel-settings-admin-area-buddy-list-strategy-title"/></span>
     </div>
     <div class="button-group">
         <label data-choice="${ALL}" class="button button-primary ${allActiveClass}">
-            <span>All</span>
+            <span><liferay-ui:message key="panel-settings-admin-area-buddy-list-strategy-all"/></span>
         </label>
         <label data-choice="${SITES}" class="button button-primary ${sitesActiveClass}">
-            <span>Sites</span>
+            <span><liferay-ui:message key="panel-settings-admin-area-buddy-list-strategy-sites"/></span>
         </label>
         <label data-choice="${SOCIAL}" class="button button-primary ${socialActiveClass}">
-            <span>Social</span>
+            <span><liferay-ui:message key="panel-settings-admin-area-buddy-list-strategy-social"/></span>
         </label>
         <label data-choice="${SITES_AND_SOCIAL}" class="button button-primary ${sitesAndSocialActiveClass}">
-            <span>Sites, Social</span>
+            <span><liferay-ui:message key="panel-settings-admin-area-buddy-list-strategy-sites-and-social"/></span>
         </label>
         <label data-choice="${USER_GROUPS}" class="button button-primary ${userGroupsActiveClass}">
-            <span>Groups</span>
+            <span><liferay-ui:message key="panel-settings-admin-area-buddy-list-strategy-user-groups"/></span>
         </label>
 
         <div class="clear"></div>

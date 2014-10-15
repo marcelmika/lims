@@ -41,7 +41,7 @@
 <li class="buddy-list-group-excludes token-input ${disabledClass}">
 
     <div class="settings-category-title">
-        <span>Excluded groups</span>
+        <span><liferay-ui:message key="panel-settings-admin-area-excluded-groups-title"/></span>
     </div>
     <input type="text" placeholder="" value="${properties.buddyListGroupExcludesFlatten}"/>
 
