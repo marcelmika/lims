@@ -77,6 +77,9 @@ public class PropertiesController {
         // Check preferences
         if (request.getPreferences() == null) {
             ResponseUtil.writeResponse(HttpStatus.NOT_FOUND, response);
+            if (log.isErrorEnabled()) {
+                log.error("Cannot find preferences in request. This shouldn't normally happen.");
+            }
             return;
         }
 
