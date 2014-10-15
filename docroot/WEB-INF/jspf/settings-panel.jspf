@@ -86,10 +86,9 @@
                     <div class="settings-title">
                         <span><liferay-ui:message key="panel-settings-admin-area-title"/></span>
                         <span class="open-button">${openButtonText}</span>
+                        <a class="help" href="${properties.urlHelp}" target="_blank"
+                           title="<liferay-ui:message key="panel-settings-admin-area-help"/>"></a>
                     </div>
-
-                    <a class="help" href="${properties.urlHelp}" target="_blank"
-                       title="<liferay-ui:message key="panel-settings-admin-area-help"/>"></a>
 
                     <ul class="lfr-component settings ${adminAreaClass}">
                         <%@ include file="/WEB-INF/jspf/settings/buddy-list-strategy.jspf" %>
