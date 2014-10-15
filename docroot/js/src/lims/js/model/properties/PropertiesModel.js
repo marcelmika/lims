@@ -44,8 +44,8 @@ Y.LIMS.Model.PropertiesModel = Y.Base.create('propertiesModel', Y.Model, [Y.LIMS
 
         switch (action) {
 
-            // Read action, called on ServerTimeModel.load() method
             case 'create':
+            case 'update': // Intentional fall through
 
                 // Deserialize
                 content = Y.JSON.stringify(this.toJSON());
@@ -81,7 +81,6 @@ Y.LIMS.Model.PropertiesModel = Y.Base.create('propertiesModel', Y.Model, [Y.LIMS
                 break;
 
             case 'read':
-            case 'update':
             case 'delete':
                 break;
 
@@ -94,9 +93,11 @@ Y.LIMS.Model.PropertiesModel = Y.Base.create('propertiesModel', Y.Model, [Y.LIMS
     }
 
 }, {
+
     // Add custom model attributes here. These attributes will contain your
     // model's data. See the docs for Y.Attribute to learn more about defining
     // attributes.
+
     ATTRS: {
 
         /**
@@ -114,6 +115,69 @@ Y.LIMS.Model.PropertiesModel = Y.Base.create('propertiesModel', Y.Model, [Y.LIMS
          * []
          */
         buddyListSocialRelations: {
+            value: null // to be set
+        },
+
+        /**
+         * Buddy list ignore default user
+         *
+         * {boolean}
+         */
+        buddyListIgnoreDefaultUser: {
+            value: null // to be set
+        },
+
+        /**
+         * Buddy list ignore deactivated
+         *
+         * {boolean}
+         */
+        buddyListIgnoreDeactivatedUser: {
+            value: null // to be set
+        },
+
+        /**
+         * Buddy list max buddies
+         *
+         * {Number}
+         */
+        buddyListMaxBuddies: {
+            value: null // to be set
+        },
+
+        /**
+         * Buddy list max search
+         *
+         * {Number}
+         */
+        buddyListMaxSearch: {
+            value: null // to be set
+        },
+
+        /**
+         * Conversation list max messages
+         *
+         * {Number}
+         */
+        conversationListMaxMessages: {
+            value: null // to be set
+        },
+
+        /**
+         * Buddy list site excludes
+         *
+         * []
+         */
+        buddyListSiteExcludes: {
+            value: null // to be set
+        },
+
+        /**
+         * Buddy list group excludes
+         *
+         * []
+         */
+        buddyListGroupExcludes: {
             value: null // to be set
         }
     }
