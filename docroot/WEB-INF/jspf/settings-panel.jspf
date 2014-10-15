@@ -94,6 +94,7 @@
                         <%@ include file="/WEB-INF/jspf/settings/buddy-list-site-excludes.jspf" %>
                         <%@ include file="/WEB-INF/jspf/settings/buddy-list-group-excludes.jspf" %>
                     </ul>
+                    <div class="clear"></div>
                 </div>
             </c:if>
         </div>
