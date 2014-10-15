@@ -1,3 +1,4 @@
+<%@ page import="com.marcelmika.lims.api.environment.Environment" %>
 <%--
   ~ The MIT License (MIT)
   ~
@@ -24,6 +25,9 @@
 
 <%-- Variables --%>
 <%--@elvariable id="isAdmin" type="boolean"--%>
+
+<%-- Constants --%>
+<c:set var="PREFERENCES" value="<%= Environment.PropertiesSource.PREFERENCES %>"/>
 
 <% { %>
 
@@ -77,7 +81,7 @@
             </div>
 
             <%-- ADMIN AREA --%>
-            <c:if test="${isAdmin}">
+            <c:if test="${isAdmin and (properties.propertiesSource eq PREFERENCES)}">
                 <div class="admin-area">
                     <div class="settings-title">
                         <span><liferay-ui:message key="panel-settings-admin-area-title"/></span>

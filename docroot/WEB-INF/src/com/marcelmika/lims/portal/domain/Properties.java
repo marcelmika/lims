@@ -28,6 +28,9 @@ import com.liferay.compat.portal.kernel.util.StringUtil;
 import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.environment.Environment.BuddyListStrategy;
 import com.marcelmika.lims.api.environment.Environment.BuddyListSocialRelation;
+import com.marcelmika.lims.api.environment.Environment.PropertiesSource;
+
+import java.util.Arrays;
 
 /**
  * @author Ing. Marcel Mika
@@ -37,6 +40,7 @@ import com.marcelmika.lims.api.environment.Environment.BuddyListSocialRelation;
  */
 public class Properties {
 
+    private PropertiesSource propertiesSource;
     private BuddyListStrategy buddyListStrategy;
     private BuddyListSocialRelation[] buddyListSocialRelations;
     private Boolean buddyListIgnoreDefaultUser;
@@ -59,6 +63,7 @@ public class Properties {
         Properties properties = new Properties();
 
         // Map properties
+        properties.propertiesSource = Environment.getPropertiesSource();
         properties.buddyListStrategy = Environment.getBuddyListStrategy();
         properties.buddyListSocialRelations = Environment.getBuddyListSocialRelations();
         properties.buddyListIgnoreDefaultUser = Environment.getBuddyListIgnoreDefaultUser();
@@ -72,6 +77,14 @@ public class Properties {
         properties.urlUnsupportedBrowser = Environment.getUrlUnsupportedBrowser();
 
         return properties;
+    }
+
+    public PropertiesSource getPropertiesSource() {
+        return propertiesSource;
+    }
+
+    public void setPropertiesSource(PropertiesSource propertiesSource) {
+        this.propertiesSource = propertiesSource;
     }
 
     public BuddyListStrategy getBuddyListStrategy() {
@@ -168,5 +181,23 @@ public class Properties {
 
     public void setUrlUnsupportedBrowser(String urlUnsupportedBrowser) {
         this.urlUnsupportedBrowser = urlUnsupportedBrowser;
+    }
+
+    @Override
+    public String toString() {
+        return "Properties{" +
+                "propertiesSource=" + propertiesSource +
+                ", buddyListStrategy=" + buddyListStrategy +
+                ", buddyListSocialRelations=" + Arrays.toString(buddyListSocialRelations) +
+                ", buddyListIgnoreDefaultUser=" + buddyListIgnoreDefaultUser +
+                ", buddyListIgnoreDeactivatedUser=" + buddyListIgnoreDeactivatedUser +
+                ", buddyListMaxBuddies=" + buddyListMaxBuddies +
+                ", buddyListMaxSearch=" + buddyListMaxSearch +
+                ", conversationListMaxMessages=" + conversationListMaxMessages +
+                ", buddyListSiteExcludes=" + Arrays.toString(buddyListSiteExcludes) +
+                ", buddyListGroupExcludes=" + Arrays.toString(buddyListGroupExcludes) +
+                ", urlHelp='" + urlHelp + '\'' +
+                ", urlUnsupportedBrowser='" + urlUnsupportedBrowser + '\'' +
+                '}';
     }
 }
