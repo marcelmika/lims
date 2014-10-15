@@ -40,5 +40,5 @@
         <input ${checked} type="checkbox"/>
         <span></span>
     </label>
-    Ignore default user
+    <span>Ignore default user</span>
 </li>

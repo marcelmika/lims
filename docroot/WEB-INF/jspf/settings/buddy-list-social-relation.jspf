@@ -74,7 +74,7 @@
 <%-- Rendered --%>
 <li class="buddy-list-social-relations">
     <div class="settings-category-title">
-        Buddy list social relations
+        <span>Buddy list social relations</span>
     </div>
     <div class="button-group ${disabledClass}">
         <label data-choice="${TYPE_BI_CONNECTION}" class="button button-primary ${connectionActiveClass}">

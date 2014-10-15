@@ -98,11 +98,13 @@ public class PropertiesManagerImpl implements PropertiesManager {
             setupBuddyListSiteExcludes(preferences);
             setupBuddyListGroupExcludes(preferences);
 
+            // Set url properties
+            setUrlProperties();
+
             // Set jabber related properties
             setupJabberProperties();
         }
     }
-
 
     /**
      * Updates portlet preferences based on the properties. Preferences are stored and updated
@@ -812,5 +814,16 @@ public class PropertiesManagerImpl implements PropertiesManager {
         Environment.setSaslPlainAuthId(PortletPropertiesValues.JABBER_SASL_PLAIN_AUTHID);
         Environment.setSaslPlainPassword(PortletPropertiesValues.JABBER_SASL_PLAIN_PASSWORD);
         Environment.setErrorModeEnabled(PortletPropertiesValues.ERROR_MODE_ENABLED);
+    }
+
+    /**
+     * Sets url related properties
+     */
+    public void setUrlProperties() {
+
+        // Set url properties
+        Environment.setUrlHelp(PortletPropertiesValues.URL_HELP);
+        Environment.setUrlUnsupportedBrowser(PortletPropertiesValues.URL_UNSUPPORTED_BROWSER);
+
     }
 }

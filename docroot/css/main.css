@@ -1394,6 +1394,10 @@
 / SETTINGS PANEL - ADMIN AREA
 /********************************************************************************/
 
+.liferay-ims .chat-settings .admin-area {
+    position: relative;
+}
+
 .liferay-ims .chat-settings .admin-area .settings {
     width: 420px;
     height: 300px;
@@ -1404,6 +1408,22 @@
 .liferay-ims .chat-settings .admin-area .settings.closed {
     width: 250px;
     height: 0;
+}
+
+.liferay-ims .chat-settings .admin-area .help {
+    display: block;
+    text-decoration: none;
+    background: url(../images/button-help.png) center center no-repeat;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 42px;
+    right: 10px;
+    z-index: 2;
+}
+
+.liferay-ims .chat-settings .admin-area .help:hover {
+    opacity: 0.7;
 }
 
 .liferay-ims .chat-settings .admin-area .open-button {
@@ -1432,6 +1452,14 @@
 
 .liferay-ims .chat-settings .admin-area .buddy-list-group-excludes {
     margin-bottom: 20px;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+
+    .liferay-ims .chat-settings .admin-area .help {
+        background-image: url(../images/button-help@2x.png);
+        background-size: auto 20px;
+    }
 }
 
 /********************************************************************************

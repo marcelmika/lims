@@ -68,6 +68,10 @@ public interface PortletPropertiesKeys {
     public static final String JABBER_SASL_PLAIN_AUTHID = "jabber.sasl.plain.authId";
     public static final String JABBER_SASL_PLAIN_PASSWORD = "jabber.sasl.plain.password";
 
+    // URLs
+    public static final String URL_HELP = "url.help";
+    public static final String URL_UNSUPPORTED_BROWSER = "url.unsupported.browser";
+
     // Error mode
     public static final String ERROR_MODE_ENABLED = "error.mode.enabled";
 }

@@ -65,7 +65,7 @@
 <%-- Rendered --%>
 <li class="buddy-list-strategy">
     <div class="settings-category-title">
-        Buddy list strategy
+        <span>Buddy list strategy</span>
     </div>
     <div class="button-group">
         <label data-choice="${ALL}" class="button button-primary ${allActiveClass}">

@@ -40,6 +40,5 @@
                                    type="checkbox"/>
         <span></span>
     </label>
-    <liferay-ui:message key="panel-settings-play-sound-label"/>
-
+    <span><liferay-ui:message key="panel-settings-play-sound-label"/></span>
 </li>

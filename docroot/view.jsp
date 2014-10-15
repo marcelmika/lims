@@ -92,7 +92,7 @@
             <%-- Browser is not supported--%>
         <c:if test="${!isSupportedBrowser}">
             <div class="unsupported-browser">
-                <a href="http://marcelmika.com/lims/unsupported" target="_blank">
+                <a href="${properties.urlUnsupportedBrowser}" target="_blank">
                     <liferay-ui:message key="unsupported-browser-message"/>
                 </a>
             </div>

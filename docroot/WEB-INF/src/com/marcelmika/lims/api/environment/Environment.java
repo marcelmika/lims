@@ -57,6 +57,8 @@ public class Environment {
     private static Boolean saslPlainEnabled;
     private static String saslPlainAuthId;
     private static String saslPlainPassword;
+    private static String urlHelp;
+    private static String urlUnsupportedBrowser;
     private static Boolean errorModeEnabled;
 
     /**
@@ -628,6 +630,42 @@ public class Environment {
      */
     public static void setSaslPlainPassword(String saslPlainPassword) {
         Environment.saslPlainPassword = saslPlainPassword;
+    }
+
+    /**
+     * Returns url string for the unsupported browser message
+     *
+     * @return String
+     */
+    public static String getUrlUnsupportedBrowser() {
+        return urlUnsupportedBrowser;
+    }
+
+    /**
+     * Sets url string for the unsupported browser
+     *
+     * @param urlUnsupportedBrowser String
+     */
+    public static void setUrlUnsupportedBrowser(String urlUnsupportedBrowser) {
+        Environment.urlUnsupportedBrowser = urlUnsupportedBrowser;
+    }
+
+    /**
+     * Returns url string for the help message
+     *
+     * @return String
+     */
+    public static String getUrlHelp() {
+        return urlHelp;
+    }
+
+    /**
+     * Set the url string for the help message
+     *
+     * @param urlHelp String
+     */
+    public static void setUrlHelp(String urlHelp) {
+        Environment.urlHelp = urlHelp;
     }
 
     /**

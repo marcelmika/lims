@@ -30,7 +30,7 @@
 <li class="buddy-list-max-search">
 
     <div class="settings-category-title">
-        Max number of search results
+        <span>Max number of search results</span>
     </div>
     <div class="value">${properties.buddyListMaxSearch}</div>
     <div class="slider"></div>

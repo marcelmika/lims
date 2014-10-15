@@ -249,6 +249,27 @@ Y.LIMS.View.ChoiceElementView = Y.Base.create('choiceElementView', Y.View, [], {
         return selectedChoices.length > minChoices;
     },
 
+    /**
+     * Returns node related to the choice
+     *
+     * @param choice
+     * @private
+     */
+    _getChoiceNode: function (choice) {
+        // Vars
+        var container = this.get('container'),
+            choiceNode = null;
+
+        // Search all choices
+        container.all('.button').each(function (button) {
+
+            if (button.getAttribute('data-choice') === choice) {
+                choiceNode = button;
+            }
+        });
+
+        return choiceNode;
+    },
 
     /**
      * Called when the user clicks on one of the choices
@@ -278,30 +299,7 @@ Y.LIMS.View.ChoiceElementView = Y.Base.create('choiceElementView', Y.View, [], {
                 });
             }
         }
-    },
-
-    /**
-     * Returns node related to the choice
-     *
-     * @param choice
-     * @private
-     */
-    _getChoiceNode: function (choice) {
-        // Vars
-        var container = this.get('container'),
-            choiceNode = null;
-
-        // Search all choices
-        container.all('.button').each(function (button) {
-
-            if (button.getAttribute('data-choice') === choice) {
-                choiceNode = button;
-            }
-        });
-
-        return choiceNode;
     }
-
 
 }, {
 

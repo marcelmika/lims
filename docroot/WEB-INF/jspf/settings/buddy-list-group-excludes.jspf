@@ -30,7 +30,8 @@
 <li class="buddy-list-group-excludes token-input">
 
     <div class="settings-category-title">
-        Excluded groups
+        <span>Excluded groups</span>
     </div>
-    <input type="text" value="${properties.buddyListGroupExcludesFlatten}"/>
+    <input type="text" placeholder="" value="${properties.buddyListGroupExcludesFlatten}"/>
+
 </li>

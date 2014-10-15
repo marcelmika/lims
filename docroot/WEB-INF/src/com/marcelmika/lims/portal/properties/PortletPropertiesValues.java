@@ -145,6 +145,16 @@ public class PortletPropertiesValues {
             PortletPropertiesKeys.JABBER_SASL_PLAIN_PASSWORD
     );
 
+    // URL - Help
+    public static final String URL_HELP = getString(
+            PortletPropertiesKeys.URL_HELP
+    );
+
+    // URL - Unsupported browser
+    public static final String URL_UNSUPPORTED_BROWSER = getString(
+            PortletPropertiesKeys.URL_UNSUPPORTED_BROWSER
+    );
+
     // Error Mode
     public static final Boolean ERROR_MODE_ENABLED = getBoolean(
             PortletPropertiesKeys.ERROR_MODE_ENABLED

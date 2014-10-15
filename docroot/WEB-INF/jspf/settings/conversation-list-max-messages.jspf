@@ -30,7 +30,7 @@
 <li class="conversation-list-max-messages">
 
     <div class="settings-category-title">
-        Max number of visible messages in conversation
+        <span>Max number of visible messages in conversation</span>
     </div>
     <div class="value">${properties.conversationListMaxMessages}</div>
     <div class="slider"></div>

@@ -30,7 +30,7 @@
 <li class="buddy-list-max-buddies">
 
     <div class="settings-category-title">
-        Max number of buddies on a list
+        <span>Max number of buddies on a list</span>
     </div>
     <div class="value">${properties.buddyListMaxBuddies}</div>
     <div class="slider"></div>

@@ -46,6 +46,8 @@ public class Properties {
     private Integer conversationListMaxMessages;
     private String[] buddyListSiteExcludes;
     private String[] buddyListGroupExcludes;
+    private String urlHelp;
+    private String urlUnsupportedBrowser;
 
     /**
      * Factory method that creates an instance of properties from the environment properties
@@ -66,6 +68,8 @@ public class Properties {
         properties.conversationListMaxMessages = Environment.getConversationListMaxMessages();
         properties.buddyListSiteExcludes = Environment.getBuddyListSiteExcludes();
         properties.buddyListGroupExcludes = Environment.getBuddyListGroupExcludes();
+        properties.urlHelp = Environment.getUrlHelp();
+        properties.urlUnsupportedBrowser = Environment.getUrlUnsupportedBrowser();
 
         return properties;
     }
@@ -148,5 +152,21 @@ public class Properties {
 
     public void setBuddyListGroupExcludes(String[] buddyListGroupExcludes) {
         this.buddyListGroupExcludes = buddyListGroupExcludes;
+    }
+
+    public String getUrlHelp() {
+        return urlHelp;
+    }
+
+    public void setUrlHelp(String urlHelp) {
+        this.urlHelp = urlHelp;
+    }
+
+    public String getUrlUnsupportedBrowser() {
+        return urlUnsupportedBrowser;
+    }
+
+    public void setUrlUnsupportedBrowser(String urlUnsupportedBrowser) {
+        this.urlUnsupportedBrowser = urlUnsupportedBrowser;
     }
 }

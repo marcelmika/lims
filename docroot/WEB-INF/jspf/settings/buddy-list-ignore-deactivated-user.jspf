@@ -40,5 +40,5 @@
         <input ${checked} type="checkbox"/>
         <span></span>
     </label>
-    Ignore deactivated user
+    <span>Ignore deactivated user</span>
 </li>
