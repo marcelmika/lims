@@ -82,7 +82,7 @@
                         <span>Admin area</span>
                         <span class="open-button">${openButtonText}</span>
                     </div>
-                    <a class="help" href="${properties.urlHelp}" target="_blank"></a>
+                    <a class="help" href="${properties.urlHelp}" target="_blank" title="Help"></a>
                     <ul class="lfr-component settings ${adminAreaClass}">
                         <%@ include file="/WEB-INF/jspf/settings/buddy-list-strategy.jspf" %>
                         <%@ include file="/WEB-INF/jspf/settings/buddy-list-social-relation.jspf" %>
