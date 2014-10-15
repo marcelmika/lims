@@ -924,7 +924,8 @@ public class PropertiesManagerImpl implements PropertiesManager {
             if (log.isInfoEnabled()) {
                 log.info(String.format(
                         "The value of %s property is out of scope: %d. Value should be between %d - %d. Setting" +
-                                " the %s value to the default: %d",
+                                " the %s value to default: %d. To get rid of the message check the" +
+                                " portlet.properties file and update the value.",
                         name, value, min, max, name, defaultValue));
             }
 
