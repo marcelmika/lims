@@ -35,31 +35,31 @@ package com.marcelmika.lims.api.environment;
 public class Environment {
 
     // Environment properties
-    private static PropertiesSource propertiesSource;
-    private static BuddyListSource buddyListSource;
-    private static BuddyListStrategy buddyListStrategy;
-    private static BuddyListSocialRelation[] buddyListSocialRelations;
-    private static Boolean buddyListIgnoreDefaultUser;
-    private static Boolean buddyListIgnoreDeactivatedUser;
-    private static Integer buddyListMaxBuddies;
-    private static Integer buddyListMaxSearch;
-    private static Integer conversationListMaxMessages;
-    private static String[] buddyListSiteExcludes;
-    private static String[] buddyListGroupExcludes;
-    private static Boolean jabberEnabled;
-    private static String jabberHost;
-    private static Integer jabberPort;
-    private static String jabberServiceName;
-    private static String jabberResource;
-    private static Boolean jabberSock5ProxyEnabled;
-    private static Integer jabberSock5ProxyPort;
-    private static Boolean jabberImportUserEnabled;
-    private static Boolean saslPlainEnabled;
-    private static String saslPlainAuthId;
-    private static String saslPlainPassword;
-    private static String urlHelp;
-    private static String urlUnsupportedBrowser;
-    private static Boolean errorModeEnabled;
+    private static PropertiesSource propertiesSource = PropertiesSource.PREFERENCES;
+    private static BuddyListSource buddyListSource = BuddyListSource.LIFERAY;
+    private static BuddyListStrategy buddyListStrategy = BuddyListStrategy.ALL;
+    private static BuddyListSocialRelation[] buddyListSocialRelations = new BuddyListSocialRelation[]{};
+    private static Boolean buddyListIgnoreDefaultUser = false;
+    private static Boolean buddyListIgnoreDeactivatedUser = false;
+    private static Integer buddyListMaxBuddies = 0;
+    private static Integer buddyListMaxSearch = 0;
+    private static Integer conversationListMaxMessages = 0;
+    private static String[] buddyListSiteExcludes = new String[]{};
+    private static String[] buddyListGroupExcludes = new String[]{};
+    private static Boolean jabberEnabled = false;
+    private static String jabberHost = "";
+    private static Integer jabberPort = 0;
+    private static String jabberServiceName = "";
+    private static String jabberResource = "";
+    private static Boolean jabberSock5ProxyEnabled = false;
+    private static Integer jabberSock5ProxyPort = 0;
+    private static Boolean jabberImportUserEnabled = false;
+    private static Boolean saslPlainEnabled = false;
+    private static String saslPlainAuthId = "";
+    private static String saslPlainPassword = "";
+    private static String urlHelp = "";
+    private static String urlUnsupportedBrowser = "";
+    private static Boolean errorModeEnabled = false;
 
     /**
      * Enum for properties source
