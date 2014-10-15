@@ -219,7 +219,7 @@ public class PortletProcessorImpl implements PortletProcessor {
     private boolean processErrorMode(ResourceRequest request, ResourceResponse response) {
 
         // Process error only if the error mode is enabled
-        if (Environment.isErrorModeEnabled()) {
+        if (Environment.isErrorModeEnabled() != null && Environment.isErrorModeEnabled()) {
 
             // Generates random number between 0 and 10
             int number = random.nextInt(10) + 1;

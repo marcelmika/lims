@@ -97,6 +97,7 @@ public class PropertiesManagerImpl implements PropertiesManager {
             setupConversationListMaxMessages(preferences);
             setupBuddyListSiteExcludes(preferences);
             setupBuddyListGroupExcludes(preferences);
+            setupErrorMode();
 
             // Set url properties
             setUrlProperties();
@@ -813,6 +814,13 @@ public class PropertiesManagerImpl implements PropertiesManager {
         Environment.setSaslPlainEnabled(PortletPropertiesValues.JABBER_SASL_PLAIN_ENABLED);
         Environment.setSaslPlainAuthId(PortletPropertiesValues.JABBER_SASL_PLAIN_AUTHID);
         Environment.setSaslPlainPassword(PortletPropertiesValues.JABBER_SASL_PLAIN_PASSWORD);
+
+    }
+
+    /**
+     * Setups the error mode
+     */
+    private void setupErrorMode() {
         Environment.setErrorModeEnabled(PortletPropertiesValues.ERROR_MODE_ENABLED);
     }
 
