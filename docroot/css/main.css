@@ -274,18 +274,21 @@
 / SLIDER
 /********************************************************************************/
 
-.yui3-skin-sam .liferay-ims .yui3-slider-x .yui3-slider-thumb {
+.liferay-ims .slider .yui3-slider-x .yui3-slider-thumb {
     width: 22px;
 }
 
-.yui3-skin-sam .liferay-ims .yui3-slider-x .yui3-slider-thumb-shadow {
+.liferay-ims .slider .yui3-slider-x .yui3-slider-thumb-shadow {
     left: -2px;
     top: -46px;
+    width: 22px;
 }
 
-.yui3-skin-sam .liferay-ims .yui3-slider-x .yui3-slider-thumb-image {
+.liferay-ims .slider .yui3-slider-x .yui3-slider-thumb-image {
     top: -8px;
+    width: 22px;
 }
+
 
 /************************************************************************************
 /  TOKEN INPUT
@@ -1365,6 +1368,7 @@
     clear: both;
     float: none;
     padding: 10px;
+    line-height: 26px;
 }
 
 .liferay-ims .chat-settings .settings > input[type="text"] {
@@ -1417,8 +1421,8 @@
     width: 20px;
     height: 20px;
     position: absolute;
-    top: 42px;
-    right: 10px;
+    top: 44px;
+    right: 26px;
     z-index: 2;
 }
 
