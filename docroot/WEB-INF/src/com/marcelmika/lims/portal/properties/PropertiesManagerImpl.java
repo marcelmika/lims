@@ -50,6 +50,19 @@ public class PropertiesManagerImpl implements PropertiesManager {
     // Log
     private static Log log = LogFactoryUtil.getLog(PropertiesManagerImpl.class);
 
+    // Constants
+    private static final int BUDDY_LIST_MAX_BUDDIES_DEFAULT = 200;
+    private static final int BUDDY_LIST_MAX_BUDDIES_MIN = 10;
+    private static final int BUDDY_LIST_MAX_BUDDIES_MAX = 500;
+
+    private static final int BUDDY_LIST_MAX_SEARCH_DEFAULT = 10;
+    private static final int BUDDY_LIST_MAX_SEARCH_MIN = 5;
+    private static final int BUDDY_LIST_MAX_SEARCH_MAX = 50;
+
+    private static final int CONVERSATION_LIST_MAX_MESSAGES_DEFAULT = 100;
+    private static final int CONVERSATION_LIST_MAX_MESSAGES_MIN = 10;
+    private static final int CONVERSATION_LIST_MAX_MESSAGES_MAX = 200;
+
     // Set to true if the environment was already set up
     private boolean isSetup = false;
 
@@ -353,7 +366,7 @@ public class PropertiesManagerImpl implements PropertiesManager {
      *
      * @param preferences PortletPreferences
      */
-    public void setupBuddyListSocialRelations(PortletPreferences preferences) {
+    private void setupBuddyListSocialRelations(PortletPreferences preferences) {
         // Get the properties source
         PropertiesSource source = Environment.getPropertiesSource();
 
@@ -472,7 +485,7 @@ public class PropertiesManagerImpl implements PropertiesManager {
      *
      * @param preferences PortletPreferences
      */
-    public void setupBuddyListIgnoreDefaultUser(PortletPreferences preferences) {
+    private void setupBuddyListIgnoreDefaultUser(PortletPreferences preferences) {
         // Get the properties source
         PropertiesSource source = Environment.getPropertiesSource();
 
@@ -522,7 +535,7 @@ public class PropertiesManagerImpl implements PropertiesManager {
      *
      * @param preferences PortletPreferences
      */
-    public void setupBuddyListIgnoreDeactivatedUser(PortletPreferences preferences) {
+    private void setupBuddyListIgnoreDeactivatedUser(PortletPreferences preferences) {
         // Get the properties source
         PropertiesSource source = Environment.getPropertiesSource();
 
@@ -554,10 +567,19 @@ public class PropertiesManagerImpl implements PropertiesManager {
      */
     private void updateBuddyListMaxBuddies(PortletPreferences preferences, Properties properties) throws Exception {
 
+        // Get the value from properties
+        Integer value = validateValueScope(
+                properties.getBuddyListMaxBuddies(),
+                "buddy list max buddies",
+                BUDDY_LIST_MAX_BUDDIES_MIN,
+                BUDDY_LIST_MAX_BUDDIES_MAX,
+                BUDDY_LIST_MAX_BUDDIES_DEFAULT
+        );
+
         // Set the value in portlet preferences
         preferences.setValue(
                 PortletPropertiesKeys.BUDDY_LIST_MAX_BUDDIES,
-                String.valueOf(properties.getBuddyListMaxBuddies())
+                String.valueOf(value)
         );
 
         // Persists
@@ -572,10 +594,20 @@ public class PropertiesManagerImpl implements PropertiesManager {
      *
      * @param preferences PortletPreferences
      */
-    public void setupBuddyListMaxBuddies(PortletPreferences preferences) {
+    private void setupBuddyListMaxBuddies(PortletPreferences preferences) {
         // Get the properties source
         PropertiesSource source = Environment.getPropertiesSource();
 
+        // Get the value from properties
+        Integer value = validateValueScope(
+                PortletPropertiesValues.BUDDY_LIST_MAX_BUDDIES,
+                "buddy list max buddies",
+                BUDDY_LIST_MAX_BUDDIES_MIN,
+                BUDDY_LIST_MAX_BUDDIES_MAX,
+                BUDDY_LIST_MAX_BUDDIES_DEFAULT
+        );
+
+        // Prepare the value that will be returned
         Integer buddyListMaxBuddies;
 
         // Preferences
@@ -583,12 +615,12 @@ public class PropertiesManagerImpl implements PropertiesManager {
             // Take the value from preferences
             buddyListMaxBuddies = Integer.parseInt(preferences.getValue(
                     PortletPropertiesKeys.BUDDY_LIST_MAX_BUDDIES,
-                    String.valueOf(PortletPropertiesValues.BUDDY_LIST_MAX_BUDDIES)
+                    String.valueOf(value)
             ));
         }
         // Properties
         else {
-            buddyListMaxBuddies = PortletPropertiesValues.BUDDY_LIST_MAX_BUDDIES;
+            buddyListMaxBuddies = value;
         }
 
         // Save in Environment
@@ -604,10 +636,19 @@ public class PropertiesManagerImpl implements PropertiesManager {
      */
     private void updateBuddyListMaxSearch(PortletPreferences preferences, Properties properties) throws Exception {
 
+        // Get the value from properties
+        Integer value = validateValueScope(
+                properties.getBuddyListMaxSearch(),
+                "buddy list max search",
+                BUDDY_LIST_MAX_SEARCH_MIN,
+                BUDDY_LIST_MAX_SEARCH_MAX,
+                BUDDY_LIST_MAX_SEARCH_DEFAULT
+        );
+
         // Set the value in portlet preferences
         preferences.setValue(
                 PortletPropertiesKeys.BUDDY_LIST_MAX_SEARCH,
-                String.valueOf(properties.getBuddyListMaxSearch())
+                String.valueOf(value)
         );
 
         // Persist
@@ -622,10 +663,20 @@ public class PropertiesManagerImpl implements PropertiesManager {
      *
      * @param preferences PortletPreferences
      */
-    public void setupBuddyListMaxSearch(PortletPreferences preferences) {
+    private void setupBuddyListMaxSearch(PortletPreferences preferences) {
         // Get the properties source
         PropertiesSource source = Environment.getPropertiesSource();
 
+        // Get the value from properties
+        Integer value = validateValueScope(
+                PortletPropertiesValues.BUDDY_LIST_MAX_SEARCH,
+                "buddy list max search",
+                BUDDY_LIST_MAX_SEARCH_MIN,
+                BUDDY_LIST_MAX_SEARCH_MAX,
+                BUDDY_LIST_MAX_SEARCH_DEFAULT
+        );
+
+        // Prepare the value that will be returned
         Integer buddyListMaxSearch;
 
         // Preferences
@@ -633,17 +684,18 @@ public class PropertiesManagerImpl implements PropertiesManager {
             // Take the value from preferences
             buddyListMaxSearch = Integer.parseInt(preferences.getValue(
                     PortletPropertiesKeys.BUDDY_LIST_MAX_SEARCH,
-                    String.valueOf(PortletPropertiesValues.BUDDY_LIST_MAX_SEARCH)
+                    String.valueOf(value)
             ));
         }
         // Properties
         else {
-            buddyListMaxSearch = PortletPropertiesValues.BUDDY_LIST_MAX_SEARCH;
+            buddyListMaxSearch = value;
         }
 
         // Save in Environment
         Environment.setBuddyListMaxSearch(buddyListMaxSearch);
     }
+
 
     /**
      * Updates conversation list max messages property
@@ -654,10 +706,19 @@ public class PropertiesManagerImpl implements PropertiesManager {
      */
     private void updateConversationListMaxMessages(PortletPreferences preferences, Properties properties) throws Exception {
 
+        // Get the value from properties
+        Integer value = validateValueScope(
+                properties.getConversationListMaxMessages(),
+                "conversation list max messages",
+                CONVERSATION_LIST_MAX_MESSAGES_MIN,
+                CONVERSATION_LIST_MAX_MESSAGES_MAX,
+                CONVERSATION_LIST_MAX_MESSAGES_DEFAULT
+        );
+
         // Set the value in portlet preferences
         preferences.setValue(
                 PortletPropertiesKeys.CONVERSATION_LIST_MAX_MESSAGES,
-                String.valueOf(properties.getConversationListMaxMessages())
+                String.valueOf(value)
         );
 
         // Persist
@@ -672,10 +733,20 @@ public class PropertiesManagerImpl implements PropertiesManager {
      *
      * @param preferences PortletPreferences
      */
-    public void setupConversationListMaxMessages(PortletPreferences preferences) {
+    private void setupConversationListMaxMessages(PortletPreferences preferences) {
         // Get the properties source
         PropertiesSource source = Environment.getPropertiesSource();
 
+        // Get the value from properties
+        Integer value = validateValueScope(
+                PortletPropertiesValues.CONVERSATION_LIST_MAX_MESSAGES,
+                "conversation list max messages",
+                CONVERSATION_LIST_MAX_MESSAGES_MIN,
+                CONVERSATION_LIST_MAX_MESSAGES_MAX,
+                CONVERSATION_LIST_MAX_MESSAGES_DEFAULT
+        );
+
+        // Prepare the value that will be returned
         Integer conversationListMaxMessages;
 
         // Preferences
@@ -683,12 +754,12 @@ public class PropertiesManagerImpl implements PropertiesManager {
             // Take the value from preferences
             conversationListMaxMessages = Integer.parseInt(preferences.getValue(
                     PortletPropertiesKeys.CONVERSATION_LIST_MAX_MESSAGES,
-                    String.valueOf(PortletPropertiesValues.CONVERSATION_LIST_MAX_MESSAGES)
+                    String.valueOf(value)
             ));
         }
         // Properties
         else {
-            conversationListMaxMessages = PortletPropertiesValues.CONVERSATION_LIST_MAX_MESSAGES;
+            conversationListMaxMessages = value;
         }
 
         // Save in Environment
@@ -722,7 +793,7 @@ public class PropertiesManagerImpl implements PropertiesManager {
      *
      * @param preferences PortletPreferences
      */
-    public void setupBuddyListSiteExcludes(PortletPreferences preferences) {
+    private void setupBuddyListSiteExcludes(PortletPreferences preferences) {
         // Get the properties source
         PropertiesSource source = Environment.getPropertiesSource();
 
@@ -772,7 +843,7 @@ public class PropertiesManagerImpl implements PropertiesManager {
      *
      * @param preferences PortletPreferences
      */
-    public void setupBuddyListGroupExcludes(PortletPreferences preferences) {
+    private void setupBuddyListGroupExcludes(PortletPreferences preferences) {
         // Get the properties source
         PropertiesSource source = Environment.getPropertiesSource();
 
@@ -798,7 +869,7 @@ public class PropertiesManagerImpl implements PropertiesManager {
     /**
      * Sets jabber related properties
      */
-    public void setupJabberProperties() {
+    private void setupJabberProperties() {
 
         // Set jabber properties to Environment
         // TODO: Uncomment when implemented
@@ -827,11 +898,41 @@ public class PropertiesManagerImpl implements PropertiesManager {
     /**
      * Sets url related properties
      */
-    public void setUrlProperties() {
+    private void setUrlProperties() {
 
         // Set url properties
         Environment.setUrlHelp(PortletPropertiesValues.URL_HELP);
         Environment.setUrlUnsupportedBrowser(PortletPropertiesValues.URL_UNSUPPORTED_BROWSER);
 
+    }
+
+    /**
+     * Validates the value if it's in a proper scope. Returns the default
+     * value if the provided value is not in the scope
+     *
+     * @param value        that should be examined
+     * @param name         of the property that is represented by the value
+     * @param min          scope minimum
+     * @param max          scope maximum
+     * @param defaultValue which is returned if the value is out of scope
+     * @return validated value
+     */
+    private Integer validateValueScope(Integer value, String name, Integer min, Integer max, Integer defaultValue) {
+        // Check the value scope
+        if (value < min || value > max) {
+            // Log
+            if (log.isInfoEnabled()) {
+                log.info(String.format(
+                        "The value of %s property is out of scope: %d. Value should be between %d - %d. Setting" +
+                                " the %s value to the default: %d",
+                        name, value, min, max, name, defaultValue));
+            }
+
+            // Return default
+            return defaultValue;
+        }
+
+        // Value is ok
+        return value;
     }
 }

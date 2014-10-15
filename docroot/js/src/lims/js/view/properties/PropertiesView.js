@@ -678,7 +678,7 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
                     container: container,
                     valueContainer: valueContainer,
                     min: 10,
-                    max: 500,
+                    max: 200,
                     value: valueContainer.get('innerHTML')
                 });
             }
