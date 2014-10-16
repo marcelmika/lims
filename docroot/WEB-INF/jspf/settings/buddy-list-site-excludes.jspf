@@ -26,20 +26,8 @@
 <%-- Variables --%>
 <%--@elvariable id="properties" type="com.marcelmika.lims.portal.domain.Properties"--%>
 
-<%-- Constants --%>
-<c:set var="SITES" value="<%= BuddyListStrategy.SITES %>"/>
-<c:set var="SITES_AND_SOCIAL" value="<%= BuddyListStrategy.SITES_AND_SOCIAL %>"/>
-
-<%-- Defaults --%>
-<c:set var="disabledClass" value="disabled"/>
-
-<%-- Decide what should be active --%>
-<c:if test="${(properties.buddyListStrategy eq SITES) or (properties.buddyListStrategy eq SITES_AND_SOCIAL)}">
-    <c:set var="disabledClass" value=""/>
-</c:if>
-
 <%-- Render --%>
-<li class="buddy-list-site-excludes token-input ${disabledClass}">
+<li class="buddy-list-site-excludes token-input">
 
     <div class="settings-category-title">
         <span><liferay-ui:message key="panel-settings-admin-area-excluded-sites-title"/></span>

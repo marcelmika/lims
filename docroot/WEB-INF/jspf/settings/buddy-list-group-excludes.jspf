@@ -26,19 +26,8 @@
 <%-- Variables --%>
 <%--@elvariable id="properties" type="com.marcelmika.lims.portal.domain.Properties"--%>
 
-<%-- Constants --%>
-<c:set var="USER_GROUPS" value="<%= BuddyListStrategy.USER_GROUPS %>"/>
-
-<%-- Defaults --%>
-<c:set var="disabledClass" value="disabled"/>
-
-<%-- Decide what should be active --%>
-<c:if test="${properties.buddyListStrategy eq USER_GROUPS}">
-    <c:set var="disabledClass" value=""/>
-</c:if>
-
 <%-- Render --%>
-<li class="buddy-list-group-excludes token-input ${disabledClass}">
+<li class="buddy-list-group-excludes token-input">
 
     <div class="settings-category-title">
         <span><liferay-ui:message key="panel-settings-admin-area-excluded-groups-title"/></span>
