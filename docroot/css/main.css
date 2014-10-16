@@ -295,7 +295,7 @@
 /************************************************************************************/
 
 .liferay-ims .token-input li {
-    padding-bottom: 0px;
+    padding-bottom: 0;
 }
 
 .liferay-ims .token-input .yui3-tokeninput,
@@ -306,15 +306,10 @@
     padding: 0;
     vertical-align: bottom;
     zoom: 1;
-    *display: inline;
 }
 
 .liferay-ims .token-input .yui3-tokeninput {
     width: 360px;
-}
-
-.liferay-ims .token-input .yui3-tokeninput-content {
-    /*min-height: 35px;*/
 }
 
 .liferay-ims .token-input .yui3-tokeninput-content,
@@ -330,8 +325,8 @@
     outline: 0;
     padding: 0;
     width: 5ex;
-    *vertical-align: top;
     -webkit-appearance: none;
+    margin-bottom: 7px;
 }
 
 .liferay-ims .token-input .yui3-tokeninput-input:disabled {
