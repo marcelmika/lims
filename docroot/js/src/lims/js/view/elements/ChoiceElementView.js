@@ -68,6 +68,28 @@ Y.LIMS.View.ChoiceElementView = Y.Base.create('choiceElementView', Y.View, [], {
     },
 
     /**
+     * Resets all choices
+     */
+    reset: function () {
+        // Vars
+        var selectedChoices = this.get('selectedChoices'),
+            choiceNode,
+            index;
+
+        // Remove deactivated choice from the selected choices list
+        for (index = 0; index < selectedChoices.length; index++) {
+            // Get the choice node
+            choiceNode = this._getChoiceNode(selectedChoices[index]);
+
+            // Remove active class thus the button will no longer be active
+            choiceNode.removeClass('active');
+        }
+
+        // Reset the selected choices array
+        this.set('selectedChoices', []);
+    },
+
+    /**
      * Select particular choice. Returns true if the choice was selected
      *
      * @param choice {string}

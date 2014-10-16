@@ -185,6 +185,7 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
         model.save(function (err) {
             if (err) {
                 // Return everything to the previous state
+                buddyListSocialRelations.reset();
                 buddyListSocialRelations.selectChoices(preSelectedChoices);
             }
             // Re-enable the view so the user can interact with it again
