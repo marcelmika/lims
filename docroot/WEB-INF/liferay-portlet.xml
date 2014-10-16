@@ -31,7 +31,7 @@
         <ajaxable>true</ajaxable>
 
         <!-- CSS -->
-        <header-portlet-css>/css/main.css</header-portlet-css>
+        <header-portlet-css>/css/build/main/main.css</header-portlet-css>
         <!-- JS -->
         <footer-portlet-javascript>/js/build/lims-core/lims-core-debug.js</footer-portlet-javascript>
         <footer-portlet-javascript>/js/build/lims-model/lims-model-debug.js</footer-portlet-javascript>

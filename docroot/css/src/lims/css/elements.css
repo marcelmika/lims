@@ -1,0 +1,576 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 Marcel Mika, marcelmika.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+/********************************************************************************
+/ LISTS
+/********************************************************************************/
+
+/* Divider between list elements */
+.liferay-ims li.divider {
+    border-bottom: 1px solid #ddd;
+}
+
+/********************************************************************************
+/ PRELOADER
+/********************************************************************************/
+
+.liferay-ims .preloader {
+    position: absolute;
+    margin: 60px auto 0;
+    text-align: center;
+    background: url(/images/preloader-light.gif) center center no-repeat;
+    width: 100%;
+    height: 40px;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+    .liferay-ims .preloader {
+        background-image: url(/images/preloader-light@2x.gif);
+        background-size: 32px;
+    }
+}
+
+/********************************************************************************
+/ BUTTON
+/********************************************************************************/
+
+.liferay-ims .button {
+    padding: 4px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    /* UnSelectable */
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+}
+
+.liferay-ims .button:hover {
+    background-color: #eee;
+}
+
+.liferay-ims .button-group {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 22px;
+    padding-bottom: 5px;
+}
+
+.liferay-ims .button-group.disabled {
+    opacity: 0.5;
+}
+
+.liferay-ims .button-group .button {
+    border-radius: 0;
+}
+
+.liferay-ims .button-group > .button {
+    position: relative;
+    float: left;
+    margin-left: -1px;
+}
+
+.liferay-ims .button-group .button:first-of-type {
+    border-radius: 5px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.liferay-ims .button-group .button:last-of-type {
+    border-radius: 5px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.liferay-ims .button-primary {
+    color: #333333;
+    background-color: #ffffff;
+    border-color: #cccccc;
+}
+
+.liferay-ims .button-default {
+    color: #333333;
+    background-color: white;
+    border-color: #cccccc;
+}
+
+.liferay-ims .button-primary.active,
+.liferay-ims .button-primary.active:hover,
+.liferay-ims .button-group.disabled .button-primary.active:hover {
+    color: white;
+    background-color: #74B3EB;
+    border-color: #629CCE;
+}
+
+.liferay-ims .button-primary:hover {
+    color: #333333;
+    background-color: rgba(178, 217, 241, 0.62);
+    border-color: rgba(178, 217, 241, 0.62);
+}
+
+.liferay-ims .button-group.disabled .button-primary:hover {
+    color: #333333;
+    background-color: #ffffff;
+    border-color: #cccccc;
+}
+
+.liferay-ims .button-default:hover,
+.liferay-ims .button-default.active {
+    color: #333333;
+    background-color: #ebebeb;
+    border-color: #adadad;
+}
+
+/********************************************************************************
+/ SLIDER
+/********************************************************************************/
+
+.liferay-ims .slider .yui3-slider-x .yui3-slider-thumb {
+    width: 22px;
+}
+
+.liferay-ims .slider .yui3-slider-x .yui3-slider-thumb-shadow {
+    left: -2px;
+    top: -46px;
+    width: 22px;
+}
+
+.liferay-ims .slider .yui3-slider-x .yui3-slider-thumb-image {
+    top: -8px;
+    width: 22px;
+}
+
+/************************************************************************************
+/  TOKEN INPUT
+/************************************************************************************/
+
+.liferay-ims .token-input li {
+    padding-bottom: 0;
+}
+
+.liferay-ims .token-input .yui3-tokeninput,
+.liferay-ims .token-input .yui3-tokeninput-content,
+.liferay-ims .token-input .yui3-tokeninput-item,
+.liferay-ims .token-input .yui3-tokeninput-list {
+    display: inline-block;
+    padding: 0;
+    vertical-align: bottom;
+    zoom: 1;
+}
+
+.liferay-ims .token-input .yui3-tokeninput {
+    width: 360px;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-content,
+.liferay-ims .token-input .yui3-tokeninput-list {
+    width: 100%;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-input {
+    position: relative;
+    top: 4px;
+    border: 0;
+    background: none;
+    outline: 0;
+    padding: 0;
+    width: 5ex;
+    -webkit-appearance: none;
+    margin-bottom: 7px;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-input:disabled {
+    background: none;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-input:focus {
+    -webkit-appearance: none;
+    appearance: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-item {
+    margin: 1px 2px;
+    padding-bottom: 0;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-list {
+    cursor: text;
+    list-style: none;
+    margin: 0;
+    overflow: hidden;
+    padding: 1px 0;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-token {
+    cursor: pointer;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-hidden,
+.liferay-ims .token-input .yui3-tokeninput-host {
+    display: none;
+}
+
+.liferay-ims .token-input .yui3-tokeninput {
+    outline: 0;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-list {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.liferay-ims .token-input .yui3-tokeninput-content {
+    background: #fff;
+    border: 1px solid #ddd;
+    color: #000;
+    padding: 0;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-fauxinput {
+    -moz-box-shadow: inset 0 1px 2px -1px #717171;
+    -webkit-box-shadow: inset 0 1px 2px -1px #717171;
+    border-bottom-color: #dadada;
+    border-top-color: #717171;
+    box-shadow: inset 0 1px 2px -1px #717171;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-token {
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    background-color: #74B3EB;
+    border: 1px solid #629CCE;
+    color: white;
+    border-radius: 8px;
+    padding: 0 10px 1px;
+    position: relative;
+}
+
+.liferay-ims .token-input.disabled .yui3-tokeninput-token {
+    opacity: 0.5;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-hasremove {
+    padding-right: 21px !important;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-hover {
+    background-color: #64a3eb;
+    border-color: #4991ce;
+}
+
+.liferay-ims .token-input.disabled .yui3-tokeninput-hover {
+    background-color: #74B3EB;
+    border: 1px solid #629CCE;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-focus {
+    background-color: #4595eb;
+    border-color: #337ece;
+    color: #fff;
+    outline: 0;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-remove {
+    color: #fff;
+    line-height: 1;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    font-size: 18px;
+    font-weight: lighter;
+    text-decoration: none;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-windows .yui3-tokeninput-remove {
+    margin-top: 2px;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-remove:hover {
+    color: #333;
+}
+
+.liferay-ims .token-input.disabled .yui3-tokeninput-remove:hover {
+    color: #ffffff;
+}
+
+.liferay-ims .token-input .yui3-tokeninput-focus .yui3-tokeninput-remove {
+    color: #fff;
+}
+
+/********************************************************************************
+/ STATUS INDICATOR
+/********************************************************************************/
+
+.liferay-ims .status-indicator {
+    width: 10px;
+    height: 10px;
+    opacity: 0.9;
+}
+
+.liferay-ims .status-indicator.online {
+    background: url(/images/status-online.png) no-repeat center center;
+}
+
+.liferay-ims .status-indicator.busy {
+    background: url(/images/status-busy.png) no-repeat center center;
+}
+
+.liferay-ims .status-indicator.unavailable {
+    background: url(/images/status-unavailable.png) no-repeat center center;
+}
+
+.liferay-ims .status-indicator.off {
+    background: url(/images/status-off.png) no-repeat center center;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+    .liferay-ims .status-indicator.online {
+        background-image: url(/images/status-online@2x.png);
+        background-size: 10px
+    }
+
+    .liferay-ims .status-indicator.busy {
+        background-image: url(/images/status-busy@2x.png);
+        background-size: 10px
+    }
+
+    .liferay-ims .status-indicator.unavailable {
+        background-image: url(/images/status-unavailable@2x.png);
+        background-size: 10px
+    }
+
+    .liferay-ims .status-indicator.off {
+        background-image: url(/images/status-off@2x.png);
+        background-size: 10px
+    }
+}
+
+
+/********************************************************************************
+/ SWITCH
+/********************************************************************************/
+
+.liferay-ims label.switch {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.liferay-ims .switch input {
+    opacity: 0;
+    position: absolute;
+}
+
+.liferay-ims .switch input + span {
+    position: relative;
+    display: inline-block;
+    width: 1.65em;
+    height: 1em;
+    background: white;
+    box-shadow: inset 0 0 0 0.0625em #e9e9e9;
+    border-radius: 0.5em;
+    vertical-align: -0.15em;
+    transition: all 0.40s cubic-bezier(.17, .67, .43, .98);
+}
+
+.liferay-ims .switch:active input + span,
+.liferay-ims .switch input + span:active {
+    box-shadow: inset 0 0 0 0.73em #e9e9e9;
+}
+
+.liferay-ims .switch input + span:after {
+    position: absolute;
+    display: block;
+    content: '';
+    width: 0.875em;
+    height: 0.875em;
+    border-radius: 0.4375em;
+    top: 0.0625em;
+    left: 0.0625em;
+    background: white;
+    box-shadow: inset 0 0 0 0.03em rgba(0, 0, 0, 0.1),
+    0 0 0.05em rgba(0, 0, 0, 0.05),
+    0 0.1em 0.2em rgba(0, 0, 0, 0.2);
+    transition: all 0.25s ease-out;
+}
+
+.liferay-ims .switch:active input + span:after,
+.liferay-ims .switch input + span:active:after {
+    width: 1.15em;
+}
+
+.liferay-ims .switch input:checked + span {
+    box-shadow: inset 0 0 0 0.73em #4cd964;
+}
+
+.liferay-ims .switch input:disabled + span {
+    box-shadow: inset 0 0 0 0.73em rgba(0, 0, 0, 0.08);
+}
+
+.liferay-ims .switch input:checked + span:after {
+    left: 0.7125em;
+}
+
+.liferay-ims .switch:active input:checked + span:after,
+.liferay-ims .switch input:checked + span:active:after {
+    left: 0.4375em;
+}
+
+/* accessibility styles */
+.liferay-ims .switch input:focus + span:after {
+    box-shadow: inset 0 0 0 0.03em rgba(0, 0, 0, 0.15),
+    0 0 0.05em rgba(0, 0, 0, 0.08),
+    0 0.1em 0.2em rgba(0, 0, 0, 0.3);
+    background: #fff;
+}
+
+.liferay-ims .switch input:focus + span {
+    box-shadow: inset 0 0 0 0.0625em #dadada;
+}
+
+.liferay-ims .switch input:focus:checked + span {
+    box-shadow: inset 0 0 0 0.73em #33be4b;
+}
+
+/* reset accessibility style on hover */
+.liferay-ims .switch:hover input:focus + span:after {
+    box-shadow: inset 0 0 0 0.03em rgba(0, 0, 0, 0.1),
+    0 0 0.05em rgba(0, 0, 0, 0.05),
+    0 0.1em 0.2em rgba(0, 0, 0, 0.2);
+    background: #fff;
+}
+
+.liferay-ims .switch:hover input:focus + span {
+    box-shadow: inset 0 0 0 0.0625em #e9e9e9;
+}
+
+.liferay-ims .switch:hover input:focus:checked + span {
+    box-shadow: inset 0 0 0 0.73em #4cd964;
+}
+
+/************************************************************************************
+/  ERROR NOTIFICATION
+/************************************************************************************/
+
+.liferay-ims .error-notification {
+    top: 40%;
+    padding: 10px;
+    width: 90%;
+    position: absolute;
+}
+
+.liferay-ims .error-notification .warning-icon {
+    background: transparent url(/images/icon-warning-red.png) no-repeat center center;
+    width: 14px;
+    height: 16px;
+    margin: 0 7px 0 0;
+    float: left;
+}
+
+.liferay-ims .error-notification .error-message {
+    color: #ce1b1b;
+    max-width: 170px;
+    min-height: 16px;
+    float: left;
+    line-height: 13px;
+    font-size: 12px;
+    text-align: justify;
+}
+
+.liferay-ims .error-notification .resend-button {
+    background: transparent url(/images/icon-resend.png) no-repeat center center;
+    width: 21px;
+    height: 21px;
+    float: right;
+}
+
+.liferay-ims .error-notification .resend-button.activated {
+    position: relative;
+    text-align: center;
+    background: transparent url(/images/preloader-button.gif) center center no-repeat;
+    background-size: 21px;
+    width: 21px;
+    height: 21px;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+    .liferay-ims .error-notification .warning-icon {
+        background-image: url(/images/icon-warning-red@2x.png);
+        background-size: auto 16px;
+    }
+
+    .liferay-ims .error-notification .resend-button {
+        background-image: url(/images/icon-resend@2x.png);
+        background-size: auto 21px;
+    }
+
+    .liferay-ims .error-notification .resend-button.activated {
+        background-image: url(/images/preloader-button@2x.gif);
+        background-size: auto 21px;
+    }
+}
+
+/************************************************************************************
+/  INFO NOTIFICATION
+/************************************************************************************/
+
+.liferay-ims .info-notification {
+    top: 40%;
+    padding: 10px;
+    width: 90%;
+    position: absolute;
+}
+
+.liferay-ims .info-notification .info-icon {
+    background: transparent url(/images/icon-info-blue.png) no-repeat center center;
+    width: 18px;
+    height: 18px;
+    margin: 0 10px 0 5px;
+    float: left;
+}
+
+.liferay-ims .info-notification .info-message {
+    color: #7e7e7e;
+    max-width: 190px;
+    min-height: 18px;
+    float: left;
+    line-height: 13px;
+    font-size: 12px;
+    text-align: justify;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+    .liferay-ims .info-notification .info-icon {
+        background-image: url(/images/icon-info-blue@2x.png);
+        background-size: auto 18px;
+    }
+}

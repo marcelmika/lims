@@ -1,0 +1,94 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 Marcel Mika, marcelmika.com
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+
+/************************************************************************************
+**   PRESENCE PANEL
+*************************************************************************************/
+
+.liferay-ims .status-panel .panel-trigger .trigger-name {
+    width: 20px;
+    height: 24px;
+}
+
+.liferay-ims .status-panel .panel-window {
+    min-width: 150px;
+}
+
+.liferay-ims .status-panel .status-indicator {
+    margin-left: 6px;
+    margin-top: 7px;
+}
+
+.liferay-ims .status-panel .panel-window .status li {
+    padding: 10px 5px 10px 30px;
+    cursor: pointer;
+    line-height: 15px;
+    /* UnSelectable */
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+}
+
+.liferay-ims .status-panel .panel-window .status li:hover {
+    background-color: #f3f3f3;
+}
+
+.liferay-ims .status-panel .panel-window .status .online {
+    background: url(/images/status-online.png) no-repeat 10px center;
+}
+
+.liferay-ims .status-panel .panel-window .status .busy {
+    background: url(/images/status-busy.png) no-repeat 10px center;
+}
+
+.liferay-ims .status-panel .panel-window .status .unavailable {
+    background: url(/images/status-unavailable.png) no-repeat 10px center;
+}
+
+.liferay-ims .status-panel .panel-window .status .off {
+    background: url(/images/status-off.png) no-repeat 10px center;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+    .liferay-ims .status-panel .panel-window .status .online {
+        background-image: url(/images/status-online@2x.png);
+        background-size: 10px;
+    }
+
+    .liferay-ims .status-panel .panel-window .status .busy {
+        background-image: url(/images/status-busy@2x.png);
+        background-size: 10px;
+    }
+
+    .liferay-ims .status-panel .panel-window .status .unavailable {
+        background-image: url(/images/status-unavailable@2x.png);
+        background-size: 10px;
+    }
+
+    .liferay-ims .status-panel .panel-window .status .off {
+        background-image: url(/images/status-off@2x.png);
+        background-size: 10px;
+    }
+}

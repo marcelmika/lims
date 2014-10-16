@@ -1,0 +1,28 @@
+{
+    "name": "lims",
+    "builds": {
+
+        "main": {
+            "cssfiles": [
+                "css/elements.css",
+                "css/globals.css",
+                "css/panel.css",
+                "css/panel-contacts.css",
+                "css/panel-conversation.css",
+                "css/panel-presence.css",
+                "css/panel-settings.css",
+                "css/panel-status.css",
+                "css/portlet.css",
+                "css/reset.css"
+            ],
+            "replace": {
+                "/images/": "../../../images/"
+            }
+        }
+    },
+
+    "shifter": {
+        "lint": false
+    }
+
+}
