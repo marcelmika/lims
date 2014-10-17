@@ -52,10 +52,8 @@
       padding: 10px 5px 10px 30px;
       cursor: pointer;
       line-height: 15px;
-      /* UnSelectable */
-      -webkit-user-select: none; /* Chrome/Safari */
-      -moz-user-select: none; /* Firefox */
-      -ms-user-select: none; /* IE10+ */
+      // Make the button unselectable
+      @include user-select(none);
     }
 
     li:hover {

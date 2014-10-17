@@ -46,10 +46,8 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     padding-right: 15px;
-    /* UnSelectable */
-    -webkit-user-select: none; /* Chrome/Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+ */
+    // Make the button unselectable
+    @include user-select(none);
   }
 
   // Unread messages badge

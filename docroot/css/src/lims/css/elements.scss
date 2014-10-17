@@ -57,10 +57,8 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     cursor: pointer;
-    /* UnSelectable */
-    -webkit-user-select: none; /* Chrome/Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+ */
+    // Make the button unselectable
+    @include user-select(none);
   }
 
   .button:hover {
@@ -377,10 +375,8 @@
 .liferay-ims {
 
   .switch {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    // Make the button unselectable
+    @include user-select(none);
     -webkit-tap-highlight-color: transparent;
     tap-highlight-color: transparent;
     font-size: 20px;
