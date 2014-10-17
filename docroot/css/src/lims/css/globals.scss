@@ -22,62 +22,68 @@
  * SOFTWARE.
  */
 
-
 /********************************************************************************
 / GLOBALS
 /********************************************************************************/
 
-.liferay-ims li {
+.liferay-ims {
+
+  li {
     line-height: 15px;
     padding: 0;
     margin: 0;
     background: #ffffff;
     text-align: left;
-}
+  }
 
-.liferay-ims button {
+  button {
     background: transparent;
     border: none;
     padding: 0;
     margin: 0;
     outline: none;
     opacity: 1 !important;
-}
+  }
 
-.liferay-ims label {
+  label {
     display: inline-block;
     position: relative;
     cursor: pointer;
-}
+  }
 
-.liferay-ims button:hover {
+  button:hover {
     opacity: 0.6 !important;
+  }
+
 }
 
 /********************************************************************************
 / HELPERS
 /********************************************************************************/
 
-.liferay-ims .hidden {
+.liferay-ims {
+
+  .hidden {
     display: none;
-}
+  }
 
-.liferay-ims .covered {
+  .covered {
     visibility: hidden;
-}
+  }
 
-.liferay-ims .clear {
+  .clear {
     clear: both;
-}
+  }
 
-.liferay-ims .pull-left {
+  .pull-left {
     float: left;
-}
+  }
 
-.liferay-ims .pull-right {
+  .pull-right {
     float: right;
-}
+  }
 
-.liferay-ims .overflow-y-scroll {
+  .overflow-y-scroll {
     overflow-y: scroll;
+  }
 }

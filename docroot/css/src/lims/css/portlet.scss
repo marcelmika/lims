@@ -28,53 +28,47 @@
 
 /* Move container down and on top */
 .liferay-ims {
-    position: fixed;
-    bottom: 0;
-    z-index: 1000;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 12px;
-    font-weight: 200;
-    padding: 0;
-    margin: 0;
-    opacity: 1;
-}
+  position: fixed;
+  bottom: 0;
+  z-index: 1000;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 200;
+  padding: 0;
+  margin: 0;
+  opacity: 1;
 
-.liferay-ims textarea,
-.liferay-ims pre,
-.liferay-ims, input {
+  textarea, pre, input {
     font-weight: 200;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
+  }
 
-/* Hide unnecessary portlet bars */
-.liferay-ims .portlet-borderless-bar {
+  // Hide unnecessary portlet bars
+  .portlet-borderless-bar {
     display: none !important;
-}
+  }
 
-/* This hides portlet bars that might appear around the chat bar */
-.liferay-ims .portlet {
+  // This hides portlet bars that might appear around the chat bar
+  .portlet {
     border: none !important;
     background: none !important;
     box-shadow: none !important;
     -moz-box-shadow: none !important;
     -webkit-box-shadow: none !important;
-}
+  }
 
-/* Preloaded images should be taken as far from the visible area as possible */
-.liferay-ims .preloaded-images {
+  // Preloaded images should be taken as far from the visible area as possible
+  .preloaded-images {
     position: absolute;
     overflow: hidden;
     left: -9999px;
     top: -9999px;
     height: 1px;
     width: 1px;
-}
+  }
 
-/********************************************************************************
-/ CHAT CONTAINER
-/********************************************************************************/
-
-.liferay-ims .unsupported-browser {
+  // Message for unsupported browser
+  .unsupported-browser {
     background: #fafafa;
     border: 1px solid #ddd;
     border-bottom: none;
@@ -83,41 +77,47 @@
     right: 5em;
     padding: 3px 10px;
     z-index: 999;
-}
+  }
 
-.liferay-ims .unsupported-browser a {
+  .unsupported-browser a {
     color: #444;
     text-decoration: none;
+  }
+
+  // Hide sound element
+  .lims-sound {
+    position: absolute;
+    top: -10000px;
+    bottom: -10000px;
+  }
+
 }
+
+/********************************************************************************
+/ LIMS BAR (Main container)
+/********************************************************************************/
 
 .liferay-ims .lims-bar {
-    background: #fafafa;
-    border: 1px solid #ddd;
-    border-left: none;
-    border-bottom: none;
-    bottom: 0;
-    height: 24px;
-    position: fixed;
-    right: 5em;
-    z-index: 999;
-}
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-left: none;
+  border-bottom: none;
+  bottom: 0;
+  height: 24px;
+  position: fixed;
+  right: 5em;
+  z-index: 999;
 
-.liferay-ims .lims-bar div ul,
-.liferay-ims .lims-bar div ul li {
+  div ul,
+  div ul li {
     list-style-type: none;
     margin: 0;
     padding: 0;
     position: relative;
     text-align: left;
-}
+  }
 
-.liferay-ims .lims-sound {
-    position: absolute;
-    top: -10000px;
-    bottom: -10000px;
-}
-
-.liferay-ims .lims-bar .panel {
+  .panel {
     bottom: 24px;
     display: none;
     position: absolute;
@@ -126,17 +126,19 @@
     box-shadow: #bcbcbc 1px 1px 1px;
     -webkit-box-shadow: #bcbcbc 1px 1px 1px;
     -moz-box-shadow: #bcbcbc 1px 1px 1px;
-}
+  }
 
-.liferay-ims .lims-bar .selected .panel {
+  .selected .panel {
     display: block;
-}
+  }
 
-.liferay-ims .lims-bar .lims-tabs > li {
+  .lims-tabs > li {
     float: right;
     line-height: 24px;
-}
+  }
 
-.liferay-ims .lims-bar div ul li.closed {
+  div ul li.closed {
     display: none;
+  }
+
 }
