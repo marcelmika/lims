@@ -87,10 +87,8 @@
     height: 36px;
     width: 36px;
     background: #fff;
-    /* Circled image */
-    border-radius: 18px;
-    -webkit-border-radius: 18px;
-    -moz-border-radius: 18px;
+    // Circled image
+    @include border-radius(18px);
   }
 
   .group-buddy-item-divider {

@@ -54,10 +54,8 @@
     left: 6px;
     top: 6px;
     background: #fff;
-    /* Circled image */
-    border-radius: 16px;
-    -webkit-border-radius: 16px;
-    -moz-border-radius: 16px;
+    // Circled image
+    @include border-radius(16px);
   }
 
   .conversation-item-message {
@@ -110,7 +108,6 @@
     border: 1px solid #dedede;
     border-left: none;
     border-right: none;
-    border-radius: 0;
     display: block;
     overflow: hidden;
     -webkit-box-shadow: none;
@@ -121,6 +118,8 @@
     font-size: 12px;
     line-height: 14px;
     color: #545454;
+    // Rounded corners
+    @include border-radius(5px);
   }
 
   .panel-input textarea:focus {

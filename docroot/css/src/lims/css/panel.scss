@@ -52,10 +52,6 @@
 
   // Unread messages badge
   .unread {
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -khtml-border-radius: 5px;
-    border-radius: 5px;
     background: #bd3131;
     color: #fff;
     font-size: 10px;
@@ -69,6 +65,8 @@
     font-weight: bold;
     opacity: 0.8;
     overflow: hidden;
+    // Rounded corners
+    @include border-radius(5px);
 
     &.dimmed {
       background-color: #b3b3b3;
@@ -249,9 +247,8 @@
     box-shadow: none;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
-    -webkit-border-radius: 10px;
-    -ms-border-radius: 10px;
-    border-radius: 10px;
+    // Rounded corners
+    @include border-radius(10px);
   }
 
   .search-input-field:hover,

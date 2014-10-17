@@ -55,8 +55,9 @@
   .button {
     padding: 4px 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
     cursor: pointer;
+    // Rounded corners
+    @include border-radius(5px);
     // Make the button unselectable
     @include user-select(none);
   }
@@ -125,7 +126,8 @@
     }
 
     .button {
-      border-radius: 0;
+      // Rounded corners
+      @include border-radius(0);
     }
 
     > .button {
@@ -135,15 +137,17 @@
     }
 
     .button:first-of-type {
-      border-radius: 5px;
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
+      // Rounded corners
+      @include border-radius(5px);
+      @include border-top-right-radius(0);
+      @include border-bottom-right-radius(0);
     }
 
     .button:last-of-type {
-      border-radius: 5px;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
+      // Rounded corners
+      @include border-radius(5px);
+      @include border-top-left-radius(0);
+      @include border-bottom-left-radius(0);
     }
   }
 
@@ -271,12 +275,11 @@
   }
 
   .yui3-tokeninput-token {
-    -moz-border-radius: 8px;
-    -webkit-border-radius: 8px;
+    // Rounded corners
+    @include border-radius(8px);
     background-color: #74B3EB;
     border: 1px solid #629CCE;
     color: white;
-    border-radius: 8px;
     padding: 0 10px 1px;
     position: relative;
   }
