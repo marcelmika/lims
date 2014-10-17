@@ -29,9 +29,7 @@
 .liferay-ims {
 
   * {
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
+    @include box-sizing(content-box);
     background: none repeat scroll 0 0 transparent;
     font-weight: normal;
     text-decoration: none;
