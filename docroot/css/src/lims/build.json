@@ -4,16 +4,17 @@
 
         "main": {
             "cssfiles": [
-                "css/elements.css",
-                "css/globals.css",
-                "css/panel.css",
-                "css/panel-contacts.css",
-                "css/panel-conversation.css",
-                "css/panel-presence.css",
-                "css/panel-settings.css",
-                "css/panel-status.css",
-                "css/portlet.css",
-                "css/reset.css"
+                "css/mixins.scss",
+                "css/reset.scss",
+                "css/elements.scss",
+                "css/globals.scss",
+                "css/panel.scss",
+                "css/panel-contacts.scss",
+                "css/panel-conversation.scss",
+                "css/panel-presence.scss",
+                "css/panel-settings.scss",
+                "css/panel-status.scss",
+                "css/portlet.scss"
             ],
             "replace": {
                 "/images/": "../../../images/"

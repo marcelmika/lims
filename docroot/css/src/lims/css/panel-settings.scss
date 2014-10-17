@@ -22,90 +22,76 @@
  * SOFTWARE.
  */
 
-
-
-
 /********************************************************************************
 / SETTINGS PANEL
 /********************************************************************************/
 
 .liferay-ims .chat-settings label {
-    font-size: 12px;
+  font-size: 12px;
 }
 
-
 .liferay-ims .chat-settings label.switch {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .liferay-ims .chat-settings .panel-trigger .trigger-name {
-    background: url(/images/icon-settings.png) no-repeat center center;
-    width: 40px;
-    height: 24px;
+  background: url(/images/icon-settings.png) no-repeat center center;
+  @include image-2x('/images/icon-settings@2x.png', 16px, 16px);
+  width: 40px;
+  height: 24px;
 }
 
 .liferay-ims .chat-settings.selected .panel-trigger .trigger-name {
-    background: url(/images/icon-settings-selected.png) no-repeat center center;
-    width: 40px;
-    height: 24px;
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
-    .liferay-ims .chat-settings .panel-trigger .trigger-name {
-        background-image: url(/images/icon-settings@2x.png);
-        background-size: 16px;
-    }
-
-    .liferay-ims .chat-settings.selected .panel-trigger .trigger-name {
-        background-image: url(/images/icon-settings-selected@2x.png);
-        background-size: 16px;
-    }
+  background: url(/images/icon-settings-selected.png) no-repeat center center;
+  @include image-2x('/images/icon-settings-selected@2x.png', 16px, 16px);
+  width: 40px;
+  height: 24px;
 }
 
 .liferay-ims .chat-settings .settings {
-    float: none;
+  float: none;
 }
 
 .liferay-ims .chat-settings .slider {
-    height: 30px;
+  height: 30px;
 }
 
 .liferay-ims .chat-settings .value {
-    float: left;
-    margin: -4px 8px 11px 9px;
-    font-size: 14px;
-    font-weight: bold;
-    min-width: 30px;
+  float: left;
+  margin: -4px 8px 11px 9px;
+  font-size: 14px;
+  font-weight: bold;
+  min-width: 30px;
 }
 
 .liferay-ims .chat-settings .settings li {
-    clear: both;
-    float: none;
-    padding: 10px;
-    line-height: 26px;
+  clear: both;
+  float: none;
+  padding: 10px;
+  line-height: 26px;
 }
 
 .liferay-ims .chat-settings .settings > input[type="text"] {
-    width: 300px;
+  width: 300px;
 }
 
 .liferay-ims .chat-settings .buddy-list-max-buddies {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .liferay-ims .chat-settings .settings-title {
-    height: 25px;
-    background: #f8f8f8;
-    padding-left: 5px;
-    padding-top: 6px;
-    text-transform: uppercase;
-    float: none;
-    -moz-box-shadow: inset 0 0 0 0 #f8f8f8, inset 0 -2px 2px -2px rgba(105, 104, 104, 0.25);
-    -webkit-box-shadow: inset 0 0 0 0 #f8f8f8, inset 0 -2px 2px -2px rgba(105, 104, 104, 0.25);
-    box-shadow: inset 0 0 0 0 #f8f8f8, inset 0 -2px 2px -2px rgba(105, 104, 104, 0.25);
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  height: 25px;
+  background: #f8f8f8;
+  padding-left: 5px;
+  padding-top: 6px;
+  text-transform: uppercase;
+  float: none;
+  -moz-box-shadow: inset 0 0 0 0 #f8f8f8, inset 0 -2px 2px -2px rgba(105, 104, 104, 0.25);
+  -webkit-box-shadow: inset 0 0 0 0 #f8f8f8, inset 0 -2px 2px -2px rgba(105, 104, 104, 0.25);
+  box-shadow: inset 0 0 0 0 #f8f8f8, inset 0 -2px 2px -2px rgba(105, 104, 104, 0.25);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /********************************************************************************
@@ -113,67 +99,61 @@
 /********************************************************************************/
 
 .liferay-ims .chat-settings .admin-area {
-    position: relative;
+  position: relative;
 }
 
 .liferay-ims .chat-settings .admin-area .settings {
-    width: 420px;
-    height: 300px;
-    overflow-x: hidden;
-    overflow-y: scroll;
+  width: 420px;
+  height: 300px;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .liferay-ims .chat-settings .admin-area .settings.closed {
-    width: 250px;
-    height: 0;
+  width: 250px;
+  height: 0;
 }
 
 .liferay-ims .chat-settings .admin-area .help {
-    display: inline-block;
-    text-decoration: none;
-    background: url(/images/button-help.png) center center no-repeat;
-    width: 20px;
-    height: 20px;
-    float: right;
-    margin-right: 10px;
+  display: inline-block;
+  text-decoration: none;
+  background: url(/images/button-help.png) center center no-repeat;
+  @include image-2x('/images/button-help@2x.png', auto, 20px);
+  width: 20px;
+  height: 20px;
+  float: right;
+  margin-right: 10px;
 }
 
 .liferay-ims .chat-settings .admin-area .help:hover {
-    opacity: 0.7;
+  opacity: 0.7;
 }
 
 .liferay-ims .chat-settings .admin-area .open-button {
-    float: right;
-    margin-right: 10px;
-    text-decoration: underline;
-    text-transform: capitalize;
-    cursor: pointer;
+  float: right;
+  margin-right: 10px;
+  text-decoration: underline;
+  text-transform: capitalize;
+  cursor: pointer;
 }
 
 .liferay-ims .chat-settings .admin-area li {
-    padding: 0 10px;
+  padding: 0 10px;
 }
 
 .liferay-ims .chat-settings .admin-area .buddy-list-ignore-default-user {
-    padding-top: 14px;
+  padding-top: 14px;
 }
 
 .liferay-ims .chat-settings .admin-area .buddy-list-max-buddies {
-    margin-top: 17px;
+  margin-top: 17px;
 }
 
 .liferay-ims .chat-settings .admin-area .settings-category-title {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .liferay-ims .chat-settings .admin-area .buddy-list-group-excludes {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
-
-    .liferay-ims .chat-settings .admin-area .help {
-        background-image: url(/images/button-help@2x.png);
-        background-size: auto 20px;
-    }
-}

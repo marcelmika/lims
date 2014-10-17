@@ -22,51 +22,36 @@
  * SOFTWARE.
  */
 
-
 /************************************************************************************
 /  STATUS PANEL
 /************************************************************************************/
 
 .liferay-ims .status-panel .panel-window .status {
-    background: #ffffff;
-    display: block;
-    font-size: 12px;
+  background: #ffffff;
+  display: block;
+  font-size: 12px;
 }
 
 .liferay-ims .status.online {
-    background: url(/images/status-online.png) center center no-repeat;
-    background-size: 10px;
+  background: url(/images/status-online.png) center center no-repeat;
+  @include image-2x('/images/status-online@2x.png', 10px, 10px);
+  background-size: 10px;
 }
 
 .liferay-ims .status.busy {
-    background: url(/images/status-busy.png) center center no-repeat;
-    background-size: 10px;
+  background: url(/images/status-busy.png) center center no-repeat;
+  @include image-2x('/images/status-busy@2x.png', 10px, 10px);
+  background-size: 10px;
 }
 
 .liferay-ims .status.unavailable {
-    background: url(/images/status-unavailable.png) center center no-repeat;
-    background-size: 10px;
+  background: url(/images/status-unavailable.png) center center no-repeat;
+  @include image-2x('/images/status-unavailable@2x.png', 10px, 10px);
+  background-size: 10px;
 }
 
 .liferay-ims .status.off {
-    background: url(/images/status-off.png) center center no-repeat;
-    background-size: 10px;
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
-    .liferay-ims .status.online {
-        background-image: url(/images/status-online@2x.png);
-    }
-
-    .liferay-ims .status.busy {
-        background-image: url(/images/status-busy@2x.png);
-    }
-
-    .liferay-ims .status.unavailable {
-        background-image: url(/images/status-unavailable@2x.png);
-    }
-
-    .liferay-ims .status.off {
-        background-image: url(/images/status-off@2x.png);
-    }
+  background: url(/images/status-off.png) center center no-repeat;
+  @include image-2x('/images/status-off@2x.png', 10px, 10px);
+  background-size: 10px;
 }

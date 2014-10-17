@@ -22,73 +22,54 @@
  * SOFTWARE.
  */
 
-
 /************************************************************************************
 **   PRESENCE PANEL
 *************************************************************************************/
 
 .liferay-ims .status-panel .panel-trigger .trigger-name {
-    width: 20px;
-    height: 24px;
+  width: 20px;
+  height: 24px;
 }
 
 .liferay-ims .status-panel .panel-window {
-    min-width: 150px;
+  min-width: 150px;
 }
 
 .liferay-ims .status-panel .status-indicator {
-    margin-left: 6px;
-    margin-top: 7px;
+  margin-left: 6px;
+  margin-top: 7px;
 }
 
 .liferay-ims .status-panel .panel-window .status li {
-    padding: 10px 5px 10px 30px;
-    cursor: pointer;
-    line-height: 15px;
-    /* UnSelectable */
-    -webkit-user-select: none; /* Chrome/Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+ */
+  padding: 10px 5px 10px 30px;
+  cursor: pointer;
+  line-height: 15px;
+  /* UnSelectable */
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
 }
 
 .liferay-ims .status-panel .panel-window .status li:hover {
-    background-color: #f3f3f3;
+  background-color: #f3f3f3;
 }
 
 .liferay-ims .status-panel .panel-window .status .online {
-    background: url(/images/status-online.png) no-repeat 10px center;
+  background: url(/images/status-online.png) no-repeat 10px center;
+  @include image-2x('/images/status-online@2x.png', 10px, 10px);
 }
 
 .liferay-ims .status-panel .panel-window .status .busy {
-    background: url(/images/status-busy.png) no-repeat 10px center;
+  background: url(/images/status-busy.png) no-repeat 10px center;
+  @include image-2x('/images/status-busy@2x.png', 10px, 10px);
 }
 
 .liferay-ims .status-panel .panel-window .status .unavailable {
-    background: url(/images/status-unavailable.png) no-repeat 10px center;
+  background: url(/images/status-unavailable.png) no-repeat 10px center;
+  @include image-2x('/images/status-unavailable@2x.png', 10px, 10px);
 }
 
 .liferay-ims .status-panel .panel-window .status .off {
-    background: url(/images/status-off.png) no-repeat 10px center;
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
-    .liferay-ims .status-panel .panel-window .status .online {
-        background-image: url(/images/status-online@2x.png);
-        background-size: 10px;
-    }
-
-    .liferay-ims .status-panel .panel-window .status .busy {
-        background-image: url(/images/status-busy@2x.png);
-        background-size: 10px;
-    }
-
-    .liferay-ims .status-panel .panel-window .status .unavailable {
-        background-image: url(/images/status-unavailable@2x.png);
-        background-size: 10px;
-    }
-
-    .liferay-ims .status-panel .panel-window .status .off {
-        background-image: url(/images/status-off@2x.png);
-        background-size: 10px;
-    }
+  background: url(/images/status-off.png) no-repeat 10px center;
+  @include image-2x('/images/status-off@2x.png', 10px, 10px);
 }
