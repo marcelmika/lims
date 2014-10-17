@@ -83,9 +83,7 @@
   height: 24px;
   position: relative;
   z-index: 30;
-  box-shadow: #bcbcbc 1px 1px 1px;
-  -webkit-box-shadow: #bcbcbc 1px 1px 1px;
-  -moz-box-shadow: #bcbcbc 1px 1px 1px;
+  @include box-shadow(#bcbcbc 1px 1px 1px);
 }
 
 /********************************************************************************
@@ -239,14 +237,13 @@
     min-height: 21px;
     max-height: 26px;
     padding: 2px 27px 2px 27px;
-    background: #f1f1f1 url(/images/search-button.png) 7px center no-repeat;
-    @include image-2x('/images/search-button@2x.png', auto, 13px);
     color: #1A1A1A;
     font-size: 12px;
     background-size: 13px;
-    box-shadow: none;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
+    background: #f1f1f1 url(/images/search-button.png) 7px center no-repeat;
+    @include image-2x('/images/search-button@2x.png', auto, 13px);
+    // Shadow
+    @include box-shadow(none);
     // Rounded corners
     @include border-radius(10px);
   }
@@ -254,13 +251,12 @@
   .search-input-field:hover,
   .search-input-field:focus {
     background: #ffffff url(/images/search-button.png) 7px center no-repeat;
-    @include image-2x('/images/search-button@2x.png', auto, 13px);
-    background-size: 13px;
     border: 1px solid #d4d4d4;
     outline: none;
-    box-shadow: none;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
+    background-size: 13px;
+    @include image-2x('/images/search-button@2x.png', auto, 13px);
+    // No shadow
+    @include box-shadow(none);
   }
 
   .search-content {

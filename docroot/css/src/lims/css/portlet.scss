@@ -52,9 +52,8 @@
   .portlet {
     border: none !important;
     background: none !important;
-    box-shadow: none !important;
-    -moz-box-shadow: none !important;
-    -webkit-box-shadow: none !important;
+    // Hide shadow
+    @include box-shadow(none !important);
   }
 
   // Preloaded images should be taken as far from the visible area as possible
@@ -123,9 +122,8 @@
     position: absolute;
     right: 0;
     z-index: 20;
-    box-shadow: #bcbcbc 1px 1px 1px;
-    -webkit-box-shadow: #bcbcbc 1px 1px 1px;
-    -moz-box-shadow: #bcbcbc 1px 1px 1px;
+    // Shadow
+    @include box-shadow(#bcbcbc 1px 1px 1px);
   }
 
   .selected .panel {

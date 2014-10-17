@@ -110,9 +110,7 @@
     border-right: none;
     display: block;
     overflow: hidden;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
+    @include box-shadow(none);
     resize: none;
     outline: none;
     font-size: 12px;
