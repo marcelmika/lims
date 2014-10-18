@@ -86,10 +86,13 @@
             <c:if test="${isAdmin and (properties.propertiesSource eq PREFERENCES)}">
                 <div class="admin-area">
                     <div class="settings-title">
-                        <span><liferay-ui:message key="panel-settings-admin-area-title"/></span>
-                        <span class="open-button">${openButtonText}</span>
+                        <div class="settings-title-text">
+                            <liferay-ui:message key="panel-settings-admin-area-title"/>
+                        </div>
                         <a class="help ${helpButtonHiddenClass}" href="${properties.urlHelp}" target="_blank"
                            title="<liferay-ui:message key="panel-settings-admin-area-help"/>"></a>
+                        <div class="open-button">${openButtonText}</div>
+                        <div class="clear"></div>
                     </div>
 
                     <ul class="lfr-component settings ${adminAreaClass}">

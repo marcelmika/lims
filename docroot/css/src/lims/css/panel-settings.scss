@@ -92,6 +92,13 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+
+    .settings-title-text {
+      float: left;
+      max-width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   /********************************************************************************
@@ -102,7 +109,7 @@
     position: relative;
 
     .settings {
-      width: 420px;
+      width: 440px;
       height: 300px;
       overflow-x: hidden;
       overflow-y: scroll;

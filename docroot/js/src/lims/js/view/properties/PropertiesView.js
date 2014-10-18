@@ -473,7 +473,7 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
                         opacity: 0
                     },
                     to: {
-                        width: 420,
+                        width: 440,
                         height: 300,
                         opacity: 1
                     },
