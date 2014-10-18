@@ -21,13 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 //
 // Import compass mixin library
 // http://compass-style.org
 //
 @import "compass";
-@import "compass/css3/user-interface";
 
 /**
  * Imports high resolution images for high density displays such as retina
@@ -46,4 +44,17 @@
     background-image: url($image);
     background-size: $width $height;
   }
+}
+
+/**
+ * Prevents user from selecting the element
+ */
+@mixin no-select() {
+  -webkit-user-select: none; /* Chrome all / Safari all */
+  -moz-user-select: none; /* Firefox all */
+  -ms-user-select: none; /* IE 10+ */
+
+  /* No support for these yet, use at own risk */
+  -o-user-select: none;
+  user-select: none;
 }

@@ -53,7 +53,7 @@
       cursor: pointer;
       line-height: 15px;
       // Make the button unselectable
-      @include user-select(none);
+      @include no-select();
     }
 
     li:hover {

@@ -47,7 +47,7 @@
     text-overflow: ellipsis;
     padding-right: 15px;
     // Make the button unselectable
-    @include user-select(none);
+    @include no-select();
   }
 
   // Unread messages badge

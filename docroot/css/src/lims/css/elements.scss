@@ -59,7 +59,7 @@
     // Rounded corners
     @include border-radius(5px);
     // Make the button unselectable
-//    @include no-select();
+    @include no-select();
   }
 
   .button:hover {
@@ -377,7 +377,7 @@
 
   .switch {
     // Make the button unselectable
-//    @include no-select();
+    @include no-select();
     -webkit-tap-highlight-color: transparent;
     tap-highlight-color: transparent;
     font-size: 20px;
