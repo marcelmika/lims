@@ -92,8 +92,7 @@
     font-size: 12px;
     line-height: 14px;
     color: #545454;
-    // Rounded corners
-    @include border-radius(5px);
+    @include border-radius(0px);
   }
 
   .panel-input textarea:focus {
