@@ -52,7 +52,7 @@ Y.LIMS.View.TokenInputElementView = Y.Base.create('tokenInputElementView', Y.Vie
         var inputNode = this.get('inputNode');
 
         // Set tokens to token input
-        inputNode.tokenInput.set('tokens', values);
+        inputNode.tokenInputPlugin.set('tokens', values);
     },
 
     /**
@@ -117,7 +117,7 @@ Y.LIMS.View.TokenInputElementView = Y.Base.create('tokenInputElementView', Y.Vie
         var inputNode = this.get('inputNode');
 
         // Local events
-        inputNode.tokenInput.on('tokensChange', this._onTokensChange, this);
+        inputNode.tokenInputPlugin.on('tokensChange', this._onTokensChange, this);
     },
 
     /**
@@ -187,7 +187,7 @@ Y.LIMS.View.TokenInputElementView = Y.Base.create('tokenInputElementView', Y.Vie
                 var inputNode = this.get('container').one('input');
 
                 // Tokenize
-                inputNode.plug(Y.Plugin.TokenInput, {
+                inputNode.plug(Y.Plugin.TokenInputPlugin, {
                     removeButton: true
                 });
 
@@ -202,7 +202,7 @@ Y.LIMS.View.TokenInputElementView = Y.Base.create('tokenInputElementView', Y.Vie
          */
         tokenInputNode: {
             valueFn: function () {
-                return this.get('inputNode').tokenInput.get('inputNode');
+                return this.get('inputNode').tokenInputPlugin.get('inputNode');
             }
         },
 

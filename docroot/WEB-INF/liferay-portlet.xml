@@ -37,6 +37,7 @@
         <footer-portlet-javascript>/js/build/lims-model/lims-model-debug.js</footer-portlet-javascript>
         <footer-portlet-javascript>/js/build/lims-view/lims-view-debug.js</footer-portlet-javascript>
         <footer-portlet-javascript>/js/build/lims-controller/lims-controller-debug.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/js/build/lims-plugin/lims-plugin-debug.js</footer-portlet-javascript>
         <footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 
         <css-class-wrapper>liferay-ims</css-class-wrapper>
