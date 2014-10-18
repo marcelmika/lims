@@ -5,6 +5,7 @@
         "main": {
             "cssfiles": [
                 "css/mixins.scss",
+                "css/theme.scss",
                 "css/reset.scss",
                 "css/elements.scss",
                 "css/globals.scss",

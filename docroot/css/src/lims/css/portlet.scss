@@ -31,7 +31,7 @@
   position: fixed;
   bottom: 0;
   z-index: 1000;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: $font-family;
   font-size: 12px;
   font-weight: 200;
   padding: 0;
@@ -40,7 +40,7 @@
 
   textarea, pre, input {
     font-weight: 200;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: $font-family;
   }
 
   // Hide unnecessary portlet bars
