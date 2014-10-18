@@ -85,10 +85,10 @@ Y.LIMS.View.SliderElementView = Y.Base.create('sliderElementView', Y.View, [], {
         var slider = this.get('slider'),
             container = this.get('container');
 
-        // Enable the slider
-        slider.enable();
         // Set the opacity to max
         container.setStyle('opacity', 1);
+        // Enable the slider
+        slider.set('disabled', false);
     },
 
     /**
@@ -99,10 +99,10 @@ Y.LIMS.View.SliderElementView = Y.Base.create('sliderElementView', Y.View, [], {
         var slider = this.get('slider'),
             container = this.get('container');
 
-        // Disable the slider
-        slider.disable();
         // Dim the slider
         container.setStyle('opacity', 0.5);
+        // Disable the slider
+        slider.set('disabled', true);
     },
 
     /**
