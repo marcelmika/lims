@@ -120,5 +120,16 @@
                 ]
             }
         }
+    },
+    "rollups": {
+        "lims": {
+            "files": [
+                "lims-core",
+                "lims-model",
+                "lims-view",
+                "lims-controller",
+                "lims-plugin"
+            ]
+        }
     }
 }

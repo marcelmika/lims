@@ -2,7 +2,7 @@
     "name": "lims",
     "builds": {
 
-        "main": {
+        "lims": {
             "cssfiles": [
                 "css/mixins.scss",
                 "css/theme.scss",
@@ -24,7 +24,8 @@
     },
 
     "shifter": {
-        "lint": false
+        "lint": false,
+        "coverage": false
     }
 
 }
