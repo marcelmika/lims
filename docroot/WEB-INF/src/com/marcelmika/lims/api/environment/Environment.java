@@ -36,6 +36,7 @@ public class Environment {
 
     // Environment properties
     private static PropertiesSource propertiesSource = PropertiesSource.PREFERENCES;
+    private static String[] excludedSites = new String[]{};
     private static BuddyListSource buddyListSource = BuddyListSource.LIFERAY;
     private static BuddyListStrategy buddyListStrategy = BuddyListStrategy.ALL;
     private static BuddyListSocialRelation[] buddyListSocialRelations = new BuddyListSocialRelation[]{};
@@ -92,6 +93,24 @@ public class Environment {
      */
     public static void setPropertiesSource(PropertiesSource propertiesSource) {
         Environment.propertiesSource = propertiesSource;
+    }
+
+    /**
+     * Returns an array of sites names where the portlet shouldn't be displayed
+     *
+     * @return String[]
+     */
+    public static String[] getExcludedSites() {
+        return excludedSites;
+    }
+
+    /**
+     * Sets the excluded sites property
+     *
+     * @param excludedSites String[]
+     */
+    public static void setExcludedSites(String[] excludedSites) {
+        Environment.excludedSites = excludedSites;
     }
 
     /**

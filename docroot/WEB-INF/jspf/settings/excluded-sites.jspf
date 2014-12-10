@@ -24,13 +24,14 @@
 
 
 <%-- Variables --%>
-<%--@elvariable id="properties" type="com.marcelmika.lims.portal.domain.Properties"--%>
+<%--@elvariable id="properties" type="com.marcelmika.limsmuc.portal.domain.Properties"--%>
 
 <%-- Render --%>
-<li class="buddy-list-site-excludes token-input">
+<li class="excluded-sites token-input">
 
     <div class="settings-category-title">
-        <span><liferay-ui:message key="panel-settings-admin-area-buddy-list-site-excludes-title"/></span>
+        <span><liferay-ui:message key="panel-settings-admin-area-excluded-sites-title"/></span>
     </div>
-    <input type="text" placeholder="" value="${properties.buddyListSiteExcludesFlatten}"/>
+    <input type="text" placeholder="" value="${properties.excludedSitesFlatten}"/>
+
 </li>

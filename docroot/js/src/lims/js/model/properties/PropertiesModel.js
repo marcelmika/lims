@@ -164,6 +164,15 @@ Y.LIMS.Model.PropertiesModel = Y.Base.create('propertiesModel', Y.Model, [Y.LIMS
         },
 
         /**
+         * Excluded sites
+         *
+         * []
+         */
+        excludedSites: {
+            value: null // to be set
+        },
+
+        /**
          * Buddy list site excludes
          *
          * []

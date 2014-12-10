@@ -30,7 +30,7 @@
 <li class="buddy-list-group-excludes token-input">
 
     <div class="settings-category-title">
-        <span><liferay-ui:message key="panel-settings-admin-area-excluded-groups-title"/></span>
+        <span><liferay-ui:message key="panel-settings-admin-area-buddy-list-group-excludes-title"/></span>
     </div>
     <input type="text" placeholder="" value="${properties.buddyListGroupExcludesFlatten}"/>
 

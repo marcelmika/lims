@@ -101,6 +101,7 @@ public class PropertiesManagerImpl implements PropertiesManager {
 
             // Set the whole environment
             setupBuddyListSource();
+            setupExcludedSites(preferences);
             setupBuddyListStrategy(preferences);
             setupBuddyListSocialRelations(preferences);
             setupBuddyListIgnoreDefaultUser(preferences);
@@ -131,6 +132,11 @@ public class PropertiesManagerImpl implements PropertiesManager {
      */
     @Override
     public void updatePortletPreferences(PortletPreferences preferences, Properties properties) throws Exception {
+
+        // Excluded sites
+        if (properties.getExcludedSites() != null) {
+            updateExcludedSites(preferences, properties);
+        }
 
         // Buddy list strategy
         if (properties.getBuddyListStrategy() != null) {
@@ -207,6 +213,56 @@ public class PropertiesManagerImpl implements PropertiesManager {
 
         // Save to Environment
         Environment.setPropertiesSource(propertiesSource);
+    }
+
+    /**
+     * Sets the excluded sites property
+     *
+     * @param preferences PortletPreferences
+     */
+    private void setupExcludedSites(PortletPreferences preferences) {
+        // Get the properties source
+        PropertiesSource source = Environment.getPropertiesSource();
+
+        String[] excludedSites;
+
+        // Preferences
+        if (source == PropertiesSource.PREFERENCES) {
+            // Take the value from preferences
+            excludedSites = preferences.getValues(
+                    PortletPropertiesKeys.EXCLUDED_SITES,
+                    PortletPropertiesValues.EXCLUDED_SITES
+            );
+        }
+        // Properties
+        else {
+            excludedSites = PortletPropertiesValues.EXCLUDED_SITES;
+        }
+
+        // Save in Environment
+        Environment.setExcludedSites(excludedSites);
+    }
+
+    /**
+     * Updates excluded sites property
+     *
+     * @param preferences PortletPreferences
+     * @param properties  Properties
+     * @throws Exception
+     */
+    private void updateExcludedSites(PortletPreferences preferences, Properties properties) throws Exception {
+
+        // Set the value in portlet preferences
+        preferences.setValues(
+                PortletPropertiesKeys.EXCLUDED_SITES,
+                properties.getExcludedSites()
+        );
+
+        // Persist
+        preferences.store();
+
+        // Save in Environment
+        setupExcludedSites(preferences);
     }
 
     /**

@@ -45,6 +45,11 @@ public class PortletPropertiesValues {
             PortletPropertiesKeys.BUDDY_LIST_SOURCE
     );
 
+    // Excluded - Sites
+    public static final String[] EXCLUDED_SITES = getStringValues(
+            PortletPropertiesKeys.EXCLUDED_SITES
+    );
+
     // Buddy List - Social Relation Types
     public static final int[] BUDDY_LIST_ALLOWED_SOCIAL_RELATION_TYPES = getIntegerValues(
             PortletPropertiesKeys.BUDDY_LIST_ALLOWED_SOCIAL_RELATION_TYPES

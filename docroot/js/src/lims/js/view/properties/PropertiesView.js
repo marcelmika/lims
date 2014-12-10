@@ -74,6 +74,7 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
             buddyListMaxBuddies = this.get('buddyListMaxBuddies'),
             buddyListMaxSearch = this.get('buddyListMaxSearch'),
             conversationListMaxMessages = this.get('conversationListMaxMessages'),
+            excludedSites = this.get('excludedSites'),
             buddyListSiteExcludes = this.get('buddyListSiteExcludes'),
             buddyListGroupExcludes = this.get('buddyListGroupExcludes');
 
@@ -86,6 +87,7 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
         buddyListMaxBuddies.on('sliderUpdate', this._onBuddyListMaxBuddiesUpdate, this);
         buddyListMaxSearch.on('sliderUpdate', this._onBuddyListMaxSearchUpdate, this);
         conversationListMaxMessages.on('sliderUpdate', this._onConversationListMaxMessagesUpdate, this);
+        excludedSites.on('inputUpdate', this._onExcludedSitesUpdate, this);
         buddyListSiteExcludes.on('inputUpdate', this._onBuddyListSiteExcludesUpdate, this);
         buddyListGroupExcludes.on('inputUpdate', this._onBuddyListGroupExcludesUpdate, this);
     },
@@ -327,6 +329,42 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
             }
             // Re-enable the view so the user can interact with it again
             conversationListMaxMessages.enable();
+        });
+    },
+
+    /**
+     * Called when the user updates excluded sites property
+     *
+     * @param event
+     * @private
+     */
+    _onExcludedSitesUpdate: function (event) {
+        // Vars
+        var excludedSites = this.get('excludedSites'),
+            preValue = event.preValue,      // Previously selected value
+            postValue = event.postValue,    // Currently selected value
+            model;
+
+        // Prepare the model
+        model = new Y.LIMS.Model.PropertiesModel({
+            excludedSites: postValue
+        });
+
+        // Disable view
+        excludedSites.disable();
+
+        // Save the model
+        model.save(function (err) {
+            if (err) {
+                // Return everything to the previous state
+                excludedSites.setValues(preValue);
+            }
+            // Re-enable the view so the user can interact with it again
+            excludedSites.enable();
+            // Since if we called the disable()
+            // function token input looses it's focus. So if we enable it
+            // we need to re-enable the focus again.
+            excludedSites.focus();
         });
     },
 
@@ -680,6 +718,22 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
                     min: 10,
                     max: 200,
                     value: valueContainer.get('innerHTML')
+                });
+            }
+        },
+
+        /**
+         * View for excluded sites
+         *
+         * {Y.LIMS.View.TokenInputElementView}
+         */
+        excludedSites: {
+            valueFn: function () {
+                // Vars
+                var container = this.get('container').one('.excluded-sites');
+
+                return new Y.LIMS.View.TokenInputElementView({
+                    container: container
                 });
             }
         },

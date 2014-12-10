@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.util.bridges.mvc.MVCPortlet;
+import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.events.conversation.GetOpenedConversationsRequestEvent;
 import com.marcelmika.lims.api.events.conversation.GetOpenedConversationsResponseEvent;
 import com.marcelmika.lims.api.events.settings.ReadSettingsRequestEvent;
@@ -109,21 +110,33 @@ public class LIMSPortlet extends MVCPortlet {
         // Environment needs to be set up at the beginning of the request
         propertiesManager.setup(renderRequest.getPreferences());
 
-        // Check the availability of browser
-        boolean isSupportedBrowser = BrowserDetector.isSupportedBrowser(renderRequest);
+        // Check if the current site is excluded
+        boolean isExcluded = isExcluded(renderRequest);
 
-        // Render portlet only if the browser is supported
-        if (isSupportedBrowser) {
-            // Settings pane
-            renderSettings(renderRequest);
-            // Conversations pane
-            renderConversations(renderRequest);
+        // Site is excluded
+        if (isExcluded) {
+            // Disable portlet
+            renderRequest.setAttribute(VARIABLE_IS_ENABLED, false);
         }
+        // Site is not excluded
+        else {
 
-        // Set correct content type
-        renderResponse.setContentType(renderRequest.getResponseContentType());
-        // Additional parameters
-        renderAdditions(renderRequest);
+            // Check the availability of browser
+            boolean isSupportedBrowser = BrowserDetector.isSupportedBrowser(renderRequest);
+
+            // Render portlet only if the browser is supported
+            if (isSupportedBrowser) {
+                // Settings pane
+                renderSettings(renderRequest);
+                // Conversations pane
+                renderConversations(renderRequest);
+            }
+
+            // Set correct content type
+            renderResponse.setContentType(renderRequest.getResponseContentType());
+            // Additional parameters
+            renderAdditions(renderRequest);
+        }
 
         // Set response to view.jsp
         include(VIEW_JSP_PATH, renderRequest, renderResponse);
@@ -257,4 +270,46 @@ public class LIMSPortlet extends MVCPortlet {
         return themeDisplay.isSignedIn();
     }
 
+    /**
+     * Returns true if the current site is excluded
+     *
+     * @param request PortletRequest
+     * @return true if the current site is excluded
+     */
+    private boolean isExcluded(PortletRequest request) {
+        // Check if the user is signed in
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
+        // Check for params
+        if (themeDisplay == null) {
+            return true;
+        }
+
+        try {
+            // Get the current site name (group == site)
+            String siteName = themeDisplay.getLayout().getGroup().getName();
+            // Get excluded sites
+            String[] excludedSites = Environment.getExcludedSites();
+
+            // Check if the current site belongs to the excluded sites list
+            for (String excludedSite : excludedSites) {
+                // Site is excluded
+                if (excludedSite.equals(siteName)) {
+                    return true;
+                }
+            }
+
+            // No site was found -> site is not excluded
+            return false;
+        }
+        // Failure
+        catch (Exception exception) {
+            // Log
+            if (log.isDebugEnabled()) {
+                log.debug(exception);
+            }
+            // Cannot get the site name -> exclude portlet
+            return true;
+        }
+    }
 }
