@@ -271,12 +271,13 @@ public class LIMSPortlet extends MVCPortlet {
     }
 
     /**
-     * Returns true if the current site is excluded
+     * Returns true if the current site is excluded. Control panel is excluded by default
      *
      * @param request PortletRequest
      * @return true if the current site is excluded
      */
     private boolean isExcluded(PortletRequest request) {
+
         // Check if the user is signed in
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
@@ -286,6 +287,16 @@ public class LIMSPortlet extends MVCPortlet {
         }
 
         try {
+            // Exclude control panel
+            if (themeDisplay.getLayout().getGroup().isControlPanel()) {
+                return true;
+            }
+
+            // Admin is never excluded
+            if (PermissionDetector.isAdmin(request)) {
+                return false;
+            }
+
             // Get the current site name (group == site)
             String siteName = themeDisplay.getLayout().getGroup().getName();
             // Get excluded sites
