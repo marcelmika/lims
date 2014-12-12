@@ -141,7 +141,7 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
      */
     _onSessionExpired: function () {
         // Hide the whole portlet
-        this.getRootNode().hide();
+        Y.LIMS.Core.Util.hide(this.getRootNode());
     }
 
 }, {

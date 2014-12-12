@@ -529,8 +529,8 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
                     // Hide the open button, we don't want the user to interact now
                     openButton.setStyle('opacity', 0);
                     // Hide buttons
-                    openButton.hide();
-                    helpButton.hide();
+                    Y.LIMS.Core.Util.hide(openButton);
+                    Y.LIMS.Core.Util.hide(helpButton);
 
                 }, this);
 
@@ -556,13 +556,13 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
                         settingsContainer.removeClass('closed');
                         settingsContainer.addClass('opened');
                         // Hide help button
-                        helpButton.show();
+                        Y.LIMS.Core.Util.show(helpButton);
                         // Fire the event
                         this.fire('propertiesOpened');
                     }
 
                     // Show the button
-                    openButton.show();
+                    Y.LIMS.Core.Util.show(openButton);
                     // And run the animation
                     openButtonAnimation.run();
 

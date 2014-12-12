@@ -38,7 +38,7 @@
         <c:set var="hiddenClass" value=""/>
     </c:when>
     <c:otherwise>
-        <c:set var="hiddenClass" value="aui-helper-hidden hide"/>
+        <c:set var="hiddenClass" value="hide"/>
     </c:otherwise>
 </c:choose>
 

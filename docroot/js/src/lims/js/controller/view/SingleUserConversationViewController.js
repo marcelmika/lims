@@ -436,7 +436,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
 
             // Show badge
             if (badge) {
-                badge.show();
+                Y.LIMS.Core.Util.show(badge);
             }
         },
 
@@ -451,7 +451,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
 
             // Hide badge
             if (badge) {
-                badge.hide();
+                Y.LIMS.Core.Util.hide(badge);
             }
         },
 
@@ -489,7 +489,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             var activityIndicator = this.get('activityIndicator');
 
             // Show preloader
-            activityIndicator.show();
+            Y.LIMS.Core.Util.show(activityIndicator);
         },
 
         /**
@@ -502,7 +502,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             var activityIndicator = this.get('activityIndicator');
 
             // Hide preloader
-            activityIndicator.hide();
+            Y.LIMS.Core.Util.hide(activityIndicator);
         }
 
     }, {

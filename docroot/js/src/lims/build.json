@@ -11,7 +11,8 @@
                 "js/core/notification/Notification.js",
                 "js/core/properties/Properties.js",
                 "js/core/poller/Poller.js",
-                "js/core/poller/PollerEntry.js"
+                "js/core/poller/PollerEntry.js",
+                "js/core/util/Util.js"
             ],
             "config": {
                 "requires": [

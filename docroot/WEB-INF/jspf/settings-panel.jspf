@@ -49,7 +49,7 @@
         <c:set var="hiddenClass" value=""/>
     </c:when>
     <c:otherwise>
-        <c:set var="hiddenClass" value="aui-helper-hidden hide"/>
+        <c:set var="hiddenClass" value="hide"/>
     </c:otherwise>
 </c:choose>
 
@@ -61,7 +61,7 @@
     </c:when>
     <c:otherwise>
         <c:set var="adminAreaClass" value="closed"/>
-        <c:set var="helpButtonHiddenClass" value="aui-helper-hidden hide"/>
+        <c:set var="helpButtonHiddenClass" value="hide"/>
         <c:set var="openButtonText"><liferay-ui:message key="panel-settings-admin-area-open"/></c:set>
     </c:otherwise>
 </c:choose>

@@ -91,7 +91,7 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         }
 
         // Hide indicator
-        activityIndicator.hide();
+        Y.LIMS.Core.Util.hide(activityIndicator);
     },
 
     /**
@@ -106,7 +106,7 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
             errorView = this.get('errorView');
 
         // Hide indicator
-        activityIndicator.hide();
+        Y.LIMS.Core.Util.hide(activityIndicator);
         // Hide groups
         this._hideGroups();
         // Hide info about empty groups
