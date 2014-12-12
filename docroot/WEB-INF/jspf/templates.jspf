@@ -22,6 +22,10 @@
   ~ SOFTWARE.
   --%>
 
+<%-- Constants --%>
+<c:set var="MESSAGE_MAX_SIZE" value="<%= InputLimits.MESSAGE_MAX_SIZE %>"/>
+<c:set var="SEARCH_QUERY_MAX_SIZE" value="<%= InputLimits.SEARCH_QUERY_MAX_SIZE %>"/>
+
 <%-- This template HTML will be used to render each group item. --%>
 <script type="text/x-template" id="lims-group-item-template">
     <div class="group-name">{name}</div>
@@ -55,7 +59,8 @@
             </div>
             <div class="panel-input">
                 <textarea
-                        placeholder="<liferay-ui:message key="panel-conversation-message-placeholder" />"></textarea>
+                        placeholder="<liferay-ui:message key="panel-conversation-message-placeholder" />"
+                        maxlength="${MESSAGE_MAX_SIZE}"></textarea>
             </div>
         </div>
     </div>
@@ -97,7 +102,11 @@
 <script type="text/x-template" id="lims-panel-search-template">
     <div class="panel-search">
         <label class="search-input-field-label" for="lims-search-input-field">
-            <input id="lims-search-input-field" class="search-input-field" type="text" value=""/>
+            <input id="lims-search-input-field"
+                   maxlength="${SEARCH_QUERY_MAX_SIZE}"
+                   class="search-input-field"
+                   type="text"
+                   value=""/>
         </label>
 
         <div class="search-content">

@@ -22,37 +22,19 @@
  * SOFTWARE.
  */
 
-package com.marcelmika.lims.portal.request.parameters;
-
-import com.marcelmika.lims.portal.properties.InputLimits;
+package com.marcelmika.lims.portal.properties;
 
 /**
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
- * Date: 22/09/14
- * Time: 20:02
+ * Date: 12/12/14
+ * Time: 22:14
  */
-public class SearchBuddiesParameters {
+public class InputLimits {
 
-    private String searchQuery;
-
-    public String getSearchQuery() {
-        return searchQuery;
-    }
-
-    public void setSearchQuery(String searchQuery) {
-        // Limit the maximal search query size
-        if (searchQuery.length() > InputLimits.SEARCH_QUERY_MAX_SIZE) {
-            searchQuery = searchQuery.substring(0, InputLimits.SEARCH_QUERY_MAX_SIZE);
-        }
-
-        this.searchQuery = searchQuery;
-    }
-
-    @Override
-    public String toString() {
-        return "SearchBuddiesParameters{" +
-                "searchQuery='" + searchQuery + '\'' +
-                '}';
-    }
+    // Maximal size of the message
+    public static final Integer MESSAGE_MAX_SIZE = 10000;
+    // Maximal size of the search buddy query
+    public static final Integer SEARCH_QUERY_MAX_SIZE = 20;
+    
 }

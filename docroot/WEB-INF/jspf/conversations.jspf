@@ -22,11 +22,18 @@
   ~ SOFTWARE.
   --%>
 
+<%-- Imports --%>
+<%@ page import="com.marcelmika.lims.portal.properties.InputLimits" %>
+
 <% { %>
 
 <%-- Declared variables --%>
 <%--@elvariable id="conversations" type="java.util.List<Conversation>"--%>
 
+<%-- Constants --%>
+<c:set var="MESSAGE_MAX_SIZE" value="<%= InputLimits.MESSAGE_MAX_SIZE %>"/>
+
+<%-- Rendered --%>
 
 <c:forEach items="${conversations}" var="conversation">
 
@@ -92,7 +99,8 @@
                 </div>
                 <div class="panel-input covered">
                     <textarea
-                            placeholder="<liferay-ui:message key="panel-conversation-message-placeholder" />"></textarea>
+                            placeholder="<liferay-ui:message key="panel-conversation-message-placeholder" />"
+                            maxlength="${MESSAGE_MAX_SIZE}"></textarea>
                 </div>
             </div>
         </div>

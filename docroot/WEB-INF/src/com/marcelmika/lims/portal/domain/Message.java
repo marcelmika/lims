@@ -25,6 +25,7 @@
 package com.marcelmika.lims.portal.domain;
 
 import com.marcelmika.lims.api.entity.MessageDetails;
+import com.marcelmika.lims.portal.properties.InputLimits;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -124,6 +125,11 @@ public class Message {
     }
 
     public void setBody(String body) {
+        // Limit the body maximal size
+        if (body.length() > InputLimits.MESSAGE_MAX_SIZE) {
+            body = body.substring(0, InputLimits.MESSAGE_MAX_SIZE);
+        }
+
         this.body = body;
     }
 
