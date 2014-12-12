@@ -49,6 +49,21 @@
     line-height: 26px;
   }
 
+  .settings .version {
+    position: absolute;
+    right: 28px;
+    z-index: 2;
+    font-size: 11px;
+    background: #fff;
+    padding: 1px 10px;
+    border: 1px solid #f0f0f0;
+    border-top: 0;
+  }
+
+  .settings.closed .version {
+    visibility: hidden;
+  }
+
   .settings > input[type="text"] {
     width: 300px;
   }

@@ -32,6 +32,9 @@ package com.marcelmika.lims.portal.properties;
  */
 public interface PortletPropertiesKeys {
 
+    // Version
+    public static final String VERSION = "version";
+
     // Properties source
     public static final String PROPERTIES_SOURCE = "properties.source";
 

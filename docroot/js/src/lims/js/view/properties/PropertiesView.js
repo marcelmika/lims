@@ -544,6 +544,7 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
                         // Settings container doesn't need the closed class anymore
                         settingsContainer.removeClass('opened');
                         settingsContainer.addClass('closed');
+                        settingsContainer.setStyle('opacity', 0);
                         // Fire the event
                         this.fire('propertiesClosed');
                     }

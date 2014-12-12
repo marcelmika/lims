@@ -35,6 +35,11 @@ import com.liferay.util.portlet.PortletProps;
  */
 public class PortletPropertiesValues {
 
+    // Version
+    public static final String VERSION = getString(
+            PortletPropertiesKeys.VERSION
+    );
+
     // Properties source
     public static final String PROPERTIES_SOURCE = getString(
             PortletPropertiesKeys.PROPERTIES_SOURCE

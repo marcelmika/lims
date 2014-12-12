@@ -46,6 +46,7 @@ import com.marcelmika.lims.portal.domain.Settings;
 import com.marcelmika.lims.portal.http.HttpStatus;
 import com.marcelmika.lims.portal.processor.PortletProcessor;
 import com.marcelmika.lims.portal.processor.PortletProcessorUtil;
+import com.marcelmika.lims.portal.properties.PortletPropertiesValues;
 import com.marcelmika.lims.portal.properties.PropertiesManager;
 import com.marcelmika.lims.portal.properties.PropertiesManagerUtil;
 
@@ -76,7 +77,7 @@ public class LIMSPortlet extends MVCPortlet {
     // Constants
     private static final String VIEW_JSP_PATH = "/view.jsp"; // Path to the view.jsp
 
-    // Variables
+    // Variable keys
     private static final String VARIABLE_IS_ADMIN = "isAdmin";
     private static final String VARIABLE_PROPERTIES = "properties";
     private static final String VARIABLE_IS_SUPPORTED_BROWSER = "isSupportedBrowser";
@@ -86,6 +87,7 @@ public class LIMSPortlet extends MVCPortlet {
     private static final String VARIABLE_IS_ENABLED = "isEnabled";
     private static final String VARIABLE_SCREEN_NAME = "screenName";
     private static final String VARIABLE_FULL_NAME = "fullName";
+    private static final String VARIABLE_VERSION = "version";
 
     // Log
     private static Log log = LogFactoryUtil.getLog(LIMSPortlet.class);
@@ -254,6 +256,8 @@ public class LIMSPortlet extends MVCPortlet {
         // Screen name cannot be accessed via javascript so we need to render it manually
         renderRequest.setAttribute(VARIABLE_SCREEN_NAME, buddy.getScreenName());
         renderRequest.setAttribute(VARIABLE_FULL_NAME, buddy.getFullName());
+        // Version
+        renderRequest.setAttribute(VARIABLE_VERSION, PortletPropertiesValues.VERSION);
     }
 
     /**

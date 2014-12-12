@@ -23,12 +23,16 @@
   ~ SOFTWARE.
   --%>
 
+<%-- Imports --%>
+
 <%-- Variables --%>
 <%--@elvariable id="isAdmin" type="boolean"--%>
+<%--@elvariable id="version" type="String"--%>
 
 <%-- Constants --%>
 <c:set var="PREFERENCES" value="<%= Environment.PropertiesSource.PREFERENCES %>"/>
 
+<%-- Rendered --%>
 <% { %>
 
 <c:choose>
@@ -91,22 +95,26 @@
                         </div>
                         <a class="help ${helpButtonHiddenClass}" href="${properties.urlHelp}" target="_blank"
                            title="<liferay-ui:message key="panel-settings-admin-area-help"/>"></a>
+
                         <div class="open-button">${openButtonText}</div>
                         <div class="clear"></div>
                     </div>
 
-                    <ul class="lfr-component settings ${adminAreaClass}">
-                        <%@ include file="/WEB-INF/jspf/settings/buddy-list-strategy.jspf" %>
-                        <%@ include file="/WEB-INF/jspf/settings/buddy-list-social-relation.jspf" %>
-                        <%@ include file="/WEB-INF/jspf/settings/buddy-list-ignore-default-user.jspf" %>
-                        <%@ include file="/WEB-INF/jspf/settings/buddy-list-ignore-deactivated-user.jspf" %>
-                        <%@ include file="/WEB-INF/jspf/settings/buddy-list-max-buddies.jspf" %>
-                        <%@ include file="/WEB-INF/jspf/settings/buddy-list-max-search.jspf" %>
-                        <%@ include file="/WEB-INF/jspf/settings/conversation-list-max-messages.jspf" %>
-                        <%@ include file="/WEB-INF/jspf/settings/excluded-sites.jspf" %>
-                        <%@ include file="/WEB-INF/jspf/settings/buddy-list-site-excludes.jspf" %>
-                        <%@ include file="/WEB-INF/jspf/settings/buddy-list-group-excludes.jspf" %>
-                    </ul>
+                    <div class="settings ${adminAreaClass}">
+                        <div class="version">${version}</div>
+                        <ul class="lfr-component">
+                            <%@ include file="/WEB-INF/jspf/settings/buddy-list-strategy.jspf" %>
+                            <%@ include file="/WEB-INF/jspf/settings/buddy-list-social-relation.jspf" %>
+                            <%@ include file="/WEB-INF/jspf/settings/buddy-list-ignore-default-user.jspf" %>
+                            <%@ include file="/WEB-INF/jspf/settings/buddy-list-ignore-deactivated-user.jspf" %>
+                            <%@ include file="/WEB-INF/jspf/settings/buddy-list-max-buddies.jspf" %>
+                            <%@ include file="/WEB-INF/jspf/settings/buddy-list-max-search.jspf" %>
+                            <%@ include file="/WEB-INF/jspf/settings/conversation-list-max-messages.jspf" %>
+                            <%@ include file="/WEB-INF/jspf/settings/excluded-sites.jspf" %>
+                            <%@ include file="/WEB-INF/jspf/settings/buddy-list-site-excludes.jspf" %>
+                            <%@ include file="/WEB-INF/jspf/settings/buddy-list-group-excludes.jspf" %>
+                        </ul>
+                    </div>
                     <div class="clear"></div>
                 </div>
             </c:if>
