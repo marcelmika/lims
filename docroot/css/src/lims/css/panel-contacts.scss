@@ -23,16 +23,24 @@
   .group-list .group-item {
     clear: both;
     list-style-type: none;
-    border: 1px solid #fff;
     line-height: 27px;
   }
 
+  .group-buddy-list {
+    overflow: hidden;
+  }
+
   .group-buddy-item {
-    padding: 7px;
+    padding: 3px 7px;
     cursor: pointer;
     height: 35px;
     clear: both;
     line-height: 15px;
+    min-height: 35px;
+  }
+
+  .group-buddy-item:last-of-type {
+    padding-bottom: 7px;
   }
 
   .group-buddy-item .group-buddy-item-name {
@@ -53,17 +61,17 @@
   .group-buddy-item-portrait {
     height: 36px;
     width: 36px;
-    margin: 0 6px 2px 0;
+    margin: 2px 6px 2px 0;
     float: left;
   }
 
   .group-buddy-item-portrait .portrait {
     display: block;
-    height: 36px;
-    width: 36px;
+    height: 32px;
+    width: 32px;
     background: #fff;
     // Circled image
-    @include border-radius(18px);
+    @include border-radius(16px);
   }
 
   .group-buddy-item-divider {
