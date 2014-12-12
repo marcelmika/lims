@@ -64,11 +64,10 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
      */
     public Participant addParticipant(Long cid, Long participantId) throws SystemException {
         // Fetch possible existing conversation
-        Participant participantModel;
-        try {
-            // Try to find participant
-            participantModel = participantPersistence.findByCidParticipantId(cid, participantId);
-        } catch (NoSuchParticipantException e) {
+        Participant participantModel = participantPersistence.fetchByCidParticipantId(cid, participantId);
+
+        // Create a new one
+        if (participantModel == null) {
             // No participant was found, so create a new one
             participantModel = participantPersistence.create(counterLocalService.increment());
             participantModel.setCid(cid);

@@ -35,7 +35,6 @@ import com.marcelmika.lims.api.events.conversation.*;
 import com.marcelmika.lims.persistence.domain.Buddy;
 import com.marcelmika.lims.persistence.domain.Conversation;
 import com.marcelmika.lims.persistence.domain.Message;
-import com.marcelmika.lims.persistence.domain.Pagination;
 import com.marcelmika.lims.persistence.generated.NoSuchConversationException;
 import com.marcelmika.lims.persistence.generated.NoSuchParticipantException;
 import com.marcelmika.lims.persistence.generated.model.Participant;
@@ -117,7 +116,6 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
     public ReadSingleUserConversationResponseEvent readConversation(ReadSingleUserConversationRequestEvent event) {
         // Map to persistence objects
         Conversation conversation = Conversation.fromConversationDetails(event.getConversation());
-        Pagination pagination = Pagination.fromPaginationDetails(event.getPagination());
 
         // Read from persistence
         try {
