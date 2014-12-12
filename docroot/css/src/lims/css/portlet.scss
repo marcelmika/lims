@@ -116,3 +116,21 @@
   }
 
 }
+
+/********************************************************************************
+/ NOTIFICATION - CONFLICT
+/********************************************************************************/
+
+.liferay-ims .conflict-notification {
+  max-width: 300px;
+  padding: 10px;
+  background: rgb(240, 209, 213);
+  border: 1px solid rgb(171, 134, 134);
+  border-bottom: none;
+
+  strong {
+    font-weight: bold;
+  }
+
+}
+

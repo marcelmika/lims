@@ -46,6 +46,21 @@ Y.LIMS.Controller.ControllerExtension.prototype = {
     },
 
     /**
+     * Makes the whole portlet visible
+     */
+    showPortlet: function () {
+        Y.one(this.rootNode).removeClass('covered');
+    },
+
+    /**
+     * Hides the whole portlet
+     *
+     */
+    hidePortlet: function () {
+        Y.one(this.rootNode).addClass('covered');
+    },
+
+    /**
      * Returns true if the portlet is in the IE support
      *
      * @returns {boolean}

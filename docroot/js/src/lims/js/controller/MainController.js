@@ -100,10 +100,22 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
      * @private
      */
     _attachEvents: function () {
+        // Global events
+        Y.on('initializationFinished', this._onInitializationFinished, this);
         // Panel events
         Y.on('panelShown', this._onPanelShown, this);
         Y.on('panelHidden', this._onPanelHidden, this);
         Y.on('userSessionExpired', this._onSessionExpired, this);
+    },
+
+    /**
+     * Called when the initialization is finished
+     *
+     * @private
+     */
+    _onInitializationFinished: function () {
+        // We can now show the portlet
+        this.showPortlet();
     },
 
     /**

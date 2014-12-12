@@ -51,6 +51,9 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
         if (properties.isChatEnabled()) {
             this._startPolling();
         }
+
+        // Fire an event that the initialization has been finished
+        Y.fire('initializationFinished');
     },
 
     /**
