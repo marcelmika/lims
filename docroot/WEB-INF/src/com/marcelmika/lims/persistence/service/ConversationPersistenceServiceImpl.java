@@ -136,9 +136,6 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
 
             conversation = Conversation.fromConversationModel(conversationModel);
 
-            // TODO: Add pagination
-            // TODO: Check if participant in event is really in the conversation
-
             // Get messages from persistence
             List<com.marcelmika.lims.persistence.generated.model.Message> messageModels =
                     MessageLocalServiceUtil.readMessages(
