@@ -151,7 +151,21 @@
       width: 21px;
       height: 21px;
       float: right;
-      padding-right: 15px;
+      @include box-shadow(none);
+      margin: 0;
+      padding: 0 15px 0 0;
+      border: none;
+
+      &:hover,
+      &:focus, {
+        border: none;
+        filter: none;
+        padding: 0 15px 0 0;
+        margin: 0;
+        @include box-shadow(none);
+        width: 21px;
+        height: 21px;
+      }
     }
 
     .resend-button.preloader {
@@ -168,7 +182,21 @@
       width: 16px;
       height: 21px;
       float: right;
-      padding-right: 0;
+      padding: 0;
+      margin: 0;
+      border: none;
+      @include box-shadow(none);
+
+      &:hover,
+      &:focus, {
+        border: none;
+        filter: none;
+        padding: 0;
+        margin: 0;
+        @include box-shadow(none);
+        width: 16px;
+        height: 21px;
+      }
     }
   }
 }

@@ -48,6 +48,32 @@
       background-color: #b3b3b3;
     }
   }
+
+  .close {
+    background: #bd3131;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    right: 3px;
+    top: 4px;
+    background: url(/images/trigger-close-button.png) center center no-repeat;
+    @include image-2x('/images/trigger-close-button@2x.png', auto, 9px);
+    background-size: 9px;
+    border: none;
+    filter: none;
+    padding: 0;
+    margin: 0;
+    @include box-shadow(none);
+
+    &:hover,
+    &:focus {
+      border: none;
+      filter: none;
+      padding: 0;
+      margin: 0;
+      @include box-shadow(none);
+    }
+  }
 }
 
 // Selected trigger
@@ -90,14 +116,23 @@
   width: 20px;
   height: 14px;
   float: right;
-  margin-top: 5px;
-  margin-right: 7px;
+  margin: 5px 7px 0 0;
   opacity: 0.8;
   outline: none;
   filter: none;
+  @include box-shadow(none);
+  border: none;
+  padding: 0;
 
-  &:hover {
+  &:hover,
+  &:focus, {
+    border: none;
     filter: none;
+    padding: 0;
+    margin: 5px 7px 0 0;
+    @include box-shadow(none);
+    width: 20px;
+    height: 14px;
   }
 
   &.minimize {

@@ -36,10 +36,14 @@
     @include border-radius(5px);
     // Make the button unselectable
     @include no-select();
-  }
+    @include box-shadow(0 1px 0 rgba(255,255,255,0.75) inset,0 -1px 0 rgba(0,0,0,0.15) inset);
 
-  .button:hover {
-    background-color: #eee;
+    &:hover,
+    &:focus {
+      text-shadow: none;
+      @include box-shadow(none);
+      background-color: #eee;
+    }
   }
 
   .button-primary {
@@ -104,6 +108,7 @@
     .button {
       // Rounded corners
       @include border-radius(0);
+      @include box-shadow(none);
     }
 
     > .button {
@@ -496,6 +501,11 @@
     width: 21px;
     height: 21px;
     float: right;
+    border: none;
+    filter: none;
+    padding: 0;
+    margin: 0;
+    @include box-shadow(none);
   }
 
   .resend-button.activated {
