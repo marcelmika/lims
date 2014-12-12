@@ -72,8 +72,11 @@
     </div>
     <div class="panel">
         <div class="panel-window">
+
+            <%-- Title --%>
             <div class="panel-title">
-                <button class="panel-button minimize"></button>
+                <button title="<liferay-ui:message key="panel-button-minimize-title"/>"
+                        class="panel-button minimize"></button>
                 <div class="panel-title-text">
                     <liferay-ui:message key="panel-settings-title"/>
                 </div>

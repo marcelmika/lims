@@ -49,8 +49,10 @@
     <div class="panel">
         <div class="panel-window">
             <div class="panel-title">
-                <button class="panel-button close"></button>
-                <button class="panel-button minimize"></button>
+                <button title="<liferay-ui:message key="panel-button-close-title"/>"
+                        class="panel-button close"></button>
+                <button title="<liferay-ui:message key="panel-button-minimize-title"/>"
+                        class="panel-button minimize"></button>
                 <div class="panel-title-text">{conversationTitle}</div>
             </div>
             <div class="panel-content">

@@ -88,11 +88,17 @@
         </div>
         <div class="panel">
             <div class="panel-window">
+
+                    <%-- Title --%>
                 <div class="panel-title">
-                    <button class="panel-button close"></button>
-                    <button class="panel-button minimize"></button>
+                    <button title="<liferay-ui:message key="panel-button-close-title"/>"
+                            class="panel-button close"></button>
+                    <button title="<liferay-ui:message key="panel-button-minimize-title"/>"
+                            class="panel-button minimize"></button>
                     <div class="panel-title-text">${conversation.title}</div>
                 </div>
+
+                    <%-- Content --%>
                 <div class="panel-content">
                     <div class="preloader"></div>
                     <ul></ul>
