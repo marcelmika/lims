@@ -176,6 +176,7 @@
     "timeRangeWeeksAgo":"<liferay-ui:message key="time-range-weeks-ago"/>",
     "dateFormat":"<liferay-ui:message key="date-format"/>",
     "adminAreaOpen": "<liferay-ui:message key="panel-settings-admin-area-open"/>",
-    "adminAreaClose": "<liferay-ui:message key="panel-settings-admin-area-close"/>"
+    "adminAreaClose": "<liferay-ui:message key="panel-settings-admin-area-close"/>",
+    "incomingMessageTitleText" : "<liferay-ui:message key="incoming-message-title-text"/>"
     }
 </script>
