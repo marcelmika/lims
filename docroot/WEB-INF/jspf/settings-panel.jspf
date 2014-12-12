@@ -102,6 +102,10 @@
 
                     <div class="settings ${adminAreaClass}">
                         <div class="version">${version}</div>
+                        <a href="http://marcelmika.com/lims/muc" target="_blank" class="muc-sponsored">
+                            <div class="muc-icon"></div>
+                            <div class="muc-text"><liferay-ui:message key="muc-sponsored-text"/></div>
+                        </a>
                         <ul class="lfr-component">
                             <%@ include file="/WEB-INF/jspf/settings/buddy-list-strategy.jspf" %>
                             <%@ include file="/WEB-INF/jspf/settings/buddy-list-social-relation.jspf" %>

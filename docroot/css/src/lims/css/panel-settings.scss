@@ -99,6 +99,30 @@
   .admin-area {
     position: relative;
 
+    .muc-sponsored {
+      padding: 10px;
+      display: block;
+      text-decoration: none;
+      max-width: 250px;
+
+      .muc-icon {
+        float: left;
+        background: url(/images/icon-muc.png) center center no-repeat;
+        @include image-2x('/images/icon-muc@2x.png', auto, 45px);
+        width: 45px;
+        height: 45px;
+      }
+
+      .muc-text {
+        max-width: 160px;
+        padding-left: 53px;
+        padding-top: 9px;
+        line-height: 15px;
+        color: rgb(76, 154, 194);
+      }
+
+    }
+
     .settings {
       width: 440px;
       height: 300px;
