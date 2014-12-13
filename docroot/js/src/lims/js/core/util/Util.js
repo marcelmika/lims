@@ -83,6 +83,24 @@ var Util = {
      */
     hide: function (node) {
         node.addClass('hide');
+    },
+
+    /**
+     * Takes the string and makes all links clickable
+     *
+     * @param text
+     * @return {string}
+     */
+    linkify: function(text) {
+
+        // http://, https://, ftp://
+        var urlPattern = /\b(?:https?|ftp):&#x2F;&#x2F;[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim,
+        // Email addresses
+        emailAddressPattern = /[\w.]+@[a-zA-Z_\-]+?(?:\.[a-zA-Z]{2,6})+/gim;
+
+        return text
+            .replace(urlPattern, '<a class="link" target="_blank" href="$&">$&</a>')
+            .replace(emailAddressPattern, '<a class="link" target="_blank" href="mailto:$&">$&</a>');
     }
 
 };
