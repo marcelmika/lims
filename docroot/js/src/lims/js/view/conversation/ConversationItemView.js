@@ -273,7 +273,7 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
             resendButtonNode.addClass('preloader');
             // We don't want the user to delete the message
             // that is being processed
-            deleteButtonNode.hide();
+            Y.LIMS.Core.Util.hide(deleteButtonNode);
 
             // Save the model again
             model.save();

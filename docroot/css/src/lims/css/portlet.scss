@@ -1,0 +1,136 @@
+/********************************************************************************
+/ PORTLET
+/********************************************************************************/
+
+/* Move container down and on top */
+.liferay-ims {
+  position: fixed;
+  bottom: 0;
+  z-index: 1000;
+  font-family: $font-family;
+  font-size: 12px;
+  font-weight: 200;
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+
+  textarea, pre, input {
+    font-weight: 200;
+    font-family: $font-family;
+  }
+
+  // Hide unnecessary portlet bars
+  .portlet-borderless-bar {
+    display: none !important;
+  }
+
+  // This hides portlet bars that might appear around the chat bar
+  .portlet {
+    border: none !important;
+    background: none !important;
+    // Hide shadow
+    @include box-shadow(none !important);
+  }
+
+  // Preloaded images should be taken as far from the visible area as possible
+  .preloaded-images {
+    position: absolute;
+    overflow: hidden;
+    left: -9999px;
+    top: -9999px;
+    height: 1px;
+    width: 1px;
+  }
+
+  // Message for unsupported browser
+  .unsupported-browser {
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    bottom: 0;
+    position: fixed;
+    right: 5em;
+    padding: 3px 10px;
+    z-index: 999;
+  }
+
+  .unsupported-browser a {
+    color: #444;
+    text-decoration: none;
+  }
+
+  // Hide sound element
+  .lims-sound {
+    position: absolute;
+    top: -10000px;
+    bottom: -10000px;
+  }
+
+}
+
+/********************************************************************************
+/ LIMS BAR (Main container)
+/********************************************************************************/
+
+.liferay-ims .lims-bar {
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-left: none;
+  border-bottom: none;
+  bottom: 0;
+  height: 24px;
+  position: fixed;
+  right: 5em;
+  z-index: 999;
+
+  div ul,
+  div ul li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    text-align: left;
+  }
+
+  .panel {
+    bottom: 24px;
+    display: none;
+    position: absolute;
+    right: 0;
+    z-index: 20;
+    // Shadow
+    @include box-shadow(#bcbcbc 1px 1px 1px);
+  }
+
+  .selected .panel {
+    display: block;
+  }
+
+  .lims-tabs > li {
+    float: right;
+    line-height: 24px;
+  }
+
+  div ul li.closed {
+    display: none;
+  }
+
+}
+
+/********************************************************************************
+/ NOTIFICATION - CONFLICT
+/********************************************************************************/
+
+.liferay-ims .conflict-notification {
+  max-width: 300px;
+  padding: 10px;
+  background: rgb(240, 209, 213);
+  border: 1px solid rgb(171, 134, 134);
+  border-bottom: none;
+
+  strong {
+    font-weight: bold;
+  }
+
+}
+

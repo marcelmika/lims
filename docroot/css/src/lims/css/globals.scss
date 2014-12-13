@@ -1,0 +1,65 @@
+/********************************************************************************
+/ GLOBALS
+/********************************************************************************/
+
+.liferay-ims {
+
+  li {
+    line-height: 15px;
+    padding: 0;
+    margin: 0;
+    background: #ffffff;
+    text-align: left;
+  }
+
+  button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    opacity: 1 !important;
+  }
+
+  label {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+  }
+
+  button:hover {
+    opacity: 0.6 !important;
+  }
+
+}
+
+/********************************************************************************
+/ HELPERS
+/********************************************************************************/
+
+.liferay-ims {
+
+  .hide {
+    display: none !important;
+  }
+
+  .covered {
+    visibility: hidden;
+  }
+
+  .clear {
+    clear: both;
+  }
+
+  .pull-left {
+    float: left;
+  }
+
+  .pull-right {
+    float: right;
+  }
+
+  .overflow-y-scroll {
+    overflow-y: scroll;
+  }
+}

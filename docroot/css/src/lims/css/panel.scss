@@ -1,0 +1,272 @@
+/********************************************************************************
+/ PANEL - TRIGGER
+/********************************************************************************/
+
+.liferay-ims .lims-bar div ul li .panel-trigger {
+  cursor: pointer;
+  float: left;
+  border-left: 1px solid #dddad8;
+  color: #111;
+  text-decoration: none;
+  padding: 0 6px;
+
+  &:hover {
+    background: #fff;
+  }
+
+  // Trigger name
+  span.trigger-name {
+    max-width: 150px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-right: 15px;
+    // Make the button unselectable
+    @include no-select();
+  }
+
+  // Unread messages badge
+  .unread {
+    background: #bd3131;
+    color: #fff;
+    font-size: 10px;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    right: 3px;
+    top: 4px;
+    text-align: center;
+    line-height: 14px;
+    font-weight: bold;
+    opacity: 0.8;
+    overflow: hidden;
+    // Rounded corners
+    @include border-radius(5px);
+
+    &.dimmed {
+      background-color: #b3b3b3;
+    }
+  }
+}
+
+// Selected trigger
+.liferay-ims .lims-bar div ul li.selected .panel-trigger {
+  background: #fff;
+  border-top: none;
+  border-bottom: none;
+  line-height: 24px;
+  height: 24px;
+  position: relative;
+  z-index: 30;
+  @include box-shadow(#bcbcbc 1px 1px 1px);
+}
+
+/********************************************************************************
+/ PANEL - WINDOW
+/********************************************************************************/
+
+.liferay-ims .panel-window {
+  background: #fff;
+  border: 1px solid #dddad8;
+  border-bottom: none;
+  border-right: none;
+  font-size: 12px;
+  min-width: 250px;
+  position: relative;
+}
+
+.liferay-ims .ie-support .panel-window {
+  border-right: 2px solid #dddad8;
+  border-bottom: 1px solid #dddad8;
+}
+
+/********************************************************************************
+/ PANEL - BUTTONS
+/********************************************************************************/
+
+.liferay-ims .panel-button {
+  cursor: pointer;
+  width: 20px;
+  height: 14px;
+  float: right;
+  margin: 5px 7px 0 0;
+  opacity: 0.8;
+  outline: none;
+  filter: none;
+  @include box-shadow(none);
+  border: none;
+  padding: 0;
+
+  &:hover,
+  &:focus, {
+    border: none;
+    filter: none;
+    padding: 0;
+    margin: 5px 7px 0 0;
+    @include box-shadow(none);
+    width: 20px;
+    height: 14px;
+  }
+
+  &.minimize {
+    background: url(/images/minimize-button.png) left bottom no-repeat;
+    @include image-2x('/images/minimize-button@2x.png', auto, 13px);
+  }
+
+  &.close {
+    background: url(/images/close-button.png) center center no-repeat;
+    @include image-2x('/images/close-button@2x.png', auto, 18px);
+  }
+
+  &.search {
+    background: url(/images/search-button.png) center center no-repeat;
+    @include image-2x('/images/search-button@2x.png', auto, 13px);
+  }
+
+  &.list {
+    background: url(/images/list-button.png) center center no-repeat;
+    @include image-2x('/images/list-button@2x.png', auto, 11px);
+  }
+}
+
+/********************************************************************************
+/ PANEL - TITLE
+/********************************************************************************/
+
+.liferay-ims {
+
+  .panel-title {
+    background: #ffffff;
+    color: #222;
+    font-weight: normal;
+    height: 25px;
+    line-height: 24px;
+    text-indent: 7px;
+    text-align: left;
+    font-size: 15px;
+    border-bottom: 1px solid #ccc;
+
+    .panel-title-text {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: 190px;
+      text-indent: 5px;
+      cursor: default;
+      @include no-select();
+    }
+  }
+
+  .panel-subtitle {
+    padding: 5px;
+    background: #f8f8f8;
+    color: #222;
+    font-weight: bold;
+    height: 16px;
+  }
+}
+
+/********************************************************************************
+/ PANEL - ERROR
+/********************************************************************************/
+
+.liferay-ims .panel-error {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.7);
+  top: 25px;
+  z-index: 2;
+  width: 100%;
+
+  .error-message {
+    margin: 15px 20px;
+    font-weight: 500;
+    line-height: 13px;
+    color: #ffffff;
+  }
+
+  .warning-icon {
+    background: transparent url(/images/icon-warning-white.png) no-repeat center center;
+    @include image-2x('/images/icon-warning-white@2x.png', auto, 21px);
+    width: 21px;
+    height: 21px;
+    margin: 18px 7px;
+    float: left;
+  }
+}
+
+.liferay-ims .ie-support .panel-error {
+  background: #000;
+}
+
+/********************************************************************************
+/ PANEL - SEARCH INPUT
+/********************************************************************************/
+
+.liferay-ims .panel-search {
+  position: absolute;
+  top: 26px;
+  z-index: 2;
+  background: #ffffff;
+  width: 100%;
+
+  .search-input-field-label {
+    padding: 0;
+    border: none;
+    height: 26px;
+    background: none;
+    margin: 5px 0 5px 7px;
+  }
+
+  .search-input-field {
+    border: 1px solid #d4d4d4;
+    width: 180px;
+    min-height: 21px;
+    max-height: 26px;
+    padding: 2px 27px 2px 27px;
+    color: #1A1A1A;
+    font-size: 12px;
+    background-size: 13px;
+    background: #f1f1f1 url(/images/search-button.png) 7px center no-repeat;
+    @include image-2x('/images/search-button@2x.png', auto, 13px);
+    // Shadow
+    @include box-shadow(none);
+    // Rounded corners
+    @include border-radius(10px);
+  }
+
+  .search-input-field:hover,
+  .search-input-field:focus {
+    background: #ffffff url(/images/search-button.png) 7px center no-repeat;
+    border: 1px solid #d4d4d4;
+    outline: none;
+    background-size: 13px;
+    @include image-2x('/images/search-button@2x.png', auto, 13px);
+    // No shadow
+    @include box-shadow(none);
+  }
+
+  .search-content {
+    height: 252px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .preloader {
+    width: 20px;
+    height: 20px;
+    background-image: url(/images/preloader-tiny.gif);
+    @include image-2x('/images/preloader-tiny@2x.gif', auto, 17px);
+    background-size: 17px;
+    top: 7px;
+    right: 12px;
+    margin: 0;
+  }
+
+  .error-notification,
+  .info-notification {
+    /* Move the notification views a bit up since there is a search input that takes the place */
+    top: 20%;
+  }
+}
+

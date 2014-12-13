@@ -109,20 +109,21 @@ Y.LIMS.Core.ViewController = Y.Base.create('viewController', Y.View, [], {
      * Shows view controller. Panel is visible.
      */
     showViewController: function () {
-        this.get('container').show();
+        Y.LIMS.Core.Util.show(this.get('container'));
     },
 
     /**
      * Hides the controller's panel. Nothing is visible.
      */
     hideViewController: function () {
-        this.get('container').hide();
+        Y.LIMS.Core.Util.hide(this.get('container'));
     },
 
     /**
      * Presents view controller. Panel is opened.
      */
     presentViewController: function () {
+        // Show the panel
         this.get('panel').show();
     },
 

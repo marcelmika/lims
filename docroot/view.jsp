@@ -32,7 +32,7 @@
     <portlet:resourceURL var="limsPortletURL" id="view.jsp" escapeXml="false"/>
 
     <%-- LIMS bar --%>
-    <div id="lims-container" class="${ieSupportClass}">
+    <div id="lims-container" class="covered ${ieSupportClass}">
 
             <%-- Render portlet content only if the browser is supported --%>
         <c:if test="${isSupportedBrowser}">
@@ -92,7 +92,7 @@
             <%-- Browser is not supported--%>
         <c:if test="${!isSupportedBrowser}">
             <div class="unsupported-browser">
-                <a href="http://marcelmika.com/lims/unsupported" target="_blank">
+                <a href="${properties.urlUnsupportedBrowser}" target="_blank">
                     <liferay-ui:message key="unsupported-browser-message"/>
                 </a>
             </div>
@@ -103,5 +103,8 @@
 
     <%-- Preloaded Images --%>
     <%@ include file="/WEB-INF/jspf/preloaded-images.jspf" %>
+
+    <%-- Conflict notifications --%>
+    <%@ include file="/WEB-INF/jspf/conflict.jspf" %>
 
 </c:if>

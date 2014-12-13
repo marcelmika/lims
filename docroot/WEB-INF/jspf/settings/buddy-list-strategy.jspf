@@ -1,0 +1,89 @@
+<%--
+  ~ The MIT License (MIT)
+  ~
+  ~ Copyright (c) 2014 Marcel Mika, marcelmika.com
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  --%>
+
+
+<%-- Variables --%>
+<%--@elvariable id="properties" type="com.marcelmika.lims.portal.domain.Properties"--%>
+
+<%-- Imports --%>
+<%@ page import="com.marcelmika.lims.api.environment.Environment.BuddyListStrategy" %>
+
+<%-- Constants --%>
+<c:set var="ALL" value="<%= BuddyListStrategy.ALL %>"/>
+<c:set var="SITES" value="<%= BuddyListStrategy.SITES %>"/>
+<c:set var="SOCIAL" value="<%= BuddyListStrategy.SOCIAL %>"/>
+<c:set var="SITES_AND_SOCIAL" value="<%= BuddyListStrategy.SITES_AND_SOCIAL %>"/>
+<c:set var="USER_GROUPS" value="<%= BuddyListStrategy.USER_GROUPS %>"/>
+
+<%-- Defaults --%>
+<c:set var="allActiveClass" value=""/>
+<c:set var="sitesActiveClass" value=""/>
+<c:set var="socialActiveClass" value=""/>
+<c:set var="sitesAndSocialActiveClass" value=""/>
+<c:set var="userGroupsActiveClass" value=""/>
+
+<%-- Decide what should be active --%>
+<c:choose>
+    <c:when test="${properties.buddyListStrategy == ALL}">
+        <c:set var="allActiveClass" value="active"/>
+    </c:when>
+    <c:when test="${properties.buddyListStrategy == SITES}">
+        <c:set var="sitesActiveClass" value="active"/>
+    </c:when>
+    <c:when test="${properties.buddyListStrategy == SOCIAL}">
+        <c:set var="socialActiveClass" value="active"/>
+    </c:when>
+    <c:when test="${properties.buddyListStrategy == SITES_AND_SOCIAL}">
+        <c:set var="sitesAndSocialActiveClass" value="active"/>
+    </c:when>
+    <c:when test="${properties.buddyListStrategy == USER_GROUPS}">
+        <c:set var="userGroupsActiveClass" value="active"/>
+    </c:when>
+</c:choose>
+
+<%-- Rendered --%>
+<li class="buddy-list-strategy">
+    <div class="settings-category-title">
+        <span><liferay-ui:message key="panel-settings-admin-area-buddy-list-strategy-title"/></span>
+    </div>
+    <div class="button-group">
+        <label data-choice="${ALL}" class="button button-primary ${allActiveClass}">
+            <span><liferay-ui:message key="panel-settings-admin-area-buddy-list-strategy-all"/></span>
+        </label>
+        <label data-choice="${SITES}" class="button button-primary ${sitesActiveClass}">
+            <span><liferay-ui:message key="panel-settings-admin-area-buddy-list-strategy-sites"/></span>
+        </label>
+        <label data-choice="${SOCIAL}" class="button button-primary ${socialActiveClass}">
+            <span><liferay-ui:message key="panel-settings-admin-area-buddy-list-strategy-social"/></span>
+        </label>
+        <label data-choice="${SITES_AND_SOCIAL}" class="button button-primary ${sitesAndSocialActiveClass}">
+            <span><liferay-ui:message key="panel-settings-admin-area-buddy-list-strategy-sites-and-social"/></span>
+        </label>
+        <label data-choice="${USER_GROUPS}" class="button button-primary ${userGroupsActiveClass}">
+            <span><liferay-ui:message key="panel-settings-admin-area-buddy-list-strategy-user-groups"/></span>
+        </label>
+
+        <div class="clear"></div>
+    </div>
+</li>

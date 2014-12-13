@@ -38,7 +38,7 @@
         <c:set var="hiddenClass" value=""/>
     </c:when>
     <c:otherwise>
-        <c:set var="hiddenClass" value="aui-helper-hidden hide"/>
+        <c:set var="hiddenClass" value="hide"/>
     </c:otherwise>
 </c:choose>
 
@@ -48,13 +48,19 @@
     </div>
     <div class="panel">
         <div class="panel-window">
+
+            <%-- Title --%>
             <div class="panel-title">
-                <button class="panel-button minimize"></button>
-                <button class="panel-button search"></button>
+                <button title="<liferay-ui:message key="panel-button-minimize-title"/>"
+                        class="panel-button minimize"></button>
+                <button title="<liferay-ui:message key="panel-button-search-title"/>"
+                        class="panel-button search"></button>
                 <div class="panel-title-text">
                     <liferay-ui:message key="panel-contacts-title"/>
                 </div>
             </div>
+
+            <%-- Content --%>
             <div class="panel-content">
                 <div class="preloader"></div>
                 <ul class="group-list"></ul>

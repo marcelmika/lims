@@ -67,7 +67,7 @@ public class GroupManagerImpl implements GroupManager {
         String[] excludedSites = Environment.getBuddyListSiteExcludes();
         String[] excludedGroups = Environment.getBuddyListGroupExcludes();
         // Relation types
-        BuddyListSocialRelation[] relationTypes = Environment.getBuddyListAllowedSocialRelationTypes();
+        BuddyListSocialRelation[] relationTypes = Environment.getBuddyListSocialRelations();
 
         // All buddies
         if (strategy == BuddyListStrategy.ALL) {
