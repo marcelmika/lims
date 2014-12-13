@@ -54,6 +54,7 @@ import java.util.List;
 public class ConversationPersistenceServiceImpl implements ConversationPersistenceService {
 
     // Log
+    @SuppressWarnings("unused")
     private static Log log = LogFactoryUtil.getLog(ConversationPersistenceServiceImpl.class);
 
     /**
@@ -116,6 +117,7 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
     public ReadSingleUserConversationResponseEvent readConversation(ReadSingleUserConversationRequestEvent event) {
         // Map to persistence objects
         Conversation conversation = Conversation.fromConversationDetails(event.getConversation());
+        Buddy buddy = Buddy.fromBuddyDetails(event.getParticipant());
 
         // Read from persistence
         try {
@@ -129,6 +131,18 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             if (conversationModel == null) {
                 return ReadSingleUserConversationResponseEvent.readConversationFailure(
                         ReadSingleUserConversationResponseEvent.Status.ERROR_NOT_FOUND
+                );
+            }
+
+            // Get user's participant model for the given conversation
+            Participant participant = ParticipantLocalServiceUtil.getParticipant(
+                    conversationModel.getCid(), buddy.getBuddyId()
+            );
+
+            // User is not in the conversation thus he can't read it
+            if (participant == null) {
+                return ReadSingleUserConversationResponseEvent.readConversationFailure(
+                        ReadSingleUserConversationResponseEvent.Status.ERROR_FORBIDDEN
                 );
             }
 
@@ -147,11 +161,6 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             // Add to conversation
             conversation.setMessages(messages);
 
-            // Get participant
-            com.marcelmika.lims.persistence.generated.model.Participant participant =
-                    ParticipantLocalServiceUtil.getParticipant(
-                            conversationModel.getCid(), event.getParticipant().getBuddyId()
-                    );
             // Add to conversation
             conversation.setUnreadMessagesCount(participant.getUnreadMessagesCount());
 
@@ -319,6 +328,17 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
                 return SendMessageResponseEvent.sendMessageFailure(
                         SendMessageResponseEvent.Status.ERROR_NOT_FOUND
                 );
+            }
+
+            // Check if the user is in the conversation
+            Participant participant = ParticipantLocalServiceUtil.getParticipant(
+                    conversationModel.getCid(), buddy.getBuddyId()
+            );
+
+            // User is not in the conversation thus he can't leave it
+            if (participant == null) {
+                // Failure
+                return SendMessageResponseEvent.sendMessageFailure(SendMessageResponseEvent.Status.ERROR_FORBIDDEN);
             }
 
             // Create new message
