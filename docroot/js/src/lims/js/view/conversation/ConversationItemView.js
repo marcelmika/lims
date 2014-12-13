@@ -66,15 +66,22 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
         var container = this.get('container'),      // Container that holds the view
             model = this.get('model'),              // Message model
             from = model.get('from'),               // Creator of the message
+            body,                                   // Message body
             formatter = this.get('dateFormatter');  // Prettify date formatter
 
+        // Get the message body
+        body = model.get('body');
+        // Escape message
+        body = Y.Escape.html(body);
+        // Make links clickable
+        body = Y.LIMS.Core.Util.linkify(body);
 
         // Fill data from model to template and set it to container
         container.set('innerHTML', Y.Lang.sub(this.template, {
                 createdPrettified: formatter.prettyDate(model.get('createdAt')),
                 created: formatter.formatDate(new Date(model.get('createdAt'))),
                 fullName: from.get('fullName'),
-                content: Y.Escape.html(model.get('body')),
+                content: body,
                 portrait: this._renderPortrait(from.get('screenName'))
             })
         );
