@@ -1,7 +1,23 @@
-AUI().use('lims-core', "lims-model", "lims-view", "lims-controller", function (A) {
+AUI().use('lims-core', 'lims-model', 'lims-view', 'lims-controller', 'lims-plugin', function (A) {
+
+    // Vars
+    var conflictMessage;
 
     // If there is no chat bar do nothing
     if (!A.one('#lims-container .lims-bar')) {
+        return; // Stop the app
+    }
+
+    // There is an instance of Chat Portlet already running
+    else if (A.one('#chatBar')) {
+
+        // Vars
+        conflictMessage = A.one('.liferay-ims .conflict-chat-portlet');
+        // Show the warning
+        if (conflictMessage) {
+            A.one('.liferay-ims .conflict-chat-portlet').removeClass('hide');
+        }
+
         return;
     }
 

@@ -35,6 +35,7 @@ public class SettingsSoap implements Serializable {
 		soapModel.setPresenceUpdatedAt(model.getPresenceUpdatedAt());
 		soapModel.setMute(model.getMute());
 		soapModel.setChatEnabled(model.getChatEnabled());
+		soapModel.setAdminAreaOpened(model.getAdminAreaOpened());
 
 		return soapModel;
 	}
@@ -143,10 +144,23 @@ public class SettingsSoap implements Serializable {
 		_chatEnabled = chatEnabled;
 	}
 
+	public boolean getAdminAreaOpened() {
+		return _adminAreaOpened;
+	}
+
+	public boolean isAdminAreaOpened() {
+		return _adminAreaOpened;
+	}
+
+	public void setAdminAreaOpened(boolean adminAreaOpened) {
+		_adminAreaOpened = adminAreaOpened;
+	}
+
 	private long _sid;
 	private long _userId;
 	private String _presence;
 	private long _presenceUpdatedAt;
 	private boolean _mute;
 	private boolean _chatEnabled;
+	private boolean _adminAreaOpened;
 }

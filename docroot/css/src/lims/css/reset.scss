@@ -1,0 +1,50 @@
+/********************************************************************************
+/* RESET
+/********************************************************************************/
+
+.liferay-ims {
+
+  * {
+    @include box-sizing(content-box);
+    background: none repeat scroll 0 0 transparent;
+    font-weight: normal;
+    text-decoration: none;
+    text-indent: 0;
+    text-align: left;
+  }
+
+  div,
+  span,
+  p,
+  a,
+  img,
+  small,
+  strong,
+  b,
+  u,
+  i,
+  ul,
+  li,
+  fieldset,
+  label,
+  textarea {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    font-size: 100%;
+    vertical-align: baseline;
+    border-spacing: 0;
+    float: none;
+  }
+
+  ul {
+    list-style: none;
+    float: none;
+  }
+
+  input,
+  input[type="text"] {
+    @include box-shadow(none);
+  }
+}

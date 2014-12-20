@@ -35,6 +35,9 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
     private static final String SEARCH_BY_SOCIAL_GROUPS = SettingsFinder.class.getName() + ".searchBySocialGroups";
     private static final String SEARCH_BY_USER_GROUPS = SettingsFinder.class.getName() + ".searchByUserGroups";
 
+    // Search columns count
+    private static final Integer SEARCH_COLUMN_COUNT = 3;
+
     // Placeholders
     private static final String PLACEHOLDER_DEFAULT_USER = "[$DEFAULT_USER$]";
     private static final String PLACEHOLDER_DEACTIVATED_USER = "[$DEACTIVATED_USER$]";
@@ -324,9 +327,9 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             // Create the like statement for search query
             String likeStatement = "%" + lowerCaseSearchQuery + "%";
 
-            // There are 5 possible columns we are about to search
+            // There are 3 possible columns we are about to search
             // (first name, middle name, last name, screen name, email address)
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < SEARCH_COLUMN_COUNT; i++) {
                 queryPos.add(likeStatement);
                 queryPos.add(lowerCaseSearchQuery);
             }
@@ -390,9 +393,9 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             // Create the like statement for search query
             String likeStatement = "%" + lowerCaseSearchQuery + "%";
 
-            // There are 5 possible columns we are about to search
+            // There are 3 possible columns we are about to search
             // (first name, middle name, last name, screen name, email address)
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < SEARCH_COLUMN_COUNT; i++) {
                 queryPos.add(likeStatement);
                 queryPos.add(lowerCaseSearchQuery);
             }
@@ -465,9 +468,9 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             // Create the like statement for search query
             String likeStatement = "%" + lowerCaseSearchQuery + "%";
 
-            // There are 5 possible columns we are about to search
+            // There are 3 possible columns we are about to search
             // (first name, middle name, last name, screen name, email address)
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < SEARCH_COLUMN_COUNT; i++) {
                 queryPos.add(likeStatement);
                 queryPos.add(lowerCaseSearchQuery);
             }
@@ -541,9 +544,9 @@ public class SettingsFinderImpl extends BasePersistenceImpl<Settings> implements
             // Create the like statement for search query
             String likeStatement = "%" + lowerCaseSearchQuery + "%";
 
-            // There are 5 possible columns we are about to search
+            // There are 3 possible columns we are about to search
             // (first name, middle name, last name, screen name, email address)
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < SEARCH_COLUMN_COUNT; i++) {
                 queryPos.add(likeStatement);
                 queryPos.add(lowerCaseSearchQuery);
             }

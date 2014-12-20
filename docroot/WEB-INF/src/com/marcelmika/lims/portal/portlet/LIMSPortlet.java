@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.util.bridges.mvc.MVCPortlet;
+import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.events.conversation.GetOpenedConversationsRequestEvent;
 import com.marcelmika.lims.api.events.conversation.GetOpenedConversationsResponseEvent;
 import com.marcelmika.lims.api.events.settings.ReadSettingsRequestEvent;
@@ -40,10 +41,14 @@ import com.marcelmika.lims.core.service.SettingsCoreService;
 import com.marcelmika.lims.core.service.SettingsCoreServiceUtil;
 import com.marcelmika.lims.portal.domain.Buddy;
 import com.marcelmika.lims.portal.domain.Conversation;
+import com.marcelmika.lims.portal.domain.Properties;
 import com.marcelmika.lims.portal.domain.Settings;
 import com.marcelmika.lims.portal.http.HttpStatus;
 import com.marcelmika.lims.portal.processor.PortletProcessor;
 import com.marcelmika.lims.portal.processor.PortletProcessorUtil;
+import com.marcelmika.lims.portal.properties.PortletPropertiesValues;
+import com.marcelmika.lims.portal.properties.PropertiesManager;
+import com.marcelmika.lims.portal.properties.PropertiesManagerUtil;
 
 import javax.portlet.*;
 import java.io.IOException;
@@ -66,10 +71,15 @@ public class LIMSPortlet extends MVCPortlet {
     SettingsCoreService settingsCoreService = SettingsCoreServiceUtil.getSettingsCoreService();
     ConversationCoreService conversationCoreService = ConversationCoreServiceUtil.getConversationCoreService();
 
+    // Properties Dependencies
+    PropertiesManager propertiesManager = PropertiesManagerUtil.getPropertiesManager();
+
     // Constants
     private static final String VIEW_JSP_PATH = "/view.jsp"; // Path to the view.jsp
 
-    // Variables
+    // Variable keys
+    private static final String VARIABLE_IS_ADMIN = "isAdmin";
+    private static final String VARIABLE_PROPERTIES = "properties";
     private static final String VARIABLE_IS_SUPPORTED_BROWSER = "isSupportedBrowser";
     private static final String VARIABLE_NEEDS_IE_SUPPORT = "needsIESupport";
     private static final String VARIABLE_SETTINGS = "settings";
@@ -77,6 +87,7 @@ public class LIMSPortlet extends MVCPortlet {
     private static final String VARIABLE_IS_ENABLED = "isEnabled";
     private static final String VARIABLE_SCREEN_NAME = "screenName";
     private static final String VARIABLE_FULL_NAME = "fullName";
+    private static final String VARIABLE_VERSION = "version";
 
     // Log
     private static Log log = LogFactoryUtil.getLog(LIMSPortlet.class);
@@ -98,21 +109,36 @@ public class LIMSPortlet extends MVCPortlet {
     public void doView(RenderRequest renderRequest,
                        RenderResponse renderResponse) throws PortletException, IOException {
 
-        // Check the availability of browser
-        boolean isSupportedBrowser = BrowserDetector.isSupportedBrowser(renderRequest);
+        // Environment needs to be set up at the beginning of the request
+        propertiesManager.setup(renderRequest.getPreferences());
 
-        // Render portlet only if the browser is supported
-        if (isSupportedBrowser) {
-            // Settings pane
-            renderSettings(renderRequest);
-            // Conversations pane
-            renderConversations(renderRequest);
+        // Check if the current site is excluded
+        boolean isExcluded = isExcluded(renderRequest);
+
+        // Site is excluded
+        if (isExcluded) {
+            // Disable portlet
+            renderRequest.setAttribute(VARIABLE_IS_ENABLED, false);
         }
+        // Site is not excluded
+        else {
 
-        // Set correct content type
-        renderResponse.setContentType(renderRequest.getResponseContentType());
-        // Additional parameters
-        renderAdditions(renderRequest);
+            // Check the availability of browser
+            boolean isSupportedBrowser = BrowserDetector.isSupportedBrowser(renderRequest);
+
+            // Render portlet only if the browser is supported
+            if (isSupportedBrowser) {
+                // Settings pane
+                renderSettings(renderRequest);
+                // Conversations pane
+                renderConversations(renderRequest);
+            }
+
+            // Set correct content type
+            renderResponse.setContentType(renderRequest.getResponseContentType());
+            // Additional parameters
+            renderAdditions(renderRequest);
+        }
 
         // Set response to view.jsp
         include(VIEW_JSP_PATH, renderRequest, renderResponse);
@@ -135,8 +161,13 @@ public class LIMSPortlet extends MVCPortlet {
             response.setProperty(ResourceResponse.HTTP_STATUS_CODE, HttpStatus.UNAUTHORIZED.toString());
             return;
         }
+
+        // Environment needs to be set up at the beginning of the request
+        propertiesManager.setup(request.getPreferences());
+
         // Response content type is JSON
         response.setContentType(ContentTypes.APPLICATION_JSON);
+
         // This is an entry point to the whole app. Processor will do all the necessary work and fill the response.
         processor.processRequest(request, response);
     }
@@ -212,6 +243,10 @@ public class LIMSPortlet extends MVCPortlet {
     private void renderAdditions(RenderRequest renderRequest) {
         // Get buddy from request
         Buddy buddy = Buddy.fromRenderRequest(renderRequest);
+        // Check if the user is admin
+        renderRequest.setAttribute(VARIABLE_IS_ADMIN, PermissionDetector.isAdmin(renderRequest));
+        // Render properties
+        renderRequest.setAttribute(VARIABLE_PROPERTIES, Properties.fromEnvironment());
         // Check if lims is enabled and pass it to jsp as a parameter
         renderRequest.setAttribute(VARIABLE_IS_ENABLED, isCorrectAttempt(renderRequest));
         // Check if the browser is supported
@@ -221,18 +256,85 @@ public class LIMSPortlet extends MVCPortlet {
         // Screen name cannot be accessed via javascript so we need to render it manually
         renderRequest.setAttribute(VARIABLE_SCREEN_NAME, buddy.getScreenName());
         renderRequest.setAttribute(VARIABLE_FULL_NAME, buddy.getFullName());
+        // Version
+        renderRequest.setAttribute(VARIABLE_VERSION, PortletPropertiesValues.VERSION);
     }
 
     /**
      * Checks if the server request attempt is correct. In other words checks if the user is signed in.
      *
-     * @param request Request
+     * @param request PortletRequest
      * @return true if the request attempt is correct
      */
     private boolean isCorrectAttempt(PortletRequest request) {
         // Check if the user is signed in
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
+        if (themeDisplay == null) {
+            if (log.isErrorEnabled()) {
+                log.error("Theme display is null");
+            }
+            return false;
+        }
+
+        // Returns true if the user is signed in
         return themeDisplay.isSignedIn();
+    }
+
+    /**
+     * Returns true if the current site is excluded. Control panel is excluded by default
+     *
+     * @param request PortletRequest
+     * @return true if the current site is excluded
+     */
+    private boolean isExcluded(PortletRequest request) {
+
+        // Check if the user is signed in
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
+        // Check for params
+        if (themeDisplay == null) {
+            if (log.isErrorEnabled()) {
+                log.error("Theme display is null");
+            }
+            return true;
+        }
+
+        try {
+            // Exclude control panel
+            if (themeDisplay.getLayout().getGroup().isControlPanel()) {
+                return true;
+            }
+
+            // Admin is never excluded
+            if (PermissionDetector.isAdmin(request)) {
+                return false;
+            }
+
+            // Get the current site name (group == site)
+            String siteName = themeDisplay.getLayout().getGroup().getName();
+            // Get excluded sites
+            String[] excludedSites = Environment.getExcludedSites();
+
+            // Check if the current site belongs to the excluded sites list
+            for (String excludedSite : excludedSites) {
+                // Site is excluded
+                if (excludedSite.equals(siteName)) {
+                    return true;
+                }
+            }
+
+            // No site was found -> site is not excluded
+            return false;
+        }
+        // Failure
+        catch (Exception exception) {
+            // Log
+            if (log.isDebugEnabled()) {
+                log.debug(exception);
+            }
+            // Cannot get the site name -> exclude portlet
+            return true;
+        }
     }
 }

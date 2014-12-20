@@ -12,6 +12,17 @@
         </friendly-url-mapper-class>
         <friendly-url-mapping>lims</friendly-url-mapping>
         <friendly-url-routes>META-INF/lims-friendly-url-routes.xml</friendly-url-routes>
+
+        <!--
+        Set the use-default-template value to true if the portlet uses the default
+        template to decorate and wrap content. Setting this to false allows the
+        developer to own and maintain the portlet's entire outputted content. The
+        default value is true.
+
+        The most common use of this is if you want the portlet to look different from
+        the other portlets or if you want the portlet to not have borders around the
+        outputted content.
+        -->
         <use-default-template>false</use-default-template>
 
         <!-- requires-namespaced-parameters and ajaxable should fix issue with no params via ajax call:
@@ -20,12 +31,9 @@
         <ajaxable>true</ajaxable>
 
         <!-- CSS -->
-        <header-portlet-css>/css/main.css</header-portlet-css>
+        <header-portlet-css>/css/build/lims/lims.css</header-portlet-css>
         <!-- JS -->
-        <footer-portlet-javascript>/js/build/lims-core/lims-core-min.js</footer-portlet-javascript>
-        <footer-portlet-javascript>/js/build/lims-model/lims-model-min.js</footer-portlet-javascript>
-        <footer-portlet-javascript>/js/build/lims-view/lims-view-min.js</footer-portlet-javascript>
-        <footer-portlet-javascript>/js/build/lims-controller/lims-controller-min.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/js/build/lims/lims-min.js</footer-portlet-javascript>
         <footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 
         <css-class-wrapper>liferay-ims</css-class-wrapper>

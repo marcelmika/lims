@@ -22,11 +22,18 @@
   ~ SOFTWARE.
   --%>
 
+<%-- Imports --%>
+<%@ page import="com.marcelmika.lims.portal.properties.InputLimits" %>
+
 <% { %>
 
 <%-- Declared variables --%>
 <%--@elvariable id="conversations" type="java.util.List<Conversation>"--%>
 
+<%-- Constants --%>
+<c:set var="MESSAGE_MAX_SIZE" value="<%= InputLimits.MESSAGE_MAX_SIZE %>"/>
+
+<%-- Rendered --%>
 
 <c:forEach items="${conversations}" var="conversation">
 
@@ -56,7 +63,7 @@
             <c:set var="hiddenClass" value=""/>
         </c:when>
         <c:otherwise>
-            <c:set var="hiddenClass" value="aui-helper-hidden hide"/>
+            <c:set var="hiddenClass" value="hide"/>
         </c:otherwise>
     </c:choose>
 
@@ -66,7 +73,7 @@
             <c:set var="hiddenBadgeClass" value=""/>
         </c:when>
         <c:otherwise>
-            <c:set var="hiddenBadgeClass" value="aui-helper-hidden hide"/>
+            <c:set var="hiddenBadgeClass" value="hide"/>
         </c:otherwise>
     </c:choose>
 
@@ -81,18 +88,25 @@
         </div>
         <div class="panel">
             <div class="panel-window">
+
+                    <%-- Title --%>
                 <div class="panel-title">
-                    <button class="panel-button close"></button>
-                    <button class="panel-button minimize"></button>
+                    <button title="<liferay-ui:message key="panel-button-close-title"/>"
+                            class="panel-button close"></button>
+                    <button title="<liferay-ui:message key="panel-button-minimize-title"/>"
+                            class="panel-button minimize"></button>
                     <div class="panel-title-text">${conversation.title}</div>
                 </div>
+
+                    <%-- Content --%>
                 <div class="panel-content">
                     <div class="preloader"></div>
                     <ul></ul>
                 </div>
                 <div class="panel-input covered">
                     <textarea
-                            placeholder="<liferay-ui:message key="panel-conversation-message-placeholder" />"></textarea>
+                            placeholder="<liferay-ui:message key="panel-conversation-message-placeholder" />"
+                            maxlength="${MESSAGE_MAX_SIZE}"></textarea>
                 </div>
             </div>
         </div>

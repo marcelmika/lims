@@ -37,41 +37,62 @@ Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
     mp3SoundFile: '/lims-portlet/audio/notification.mp3',
     wavSoundFile: '/lims-portlet/audio/notification.wav',
 
+
+    /**
+     * Called after the instance is initializer
+     */
+    initializer: function () {
+        // Attach events
+        this._attachEvents();
+    },
+
     /**
      * Notifies user about new messages by showing this in the title of the page.
      * If the sound is enabled it also plays a sound.
      *
-     * @param messageCount number of newly received messages
-     * @param silent set to true if no sound should appear on notification
+     * @param lastMessage {Y.LIMS.Model.MessageItemModel}
      */
-    notify: function (messageCount, silent) {
+    notify: function (lastMessage) {
         // Vars
         var settings = this.get('settings');
 
-        // Store new count
-        this._increaseMessageCount(messageCount);
+        if (lastMessage) {
 
-        // If sound is enabled
-        if (!settings.isMute() && !silent) {
-            this._playSound();
+            // Save the last message
+            this.set('lastMessage', lastMessage);
+
+            // If sound is enabled
+            if (!settings.isMute()) {
+                this._playSound();
+            }
+
+            // Update title
+            this._updatePageTitleMessage();
         }
+    },
+    /**
+     * Call this method whenever the notification should be removed from the title
+     */
+    suppress: function () {
+        // Vars
+        var timer = this.get('timer');
 
-        // Update title
-        this._updatePageTitleMessage();
+        // Clear refresh timer
+        clearTimeout(timer);
+        // Return to the default page title
+        Y.config.doc.title = this.get('defaultPageTitle');
     },
 
     /**
-     * Call this method whenever the amount of read messages has decreased.
-     * For example if the user has opened conversation so he has already read
-     * some amount of messages.
+     * Attach events to elements
      *
-     * @param messageCount
+     * @private
      */
-    suppress: function (messageCount) {
-        // Store new count
-        this._decreaseMessageCount(messageCount);
-        // Update title
-        this._updatePageTitleMessage();
+    _attachEvents: function () {
+
+        // Global events
+        Y.one(Y.config.win).on('focus', this._onWindowFocus, this);
+        Y.one(Y.config.win).on('blur', this._onWindowBlur, this);
     },
 
     /**
@@ -127,70 +148,63 @@ Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
     },
 
     /**
-     * Increments message count
-     *
-     * @param count
-     * @private
-     */
-    _increaseMessageCount: function (count) {
-        // Vars
-        var unreadMessagesCount = this.get('unreadMessagesCount');
-
-        // We need to be sure that count is a number
-        count = parseInt(count, 10);
-        // Increase counter
-        unreadMessagesCount = count + unreadMessagesCount;
-        // Set the value
-        this.set('unreadMessagesCount', unreadMessagesCount);
-    },
-
-    /**
-     * Decrements message count
-     *
-     * @param count
-     * @private
-     */
-    _decreaseMessageCount: function (count) {
-        // Vars
-        var unreadMessagesCount = this.get('unreadMessagesCount');
-
-        // We need to be sure that count is a number
-        count = parseInt(count, 10);
-        // Increase counter
-        unreadMessagesCount = unreadMessagesCount - count;
-
-        // Just to be sure that message count cannot be less than 0
-        if (unreadMessagesCount < 0) {
-            unreadMessagesCount = 0;
-        }
-
-        // Set the value
-        this.set('unreadMessagesCount', unreadMessagesCount);
-    },
-
-    /**
-     * Takes amount of unread messages and updates the page title
+     * Takes the last message and updates the page title
      *
      * @private
      */
     _updatePageTitleMessage: function () {
         // Vars
         var defaultPageTitle = this.get('defaultPageTitle'),
-            unreadMessagesCount = this.get('unreadMessagesCount'),
+            lastMessage = this.get('lastMessage'),
+            timerInterval = this.get('timerInterval'),
+            timer = this.get('timer'),
+            windowHasFocus = this.get('windowHasFocus'),
             properties = this.get('properties');
 
         // Chat is not enabled
         if (!properties.isChatEnabled()) {
             Y.config.doc.title = defaultPageTitle;
         }
-        // If no unread message simply keep the default title
-        else if (unreadMessagesCount === 0) {
-            Y.config.doc.title = defaultPageTitle;
+        // Start message notification
+        else if (!windowHasFocus && lastMessage) {
+
+            // Clear the old timer
+            clearTimeout(timer);
+            // Set a new one
+            this.set('timer', setInterval(function () {
+                // Vars
+                var title = Y.config.doc.title,
+                    notificationTitle = Y.Lang.sub(Y.LIMS.Core.i18n.values.incomingMessageTitleText, {
+                        fullName: lastMessage.get('from').get('fullName')
+                    });
+
+                // Update the title
+                Y.config.doc.title = (title === defaultPageTitle ? notificationTitle : defaultPageTitle);
+
+            }, timerInterval));
         }
-        // Append message count to title
-        else {
-            Y.config.doc.title = "(" + unreadMessagesCount + ") " + defaultPageTitle;
-        }
+    },
+
+    /**
+     * Called when the window obtains focus
+     *
+     * @private
+     */
+    _onWindowFocus: function () {
+        // Remember
+        this.set('windowHasFocus', true);
+        // Suppress notifications
+        this.suppress();
+    },
+
+    /**
+     * Called when the window losses focus
+     *
+     * @private
+     */
+    _onWindowBlur: function () {
+        // Remember
+        this.set('windowHasFocus', false);
     }
 
 }, {
@@ -253,12 +267,12 @@ Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
         },
 
         /**
-         * Count of unread messages
+         * Last message sent to the user
          *
-         * {integer}
+         * {Y.LIMS.Model.MessageItemModel}
          */
-        unreadMessagesCount: {
-            value: 0
+        lastMessage: {
+            value: null // default value
         },
 
         /**
@@ -270,6 +284,33 @@ Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
             valueFn: function () {
                 return Y.config.doc.title;
             }
+        },
+
+        /**
+         * True if the window has the focus
+         *
+         * {boolean}
+         */
+        windowHasFocus: {
+            value: true // default value
+        },
+
+        /**
+         * Timer that is used to refresh title
+         *
+         * {timer}
+         */
+        timer: {
+            value: null // to be set
+        },
+
+        /**
+         * Length of the timer period that is used to refresh title
+         *
+         * {integer}
+         */
+        timerInterval: {
+            value: 2000 // 2 seconds
         }
     }
 });

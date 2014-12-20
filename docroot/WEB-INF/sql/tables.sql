@@ -34,5 +34,6 @@ create table Lims_Settings (
 	presence VARCHAR(75) null,
 	presenceUpdatedAt LONG,
 	mute BOOLEAN,
-	chatEnabled BOOLEAN
+	chatEnabled BOOLEAN,
+	adminAreaOpened BOOLEAN
 );

@@ -202,7 +202,7 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
      */
     _onMessagesUpdated: function () {
         // Hide indicator if it wasn't already hidden
-        this.get('activityIndicator').hide();
+        Y.LIMS.Core.Util.hide(this.get('activityIndicator'));
         // Render the list
         this._renderMessagesList();
         // Since the list is already rendered there is no need to
@@ -309,7 +309,7 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
             panelContentList.setStyle('opacity', 0);
         }
 
-        panelContentList.show();
+        Y.LIMS.Core.Util.show(panelContentList);
 
         // Run the effect animation
         if (animated) {
@@ -326,7 +326,7 @@ Y.LIMS.View.ConversationListView = Y.Base.create('conversationListView', Y.View,
         // Vars
         var panelContentList = this.get('panelContentList');
         // Hide list view
-        panelContentList.hide();
+        Y.LIMS.Core.Util.hide(panelContentList);
     },
 
     /**

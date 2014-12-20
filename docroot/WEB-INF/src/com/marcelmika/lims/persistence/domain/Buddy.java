@@ -121,10 +121,13 @@ public class Buddy {
         // Map data from object
         buddy.buddyId = (Long) object[firstElement++];
         buddy.screenName = (String) object[firstElement++];
-        buddy.fullName = String.format("%s %s %s",
-                object[firstElement++],
-                object[firstElement++],
-                object[firstElement++]);
+
+        // Compose full name
+        String firstName = fixNullValue((String) object[firstElement++]);
+        String middleName = fixNullValue((String) object[firstElement++]);
+        String lastName = fixNullValue((String) object[firstElement++]);
+
+        buddy.fullName = String.format("%s %s %s", firstName, middleName, lastName);
 
         String presence = String.format("%s", object[firstElement++]);
         if (presence != null) {
@@ -229,14 +232,8 @@ public class Buddy {
     }
 
     @Override
-    public String toString() {
-        return "Buddy{" +
-                "buddyId=" + buddyId +
-                ", fullName='" + fullName + '\'' +
-                ", screenName='" + screenName + '\'' +
-                ", password='" + password + '\'' +
-                ", presence=" + presence +
-                '}';
+    public int hashCode() {
+        return buddyId != null ? buddyId.hashCode() : 0;
     }
 
     @Override
@@ -250,7 +247,31 @@ public class Buddy {
     }
 
     @Override
-    public int hashCode() {
-        return buddyId != null ? buddyId.hashCode() : 0;
+    public String toString() {
+        return "Buddy{" +
+                "buddyId=" + buddyId +
+                ", fullName='" + fullName + '\'' +
+                ", screenName='" + screenName + '\'' +
+                ", password='" + password + '\'' +
+                ", presence=" + presence +
+                '}';
+    }
+
+    /**
+     * Fixes value returned from db, that is null or "null". Returns empty string if so.
+     *
+     * @param value String
+     * @return fixed value
+     */
+    private static String fixNullValue(String value) {
+        if (value == null) {
+            return "";
+        }
+
+        if (value.equals("null")) {
+            return "";
+        }
+
+        return value;
     }
 }
