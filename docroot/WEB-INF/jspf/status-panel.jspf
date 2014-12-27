@@ -70,17 +70,13 @@
     </div>
     <div class="panel">
         <div class="panel-window">
-
-            <%-- Title --%>
             <div class="panel-title">
-                <button title="<liferay-ui:message key="panel-button-minimize-title"/>"
-                        class="panel-button minimize"></button>
+                <button class="panel-button minimize"></button>
                 <div class="panel-title-text">
                     <liferay-ui:message key="panel-status-title"/>
                 </div>
             </div>
 
-            <%-- Content --%>
             <ul class="lfr-component status">
                 <li class="online" data-status="${PRESENCE_ACTIVE}">
                     <liferay-ui:message key="presence-online"/>

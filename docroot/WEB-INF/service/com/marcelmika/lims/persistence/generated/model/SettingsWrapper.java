@@ -54,7 +54,6 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 		attributes.put("presenceUpdatedAt", getPresenceUpdatedAt());
 		attributes.put("mute", getMute());
 		attributes.put("chatEnabled", getChatEnabled());
-		attributes.put("adminAreaOpened", getAdminAreaOpened());
 
 		return attributes;
 	}
@@ -95,12 +94,6 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 
 		if (chatEnabled != null) {
 			setChatEnabled(chatEnabled);
-		}
-
-		Boolean adminAreaOpened = (Boolean)attributes.get("adminAreaOpened");
-
-		if (adminAreaOpened != null) {
-			setAdminAreaOpened(adminAreaOpened);
 		}
 	}
 
@@ -284,36 +277,6 @@ public class SettingsWrapper implements Settings, ModelWrapper<Settings> {
 	@Override
 	public void setChatEnabled(boolean chatEnabled) {
 		_settings.setChatEnabled(chatEnabled);
-	}
-
-	/**
-	* Returns the admin area opened of this settings.
-	*
-	* @return the admin area opened of this settings
-	*/
-	@Override
-	public boolean getAdminAreaOpened() {
-		return _settings.getAdminAreaOpened();
-	}
-
-	/**
-	* Returns <code>true</code> if this settings is admin area opened.
-	*
-	* @return <code>true</code> if this settings is admin area opened; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isAdminAreaOpened() {
-		return _settings.isAdminAreaOpened();
-	}
-
-	/**
-	* Sets whether this settings is admin area opened.
-	*
-	* @param adminAreaOpened the admin area opened of this settings
-	*/
-	@Override
-	public void setAdminAreaOpened(boolean adminAreaOpened) {
-		_settings.setAdminAreaOpened(adminAreaOpened);
 	}
 
 	@Override

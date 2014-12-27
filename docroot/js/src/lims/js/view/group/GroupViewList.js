@@ -41,6 +41,10 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
     initializer: function () {
         // Attach events
         this._attachEvents();
+
+        // Group list needs to be removed from the DOM since we don't know if there
+        // are any groups yet
+        this.get('groupList').remove();
     },
 
     /**
@@ -91,7 +95,7 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         }
 
         // Hide indicator
-        Y.LIMS.Core.Util.hide(activityIndicator);
+        activityIndicator.hide();
     },
 
     /**
@@ -106,7 +110,7 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
             errorView = this.get('errorView');
 
         // Hide indicator
-        Y.LIMS.Core.Util.hide(activityIndicator);
+        activityIndicator.hide();
         // Hide groups
         this._hideGroups();
         // Hide info about empty groups
@@ -254,16 +258,7 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
          */
         groupList: {
             valueFn: function () {
-                // Vars
-                var groupList = this.get('container').one('.group-list');
-
-                if (groupList) {
-                    // Remove it from the DOM, since it will be shown after
-                    // the list is loaded from the server
-                    groupList.remove();
-                }
-
-                return groupList;
+                return this.get('container').one('.group-list');
             }
         },
 

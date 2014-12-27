@@ -15,6 +15,7 @@
 package com.marcelmika.lims.persistence.generated.service.impl;
 
 import com.liferay.portal.kernel.exception.SystemException;
+import com.marcelmika.lims.persistence.generated.NoSuchConversationException;
 import com.marcelmika.lims.persistence.generated.model.Conversation;
 import com.marcelmika.lims.persistence.generated.service.base.ConversationLocalServiceBaseImpl;
 
@@ -22,10 +23,10 @@ import java.util.Calendar;
 
 /**
  * The implementation of the conversation local service.
- * <p/>
+ *
  * <p>
  * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the {@link com.marcelmika.lims.persistence.generated.service.ConversationLocalService} interface.
- * <p/>
+ *
  * <p>
  * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
  * </p>
@@ -35,9 +36,9 @@ import java.util.Calendar;
  * @see com.marcelmika.lims.persistence.generated.service.ConversationLocalServiceUtil
  */
 public class ConversationLocalServiceImpl
-        extends ConversationLocalServiceBaseImpl {
-    /*
-     * NOTE FOR DEVELOPERS:
+	extends ConversationLocalServiceBaseImpl {
+	/*
+	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never reference this interface directly. Always use {@link com.marcelmika.lims.persistence.generated.service.ConversationLocalServiceUtil} to access the conversation local service.
 	 */
@@ -63,7 +64,11 @@ public class ConversationLocalServiceImpl
     }
 
     public Conversation getConversation(String conversationId) throws SystemException {
-        return conversationPersistence.fetchByConversationId(conversationId);
+        try {
+            return conversationPersistence.findByConversationId(conversationId);
+        } catch (NoSuchConversationException e) {
+            return null;
+        }
     }
 
     public void updateConversationTimestamp(long cid) throws Exception {

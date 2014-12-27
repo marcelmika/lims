@@ -65,10 +65,9 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 			{ "presence", Types.VARCHAR },
 			{ "presenceUpdatedAt", Types.BIGINT },
 			{ "mute", Types.BOOLEAN },
-			{ "chatEnabled", Types.BOOLEAN },
-			{ "adminAreaOpened", Types.BOOLEAN }
+			{ "chatEnabled", Types.BOOLEAN }
 		};
-	public static final String TABLE_SQL_CREATE = "create table Lims_Settings (sid LONG not null primary key,userId LONG,presence VARCHAR(75) null,presenceUpdatedAt LONG,mute BOOLEAN,chatEnabled BOOLEAN,adminAreaOpened BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table Lims_Settings (sid LONG not null primary key,userId LONG,presence VARCHAR(75) null,presenceUpdatedAt LONG,mute BOOLEAN,chatEnabled BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table Lims_Settings";
 	public static final String ORDER_BY_JPQL = " ORDER BY settings.sid ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY Lims_Settings.sid ASC";
@@ -133,7 +132,6 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		attributes.put("presenceUpdatedAt", getPresenceUpdatedAt());
 		attributes.put("mute", getMute());
 		attributes.put("chatEnabled", getChatEnabled());
-		attributes.put("adminAreaOpened", getAdminAreaOpened());
 
 		return attributes;
 	}
@@ -174,12 +172,6 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 
 		if (chatEnabled != null) {
 			setChatEnabled(chatEnabled);
-		}
-
-		Boolean adminAreaOpened = (Boolean)attributes.get("adminAreaOpened");
-
-		if (adminAreaOpened != null) {
-			setAdminAreaOpened(adminAreaOpened);
 		}
 	}
 
@@ -290,21 +282,6 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		_chatEnabled = chatEnabled;
 	}
 
-	@Override
-	public boolean getAdminAreaOpened() {
-		return _adminAreaOpened;
-	}
-
-	@Override
-	public boolean isAdminAreaOpened() {
-		return _adminAreaOpened;
-	}
-
-	@Override
-	public void setAdminAreaOpened(boolean adminAreaOpened) {
-		_adminAreaOpened = adminAreaOpened;
-	}
-
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -342,7 +319,6 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		settingsImpl.setPresenceUpdatedAt(getPresenceUpdatedAt());
 		settingsImpl.setMute(getMute());
 		settingsImpl.setChatEnabled(getChatEnabled());
-		settingsImpl.setAdminAreaOpened(getAdminAreaOpened());
 
 		settingsImpl.resetOriginalValues();
 
@@ -426,14 +402,12 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 
 		settingsCacheModel.chatEnabled = getChatEnabled();
 
-		settingsCacheModel.adminAreaOpened = getAdminAreaOpened();
-
 		return settingsCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("{sid=");
 		sb.append(getSid());
@@ -447,8 +421,6 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 		sb.append(getMute());
 		sb.append(", chatEnabled=");
 		sb.append(getChatEnabled());
-		sb.append(", adminAreaOpened=");
-		sb.append(getAdminAreaOpened());
 		sb.append("}");
 
 		return sb.toString();
@@ -456,7 +428,7 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(22);
 
 		sb.append("<model><model-name>");
 		sb.append("com.marcelmika.lims.persistence.generated.model.Settings");
@@ -486,10 +458,6 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 			"<column><column-name>chatEnabled</column-name><column-value><![CDATA[");
 		sb.append(getChatEnabled());
 		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>adminAreaOpened</column-name><column-value><![CDATA[");
-		sb.append(getAdminAreaOpened());
-		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -510,7 +478,6 @@ public class SettingsModelImpl extends BaseModelImpl<Settings>
 	private long _presenceUpdatedAt;
 	private boolean _mute;
 	private boolean _chatEnabled;
-	private boolean _adminAreaOpened;
 	private long _columnBitmask;
 	private Settings _escapedModel;
 }

@@ -22,10 +22,6 @@
   ~ SOFTWARE.
   --%>
 
-<%-- Constants --%>
-<c:set var="MESSAGE_MAX_SIZE" value="<%= InputLimits.MESSAGE_MAX_SIZE %>"/>
-<c:set var="SEARCH_QUERY_MAX_SIZE" value="<%= InputLimits.SEARCH_QUERY_MAX_SIZE %>"/>
-
 <%-- This template HTML will be used to render each group item. --%>
 <script type="text/x-template" id="lims-group-item-template">
     <div class="group-name">{name}</div>
@@ -49,10 +45,8 @@
     <div class="panel">
         <div class="panel-window">
             <div class="panel-title">
-                <button title="<liferay-ui:message key="panel-button-close-title"/>"
-                        class="panel-button close"></button>
-                <button title="<liferay-ui:message key="panel-button-minimize-title"/>"
-                        class="panel-button minimize"></button>
+                <button class="panel-button close"></button>
+                <button class="panel-button minimize"></button>
                 <div class="panel-title-text">{conversationTitle}</div>
             </div>
             <div class="panel-content">
@@ -61,8 +55,7 @@
             </div>
             <div class="panel-input">
                 <textarea
-                        placeholder="<liferay-ui:message key="panel-conversation-message-placeholder" />"
-                        maxlength="${MESSAGE_MAX_SIZE}"></textarea>
+                        placeholder="<liferay-ui:message key="panel-conversation-message-placeholder" />"></textarea>
             </div>
         </div>
     </div>
@@ -104,11 +97,7 @@
 <script type="text/x-template" id="lims-panel-search-template">
     <div class="panel-search">
         <label class="search-input-field-label" for="lims-search-input-field">
-            <input id="lims-search-input-field"
-                   maxlength="${SEARCH_QUERY_MAX_SIZE}"
-                   class="search-input-field"
-                   type="text"
-                   value=""/>
+            <input id="lims-search-input-field" class="search-input-field" type="text" value=""/>
         </label>
 
         <div class="search-content">
@@ -185,9 +174,6 @@
     "timeRangeYesterday":"<liferay-ui:message key="time-range-yesterday"/>",
     "timeRangeDaysAgo":"<liferay-ui:message key="time-range-days-ago"/>",
     "timeRangeWeeksAgo":"<liferay-ui:message key="time-range-weeks-ago"/>",
-    "dateFormat":"<liferay-ui:message key="date-format"/>",
-    "adminAreaOpen": "<liferay-ui:message key="panel-settings-admin-area-open"/>",
-    "adminAreaClose": "<liferay-ui:message key="panel-settings-admin-area-close"/>",
-    "incomingMessageTitleText" : "<liferay-ui:message key="incoming-message-title-text"/>"
+    "dateFormat":"<liferay-ui:message key="date-format"/>"
     }
 </script>

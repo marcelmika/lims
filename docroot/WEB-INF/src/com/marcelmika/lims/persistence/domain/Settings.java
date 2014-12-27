@@ -38,7 +38,6 @@ public class Settings {
     private String activePanel;
     private boolean isMute;
     private boolean isChatEnabled;
-    private boolean isAdminAreaOpened;
 
 
     /**
@@ -61,7 +60,6 @@ public class Settings {
         if (settingsModel != null) {
             settings.isMute = settingsModel.getMute();
             settings.isChatEnabled = settingsModel.getChatEnabled();
-            settings.isAdminAreaOpened = settingsModel.isAdminAreaOpened();
             // Relations
             settings.presence = Presence.fromDescription(settingsModel.getPresence());
         }
@@ -82,7 +80,6 @@ public class Settings {
         settings.activePanel = settingsDetails.getActivePanelId();
         settings.isMute = settingsDetails.isMute();
         settings.isChatEnabled = settingsDetails.isChatEnabled();
-        settings.isAdminAreaOpened = settingsDetails.isAdminAreaOpened();
 
         // Relations
         if (settingsDetails.getPresenceDetails() != null) {
@@ -104,7 +101,6 @@ public class Settings {
         details.setActivePanelId(activePanel);
         details.setMute(isMute);
         details.setChatEnabled(isChatEnabled);
-        details.setAdminAreaOpened(isAdminAreaOpened);
 
         // Relations
         if (presence != null) {
@@ -144,13 +140,5 @@ public class Settings {
 
     public void setChatEnabled(boolean isChatEnabled) {
         this.isChatEnabled = isChatEnabled;
-    }
-
-    public boolean isAdminAreaOpened() {
-        return isAdminAreaOpened;
-    }
-
-    public void setAdminAreaOpened(boolean isAdminAreaOpened) {
-        this.isAdminAreaOpened = isAdminAreaOpened;
     }
 }

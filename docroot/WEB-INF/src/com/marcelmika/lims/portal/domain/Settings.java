@@ -39,7 +39,6 @@ public class Settings {
     private String activePanelId;
     private boolean isMute;
     private boolean isChatEnabled;
-    private boolean isAdminAreaOpened;
 
 
     /**
@@ -55,7 +54,6 @@ public class Settings {
         settings.activePanelId = settingsDetails.getActivePanelId();
         settings.isMute = settingsDetails.isMute();
         settings.isChatEnabled = settingsDetails.isChatEnabled();
-        settings.isAdminAreaOpened = settingsDetails.isAdminAreaOpened();
 
         // Relations
         if (settingsDetails.getPresenceDetails() != null) {
@@ -77,7 +75,6 @@ public class Settings {
         details.setActivePanelId(activePanelId);
         details.setMute(isMute);
         details.setChatEnabled(isChatEnabled);
-        details.setAdminAreaOpened(isAdminAreaOpened);
 
         // Relations
         if (presence != null) {
@@ -129,25 +126,5 @@ public class Settings {
 
     public void setChatEnabled(boolean isChatEnabled) {
         this.isChatEnabled = isChatEnabled;
-    }
-
-    public boolean isAdminAreaOpened() {
-        return isAdminAreaOpened;
-    }
-
-    public void setIsAdminAreaOpened(boolean isAdminAreaOpened) {
-        this.isAdminAreaOpened = isAdminAreaOpened;
-    }
-
-    @Override
-    public String toString() {
-        return "Settings{" +
-                "buddy=" + buddy +
-                ", presence=" + presence +
-                ", activePanelId='" + activePanelId + '\'' +
-                ", isMute=" + isMute +
-                ", isChatEnabled=" + isChatEnabled +
-                ", isAdminAreaOpened=" + isAdminAreaOpened +
-                '}';
     }
 }

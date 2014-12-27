@@ -172,27 +172,6 @@ public interface SettingsModel extends BaseModel<Settings> {
 	 */
 	public void setChatEnabled(boolean chatEnabled);
 
-	/**
-	 * Returns the admin area opened of this settings.
-	 *
-	 * @return the admin area opened of this settings
-	 */
-	public boolean getAdminAreaOpened();
-
-	/**
-	 * Returns <code>true</code> if this settings is admin area opened.
-	 *
-	 * @return <code>true</code> if this settings is admin area opened; <code>false</code> otherwise
-	 */
-	public boolean isAdminAreaOpened();
-
-	/**
-	 * Sets whether this settings is admin area opened.
-	 *
-	 * @param adminAreaOpened the admin area opened of this settings
-	 */
-	public void setAdminAreaOpened(boolean adminAreaOpened);
-
 	@Override
 	public boolean isNew();
 

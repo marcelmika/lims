@@ -91,9 +91,7 @@ public class ConversationController {
             // Bad request
             ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
             // Log
-            if (log.isDebugEnabled()) {
-                log.debug(exception);
-            }
+            log.debug(exception);
             // End here
             return;
         }
@@ -202,10 +200,6 @@ public class ConversationController {
             // Not found
             if (status == ReadSingleUserConversationResponseEvent.Status.ERROR_NOT_FOUND) {
                 ResponseUtil.writeResponse(HttpStatus.NOT_FOUND, response);
-            }
-            // Forbidden
-            else if (status == ReadSingleUserConversationResponseEvent.Status.ERROR_FORBIDDEN) {
-                ResponseUtil.writeResponse(HttpStatus.FORBIDDEN, response);
             }
             // Unauthorized
             else if (status == ReadSingleUserConversationResponseEvent.Status.ERROR_NO_SESSION) {
@@ -464,10 +458,6 @@ public class ConversationController {
             // Unauthorized
             if (status == SendMessageResponseEvent.Status.ERROR_NO_SESSION) {
                 ResponseUtil.writeResponse(HttpStatus.UNAUTHORIZED, response);
-            }
-            // Forbidden
-            else if (status == SendMessageResponseEvent.Status.ERROR_FORBIDDEN) {
-                ResponseUtil.writeResponse(HttpStatus.FORBIDDEN, response);
             }
             // Not found
             else if (status == SendMessageResponseEvent.Status.ERROR_NOT_FOUND) {

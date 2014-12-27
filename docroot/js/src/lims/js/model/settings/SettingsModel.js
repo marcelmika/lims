@@ -106,8 +106,8 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [Y.LIMS.Mod
                         content: content
                     },
                     on: {
-                        success: function () {
-                            callback(null);
+                        success: function (id, o) {
+                            callback(null, o.responseText);
                         },
                         failure: function (x, o) {
                             // If the attempt is unauthorized session has expired
@@ -115,7 +115,7 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [Y.LIMS.Mod
                                 // Notify everybody else
                                 Y.fire('userSessionExpired');
                             }
-                            callback("Cannot update settings");
+                            callback("Cannot update settings", o.responseText);
                         }
                     }
                 });
@@ -136,39 +136,15 @@ Y.LIMS.Model.SettingsModel = Y.Base.create('settingsModel', Y.Model, [Y.LIMS.Mod
         // model's data. See the docs for Y.Attribute to learn more about defining
         // attributes.
 
-        /**
-         * Buddy object related to the settings
-         *
-         * {Y.LIMS.Model.BuddyModelItem}
-         */
         buddy: {
             value: null
         },
 
-        /**
-         * ID of the active panel
-         *
-         * {string}
-         */
         activePanelId: {
             value: null // default value
         },
 
-        /**
-         * True if the chat sounds are switched off
-         *
-         * {boolean}
-         */
         isMute: {
-            value: false // default value
-        },
-
-        /**
-         * True if the admin area is opened
-         *
-         * {boolean}
-         */
-        isAdminAreaOpened: {
             value: false // default value
         }
     }

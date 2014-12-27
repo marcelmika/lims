@@ -25,7 +25,10 @@
 package com.marcelmika.lims.api.events.conversation;
 
 import com.marcelmika.lims.api.entity.ConversationDetails;
+import com.marcelmika.lims.api.entity.MessageDetails;
 import com.marcelmika.lims.api.events.ResponseEvent;
+
+import java.util.List;
 
 /**
  * @author Ing. Marcel Mika
@@ -43,7 +46,6 @@ public class ReadSingleUserConversationResponseEvent extends ResponseEvent {
         ERROR_WRONG_PARAMETERS, // Wrong input parameters
         ERROR_NO_SESSION, // User does not have a session
         ERROR_NOT_FOUND, // No Conversation was found
-        ERROR_FORBIDDEN, // User does not have an access to the conversation
         ERROR_PERSISTENCE, // Error with persistence occurred
     }
 

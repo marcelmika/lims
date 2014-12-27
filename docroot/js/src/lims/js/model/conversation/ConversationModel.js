@@ -118,8 +118,8 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
         // Vars
         var instance = this,
             parameters = Y.JSON.stringify({
-                conversationId: this.get('conversationId')
-            });
+            conversationId: this.get('conversationId')
+        });
 
         // Send the request
         Y.io(this.getServerRequestUrl(), {
@@ -324,11 +324,6 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
 
             // Add message to message list
             messageModels.push(message);
-
-            // Set the last message
-            if (index + 1 === conversation.messages.length) {
-                this.set('lastMessage', message);
-            }
         }
 
         // Add not yet acknowledged messages at the and.
@@ -374,34 +369,6 @@ Y.LIMS.Model.ConversationModel = Y.Base.create('conversationModel', Y.Model, [Y.
 
         unreadMessagesCount: {
             value: 0 // default value
-        },
-
-        /**
-         * Last message in the conversation
-         *
-         * {Y.LIMS.Model.MessageItemModel}
-         */
-        lastMessage: {
-            /**
-             * Setter
-             *
-             * @param object
-             * @return {Y.LIMS.Model.MessageItemModel|null}
-             */
-            setter: function (object) {
-                // No last message was set
-                if (!object) {
-                    return null;
-                }
-
-                // Create a model instance from value object
-                if (object.name !== "messageItemModel") {
-                    return new Y.LIMS.Model.MessageItemModel(object);
-                }
-
-                // Value is already an instance of Y.LIMS.Model.MessageItemModel
-                return object;
-            }
         },
 
         serverTimeOffset: {

@@ -40,6 +40,5 @@
 		<field name="presenceUpdatedAt" type="long" />
 		<field name="mute" type="boolean" />
 		<field name="chatEnabled" type="boolean" />
-		<field name="adminAreaOpened" type="boolean" />
 	</model>
 </model-hints>

@@ -75,7 +75,7 @@ Y.LIMS.View.GroupViewItem = Y.Base.create('groupViewItem', Y.View, [], {
 
         // Hide group name if nothing was set
         if (!model.get('name')) {
-            Y.LIMS.Core.Util.hide(container.one('.group-name'));
+            container.one('.group-name').hide();
         }
 
         // Render Buddies

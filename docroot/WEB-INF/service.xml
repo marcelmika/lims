@@ -27,7 +27,6 @@
         <column name="presenceUpdatedAt" type="long" />
         <column name='mute' type='boolean'/>
         <column name='chatEnabled' type='boolean'/>
-        <column name='adminAreaOpened' type='boolean'/>
         <finder name='UserId' return-type='Settings'>
             <finder-column name='userId'/>
         </finder>

@@ -35,6 +35,7 @@ import com.marcelmika.lims.api.events.conversation.*;
 import com.marcelmika.lims.persistence.domain.Buddy;
 import com.marcelmika.lims.persistence.domain.Conversation;
 import com.marcelmika.lims.persistence.domain.Message;
+import com.marcelmika.lims.persistence.domain.Pagination;
 import com.marcelmika.lims.persistence.generated.NoSuchConversationException;
 import com.marcelmika.lims.persistence.generated.NoSuchParticipantException;
 import com.marcelmika.lims.persistence.generated.model.Participant;
@@ -54,7 +55,6 @@ import java.util.List;
 public class ConversationPersistenceServiceImpl implements ConversationPersistenceService {
 
     // Log
-    @SuppressWarnings("unused")
     private static Log log = LogFactoryUtil.getLog(ConversationPersistenceServiceImpl.class);
 
     /**
@@ -117,7 +117,7 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
     public ReadSingleUserConversationResponseEvent readConversation(ReadSingleUserConversationRequestEvent event) {
         // Map to persistence objects
         Conversation conversation = Conversation.fromConversationDetails(event.getConversation());
-        Buddy buddy = Buddy.fromBuddyDetails(event.getParticipant());
+        Pagination pagination = Pagination.fromPaginationDetails(event.getPagination());
 
         // Read from persistence
         try {
@@ -134,19 +134,10 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
                 );
             }
 
-            // Get user's participant model for the given conversation
-            Participant participant = ParticipantLocalServiceUtil.getParticipant(
-                    conversationModel.getCid(), buddy.getBuddyId()
-            );
-
-            // User is not in the conversation thus he can't read it
-            if (participant == null) {
-                return ReadSingleUserConversationResponseEvent.readConversationFailure(
-                        ReadSingleUserConversationResponseEvent.Status.ERROR_FORBIDDEN
-                );
-            }
-
             conversation = Conversation.fromConversationModel(conversationModel);
+
+            // TODO: Add pagination
+            // TODO: Check if participant in event is really in the conversation
 
             // Get messages from persistence
             List<com.marcelmika.lims.persistence.generated.model.Message> messageModels =
@@ -161,6 +152,11 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             // Add to conversation
             conversation.setMessages(messages);
 
+            // Get participant
+            com.marcelmika.lims.persistence.generated.model.Participant participant =
+                    ParticipantLocalServiceUtil.getParticipant(
+                            conversationModel.getCid(), event.getParticipant().getBuddyId()
+                    );
             // Add to conversation
             conversation.setUnreadMessagesCount(participant.getUnreadMessagesCount());
 
@@ -328,17 +324,6 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
                 return SendMessageResponseEvent.sendMessageFailure(
                         SendMessageResponseEvent.Status.ERROR_NOT_FOUND
                 );
-            }
-
-            // Check if the user is in the conversation
-            Participant participant = ParticipantLocalServiceUtil.getParticipant(
-                    conversationModel.getCid(), buddy.getBuddyId()
-            );
-
-            // User is not in the conversation thus he can't leave it
-            if (participant == null) {
-                // Failure
-                return SendMessageResponseEvent.sendMessageFailure(SendMessageResponseEvent.Status.ERROR_FORBIDDEN);
             }
 
             // Create new message

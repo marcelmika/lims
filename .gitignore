@@ -8,9 +8,6 @@
 # js build folders
 /docroot/js/build
 
-# css build folders
-/docroot/css/build
-
 # idea, eclipse
 /.idea/
 .project
@@ -25,4 +22,5 @@
 .DS_Store
 
 # css cache
-.sass-cache
+/docroot/css/.sass-cache/
+

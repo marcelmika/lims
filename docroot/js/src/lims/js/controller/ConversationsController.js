@@ -51,9 +51,6 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
         if (properties.isChatEnabled()) {
             this._startPolling();
         }
-
-        // Fire an event that the initialization has been finished
-        Y.fire('initializationFinished');
     },
 
     /**
@@ -164,6 +161,9 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
 
                 // Add to map
                 map[conversationId] = controller;
+
+                // Silently notify about new messages
+                notification.notify(unreadMessagesCount, true);
             }
         });
     },
@@ -337,7 +337,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                         controller.showViewController();
                         // We have created a controller based on long polling message.
                         // We thus need to notify the user about received messages.
-                        notification.notify(conversationModel.get('lastMessage'));
+                        notification.notify(conversationModel.get('unreadMessagesCount'));
                     }
                 });
             }

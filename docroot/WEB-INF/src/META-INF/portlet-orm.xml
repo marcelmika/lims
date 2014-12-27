@@ -66,7 +66,6 @@
 			<basic name="presenceUpdatedAt" />
 			<basic name="mute" />
 			<basic name="chatEnabled" />
-			<basic name="adminAreaOpened" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

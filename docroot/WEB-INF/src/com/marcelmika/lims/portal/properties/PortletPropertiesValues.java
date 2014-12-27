@@ -35,24 +35,9 @@ import com.liferay.util.portlet.PortletProps;
  */
 public class PortletPropertiesValues {
 
-    // Version
-    public static final String VERSION = getString(
-            PortletPropertiesKeys.VERSION
-    );
-
-    // Properties source
-    public static final String PROPERTIES_SOURCE = getString(
-            PortletPropertiesKeys.PROPERTIES_SOURCE
-    );
-
     // Buddy List - Source
     public static final String BUDDY_LIST_SOURCE = getString(
             PortletPropertiesKeys.BUDDY_LIST_SOURCE
-    );
-
-    // Excluded - Sites
-    public static final String[] EXCLUDED_SITES = getStringValues(
-            PortletPropertiesKeys.EXCLUDED_SITES
     );
 
     // Buddy List - Social Relation Types
@@ -153,16 +138,6 @@ public class PortletPropertiesValues {
     // Jabber - SASL - Password
     public static final String JABBER_SASL_PLAIN_PASSWORD = getString(
             PortletPropertiesKeys.JABBER_SASL_PLAIN_PASSWORD
-    );
-
-    // URL - Help
-    public static final String URL_HELP = getString(
-            PortletPropertiesKeys.URL_HELP
-    );
-
-    // URL - Unsupported browser
-    public static final String URL_UNSUPPORTED_BROWSER = getString(
-            PortletPropertiesKeys.URL_UNSUPPORTED_BROWSER
     );
 
     // Error Mode

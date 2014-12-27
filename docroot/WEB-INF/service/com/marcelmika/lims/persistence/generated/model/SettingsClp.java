@@ -79,7 +79,6 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		attributes.put("presenceUpdatedAt", getPresenceUpdatedAt());
 		attributes.put("mute", getMute());
 		attributes.put("chatEnabled", getChatEnabled());
-		attributes.put("adminAreaOpened", getAdminAreaOpened());
 
 		return attributes;
 	}
@@ -120,12 +119,6 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 
 		if (chatEnabled != null) {
 			setChatEnabled(chatEnabled);
-		}
-
-		Boolean adminAreaOpened = (Boolean)attributes.get("adminAreaOpened");
-
-		if (adminAreaOpened != null) {
-			setAdminAreaOpened(adminAreaOpened);
 		}
 	}
 
@@ -288,35 +281,6 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		}
 	}
 
-	@Override
-	public boolean getAdminAreaOpened() {
-		return _adminAreaOpened;
-	}
-
-	@Override
-	public boolean isAdminAreaOpened() {
-		return _adminAreaOpened;
-	}
-
-	@Override
-	public void setAdminAreaOpened(boolean adminAreaOpened) {
-		_adminAreaOpened = adminAreaOpened;
-
-		if (_settingsRemoteModel != null) {
-			try {
-				Class<?> clazz = _settingsRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setAdminAreaOpened",
-						boolean.class);
-
-				method.invoke(_settingsRemoteModel, adminAreaOpened);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
 	public BaseModel<?> getSettingsRemoteModel() {
 		return _settingsRemoteModel;
 	}
@@ -392,7 +356,6 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		clone.setPresenceUpdatedAt(getPresenceUpdatedAt());
 		clone.setMute(getMute());
 		clone.setChatEnabled(getChatEnabled());
-		clone.setAdminAreaOpened(getAdminAreaOpened());
 
 		return clone;
 	}
@@ -441,7 +404,7 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("{sid=");
 		sb.append(getSid());
@@ -455,8 +418,6 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		sb.append(getMute());
 		sb.append(", chatEnabled=");
 		sb.append(getChatEnabled());
-		sb.append(", adminAreaOpened=");
-		sb.append(getAdminAreaOpened());
 		sb.append("}");
 
 		return sb.toString();
@@ -464,7 +425,7 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(22);
 
 		sb.append("<model><model-name>");
 		sb.append("com.marcelmika.lims.persistence.generated.model.Settings");
@@ -494,10 +455,6 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 			"<column><column-name>chatEnabled</column-name><column-value><![CDATA[");
 		sb.append(getChatEnabled());
 		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>adminAreaOpened</column-name><column-value><![CDATA[");
-		sb.append(getAdminAreaOpened());
-		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -511,6 +468,5 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 	private long _presenceUpdatedAt;
 	private boolean _mute;
 	private boolean _chatEnabled;
-	private boolean _adminAreaOpened;
 	private BaseModel<?> _settingsRemoteModel;
 }

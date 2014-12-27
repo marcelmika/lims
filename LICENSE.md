@@ -1,7 +1,3 @@
-
-**LIMS SUC cannot be modified and uploaded to the Liferay Marketplace without 
-the explicit approval of the author Marcel Mika.**
-
 The MIT License (MIT)
 
 Copyright (c) 2014 Marcel Mika, marcelmika.com

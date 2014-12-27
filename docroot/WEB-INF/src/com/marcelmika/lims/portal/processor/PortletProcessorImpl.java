@@ -58,7 +58,6 @@ public class PortletProcessorImpl implements PortletProcessor {
     GroupController groupController;
     SettingsController settingsController;
     ServerController serverController;
-    PropertiesController propertiesController;
 
     // Private properties
     private Random random = new Random();
@@ -79,7 +78,6 @@ public class PortletProcessorImpl implements PortletProcessor {
     private static final String QUERY_UPDATE_SETTINGS = "UpdateSettings";
     private static final String QUERY_GET_SERVER_TIME = "GetServerTime";
     private static final String QUERY_SEARCH_BUDDIES = "SearchBuddies";
-    private static final String QUERY_PATCH_PROPERTIES = "PatchProperties";
 
     /**
      * Constructor
@@ -89,21 +87,18 @@ public class PortletProcessorImpl implements PortletProcessor {
      * @param groupController        GroupController
      * @param settingsController     SettingsController
      * @param serverController       ServerController
-     * @param propertiesController   PropertiesController
      */
     public PortletProcessorImpl(final BuddyController buddyController,
                                 final ConversationController conversationController,
                                 final GroupController groupController,
                                 final SettingsController settingsController,
-                                final ServerController serverController,
-                                final PropertiesController propertiesController) {
+                                final ServerController serverController) {
 
         this.buddyController = buddyController;
         this.conversationController = conversationController;
         this.groupController = groupController;
         this.settingsController = settingsController;
         this.serverController = serverController;
-        this.propertiesController = propertiesController;
     }
 
     /**
@@ -197,10 +192,6 @@ public class PortletProcessorImpl implements PortletProcessor {
         else if (query.equals(QUERY_SEARCH_BUDDIES)) {
             buddyController.searchBuddies(request, response);
         }
-        // Patch properties
-        else if (query.equals(QUERY_PATCH_PROPERTIES)) {
-            propertiesController.patchProperties(request, response);
-        }
         // No such query was found
         else {
             // Write 404 to response
@@ -219,7 +210,7 @@ public class PortletProcessorImpl implements PortletProcessor {
     private boolean processErrorMode(ResourceRequest request, ResourceResponse response) {
 
         // Process error only if the error mode is enabled
-        if (Environment.isErrorModeEnabled() != null && Environment.isErrorModeEnabled()) {
+        if (Environment.isErrorModeEnabled()) {
 
             // Generates random number between 0 and 10
             int number = random.nextInt(10) + 1;

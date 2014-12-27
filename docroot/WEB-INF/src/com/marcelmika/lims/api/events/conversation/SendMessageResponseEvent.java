@@ -42,7 +42,6 @@ public class SendMessageResponseEvent extends ResponseEvent {
         SUCCESS, // Event was successful
         ERROR_WRONG_PARAMETERS, // Wrong input parameters
         ERROR_NO_SESSION, // User does not have a session
-        ERROR_FORBIDDEN, // User is not allowed to send the message
         ERROR_NOT_FOUND, // No Conversation was found
         ERROR_UNKNOWN_CONVERSATION_TYPE, // Unknown conversation type
         ERROR_NOT_IMPLEMENTED, // Functionality is not implemented yet

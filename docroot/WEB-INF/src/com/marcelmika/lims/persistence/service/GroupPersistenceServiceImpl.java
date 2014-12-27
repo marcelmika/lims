@@ -73,6 +73,7 @@ public class GroupPersistenceServiceImpl implements GroupPersistenceService {
         }
 
         try {
+            // TODO: Implement pagination
             int start = 0;
             int end = Environment.getBuddyListMaxBuddies();
 

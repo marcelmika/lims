@@ -33,9 +33,6 @@ Y.LIMS.View.ViewExtension = function () {
 
 Y.LIMS.View.ViewExtension.prototype = {
 
-    // Root node of the lims portlet
-    rootNode: '#lims-container',
-
     /**
      * Returns url of the portrait of buddy based on the screenName
      * @param screenName
@@ -46,24 +43,6 @@ Y.LIMS.View.ViewExtension.prototype = {
             pathImage = Y.LIMS.Core.Properties.pathImage;
 
         return pathImage + '/user_portrait?screenName=' + screenName + '&' + 'companyId=' + companyId;
-    },
-
-    /**
-     * Returns root container node
-     *
-     * @returns {Node}
-     */
-    getRootNode: function () {
-        return Y.one(this.rootNode);
-    },
-
-    /**
-     * Returns true if the portlet is in the IE support
-     *
-     * @returns {boolean}
-     */
-    hasIESupport: function () {
-        return Y.one(this.rootNode).hasClass('ie-support');
     }
 };
 
