@@ -55,5 +55,6 @@
 		<property name="presenceUpdatedAt" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="mute" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="chatEnabled" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="adminAreaOpened" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 </hibernate-mapping>

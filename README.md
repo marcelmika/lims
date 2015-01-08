@@ -1,4 +1,4 @@
-# LIMS - Instant Messaging System for Liferay (SUC)
+# LIMS - Messenger for Liferay (SUC)
 
 LIMS is an instant messaging portlet designed for the leading open source portal that 
 brings fast and reliable way of communication in fresh and minimalistic design.
@@ -17,6 +17,9 @@ a huge contribution of [Czech Technical University, Prague](http://fit.cvut.cz) 
 
 
 ## License
+
+**LIMS SUC cannot be modified and uploaded to the Liferay Marketplace without 
+the explicit approval of the author Marcel Mika.**
 
 The MIT License (MIT)
 

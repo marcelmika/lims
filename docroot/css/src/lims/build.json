@@ -1,0 +1,31 @@
+{
+    "name": "lims",
+    "builds": {
+
+        "lims": {
+            "cssfiles": [
+                "css/mixins.scss",
+                "css/theme.scss",
+                "css/reset.scss",
+                "css/elements.scss",
+                "css/globals.scss",
+                "css/panel.scss",
+                "css/panel-contacts.scss",
+                "css/panel-conversation.scss",
+                "css/panel-presence.scss",
+                "css/panel-settings.scss",
+                "css/panel-status.scss",
+                "css/portlet.scss"
+            ],
+            "replace": {
+                "/images/": "../../../images/"
+            }
+        }
+    },
+
+    "shifter": {
+        "lint": false,
+        "coverage": false
+    }
+
+}

@@ -115,7 +115,6 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             var conversationModel = this.get('model'),      // Current conversation model
                 currentUnreadMessagesCount,                 // Current unread message count
                 updatedUnreadMessageCount,                  // Unread message count of updated model
-                newMessagesCount,                           // Number of newly received messages
                 notification = this.get('notification'),    // Notification handler
                 listView = this.get('listView'),            // List view
                 instance = this;                            // Saved instance
@@ -141,10 +140,8 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
                             }
                             // Message text field does not have a focus thus we notify the user
                             else {
-                                // Actual count of newly received messages
-                                newMessagesCount = updatedUnreadMessageCount - currentUnreadMessagesCount;
                                 // Notify about new message
-                                notification.notify(newMessagesCount);
+                                notification.notify(conversationModel.get('lastMessage'));
                                 // Update badge count
                                 instance._updateBadge(updatedUnreadMessageCount);
                             }
@@ -370,8 +367,6 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
         _onMessageTextFieldFocus: function () {
             // Vars
             var model = this.get('model'),
-                unreadMessages = model.get('unreadMessagesCount'),
-                notification = this.get('notification'),
                 instance = this;
 
             // If the users sets focus to the text field
@@ -381,8 +376,6 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             if (model.get('unreadMessagesCount') > 0) {
                 model.resetUnreadMessagesCounter(function (err) {
                     if (!err) {
-                        // Messages are read so suppress the count
-                        notification.suppress(unreadMessages);
                         // Reset badge
                         instance._updateBadge(0);
                     }
@@ -443,7 +436,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
 
             // Show badge
             if (badge) {
-                badge.show();
+                Y.LIMS.Core.Util.show(badge);
             }
         },
 
@@ -458,7 +451,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
 
             // Hide badge
             if (badge) {
-                badge.hide();
+                Y.LIMS.Core.Util.hide(badge);
             }
         },
 
@@ -496,7 +489,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             var activityIndicator = this.get('activityIndicator');
 
             // Show preloader
-            activityIndicator.show();
+            Y.LIMS.Core.Util.show(activityIndicator);
         },
 
         /**
@@ -509,7 +502,7 @@ Y.LIMS.Controller.SingleUserConversationViewController = Y.Base.create('singleUs
             var activityIndicator = this.get('activityIndicator');
 
             // Hide preloader
-            activityIndicator.hide();
+            Y.LIMS.Core.Util.hide(activityIndicator);
         }
 
     }, {

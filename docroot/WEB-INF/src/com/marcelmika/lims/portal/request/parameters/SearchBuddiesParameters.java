@@ -24,6 +24,8 @@
 
 package com.marcelmika.lims.portal.request.parameters;
 
+import com.marcelmika.lims.portal.properties.InputLimits;
+
 /**
  * @author Ing. Marcel Mika
  * @link http://marcelmika.com
@@ -39,6 +41,11 @@ public class SearchBuddiesParameters {
     }
 
     public void setSearchQuery(String searchQuery) {
+        // Limit the maximal search query size
+        if (searchQuery.length() > InputLimits.SEARCH_QUERY_MAX_SIZE) {
+            searchQuery = searchQuery.substring(0, InputLimits.SEARCH_QUERY_MAX_SIZE);
+        }
+
         this.searchQuery = searchQuery;
     }
 

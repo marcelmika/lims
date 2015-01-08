@@ -433,7 +433,7 @@ Y.LIMS.View.GroupSearchView = Y.Base.create('groupSearchView', Y.View, [], {
         },
 
         /**
-         * Time used for the delayed key up in text field
+         * Timer used for the delayed key up in text field
          *
          * {timer}
          */

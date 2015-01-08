@@ -11,7 +11,8 @@
                 "js/core/notification/Notification.js",
                 "js/core/properties/Properties.js",
                 "js/core/poller/Poller.js",
-                "js/core/poller/PollerEntry.js"
+                "js/core/poller/PollerEntry.js",
+                "js/core/util/Util.js"
             ],
             "config": {
                 "requires": [
@@ -33,6 +34,7 @@
                 "js/model/conversation/ConversationListModel.js",
                 "js/model/message/MessageItemModel.js",
                 "js/model/message/MessageListModel.js",
+                "js/model/properties/PropertiesModel.js",
                 "js/model/group/GroupModelItem.js",
                 "js/model/group/GroupModelList.js",
                 "js/model/group/GroupSocialRelationType.js",
@@ -55,6 +57,10 @@
                 "js/view/ViewExtension.js",
                 "js/view/conversation/ConversationItemView.js",
                 "js/view/conversation/ConversationListView.js",
+                "js/view/elements/ChoiceElementView.js",
+                "js/view/elements/SwitchElementView.js",
+                "js/view/elements/SliderElementView.js",
+                "js/view/elements/TokenInputElementView.js",
                 "js/view/notification/ErrorNotificationView.js",
                 "js/view/notification/InfoNotificationView.js",
                 "js/view/group/GroupBuddyViewItem.js",
@@ -64,13 +70,16 @@
                 "js/view/group/GroupViewList.js",
                 "js/view/portrait/PortraitView.js",
                 "js/view/presence/PresenceView.js",
+                "js/view/properties/PropertiesView.js",
+                "js/view/properties/SettingsView.js",
                 "js/view/panel/PanelView.js"
             ],
             "config": {
                 "requires": [
                     "view",
                     "node",
-                    "anim"
+                    "anim",
+                    "slider"
                 ]
             }
         },
@@ -92,6 +101,36 @@
                     "node"
                 ]
             }
+        },
+
+        "lims-plugin": {
+            "jsfiles": [
+                "js/bootstrap.js",
+                "js/plugin/TokenInputPlugin.js"
+            ],
+            "config": {
+                "requires": [
+                    "array-extras",
+                    "classnamemanager",
+                    "event-focus",
+                    "event-valuechange",
+                    "node-event-delegate",
+                    "node-pluginhost",
+                    "node-style",
+                    "plugin"
+                ]
+            }
+        }
+    },
+    "rollups": {
+        "lims": {
+            "files": [
+                "lims-core",
+                "lims-model",
+                "lims-view",
+                "lims-controller",
+                "lims-plugin"
+            ]
         }
     }
 }

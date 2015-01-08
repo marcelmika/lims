@@ -163,7 +163,6 @@ public class Conversation {
                 }
             }
         }
-        // TODO: Implement MULTI_USER
 
         return title;
     }

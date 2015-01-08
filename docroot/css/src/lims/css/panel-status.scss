@@ -1,0 +1,37 @@
+/************************************************************************************
+/  STATUS PANEL
+/************************************************************************************/
+
+.liferay-ims .status-panel {
+
+  .panel-window .status {
+    background: #ffffff;
+    display: block;
+    font-size: 12px;
+
+    &.online {
+      background: url(/images/status-online.png) center center no-repeat;
+      @include image-2x('/images/status-online@2x.png', 10px, 10px);
+      background-size: 10px;
+    }
+
+    &.busy {
+      background: url(/images/status-busy.png) center center no-repeat;
+      @include image-2x('/images/status-busy@2x.png', 10px, 10px);
+      background-size: 10px;
+    }
+
+    &.unavailable {
+      background: url(/images/status-unavailable.png) center center no-repeat;
+      @include image-2x('/images/status-unavailable@2x.png', 10px, 10px);
+      background-size: 10px;
+    }
+
+    &.off {
+      background: url(/images/status-off.png) center center no-repeat;
+      @include image-2x('/images/status-off@2x.png', 10px, 10px);
+      background-size: 10px;
+    }
+  }
+}
+

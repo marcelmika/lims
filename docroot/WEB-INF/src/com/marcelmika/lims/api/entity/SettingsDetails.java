@@ -36,6 +36,7 @@ public class SettingsDetails {
     private String activePanelId;
     private boolean isMute;
     private boolean isChatEnabled;
+    private boolean isAdminAreaOpened;
 
     public PresenceDetails getPresenceDetails() {
         return presenceDetails;
@@ -67,5 +68,13 @@ public class SettingsDetails {
 
     public void setChatEnabled(boolean isChatEnabled) {
         this.isChatEnabled = isChatEnabled;
+    }
+
+    public boolean isAdminAreaOpened() {
+        return isAdminAreaOpened;
+    }
+
+    public void setAdminAreaOpened(boolean isAdminAreaOpened) {
+        this.isAdminAreaOpened = isAdminAreaOpened;
     }
 }

@@ -41,10 +41,6 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
     initializer: function () {
         // Attach events
         this._attachEvents();
-
-        // Group list needs to be removed from the DOM since we don't know if there
-        // are any groups yet
-        this.get('groupList').remove();
     },
 
     /**
@@ -95,7 +91,7 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         }
 
         // Hide indicator
-        activityIndicator.hide();
+        Y.LIMS.Core.Util.hide(activityIndicator);
     },
 
     /**
@@ -110,7 +106,7 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
             errorView = this.get('errorView');
 
         // Hide indicator
-        activityIndicator.hide();
+        Y.LIMS.Core.Util.hide(activityIndicator);
         // Hide groups
         this._hideGroups();
         // Hide info about empty groups
@@ -128,8 +124,10 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         // Vars
         var groupList = this.get('groupList');
 
-        // Empty node
-        groupList.set('innerHTML', '');
+        if (groupList) {
+            // Empty node
+            groupList.set('innerHTML', '');
+        }
     },
 
     /**
@@ -144,10 +142,12 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
         var groupView = new Y.LIMS.View.GroupViewItem({model: e.model}),
             groupList = this.get('groupList');
 
-        // Render group
-        groupView.render();
-        // Add it to group list
-        groupList.append(groupView.get('container'));
+        if (groupList && groupView) {
+            // Render group
+            groupView.render();
+            // Add it to group list
+            groupList.append(groupView.get('container'));
+        }
     },
 
     /**
@@ -174,7 +174,7 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
             animation;
 
         // If the group list is already in the document don't animate it
-        if (!groupList.inDoc()) {
+        if (groupList && !groupList.inDoc()) {
 
             // Create an instance of animation
             animation = new Y.Anim({
@@ -207,7 +207,7 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
             animation;
 
         // Run the animation only if the group list is in DOM
-        if (groupList.inDoc()) {
+        if (groupList && groupList.inDoc()) {
 
             // Create the animation instance
             animation = new Y.Anim({
@@ -258,7 +258,16 @@ Y.LIMS.View.GroupViewList = Y.Base.create('groupViewList', Y.View, [], {
          */
         groupList: {
             valueFn: function () {
-                return this.get('container').one('.group-list');
+                // Vars
+                var groupList = this.get('container').one('.group-list');
+
+                if (groupList) {
+                    // Remove it from the DOM, since it will be shown after
+                    // the list is loaded from the server
+                    groupList.remove();
+                }
+
+                return groupList;
             }
         },
 
