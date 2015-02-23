@@ -97,18 +97,74 @@ Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [Y.LIMS.M
         // model's data. See the docs for Y.Attribute to learn more about defining
         // attributes.
 
+        /**
+         * Id of the buddy
+         *
+         * {integer|null}
+         */
         buddyId: {
             value: null // default value
         },
 
+        /**
+         * Screen name of the buddy
+         *
+         * {string}
+         */
         screenName: {
             value: "" // default value
         },
 
+        /**
+         * Set to true if the buddy is male
+         *
+         * {boolean|null}
+         */
+        male: {
+            value: null // default value
+        },
+
+        /**
+         * Portrait id of the buddy
+         *
+         * {integer}
+         */
+        portraitId: {
+            value: 0 // default value
+        },
+
+        /**
+         * Portrait token of the buddy
+         *
+         * {string|null}
+         */
+        portraitToken: {
+            value: null // default value
+        },
+
+        /**
+         * Portrait image token of the buddy
+         *
+         * {string | null}
+         */
+        portraitImageToken: {
+            value: null // default value
+        },
+
+        /**
+         * Full name of the buddy
+         *
+         * {string}
+         */
         fullName: {
             value: "" // default value
         },
 
+        /**
+         * Presence of the buddy
+         *
+         * {string}
+         */
         presence: {
             value: null // default value
         }
