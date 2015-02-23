@@ -14,6 +14,12 @@
         <friendly-url-routes>META-INF/lims-friendly-url-routes.xml</friendly-url-routes>
 
         <!--
+        Set the preferences-company-wide value to true if the preferences for the portlet are
+        across the entire company.
+        -->
+        <preferences-company-wide>true</preferences-company-wide>
+
+        <!--
         Set the use-default-template value to true if the portlet uses the default
         template to decorate and wrap content. Setting this to false allows the
         developer to own and maintain the portlet's entire outputted content. The
