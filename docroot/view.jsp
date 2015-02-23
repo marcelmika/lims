@@ -49,33 +49,11 @@
             <%-- Javascript Templates --%>
             <%@ include file="/WEB-INF/jspf/templates.jspf" %>
 
-            <%-- Portlet Enabled Flag --%>
-            <aui:input type="hidden"
-                       id="limsPortletEnabled"
-                       name="limsPortletEnabled"
-                       useNamespace="false"
-                       value="${settings.chatEnabled}"/>
+            <%-- Rendered properties passed to client --%>
+            <%@ include file="/WEB-INF/jspf/properties.jspf" %>
 
-            <%-- Server Time --%>
-            <aui:input type="hidden"
-                       id="limsCurrentServerTime"
-                       name="limsCurrentServerTime"
-                       useNamespace="false"
-                       value="<%= System.currentTimeMillis() %>"/>
-
-            <%-- Logged user screen name --%>
-            <aui:input type="hidden"
-                       id="limsCurrentUserScreenName"
-                       name="limsCurrentUserScreenName"
-                       useNamespace="false"
-                       value="${screenName}"/>
-
-            <%-- Logged user full name --%>
-            <aui:input type="hidden"
-                       id="limsCurrentUserFullName"
-                       name="limsCurrentUserFullName"
-                       useNamespace="false"
-                       value="${fullName}"/>
+            <%-- Rendered i18n string used on client --%>
+            <%@ include file="/WEB-INF/jspf/i18n.jspf" %>
 
         </c:if>
 
@@ -87,7 +65,6 @@
                 </a>
             </div>
         </c:if>
-
 
     </div>
 

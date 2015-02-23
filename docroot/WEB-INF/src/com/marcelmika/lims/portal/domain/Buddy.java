@@ -90,7 +90,18 @@ public class Buddy {
         User user = themeDisplay.getUser();
         buddy.buddyId = user.getUserId();
         buddy.companyId = user.getCompanyId();
+        try {
+            buddy.male = user.isMale();
+        } catch (Exception e) {
+            buddy.male = true;
+        }
         buddy.portraitId = user.getPortraitId();
+        try {
+            buddy.portraitImageToken = HttpUtil.encodeURL(DigesterUtil.digest(user.getUserUuid()));
+        } catch (SystemException e) {
+            buddy.portraitImageToken = "";
+        }
+        buddy.portraitToken = WebServerServletTokenUtil.getToken(user.getPortraitId());
         buddy.screenName = user.getScreenName();
         buddy.fullName = user.getFullName();
 

@@ -43,19 +43,14 @@ AUI().use(
                 // Set global settings
                 A.LIMS.Core.Properties.resourceURL = resourceURL.toString();
                 A.LIMS.Core.Properties.pathImage = Liferay.ThemeDisplay.getPathImage();
-                A.LIMS.Core.Properties.userId = Liferay.ThemeDisplay.getUserId();
-                A.LIMS.Core.Properties.companyId = Liferay.ThemeDisplay.getCompanyId();
                 A.LIMS.Core.Properties.isIE = Liferay.Browser.isIe();
 
                 // Parse localization values from template
                 A.LIMS.Core.i18n.values = A.JSON.parse(A.one('#lims-i18n').get('innerHTML'));
+                A.LIMS.Core.Properties.values = A.JSON.parse(A.one('#lims-properties').get('innerHTML'));
 
                 // Start the app!
-                mainController = new A.LIMS.Controller.MainController({
-                    userId: Liferay.ThemeDisplay.getUserId(),
-                    companyId: Liferay.ThemeDisplay.getCompanyId(),
-                    pathImage: Liferay.ThemeDisplay.getPathImage()
-                });
+                mainController = new A.LIMS.Controller.MainController();
 
                 // Notify main controller if the user session expires
                 Liferay.bind('sessionExpired', function () {
