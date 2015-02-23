@@ -389,6 +389,10 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 		}
 	}
 
+	public Class<?> getClpSerializerClass() {
+		return _clpSerializerClass;
+	}
+
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
@@ -460,4 +464,5 @@ public class ParticipantClp extends BaseModelImpl<Participant>
 	private boolean _isOpened;
 	private long _openedAt;
 	private BaseModel<?> _participantRemoteModel;
+	private Class<?> _clpSerializerClass = com.marcelmika.lims.persistence.generated.service.ClpSerializer.class;
 }

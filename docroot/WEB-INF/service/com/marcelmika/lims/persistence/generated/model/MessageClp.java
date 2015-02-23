@@ -344,6 +344,10 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 		}
 	}
 
+	public Class<?> getClpSerializerClass() {
+		return _clpSerializerClass;
+	}
+
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
@@ -408,4 +412,5 @@ public class MessageClp extends BaseModelImpl<Message> implements Message {
 	private Date _createdAt;
 	private String _body;
 	private BaseModel<?> _messageRemoteModel;
+	private Class<?> _clpSerializerClass = com.marcelmika.lims.persistence.generated.service.ClpSerializer.class;
 }

@@ -434,6 +434,10 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 		}
 	}
 
+	public Class<?> getClpSerializerClass() {
+		return _clpSerializerClass;
+	}
+
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
@@ -513,4 +517,5 @@ public class SettingsClp extends BaseModelImpl<Settings> implements Settings {
 	private boolean _chatEnabled;
 	private boolean _adminAreaOpened;
 	private BaseModel<?> _settingsRemoteModel;
+	private Class<?> _clpSerializerClass = com.marcelmika.lims.persistence.generated.service.ClpSerializer.class;
 }

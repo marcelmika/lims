@@ -293,6 +293,10 @@ public class PanelClp extends BaseModelImpl<Panel> implements Panel {
 		}
 	}
 
+	public Class<?> getClpSerializerClass() {
+		return _clpSerializerClass;
+	}
+
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
@@ -344,4 +348,5 @@ public class PanelClp extends BaseModelImpl<Panel> implements Panel {
 	private String _userUuid;
 	private String _activePanelId;
 	private BaseModel<?> _panelRemoteModel;
+	private Class<?> _clpSerializerClass = com.marcelmika.lims.persistence.generated.service.ClpSerializer.class;
 }

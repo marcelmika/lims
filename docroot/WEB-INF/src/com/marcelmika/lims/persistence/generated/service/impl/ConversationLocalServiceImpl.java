@@ -15,6 +15,8 @@
 package com.marcelmika.lims.persistence.generated.service.impl;
 
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.persistence.generated.model.Conversation;
 import com.marcelmika.lims.persistence.generated.service.base.ConversationLocalServiceBaseImpl;
 
@@ -42,7 +44,12 @@ public class ConversationLocalServiceImpl
 	 * Never reference this interface directly. Always use {@link com.marcelmika.lims.persistence.generated.service.ConversationLocalServiceUtil} to access the conversation local service.
 	 */
 
+    // Log
+    @SuppressWarnings("unused")
+    private static Log log = LogFactoryUtil.getLog(ConversationLocalServiceImpl.class);
+
     public Conversation addConversation(String conversationId, String conversationType) throws SystemException {
+
         // Fetch possible existing conversation
         Conversation conversationModel = conversationPersistence.fetchByConversationId(conversationId);
 
@@ -69,7 +76,7 @@ public class ConversationLocalServiceImpl
     public void updateConversationTimestamp(long cid) throws Exception {
 
         // Find conversation
-        Conversation conversation = conversationPersistence.findByPrimaryKey(cid);
+        Conversation conversation = conversationPersistence.fetchByPrimaryKey(cid);
 
         // Update to current time
         Calendar calendar = Calendar.getInstance();
