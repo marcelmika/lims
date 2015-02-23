@@ -100,6 +100,9 @@ public class ResponseUtil {
         // Remove null properties to decrease response size
         content = SerializationUtil.excludeNullProperties(content);
 
+        // Remove class property do decrease response size
+        content = SerializationUtil.excludeClassProperty(content);
+
         // Write the content to the output stream
         if (content != null) {
             // Get the writer
