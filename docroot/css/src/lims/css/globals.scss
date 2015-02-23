@@ -4,6 +4,10 @@
 
 .liferay-ims {
 
+  // Add the global font-smoothing to avoid issues
+  // with wrong font rendering in Chrome
+  @include font-smoothing;
+
   li {
     line-height: 15px;
     padding: 0;
