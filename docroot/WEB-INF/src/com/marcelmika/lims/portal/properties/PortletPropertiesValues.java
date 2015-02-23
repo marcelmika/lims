@@ -80,11 +80,6 @@ public class PortletPropertiesValues {
             PortletPropertiesKeys.BUDDY_LIST_STRATEGY
     );
 
-    // Buddy List - Ignore default user
-    public static final boolean BUDDY_LIST_IGNORE_DEFAULT_USER = getBoolean(
-            PortletPropertiesKeys.BUDDY_LIST_IGNORE_DEFAULT_USER
-    );
-
     // Buddy List - Ignore deactivated user
     public static final boolean BUDDY_LIST_IGNORE_DEACTIVATED_USER = getBoolean(
             PortletPropertiesKeys.BUDDY_LIST_IGNORE_DEACTIVATED_USER

@@ -102,7 +102,6 @@ public class PropertiesManagerImpl implements PropertiesManager {
             setupExcludedSites(preferences);
             setupBuddyListStrategy(preferences);
             setupBuddyListSocialRelations(preferences);
-            setupBuddyListIgnoreDefaultUser(preferences);
             setupBuddyListIgnoreDeactivatedUser(preferences);
             setupBuddyListMaxBuddies(preferences);
             setupBuddyListMaxSearch(preferences);
@@ -141,11 +140,6 @@ public class PropertiesManagerImpl implements PropertiesManager {
         // Buddy list social relations
         if (properties.getBuddyListSocialRelations() != null) {
             updateBuddyListSocialRelations(preferences, properties);
-        }
-
-        // Buddy list ignore default user
-        if (properties.getBuddyListIgnoreDefaultUser() != null) {
-            updateBuddyListIgnoreDefaultUser(preferences, properties);
         }
 
         // Buddy list ignore deactivated user
@@ -475,56 +469,6 @@ public class PropertiesManagerImpl implements PropertiesManager {
 
         // Save to environment
         Environment.setBuddyListSocialRelations(buddyListSocialRelations);
-    }
-
-    /**
-     * Updates the buddy list default user property
-     *
-     * @param preferences PortletPreferences
-     * @param properties  Properties
-     * @throws Exception
-     */
-    private void updateBuddyListIgnoreDefaultUser(PortletPreferences preferences,
-                                                  Properties properties) throws Exception {
-
-        // Set the value in portlet preferences
-        preferences.setValue(
-                PortletPropertiesKeys.BUDDY_LIST_IGNORE_DEFAULT_USER,
-                String.valueOf(properties.getBuddyListIgnoreDefaultUser())
-        );
-        // Persist
-        preferences.store();
-
-        // Save in Environment
-        setupBuddyListIgnoreDefaultUser(preferences);
-    }
-
-    /**
-     * Sets the buddy list ignore default user property
-     *
-     * @param preferences PortletPreferences
-     */
-    private void setupBuddyListIgnoreDefaultUser(PortletPreferences preferences) {
-        // Get the properties source
-        PropertiesSource source = Environment.getPropertiesSource();
-
-        Boolean buddyListIgnoreDefaultUser;
-
-        // Preferences
-        if (source == PropertiesSource.PREFERENCES) {
-            // Take the value from preferences
-            buddyListIgnoreDefaultUser = Boolean.parseBoolean(preferences.getValue(
-                    PortletPropertiesKeys.BUDDY_LIST_IGNORE_DEFAULT_USER,
-                    String.valueOf(PortletPropertiesValues.BUDDY_LIST_IGNORE_DEFAULT_USER)
-            ));
-        }
-        // Properties
-        else {
-            buddyListIgnoreDefaultUser = PortletPropertiesValues.BUDDY_LIST_IGNORE_DEFAULT_USER;
-        }
-
-        // Save in environment
-        Environment.setBuddyListIgnoreDefaultUser(buddyListIgnoreDefaultUser);
     }
 
     /**

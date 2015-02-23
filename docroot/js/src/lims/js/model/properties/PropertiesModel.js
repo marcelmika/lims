@@ -119,15 +119,6 @@ Y.LIMS.Model.PropertiesModel = Y.Base.create('propertiesModel', Y.Model, [Y.LIMS
         },
 
         /**
-         * Buddy list ignore default user
-         *
-         * {boolean}
-         */
-        buddyListIgnoreDefaultUser: {
-            value: null // to be set
-        },
-
-        /**
          * Buddy list ignore deactivated
          *
          * {boolean}

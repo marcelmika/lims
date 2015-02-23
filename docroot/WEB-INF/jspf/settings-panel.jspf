@@ -112,7 +112,6 @@
                         <ul class="lfr-component">
                             <%@ include file="/WEB-INF/jspf/settings/buddy-list-strategy.jspf" %>
                             <%@ include file="/WEB-INF/jspf/settings/buddy-list-social-relation.jspf" %>
-                            <%@ include file="/WEB-INF/jspf/settings/buddy-list-ignore-default-user.jspf" %>
                             <%@ include file="/WEB-INF/jspf/settings/buddy-list-ignore-deactivated-user.jspf" %>
                             <%@ include file="/WEB-INF/jspf/settings/buddy-list-max-buddies.jspf" %>
                             <%@ include file="/WEB-INF/jspf/settings/buddy-list-max-search.jspf" %>

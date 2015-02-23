@@ -46,6 +46,7 @@ import java.util.Set;
 public class SearchManagerImpl implements SearchManager {
 
     // Log
+    @SuppressWarnings("unused")
     private static Log log = LogFactoryUtil.getLog(SearchManagerImpl.class);
 
     /**
@@ -63,8 +64,6 @@ public class SearchManagerImpl implements SearchManager {
     public List<Buddy> searchBuddies(Long userId, String searchQuery, int start, int end) throws Exception {
         // Get selected list strategy
         Environment.BuddyListStrategy strategy = Environment.getBuddyListStrategy();
-        // Get the info if default user should be ignored
-        boolean ignoreDefaultUser = Environment.getBuddyListIgnoreDefaultUser();
         // Get the info if the deactivated user should be ignored
         boolean ignoreDeactivatedUser = Environment.getBuddyListIgnoreDeactivatedUser();
         // Some sites or groups may be excluded
@@ -76,31 +75,31 @@ public class SearchManagerImpl implements SearchManager {
         // All buddies
         if (strategy == BuddyListStrategy.ALL) {
             return searchAllBuddies(
-                    userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, start, end
+                    userId, searchQuery, true, ignoreDeactivatedUser, start, end
             );
         }
         // Buddies from sites
         else if (strategy == BuddyListStrategy.SITES) {
             return searchSitesBuddies(
-                    userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, start, end
+                    userId, searchQuery, true, ignoreDeactivatedUser, excludedSites, start, end
             );
         }
         // Buddies by social relations
         else if (strategy == BuddyListStrategy.SOCIAL) {
             return searchSocialBuddies(
-                    userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, relationTypes, start, end
+                    userId, searchQuery, true, ignoreDeactivatedUser, relationTypes, start, end
             );
         }
         // Buddies by social relations together with sites
         else if (strategy == BuddyListStrategy.SITES_AND_SOCIAL) {
             return searchSitesAndSocialBuddies(
-                    userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, relationTypes, start, end
+                    userId, searchQuery, true, ignoreDeactivatedUser, excludedSites, relationTypes, start, end
             );
         }
         // Buddies by user groups
         else if (strategy == BuddyListStrategy.USER_GROUPS) {
             return searchUserGroupsBuddies(
-                    userId, searchQuery, ignoreDefaultUser, ignoreDeactivatedUser, excludedGroups, start, end
+                    userId, searchQuery, true, ignoreDeactivatedUser, excludedGroups, start, end
             );
         }
         // Unknown
