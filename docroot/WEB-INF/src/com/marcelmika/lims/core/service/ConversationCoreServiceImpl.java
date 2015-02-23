@@ -26,13 +26,7 @@ package com.marcelmika.lims.core.service;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.marcelmika.lims.api.entity.BuddyDetails;
-import com.marcelmika.lims.api.entity.ConversationDetails;
-import com.marcelmika.lims.api.entity.MessageDetails;
-import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.events.conversation.*;
-import com.marcelmika.lims.jabber.service.ConversationJabberService;
-import com.marcelmika.lims.jabber.service.ConversationJabberServiceListener;
 import com.marcelmika.lims.persistence.service.ConversationPersistenceService;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -44,10 +38,9 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  * Date: 2/19/14
  * Time: 11:03 PM
  */
-public class ConversationCoreServiceImpl implements ConversationCoreService, ConversationJabberServiceListener {
+public class ConversationCoreServiceImpl implements ConversationCoreService {
 
     // Dependencies
-    ConversationJabberService conversationJabberService;
     ConversationPersistenceService conversationPersistenceService;
 
     // Log
@@ -56,26 +49,10 @@ public class ConversationCoreServiceImpl implements ConversationCoreService, Con
     /**
      * Constructor
      *
-     * @param conversationJabberService jabber service
+     * @param conversationPersistenceService ConversationPersistenceService
      */
-    public ConversationCoreServiceImpl(final ConversationJabberService conversationJabberService,
-                                       final ConversationPersistenceService conversationPersistenceService) {
-        this.conversationJabberService = conversationJabberService;
+    public ConversationCoreServiceImpl(final ConversationPersistenceService conversationPersistenceService) {
         this.conversationPersistenceService = conversationPersistenceService;
-
-        // Listeners
-        conversationJabberService.addConversationJabberServiceListener(this);
-    }
-
-    /**
-     * Get all conversations related to the particular buddy
-     *
-     * @param event request event for method
-     * @return response event for  method
-     */
-    @Override
-    public GetConversationsResponseEvent getConversations(GetConversationsRequestEvent event) {
-        throw new NotImplementedException();
     }
 
     /**
@@ -98,23 +75,7 @@ public class ConversationCoreServiceImpl implements ConversationCoreService, Con
      */
     @Override
     public CreateConversationResponseEvent createConversation(CreateConversationRequestEvent event) {
-
-        // Create conversation locally
-        CreateConversationResponseEvent persistenceResponseEvent = conversationPersistenceService.createConversation(
-                event
-        );
-
-        // Check for error
-        if (!persistenceResponseEvent.isSuccess()) {
-            return persistenceResponseEvent;
-        }
-
-        // If enabled create in jabber too
-        if (Environment.isJabberEnabled()) {
-            conversationJabberService.createConversation(event);
-        }
-
-        return persistenceResponseEvent;
+        return conversationPersistenceService.createConversation(event);
     }
 
     /**
@@ -130,17 +91,6 @@ public class ConversationCoreServiceImpl implements ConversationCoreService, Con
     }
 
     /**
-     * Opens existing conversation
-     *
-     * @param event Request event for login method
-     * @return Response event for login method
-     */
-    @Override
-    public OpenConversationResponseEvent openConversation(OpenConversationRequestEvent event) {
-        throw new NotImplementedException();
-    }
-
-    /**
      * Closes existing conversation. User remains in the conversation though.
      *
      * @param event Request event for login method
@@ -148,7 +98,6 @@ public class ConversationCoreServiceImpl implements ConversationCoreService, Con
      */
     @Override
     public CloseConversationResponseEvent closeConversation(CloseConversationRequestEvent event) {
-        // Save to persistence
         return conversationPersistenceService.closeConversation(event);
     }
 
@@ -160,30 +109,7 @@ public class ConversationCoreServiceImpl implements ConversationCoreService, Con
      */
     @Override
     public ResetUnreadMessagesCounterResponseEvent resetUnreadMessagesCounter(ResetUnreadMessagesCounterRequestEvent event) {
-        // Save to persistence
         return conversationPersistenceService.resetUnreadMessagesCounter(event);
-    }
-
-    /**
-     * Removes buddy from the conversation
-     *
-     * @param event Request event for login method
-     * @return Response event for login method
-     */
-    @Override
-    public LeaveConversationResponseEvent leaveConversation(LeaveConversationRequestEvent event) {
-        throw new NotImplementedException();
-    }
-
-    /**
-     * Adds buddies to the conversation
-     *
-     * @param event request event for method
-     * @return response event for method
-     */
-    @Override
-    public AddBuddiesResponseEvent addBuddies(AddBuddiesRequestEvent event) {
-        throw new NotImplementedException();
     }
 
     /**
@@ -219,55 +145,9 @@ public class ConversationCoreServiceImpl implements ConversationCoreService, Con
             return persistenceResponseEvent;
         }
 
-        // Send message to Jabber
-        if (Environment.isJabberEnabled()) {
-            // Send message via jabber service
-            SendMessageResponseEvent jabberResponseEvent = conversationJabberService.sendMessage(
-                    new SendMessageRequestEvent(
-                            event.getBuddyDetails(),
-                            participantListEvent.getConversation(),
-                            event.getMessageDetails())
-            );
-            // Failure
-            if (!jabberResponseEvent.isSuccess()) {
-                return SendMessageResponseEvent.sendMessageFailure(
-                        SendMessageResponseEvent.Status.ERROR_JABBER, jabberResponseEvent.getException()
-                );
-            }
-        }
-
         // Return persistence event
         return SendMessageResponseEvent.sendMessageSuccess(
                 persistenceResponseEvent.getMessage()
         );
-    }
-
-
-    // -------------------------------------------------------------------------------------------
-    // Conversation Jabber Service Listener
-    // -------------------------------------------------------------------------------------------
-
-    @Override
-    public void messageReceived(ConversationDetails conversation, MessageDetails message) {
-        log.info("## CORE MESSAGE RECEIVED: " + message);
-
-        // Conversation holds the creator
-        BuddyDetails creator = conversation.getBuddy();
-
-        // Create the conversation
-        CreateConversationResponseEvent responseEvent = conversationPersistenceService.createConversation(
-                new CreateConversationRequestEvent(creator, conversation, message)
-        );
-
-        if (!responseEvent.isSuccess()) {
-            // TODO log
-            log.error(responseEvent.getException());
-        }
-
-        SendMessageResponseEvent sendMessageResponse = conversationPersistenceService.sendMessage(
-                new SendMessageRequestEvent(creator, conversation, message)
-        );
-
-        // Send message
     }
 }

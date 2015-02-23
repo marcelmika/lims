@@ -45,6 +45,7 @@ import java.util.Date;
 public class ServerController {
 
     // Log
+    @SuppressWarnings("unused")
     private static Log log = LogFactoryUtil.getLog(ServerController.class);
 
 

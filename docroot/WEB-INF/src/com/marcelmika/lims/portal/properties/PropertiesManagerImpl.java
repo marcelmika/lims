@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.environment.Environment.BuddyListSocialRelation;
-import com.marcelmika.lims.api.environment.Environment.BuddyListSource;
 import com.marcelmika.lims.api.environment.Environment.BuddyListStrategy;
 import com.marcelmika.lims.api.environment.Environment.PropertiesSource;
 import com.marcelmika.lims.portal.domain.Properties;
@@ -100,7 +99,6 @@ public class PropertiesManagerImpl implements PropertiesManager {
             setupPropertiesSource();
 
             // Set the whole environment
-            setupBuddyListSource();
             setupExcludedSites(preferences);
             setupBuddyListStrategy(preferences);
             setupBuddyListSocialRelations(preferences);
@@ -115,9 +113,6 @@ public class PropertiesManagerImpl implements PropertiesManager {
 
             // Set url properties
             setUrlProperties();
-
-            // Set jabber related properties
-            setupJabberProperties();
         }
     }
 
@@ -263,38 +258,6 @@ public class PropertiesManagerImpl implements PropertiesManager {
 
         // Save in Environment
         setupExcludedSites(preferences);
-    }
-
-    /**
-     * Sets buddy list source
-     */
-    private void setupBuddyListSource() {
-        String value = PortletPropertiesValues.BUDDY_LIST_SOURCE;
-
-        BuddyListSource buddyListSource;
-
-        // Liferay
-        if (value.equals("liferay")) {
-            buddyListSource = BuddyListSource.LIFERAY;
-        }
-        // Jabber
-        else if (value.equals("jabber")) {
-            buddyListSource = BuddyListSource.JABBER;
-        }
-        // Unknown value
-        else {
-            log.error(String.format(
-                    "Unknown buddy list source: %s. Valid values are \"liferay\" or \"jabber\". Since no valid " +
-                            "property was provided \"liferay\" was chosen as a default. The value can be " +
-                            "set in portlet-ext.properties file related to the LIMS portlet.", value
-            ));
-
-            // Fallback to default
-            buddyListSource = BuddyListSource.LIFERAY;
-        }
-
-        // Save to Environment
-        Environment.setBuddyListSource(buddyListSource);
     }
 
     /**
@@ -920,28 +883,6 @@ public class PropertiesManagerImpl implements PropertiesManager {
 
         // Save in Environment
         Environment.setBuddyListGroupExcludes(buddyListGroupExcludes);
-    }
-
-    /**
-     * Sets jabber related properties
-     */
-    private void setupJabberProperties() {
-
-        // Set jabber properties to Environment
-        // TODO: Uncomment when implemented
-//        Environment.setJabberEnabled(PortletPropertiesValues.JABBER_ENABLED);
-        Environment.setJabberEnabled(false);
-        Environment.setJabberHost(PortletPropertiesValues.JABBER_HOST);
-        Environment.setJabberPort(PortletPropertiesValues.JABBER_PORT);
-        Environment.setJabberServiceName(PortletPropertiesValues.JABBER_SERVICE_NAME);
-        Environment.setJabberResource(PortletPropertiesValues.JABBER_RESOURCE);
-        Environment.setJabberSock5ProxyEnabled(PortletPropertiesValues.JABBER_SOCK5_PROXY_ENABLED);
-        Environment.setJabberSock5ProxyPort(PortletPropertiesValues.JABBER_SOCK5_PROXY_PORT);
-        Environment.setJabberImportUserEnabled(PortletPropertiesValues.JABBER_IMPORT_USER_ENABLED);
-        Environment.setSaslPlainEnabled(PortletPropertiesValues.JABBER_SASL_PLAIN_ENABLED);
-        Environment.setSaslPlainAuthId(PortletPropertiesValues.JABBER_SASL_PLAIN_AUTHID);
-        Environment.setSaslPlainPassword(PortletPropertiesValues.JABBER_SASL_PLAIN_PASSWORD);
-
     }
 
     /**
