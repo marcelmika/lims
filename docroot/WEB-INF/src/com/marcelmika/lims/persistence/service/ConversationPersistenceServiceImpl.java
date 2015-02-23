@@ -71,6 +71,16 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
 
         // Save to persistence
         try {
+
+            // Get the participant
+            Buddy participant = conversation.getParticipants().get(0);
+            // User cannot create conversation with himself
+            if (participant.getBuddyId().equals(creator.getBuddyId())) {
+                return CreateConversationResponseEvent.createConversationFailure(
+                        CreateConversationResponseEvent.Status.ERROR_COLLISION
+                );
+            }
+
             // Save conversation
             com.marcelmika.lims.persistence.generated.model.Conversation conversationModel =
                     ConversationLocalServiceUtil.addConversation(
