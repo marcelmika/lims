@@ -128,33 +128,6 @@ Y.LIMS.Model.PropertiesModel = Y.Base.create('propertiesModel', Y.Model, [Y.LIMS
         },
 
         /**
-         * Buddy list max buddies
-         *
-         * {Number}
-         */
-        buddyListMaxBuddies: {
-            value: null // to be set
-        },
-
-        /**
-         * Buddy list max search
-         *
-         * {Number}
-         */
-        buddyListMaxSearch: {
-            value: null // to be set
-        },
-
-        /**
-         * Conversation list max messages
-         *
-         * {Number}
-         */
-        conversationListMaxMessages: {
-            value: null // to be set
-        },
-
-        /**
          * Excluded sites
          *
          * []

@@ -59,7 +59,6 @@
                 "js/view/conversation/ConversationListView.js",
                 "js/view/elements/ChoiceElementView.js",
                 "js/view/elements/SwitchElementView.js",
-                "js/view/elements/SliderElementView.js",
                 "js/view/elements/TokenInputElementView.js",
                 "js/view/notification/ErrorNotificationView.js",
                 "js/view/notification/InfoNotificationView.js",
@@ -78,8 +77,7 @@
                 "requires": [
                     "view",
                     "node",
-                    "anim",
-                    "slider"
+                    "anim"
                 ]
             }
         },
