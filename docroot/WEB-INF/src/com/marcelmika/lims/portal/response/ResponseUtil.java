@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.portal.domain.ErrorMessage;
 import com.marcelmika.lims.portal.http.HttpStatus;
+import com.marcelmika.lims.portal.serialization.SerializationUtil;
 
 import javax.portlet.ResourceResponse;
 import java.io.IOException;
@@ -95,6 +96,9 @@ public class ResponseUtil {
      * @param response   Resource response
      */
     public static void writeResponse(String content, HttpStatus statusCode, ResourceResponse response) {
+
+        // Remove null properties to decrease response size
+        content = SerializationUtil.excludeNullProperties(content);
 
         // Write the content to the output stream
         if (content != null) {
