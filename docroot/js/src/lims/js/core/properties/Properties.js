@@ -35,6 +35,7 @@ Y.LIMS.Core.Properties = Y.Base.create('properties', Y.Base, [], {
     companyId: null,   // This is set in main.js, to access it use Y.LIMS.Core.Properties.companyId
     pathImage: null,   // This is set in main.js, to access it use Y.LIMS.Core.Properties.pathImage
     isIE: false,       // This is set in main.js, to access it use Y.LIMS.Core.Properties.isIE
+    resourceURL: null,  // This is set in main.js, to access it use Y.LIMS.Core.Properties.resourceURL
 
     /**
      * Called when the object is created

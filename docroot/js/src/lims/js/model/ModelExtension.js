@@ -40,6 +40,6 @@ Y.LIMS.Model.ModelExtension.prototype = {
      * @returns {URL}
      */
     getServerRequestUrl: function () {
-        return Y.one('#limsPortletURL').get('value');
+        return Y.LIMS.Core.Properties.resourceURL;
     }
 };

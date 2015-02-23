@@ -28,9 +28,6 @@
 
 <c:if test="${isEnabled}">
 
-    <%-- Resource URL --%>
-    <portlet:resourceURL var="limsPortletURL" id="view.jsp" escapeXml="false"/>
-
     <%-- LIMS bar --%>
     <div id="lims-container" class="covered ${ieSupportClass}">
 
@@ -58,13 +55,6 @@
                        name="limsPortletEnabled"
                        useNamespace="false"
                        value="${settings.chatEnabled}"/>
-
-            <%-- Portlet URL --%>
-            <aui:input type="hidden"
-                       id="limsPortletURL"
-                       name="limsPortletURL"
-                       useNamespace="false"
-                       value="<%= renderResponse.encodeURL(limsPortletURL.toString()) %>"/>
 
             <%-- Server Time --%>
             <aui:input type="hidden"
