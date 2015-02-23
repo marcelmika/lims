@@ -64,8 +64,8 @@
     width: 300px;
   }
 
-  .buddy-list-max-buddies {
-    margin-top: 10px;
+  .title-text {
+    text-transform: capitalize;
   }
 
   .buddy-list-ignore-deactivated-user {
@@ -160,14 +160,6 @@
 
     li {
       padding: 0 10px;
-    }
-
-    .buddy-list-ignore-default-user {
-      padding-top: 14px;
-    }
-
-    .buddy-list-max-buddies {
-      margin-top: 17px;
     }
 
     .settings-category-title {
