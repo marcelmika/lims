@@ -131,7 +131,9 @@ public class ConversationController {
             else {
                 ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
                 // Log
-                log.error(responseEvent.getException());
+                if (log.isDebugEnabled()) {
+                    log.debug(responseEvent.getException());
+                }
             }
         }
     }
@@ -162,7 +164,9 @@ public class ConversationController {
             // Bad request
             ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
             // Log
-            log.debug(exception);
+            if (log.isDebugEnabled()) {
+                log.debug(exception);
+            }
             // End here
             return;
         }
@@ -219,7 +223,9 @@ public class ConversationController {
             else {
                 ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
                 // Log
-                log.error(responseEvent.getException());
+                if (log.isDebugEnabled()) {
+                    log.debug(responseEvent.getException());
+                }
             }
         }
     }
@@ -251,7 +257,9 @@ public class ConversationController {
             // Bad request
             ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
             // Log
-            log.debug(exception);
+            if (log.isDebugEnabled()) {
+                log.debug(exception);
+            }
             // End here
             return;
         }
@@ -276,6 +284,10 @@ public class ConversationController {
             // Everything else is server fault
             else {
                 ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
+                // Log
+                if (log.isDebugEnabled()) {
+                    log.debug(responseEvent.getException());
+                }
             }
         }
     }
@@ -307,7 +319,9 @@ public class ConversationController {
             // Bad request
             ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
             // Log
-            log.debug(exception);
+            if (log.isDebugEnabled()) {
+                log.debug(exception);
+            }
             // End here
             return;
         }
@@ -333,7 +347,9 @@ public class ConversationController {
             else {
                 ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
                 // Log
-                log.error(responseEvent.getException());
+                if (log.isDebugEnabled()) {
+                    log.debug(responseEvent.getException());
+                }
             }
         }
     }
@@ -358,7 +374,9 @@ public class ConversationController {
             // Bad request
             ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
             // Log
-            log.debug(exception);
+            if (log.isDebugEnabled()) {
+                log.debug(exception);
+            }
             // End here
             return;
         }
@@ -394,7 +412,9 @@ public class ConversationController {
             else {
                 ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
                 // Log
-                log.error(responseEvent.getException());
+                if (log.isDebugEnabled()) {
+                    log.debug(responseEvent.getException());
+                }
             }
         }
     }
@@ -430,7 +450,9 @@ public class ConversationController {
             // Bad request
             ResponseUtil.writeResponse(HttpStatus.BAD_REQUEST, response);
             // Log
-            log.debug(exception);
+            if (log.isDebugEnabled()) {
+                log.debug(exception);
+            }
             // End here
             return;
         }
@@ -482,10 +504,10 @@ public class ConversationController {
             else {
                 ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
                 // Log
-                log.error(responseEvent.getException());
+                if (log.isDebugEnabled()) {
+                    log.debug(responseEvent.getException());
+                }
             }
         }
     }
-
-
 }

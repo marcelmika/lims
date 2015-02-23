@@ -130,10 +130,17 @@ public class ResponseUtil {
      */
     public static PrintWriter getResponseWriter(ResourceResponse response) {
         PrintWriter writer = null;
+
         try {
+            // Get the writer from response
             writer = response.getWriter();
-        } catch (IOException e) {
-            log.error(e);
+        }
+        // Failure
+        catch (IOException e) {
+            // Log
+            if (log.isErrorEnabled()) {
+                log.error(e);
+            }
         }
 
         return writer;

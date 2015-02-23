@@ -113,8 +113,8 @@ public class PropertiesController {
             // This is a server fault
             ResponseUtil.writeResponse(HttpStatus.INTERNAL_SERVER_ERROR, response);
             // Log
-            if (log.isErrorEnabled()) {
-                log.error(exception);
+            if (log.isDebugEnabled()) {
+                log.debug(exception);
             }
         }
     }

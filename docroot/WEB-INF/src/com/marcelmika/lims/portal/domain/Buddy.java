@@ -213,8 +213,10 @@ public class Buddy {
                 }
 
             } catch (Exception e) {
-                // Do nothing
-                log.error(e);
+                // Just log
+                if (log.isDebugEnabled()) {
+                    log.debug(e);
+                }
             }
         }
 

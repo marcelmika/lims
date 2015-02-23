@@ -57,10 +57,16 @@ public class SessionDestroyAction extends SessionAction {
 
         // Create buddy from session
         Buddy buddy = Buddy.fromHttpSession(session);
+        // Logout
+        logoutBuddy(buddy);
+    }
 
-        if (log.isDebugEnabled()) {
-            log.debug(String.format("Session Destroyed for user %s", buddy.getBuddyId()));
-        }
+    /**
+     * Logs out buddy
+     *
+     * @param buddy Buddy
+     */
+    private void logoutBuddy(Buddy buddy) {
 
         // Logout buddy
         LogoutBuddyResponseEvent responseEvent = coreService.logoutBuddy(
@@ -69,7 +75,14 @@ public class SessionDestroyAction extends SessionAction {
 
         // Log error
         if (!responseEvent.isSuccess()) {
-            log.error(responseEvent.getException());
+            if (log.isWarnEnabled()) {
+                log.warn(String.format("Logout %s", responseEvent.getExceptionMessage()));
+            }
+        }
+
+        // Log debug
+        if (log.isDebugEnabled()) {
+            log.debug(String.format("Session Destroyed for user %s", buddy.getBuddyId()));
         }
     }
 }

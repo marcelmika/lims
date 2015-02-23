@@ -47,4 +47,17 @@ public class ResponseEvent {
     public Throwable getException() {
         return exception;
     }
+
+    /**
+     * Returns exception message if set. Empty string otherwise
+     *
+     * @return String
+     */
+    public String getExceptionMessage() {
+        if (exception == null) {
+            return "";
+        }
+
+        return exception.getLocalizedMessage();
+    }
 }

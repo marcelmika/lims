@@ -49,18 +49,45 @@ public class UserListener extends BaseModelListener<User> {
     // Services
     BuddyCoreService coreService = BuddyCoreServiceUtil.getBuddyCoreService();
 
+    /**
+     * Called whenever the user is removed from the portal
+     *
+     * @param user User
+     */
     @Override
     public void onAfterRemove(User user) {
+
         // Create buddy from portal user
         Buddy buddy = Buddy.fromPortalUser(user);
-        // Logout buddy
+
+        // Delete the user
+        deleteBuddy(buddy);
+    }
+
+    /**
+     * Removes buddy from the system
+     *
+     * @param buddy Buddy
+     */
+    private void deleteBuddy(Buddy buddy) {
+
+        // Remove buddy
         DeleteBuddyResponseEvent responseEvent = coreService.removeBuddy(
                 new DeleteBuddyRequestEvent(buddy.toBuddyDetails())
         );
 
-        // Log result
+        // Failure
         if (!responseEvent.isSuccess()) {
-            log.error(responseEvent.getException());
+
+            // Notify the admin about the error
+            if (log.isWarnEnabled()) {
+                log.warn(String.format("Remove user %s", responseEvent.getExceptionMessage()));
+            }
+
+            // Provide more detailed description of the issue by printing the exception
+            if (log.isDebugEnabled()) {
+                log.debug(responseEvent.getException());
+            }
         }
     }
 }
