@@ -175,7 +175,7 @@ Y.LIMS.Core.Notification = Y.Base.create('notification', Y.View, [], {
                 // Vars
                 var title = Y.config.doc.title,
                     notificationTitle = Y.Lang.sub(Y.LIMS.Core.i18n.values.incomingMessageTitleText, {
-                        fullName: lastMessage.get('from').get('fullName')
+                        fullName: lastMessage.get('from').printableName()
                     });
 
                 // Update the title

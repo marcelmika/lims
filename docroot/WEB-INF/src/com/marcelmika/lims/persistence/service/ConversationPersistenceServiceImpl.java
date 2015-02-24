@@ -211,8 +211,15 @@ public class ConversationPersistenceServiceImpl implements ConversationPersisten
             // Map participants to buddies
             List<Buddy> buddies = new LinkedList<Buddy>();
             for (Participant participant : participants) {
+
                 // Find user in Liferay
-                User user = UserLocalServiceUtil.getUser(participant.getParticipantId());
+                User user = UserLocalServiceUtil.fetchUser(participant.getParticipantId());
+
+                // If the user is no longer in the liferay don't include him
+                if (user == null) {
+                    continue;
+                }
+
                 // Map Liferay user to buddy
                 Buddy buddy = Buddy.fromUser(user);
                 // Add to list

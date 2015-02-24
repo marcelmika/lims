@@ -238,6 +238,7 @@ public class Buddy {
                 buddy.portraitId = user.getPortraitId();
                 buddy.portraitImageToken = HttpUtil.encodeURL(DigesterUtil.digest(user.getUserUuid()));
                 buddy.portraitToken = WebServerServletTokenUtil.getToken(user.getPortraitId());
+                buddy.fullName = user.getFullName();
 
             } catch (Exception e) {
                 // Just log

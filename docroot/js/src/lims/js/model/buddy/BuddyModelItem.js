@@ -76,19 +76,27 @@ Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [Y.LIMS.M
         });
     },
 
-    // Custom sync layer.
-    sync: function (action, options, callback) {
+    /**
+     * Returns printable name of the buddy
+     *
+     * @return {string}
+     */
+    printableName: function () {
+        // Vars
+        var fullName = this.get('fullName'),
+            screenName = this.get('screenName');
 
-        switch (action) {
-            case 'create':
-            case 'update':
-            case 'read':
-            case 'delete':
-                return;
-
-            default:
-                callback('Invalid action');
+        // Full name
+        if (fullName && fullName.length > 0) {
+            return fullName;
         }
+        // If the full name is not set return the screen name
+        if (screenName && screenName.length > 0) {
+            return screenName;
+        }
+
+        // Otherwise return default
+        return Y.LIMS.Core.i18n.values.unknownUserPlaceholder;
     }
 
 }, {

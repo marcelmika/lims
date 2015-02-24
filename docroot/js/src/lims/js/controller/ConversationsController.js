@@ -206,7 +206,7 @@ Y.LIMS.Controller.ConversationsController = Y.Base.create('conversationsControll
                 conversationId: conversationId,
                 creator: buddyDetails,
                 participants: [buddy],
-                title: buddy.get('fullName'),
+                title: buddy.printableName(),
                 serverTimeOffset: properties.getServerTimeOffset()
             });
             // Add model to list

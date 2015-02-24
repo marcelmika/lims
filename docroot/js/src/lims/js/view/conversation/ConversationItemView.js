@@ -80,7 +80,7 @@ Y.LIMS.View.ConversationItemView = Y.Base.create('conversationViewItem', Y.View,
         container.set('innerHTML', Y.Lang.sub(this.template, {
                 createdPrettified: formatter.prettyDate(model.get('createdAt')),
                 created: formatter.formatDate(new Date(model.get('createdAt'))),
-                fullName: from.get('fullName'),
+                fullName: from.printableName(),
                 content: body,
                 portrait: this._renderPortrait(from)
             })

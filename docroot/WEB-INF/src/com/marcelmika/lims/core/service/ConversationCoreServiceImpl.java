@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.events.conversation.*;
 import com.marcelmika.lims.persistence.service.ConversationPersistenceService;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Implementation of ConversationCoreService
@@ -44,6 +43,7 @@ public class ConversationCoreServiceImpl implements ConversationCoreService {
     ConversationPersistenceService conversationPersistenceService;
 
     // Log
+    @SuppressWarnings("unused")
     private static Log log = LogFactoryUtil.getLog(ConversationCoreServiceImpl.class);
 
     /**
