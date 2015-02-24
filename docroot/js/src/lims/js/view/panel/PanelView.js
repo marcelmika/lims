@@ -207,13 +207,19 @@ Y.LIMS.View.PanelView = Y.Base.create('panelView', Y.View, [], {
      */
     _onPanelButtonsClick: function (event) {
         var target = event.currentTarget;
+
+        // Stop the propagation of event
+        event.preventDefault();
+
         // Minimize button
         if (target.hasClass('minimize')) {
             this.hide();
+            return false; // Just to prevent the default behavior
         }
         // Close button
         else if (target.hasClass('close')) {
             this.close();
+            return false; // Just to prevent the default behavior
         }
     }
 
