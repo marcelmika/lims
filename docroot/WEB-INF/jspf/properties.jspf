@@ -26,9 +26,6 @@
 <%--@elvariable id="settings" type="com.marcelmika.lims.portal.domain.Settings"--%>
 <%--@elvariable id="currentUser" type="com.marcelmika.limsmuc.portal.domain.Buddy"--%>
 
-<%-- Libraries --%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-
 <%-- This template HTML will be used to render localization messages --%>
 <script type="text/x-template" id="lims-properties">
     {
