@@ -1,6 +1,6 @@
 create table Lims_Conversation (
 	cid LONG not null primary key,
-	conversationId VARCHAR(256) null,
+	conversationId VARCHAR(255) null,
 	conversationType VARCHAR(75) null,
 	updatedAt DATE null
 );
@@ -16,7 +16,7 @@ create table Lims_Message (
 create table Lims_Panel (
 	pid LONG not null primary key,
 	userId LONG,
-	activePanelId VARCHAR(256) null
+	activePanelId VARCHAR(255) null
 );
 
 create table Lims_Participant (
