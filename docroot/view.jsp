@@ -7,6 +7,7 @@
 
 <%-- Taglib --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %>
 <%@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
 <%@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
@@ -27,9 +28,6 @@
 </c:choose>
 
 <c:if test="${isEnabled}">
-
-    <%-- Resource URL --%>
-    <portlet:resourceURL var="limsPortletURL" id="view.jsp" escapeXml="false"/>
 
     <%-- LIMS bar --%>
     <div id="lims-container" class="covered ${ieSupportClass}">
@@ -52,40 +50,11 @@
             <%-- Javascript Templates --%>
             <%@ include file="/WEB-INF/jspf/templates.jspf" %>
 
-            <%-- Portlet Enabled Flag --%>
-            <aui:input type="hidden"
-                       id="limsPortletEnabled"
-                       name="limsPortletEnabled"
-                       useNamespace="false"
-                       value="${settings.chatEnabled}"/>
+            <%-- Rendered properties passed to client --%>
+            <%@ include file="/WEB-INF/jspf/properties.jspf" %>
 
-            <%-- Portlet URL --%>
-            <aui:input type="hidden"
-                       id="limsPortletURL"
-                       name="limsPortletURL"
-                       useNamespace="false"
-                       value="<%= renderResponse.encodeURL(limsPortletURL.toString()) %>"/>
-
-            <%-- Server Time --%>
-            <aui:input type="hidden"
-                       id="limsCurrentServerTime"
-                       name="limsCurrentServerTime"
-                       useNamespace="false"
-                       value="<%= System.currentTimeMillis() %>"/>
-
-            <%-- Logged user screen name --%>
-            <aui:input type="hidden"
-                       id="limsCurrentUserScreenName"
-                       name="limsCurrentUserScreenName"
-                       useNamespace="false"
-                       value="${screenName}"/>
-
-            <%-- Logged user full name --%>
-            <aui:input type="hidden"
-                       id="limsCurrentUserFullName"
-                       name="limsCurrentUserFullName"
-                       useNamespace="false"
-                       value="${fullName}"/>
+            <%-- Rendered i18n string used on client --%>
+            <%@ include file="/WEB-INF/jspf/i18n.jspf" %>
 
         </c:if>
 
@@ -97,7 +66,6 @@
                 </a>
             </div>
         </c:if>
-
 
     </div>
 

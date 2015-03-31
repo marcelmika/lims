@@ -173,10 +173,20 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
             throws NoSuchParticipantException, SystemException, NoSuchConversationException {
 
         // Find conversation
-        Conversation conversation = conversationPersistence.findByConversationId(conversationId);
+        Conversation conversation = conversationPersistence.fetchByConversationId(conversationId);
+
+        if (conversation == null) {
+            // End here
+            return;
+        }
 
         // Find participant
-        Participant participant = participantPersistence.findByCidParticipantId(conversation.getCid(), participantId);
+        Participant participant = participantPersistence.fetchByCidParticipantId(conversation.getCid(), participantId);
+
+        if (participant == null) {
+            // End here
+            return;
+        }
 
         // Set counter to zero
         participant.setUnreadMessagesCount(0);
@@ -214,10 +224,9 @@ public class ParticipantLocalServiceImpl extends ParticipantLocalServiceBaseImpl
      *
      * @param participantId Id of the participant
      * @return participant
-     * @throws NoSuchParticipantException
      * @throws SystemException
      */
-    public Participant getParticipant(Long cid, Long participantId) throws NoSuchParticipantException, SystemException {
-        return participantPersistence.findByCidParticipantId(cid, participantId);
+    public Participant getParticipant(Long cid, Long participantId) throws SystemException {
+        return participantPersistence.fetchByCidParticipantId(cid, participantId);
     }
 }

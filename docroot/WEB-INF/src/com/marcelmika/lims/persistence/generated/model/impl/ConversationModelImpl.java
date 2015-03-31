@@ -64,7 +64,7 @@ public class ConversationModelImpl extends BaseModelImpl<Conversation>
 			{ "conversationType", Types.VARCHAR },
 			{ "updatedAt", Types.TIMESTAMP }
 		};
-	public static final String TABLE_SQL_CREATE = "create table Lims_Conversation (cid LONG not null primary key,conversationId VARCHAR(256) null,conversationType VARCHAR(75) null,updatedAt DATE null)";
+	public static final String TABLE_SQL_CREATE = "create table Lims_Conversation (cid LONG not null primary key,conversationId VARCHAR(255) null,conversationType VARCHAR(75) null,updatedAt DATE null)";
 	public static final String TABLE_SQL_DROP = "drop table Lims_Conversation";
 	public static final String ORDER_BY_JPQL = " ORDER BY conversation.cid ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY Lims_Conversation.cid ASC";

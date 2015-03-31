@@ -55,3 +55,10 @@
   -ms-user-select: none;
   user-select: none;
 }
+
+//
+// Makes the font smooth. Needed for webkit
+// See: http://stackoverflow.com/questions/13144061/font-weights-differing-in-webkit-and-firefox
+@mixin font-smoothing() {
+  -webkit-font-smoothing: antialiased;
+}

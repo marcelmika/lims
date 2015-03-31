@@ -87,6 +87,7 @@ public class LIMSPortlet extends MVCPortlet {
     private static final String VARIABLE_IS_ENABLED = "isEnabled";
     private static final String VARIABLE_SCREEN_NAME = "screenName";
     private static final String VARIABLE_FULL_NAME = "fullName";
+    private static final String VARIABLE_CURRENT_USER = "currentUser";
     private static final String VARIABLE_VERSION = "version";
 
     // Log
@@ -198,7 +199,10 @@ public class LIMSPortlet extends MVCPortlet {
         }
         // Log failure
         else {
-            log.error(responseEvent.getException());
+            // Log
+            if (log.isErrorEnabled()) {
+                log.error(responseEvent.getException());
+            }
         }
     }
 
@@ -231,7 +235,9 @@ public class LIMSPortlet extends MVCPortlet {
         }
         // Log failure
         else {
-            log.error(responseEvent.getException());
+            if (log.isErrorEnabled()) {
+                log.error(responseEvent.getException());
+            }
         }
     }
 
@@ -253,6 +259,8 @@ public class LIMSPortlet extends MVCPortlet {
         renderRequest.setAttribute(VARIABLE_IS_SUPPORTED_BROWSER, BrowserDetector.isSupportedBrowser(renderRequest));
         // Check if the browser needs support
         renderRequest.setAttribute(VARIABLE_NEEDS_IE_SUPPORT, BrowserDetector.needsInternetExplorerSupport(renderRequest));
+        // User values cannot be accessed via javascript so we need to render it manually
+        renderRequest.setAttribute(VARIABLE_CURRENT_USER, buddy);
         // Screen name cannot be accessed via javascript so we need to render it manually
         renderRequest.setAttribute(VARIABLE_SCREEN_NAME, buddy.getScreenName());
         renderRequest.setAttribute(VARIABLE_FULL_NAME, buddy.getFullName());

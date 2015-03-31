@@ -176,6 +176,10 @@ Y.LIMS.Controller.MainController = Y.Base.create('mainController', Y.Base, [Y.LI
                 // Get logged user
                 return new Y.LIMS.Model.BuddyModelItem({
                     buddyId: properties.getCurrentUserId(),
+                    male: properties.getCurrentUserMale(),
+                    portraitId: properties.getCurrentUserPortraitId(),
+                    portraitImageToken: properties.getCurrentUserPortraitImageToken(),
+                    portraitToken: properties.getCurrentUserPortraitToken(),
                     screenName: properties.getCurrentUserScreenName(),
                     fullName: properties.getCurrentUserFullName()
                 });

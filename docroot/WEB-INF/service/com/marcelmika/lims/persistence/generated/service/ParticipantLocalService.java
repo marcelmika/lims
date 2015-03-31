@@ -333,12 +333,10 @@ public interface ParticipantLocalService extends BaseLocalService,
 	*
 	* @param participantId Id of the participant
 	* @return participant
-	* @throws NoSuchParticipantException
 	* @throws SystemException
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public com.marcelmika.lims.persistence.generated.model.Participant getParticipant(
 		java.lang.Long cid, java.lang.Long participantId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.persistence.generated.NoSuchParticipantException;
+		throws com.liferay.portal.kernel.exception.SystemException;
 }

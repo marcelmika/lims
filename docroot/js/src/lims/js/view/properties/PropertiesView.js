@@ -69,11 +69,7 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
         var openButton = this.get('openButton'),
             buddyListStrategy = this.get('buddyListStrategy'),
             buddyListSocialRelations = this.get('buddyListSocialRelations'),
-            buddyListIgnoreDefaultUser = this.get('buddyListIgnoreDefaultUser'),
             buddyListIgnoreDeactivatedUser = this.get('buddyListIgnoreDeactivatedUser'),
-            buddyListMaxBuddies = this.get('buddyListMaxBuddies'),
-            buddyListMaxSearch = this.get('buddyListMaxSearch'),
-            conversationListMaxMessages = this.get('conversationListMaxMessages'),
             excludedSites = this.get('excludedSites'),
             buddyListSiteExcludes = this.get('buddyListSiteExcludes'),
             buddyListGroupExcludes = this.get('buddyListGroupExcludes');
@@ -82,11 +78,7 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
         openButton.on('click', this._onOpenButtonClick, this);
         buddyListStrategy.on('choiceClick', this._onBuddyListStrategySelected, this);
         buddyListSocialRelations.on('choiceClick', this._onBuddyListSocialRelationsSelected, this);
-        buddyListIgnoreDefaultUser.on('switchClick', this._onBuddyListIgnoreDefaultUserClick, this);
         buddyListIgnoreDeactivatedUser.on('switchClick', this._onBuddyListIgnoreDeactivatedUserClick, this);
-        buddyListMaxBuddies.on('sliderUpdate', this._onBuddyListMaxBuddiesUpdate, this);
-        buddyListMaxSearch.on('sliderUpdate', this._onBuddyListMaxSearchUpdate, this);
-        conversationListMaxMessages.on('sliderUpdate', this._onConversationListMaxMessagesUpdate, this);
         excludedSites.on('inputUpdate', this._onExcludedSitesUpdate, this);
         buddyListSiteExcludes.on('inputUpdate', this._onBuddyListSiteExcludesUpdate, this);
         buddyListGroupExcludes.on('inputUpdate', this._onBuddyListGroupExcludesUpdate, this);
@@ -178,35 +170,6 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
     },
 
     /**
-     * Called when the user click on the buddy list ignore default user switch
-     *
-     * @private
-     */
-    _onBuddyListIgnoreDefaultUserClick: function () {
-        // Vars
-        var switchView = this.get('buddyListIgnoreDefaultUser'),
-            model;
-
-        // Prepare the model
-        model = new Y.LIMS.Model.PropertiesModel({
-            buddyListIgnoreDefaultUser: switchView.isOn()
-        });
-
-        // Disable view
-        switchView.disable();
-
-        // Save the model
-        model.save(function (err) {
-            if (err) {
-                // Return everything to the previous state
-                switchView.toggle();
-            }
-            // Re-enable the view so the user can interact with it again
-            switchView.enable();
-        });
-    },
-
-    /**
      * Called when the user click on the buddy list ignore deactivated user switch
      *
      * @private
@@ -232,103 +195,6 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
             }
             // Re-enable the view so the user can interact with it again
             switchView.enable();
-        });
-    },
-
-    /**
-     * Called when the user updates buddy list max buddies property
-     *
-     * @param event
-     * @private
-     */
-    _onBuddyListMaxBuddiesUpdate: function (event) {
-        // Vars
-        var buddyListMaxBuddies = this.get('buddyListMaxBuddies'),
-            preValue = event.preValue,          // Previously selected value
-            postValue = event.postValue,        // Current value
-            model;
-
-        // Prepare the model
-        model = new Y.LIMS.Model.PropertiesModel({
-            buddyListMaxBuddies: postValue
-        });
-
-        // Disable view
-        buddyListMaxBuddies.disable();
-
-        // Save the model
-        model.save(function (err) {
-            if (err) {
-                // Return everything to the previous state
-                buddyListMaxBuddies.setValue(preValue);
-            }
-            // Re-enable the view so the user can interact with it again
-            buddyListMaxBuddies.enable();
-        });
-    },
-
-    /**
-     * Called when the user updates buddy list max search property
-     *
-     * @param event
-     * @private
-     */
-    _onBuddyListMaxSearchUpdate: function (event) {
-        // Vars
-        var buddyListMaxSearch = this.get('buddyListMaxSearch'),
-            preValue = event.preValue,      // Previously selected value
-            postValue = event.postValue,    // Current value
-            model;
-
-        // Prepare the model
-        model = new Y.LIMS.Model.PropertiesModel({
-            buddyListMaxSearch: postValue
-        });
-
-        // Disable view
-        buddyListMaxSearch.disable();
-
-        // Save the model
-        model.save(function (err) {
-            if (err) {
-                // Return everything to the previous state
-                buddyListMaxSearch.setValue(preValue);
-            }
-            // Re-enable the view so the user can interact with it again
-            buddyListMaxSearch.enable();
-        });
-    },
-
-
-    /**
-     * Called when the user updates conversation list max messages property
-     *
-     * @param event
-     * @private
-     */
-    _onConversationListMaxMessagesUpdate: function (event) {
-        // Vars
-        var conversationListMaxMessages = this.get('conversationListMaxMessages'),
-            preValue = event.preValue,      // Previously selected value
-            postValue = event.postValue,    // Current value
-            model;
-
-        // Prepare the model
-        model = new Y.LIMS.Model.PropertiesModel({
-            conversationListMaxMessages: postValue
-        });
-
-        // Disable view
-        conversationListMaxMessages.disable();
-
-        // Save the model
-        model.save(function (err) {
-            if (err) {
-                // Return everything to the previous state
-                conversationListMaxMessages.setValue(preValue);
-            }
-            // Re-enable the view so the user can interact with it again
-            conversationListMaxMessages.enable();
         });
     },
 
@@ -629,22 +495,6 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
         },
 
         /**
-         * View for buddy list ignore default user
-         *
-         * {Y.LIMS.View.SwitchElementView}
-         */
-        buddyListIgnoreDefaultUser: {
-            valueFn: function () {
-                // Vars
-                var container = this.get('container').one('.buddy-list-ignore-default-user');
-
-                return new Y.LIMS.View.SwitchElementView({
-                    container: container
-                });
-            }
-        },
-
-        /**
          * View for buddy list ignore deactivated user
          *
          * {Y.LIMS.View.SwitchElementView}
@@ -656,69 +506,6 @@ Y.LIMS.View.PropertiesView = Y.Base.create('propertiesView', Y.View, [], {
 
                 return new Y.LIMS.View.SwitchElementView({
                     container: container
-                });
-            }
-        },
-
-        /**
-         * View for buddy list max buddies
-         *
-         * {Y.LIMS.View.SliderElementView}
-         */
-        buddyListMaxBuddies: {
-            valueFn: function () {
-                // Vars
-                var container = this.get('container').one('.buddy-list-max-buddies .slider'),
-                    valueContainer = this.get('container').one('.buddy-list-max-buddies .value');
-
-                return new Y.LIMS.View.SliderElementView({
-                    container: container,
-                    valueContainer: valueContainer,
-                    min: 10,
-                    max: 500,
-                    value: valueContainer.get('innerHTML')
-                });
-            }
-        },
-
-        /**
-         * View for buddy list max search
-         *
-         * {Y.LIMS.View.SliderElementView}
-         */
-        buddyListMaxSearch: {
-            valueFn: function () {
-                // Vars
-                var container = this.get('container').one('.buddy-list-max-search .slider'),
-                    valueContainer = this.get('container').one('.buddy-list-max-search .value');
-
-                return new Y.LIMS.View.SliderElementView({
-                    container: container,
-                    valueContainer: valueContainer,
-                    min: 5,
-                    max: 50,
-                    value: valueContainer.get('innerHTML')
-                });
-            }
-        },
-
-        /**
-         * View for conversation list max messages
-         *
-         * {Y.LIMS.View.SliderElementView}
-         */
-        conversationListMaxMessages: {
-            valueFn: function () {
-                // Vars
-                var container = this.get('container').one('.conversation-list-max-messages .slider'),
-                    valueContainer = this.get('container').one('.conversation-list-max-messages .value');
-
-                return new Y.LIMS.View.SliderElementView({
-                    container: container,
-                    valueContainer: valueContainer,
-                    min: 10,
-                    max: 200,
-                    value: valueContainer.get('innerHTML')
                 });
             }
         },

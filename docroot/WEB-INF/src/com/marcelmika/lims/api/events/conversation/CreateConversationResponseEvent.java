@@ -44,7 +44,7 @@ public class CreateConversationResponseEvent extends ResponseEvent {
         ERROR_NO_SESSION, // User does not have a session
         ERROR_UNKNOWN_CONVERSATION_TYPE, // Unknown conversation type
         ERROR_NOT_IMPLEMENTED, // Functionality is not implemented yet
-        ERROR_JABBER, // Error with jabber occurred
+        ERROR_COLLISION, // Cannot create conversation with yourself
         ERROR_PERSISTENCE, // Error with persistence occurred
     }
 

@@ -76,19 +76,27 @@ Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [Y.LIMS.M
         });
     },
 
-    // Custom sync layer.
-    sync: function (action, options, callback) {
+    /**
+     * Returns printable name of the buddy
+     *
+     * @return {string}
+     */
+    printableName: function () {
+        // Vars
+        var fullName = this.get('fullName'),
+            screenName = this.get('screenName');
 
-        switch (action) {
-            case 'create':
-            case 'update':
-            case 'read':
-            case 'delete':
-                return;
-
-            default:
-                callback('Invalid action');
+        // Full name
+        if (fullName && fullName.length > 0) {
+            return fullName;
         }
+        // If the full name is not set return the screen name
+        if (screenName && screenName.length > 0) {
+            return screenName;
+        }
+
+        // Otherwise return default
+        return Y.LIMS.Core.i18n.values.unknownUserPlaceholder;
     }
 
 }, {
@@ -97,18 +105,74 @@ Y.LIMS.Model.BuddyModelItem = Y.Base.create('buddyModelItem', Y.Model, [Y.LIMS.M
         // model's data. See the docs for Y.Attribute to learn more about defining
         // attributes.
 
+        /**
+         * Id of the buddy
+         *
+         * {integer|null}
+         */
         buddyId: {
             value: null // default value
         },
 
+        /**
+         * Screen name of the buddy
+         *
+         * {string}
+         */
         screenName: {
             value: "" // default value
         },
 
+        /**
+         * Set to true if the buddy is male
+         *
+         * {boolean|null}
+         */
+        male: {
+            value: null // default value
+        },
+
+        /**
+         * Portrait id of the buddy
+         *
+         * {integer}
+         */
+        portraitId: {
+            value: 0 // default value
+        },
+
+        /**
+         * Portrait token of the buddy
+         *
+         * {string|null}
+         */
+        portraitToken: {
+            value: null // default value
+        },
+
+        /**
+         * Portrait image token of the buddy
+         *
+         * {string | null}
+         */
+        portraitImageToken: {
+            value: null // default value
+        },
+
+        /**
+         * Full name of the buddy
+         *
+         * {string}
+         */
         fullName: {
             value: "" // default value
         },
 
+        /**
+         * Presence of the buddy
+         *
+         * {string}
+         */
         presence: {
             value: null // default value
         }

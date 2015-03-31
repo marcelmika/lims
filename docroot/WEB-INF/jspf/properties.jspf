@@ -22,17 +22,24 @@
   ~ SOFTWARE.
   --%>
 
-
 <%-- Variables --%>
-<%--@elvariable id="properties" type="com.marcelmika.lims.portal.domain.Properties"--%>
+<%--@elvariable id="settings" type="com.marcelmika.lims.portal.domain.Settings"--%>
+<%--@elvariable id="currentUser" type="com.marcelmika.limsmuc.portal.domain.Buddy"--%>
 
-<%-- Render --%>
-<li class="buddy-list-max-buddies">
-
-    <div class="settings-category-title">
-        <span><liferay-ui:message key="panel-settings-admin-area-buddy-list-max-buddies-title"/></span>
-    </div>
-    <div class="value">${properties.buddyListMaxBuddies}</div>
-    <div class="slider"></div>
-
-</li>
+<%-- This template HTML will be used to render localization messages --%>
+<script type="text/x-template" id="lims-properties">
+    {
+    "userId":${currentUser.buddyId},
+    "companyId":${currentUser.companyId},
+    "male":${currentUser.male},
+    "portraitId":${currentUser.portraitId},
+    "portraitImageToken":"${currentUser.portraitImageToken}",
+    "portraitToken":"${currentUser.portraitToken}",
+    "screenName":"${fn:escapeXml(currentUser.screenName)}",
+    "fullName":"${fn:escapeXml(currentUser.fullName)}",
+    "portletEnabled": ${settings.chatEnabled},
+    "activePanelId": "${settings.activePanelId}",
+    "contextPath":"<%= request.getContextPath() %>",
+    "currentServerTime":<%= System.currentTimeMillis() %>
+    }
+</script>

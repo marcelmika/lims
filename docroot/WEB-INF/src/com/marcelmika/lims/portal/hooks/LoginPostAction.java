@@ -58,19 +58,50 @@ public class LoginPostAction extends Action {
         try {
             // Create buddy from portal request
             Buddy buddy = Buddy.fromPortalServletRequest(request);
-            // Login buddy
-            LoginBuddyResponseEvent responseEvent = coreService.loginBuddy(
-                    new LoginBuddyRequestEvent(buddy.toBuddyDetails())
-            );
 
+            // Login
+            loginBuddy(buddy);
+        }
+        // Failure
+        catch (Exception e) {
             // Log error
-            if (!responseEvent.isSuccess()) {
-                log.error(responseEvent.getException());
+            if (log.isErrorEnabled()) {
+                log.error(e);
+            }
+        }
+    }
+
+    /**
+     * Login buddy
+     *
+     * @param buddy Buddy
+     */
+    private void loginBuddy(Buddy buddy) {
+
+        // Log
+        if(log.isDebugEnabled()) {
+            log.debug("Login user " + buddy.getScreenName());
+        }
+
+        // Login buddy
+        LoginBuddyResponseEvent responseEvent = coreService.loginBuddy(
+                new LoginBuddyRequestEvent(buddy.toBuddyDetails())
+        );
+
+        // Failure
+        if (!responseEvent.isSuccess()) {
+
+            // Notify the admin about the error
+            if (log.isWarnEnabled()) {
+                log.warn(String.format(
+                        "Login error " + responseEvent.getStatus() + ": " + responseEvent.getExceptionMessage()
+                ));
             }
 
-        } catch (Exception e) {
-            // Log error
-            log.error(e);
+            // Provide more detailed description of the issue by printing the exception
+            if (log.isDebugEnabled()) {
+                log.debug(responseEvent.getException());
+            }
         }
     }
 }

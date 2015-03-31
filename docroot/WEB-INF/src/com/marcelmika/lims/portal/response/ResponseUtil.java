@@ -26,7 +26,9 @@ package com.marcelmika.lims.portal.response;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.marcelmika.lims.portal.domain.ErrorMessage;
 import com.marcelmika.lims.portal.http.HttpStatus;
+import com.marcelmika.lims.portal.serialization.SerializationUtil;
 
 import javax.portlet.ResourceResponse;
 import java.io.IOException;
@@ -50,7 +52,40 @@ public class ResponseUtil {
      * @param response   Resource response
      */
     public static void writeResponse(HttpStatus statusCode, ResourceResponse response) {
-        writeResponse(null, statusCode, response);
+        // We will pass additional error message as a content to make the server API more readable
+        String content = null;
+
+        // 400
+        if (statusCode == HttpStatus.BAD_REQUEST) {
+            content = ErrorMessage.badRequest().serialize();
+        }
+        // 401
+        else if (statusCode == HttpStatus.UNAUTHORIZED) {
+            content = ErrorMessage.unauthorized().serialize();
+        }
+        // 403
+        else if (statusCode == HttpStatus.FORBIDDEN) {
+            content = ErrorMessage.forbidden().serialize();
+        }
+        // 404
+        else if (statusCode == HttpStatus.NOT_FOUND) {
+            content = ErrorMessage.notFound().serialize();
+        }
+        // 409
+        else if (statusCode == HttpStatus.CONFLICT) {
+            content = ErrorMessage.conflict().serialize();
+        }
+        // 417
+        else if (statusCode == HttpStatus.REQUEST_ENTITY_TOO_LARGE) {
+            content = ErrorMessage.requestEntityTooLarge().serialize();
+        }
+        // 500
+        else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR) {
+            content = ErrorMessage.internalServerError().serialize();
+        }
+
+        // Write content to the response
+        writeResponse(content, statusCode, response);
     }
 
     /**
@@ -61,6 +96,12 @@ public class ResponseUtil {
      * @param response   Resource response
      */
     public static void writeResponse(String content, HttpStatus statusCode, ResourceResponse response) {
+
+        // Remove null properties to decrease response size
+        content = SerializationUtil.excludeNullProperties(content);
+
+        // Remove class property do decrease response size
+        content = SerializationUtil.excludeClassProperty(content);
 
         // Write the content to the output stream
         if (content != null) {
@@ -96,10 +137,17 @@ public class ResponseUtil {
      */
     public static PrintWriter getResponseWriter(ResourceResponse response) {
         PrintWriter writer = null;
+
         try {
+            // Get the writer from response
             writer = response.getWriter();
-        } catch (IOException e) {
-            log.error(e);
+        }
+        // Failure
+        catch (IOException e) {
+            // Log
+            if (log.isErrorEnabled()) {
+                log.error(e);
+            }
         }
 
         return writer;

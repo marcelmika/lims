@@ -30,10 +30,6 @@
     float: none;
   }
 
-  .slider {
-    height: 30px;
-  }
-
   .value {
     float: left;
     margin: -4px 8px 11px 9px;
@@ -68,7 +64,11 @@
     width: 300px;
   }
 
-  .buddy-list-max-buddies {
+  .title-text {
+    text-transform: capitalize;
+  }
+
+  .buddy-list-ignore-deactivated-user {
     margin-top: 10px;
   }
 
@@ -160,14 +160,6 @@
 
     li {
       padding: 0 10px;
-    }
-
-    .buddy-list-ignore-default-user {
-      padding-top: 14px;
-    }
-
-    .buddy-list-max-buddies {
-      margin-top: 17px;
     }
 
     .settings-category-title {

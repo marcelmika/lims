@@ -25,6 +25,7 @@
 package com.marcelmika.lims.portal.domain;
 
 import com.liferay.portal.kernel.json.JSON;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.util.PortalUtil;
 import com.marcelmika.lims.api.entity.BuddyDetails;
 import com.marcelmika.lims.api.entity.ConversationDetails;
@@ -152,7 +153,7 @@ public class Conversation {
      */
     @JSON
     public String getTitle() {
-        String title = ""; // Default
+        String title = StringPool.DASH;
 
         // Single user conversation title
         if (conversationType == ConversationType.SINGLE_USER) {
@@ -162,6 +163,13 @@ public class Conversation {
                     title = PortalUtil.getUserName(participant.getBuddyId(), title);
                 }
             }
+        }
+
+        // No title was set
+        if (title.equals(StringPool.DASH) && buddy != null) {
+            // This means that the conversation has no other participants
+            // thus set the buddy's full name as a title
+            title = buddy.getFullName();
         }
 
         return title;

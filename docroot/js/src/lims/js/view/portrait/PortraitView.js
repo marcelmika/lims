@@ -41,10 +41,11 @@ Y.LIMS.View.PortraitView = Y.Base.create('portraitView', Y.View, [Y.LIMS.View.Vi
      */
     render: function () {
         // Vars
-        var container = this.get("container");
+        var container = this.get("container"),
+            buddy = this.get('buddy');
 
         // Set portrait image src attribute based on the screen name
-        container.set('src', this.getPortraitUrl(this.get("screenName")));
+        container.set('src', this.getPortraitUrl(buddy));
 
         return this;
     }
@@ -53,14 +54,24 @@ Y.LIMS.View.PortraitView = Y.Base.create('portraitView', Y.View, [Y.LIMS.View.Vi
 
     // Specify attributes and static properties for your View here.
     ATTRS: {
-        // Override the default container attribute.
+
+        /**
+         * View's container node
+         *
+         * {Node}
+         */
         container: {
             valueFn: function () {
                 return Y.Node.create(this.containerTemplate);
             }
         },
 
-        screenName: {
+        /**
+         * Buddy related to the portrait
+         *
+         * {Y.LIMS.Model.BuddyModelItem}
+         */
+        buddy: {
             value: null
         }
     }

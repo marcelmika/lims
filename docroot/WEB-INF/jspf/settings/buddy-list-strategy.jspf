@@ -65,7 +65,9 @@
 <%-- Rendered --%>
 <li class="buddy-list-strategy">
     <div class="settings-category-title">
-        <span><liferay-ui:message key="panel-settings-admin-area-buddy-list-strategy-title"/></span>
+        <span class="title-text">
+            <liferay-ui:message key="panel-settings-admin-area-buddy-list-strategy-title"/>
+        </span>
     </div>
     <div class="button-group">
         <label data-choice="${ALL}" class="button button-primary ${allActiveClass}">

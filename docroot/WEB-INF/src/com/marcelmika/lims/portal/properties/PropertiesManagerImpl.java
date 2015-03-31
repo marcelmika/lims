@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.api.environment.Environment.BuddyListSocialRelation;
-import com.marcelmika.lims.api.environment.Environment.BuddyListSource;
 import com.marcelmika.lims.api.environment.Environment.BuddyListStrategy;
 import com.marcelmika.lims.api.environment.Environment.PropertiesSource;
 import com.marcelmika.lims.portal.domain.Properties;
@@ -100,24 +99,19 @@ public class PropertiesManagerImpl implements PropertiesManager {
             setupPropertiesSource();
 
             // Set the whole environment
-            setupBuddyListSource();
             setupExcludedSites(preferences);
             setupBuddyListStrategy(preferences);
             setupBuddyListSocialRelations(preferences);
-            setupBuddyListIgnoreDefaultUser(preferences);
             setupBuddyListIgnoreDeactivatedUser(preferences);
-            setupBuddyListMaxBuddies(preferences);
-            setupBuddyListMaxSearch(preferences);
-            setupConversationListMaxMessages(preferences);
+            setupBuddyListMaxBuddies();
+            setupBuddyListMaxSearch();
+            setupConversationListMaxMessages();
             setupBuddyListSiteExcludes(preferences);
             setupBuddyListGroupExcludes(preferences);
             setupErrorMode();
 
             // Set url properties
             setUrlProperties();
-
-            // Set jabber related properties
-            setupJabberProperties();
         }
     }
 
@@ -148,29 +142,9 @@ public class PropertiesManagerImpl implements PropertiesManager {
             updateBuddyListSocialRelations(preferences, properties);
         }
 
-        // Buddy list ignore default user
-        if (properties.getBuddyListIgnoreDefaultUser() != null) {
-            updateBuddyListIgnoreDefaultUser(preferences, properties);
-        }
-
         // Buddy list ignore deactivated user
         if (properties.getBuddyListIgnoreDeactivatedUser() != null) {
             updateBuddyListIgnoreDeactivatedUser(preferences, properties);
-        }
-
-        // Buddy list max buddies
-        if (properties.getBuddyListMaxBuddies() != null) {
-            updateBuddyListMaxBuddies(preferences, properties);
-        }
-
-        // Buddy list max search
-        if (properties.getBuddyListMaxSearch() != null) {
-            updateBuddyListMaxSearch(preferences, properties);
-        }
-
-        // Conversation list max messages
-        if (properties.getConversationListMaxMessages() != null) {
-            updateConversationListMaxMessages(preferences, properties);
         }
 
         // Buddy list site excludes
@@ -263,38 +237,6 @@ public class PropertiesManagerImpl implements PropertiesManager {
 
         // Save in Environment
         setupExcludedSites(preferences);
-    }
-
-    /**
-     * Sets buddy list source
-     */
-    private void setupBuddyListSource() {
-        String value = PortletPropertiesValues.BUDDY_LIST_SOURCE;
-
-        BuddyListSource buddyListSource;
-
-        // Liferay
-        if (value.equals("liferay")) {
-            buddyListSource = BuddyListSource.LIFERAY;
-        }
-        // Jabber
-        else if (value.equals("jabber")) {
-            buddyListSource = BuddyListSource.JABBER;
-        }
-        // Unknown value
-        else {
-            log.error(String.format(
-                    "Unknown buddy list source: %s. Valid values are \"liferay\" or \"jabber\". Since no valid " +
-                            "property was provided \"liferay\" was chosen as a default. The value can be " +
-                            "set in portlet-ext.properties file related to the LIMS portlet.", value
-            ));
-
-            // Fallback to default
-            buddyListSource = BuddyListSource.LIFERAY;
-        }
-
-        // Save to Environment
-        Environment.setBuddyListSource(buddyListSource);
     }
 
     /**
@@ -515,56 +457,6 @@ public class PropertiesManagerImpl implements PropertiesManager {
     }
 
     /**
-     * Updates the buddy list default user property
-     *
-     * @param preferences PortletPreferences
-     * @param properties  Properties
-     * @throws Exception
-     */
-    private void updateBuddyListIgnoreDefaultUser(PortletPreferences preferences,
-                                                  Properties properties) throws Exception {
-
-        // Set the value in portlet preferences
-        preferences.setValue(
-                PortletPropertiesKeys.BUDDY_LIST_IGNORE_DEFAULT_USER,
-                String.valueOf(properties.getBuddyListIgnoreDefaultUser())
-        );
-        // Persist
-        preferences.store();
-
-        // Save in Environment
-        setupBuddyListIgnoreDefaultUser(preferences);
-    }
-
-    /**
-     * Sets the buddy list ignore default user property
-     *
-     * @param preferences PortletPreferences
-     */
-    private void setupBuddyListIgnoreDefaultUser(PortletPreferences preferences) {
-        // Get the properties source
-        PropertiesSource source = Environment.getPropertiesSource();
-
-        Boolean buddyListIgnoreDefaultUser;
-
-        // Preferences
-        if (source == PropertiesSource.PREFERENCES) {
-            // Take the value from preferences
-            buddyListIgnoreDefaultUser = Boolean.parseBoolean(preferences.getValue(
-                    PortletPropertiesKeys.BUDDY_LIST_IGNORE_DEFAULT_USER,
-                    String.valueOf(PortletPropertiesValues.BUDDY_LIST_IGNORE_DEFAULT_USER)
-            ));
-        }
-        // Properties
-        else {
-            buddyListIgnoreDefaultUser = PortletPropertiesValues.BUDDY_LIST_IGNORE_DEFAULT_USER;
-        }
-
-        // Save in environment
-        Environment.setBuddyListIgnoreDefaultUser(buddyListIgnoreDefaultUser);
-    }
-
-    /**
      * Updates the buddy list deactivated user property
      *
      * @param preferences PortletPreferences
@@ -615,211 +507,55 @@ public class PropertiesManagerImpl implements PropertiesManager {
     }
 
     /**
-     * Updates the buddy list max buddies property
-     *
-     * @param preferences PortletPreferences
-     * @param properties  Properties
-     * @throws Exception
-     */
-    private void updateBuddyListMaxBuddies(PortletPreferences preferences, Properties properties) throws Exception {
-
-        // Get the value from properties
-        Integer value = validateValueScope(
-                properties.getBuddyListMaxBuddies(),
-                "buddy list max buddies",
-                BUDDY_LIST_MAX_BUDDIES_MIN,
-                BUDDY_LIST_MAX_BUDDIES_MAX,
-                BUDDY_LIST_MAX_BUDDIES_DEFAULT
-        );
-
-        // Set the value in portlet preferences
-        preferences.setValue(
-                PortletPropertiesKeys.BUDDY_LIST_MAX_BUDDIES,
-                String.valueOf(value)
-        );
-
-        // Persists
-        preferences.store();
-
-        // Save in Environment
-        setupBuddyListMaxBuddies(preferences);
-    }
-
-    /**
      * Sets the buddy list max buddies property
-     *
-     * @param preferences PortletPreferences
      */
-    private void setupBuddyListMaxBuddies(PortletPreferences preferences) {
-        // Get the properties source
-        PropertiesSource source = Environment.getPropertiesSource();
-
+    private void setupBuddyListMaxBuddies() {
         // Get the value from properties
         Integer value = validateValueScope(
                 PortletPropertiesValues.BUDDY_LIST_MAX_BUDDIES,
-                "buddy list max buddies",
+                PortletPropertiesKeys.BUDDY_LIST_MAX_BUDDIES,
                 BUDDY_LIST_MAX_BUDDIES_MIN,
                 BUDDY_LIST_MAX_BUDDIES_MAX,
                 BUDDY_LIST_MAX_BUDDIES_DEFAULT
         );
 
-        // Prepare the value that will be returned
-        Integer buddyListMaxBuddies;
-
-        // Preferences
-        if (source == PropertiesSource.PREFERENCES) {
-            // Take the value from preferences
-            buddyListMaxBuddies = Integer.parseInt(preferences.getValue(
-                    PortletPropertiesKeys.BUDDY_LIST_MAX_BUDDIES,
-                    String.valueOf(value)
-            ));
-        }
-        // Properties
-        else {
-            buddyListMaxBuddies = value;
-        }
-
         // Save in Environment
-        Environment.setBuddyListMaxBuddies(buddyListMaxBuddies);
-    }
-
-    /**
-     * Updates the buddy list max search property
-     *
-     * @param preferences PortletPreferences
-     * @param properties  Properties
-     * @throws Exception
-     */
-    private void updateBuddyListMaxSearch(PortletPreferences preferences, Properties properties) throws Exception {
-
-        // Get the value from properties
-        Integer value = validateValueScope(
-                properties.getBuddyListMaxSearch(),
-                "buddy list max search",
-                BUDDY_LIST_MAX_SEARCH_MIN,
-                BUDDY_LIST_MAX_SEARCH_MAX,
-                BUDDY_LIST_MAX_SEARCH_DEFAULT
-        );
-
-        // Set the value in portlet preferences
-        preferences.setValue(
-                PortletPropertiesKeys.BUDDY_LIST_MAX_SEARCH,
-                String.valueOf(value)
-        );
-
-        // Persist
-        preferences.store();
-
-        // Save in Environment
-        setupBuddyListMaxSearch(preferences);
+        Environment.setBuddyListMaxBuddies(value);
     }
 
     /**
      * Sets the buddy list max search property
-     *
-     * @param preferences PortletPreferences
      */
-    private void setupBuddyListMaxSearch(PortletPreferences preferences) {
-        // Get the properties source
-        PropertiesSource source = Environment.getPropertiesSource();
-
+    private void setupBuddyListMaxSearch() {
         // Get the value from properties
         Integer value = validateValueScope(
                 PortletPropertiesValues.BUDDY_LIST_MAX_SEARCH,
-                "buddy list max search",
+                PortletPropertiesKeys.BUDDY_LIST_MAX_SEARCH,
                 BUDDY_LIST_MAX_SEARCH_MIN,
                 BUDDY_LIST_MAX_SEARCH_MAX,
                 BUDDY_LIST_MAX_SEARCH_DEFAULT
         );
 
-        // Prepare the value that will be returned
-        Integer buddyListMaxSearch;
-
-        // Preferences
-        if (source == PropertiesSource.PREFERENCES) {
-            // Take the value from preferences
-            buddyListMaxSearch = Integer.parseInt(preferences.getValue(
-                    PortletPropertiesKeys.BUDDY_LIST_MAX_SEARCH,
-                    String.valueOf(value)
-            ));
-        }
-        // Properties
-        else {
-            buddyListMaxSearch = value;
-        }
-
         // Save in Environment
-        Environment.setBuddyListMaxSearch(buddyListMaxSearch);
-    }
-
-
-    /**
-     * Updates conversation list max messages property
-     *
-     * @param preferences PortletPreferences
-     * @param properties  Properties
-     * @throws Exception
-     */
-    private void updateConversationListMaxMessages(PortletPreferences preferences, Properties properties) throws Exception {
-
-        // Get the value from properties
-        Integer value = validateValueScope(
-                properties.getConversationListMaxMessages(),
-                "conversation list max messages",
-                CONVERSATION_LIST_MAX_MESSAGES_MIN,
-                CONVERSATION_LIST_MAX_MESSAGES_MAX,
-                CONVERSATION_LIST_MAX_MESSAGES_DEFAULT
-        );
-
-        // Set the value in portlet preferences
-        preferences.setValue(
-                PortletPropertiesKeys.CONVERSATION_LIST_MAX_MESSAGES,
-                String.valueOf(value)
-        );
-
-        // Persist
-        preferences.store();
-
-        // Save in Environment
-        setupConversationListMaxMessages(preferences);
+        Environment.setBuddyListMaxSearch(value);
     }
 
     /**
      * Sets the conversation list max messages property
-     *
-     * @param preferences PortletPreferences
      */
-    private void setupConversationListMaxMessages(PortletPreferences preferences) {
-        // Get the properties source
-        PropertiesSource source = Environment.getPropertiesSource();
+    private void setupConversationListMaxMessages() {
 
         // Get the value from properties
         Integer value = validateValueScope(
                 PortletPropertiesValues.CONVERSATION_LIST_MAX_MESSAGES,
-                "conversation list max messages",
+                PortletPropertiesKeys.CONVERSATION_LIST_MAX_MESSAGES,
                 CONVERSATION_LIST_MAX_MESSAGES_MIN,
                 CONVERSATION_LIST_MAX_MESSAGES_MAX,
                 CONVERSATION_LIST_MAX_MESSAGES_DEFAULT
         );
 
-        // Prepare the value that will be returned
-        Integer conversationListMaxMessages;
-
-        // Preferences
-        if (source == PropertiesSource.PREFERENCES) {
-            // Take the value from preferences
-            conversationListMaxMessages = Integer.parseInt(preferences.getValue(
-                    PortletPropertiesKeys.CONVERSATION_LIST_MAX_MESSAGES,
-                    String.valueOf(value)
-            ));
-        }
-        // Properties
-        else {
-            conversationListMaxMessages = value;
-        }
-
         // Save in Environment
-        Environment.setConversationListMaxMessages(conversationListMaxMessages);
+        Environment.setConversationListMaxMessages(value);
     }
 
     /**
@@ -920,28 +656,6 @@ public class PropertiesManagerImpl implements PropertiesManager {
 
         // Save in Environment
         Environment.setBuddyListGroupExcludes(buddyListGroupExcludes);
-    }
-
-    /**
-     * Sets jabber related properties
-     */
-    private void setupJabberProperties() {
-
-        // Set jabber properties to Environment
-        // TODO: Uncomment when implemented
-//        Environment.setJabberEnabled(PortletPropertiesValues.JABBER_ENABLED);
-        Environment.setJabberEnabled(false);
-        Environment.setJabberHost(PortletPropertiesValues.JABBER_HOST);
-        Environment.setJabberPort(PortletPropertiesValues.JABBER_PORT);
-        Environment.setJabberServiceName(PortletPropertiesValues.JABBER_SERVICE_NAME);
-        Environment.setJabberResource(PortletPropertiesValues.JABBER_RESOURCE);
-        Environment.setJabberSock5ProxyEnabled(PortletPropertiesValues.JABBER_SOCK5_PROXY_ENABLED);
-        Environment.setJabberSock5ProxyPort(PortletPropertiesValues.JABBER_SOCK5_PROXY_PORT);
-        Environment.setJabberImportUserEnabled(PortletPropertiesValues.JABBER_IMPORT_USER_ENABLED);
-        Environment.setSaslPlainEnabled(PortletPropertiesValues.JABBER_SASL_PLAIN_ENABLED);
-        Environment.setSaslPlainAuthId(PortletPropertiesValues.JABBER_SASL_PLAIN_AUTHID);
-        Environment.setSaslPlainPassword(PortletPropertiesValues.JABBER_SASL_PLAIN_PASSWORD);
-
     }
 
     /**

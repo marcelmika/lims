@@ -37,17 +37,49 @@ Y.LIMS.View.ViewExtension.prototype = {
     rootNode: '#lims-container',
 
     /**
-     * Returns url of the portrait of buddy based on the screenName
-     * @param screenName
+     * Returns url of the portrait for the given buddy
+     *
+     * @param buddy {Y.LIMS.Model.BuddyModelItem}
      * @returns {string}
      */
-    getPortraitUrl: function (screenName) {
-        var companyId = Y.LIMS.Core.Properties.companyId,
-            pathImage = Y.LIMS.Core.Properties.pathImage;
+    getPortraitUrl: function (buddy) {
+        // Vars
+        var pathImage = Y.LIMS.Core.Properties.pathImage,
+            male = buddy.get('male'),
+            portraitId = buddy.get('portraitId'),
+            portraitToken = buddy.get('portraitToken'),
+            portraitImageToken = buddy.get('portraitImageToken'),
+            pathUrl,
+            portraitUrl;
 
-        return pathImage + '/user_portrait?screenName=' + screenName + '&' + 'companyId=' + companyId;
+        // Male
+        if (male === true) {
+            pathUrl = '/user_male_portrait';
+        }
+        // Female
+        else if (male === false) {
+            pathUrl = '/user_female_portrait';
+        }
+        // Other
+        else {
+            pathUrl = '/user_portrait';
+        }
+
+        // Compose the portrait url
+        portraitUrl = pathImage + pathUrl + '?img_id=' + portraitId;
+
+        // Add the portrait image token if needed
+        if (portraitImageToken) {
+            portraitUrl += ('&img_id_token=' + portraitImageToken);
+        }
+
+        // Add the portrait token if needed
+        if (portraitToken) {
+            portraitUrl += ('&t=' + portraitToken);
+        }
+
+        return portraitUrl;
     },
-
     /**
      * Returns root container node
      *

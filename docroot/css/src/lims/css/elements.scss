@@ -131,38 +131,8 @@
       @include border-bottom-left-radius(0);
     }
   }
-
 }
 
-/********************************************************************************
-/ SLIDER
-/********************************************************************************/
-
-.liferay-ims .slider {
-
-  .yui3-slider-x .yui3-slider-thumb {
-    width: 22px;
-  }
-
-  .yui3-slider-x .yui3-slider-thumb-shadow {
-    left: -2px;
-    top: -46px;
-    width: 22px;
-  }
-
-  .yui3-slider-x .yui3-slider-thumb-image {
-    top: -8px;
-    width: 22px;
-  }
-
-  // Overwrite the default rail
-  .yui3-slider-x .yui3-slider-rail,
-  .yui3-slider-x .yui3-slider-rail-cap-left,
-  .yui3-slider-x .yui3-slider-rail-cap-right {
-    background-image: url(/images/rail-x.png);
-  }
-
-}
 
 /************************************************************************************
 /  TOKEN INPUT
@@ -264,10 +234,11 @@
     // Rounded corners
     @include border-radius(8px);
     background-color: #74B3EB;
-    border: 1px solid #629CCE;
+    border: none;
     color: white;
-    padding: 0 10px 1px;
+    padding: 1px 11px 2px;
     position: relative;
+    font-weight: 500;
   }
 
   .token-input-plugin-hasremove {
@@ -290,10 +261,10 @@
     color: #fff;
     line-height: 1;
     position: absolute;
-    top: 4px;
+    top: 2px;
     right: 4px;
     font-size: 18px;
-    font-weight: lighter;
+    font-weight: 500;
     text-decoration: none;
   }
 

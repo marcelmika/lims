@@ -37,15 +37,6 @@ import com.marcelmika.lims.api.events.conversation.*;
 public interface ConversationCoreService {
 
     /**
-     * Get all conversations related to the particular buddy
-     *
-     * @param event request event for method
-     * @return response event for  method
-     * @deprecated
-     */
-    public GetConversationsResponseEvent getConversations(GetConversationsRequestEvent event);
-
-    /**
      * Get all opened conversations related to the particular buddy
      *
      * @param event request event for method
@@ -70,15 +61,6 @@ public interface ConversationCoreService {
     public ReadSingleUserConversationResponseEvent readConversation(ReadSingleUserConversationRequestEvent event);
 
     /**
-     * Opens existing conversation
-     *
-     * @param event request event for method
-     * @return response event for method
-     * @deprecated
-     */
-    public OpenConversationResponseEvent openConversation(OpenConversationRequestEvent event);
-
-    /**
      * Closes existing conversation. User remains in the conversation though.
      *
      * @param event request event for method
@@ -92,27 +74,7 @@ public interface ConversationCoreService {
      * @param event request event for method
      * @return response event for method
      */
-    public ResetUnreadMessagesCounterResponseEvent resetUnreadMessagesCounter(ResetUnreadMessagesCounterRequestEvent
-                                                                                      event);
-
-    /**
-     * Removes buddy from the conversation
-     *
-     * @param event request event for method
-     * @return response event for method
-     * @deprecated
-     */
-    public LeaveConversationResponseEvent leaveConversation(LeaveConversationRequestEvent event);
-
-
-    /**
-     * Adds buddies to the conversation
-     *
-     * @param event request event for method
-     * @return response event for method
-     * @deprecated
-     */
-    public AddBuddiesResponseEvent addBuddies(AddBuddiesRequestEvent event);
+    public ResetUnreadMessagesCounterResponseEvent resetUnreadMessagesCounter(ResetUnreadMessagesCounterRequestEvent event);
 
     /**
      * Sends message to conversation
@@ -121,6 +83,5 @@ public interface ConversationCoreService {
      * @return response event for method
      */
     public SendMessageResponseEvent sendMessage(SendMessageRequestEvent event);
-
 
 }

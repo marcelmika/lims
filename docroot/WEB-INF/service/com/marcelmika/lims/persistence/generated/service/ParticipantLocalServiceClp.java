@@ -919,8 +919,7 @@ public class ParticipantLocalServiceClp implements ParticipantLocalService {
 	@Override
 	public com.marcelmika.lims.persistence.generated.model.Participant getParticipant(
 		java.lang.Long cid, java.lang.Long participantId)
-		throws com.liferay.portal.kernel.exception.SystemException,
-			com.marcelmika.lims.persistence.generated.NoSuchParticipantException {
+		throws com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
@@ -937,10 +936,6 @@ public class ParticipantLocalServiceClp implements ParticipantLocalService {
 
 			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
 				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
-
-			if (t instanceof com.marcelmika.lims.persistence.generated.NoSuchParticipantException) {
-				throw (com.marcelmika.lims.persistence.generated.NoSuchParticipantException)t;
 			}
 
 			if (t instanceof RuntimeException) {

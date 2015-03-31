@@ -35,6 +35,15 @@ Y.LIMS.Core.Properties = Y.Base.create('properties', Y.Base, [], {
     companyId: null,   // This is set in main.js, to access it use Y.LIMS.Core.Properties.companyId
     pathImage: null,   // This is set in main.js, to access it use Y.LIMS.Core.Properties.pathImage
     isIE: false,       // This is set in main.js, to access it use Y.LIMS.Core.Properties.isIE
+    resourceURL: null,  // This is set in main.js, to access it use Y.LIMS.Core.Properties.resourceURL
+
+    /**
+     * Values are parsed from HTML in main.js.
+     * Check the properties.jspf for the list of all possible properties.
+     *
+     * {}
+     */
+    values: null,
 
     /**
      * Called when the object is created
@@ -51,6 +60,51 @@ Y.LIMS.Core.Properties = Y.Base.create('properties', Y.Base, [], {
      */
     getCurrentUserId: function () {
         return this.get('userId');
+    },
+
+    /**
+     * Returns companyId of the currently connected user
+     *
+     * @return {number}
+     */
+    getCurrentUserCompanyId: function () {
+        return this.get('companyId');
+    },
+
+    /**
+     * Returns true if the current user is male
+     *
+     * @return {boolean}
+     */
+    getCurrentUserMale: function () {
+        return this.get('male');
+    },
+
+    /**
+     * Returns portraitId of the currently connected user
+     *
+     * @return {number}
+     */
+    getCurrentUserPortraitId: function () {
+        return this.get('portraitId');
+    },
+
+    /**
+     * Returns portrait image token of the currently connected user
+     *
+     * @return {string}
+     */
+    getCurrentUserPortraitImageToken: function () {
+        return this.get('portraitImageToken');
+    },
+
+    /**
+     * Returns portrait token of the currently connected user
+     *
+     * @return {string}
+     */
+    getCurrentUserPortraitToken: function () {
+        return this.get('portraitToken');
     },
 
     /**
@@ -125,51 +179,101 @@ Y.LIMS.Core.Properties = Y.Base.create('properties', Y.Base, [], {
 
         /**
          * User Id of the currently logged user
+         *
+         * {integer}
          */
         userId: {
             valueFn: function () {
-                return Y.LIMS.Core.Properties.userId;
+                return Y.LIMS.Core.Properties.values.userId;
             }
         },
 
         /**
          * Company Id of the currently logged user
+         *
+         * {integer}
          */
         companyId: {
             valueFn: function () {
-                return Y.LIMS.Core.Properties.companyId;
+                return Y.LIMS.Core.Properties.values.companyId;
+            }
+        },
+
+        /**
+         * Set to true if the user is male
+         *
+         * {boolean}
+         */
+        male: {
+            valueFn: function () {
+                return Y.LIMS.Core.Properties.values.male;
+            }
+        },
+
+        /**
+         * Portrait id of the currently logged user
+         *
+         * {integer}
+         */
+        portraitId: {
+            valueFn: function () {
+                return Y.LIMS.Core.Properties.values.portraitId;
+            }
+        },
+
+        /**
+         * Portrait image token of the currently logged user
+         *
+         * {string}
+         */
+        portraitImageToken: {
+            valueFn: function () {
+                return Y.LIMS.Core.Properties.values.portraitImageToken;
+            }
+        },
+
+        /**
+         * Portrait token of the currently logged user
+         *
+         * {string}
+         */
+        portraitToken: {
+            valueFn: function () {
+                return Y.LIMS.Core.Properties.values.portraitToken;
             }
         },
 
         /**
          * Screen name of the currently logged user
+         *
+         * {string}
          */
         screenName: {
             valueFn: function () {
-                // Since it cannot be accessed via Liferay.ThemeDisplay we need to
-                // take it manually via value in HTML
-                return Y.one('#limsCurrentUserScreenName').get('value');
+                return Y.LIMS.Core.Properties.values.screenName;
             }
         },
 
 
         /**
-         * Screen name of the currently logged user
+         * Full name of the currently logged user
+         *
+         * {string}
          */
         fullName: {
             valueFn: function () {
-                // Since it cannot be accessed via Liferay.ThemeDisplay we need to
-                // take it manually via value in HTML
-                return Y.one('#limsCurrentUserFullName').get('value');
+                return Y.LIMS.Core.Properties.values.fullName;
             }
         },
 
         /**
          * Holds current server time
+         *
+         * {number}
          */
         serverTime: {
             valueFn: function () {
-                return Y.one('#limsCurrentServerTime').get('value');
+                return Y.LIMS.Core.Properties.values.currentServerTime;
             }
         },
 
@@ -196,12 +300,12 @@ Y.LIMS.Core.Properties = Y.Base.create('properties', Y.Base, [], {
 
         /**
          * Set to true if chat is enabled
+         *
+         * {boolean}
          */
         isChatEnabled: {
             valueFn: function () {
-                // Take the default value from HTML. However, if the chat is e.g. disabled
-                // in the future this value will be overridden.
-                return Y.one('#limsPortletEnabled').get('value') === 'true';
+                return Y.LIMS.Core.Properties.values.portletEnabled;
             }
         }
     }

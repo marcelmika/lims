@@ -37,24 +37,14 @@ public class Environment {
     // Environment properties
     private static PropertiesSource propertiesSource = PropertiesSource.PREFERENCES;
     private static String[] excludedSites = new String[]{};
-    private static BuddyListSource buddyListSource = BuddyListSource.LIFERAY;
     private static BuddyListStrategy buddyListStrategy = BuddyListStrategy.ALL;
     private static BuddyListSocialRelation[] buddyListSocialRelations = new BuddyListSocialRelation[]{};
-    private static Boolean buddyListIgnoreDefaultUser = false;
     private static Boolean buddyListIgnoreDeactivatedUser = false;
     private static Integer buddyListMaxBuddies = 0;
     private static Integer buddyListMaxSearch = 0;
     private static Integer conversationListMaxMessages = 0;
     private static String[] buddyListSiteExcludes = new String[]{};
     private static String[] buddyListGroupExcludes = new String[]{};
-    private static Boolean jabberEnabled = false;
-    private static String jabberHost = "";
-    private static Integer jabberPort = 0;
-    private static String jabberServiceName = "";
-    private static String jabberResource = "";
-    private static Boolean jabberSock5ProxyEnabled = false;
-    private static Integer jabberSock5ProxyPort = 0;
-    private static Boolean jabberImportUserEnabled = false;
     private static Boolean saslPlainEnabled = false;
     private static String saslPlainAuthId = "";
     private static String saslPlainPassword = "";
@@ -111,39 +101,6 @@ public class Environment {
      */
     public static void setExcludedSites(String[] excludedSites) {
         Environment.excludedSites = excludedSites;
-    }
-
-    /**
-     * Enum for source of buddy list
-     */
-    public enum BuddyListSource {
-
-        /**
-         * Buddies are loaded from the Liferay database
-         */
-        LIFERAY,
-        /**
-         * Buddies are loaded from the Jabber server
-         */
-        JABBER
-    }
-
-    /**
-     * Returns source of the buddy list property
-     *
-     * @return BuddyListSource
-     */
-    public static BuddyListSource getBuddyListSource() {
-        return buddyListSource;
-    }
-
-    /**
-     * Sets buddy list source
-     *
-     * @param buddyListSource BuddyListSource
-     */
-    public static void setBuddyListSource(BuddyListSource buddyListSource) {
-        Environment.buddyListSource = buddyListSource;
     }
 
     /**
@@ -398,25 +355,6 @@ public class Environment {
     }
 
     /**
-     * Returns true if the default user should be ignored. Default user is the user which has
-     * the defaultUser flag in database set to true.
-     *
-     * @return boolean
-     */
-    public static boolean getBuddyListIgnoreDefaultUser() {
-        return buddyListIgnoreDefaultUser;
-    }
-
-    /**
-     * Sets the buddy list ignore default user property
-     *
-     * @param buddyListIgnoreDefaultUser Boolean
-     */
-    public static void setBuddyListIgnoreDefaultUser(Boolean buddyListIgnoreDefaultUser) {
-        Environment.buddyListIgnoreDefaultUser = buddyListIgnoreDefaultUser;
-    }
-
-    /**
      * Returns true if the deactivated user should be ignored. Deactivated user is the user which has
      * the status column set to 0 in database.
      *
@@ -451,150 +389,6 @@ public class Environment {
      */
     public static void setConversationListMaxMessages(Integer conversationListMaxMessages) {
         Environment.conversationListMaxMessages = conversationListMaxMessages;
-    }
-
-    /**
-     * Return true if communication via jabber is enabled
-     *
-     * @return boolean
-     */
-    public static boolean isJabberEnabled() {
-        return jabberEnabled;
-    }
-
-    /**
-     * Sets jabber enabled property
-     *
-     * @param jabberEnabled Boolean
-     */
-    public static void setJabberEnabled(Boolean jabberEnabled) {
-        Environment.jabberEnabled = jabberEnabled;
-    }
-
-    /**
-     * Returns jabber server host property
-     *
-     * @return String jabber host
-     */
-    public static String getJabberHost() {
-        return jabberHost;
-    }
-
-    /**
-     * Sets jabber host property
-     *
-     * @param jabberHost String
-     */
-    public static void setJabberHost(String jabberHost) {
-        Environment.jabberHost = jabberHost;
-    }
-
-    /**
-     * Returns jabber server port property
-     *
-     * @return int jabber port
-     */
-    public static int getJabberPort() {
-        return jabberPort;
-    }
-
-    /**
-     * Sets jabber port property
-     *
-     * @param jabberPort Integer
-     */
-    public static void setJabberPort(Integer jabberPort) {
-        Environment.jabberPort = jabberPort;
-    }
-
-    /**
-     * Returns jabber server service name property
-     *
-     * @return String jabber service name
-     */
-    public static String getJabberServiceName() {
-        return jabberServiceName;
-    }
-
-    /**
-     * Sets jabber service name property
-     *
-     * @param jabberServiceName String
-     */
-    public static void setJabberServiceName(String jabberServiceName) {
-        Environment.jabberServiceName = jabberServiceName;
-    }
-
-    /**
-     * Returns jabber server resource property
-     *
-     * @return String jabber resource
-     */
-    public static String getJabberResource() {
-        return jabberResource;
-    }
-
-    /**
-     * Sets jabber resource property
-     *
-     * @param jabberResource String
-     */
-    public static void setJabberResource(String jabberResource) {
-        Environment.jabberResource = jabberResource;
-    }
-
-    /**
-     * Returns true if jabber SOCK5 proxy mechanism is enabled
-     *
-     * @return boolean
-     */
-    public static boolean isJabberSock5ProxyEnabled() {
-        return jabberSock5ProxyEnabled;
-    }
-
-    /**
-     * Sets jabber SOCK5 proxy enabled property
-     *
-     * @param jabberSock5ProxyEnabled Integer
-     */
-    public static void setJabberSock5ProxyEnabled(Boolean jabberSock5ProxyEnabled) {
-        Environment.jabberSock5ProxyEnabled = jabberSock5ProxyEnabled;
-    }
-
-    /**
-     * Returns jabber SOCK5 port
-     *
-     * @return int jabber SOCK5 port
-     */
-    public static int getJabberSock5ProxyPort() {
-        return jabberSock5ProxyPort;
-    }
-
-    /**
-     * Sets jabber SOCK5 proxy port property
-     *
-     * @param jabberSock5ProxyPort Integer
-     */
-    public static void setJabberSock5ProxyPort(Integer jabberSock5ProxyPort) {
-        Environment.jabberSock5ProxyPort = jabberSock5ProxyPort;
-    }
-
-    /**
-     * Returns true if the Jabber Import User mechanism is enabled
-     *
-     * @return boolean
-     */
-    public static boolean isJabberImportUserEnabled() {
-        return jabberImportUserEnabled;
-    }
-
-    /**
-     * Sets jabber import user enabled property
-     *
-     * @param jabberImportUserEnabled Boolean
-     */
-    public static void setJabberImportUserEnabled(Boolean jabberImportUserEnabled) {
-        Environment.jabberImportUserEnabled = jabberImportUserEnabled;
     }
 
     /**

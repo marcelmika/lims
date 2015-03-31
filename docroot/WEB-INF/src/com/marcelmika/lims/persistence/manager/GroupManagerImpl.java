@@ -59,8 +59,6 @@ public class GroupManagerImpl implements GroupManager {
     public GroupCollection getGroups(Long userId, int start, int end) throws Exception {
         // Get selected list strategy
         Environment.BuddyListStrategy strategy = Environment.getBuddyListStrategy();
-        // Get the info if default user should be ignored
-        boolean ignoreDefaultUser = Environment.getBuddyListIgnoreDefaultUser();
         // Get the info if the deactivated user should be ignored
         boolean ignoreDeactivatedUser = Environment.getBuddyListIgnoreDeactivatedUser();
         // Some sites or groups may be excluded
@@ -72,30 +70,30 @@ public class GroupManagerImpl implements GroupManager {
         // All buddies
         if (strategy == BuddyListStrategy.ALL) {
             return getAllGroup(
-                    userId, ignoreDefaultUser, ignoreDeactivatedUser, start, end
+                    userId, true, ignoreDeactivatedUser, start, end
             );
         }
         // Buddies from sites
         else if (strategy == BuddyListStrategy.SITES) {
             return getSitesGroups(
-                    userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, start, end
+                    userId, true, ignoreDeactivatedUser, excludedSites, start, end
             );
         }
         // Socialized buddies
         else if (strategy == BuddyListStrategy.SOCIAL) {
             return getSocialGroups(
-                    userId, ignoreDefaultUser, ignoreDeactivatedUser, relationTypes, start, end
+                    userId, true, ignoreDeactivatedUser, relationTypes, start, end
             );
         }
         // Socialized and buddies from sites
         else if (strategy == BuddyListStrategy.SITES_AND_SOCIAL) {
             return getSitesAndSocialGroups(
-                    userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedSites, relationTypes, start, end
+                    userId, true, ignoreDeactivatedUser, excludedSites, relationTypes, start, end
             );
         }
         // User Groups
         else if (strategy == BuddyListStrategy.USER_GROUPS) {
-            return getUserGroups(userId, ignoreDefaultUser, ignoreDeactivatedUser, excludedGroups, start, end);
+            return getUserGroups(userId, true, ignoreDeactivatedUser, excludedGroups, start, end);
         }
         // Unknown
         else {

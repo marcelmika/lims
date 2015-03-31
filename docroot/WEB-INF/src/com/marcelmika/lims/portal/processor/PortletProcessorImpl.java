@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.marcelmika.lims.api.environment.Environment;
 import com.marcelmika.lims.portal.controller.*;
+import com.marcelmika.lims.portal.domain.ErrorMessage;
 import com.marcelmika.lims.portal.http.HttpStatus;
 import com.marcelmika.lims.portal.request.RequestParameterKeys;
 import com.marcelmika.lims.portal.response.ResponseUtil;
@@ -131,7 +132,12 @@ public class PortletProcessorImpl implements PortletProcessor {
 
         // Return error response if no query was set
         if (query == null) {
-            ResponseUtil.writeResponse(null, HttpStatus.BAD_REQUEST, response);
+            ResponseUtil.writeResponse(
+                    ErrorMessage.badRequest("Query parameter is missing").serialize(),
+                    HttpStatus.BAD_REQUEST,
+                    response
+            );
+            // End here
             return;
         }
 
@@ -204,7 +210,11 @@ public class PortletProcessorImpl implements PortletProcessor {
         // No such query was found
         else {
             // Write 404 to response
-            ResponseUtil.writeResponse(HttpStatus.NOT_FOUND, response);
+            ResponseUtil.writeResponse(
+                    ErrorMessage.notFound(String.format("Unknown query (%s) was passed", query)).serialize(),
+                    HttpStatus.NOT_FOUND,
+                    response
+            );
         }
     }
 
